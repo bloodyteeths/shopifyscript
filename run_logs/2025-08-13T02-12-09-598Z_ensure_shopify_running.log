@@ -1,0 +1,5 @@
+COMMAND     PID   USER   FD   TYPE             DEVICE SIZE/OFF NODE NAME
+Google     4785 tamsar   38u  IPv6 0x2bfec243652e1dbe      0t0  TCP localhost:62163->localhost:exlm-agent (CLOSE_WAIT)
+Google     4785 tamsar   39u  IPv6 0xde65dd6352f56ad1      0t0  TCP localhost:62164->localhost:exlm-agent (ESTABLISHED)
+node      69230 tamsar   15u  IPv6 0xaf39a818c5c17f34      0t0  TCP *:exlm-agent (LISTEN)
+node      69230 tamsar   17u  IPv6 0xc250c80a45c0d744      0t0  TCP localhost:exlm-agent->localhost:62164 (ESTABLISHED)

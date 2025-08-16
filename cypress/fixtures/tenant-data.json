@@ -1,0 +1,41 @@
+{
+  "demoTenant": {
+    "tenantId": "demo-tenant-1",
+    "backendUrl": "http://localhost:3001",
+    "hmacSecret": "test-secret-key-for-demo",
+    "ga4MeasurementId": "G-DEMO123456",
+    "googleAdsId": "AW-DEMO789012",
+    "conversionLabel": "demo_conversion_123"
+  },
+  "testShop": {
+    "domain": "demo-store.myshopify.com",
+    "accessToken": "shpat_test_token",
+    "apiVersion": "2023-07"
+  },
+  "safeRunDefaults": {
+    "dailyBudgetCap": "25.00",
+    "cpcCeiling": "2.50",
+    "scheduleStart": "09:00",
+    "scheduleEnd": "17:00",
+    "scheduleDays": "MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY",
+    "canaryLabel": "PROOFKIT_AUTOMATED",
+    "exclusions": "Brand Campaign,Shopping Campaign"
+  },
+  "audienceDefaults": {
+    "listId": "123456789",
+    "mode": "OBSERVE",
+    "bidModifier": "",
+    "minSize": 1000
+  },
+  "expectedMutations": {
+    "firstRun": [
+      "BUDGET_CHANGE",
+      "CPC_CEILING", 
+      "SCHEDULE_ADD",
+      "NEGATIVE_ADD",
+      "RSA_VALIDATE",
+      "AUDIENCE_ATTACH"
+    ],
+    "secondRun": []
+  }
+}

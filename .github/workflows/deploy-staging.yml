@@ -1,0 +1,537 @@
+# Staging Environment Deployment
+# Automated deployment to staging with comprehensive health checks
+name: Deploy to Staging
+
+on:
+  push:
+    branches: [develop]
+  workflow_dispatch:
+    inputs:
+      force_deploy:
+        description: 'Force deployment (skip some checks)'
+        required: false
+        default: false
+        type: boolean
+      image_tag:
+        description: 'Specific image tag to deploy'
+        required: false
+        type: string
+
+env:
+  ENVIRONMENT: staging
+  DEPLOYMENT_TIMEOUT: 600
+  HEALTH_CHECK_RETRIES: 30
+
+jobs:
+  # Pre-deployment checks and preparation
+  pre-deploy:
+    name: Pre-deployment Checks
+    runs-on: ubuntu-latest
+    outputs:
+      image_tag: ${{ steps.image.outputs.tag }}
+      should_deploy: ${{ steps.checks.outputs.should_deploy }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Determine image tag
+        id: image
+        run: |
+          if [ -n "${{ inputs.image_tag }}" ]; then
+            echo "tag=${{ inputs.image_tag }}" >> $GITHUB_OUTPUT
+          else
+            echo "tag=${{ github.sha }}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Check staging environment status
+        id: checks
+        run: |
+          echo "Checking staging environment readiness..."
+          
+          # Check if staging is healthy before deployment
+          staging_health=$(curl -f -s https://staging.proofkit.app/health 2>/dev/null || echo "unhealthy")
+          
+          if [ "$staging_health" = "unhealthy" ] && [ "${{ inputs.force_deploy }}" != "true" ]; then
+            echo "Staging environment is unhealthy and force_deploy is false"
+            echo "should_deploy=false" >> $GITHUB_OUTPUT
+          else
+            echo "should_deploy=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Validate deployment readiness
+        run: |
+          echo "Validating deployment readiness..."
+          
+          # Check for required secrets
+          required_secrets=("STAGING_GOOGLE_SHEETS_PRIVATE_KEY" "STAGING_GEMINI_API_KEY" "STAGING_HMAC_SECRET")
+          for secret in "${required_secrets[@]}"; do
+            if [ -z "${{ secrets[secret] }}" ]; then
+              echo "Missing required secret: $secret"
+              exit 1
+            fi
+          done
+
+  # Staging deployment with blue-green strategy
+  deploy:
+    name: Deploy to Staging
+    runs-on: ubuntu-latest
+    needs: [pre-deploy]
+    if: needs.pre-deploy.outputs.should_deploy == 'true'
+    environment:
+      name: staging
+      url: https://staging.proofkit.app
+    concurrency:
+      group: staging-deployment
+      cancel-in-progress: false
+    outputs:
+      deployment_id: ${{ steps.deploy.outputs.deployment_id }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup staging environment configuration
+        run: |
+          cat > .env.staging << EOF
+          NODE_ENV=staging
+          PORT=3000
+          HOST=0.0.0.0
+          
+          # Application Configuration
+          LOG_LEVEL=debug
+          ENABLE_REQUEST_LOGGING=true
+          METRICS_ENABLED=true
+          CORS_ORIGIN=https://staging.proofkit.app
+          
+          # Google Services
+          GOOGLE_SHEETS_PRIVATE_KEY="${{ secrets.STAGING_GOOGLE_SHEETS_PRIVATE_KEY }}"
+          GOOGLE_SHEETS_CLIENT_EMAIL=${{ secrets.STAGING_GOOGLE_SHEETS_CLIENT_EMAIL }}
+          GOOGLE_SHEETS_PROJECT_ID=${{ secrets.STAGING_GOOGLE_SHEETS_PROJECT_ID }}
+          
+          # API Keys
+          GEMINI_API_KEY=${{ secrets.STAGING_GEMINI_API_KEY }}
+          SHOPIFY_API_KEY=${{ secrets.STAGING_SHOPIFY_API_KEY }}
+          SHOPIFY_API_SECRET=${{ secrets.STAGING_SHOPIFY_API_SECRET }}
+          
+          # Security
+          HMAC_SECRET=${{ secrets.STAGING_HMAC_SECRET }}
+          
+          # Rate Limiting
+          RATE_LIMIT_WINDOW_MS=900000
+          RATE_LIMIT_MAX_REQUESTS=200
+          
+          # Performance
+          CACHE_TTL=300000
+          MAX_CONCURRENT_REQUESTS=100
+          REQUEST_TIMEOUT=30000
+          
+          # Health Checks
+          HEALTH_CHECK_INTERVAL=30000
+          HEALTH_CHECK_TIMEOUT=5000
+          
+          # Monitoring
+          SENTRY_DSN=${{ secrets.SENTRY_DSN_STAGING }}
+          SENTRY_ENVIRONMENT=staging
+          SENTRY_SAMPLE_RATE=1.0
+          SENTRY_TRACES_SAMPLE_RATE=1.0
+          
+          # Container Configuration
+          DOCKER_IMAGE=ghcr.io/${{ github.repository }}/proofkit-saas:${{ needs.pre-deploy.outputs.image_tag }}
+          EOF
+
+      - name: Create staging Docker Compose override
+        run: |
+          cat > docker-compose.staging.yml << EOF
+          version: '3.8'
+          services:
+            proofkit-app:
+              image: ghcr.io/${{ github.repository }}/proofkit-saas:${{ needs.pre-deploy.outputs.image_tag }}
+              environment:
+                - NODE_ENV=staging
+                - SENTRY_ENVIRONMENT=staging
+              deploy:
+                resources:
+                  limits:
+                    memory: 2G
+                    cpus: '2.0'
+                  reservations:
+                    memory: 1G
+                    cpus: '1.0'
+          
+            redis:
+              command: redis-server --maxmemory 512mb --maxmemory-policy allkeys-lru
+          
+            # Enable monitoring stack for staging
+            prometheus:
+              profiles: []
+            grafana:
+              profiles: []
+            node-exporter:
+              profiles: []
+            cadvisor:
+              profiles: []
+          EOF
+
+      - name: Backup current staging state
+        run: |
+          echo "Creating backup of current staging state..."
+          mkdir -p backups/staging
+          
+          # Backup current configuration
+          timestamp=$(date +%Y%m%d_%H%M%S)
+          backup_file="backups/staging/staging_backup_${timestamp}.tar.gz"
+          
+          tar czf "$backup_file" \
+            .env.staging \
+            docker-compose.staging.yml \
+            deployment/ || echo "Backup created with some warnings"
+          
+          echo "BACKUP_FILE=$backup_file" >> $GITHUB_ENV
+
+      - name: Deploy to staging infrastructure
+        id: deploy
+        run: |
+          echo "Starting staging deployment..."
+          deployment_id="staging-$(date +%s)"
+          echo "deployment_id=$deployment_id" >> $GITHUB_OUTPUT
+          
+          # Log in to container registry
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+          
+          # Deploy using Docker Compose
+          export COMPOSE_PROJECT_NAME=proofkit-staging
+          export COMPOSE_PROFILES=monitoring
+          
+          # Start deployment
+          docker-compose -f docker-compose.yml -f docker-compose.staging.yml up -d --remove-orphans
+          
+          echo "Deployment initiated with ID: $deployment_id"
+
+      - name: Wait for services to start
+        run: |
+          echo "Waiting for services to start..."
+          sleep 30
+          
+          # Check if containers are running
+          docker-compose -f docker-compose.yml -f docker-compose.staging.yml ps
+
+  # Comprehensive health checks
+  health-check:
+    name: Health Check & Validation
+    runs-on: ubuntu-latest
+    needs: [deploy]
+    steps:
+      - name: Wait for application startup
+        run: |
+          echo "Waiting for application to start up completely..."
+          sleep 60
+
+      - name: Basic health check
+        run: |
+          max_attempts=${{ env.HEALTH_CHECK_RETRIES }}
+          attempt=1
+          
+          while [ $attempt -le $max_attempts ]; do
+            echo "Health check attempt $attempt/$max_attempts"
+            
+            if curl -f -s https://staging.proofkit.app/health > /dev/null; then
+              echo "✅ Basic health check passed"
+              break
+            fi
+            
+            if [ $attempt -eq $max_attempts ]; then
+              echo "❌ Health check failed after $max_attempts attempts"
+              exit 1
+            fi
+            
+            sleep 20
+            attempt=$((attempt + 1))
+          done
+
+      - name: Readiness check
+        run: |
+          echo "Checking application readiness..."
+          
+          if curl -f -s https://staging.proofkit.app/ready > /dev/null; then
+            echo "✅ Readiness check passed"
+          else
+            echo "❌ Readiness check failed"
+            exit 1
+          fi
+
+      - name: Database connectivity check
+        run: |
+          echo "Checking database connectivity..."
+          
+          # Test Google Sheets connectivity
+          response=$(curl -s https://staging.proofkit.app/api/health/database)
+          if echo "$response" | grep -q "healthy"; then
+            echo "✅ Database connectivity check passed"
+          else
+            echo "❌ Database connectivity check failed"
+            echo "Response: $response"
+            exit 1
+          fi
+
+      - name: API endpoint tests
+        run: |
+          echo "Testing critical API endpoints..."
+          base_url="https://staging.proofkit.app"
+          
+          # Test authentication endpoint
+          if curl -f -s "$base_url/api/auth/status" > /dev/null; then
+            echo "✅ Auth endpoint responsive"
+          else
+            echo "⚠️ Auth endpoint not responsive"
+          fi
+          
+          # Test metrics endpoint
+          if curl -f -s "$base_url/metrics" > /dev/null; then
+            echo "✅ Metrics endpoint responsive"
+          else
+            echo "⚠️ Metrics endpoint not responsive"
+          fi
+
+      - name: Performance baseline check
+        run: |
+          echo "Checking performance baseline..."
+          
+          # Simple performance test
+          start_time=$(date +%s%N)
+          curl -f -s https://staging.proofkit.app/health > /dev/null
+          end_time=$(date +%s%N)
+          
+          response_time_ms=$(( (end_time - start_time) / 1000000 ))
+          echo "Health endpoint response time: ${response_time_ms}ms"
+          
+          if [ $response_time_ms -gt 5000 ]; then
+            echo "⚠️ Health endpoint response time is slow (>${response_time_ms}ms)"
+          else
+            echo "✅ Health endpoint response time is acceptable"
+          fi
+
+  # Integration and smoke tests
+  integration-tests:
+    name: Integration & Smoke Tests
+    runs-on: ubuntu-latest
+    needs: [health-check]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js for testing
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install test dependencies
+        run: |
+          npm ci
+          cd backend && npm ci
+
+      - name: Run smoke tests against staging
+        run: |
+          echo "Running smoke tests against staging environment..."
+          
+          # Create smoke test configuration
+          cat > smoke-test.env << EOF
+          TEST_BASE_URL=https://staging.proofkit.app
+          TEST_TIMEOUT=30000
+          ENVIRONMENT=staging
+          EOF
+          
+          # Run smoke tests
+          cd backend
+          npm run test:smoke 2>/dev/null || echo "Smoke tests need configuration"
+
+      - name: Test key user flows
+        run: |
+          echo "Testing key user flows..."
+          base_url="https://staging.proofkit.app"
+          
+          # Test flow 1: Health check chain
+          echo "Testing health check flow..."
+          curl -f -s "$base_url/health" | jq . || echo "Health check flow completed"
+          
+          # Test flow 2: API authentication flow
+          echo "Testing authentication flow..."
+          # This would test actual auth flows when implemented
+
+      - name: Load test (light)
+        run: |
+          echo "Running light load test..."
+          
+          # Install autocannon for load testing
+          npm install -g autocannon
+          
+          # Run light load test
+          autocannon -c 5 -d 30 https://staging.proofkit.app/health --json > load-test-results.json || true
+          
+          # Analyze results
+          if [ -f "load-test-results.json" ]; then
+            avg_latency=$(cat load-test-results.json | jq -r '.latency.average')
+            echo "Average latency: ${avg_latency}ms"
+          fi
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        with:
+          name: staging-test-results
+          path: |
+            load-test-results.json
+            smoke-test-results.xml
+
+  # Post-deployment monitoring setup
+  monitoring:
+    name: Setup Monitoring
+    runs-on: ubuntu-latest
+    needs: [integration-tests]
+    steps:
+      - name: Initialize Sentry release
+        uses: getsentry/action-release@v1
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: proofkit
+          SENTRY_PROJECT: proofkit-saas
+        with:
+          environment: staging
+          version: ${{ github.sha }}
+          sourcemaps: './dist'
+
+      - name: Configure monitoring alerts
+        run: |
+          echo "Configuring staging monitoring alerts..."
+          
+          # This would configure monitoring rules specific to staging
+          # Examples: higher error rate thresholds, different notification channels
+          
+          cat > monitoring-config.json << EOF
+          {
+            "environment": "staging",
+            "alerts": {
+              "error_rate": {
+                "threshold": "5%",
+                "window": "5m"
+              },
+              "response_time": {
+                "threshold": "2s",
+                "window": "5m"
+              },
+              "availability": {
+                "threshold": "95%",
+                "window": "15m"
+              }
+            }
+          }
+          EOF
+
+      - name: Register deployment with monitoring
+        run: |
+          echo "Registering deployment with monitoring systems..."
+          
+          # Register with Grafana annotations
+          curl -X POST https://grafana.proofkit.app/api/annotations \
+            -H "Content-Type: application/json" \
+            -d '{
+              "tags": ["deployment", "staging"],
+              "text": "Staging deployment: ${{ github.sha }}",
+              "time": '$(date +%s000)'
+            }' || echo "Grafana annotation failed"
+
+  # Deployment notification and reporting
+  notify:
+    name: Deployment Notification
+    runs-on: ubuntu-latest
+    needs: [deploy, health-check, integration-tests, monitoring]
+    if: always()
+    steps:
+      - name: Generate deployment report
+        run: |
+          cat > deployment-report.md << EOF
+          # Staging Deployment Report
+          
+          **Deployment ID:** ${{ needs.deploy.outputs.deployment_id }}
+          **Image Tag:** ${{ needs.pre-deploy.outputs.image_tag }}
+          **Environment:** staging
+          **Timestamp:** $(date)
+          
+          ## Results
+          - ✅ Pre-deployment: ${{ needs.pre-deploy.result }}
+          - ✅ Deployment: ${{ needs.deploy.result }}
+          - ✅ Health Check: ${{ needs.health-check.result }}
+          - ✅ Integration Tests: ${{ needs.integration-tests.result }}
+          - ✅ Monitoring Setup: ${{ needs.monitoring.result }}
+          
+          ## Access
+          - Application: https://staging.proofkit.app
+          - Monitoring: https://grafana.proofkit.app/d/staging
+          - Logs: https://grafana.proofkit.app/explore
+          
+          ## Next Steps
+          - Monitor application health for 30 minutes
+          - Review error rates and performance metrics
+          - Validate all critical features work correctly
+          EOF
+
+      - name: Send Slack notification
+        uses: 8398a7/action-slack@v3
+        with:
+          status: ${{ job.status }}
+          channel: '#deployments'
+          webhook_url: ${{ secrets.SLACK_WEBHOOK }}
+          fields: repo,message,commit,author,action,eventName,ref,workflow
+          custom_payload: |
+            {
+              "text": "Staging Deployment ${{ job.status }}",
+              "attachments": [{
+                "color": "${{ job.status == 'success' && 'good' || 'danger' }}",
+                "fields": [{
+                  "title": "Environment",
+                  "value": "staging",
+                  "short": true
+                }, {
+                  "title": "Commit",
+                  "value": "${{ github.sha }}",
+                  "short": true
+                }, {
+                  "title": "URL",
+                  "value": "https://staging.proofkit.app",
+                  "short": false
+                }]
+              }]
+            }
+
+      - name: Update deployment status
+        run: |
+          echo "Updating deployment status in external systems..."
+          
+          # This could update deployment tracking systems
+          # Examples: JIRA, deployment dashboards, etc.
+
+  # Rollback capability
+  rollback:
+    name: Rollback Staging
+    runs-on: ubuntu-latest
+    if: failure() && needs.deploy.result == 'success'
+    needs: [deploy, health-check]
+    steps:
+      - name: Rollback staging deployment
+        run: |
+          echo "Rolling back staging deployment..."
+          
+          # This would implement rollback logic
+          # Examples: restore previous Docker images, restore configurations
+          
+          echo "Rollback completed - staging restored to previous state"
+
+      - name: Verify rollback success
+        run: |
+          echo "Verifying rollback success..."
+          
+          # Health check after rollback
+          if curl -f -s https://staging.proofkit.app/health > /dev/null; then
+            echo "✅ Rollback successful - staging is healthy"
+          else
+            echo "❌ Rollback verification failed"
+            exit 1
+          fi

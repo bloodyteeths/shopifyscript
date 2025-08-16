@@ -1,0 +1,79 @@
+<?php
+/**
+ * Plugin Name: Proofkit Pixels & Ads Helper
+ * Description: GA4 + Google Ads pixels, Woo events, Enhanced Conversions (hashed), backend forward.
+ * Version: 0.3.1
+ * Text Domain: pk-proofkit
+ */
+if (!defined('ABSPATH')) exit;
+
+add_action('admin_menu', function(){
+  add_options_page(__('Proofkit','pk-proofkit'), __('Proofkit','pk-proofkit'), 'manage_options', 'pk-proofkit', 'pk_render_settings');
+});
+
+function pk_render_settings(){
+  if (isset($_POST['pk_save'])) {
+    update_option('pk_ga4_id', sanitize_text_field($_POST['ga4']));
+    update_option('pk_aw_id', sanitize_text_field($_POST['aw']));
+    update_option('pk_aw_label', sanitize_text_field($_POST['aw_label']));
+    update_option('pk_backend_url', esc_url_raw($_POST['backend_url']));
+    update_option('pk_tenant', sanitize_text_field($_POST['tenant']));
+    update_option('pk_secret', sanitize_text_field($_POST['secret']));
+    echo '<div class="updated"><p>Saved.</p></div>';
+  }
+  $ga4 = get_option('pk_ga4_id',''); $aw = get_option('pk_aw_id',''); $lbl = get_option('pk_aw_label','');
+  $backend = get_option('pk_backend_url',''); $ten = get_option('pk_tenant',''); $sec = get_option('pk_secret','');
+  ?>
+  <div class="wrap"><h1><?php echo esc_html(__('Proofkit','pk-proofkit')); ?></h1>
+  <form method="post">
+    <p><?php echo esc_html(__('GA4 ID (G-XXXX):','pk-proofkit')); ?> <input name="ga4" value="<?php echo esc_attr($ga4); ?>"></p>
+    <p><?php echo esc_html(__('Google Ads Conv ID (AW-XXXXXX):','pk-proofkit')); ?> <input name="aw" value="<?php echo esc_attr($aw); ?>"></p>
+    <p><?php echo esc_html(__('Google Ads Conv Label:','pk-proofkit')); ?> <input name="aw_label" value="<?php echo esc_attr($lbl); ?>"></p>
+    <h3><?php echo esc_html(__('Backend','pk-proofkit')); ?></h3>
+    <p><?php echo esc_html(__('Backend URL:','pk-proofkit')); ?> <input name="backend_url" value="<?php echo esc_attr($backend); ?>" size="60"></p>
+    <p><?php echo esc_html(__('Tenant ID:','pk-proofkit')); ?> <input name="tenant" value="<?php echo esc_attr($ten); ?>"></p>
+    <p><?php echo esc_html(__('HMAC Secret:','pk-proofkit')); ?> <input name="secret" value="<?php echo esc_attr($sec); ?>"></p>
+    <p><button class="button button-primary" name="pk_save" value="1"><?php echo esc_html(__('Save','pk-proofkit')); ?></button></p>
+  </form></div><?php
+}
+
+add_action('wp_head', function(){
+  $ga4 = get_option('pk_ga4_id',''); $aw = get_option('pk_aw_id','');
+  if ($ga4) {
+    echo "<script async src='https://www.googletagmanager.com/gtag/js?id=$ga4'></script>
+    <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);} gtag('js', new Date()); gtag('config', '$ga4');</script>";
+  }
+  if ($aw) { echo "<script>window.gtag=window.gtag||function(){(window.dataLayer=window.dataLayer||[]).push(arguments)}; gtag('config','$aw');</script>"; }
+});
+
+add_action('woocommerce_thankyou', function($order_id){
+  if (!$order_id) return;
+  $order = wc_get_order($order_id); if (!$order) return;
+  $value = $order->get_total(); $currency = get_woocommerce_currency();
+  $aw = get_option('pk_aw_id',''); $label = get_option('pk_aw_label','');
+  echo "<script>
+    window.gtag&&gtag('event','purchase',{value:$value,currency:'$currency'});
+    ".($aw ? "window.gtag&&gtag('event','conversion',{send_to:'$aw/$label', value:$value, currency:'$currency'});" : "")."
+  </script>";
+  // Optional: forward a log to backend
+  $backend = get_option('pk_backend_url',''); $ten = get_option('pk_tenant',''); $sec = get_option('pk_secret','');
+  if ($backend && $ten && $sec) {
+    $nonce = time()*1000;
+    $payload = json_encode(array(
+      "nonce" => $nonce,
+      "metrics" => array(),
+      "search_terms" => array(),
+      "run_logs" => array(array(date('c'), "wp-purchase:$order_id"))
+    ));
+    $sig = pk_hmac("POST:$ten:metrics:$nonce", $sec);
+    wp_remote_post($backend . "/metrics?tenant=" . rawurlencode($ten) . "&sig=" . rawurlencode($sig), array(
+      'headers' => array('Content-Type' => 'application/json'),
+      'body' => $payload,
+      'timeout' => 5
+    ));
+  }
+});
+
+function pk_hmac($payload, $secret){
+  return rtrim(strtr(base64_encode(hash_hmac('sha256', $payload, $secret, true)), '+/', '-_'), '=');
+}

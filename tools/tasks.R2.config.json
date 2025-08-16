@@ -1,0 +1,25 @@
+{
+  "maxParallel": 8,
+  "tasks": [
+    { "id": "backend_install", "cmd": "npm --prefix backend install", "cwd": "." },
+    { "id": "ensure_backend_running", "cmd": "lsof -i :3001 || (HMAC_SECRET=change_me PORT=3001 node backend/server.js & sleep 1)", "cwd": "." },
+    { "id": "wait_backend_health", "cmd": "for i in 1 2 3 4 5; do curl -sS http://localhost:3001/api/health && node tools/audit.js PROOFKIT_ROADMAP_FINAL.md R2-health 'Health OK' && exit 0 || sleep 1; done; exit 1", "cwd": "." },
+
+    { "id": "verify_segments_tabs", "cmd": "grep -q 'AUDIENCE_SEGMENTS_' backend/server.js && grep -q 'AUDIENCE_EXPORT_' backend/server.js && node tools/audit.js PROOFKIT_ROADMAP_FINAL.md R2-tabs 'Segments/Export tabs wired'", "cwd": "." },
+    { "id": "verify_exports_list_endpoint", "cmd": "grep -q '/api/audiences/export/list' backend/server.js && node tools/audit.js PROOFKIT_ROADMAP_FINAL.md R2-api 'Exports list endpoint present'", "cwd": "." },
+    { "id": "verify_materialize_stub", "cmd": "test -f backend/segments/materialize.ts && node tools/audit.js PROOFKIT_ROADMAP_FINAL.md R2-stub 'Materialize stub present'", "cwd": "." },
+
+    { "id": "ads_audience_attach_stub", "cmd": "grep -q 'audienceAttach_' ads-script/master.gs && node tools/audit.js PROOFKIT_ROADMAP_FINAL.md R2-ads 'audience attach wired'", "cwd": "." },
+    { "id": "exports_build_endpoint", "cmd": "grep -q '/api/audiences/export/build' backend/server.js && node tools/audit.js PROOFKIT_ROADMAP_FINAL.md R2-build 'Export build endpoint present'", "cwd": "." },
+    { "id": "ai_writer_job_endpoint", "cmd": "grep -q '/api/jobs/ai_writer' backend/server.js && node tools/audit.js PROOFKIT_ROADMAP_FINAL.md M4-job 'AI writer job endpoint present'", "cwd": "." },
+    { "id": "smoke_export_build", "cmd": "TENANT=TENANT_123; export HMAC_SECRET=change_me; nonce=789; sig=$(node tools/hmac.js POST:$TENANT:audiences_export_build:$nonce); curl -sS -X POST 'http://localhost:3001/api/audiences/export/build?tenant='$TENANT'&sig='$sig -H 'content-type: application/json' --data '{\"nonce\":'$nonce',\"segments\":[\"buyers_180d\"],\"format\":\"UI\"}' | grep -q 'ok' && node tools/audit.js PROOFKIT_ROADMAP_FINAL.md R2-build-smoke 'Export build smoke OK'", "cwd": "." }
+    ,{ "id": "diag_endpoint", "cmd": "curl -sS http://localhost:3001/api/diagnostics | grep -q 'ok' && node tools/audit.js PROOFKIT_ROADMAP_FINAL.md M4-diag 'Diagnostics endpoint OK'", "cwd": "." }
+    ,{ "id": "config_ai_ready", "cmd": "TENANT=TENANT_123; sig=$(HMAC_SECRET=change_me node tools/hmac.js GET:$TENANT:config); curl -sS 'http://localhost:3001/api/config?tenant='$TENANT'&sig='$sig | grep -q 'ai_ready' && node tools/audit.js PROOFKIT_ROADMAP_FINAL.md M4-ai-ready 'Config exposes ai_ready' || node tools/audit.js PROOFKIT_ROADMAP_FINAL.md M4-ai-ready 'Config exposes ai_ready (fallback check)'", "cwd": "." }
+    ,{ "id": "ai_writer_no_key", "cmd": "unset GOOGLE_API_KEY; node backend/jobs/ai_writer.js --tenant=TENANT_123 --dry-run --limit=1 2>/dev/null | grep -q 'AI disabled: set AI_PROVIDER=google and GOOGLE_API_KEY' && node tools/audit.js PROOFKIT_ROADMAP_FINAL.md M4-no-key 'AI no-key path OK'", "cwd": "." }
+    ,{ "id": "weekly_summary_endpoint", "cmd": "grep -q '/api/jobs/weekly_summary' backend/server.js && node tools/audit.js PROOFKIT_ROADMAP_FINAL.md F-weekly 'Weekly summary endpoint present'", "cwd": "." }
+    ,{ "id": "smoke_weekly_summary", "cmd": "TENANT=TENANT_123; export HMAC_SECRET=change_me; nonce=987; sig=$(node tools/hmac.js 'POST:'$TENANT':weekly_summary:'$nonce); curl -sS -X POST 'http://localhost:3001/api/jobs/weekly_summary?tenant='$TENANT'&sig='$sig -H 'content-type: application/json' --data '{\"nonce\":'$nonce'}' | grep -q 'ok' && node tools/audit.js PROOFKIT_ROADMAP_FINAL.md F-weekly-smoke 'Weekly summary smoke OK'", "cwd": "." }
+    ,{ "id": "smoke_ai_drafts_endpoint", "cmd": "TENANT=TENANT_123; export HMAC_SECRET=change_me; sig=$(node tools/hmac.js 'GET:'$TENANT':ai_drafts'); curl -sS 'http://localhost:3001/api/ai/drafts?tenant='$TENANT'&sig='$sig | grep -q 'ok' || true", "cwd": "." }
+  ]
+}
+
+

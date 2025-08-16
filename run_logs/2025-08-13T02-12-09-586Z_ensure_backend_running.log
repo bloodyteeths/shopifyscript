@@ -1,0 +1,5 @@
+COMMAND     PID   USER   FD   TYPE             DEVICE SIZE/OFF NODE NAME
+Google     4785 tamsar   42u  IPv6 0x793543bd5743dfb2      0t0  TCP localhost:62167->localhost:redwood-broker (CLOSE_WAIT)
+Google     4785 tamsar   43u  IPv6 0xfa6b828bdd9b916d      0t0  TCP localhost:62168->localhost:redwood-broker (ESTABLISHED)
+node      64607 tamsar   14u  IPv6 0x92f8306bb68de104      0t0  TCP *:redwood-broker (LISTEN)
+node      64607 tamsar   16u  IPv6 0xdf172a9c98279532      0t0  TCP localhost:redwood-broker->localhost:62168 (ESTABLISHED)

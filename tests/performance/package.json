@@ -1,0 +1,18 @@
+{
+  "name": "proofkit-performance-tests",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "test": "jest",
+    "test:load": "jest load-test.js",
+    "test:stress": "jest stress-test.js",
+    "test:all": "jest --runInBand",
+    "benchmark": "node benchmark.js"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "@jest/globals": "^29.7.0",
+    "autocannon": "^7.15.0",
+    "clinic": "^13.0.0"
+  }
+}

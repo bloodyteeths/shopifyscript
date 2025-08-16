@@ -1,0 +1,37 @@
+{
+  "name": "proofkit-backend",
+  "version": "0.3.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node server.js",
+    "test": "jest",
+    "test:unit": "jest tests/unit",
+    "test:integration": "jest tests/integration",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage"
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.24.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "google-auth-library": "^10.2.1",
+    "google-spreadsheet": "^4.0.2",
+    "puppeteer": "^22.0.0",
+    "pdfkit": "^0.15.0",
+    "html-pdf": "^3.0.1",
+    "node-cron": "^3.0.3",
+    "lodash": "^4.17.21",
+    "uuid": "^10.0.0",
+    "multer": "^1.4.5-lts.1",
+    "archiver": "^7.0.1",
+    "stripe": "^14.17.0"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "supertest": "^7.0.0",
+    "@jest/globals": "^29.7.0",
+    "jest-environment-node": "^29.7.0"
+  }
+}

@@ -1,0 +1,15 @@
+[eval]:1
+(crypto=>{{const crypto=require(\"crypto\");const s=\"change_me\";const t=\"TENANT_123\";const n=process.argv[1];const p=\"POST:\"+t+\":upsertconfig:\"+n;const h=crypto.createHmac(\"sha256\",s).update(p).digest(\"base64\").replace(/=+$/ ,\"\");console.log(encodeURIComponent(h))}})(require('node:crypto'))
+                                ^
+
+SyntaxError: Invalid or unexpected token
+    at makeContextifyScript (node:internal/vm:185:14)
+    at compileScript (node:internal/process/execution:386:10)
+    at node:internal/process/execution:450:25
+    at [eval]-wrapper:6:24
+    at runScriptInContext (node:internal/process/execution:447:60)
+    at evalFunction (node:internal/process/execution:87:30)
+    at evalScript (node:internal/process/execution:99:3)
+    at node:internal/main/eval_string:74:3
+
+Node.js v22.16.0

@@ -1,0 +1,1004 @@
+{% comment %}
+====================================
+Intent OS UTM-Driven Content Section
+====================================
+ProofKit SaaS - Conversion Rate Optimization
+Dynamically swaps content based on UTM parameters for targeted messaging
+
+Installation:
+1. Add this file to your theme's sections/ directory as "intent-os-utm.liquid"
+2. Include in your template: {% section 'intent-os-utm' %}
+3. Configure settings in Theme Customizer
+4. Test with UTM parameters: ?utm_term=high-intent, ?utm_term=research, ?utm_term=comparison
+
+Author: ProofKit Intent OS
+Version: 1.0.0
+{% endcomment %}
+
+{% liquid
+  comment 'Extract UTM term from URL'
+  assign utm_term = request.url | split: 'utm_term=' | last | split: '&' | first | downcase
+  assign content_key = utm_term | default: 'default'
+  
+  comment 'Determine content strategy based on UTM term'
+  case content_key
+    when 'high-intent'
+      assign hero_headline = section.settings.high_intent_headline | default: "Limited Time: Don't Miss Out!"
+      assign urgency_badge = section.settings.high_intent_urgency | default: "URGENT"
+      assign cta_style = 'btn-primary-urgent'
+      assign social_proof = section.settings.high_intent_social_proof | default: "Join 50,000+ customers who saved big!"
+      assign benefits_focus = 'urgency'
+    when 'research'
+      assign hero_headline = section.settings.research_headline | default: "Discover the Perfect Solution"
+      assign urgency_badge = ''
+      assign cta_style = 'btn-secondary'
+      assign social_proof = section.settings.research_social_proof | default: "Trusted by industry experts"
+      assign benefits_focus = 'educational'
+    when 'comparison'
+      assign hero_headline = section.settings.comparison_headline | default: "See Why We're #1"
+      assign urgency_badge = section.settings.comparison_badge | default: "BEST VALUE"
+      assign cta_style = 'btn-comparison'
+      assign social_proof = section.settings.comparison_social_proof | default: "Rated #1 by independent reviews"
+      assign benefits_focus = 'competitive'
+    when 'retargeting'
+      assign hero_headline = section.settings.retargeting_headline | default: "Welcome Back! Complete Your Purchase"
+      assign urgency_badge = section.settings.retargeting_badge | default: "SAVE 15%"
+      assign cta_style = 'btn-retargeting'
+      assign social_proof = section.settings.retargeting_social_proof | default: "Your items are waiting"
+      assign benefits_focus = 'personal'
+    else
+      assign hero_headline = section.settings.default_headline | default: "Welcome to Our Store"
+      assign urgency_badge = ''
+      assign cta_style = 'btn-primary'
+      assign social_proof = section.settings.default_social_proof | default: "Join thousands of satisfied customers"
+      assign benefits_focus = 'general'
+  endcase
+  
+  comment 'Analytics tracking'
+  assign intent_block_id = section.id | append: '-' | append: content_key
+%}
+
+<!-- Intent OS Analytics -->
+<script>
+  window.intentOSData = window.intentOSData || {};
+  window.intentOSData.currentUTM = '{{ content_key }}';
+  window.intentOSData.sectionId = '{{ section.id }}';
+  window.intentOSData.timestamp = new Date().toISOString();
+  
+  // Track content variation view
+  if (typeof gtag !== 'undefined') {
+    gtag('event', 'intent_os_view', {
+      'utm_term': '{{ content_key }}',
+      'section_id': '{{ section.id }}',
+      'headline': '{{ hero_headline | escape }}'
+    });
+  }
+</script>
+
+<div class="intent-os-section intent-os-{{ content_key }}" 
+     data-utm-term="{{ content_key }}" 
+     data-section-id="{{ section.id }}"
+     id="{{ intent_block_id }}">
+  
+  {% comment %} Urgency Badge {% endcomment %}
+  {% if urgency_badge != blank and section.settings.show_urgency_badge %}
+    <div class="intent-os-urgency-badge {{ cta_style }}-badge">
+      {{ urgency_badge }}
+    </div>
+  {% endif %}
+  
+  {% comment %} Hero Section {% endcomment %}
+  <div class="intent-os-hero">
+    {% if section.settings.show_hero_image and section.settings.hero_image %}
+      <div class="intent-os-hero-image">
+        {{ section.settings.hero_image | image_url: width: 800 | image_tag: 
+           loading: 'lazy', 
+           alt: hero_headline,
+           class: 'intent-os-image' }}
+      </div>
+    {% endif %}
+    
+    <h1 class="intent-os-headline intent-os-headline-{{ content_key }}">
+      {{ hero_headline }}
+    </h1>
+    
+    {% if section.settings.show_subheadline and section.settings.subheadline != blank %}
+      <p class="intent-os-subheadline">{{ section.settings.subheadline }}</p>
+    {% endif %}
+  </div>
+  
+  {% comment %} Benefits List {% endcomment %}
+  {% if section.settings.show_benefits %}
+    <div class="intent-os-benefits intent-os-benefits-{{ benefits_focus }}">
+      {% for i in (1..6) %}
+        {% assign benefit_key = 'benefit_' | append: i %}
+        {% assign benefit = section.settings[benefit_key] %}
+        {% if benefit != blank %}
+          <div class="intent-os-benefit-item">
+            <span class="intent-os-benefit-icon">
+              {% case benefits_focus %}
+                {% when 'urgency' %}
+                  ⚡
+                {% when 'educational' %}
+                  📚
+                {% when 'competitive' %}
+                  🏆
+                {% when 'personal' %}
+                  💝
+                {% else %}
+                  ✓
+              {% endcase %}
+            </span>
+            <span class="intent-os-benefit-text">{{ benefit }}</span>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  {% endif %}
+  
+  {% comment %} Social Proof {% endcomment %}
+  {% if section.settings.show_social_proof and social_proof != blank %}
+    <div class="intent-os-social-proof intent-os-social-proof-{{ content_key }}">
+      {% if section.settings.show_testimonial_stars %}
+        <div class="intent-os-stars">★★★★★</div>
+      {% endif %}
+      <p class="intent-os-social-text">{{ social_proof }}</p>
+      {% if section.settings.customer_count != blank %}
+        <span class="intent-os-customer-count">{{ section.settings.customer_count }}+ customers</span>
+      {% endif %}
+    </div>
+  {% endif %}
+  
+  {% comment %} Call to Action {% endcomment %}
+  {% if section.settings.cta_text != blank and section.settings.cta_url != blank %}
+    <div class="intent-os-cta-container">
+      <a href="{{ section.settings.cta_url }}" 
+         class="intent-os-cta-button {{ cta_style }}"
+         onclick="intentOSTrackCTA('{{ content_key }}', '{{ section.settings.cta_text | escape }}')">
+        {{ section.settings.cta_text }}
+        {% if section.settings.show_cta_arrow %}
+          <span class="intent-os-cta-arrow">→</span>
+        {% endif %}
+      </a>
+      
+      {% if section.settings.secondary_cta_text != blank and section.settings.secondary_cta_url != blank %}
+        <a href="{{ section.settings.secondary_cta_url }}" 
+           class="intent-os-cta-secondary"
+           onclick="intentOSTrackCTA('{{ content_key }}', '{{ section.settings.secondary_cta_text | escape }}', 'secondary')">
+          {{ section.settings.secondary_cta_text }}
+        </a>
+      {% endif %}
+    </div>
+  {% endif %}
+  
+  {% comment %} Trust Signals {% endcomment %}
+  {% if section.settings.show_trust_signals %}
+    <div class="intent-os-trust-signals">
+      {% if section.settings.trust_badge_1 %}
+        {{ section.settings.trust_badge_1 | image_url: width: 100 | image_tag: 
+           loading: 'lazy', 
+           class: 'intent-os-trust-badge',
+           alt: 'Trust badge' }}
+      {% endif %}
+      {% if section.settings.trust_badge_2 %}
+        {{ section.settings.trust_badge_2 | image_url: width: 100 | image_tag: 
+           loading: 'lazy', 
+           class: 'intent-os-trust-badge',
+           alt: 'Trust badge' }}
+      {% endif %}
+      {% if section.settings.trust_badge_3 %}
+        {{ section.settings.trust_badge_3 | image_url: width: 100 | image_tag: 
+           loading: 'lazy', 
+           class: 'intent-os-trust-badge',
+           alt: 'Trust badge' }}
+      {% endif %}
+    </div>
+  {% endif %}
+  
+  {% comment %} Countdown Timer for High Intent {% endcomment %}
+  {% if content_key == 'high-intent' and section.settings.show_countdown %}
+    <div class="intent-os-countdown" id="intent-os-countdown-{{ section.id }}">
+      <div class="intent-os-countdown-text">Limited time offer ends in:</div>
+      <div class="intent-os-countdown-timer">
+        <span id="countdown-hours">24</span>h
+        <span id="countdown-minutes">00</span>m
+        <span id="countdown-seconds">00</span>s
+      </div>
+    </div>
+  {% endif %}
+</div>
+
+<!-- Intent OS Analytics & Interaction Tracking -->
+<script>
+  function intentOSTrackCTA(utmTerm, ctaText, type = 'primary') {
+    // Google Analytics tracking
+    if (typeof gtag !== 'undefined') {
+      gtag('event', 'intent_os_cta_click', {
+        'utm_term': utmTerm,
+        'cta_text': ctaText,
+        'cta_type': type,
+        'section_id': '{{ section.id }}'
+      });
+    }
+    
+    // Custom tracking for ProofKit
+    if (window.proofkit && window.proofkit.track) {
+      window.proofkit.track('intent_os_conversion', {
+        utm_term: utmTerm,
+        cta_text: ctaText,
+        cta_type: type,
+        section_id: '{{ section.id }}',
+        timestamp: new Date().toISOString()
+      });
+    }
+    
+    // Send to backend for analytics
+    fetch('/api/intent-os/track-interaction', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        event: 'cta_click',
+        utm_term: utmTerm,
+        cta_text: ctaText,
+        cta_type: type,
+        section_id: '{{ section.id }}',
+        url: window.location.href,
+        timestamp: new Date().toISOString()
+      })
+    }).catch(e => console.log('Intent OS tracking failed:', e));
+  }
+  
+  {% if content_key == 'high-intent' and section.settings.show_countdown %}
+  // Countdown timer for urgency
+  function startCountdown() {
+    const countdownElement = document.getElementById('intent-os-countdown-{{ section.id }}');
+    if (!countdownElement) return;
+    
+    const hours = parseInt('{{ section.settings.countdown_hours | default: 24 }}');
+    const endTime = new Date().getTime() + (hours * 60 * 60 * 1000);
+    
+    const timer = setInterval(function() {
+      const now = new Date().getTime();
+      const distance = endTime - now;
+      
+      if (distance < 0) {
+        clearInterval(timer);
+        countdownElement.style.display = 'none';
+        return;
+      }
+      
+      const hoursLeft = Math.floor(distance / (1000 * 60 * 60));
+      const minutesLeft = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const secondsLeft = Math.floor((distance % (1000 * 60)) / 1000);
+      
+      document.getElementById('countdown-hours').textContent = hoursLeft.toString().padStart(2, '0');
+      document.getElementById('countdown-minutes').textContent = minutesLeft.toString().padStart(2, '0');
+      document.getElementById('countdown-seconds').textContent = secondsLeft.toString().padStart(2, '0');
+    }, 1000);
+  }
+  
+  // Start countdown on page load
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', startCountdown);
+  } else {
+    startCountdown();
+  }
+  {% endif %}
+</script>
+
+<style>
+.intent-os-section {
+  text-align: center;
+  padding: {{ section.settings.section_padding_top | default: 60 }}px 2rem {{ section.settings.section_padding_bottom | default: 60 }}px;
+  background: {{ section.settings.background_color | default: '#ffffff' }};
+  color: {{ section.settings.text_color | default: '#333333' }};
+  position: relative;
+  overflow: hidden;
+}
+
+/* Urgency Badge Styles */
+.intent-os-urgency-badge {
+  display: inline-block;
+  padding: 0.5rem 1.5rem;
+  border-radius: 25px;
+  font-weight: bold;
+  font-size: 0.9rem;
+  margin-bottom: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  animation: pulse 2s infinite;
+}
+
+.btn-primary-urgent-badge {
+  background: linear-gradient(45deg, #ff4444, #ff6666);
+  color: white;
+  box-shadow: 0 4px 15px rgba(255, 68, 68, 0.3);
+}
+
+.btn-comparison-badge {
+  background: linear-gradient(45deg, #3366cc, #5588dd);
+  color: white;
+  box-shadow: 0 4px 15px rgba(51, 102, 204, 0.3);
+}
+
+.btn-retargeting-badge {
+  background: linear-gradient(45deg, #ff9500, #ffb347);
+  color: white;
+  box-shadow: 0 4px 15px rgba(255, 149, 0, 0.3);
+}
+
+/* Hero Section */
+.intent-os-hero {
+  margin-bottom: 3rem;
+}
+
+.intent-os-hero-image {
+  margin-bottom: 2rem;
+}
+
+.intent-os-image {
+  max-width: 100%;
+  height: auto;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.intent-os-headline {
+  font-size: {{ section.settings.headline_size | default: 2.5 }}rem;
+  font-weight: bold;
+  margin: 1rem 0;
+  line-height: 1.2;
+  font-family: {{ section.settings.headline_font | default: 'inherit' }};
+}
+
+.intent-os-headline-high-intent {
+  color: #d32f2f;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+
+.intent-os-headline-comparison {
+  color: #1976d2;
+}
+
+.intent-os-headline-retargeting {
+  color: #f57c00;
+}
+
+.intent-os-subheadline {
+  font-size: 1.2rem;
+  color: #666;
+  margin-top: 1rem;
+  line-height: 1.4;
+}
+
+/* Benefits Section */
+.intent-os-benefits {
+  margin: 3rem 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.intent-os-benefit-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem;
+  background: rgba(255,255,255,0.8);
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  transition: transform 0.2s ease;
+}
+
+.intent-os-benefit-item:hover {
+  transform: translateY(-2px);
+}
+
+.intent-os-benefit-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.intent-os-benefit-text {
+  font-weight: 500;
+  color: #333;
+}
+
+/* Social Proof */
+.intent-os-social-proof {
+  margin: 2.5rem 0;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+  border-radius: 12px;
+  border-left: 4px solid {{ section.settings.accent_color | default: '#007bff' }};
+}
+
+.intent-os-stars {
+  color: #ffc107;
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.intent-os-social-text {
+  font-style: italic;
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  color: #555;
+}
+
+.intent-os-customer-count {
+  font-weight: bold;
+  color: {{ section.settings.accent_color | default: '#007bff' }};
+}
+
+/* Call to Action */
+.intent-os-cta-container {
+  margin: 3rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.intent-os-cta-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1.2rem 2.5rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.intent-os-cta-button:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  transition: left 0.5s;
+}
+
+.intent-os-cta-button:hover:before {
+  left: 100%;
+}
+
+.btn-primary-urgent {
+  background: linear-gradient(45deg, #ff4444, #ff6666);
+  color: white;
+  box-shadow: 0 6px 20px rgba(255, 68, 68, 0.4);
+}
+
+.btn-primary-urgent:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(255, 68, 68, 0.5);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: {{ section.settings.accent_color | default: '#007bff' }};
+  border: 2px solid {{ section.settings.accent_color | default: '#007bff' }};
+}
+
+.btn-secondary:hover {
+  background: {{ section.settings.accent_color | default: '#007bff' }};
+  color: white;
+  transform: translateY(-2px);
+}
+
+.btn-comparison {
+  background: linear-gradient(45deg, #3366cc, #5588dd);
+  color: white;
+  box-shadow: 0 6px 20px rgba(51, 102, 204, 0.4);
+}
+
+.btn-comparison:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(51, 102, 204, 0.5);
+}
+
+.btn-retargeting {
+  background: linear-gradient(45deg, #ff9500, #ffb347);
+  color: white;
+  box-shadow: 0 6px 20px rgba(255, 149, 0, 0.4);
+}
+
+.btn-retargeting:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(255, 149, 0, 0.5);
+}
+
+.btn-primary {
+  background: {{ section.settings.cta_color | default: '#000000' }};
+  color: white;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+}
+
+.btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+}
+
+.intent-os-cta-secondary {
+  display: inline-block;
+  padding: 0.8rem 1.5rem;
+  color: #666;
+  text-decoration: underline;
+  font-size: 1rem;
+  transition: color 0.2s ease;
+}
+
+.intent-os-cta-secondary:hover {
+  color: {{ section.settings.accent_color | default: '#007bff' }};
+}
+
+.intent-os-cta-arrow {
+  font-size: 1.1rem;
+  transition: transform 0.2s ease;
+}
+
+.intent-os-cta-button:hover .intent-os-cta-arrow {
+  transform: translateX(3px);
+}
+
+/* Trust Signals */
+.intent-os-trust-signals {
+  margin: 2rem 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.intent-os-trust-badge {
+  max-height: 50px;
+  opacity: 0.8;
+  transition: opacity 0.2s ease;
+}
+
+.intent-os-trust-badge:hover {
+  opacity: 1;
+}
+
+/* Countdown Timer */
+.intent-os-countdown {
+  margin: 2rem 0;
+  padding: 1.5rem;
+  background: linear-gradient(135deg, #ff4444, #ff6666);
+  color: white;
+  border-radius: 12px;
+  display: inline-block;
+}
+
+.intent-os-countdown-text {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  opacity: 0.9;
+}
+
+.intent-os-countdown-timer {
+  font-size: 2rem;
+  font-weight: bold;
+  font-family: 'Courier New', monospace;
+  letter-spacing: 2px;
+}
+
+/* Animations */
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .intent-os-section {
+    padding: 3rem 1rem;
+  }
+  
+  .intent-os-headline {
+    font-size: 2rem;
+  }
+  
+  .intent-os-benefits {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .intent-os-benefit-item {
+    padding: 0.75rem;
+  }
+  
+  .intent-os-cta-button {
+    font-size: 1.1rem;
+    padding: 1rem 2rem;
+  }
+  
+  .intent-os-countdown-timer {
+    font-size: 1.5rem;
+  }
+  
+  .intent-os-trust-signals {
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .intent-os-headline {
+    font-size: 1.75rem;
+  }
+  
+  .intent-os-cta-container {
+    gap: 0.75rem;
+  }
+  
+  .intent-os-cta-button {
+    width: 100%;
+    max-width: 300px;
+  }
+}
+</style>
+
+{% schema %}
+{
+  "name": "Intent OS UTM Content",
+  "settings": [
+    {
+      "type": "header",
+      "content": "📊 Intent OS Configuration"
+    },
+    {
+      "type": "paragraph",
+      "content": "This section dynamically changes content based on UTM parameters. Test with: ?utm_term=high-intent, ?utm_term=research, ?utm_term=comparison, ?utm_term=retargeting"
+    },
+    {
+      "type": "header",
+      "content": "🎯 Default Content"
+    },
+    {
+      "type": "text",
+      "id": "default_headline",
+      "label": "Default Headline",
+      "default": "Welcome to Our Store"
+    },
+    {
+      "type": "textarea",
+      "id": "subheadline",
+      "label": "Subheadline",
+      "info": "Optional subtitle shown below main headline"
+    },
+    {
+      "type": "text",
+      "id": "default_social_proof",
+      "label": "Default Social Proof",
+      "default": "Join thousands of satisfied customers"
+    },
+    {
+      "type": "header",
+      "content": "🔥 High Intent Content (utm_term=high-intent)"
+    },
+    {
+      "type": "text",
+      "id": "high_intent_headline",
+      "label": "High Intent Headline",
+      "default": "Limited Time: Don't Miss Out!"
+    },
+    {
+      "type": "text",
+      "id": "high_intent_urgency",
+      "label": "Urgency Badge",
+      "default": "URGENT"
+    },
+    {
+      "type": "text",
+      "id": "high_intent_social_proof",
+      "label": "High Intent Social Proof",
+      "default": "Join 50,000+ customers who saved big!"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_countdown",
+      "label": "Show Countdown Timer",
+      "default": true
+    },
+    {
+      "type": "number",
+      "id": "countdown_hours",
+      "label": "Countdown Hours",
+      "default": 24,
+      "info": "How many hours until offer expires"
+    },
+    {
+      "type": "header",
+      "content": "📚 Research Content (utm_term=research)"
+    },
+    {
+      "type": "text",
+      "id": "research_headline",
+      "label": "Research Headline",
+      "default": "Discover the Perfect Solution"
+    },
+    {
+      "type": "text",
+      "id": "research_social_proof",
+      "label": "Research Social Proof",
+      "default": "Trusted by industry experts"
+    },
+    {
+      "type": "header",
+      "content": "🏆 Comparison Content (utm_term=comparison)"
+    },
+    {
+      "type": "text",
+      "id": "comparison_headline",
+      "label": "Comparison Headline",
+      "default": "See Why We're #1"
+    },
+    {
+      "type": "text",
+      "id": "comparison_badge",
+      "label": "Comparison Badge",
+      "default": "BEST VALUE"
+    },
+    {
+      "type": "text",
+      "id": "comparison_social_proof",
+      "label": "Comparison Social Proof",
+      "default": "Rated #1 by independent reviews"
+    },
+    {
+      "type": "header",
+      "content": "💝 Retargeting Content (utm_term=retargeting)"
+    },
+    {
+      "type": "text",
+      "id": "retargeting_headline",
+      "label": "Retargeting Headline",
+      "default": "Welcome Back! Complete Your Purchase"
+    },
+    {
+      "type": "text",
+      "id": "retargeting_badge",
+      "label": "Retargeting Badge",
+      "default": "SAVE 15%"
+    },
+    {
+      "type": "text",
+      "id": "retargeting_social_proof",
+      "label": "Retargeting Social Proof",
+      "default": "Your items are waiting"
+    },
+    {
+      "type": "header",
+      "content": "✨ Benefits & Features"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_benefits",
+      "label": "Show Benefits List",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "benefit_1",
+      "label": "Benefit 1",
+      "default": "Fast Shipping"
+    },
+    {
+      "type": "text",
+      "id": "benefit_2",
+      "label": "Benefit 2",
+      "default": "Money-Back Guarantee"
+    },
+    {
+      "type": "text",
+      "id": "benefit_3",
+      "label": "Benefit 3",
+      "default": "Expert Support"
+    },
+    {
+      "type": "text",
+      "id": "benefit_4",
+      "label": "Benefit 4"
+    },
+    {
+      "type": "text",
+      "id": "benefit_5",
+      "label": "Benefit 5"
+    },
+    {
+      "type": "text",
+      "id": "benefit_6",
+      "label": "Benefit 6"
+    },
+    {
+      "type": "header",
+      "content": "👥 Social Proof"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_social_proof",
+      "label": "Show Social Proof Section",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_testimonial_stars",
+      "label": "Show Star Rating",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "customer_count",
+      "label": "Customer Count",
+      "placeholder": "10,000",
+      "info": "Number of customers (without commas)"
+    },
+    {
+      "type": "header",
+      "content": "🎯 Call to Action"
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "Primary CTA Text",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "Primary CTA URL"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cta_arrow",
+      "label": "Show CTA Arrow",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "secondary_cta_text",
+      "label": "Secondary CTA Text",
+      "placeholder": "Learn More"
+    },
+    {
+      "type": "url",
+      "id": "secondary_cta_url",
+      "label": "Secondary CTA URL"
+    },
+    {
+      "type": "header",
+      "content": "🛡️ Trust Signals"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_trust_signals",
+      "label": "Show Trust Badges",
+      "default": false
+    },
+    {
+      "type": "image_picker",
+      "id": "trust_badge_1",
+      "label": "Trust Badge 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "trust_badge_2",
+      "label": "Trust Badge 2"
+    },
+    {
+      "type": "image_picker",
+      "id": "trust_badge_3",
+      "label": "Trust Badge 3"
+    },
+    {
+      "type": "header",
+      "content": "🎨 Appearance"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_urgency_badge",
+      "label": "Show Urgency Badges",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_hero_image",
+      "label": "Show Hero Image",
+      "default": false
+    },
+    {
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Hero Image"
+    },
+    {
+      "type": "range",
+      "id": "headline_size",
+      "label": "Headline Size",
+      "min": 1.5,
+      "max": 4,
+      "step": 0.1,
+      "default": 2.5,
+      "unit": "rem"
+    },
+    {
+      "type": "font_picker",
+      "id": "headline_font",
+      "label": "Headline Font",
+      "default": "assistant_n4"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_top",
+      "label": "Top Padding",
+      "min": 0,
+      "max": 120,
+      "step": 10,
+      "default": 60,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "section_padding_bottom",
+      "label": "Bottom Padding",
+      "min": 0,
+      "max": 120,
+      "step": 10,
+      "default": 60,
+      "unit": "px"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#333333"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent Color",
+      "default": "#007bff"
+    },
+    {
+      "type": "color",
+      "id": "cta_color",
+      "label": "Primary CTA Color",
+      "default": "#000000"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Intent OS UTM Content",
+      "settings": {
+        "show_benefits": true,
+        "show_social_proof": true,
+        "show_urgency_badge": true,
+        "show_countdown": true,
+        "cta_text": "Shop Now",
+        "customer_count": "10000"
+      }
+    }
+  ]
+}
+{% endschema %}

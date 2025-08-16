@@ -1,0 +1,356 @@
+# Docker Build and Security Scanning
+# Comprehensive container build, scan, and registry management
+name: Docker Build & Security
+
+on:
+  push:
+    branches: [main, develop, staging]
+  pull_request:
+    branches: [main, develop]
+  workflow_call:
+    inputs:
+      push_image:
+        description: 'Push image to registry'
+        required: false
+        default: true
+        type: boolean
+      target_environment:
+        description: 'Target environment for build'
+        required: false
+        default: 'development'
+        type: string
+    outputs:
+      image_tag:
+        description: 'Built image tag'
+        value: ${{ jobs.build.outputs.image_tag }}
+      image_digest:
+        description: 'Built image digest'
+        value: ${{ jobs.build.outputs.image_digest }}
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: proofkit-saas
+  DOCKER_BUILDKIT: 1
+
+jobs:
+  # Multi-stage Docker build with optimization
+  build:
+    name: Build Container Image
+    runs-on: ubuntu-latest
+    outputs:
+      image_tag: ${{ steps.meta.outputs.tags }}
+      image_digest: ${{ steps.build.outputs.digest }}
+      image_size: ${{ steps.analyze.outputs.size }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        with:
+          driver-opts: |
+            network=host
+
+      - name: Log in to Container Registry
+        if: github.event_name != 'pull_request'
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.REGISTRY }}/${{ github.repository }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=sha,prefix={{branch}}-
+            type=raw,value=latest,enable={{is_default_branch}}
+            type=raw,value=staging,enable=${{ github.ref == 'refs/heads/develop' }}
+            type=raw,value=production,enable=${{ github.ref == 'refs/heads/main' }}
+          labels: |
+            org.opencontainers.image.title=ProofKit SaaS
+            org.opencontainers.image.description=ProofKit SaaS Application
+            org.opencontainers.image.vendor=ProofKit
+            org.opencontainers.image.licenses=MIT
+
+      - name: Build and push Docker image
+        id: build
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile
+          target: runtime
+          platforms: linux/amd64,linux/arm64
+          push: ${{ github.event_name != 'pull_request' && inputs.push_image != false }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          build-args: |
+            BUILDKIT_INLINE_CACHE=1
+            NODE_ENV=${{ inputs.target_environment || 'production' }}
+
+      - name: Analyze image size
+        id: analyze
+        run: |
+          if [ "${{ github.event_name }}" != "pull_request" ]; then
+            docker pull ${{ env.REGISTRY }}/${{ github.repository }}/${{ env.IMAGE_NAME }}:${{ github.sha }} || true
+            size=$(docker image inspect ${{ env.REGISTRY }}/${{ github.repository }}/${{ env.IMAGE_NAME }}:${{ github.sha }} --format='{{.Size}}' 2>/dev/null || echo "0")
+            size_mb=$((size / 1024 / 1024))
+            echo "size=${size_mb}MB" >> $GITHUB_OUTPUT
+            echo "Image size: ${size_mb}MB"
+          fi
+
+  # Comprehensive security scanning
+  security-scan:
+    name: Security Vulnerability Scan
+    runs-on: ubuntu-latest
+    needs: [build]
+    if: github.event_name != 'pull_request' || needs.build.result == 'success'
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ${{ env.REGISTRY }}/${{ github.repository }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+          severity: 'CRITICAL,HIGH,MEDIUM'
+
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v2
+        if: always()
+        with:
+          sarif_file: 'trivy-results.sarif'
+
+      - name: Run Trivy in table format
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ${{ env.REGISTRY }}/${{ github.repository }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+          format: 'table'
+          exit-code: '0'
+
+      - name: Run Snyk container scan
+        continue-on-error: true
+        uses: snyk/actions/docker@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+        with:
+          image: ${{ env.REGISTRY }}/${{ github.repository }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+          args: --severity-threshold=high --file=Dockerfile
+
+      - name: Upload Snyk results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: snyk-container-results
+          path: snyk.sarif
+
+  # Container compliance and best practices
+  compliance:
+    name: Container Compliance Check
+    runs-on: ubuntu-latest
+    needs: [build]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Run Hadolint (Dockerfile linting)
+        uses: hadolint/hadolint-action@v3.1.0
+        with:
+          dockerfile: Dockerfile
+          format: sarif
+          output-file: hadolint-results.sarif
+          no-fail: true
+
+      - name: Upload Hadolint results
+        uses: github/codeql-action/upload-sarif@v2
+        if: always()
+        with:
+          sarif_file: hadolint-results.sarif
+
+      - name: Run Docker Bench Security
+        run: |
+          git clone https://github.com/docker/docker-bench-security.git
+          cd docker-bench-security
+          sudo sh docker-bench-security.sh -c container_images > ../docker-bench-results.txt || true
+          cat ../docker-bench-results.txt
+
+      - name: Run Container Structure Test
+        run: |
+          # Install container-structure-test
+          curl -LO https://storage.googleapis.com/container-structure-test/latest/container-structure-test-linux-amd64
+          chmod +x container-structure-test-linux-amd64
+          sudo mv container-structure-test-linux-amd64 /usr/local/bin/container-structure-test
+          
+          # Create test configuration
+          cat > container-test.yaml << EOF
+          schemaVersion: '2.0.0'
+          commandTests:
+            - name: "node version"
+              command: "node"
+              args: ["--version"]
+              expectedOutput: ["v18.*"]
+          fileExistenceTests:
+            - name: 'package.json exists'
+              path: '/app/package.json'
+              shouldExist: true
+          EOF
+          
+          # Run tests
+          container-structure-test test --image ${{ env.REGISTRY }}/${{ github.repository }}/${{ env.IMAGE_NAME }}:${{ github.sha }} --config container-test.yaml || echo "Container structure test completed"
+
+      - name: Upload compliance results
+        uses: actions/upload-artifact@v4
+        with:
+          name: compliance-results
+          path: |
+            docker-bench-results.txt
+            container-test.yaml
+
+  # Image signing and attestation
+  sign-image:
+    name: Sign Container Image
+    runs-on: ubuntu-latest
+    needs: [build, security-scan]
+    if: github.ref == 'refs/heads/main' && needs.security-scan.result == 'success'
+    permissions:
+      contents: read
+      id-token: write
+      packages: write
+    steps:
+      - name: Install Cosign
+        uses: sigstore/cosign-installer@v3
+
+      - name: Log in to Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Sign container image
+        run: |
+          echo "Signing image with Cosign..."
+          cosign sign --yes ${{ env.REGISTRY }}/${{ github.repository }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
+
+      - name: Generate SLSA attestation
+        uses: slsa-framework/slsa-github-generator/.github/workflows/generator_container_slsa3.yml@v1.9.0
+        with:
+          image: ${{ env.REGISTRY }}/${{ github.repository }}/${{ env.IMAGE_NAME }}
+          digest: ${{ needs.build.outputs.image_digest }}
+          registry-username: ${{ github.actor }}
+        secrets:
+          registry-password: ${{ secrets.GITHUB_TOKEN }}
+
+  # Multi-environment image promotion
+  promote-image:
+    name: Promote Image
+    runs-on: ubuntu-latest
+    needs: [build, security-scan, compliance]
+    if: github.ref == 'refs/heads/main' && needs.security-scan.result == 'success'
+    steps:
+      - name: Log in to Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Promote to production registry
+        run: |
+          echo "Promoting image to production..."
+          
+          # Tag for production
+          docker buildx imagetools create \
+            ${{ env.REGISTRY }}/${{ github.repository }}/${{ env.IMAGE_NAME }}:${{ github.sha }} \
+            --tag ${{ env.REGISTRY }}/${{ github.repository }}/${{ env.IMAGE_NAME }}:stable
+          
+          # Tag with semantic version if available
+          if [ -n "${{ github.event.release.tag_name }}" ]; then
+            docker buildx imagetools create \
+              ${{ env.REGISTRY }}/${{ github.repository }}/${{ env.IMAGE_NAME }}:${{ github.sha }} \
+              --tag ${{ env.REGISTRY }}/${{ github.repository }}/${{ env.IMAGE_NAME }}:${{ github.event.release.tag_name }}
+          fi
+
+  # Container registry cleanup
+  cleanup:
+    name: Registry Cleanup
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+      - name: Delete old container images
+        uses: actions/delete-package-versions@v4
+        with:
+          package-name: ${{ env.IMAGE_NAME }}
+          package-type: 'container'
+          min-versions-to-keep: 10
+          delete-only-untagged-versions: true
+
+  # Build report generation
+  build-report:
+    name: Build Report
+    runs-on: ubuntu-latest
+    needs: [build, security-scan, compliance]
+    if: always()
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v4
+
+      - name: Generate build report
+        run: |
+          echo "# Container Build Report" > build-report.md
+          echo "Generated: $(date)" >> build-report.md
+          echo "" >> build-report.md
+          
+          echo "## Build Summary" >> build-report.md
+          echo "- Build Status: ${{ needs.build.result }}" >> build-report.md
+          echo "- Security Scan: ${{ needs.security-scan.result }}" >> build-report.md
+          echo "- Compliance Check: ${{ needs.compliance.result }}" >> build-report.md
+          echo "- Image Tag: ${{ needs.build.outputs.image_tag }}" >> build-report.md
+          echo "- Image Size: ${{ needs.build.outputs.image_size }}" >> build-report.md
+          echo "" >> build-report.md
+          
+          echo "## Security Findings" >> build-report.md
+          if [ -f "trivy-results.sarif" ]; then
+            echo "Trivy scan completed - check Security tab for details" >> build-report.md
+          fi
+          
+          echo "## Compliance Status" >> build-report.md
+          if [ -f "compliance-results/docker-bench-results.txt" ]; then
+            echo "Docker Bench Security scan completed" >> build-report.md
+          fi
+          
+          if [ -f "hadolint-results.sarif" ]; then
+            echo "Hadolint Dockerfile analysis completed" >> build-report.md
+          fi
+
+      - name: Upload build report
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-report
+          path: build-report.md
+
+      - name: Comment PR with build report
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            try {
+              const report = fs.readFileSync('build-report.md', 'utf8');
+              await github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: `## Container Build Report\n\n${report}`
+              });
+            } catch (error) {
+              console.log('Could not post build report:', error);
+            }

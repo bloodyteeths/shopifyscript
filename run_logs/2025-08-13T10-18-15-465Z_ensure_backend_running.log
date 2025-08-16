@@ -1,0 +1,3 @@
+COMMAND   PID   USER   FD   TYPE             DEVICE SIZE/OFF NODE NAME
+node    88911 tamsar   21u  IPv6 0x41baa915c35298ca      0t0  TCP *:redwood-broker (LISTEN)
+curl    88928 tamsar    5u  IPv6 0xb6ee25a82833e9d6      0t0  TCP localhost:53858->localhost:redwood-broker (ESTABLISHED)

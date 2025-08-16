@@ -1,0 +1,54 @@
+{
+  "timestamp": "2025-08-16T11:25:05.481Z",
+  "gate": "PROMOTE_GATE",
+  "canPromote": true,
+  "summary": "✅ All safety checks passed - Script is safe for production deployment",
+  "checks": {
+    "idempotencyTest": {
+      "passed": true,
+      "details": "Test result: PASSED",
+      "mutationCount": 0
+    },
+    "testRecency": {
+      "passed": true,
+      "details": "Test age: 0 minutes"
+    },
+    "noErrors": {
+      "passed": true,
+      "details": "No errors detected"
+    }
+  },
+  "recommendations": [
+    "Deploy to production environment",
+    "Monitor initial runs for expected behavior",
+    "Keep idempotency test logs for audit trail"
+  ],
+  "idempotencyResults": {
+    "idempotencyPassed": true,
+    "testTimestamp": "2025-08-16T11:25:05.479Z",
+    "logFile": "/Users/tamsar/Downloads/proofkit-saas/run_logs/2025-08-16T11-25-05-476Z_idempotency_test.log",
+    "mutationCount": 0,
+    "errors": [],
+    "canPromote": false,
+    "detailedResults": {
+      "passed": true,
+      "runId": "2025-08-16T11-25-05-476Z_idempotency_test",
+      "firstRun": {
+        "runLabel": "first",
+        "mutationCount": 0,
+        "mutations": [],
+        "duration": 1,
+        "timestamp": "2025-08-16T11:25:05.478Z"
+      },
+      "secondRun": {
+        "runLabel": "second",
+        "mutationCount": 0,
+        "mutations": [],
+        "duration": 0,
+        "timestamp": "2025-08-16T11:25:05.478Z"
+      },
+      "timestamp": "2025-08-16T11:25:05.478Z",
+      "logFile": "/Users/tamsar/Downloads/proofkit-saas/run_logs/2025-08-16T11-25-05-476Z_idempotency_test.log"
+    }
+  }
+}

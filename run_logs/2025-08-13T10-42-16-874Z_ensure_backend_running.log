@@ -1,0 +1,2 @@
+COMMAND   PID   USER   FD   TYPE             DEVICE SIZE/OFF NODE NAME
+node    91039 tamsar   21u  IPv6 0x793543bd5743dfb2      0t0  TCP *:redwood-broker (LISTEN)

@@ -1,0 +1,200 @@
+{
+  "config": {
+    "success": {
+      "ok": true,
+      "config": {
+        "enabled": true,
+        "label": "PROOFKIT_AUTOMATED",
+        "daily_budget_cap_default": 25.00,
+        "cpc_ceiling_default": 2.50,
+        "business_start": "09:00",
+        "business_end": "17:00",
+        "business_days_csv": "MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY",
+        "PROMOTE": false,
+        "FEATURE_AI_DRAFTS": true,
+        "FEATURE_INTENT_BLOCKS": true,
+        "FEATURE_AUDIENCE_ATTACH": true,
+        "FEATURE_INVENTORY_GUARD": true
+      }
+    },
+    "error": {
+      "ok": false,
+      "error": "Configuration service unavailable",
+      "code": "CONFIG_SERVICE_DOWN"
+    },
+    "unauthorized": {
+      "ok": false,
+      "error": "Invalid HMAC signature",
+      "code": "UNAUTHORIZED"
+    }
+  },
+  "upsertConfig": {
+    "success": {
+      "ok": true,
+      "message": "Configuration saved successfully",
+      "timestamp": "2025-08-16T10:30:00.000Z"
+    },
+    "rateLimit": {
+      "ok": false,
+      "error": "Rate limit exceeded",
+      "code": "RATE_LIMIT_EXCEEDED",
+      "retryAfter": 60
+    }
+  },
+  "scriptPreview": {
+    "firstRun": {
+      "ok": true,
+      "previewMode": true,
+      "mutations": [
+        {
+          "type": "BUDGET_CHANGE",
+          "description": "Budget capped: Test Campaign → $25.00",
+          "details": { "campaign": "Test Campaign", "oldAmount": 50.00, "newAmount": 25.00 }
+        },
+        {
+          "type": "CPC_CEILING",
+          "description": "CPC ceiling: Test Campaign → $2.50",
+          "details": { "campaign": "Test Campaign", "ceiling": 2.50 }
+        },
+        {
+          "type": "SCHEDULE_ADD",
+          "description": "Schedule added: Mon-Fri 9AM-5PM",
+          "details": { "days": "MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY", "start": "09:00", "end": "17:00" }
+        },
+        {
+          "type": "NEGATIVE_ADD",
+          "description": "5 master negatives attached",
+          "details": { "count": 5, "terms": ["waste", "cheap", "free", "job", "career"] }
+        },
+        {
+          "type": "RSA_VALIDATE",
+          "description": "RSA assets validated (30/90)",
+          "details": { "headlines": 3, "descriptions": 2, "valid": true }
+        },
+        {
+          "type": "AUDIENCE_ATTACH",
+          "description": "Audience attached in OBSERVE mode",
+          "details": { "listId": "123456789", "mode": "OBSERVE", "sizeGuard": true }
+        }
+      ],
+      "logs": [
+        "• Budget caps: 1 applied",
+        "• CPC ceilings: 1 applied",
+        "• Schedules: 1 added",
+        "• Master negatives: 5 attached",
+        "• RSA validation: passed",
+        "• Audience attach: 1 in OBSERVE mode"
+      ]
+    },
+    "secondRun": {
+      "ok": true,
+      "previewMode": true,
+      "mutations": [],
+      "logs": [
+        "• Budget caps: 0 changes (already applied)",
+        "• CPC ceilings: 0 changes (already applied)",
+        "• Schedules: 0 changes (already exists)",
+        "• Master negatives: 0 added (already attached)",
+        "• RSA validation: skipped (already valid)",
+        "• Audience attach: 0 changes (already attached)"
+      ],
+      "idempotencyResult": {
+        "passed": true,
+        "message": "Second run produced no mutations - script is idempotent"
+      }
+    }
+  },
+  "aiDrafts": {
+    "success": {
+      "ok": true,
+      "drafts": [
+        {
+          "headlines": [
+            "Premium Quality Products",
+            "Fast Shipping & Returns",
+            "Expert Customer Support"
+          ],
+          "descriptions": [
+            "Discover our curated collection of premium products with fast, free shipping.",
+            "Join thousands of satisfied customers who trust our quality and service."
+          ],
+          "validation": {
+            "headlines": { "valid": true, "maxLength": 30 },
+            "descriptions": { "valid": true, "maxLength": 90 }
+          }
+        }
+      ]
+    }
+  },
+  "intentPreview": {
+    "highIntent": {
+      "ok": true,
+      "utmTerm": "high-intent",
+      "headline": "Limited Time: 50% Off Everything!",
+      "urgencyBadge": "URGENT",
+      "benefits": ["Free Shipping", "30-Day Returns", "Price Match Guarantee"],
+      "socialProof": "Join 50,000+ customers who saved big!",
+      "ctaText": "Shop Sale Now",
+      "showCountdown": true
+    },
+    "research": {
+      "ok": true,
+      "utmTerm": "research",
+      "headline": "Discover the Perfect Solution",
+      "benefits": ["Expert Guidance", "Detailed Reviews", "Comparison Tools"],
+      "socialProof": "Trusted by industry experts",
+      "ctaText": "Learn More"
+    },
+    "comparison": {
+      "ok": true,
+      "utmTerm": "comparison",
+      "headline": "See Why We're #1",
+      "urgencyBadge": "BEST VALUE",
+      "benefits": ["Price Match Guarantee", "Superior Quality", "5-Star Service"],
+      "socialProof": "Rated #1 by independent reviews",
+      "ctaText": "Compare Now"
+    },
+    "retargeting": {
+      "ok": true,
+      "utmTerm": "retargeting",
+      "headline": "Welcome Back! Complete Your Purchase",
+      "urgencyBadge": "SAVE 15%",
+      "benefits": ["Items Still Available", "Secure Checkout", "Fast Delivery"],
+      "socialProof": "Your items are waiting",
+      "ctaText": "Complete Order"
+    }
+  },
+  "audienceUpload": {
+    "success": {
+      "ok": true,
+      "listId": "123456789",
+      "size": 15000,
+      "status": "active",
+      "mode": "OBSERVE",
+      "bidModifier": null,
+      "sizeGuard": true
+    },
+    "tooSmall": {
+      "ok": true,
+      "listId": "987654321",
+      "size": 500,
+      "status": "active",
+      "mode": "OBSERVE",
+      "bidModifier": null,
+      "sizeGuard": false,
+      "warning": "List size below minimum threshold (1000), bid modifier skipped"
+    }
+  },
+  "promoteEnable": {
+    "success": {
+      "ok": true,
+      "promoteEnabled": true,
+      "scheduleWindow": {
+        "start": "2025-08-16T10:30:00Z",
+        "end": "2025-08-16T11:30:00Z",
+        "durationMinutes": 60
+      },
+      "message": "PROMOTE gate enabled for scheduled window"
+    }
+  }
+}

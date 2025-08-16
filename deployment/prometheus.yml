@@ -1,0 +1,142 @@
+# ProofKit SaaS Prometheus Configuration
+# Monitoring and metrics collection for comprehensive observability
+
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+  external_labels:
+    cluster: 'proofkit-saas'
+    environment: 'production'
+
+# Alertmanager configuration
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+          # - alertmanager:9093
+
+# Load rules once and periodically evaluate them according to the global 'evaluation_interval'.
+rule_files:
+  # - "first_rules.yml"
+  # - "second_rules.yml"
+
+# Scrape configurations
+scrape_configs:
+  # Prometheus itself
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+    scrape_interval: 30s
+    metrics_path: '/metrics'
+
+  # ProofKit application metrics
+  - job_name: 'proofkit-app'
+    static_configs:
+      - targets: ['proofkit-app:3000']
+    scrape_interval: 15s
+    metrics_path: '/metrics'
+    scrape_timeout: 10s
+    honor_labels: true
+    params:
+      format: ['prometheus']
+
+  # Node Exporter for system metrics
+  - job_name: 'node-exporter'
+    static_configs:
+      - targets: ['node-exporter:9100']
+    scrape_interval: 30s
+    scrape_timeout: 10s
+
+  # cAdvisor for container metrics
+  - job_name: 'cadvisor'
+    static_configs:
+      - targets: ['cadvisor:8080']
+    scrape_interval: 30s
+    scrape_timeout: 10s
+    metrics_path: '/metrics'
+
+  # Redis metrics (if redis-exporter is added)
+  - job_name: 'redis'
+    static_configs:
+      - targets: ['redis:6379']
+    scrape_interval: 30s
+    metrics_path: '/metrics'
+    params:
+      format: ['prometheus']
+
+  # Nginx metrics
+  - job_name: 'nginx'
+    static_configs:
+      - targets: ['nginx:80']
+    scrape_interval: 30s
+    metrics_path: '/nginx_status'
+    scrape_timeout: 10s
+
+  # Custom application health checks
+  - job_name: 'proofkit-health'
+    static_configs:
+      - targets: ['proofkit-app:3000']
+    scrape_interval: 60s
+    metrics_path: '/health'
+    scrape_timeout: 15s
+    params:
+      format: ['json']
+
+# Recording rules for aggregated metrics
+# These can be uncommented and customized based on specific needs
+# groups:
+#   - name: proofkit.rules
+#     rules:
+#       - record: instance:node_cpu_utilisation:rate5m
+#         expr: |
+#           (
+#             (1 - rate(node_cpu_seconds_total{mode="idle"}[5m]))
+#           * on(instance) group_left(nodename)
+#             node_uname_info{nodename!=""}
+#           )
+#       
+#       - record: instance:node_load1_per_cpu:ratio
+#         expr: |
+#           (
+#             node_load1
+#           /
+#             count without (cpu, mode) (node_cpu_seconds_total{mode="idle"})
+#           * on(instance) group_left(nodename)
+#             node_uname_info{nodename!=""}
+#           )
+#       
+#       - record: instance:node_memory_utilisation:ratio
+#         expr: |
+#           (
+#             (
+#               node_memory_MemTotal_bytes
+#             -
+#               node_memory_MemAvailable_bytes
+#             )
+#           /
+#             node_memory_MemTotal_bytes
+#           * on(instance) group_left(nodename)
+#             node_uname_info{nodename!=""}
+#           )
+#       
+#       - record: proofkit:http_requests:rate5m
+#         expr: |
+#           rate(http_requests_total[5m])
+#       
+#       - record: proofkit:http_request_duration:p95
+#         expr: |
+#           histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m]))
+#       
+#       - record: proofkit:error_rate:rate5m
+#         expr: |
+#           rate(http_requests_total{status=~"5.."}[5m])
+#           /
+#           rate(http_requests_total[5m])
+
+# Storage configuration
+storage:
+  tsdb:
+    path: /prometheus
+    retention.time: 15d
+    retention.size: 10GB
+    wal-compression: true

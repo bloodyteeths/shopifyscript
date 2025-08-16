@@ -1,0 +1,25 @@
+{
+  "maxParallel": 8,
+  "tasks": [
+    { "id": "backend_install", "cmd": "npm --prefix backend install", "cwd": "." },
+    { "id": "ensure_backend_running", "cmd": "lsof -i :3001 || (HMAC_SECRET=change_me PORT=3001 node backend/server.js & sleep 1)", "cwd": "." },
+    { "id": "wait_backend_health", "cmd": "for i in 1 2 3 4 5; do curl -sS http://localhost:3001/api/health && node tools/audit.js PROOFKIT_ROADMAP_FINAL.md R1-health 'Health OK' && exit 0 || sleep 1; done; exit 1", "cwd": "." },
+
+    { "id": "verify_adgroup_sku_tab", "cmd": "grep -q 'ADGROUP_SKU_MAP_' backend/server.js && node tools/audit.js PROOFKIT_ROADMAP_FINAL.md R2-tabs 'ADGROUP_SKU_MAP scaffolded'", "cwd": "." },
+
+    { "id": "verify_intent_endpoints", "cmd": "grep -q '/api/intent/apply' backend/server.js && grep -q '/api/intent/revert' backend/server.js && node tools/audit.js PROOFKIT_ROADMAP_FINAL.md M3-intent 'Apply/Revert endpoints present'", "cwd": "." },
+
+    { "id": "verify_liquid_section", "cmd": "test -f shopify-app/app/sections/intent-block.liquid && node tools/audit.js PROOFKIT_ROADMAP_FINAL.md M3-intent-ui 'Liquid section present'", "cwd": "." },
+    { "id": "verify_intent_route", "cmd": "test -f shopify-app/app/routes/intent.jsx && node tools/audit.js PROOFKIT_ROADMAP_FINAL.md M3-intent-ui2 'Intent UI route present'", "cwd": "." },
+    { "id": "verify_overlays_route", "cmd": "test -f shopify-app/app/routes/overlays.jsx && node tools/audit.js PROOFKIT_ROADMAP_FINAL.md M3-overlays-ui 'Overlays UI route present'", "cwd": "." },
+    { "id": "verify_audiences_route", "cmd": "test -f shopify-app/app/routes/audiences.jsx && node tools/audit.js PROOFKIT_ROADMAP_FINAL.md M3-audiences-ui 'Audiences UI route present'", "cwd": "." },
+
+    { "id": "verify_ai_writer", "cmd": "test -f backend/jobs/ai_writer.ts && test -f backend/lib/validators.ts && node tools/audit.js PROOFKIT_ROADMAP_FINAL.md M4-ai 'AI writer + validators present'", "cwd": "." },
+
+    { "id": "smoke_intent_apply", "cmd": "TENANT=TENANT_123; export HMAC_SECRET=change_me; nonce=123; sig=$(node tools/hmac.js POST:$TENANT:intentapply:$nonce); curl -sS -X POST 'http://localhost:3001/api/intent/apply?tenant='$TENANT'&sig='$sig -H 'content-type: application/json' --data '{\"nonce\":123,\"overlays\":[{\"id\":\"demo\"}]}' | grep -q 'ok' && node tools/audit.js PROOFKIT_ROADMAP_FINAL.md M3-apply 'Intent apply OK'", "cwd": "." },
+
+    { "id": "smoke_intent_revert", "cmd": "TENANT=TENANT_123; export HMAC_SECRET=change_me; nonce=456; sig=$(node tools/hmac.js POST:$TENANT:intentrevert:$nonce); curl -sS -X POST 'http://localhost:3001/api/intent/revert?tenant='$TENANT'&sig='$sig -H 'content-type: application/json' --data '{\"nonce\":456,\"overlays\":[{\"id\":\"demo\"}]}' | grep -q 'ok' && node tools/audit.js PROOFKIT_ROADMAP_FINAL.md M3-revert 'Intent revert OK'", "cwd": "." }
+  ]
+}
+
+

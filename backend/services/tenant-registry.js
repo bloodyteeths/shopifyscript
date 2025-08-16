@@ -1,0 +1,233 @@
+/**
+ * Tenant Registry System - Multi-Tenant Infrastructure
+ * Manages dynamic tenant-to-sheet mapping and configuration
+ */
+
+import { GoogleSpreadsheet } from 'google-spreadsheet';
+import { JWT } from 'google-auth-library';
+
+class TenantRegistry {
+  constructor() {
+    this.registry = new Map();
+    this.isInitialized = false;
+    this.lastUpdated = null;
+    this.refreshInterval = 5 * 60 * 1000; // 5 minutes
+  }
+
+  /**
+   * Initialize the tenant registry from environment variable
+   */
+  async initialize() {
+    try {
+      const registryJson = process.env.TENANT_REGISTRY_JSON;
+      if (registryJson) {
+        const tenants = JSON.parse(registryJson);
+        this.registry.clear();
+        
+        for (const [tenantId, config] of Object.entries(tenants)) {
+          this.registry.set(tenantId, {
+            id: tenantId,
+            sheetId: config.sheetId,
+            name: config.name || tenantId,
+            plan: config.plan || 'starter',
+            enabled: config.enabled !== false,
+            config: config.config || {},
+            createdAt: config.createdAt || new Date().toISOString(),
+            updatedAt: new Date().toISOString()
+          });
+        }
+      } else {
+        // Fallback to default single-tenant mode using SHEET_ID
+        if (process.env.SHEET_ID) {
+          this.registry.set('default', {
+            id: 'default',
+            sheetId: process.env.SHEET_ID,
+            name: 'Default Tenant',
+            plan: 'starter',
+            enabled: true,
+            config: {},
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString()
+          });
+        }
+      }
+      
+      this.isInitialized = true;
+      this.lastUpdated = Date.now();
+      console.log(`TenantRegistry: Initialized with ${this.registry.size} tenants`);
+      
+      // Schedule periodic refresh
+      this.scheduleRefresh();
+      
+    } catch (error) {
+      console.error('TenantRegistry: Failed to initialize:', error.message);
+      this.isInitialized = false;
+    }
+  }
+
+  /**
+   * Schedule periodic refresh of tenant registry
+   */
+  scheduleRefresh() {
+    setInterval(() => {
+      this.refresh().catch(err => 
+        console.error('TenantRegistry: Refresh failed:', err.message)
+      );
+    }, this.refreshInterval);
+  }
+
+  /**
+   * Refresh tenant registry from environment
+   */
+  async refresh() {
+    const oldSize = this.registry.size;
+    await this.initialize();
+    const newSize = this.registry.size;
+    
+    if (oldSize !== newSize) {
+      console.log(`TenantRegistry: Refreshed - ${oldSize} -> ${newSize} tenants`);
+    }
+  }
+
+  /**
+   * Get tenant configuration by ID
+   */
+  getTenant(tenantId) {
+    if (!this.isInitialized) {
+      throw new Error('TenantRegistry not initialized');
+    }
+    
+    // Fallback to 'default' if tenant not found and it exists
+    return this.registry.get(tenantId) || this.registry.get('default');
+  }
+
+  /**
+   * Get all tenants
+   */
+  getAllTenants() {
+    if (!this.isInitialized) {
+      throw new Error('TenantRegistry not initialized');
+    }
+    
+    return Array.from(this.registry.values());
+  }
+
+  /**
+   * Check if tenant exists and is enabled
+   */
+  isValidTenant(tenantId) {
+    const tenant = this.getTenant(tenantId);
+    return tenant && tenant.enabled;
+  }
+
+  /**
+   * Get Google Sheets document for a tenant
+   */
+  async getTenantDoc(tenantId) {
+    const tenant = this.getTenant(tenantId);
+    if (!tenant) {
+      throw new Error(`Tenant not found: ${tenantId}`);
+    }
+
+    if (!tenant.enabled) {
+      throw new Error(`Tenant disabled: ${tenantId}`);
+    }
+
+    const { GOOGLE_SERVICE_EMAIL, GOOGLE_PRIVATE_KEY } = process.env;
+    if (!GOOGLE_SERVICE_EMAIL || !GOOGLE_PRIVATE_KEY) {
+      throw new Error('Google Sheets authentication not configured');
+    }
+
+    try {
+      const serviceAccountAuth = new JWT({
+        email: GOOGLE_SERVICE_EMAIL,
+        key: GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n'),
+        scopes: ['https://www.googleapis.com/auth/spreadsheets'],
+      });
+      
+      const doc = new GoogleSpreadsheet(tenant.sheetId, serviceAccountAuth);
+      await doc.loadInfo();
+      return doc;
+    } catch (error) {
+      throw new Error(`Failed to load sheets for tenant ${tenantId}: ${error.message}`);
+    }
+  }
+
+  /**
+   * Add or update tenant configuration
+   */
+  addTenant(tenantId, config) {
+    if (!tenantId || !config.sheetId) {
+      throw new Error('Tenant ID and Sheet ID are required');
+    }
+
+    this.registry.set(tenantId, {
+      id: tenantId,
+      sheetId: config.sheetId,
+      name: config.name || tenantId,
+      plan: config.plan || 'starter',
+      enabled: config.enabled !== false,
+      config: config.config || {},
+      createdAt: config.createdAt || new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    });
+
+    console.log(`TenantRegistry: Added/updated tenant ${tenantId}`);
+  }
+
+  /**
+   * Remove tenant from registry
+   */
+  removeTenant(tenantId) {
+    const removed = this.registry.delete(tenantId);
+    if (removed) {
+      console.log(`TenantRegistry: Removed tenant ${tenantId}`);
+    }
+    return removed;
+  }
+
+  /**
+   * Get tenant statistics
+   */
+  getStats() {
+    const tenants = this.getAllTenants();
+    const enabled = tenants.filter(t => t.enabled).length;
+    const plans = tenants.reduce((acc, t) => {
+      acc[t.plan] = (acc[t.plan] || 0) + 1;
+      return acc;
+    }, {});
+
+    return {
+      total: tenants.length,
+      enabled,
+      disabled: tenants.length - enabled,
+      plans,
+      lastUpdated: this.lastUpdated,
+      initialized: this.isInitialized
+    };
+  }
+
+  /**
+   * Export tenant registry as JSON
+   */
+  exportRegistry() {
+    const registry = {};
+    for (const [tenantId, config] of this.registry) {
+      registry[tenantId] = {
+        sheetId: config.sheetId,
+        name: config.name,
+        plan: config.plan,
+        enabled: config.enabled,
+        config: config.config,
+        createdAt: config.createdAt
+      };
+    }
+    return registry;
+  }
+}
+
+// Singleton instance
+const tenantRegistry = new TenantRegistry();
+
+export default tenantRegistry;
+export { TenantRegistry };

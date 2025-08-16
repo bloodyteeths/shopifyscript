@@ -1,0 +1,9 @@
+[2025-08-16T11:25:05.479Z] TEST_HARNESS_INIT: Idempotency test harness initialized
+[2025-08-16T11:25:05.479Z] TEST_START: Beginning idempotency validation
+[2025-08-16T11:25:05.479Z] FIRST_RUN_START: Starting first preview run
+[2025-08-16T11:25:05.479Z] FIRST_RUN_COMPLETE: First run planned 0 mutations
+[2025-08-16T11:25:05.479Z] SECOND_RUN_START: Starting second preview run
+[2025-08-16T11:25:05.479Z] SECOND_RUN_COMPLETE: Second run planned 0 mutations
+[2025-08-16T11:25:05.479Z] IDEMPOTENCY_CONFIRMED: Script behavior is idempotent
+[2025-08-16T11:25:05.479Z] TEST_COMPLETE: Idempotency test PASSED
+[2025-08-16T11:25:05.479Z] IDEMPOTENCY_TEST_RESULT: {"passed":true,"runId":"2025-08-16T11-25-05-476Z_idempotency_test","firstRun":{"runLabel":"first","mutationCount":0,"mutations":[],"duration":1,"timestamp":"2025-08-16T11:25:05.478Z"},"secondRun":{"runLabel":"second","mutationCount":0,"mutations":[],"duration":0,"timestamp":"2025-08-16T11:25:05.478Z"},"timestamp":"2025-08-16T11:25:05.478Z","logFile":"/Users/tamsar/Downloads/proofkit-saas/run_logs/2025-08-16T11-25-05-476Z_idempotency_test.log"}

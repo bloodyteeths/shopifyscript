@@ -1,0 +1,781 @@
+{
+  "metadata": {
+    "name": "ProofKit Performance Dashboard",
+    "description": "Comprehensive Google Ads performance monitoring and analytics dashboard for ProofKit merchants",
+    "version": "1.0.0",
+    "author": "ProofKit SaaS",
+    "tags": ["google-ads", "ecommerce", "performance", "analytics"],
+    "lastUpdated": "2025-08-16",
+    "dataSource": "Google Sheets",
+    "supportedConnectors": ["google_sheets", "google_analytics", "google_ads"],
+    "category": "Marketing Analytics"
+  },
+  "configuration": {
+    "refreshRate": "15m",
+    "timezone": "auto",
+    "dateRange": {
+      "default": "last_30_days",
+      "options": ["today", "yesterday", "last_7_days", "last_30_days", "last_90_days", "custom"]
+    },
+    "permissions": {
+      "viewer": ["read"],
+      "editor": ["read", "edit_charts"],
+      "admin": ["read", "edit_charts", "manage_data_sources", "share"]
+    }
+  },
+  "dataConnections": {
+    "primary": {
+      "type": "google_sheets",
+      "name": "ProofKit Metrics Data",
+      "description": "Main metrics data from ProofKit backend",
+      "required": true,
+      "sheets": [
+        {
+          "name": "METRICS_{TENANT}",
+          "range": "A:K",
+          "headers": ["date", "level", "campaign", "ad_group", "id", "name", "clicks", "cost", "conversions", "impr", "ctr"],
+          "dataTypes": {
+            "date": "datetime",
+            "level": "text",
+            "campaign": "text", 
+            "ad_group": "text",
+            "id": "text",
+            "name": "text",
+            "clicks": "number",
+            "cost": "number",
+            "conversions": "number",
+            "impr": "number",
+            "ctr": "number"
+          }
+        },
+        {
+          "name": "SEARCH_TERMS_{TENANT}",
+          "range": "A:G",
+          "headers": ["date", "campaign", "ad_group", "search_term", "clicks", "cost", "conversions"],
+          "dataTypes": {
+            "date": "datetime",
+            "campaign": "text",
+            "ad_group": "text", 
+            "search_term": "text",
+            "clicks": "number",
+            "cost": "number",
+            "conversions": "number"
+          }
+        },
+        {
+          "name": "RUN_LOGS_{TENANT}",
+          "range": "A:D",
+          "headers": ["timestamp", "type", "message", "data"],
+          "dataTypes": {
+            "timestamp": "datetime",
+            "type": "text",
+            "message": "text",
+            "data": "text"
+          }
+        },
+        {
+          "name": "ANOMALIES_{TENANT}",
+          "range": "A:H",
+          "headers": ["timestamp", "type", "severity", "message", "value", "threshold", "confidence", "metadata"],
+          "dataTypes": {
+            "timestamp": "datetime",
+            "type": "text",
+            "severity": "text",
+            "message": "text",
+            "value": "number",
+            "threshold": "number",
+            "confidence": "number",
+            "metadata": "text"
+          }
+        }
+      ]
+    },
+    "secondary": {
+      "type": "google_analytics",
+      "name": "Website Analytics Data",
+      "description": "Optional Google Analytics integration for website metrics",
+      "required": false,
+      "properties": ["web_property_id"]
+    }
+  },
+  "calculatedFields": [
+    {
+      "name": "CPA",
+      "formula": "IF(conversions > 0, cost / conversions, NULL)",
+      "description": "Cost per acquisition",
+      "dataType": "number",
+      "format": "currency"
+    },
+    {
+      "name": "CTR_Percent",
+      "formula": "IF(impr > 0, (clicks / impr) * 100, 0)",
+      "description": "Click-through rate as percentage",
+      "dataType": "number",
+      "format": "percent"
+    },
+    {
+      "name": "Conversion_Rate",
+      "formula": "IF(clicks > 0, (conversions / clicks) * 100, 0)",
+      "description": "Conversion rate as percentage",
+      "dataType": "number",
+      "format": "percent"
+    },
+    {
+      "name": "Cost_Per_Click", 
+      "formula": "IF(clicks > 0, cost / clicks, 0)",
+      "description": "Average cost per click",
+      "dataType": "number",
+      "format": "currency"
+    },
+    {
+      "name": "ROAS",
+      "formula": "IF(cost > 0, (conversions * avg_order_value) / cost, 0)",
+      "description": "Return on ad spend (requires avg_order_value parameter)",
+      "dataType": "number",
+      "format": "number"
+    },
+    {
+      "name": "Week_Over_Week_Cost",
+      "formula": "LAG(SUM(cost), 7) / SUM(cost) - 1",
+      "description": "Week over week cost change",
+      "dataType": "number",
+      "format": "percent"
+    },
+    {
+      "name": "Day_of_Week",
+      "formula": "DAYOFWEEK(date)",
+      "description": "Day of week (1=Sunday, 7=Saturday)",
+      "dataType": "number"
+    },
+    {
+      "name": "Hour_of_Day",
+      "formula": "HOUR(date)",
+      "description": "Hour of day (0-23)",
+      "dataType": "number"
+    }
+  ],
+  "pages": [
+    {
+      "name": "Executive Summary",
+      "description": "High-level performance overview for executives and stakeholders",
+      "layout": "grid",
+      "charts": [
+        {
+          "type": "scorecard",
+          "title": "Total Spend (30 Days)",
+          "position": {"row": 1, "col": 1, "width": 2, "height": 2},
+          "dataSource": "primary",
+          "metric": "SUM(cost)",
+          "comparison": {
+            "type": "previous_period",
+            "label": "vs Previous 30 Days"
+          },
+          "format": "currency",
+          "thresholds": {
+            "good": 0.95,
+            "warning": 0.85,
+            "critical": 0.75
+          }
+        },
+        {
+          "type": "scorecard", 
+          "title": "Total Conversions (30 Days)",
+          "position": {"row": 1, "col": 3, "width": 2, "height": 2},
+          "dataSource": "primary",
+          "metric": "SUM(conversions)",
+          "comparison": {
+            "type": "previous_period",
+            "label": "vs Previous 30 Days"
+          },
+          "format": "number"
+        },
+        {
+          "type": "scorecard",
+          "title": "Average CPA (30 Days)", 
+          "position": {"row": 1, "col": 5, "width": 2, "height": 2},
+          "dataSource": "primary",
+          "metric": "AVG(CPA)",
+          "comparison": {
+            "type": "previous_period",
+            "label": "vs Previous 30 Days"
+          },
+          "format": "currency",
+          "thresholds": {
+            "good": 1.1,
+            "warning": 1.25,
+            "critical": 1.5
+          }
+        },
+        {
+          "type": "time_series",
+          "title": "Daily Performance Trends",
+          "position": {"row": 3, "col": 1, "width": 6, "height": 4},
+          "dataSource": "primary",
+          "dimensions": ["date"],
+          "metrics": ["SUM(cost)", "SUM(conversions)", "AVG(CPA)"],
+          "dateRange": "last_30_days",
+          "chartType": "line",
+          "axes": {
+            "left": ["SUM(cost)", "AVG(CPA)"],
+            "right": ["SUM(conversions)"]
+          }
+        },
+        {
+          "type": "table",
+          "title": "Top Performing Campaigns",
+          "position": {"row": 7, "col": 1, "width": 3, "height": 4},
+          "dataSource": "primary",
+          "dimensions": ["campaign"],
+          "metrics": ["SUM(cost)", "SUM(conversions)", "AVG(CPA)", "CTR_Percent"],
+          "sort": {"metric": "SUM(conversions)", "order": "DESC"},
+          "limit": 10,
+          "conditionalFormatting": [
+            {
+              "column": "AVG(CPA)",
+              "type": "color_scale",
+              "colors": ["green", "yellow", "red"],
+              "values": [0, 50, 100]
+            }
+          ]
+        },
+        {
+          "type": "geo_chart",
+          "title": "Performance by Location",
+          "position": {"row": 7, "col": 4, "width": 3, "height": 4},
+          "dataSource": "primary",
+          "dimension": "location",
+          "metric": "SUM(conversions)",
+          "mapType": "regions",
+          "optional": true
+        }
+      ]
+    },
+    {
+      "name": "Campaign Performance",
+      "description": "Detailed campaign-level analysis and optimization insights",
+      "layout": "grid",
+      "charts": [
+        {
+          "type": "filter_control",
+          "title": "Campaign Filter",
+          "position": {"row": 1, "col": 1, "width": 2, "height": 1},
+          "dataSource": "primary",
+          "dimension": "campaign",
+          "controlType": "dropdown",
+          "allowMultiple": true
+        },
+        {
+          "type": "filter_control",
+          "title": "Date Range",
+          "position": {"row": 1, "col": 3, "width": 2, "height": 1},
+          "dataSource": "primary",
+          "dimension": "date",
+          "controlType": "date_range"
+        },
+        {
+          "type": "pivot_table",
+          "title": "Campaign Performance Matrix",
+          "position": {"row": 2, "col": 1, "width": 6, "height": 5},
+          "dataSource": "primary",
+          "rowDimensions": ["campaign", "ad_group"],
+          "columnDimensions": ["Day_of_Week"],
+          "metrics": ["SUM(cost)", "SUM(conversions)", "AVG(CPA)", "CTR_Percent"],
+          "subtotals": true,
+          "grandTotal": true
+        },
+        {
+          "type": "bubble_chart",
+          "title": "Campaign Efficiency Analysis",
+          "position": {"row": 7, "col": 1, "width": 3, "height": 4},
+          "dataSource": "primary",
+          "dimension": "campaign",
+          "xAxis": "SUM(cost)",
+          "yAxis": "SUM(conversions)",
+          "bubbleSize": "CTR_Percent",
+          "bubbleColor": "AVG(CPA)"
+        },
+        {
+          "type": "bar_chart",
+          "title": "Campaign Performance Rankings",
+          "position": {"row": 7, "col": 4, "width": 3, "height": 4},
+          "dataSource": "primary",
+          "dimension": "campaign",
+          "metrics": ["SUM(conversions)", "AVG(CPA)"],
+          "sort": {"metric": "SUM(conversions)", "order": "DESC"},
+          "limit": 15,
+          "orientation": "horizontal"
+        }
+      ]
+    },
+    {
+      "name": "Search Terms Analysis",
+      "description": "Deep dive into search term performance and keyword insights",
+      "layout": "grid",
+      "charts": [
+        {
+          "type": "word_cloud",
+          "title": "Top Converting Search Terms",
+          "position": {"row": 1, "col": 1, "width": 3, "height": 3},
+          "dataSource": "primary",
+          "table": "SEARCH_TERMS_{TENANT}",
+          "dimension": "search_term",
+          "metric": "SUM(conversions)",
+          "maxWords": 50,
+          "minOccurrences": 2
+        },
+        {
+          "type": "table",
+          "title": "Search Term Performance",
+          "position": {"row": 1, "col": 4, "width": 3, "height": 6},
+          "dataSource": "primary",
+          "table": "SEARCH_TERMS_{TENANT}",
+          "dimensions": ["search_term", "campaign"],
+          "metrics": ["SUM(clicks)", "SUM(cost)", "SUM(conversions)", "AVG(CPA)"],
+          "sort": {"metric": "SUM(conversions)", "order": "DESC"},
+          "limit": 100,
+          "searchEnabled": true,
+          "conditionalFormatting": [
+            {
+              "column": "SUM(conversions)",
+              "type": "data_bars",
+              "color": "blue"
+            },
+            {
+              "column": "AVG(CPA)",
+              "type": "color_scale",
+              "colors": ["green", "yellow", "red"]
+            }
+          ]
+        },
+        {
+          "type": "scatter_plot",
+          "title": "Search Term Efficiency (Cost vs Conversions)",
+          "position": {"row": 4, "col": 1, "width": 3, "height": 3},
+          "dataSource": "primary",
+          "table": "SEARCH_TERMS_{TENANT}",
+          "dimension": "search_term",
+          "xAxis": "SUM(cost)",
+          "yAxis": "SUM(conversions)",
+          "trendLine": true
+        },
+        {
+          "type": "histogram",
+          "title": "CPA Distribution",
+          "position": {"row": 7, "col": 1, "width": 3, "height": 3},
+          "dataSource": "primary",
+          "table": "SEARCH_TERMS_{TENANT}",
+          "metric": "AVG(CPA)",
+          "bins": 20,
+          "filter": "SUM(conversions) > 0"
+        },
+        {
+          "type": "heatmap",
+          "title": "Search Term Performance by Hour",
+          "position": {"row": 7, "col": 4, "width": 3, "height": 3},
+          "dataSource": "primary",
+          "table": "SEARCH_TERMS_{TENANT}",
+          "xDimension": "Hour_of_Day",
+          "yDimension": "search_term",
+          "metric": "SUM(conversions)",
+          "colorScale": "green_red",
+          "limit": 20
+        }
+      ]
+    },
+    {
+      "name": "Alerts & Anomalies",
+      "description": "Real-time monitoring and alert dashboard for performance issues",
+      "layout": "grid",
+      "charts": [
+        {
+          "type": "scorecard",
+          "title": "Active High Severity Alerts",
+          "position": {"row": 1, "col": 1, "width": 2, "height": 2},
+          "dataSource": "primary",
+          "table": "ANOMALIES_{TENANT}",
+          "metric": "COUNT(*)",
+          "filter": "severity = 'high' AND timestamp >= DATE_SUB(NOW(), INTERVAL 24 HOUR)",
+          "format": "number",
+          "thresholds": {
+            "good": 0,
+            "warning": 1,
+            "critical": 3
+          }
+        },
+        {
+          "type": "scorecard",
+          "title": "Alerts This Week",
+          "position": {"row": 1, "col": 3, "width": 2, "height": 2},
+          "dataSource": "primary",
+          "table": "ANOMALIES_{TENANT}",
+          "metric": "COUNT(*)",
+          "filter": "timestamp >= DATE_SUB(NOW(), INTERVAL 7 DAY)",
+          "comparison": {
+            "type": "previous_period",
+            "label": "vs Previous Week"
+          },
+          "format": "number"
+        },
+        {
+          "type": "time_series",
+          "title": "Alert Frequency Over Time",
+          "position": {"row": 3, "col": 1, "width": 4, "height": 3},
+          "dataSource": "primary",
+          "table": "ANOMALIES_{TENANT}",
+          "dimensions": ["DATE(timestamp)", "severity"],
+          "metric": "COUNT(*)",
+          "chartType": "stacked_area",
+          "dateRange": "last_30_days"
+        },
+        {
+          "type": "table",
+          "title": "Recent Alerts",
+          "position": {"row": 3, "col": 5, "width": 2, "height": 6},
+          "dataSource": "primary",
+          "table": "ANOMALIES_{TENANT}",
+          "dimensions": ["timestamp", "type", "severity", "message"],
+          "sort": {"dimension": "timestamp", "order": "DESC"},
+          "limit": 20,
+          "conditionalFormatting": [
+            {
+              "column": "severity",
+              "type": "color_by_value",
+              "values": {
+                "high": "red",
+                "medium": "orange", 
+                "low": "yellow"
+              }
+            }
+          ]
+        },
+        {
+          "type": "pie_chart",
+          "title": "Alert Types Distribution",
+          "position": {"row": 6, "col": 1, "width": 2, "height": 3},
+          "dataSource": "primary",
+          "table": "ANOMALIES_{TENANT}",
+          "dimension": "type",
+          "metric": "COUNT(*)",
+          "dateRange": "last_30_days"
+        },
+        {
+          "type": "bar_chart",
+          "title": "Alert Severity Breakdown",
+          "position": {"row": 6, "col": 3, "width": 2, "height": 3},
+          "dataSource": "primary",
+          "table": "ANOMALIES_{TENANT}",
+          "dimension": "severity",
+          "metric": "COUNT(*)",
+          "dateRange": "last_30_days",
+          "colors": ["green", "orange", "red"]
+        }
+      ]
+    },
+    {
+      "name": "Performance Insights",
+      "description": "AI-powered insights and recommendations from weekly summaries",
+      "layout": "grid",
+      "charts": [
+        {
+          "type": "text_widget",
+          "title": "Latest AI Insights",
+          "position": {"row": 1, "col": 1, "width": 6, "height": 2},
+          "dataSource": "primary",
+          "table": "RUN_LOGS_{TENANT}",
+          "textField": "message",
+          "filter": "type = 'weekly_summary'",
+          "sort": {"dimension": "timestamp", "order": "DESC"},
+          "limit": 1,
+          "formatting": {
+            "fontSize": "medium",
+            "backgroundColor": "#f8f9fa",
+            "padding": "15px"
+          }
+        },
+        {
+          "type": "time_series",
+          "title": "Weekly Performance Trends",
+          "position": {"row": 3, "col": 1, "width": 6, "height": 4},
+          "dataSource": "primary",
+          "dimensions": ["WEEK(date)"],
+          "metrics": ["SUM(cost)", "SUM(conversions)", "AVG(CPA)", "CTR_Percent"],
+          "chartType": "combo",
+          "dateRange": "last_90_days"
+        },
+        {
+          "type": "table",
+          "title": "Weekly Summary History",
+          "position": {"row": 7, "col": 1, "width": 6, "height": 4},
+          "dataSource": "primary",
+          "table": "RUN_LOGS_{TENANT}",
+          "dimensions": ["timestamp", "message"],
+          "filter": "type = 'weekly_summary'",
+          "sort": {"dimension": "timestamp", "order": "DESC"},
+          "limit": 10,
+          "columnWidth": {
+            "timestamp": 150,
+            "message": 500
+          }
+        }
+      ]
+    },
+    {
+      "name": "Time Analysis",
+      "description": "Performance patterns by time of day, day of week, and seasonality",
+      "layout": "grid",
+      "charts": [
+        {
+          "type": "heatmap",
+          "title": "Performance by Day of Week & Hour",
+          "position": {"row": 1, "col": 1, "width": 4, "height": 4},
+          "dataSource": "primary",
+          "xDimension": "Hour_of_Day",
+          "yDimension": "Day_of_Week",
+          "metric": "SUM(conversions)",
+          "colorScale": "blue_red"
+        },
+        {
+          "type": "line_chart",
+          "title": "Hourly Performance Patterns",
+          "position": {"row": 1, "col": 5, "width": 2, "height": 4},
+          "dataSource": "primary",
+          "dimension": "Hour_of_Day",
+          "metrics": ["AVG(Cost_Per_Click)", "AVG(Conversion_Rate)"],
+          "smoothing": true
+        },
+        {
+          "type": "bar_chart",
+          "title": "Day of Week Performance",
+          "position": {"row": 5, "col": 1, "width": 3, "height": 3},
+          "dataSource": "primary",
+          "dimension": "Day_of_Week",
+          "metrics": ["SUM(cost)", "SUM(conversions)"],
+          "orientation": "vertical"
+        },
+        {
+          "type": "calendar_heatmap",
+          "title": "Daily Performance Calendar",
+          "position": {"row": 5, "col": 4, "width": 3, "height": 3},
+          "dataSource": "primary",
+          "dimension": "date",
+          "metric": "SUM(conversions)",
+          "dateRange": "last_90_days",
+          "colorScale": "green_red"
+        }
+      ]
+    }
+  ],
+  "parameters": [
+    {
+      "name": "tenant_id",
+      "type": "text",
+      "required": true,
+      "description": "Tenant identifier for data filtering",
+      "defaultValue": "default"
+    },
+    {
+      "name": "avg_order_value",
+      "type": "number",
+      "required": false,
+      "description": "Average order value for ROAS calculations",
+      "defaultValue": 50
+    },
+    {
+      "name": "target_cpa",
+      "type": "number",
+      "required": false,
+      "description": "Target cost per acquisition for threshold analysis",
+      "defaultValue": 25
+    },
+    {
+      "name": "business_hours_start",
+      "type": "number",
+      "required": false,
+      "description": "Business hours start (0-23)",
+      "defaultValue": 9
+    },
+    {
+      "name": "business_hours_end",
+      "type": "number",
+      "required": false,
+      "description": "Business hours end (0-23)",
+      "defaultValue": 17
+    }
+  ],
+  "styles": {
+    "theme": "modern",
+    "colorPalette": [
+      "#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd",
+      "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf"
+    ],
+    "fonts": {
+      "title": "Roboto",
+      "body": "Open Sans",
+      "data": "Monaco"
+    },
+    "spacing": {
+      "chartPadding": 10,
+      "gridGap": 15
+    }
+  },
+  "filters": {
+    "global": [
+      {
+        "name": "Date Range",
+        "type": "date_range",
+        "defaultValue": "last_30_days"
+      },
+      {
+        "name": "Campaign",
+        "type": "dropdown",
+        "dimension": "campaign",
+        "allowMultiple": true
+      }
+    ],
+    "page_specific": {
+      "Campaign Performance": [
+        {
+          "name": "Ad Group",
+          "type": "dropdown",
+          "dimension": "ad_group",
+          "allowMultiple": true
+        }
+      ],
+      "Search Terms Analysis": [
+        {
+          "name": "Minimum Conversions",
+          "type": "slider",
+          "metric": "SUM(conversions)",
+          "min": 0,
+          "max": 100,
+          "defaultValue": 1
+        }
+      ]
+    }
+  },
+  "alerts": [
+    {
+      "name": "High CPA Alert",
+      "condition": "AVG(CPA) > target_cpa * 1.5",
+      "frequency": "daily",
+      "recipients": ["admin@merchant.com"]
+    },
+    {
+      "name": "Zero Conversions Alert",
+      "condition": "SUM(conversions) = 0 AND SUM(cost) > 100",
+      "frequency": "hourly",
+      "recipients": ["manager@merchant.com", "admin@merchant.com"]
+    },
+    {
+      "name": "Spend Spike Alert",
+      "condition": "SUM(cost) > AVG(cost, 7 days) * 2",
+      "frequency": "real_time",
+      "recipients": ["admin@merchant.com"]
+    }
+  ],
+  "scheduling": {
+    "autoRefresh": {
+      "enabled": true,
+      "interval": "15m",
+      "businessHoursOnly": false
+    },
+    "emailReports": [
+      {
+        "name": "Weekly Performance Summary",
+        "pages": ["Executive Summary", "Campaign Performance"],
+        "frequency": "weekly",
+        "day": "monday",
+        "time": "09:00",
+        "recipients": ["stakeholder@merchant.com"],
+        "format": "pdf"
+      },
+      {
+        "name": "Daily Alert Digest",
+        "pages": ["Alerts & Anomalies"],
+        "frequency": "daily",
+        "time": "08:00",
+        "recipients": ["manager@merchant.com"],
+        "format": "pdf",
+        "condition": "has_alerts = true"
+      }
+    ]
+  },
+  "installation": {
+    "requirements": [
+      "Google Sheets access to ProofKit data",
+      "Looker Studio Pro license (optional for advanced features)",
+      "Minimum viewer permissions on data sources"
+    ],
+    "setup_steps": [
+      {
+        "step": 1,
+        "title": "Connect Data Source",
+        "description": "Connect your Google Sheets containing ProofKit data",
+        "action": "Add Google Sheets connector with URL: [SHEET_URL]"
+      },
+      {
+        "step": 2,
+        "title": "Configure Parameters",
+        "description": "Set your tenant ID and business parameters",
+        "action": "Update parameters section with your values"
+      },
+      {
+        "step": 3,
+        "title": "Customize Filters",
+        "description": "Configure global and page-specific filters",
+        "action": "Modify filters based on your campaign structure"
+      },
+      {
+        "step": 4,
+        "title": "Set Up Alerts",
+        "description": "Configure threshold-based alerts for your KPIs",
+        "action": "Update alert conditions and recipient lists"
+      },
+      {
+        "step": 5,
+        "title": "Test Dashboard",
+        "description": "Verify all charts load correctly with your data",
+        "action": "Review each page and validate metrics"
+      }
+    ],
+    "troubleshooting": [
+      {
+        "issue": "No data showing in charts",
+        "solution": "Verify Google Sheets permissions and data range settings"
+      },
+      {
+        "issue": "Calculated fields showing errors",
+        "solution": "Check that all required columns exist in your data source"
+      },
+      {
+        "issue": "Filters not working",
+        "solution": "Ensure filter dimensions match column names in your sheets"
+      }
+    ]
+  },
+  "documentation": {
+    "overview": "This Looker Studio template provides comprehensive monitoring and analysis for Google Ads campaigns managed through ProofKit. It includes executive summaries, detailed campaign analysis, search term insights, anomaly detection, and time-based performance patterns.",
+    "features": [
+      "Real-time performance monitoring",
+      "AI-powered insights integration",
+      "Anomaly detection and alerting",
+      "Multi-dimensional campaign analysis",
+      "Search term performance optimization",
+      "Time pattern analysis",
+      "Automated reporting and notifications"
+    ],
+    "best_practices": [
+      "Set appropriate date ranges for meaningful comparisons",
+      "Use filters to focus on specific campaigns or time periods",
+      "Monitor alert pages regularly for performance issues",
+      "Customize thresholds based on your business goals",
+      "Share specific pages with relevant stakeholders",
+      "Schedule regular reports for consistent monitoring"
+    ],
+    "support": {
+      "email": "support@proofkit.com",
+      "documentation": "https://docs.proofkit.com/looker-studio",
+      "video_tutorials": "https://www.youtube.com/c/proofkit"
+    }
+  }
+}

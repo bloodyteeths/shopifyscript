@@ -1,0 +1,24 @@
+{% comment %} Intent Block: UTM-driven copy variants; no auto-publish {% endcomment %}
+{% assign utm_source = request.params.utm_source | default: '' %}
+{% assign utm_campaign = request.params.utm_campaign | default: '' %}
+
+{% if utm_campaign contains 'promo' %}
+  <section class="pk-intent-block" data-pk="promo">
+    <h2>Special Offer</h2>
+    <p>Exclusive promotion applied at checkout.</p>
+  </section>
+{% elsif utm_source contains 'email' %}
+  <section class="pk-intent-block" data-pk="email">
+    <h2>Welcome back</h2>
+    <p>Because you came from our newsletter, here’s tailored content.</p>
+  </section>
+{% else %}
+  <section class="pk-intent-block" data-pk="default">
+    <h2>Recommended for you</h2>
+    <p>Explore our best-sellers and curated picks.</p>
+  </section>
+{% endif %}
+
+
+
+

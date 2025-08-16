@@ -1,0 +1,136 @@
+# ProofKit SaaS Docker Ignore
+# Exclude unnecessary files from Docker build context
+
+# Version control
+.git
+.gitignore
+.gitattributes
+
+# Node.js
+node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.npm
+.yarn-integrity
+
+# Logs
+logs
+*.log
+run_logs
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage
+*.lcov
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Development files
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Build outputs
+dist
+build
+.next
+.nuxt
+
+# Testing
+test-results
+coverage
+
+# Documentation
+*.md
+docs/
+README*
+CHANGELOG*
+LICENSE*
+
+# Deployment files (keep only what's needed)
+docker-compose*.yml
+.dockerignore
+deployment/ssl/
+deployment/backups/
+
+# Temporary files
+tmp/
+temp/
+*.tmp
+
+# Development databases
+*.sqlite
+*.sqlite3
+*.db
+
+# Cache directories
+.cache
+.parcel-cache
+
+# Editor directories and files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Backup files
+*.bak
+*.backup
+*.old
+
+# Archive files
+*.zip
+*.tar.gz
+*.rar
+*.7z
+
+# Large data files
+*.csv
+*.xlsx
+*.json (if large datasets)
+
+# Performance and profiling
+*.cpuprofile
+*.heapprofile
+
+# Local configuration
+config/local.js
+config/local.json
+
+# Certificates (should be mounted as volumes)
+*.pem
+*.key
+*.crt
+*.csr
+
+# Kubernetes and deployment manifests
+k8s/
+kubernetes/
+helm/
+*.yaml
+*.yml

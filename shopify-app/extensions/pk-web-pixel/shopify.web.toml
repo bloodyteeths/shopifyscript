@@ -1,0 +1,32 @@
+name = "ProofKit Web Pixel"
+type = "web_pixel_extension"
+
+# Configuration for ProofKit Web Pixel Extension
+# Supports Consent Mode v2, GA4, and Google Ads conversion tracking
+
+[configuration]
+metafields = [
+  { namespace = "proofkit", key = "backend_url" },
+  { namespace = "proofkit", key = "tenant_id" },
+  { namespace = "proofkit", key = "secret_key" },
+  { namespace = "proofkit", key = "ga4_measurement_id" },
+  { namespace = "proofkit", key = "google_ads_id" },
+  { namespace = "proofkit", key = "conversion_label" },
+  { namespace = "proofkit", key = "debug_mode" }
+]
+
+# Privacy and compliance settings
+[privacy]
+data_usage = "analytics_marketing"
+purposes = ["analytics", "marketing", "advertising"]
+retention_period_days = 365
+
+# Required Shopify APIs
+[dependencies]
+shopify_api_version = "2024-07"
+
+# Extension settings
+[settings]
+consent_mode_v2 = true
+gdpr_compliant = true
+ccpa_compliant = true
