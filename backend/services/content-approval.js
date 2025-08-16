@@ -50,7 +50,7 @@ export class ContentApprovalWorkflow {
   async submitForApproval(content, options = {}) {
     const {
       contentType = CONTENT_TYPES.RSA_HEADLINES,
-      tenant = 'default',
+      tenant, // No default - must be provided
       submittedBy = 'system',
       priority = 'normal',
       autoApprove = false,

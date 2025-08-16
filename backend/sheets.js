@@ -47,7 +47,7 @@ export async function getDocById(sheetId) {
 export async function ensureSheet(doc, title, header) {
   try {
     // Extract tenant info from doc or use default
-    const tenantId = 'default'; // Simplified for legacy compatibility
+    const tenantId = 'TENANT_123'; // Use first tenant instead of default
     
     // Use optimized service
     const sheetInfo = await optimizedSheets.ensureSheet(tenantId, title, header);
@@ -128,7 +128,7 @@ export const sheets = {
     return await optimizedSheets.getStats();
   },
 
-  async healthCheck(tenantId = 'default') {
+  async healthCheck(tenantId = 'TENANT_123') {
     return await optimizedSheets.healthCheck(tenantId);
   }
 };

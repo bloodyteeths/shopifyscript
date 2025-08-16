@@ -8,7 +8,6 @@ import {
   Button,
   Select,
   Spinner,
-  Stack,
   TextField,
   TextContainer,
   Banner,
@@ -362,7 +361,7 @@ export const IntentOS: React.FC<IntentOSProps> = ({
         
         <Card>
           <Card.Section>
-            <Stack distribution="equalSpacing">
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <Text variant="headingMd">Metafield Overlays</Text>
               <Button 
                 primary 
@@ -371,14 +370,14 @@ export const IntentOS: React.FC<IntentOSProps> = ({
               >
                 Apply New Overlay
               </Button>
-            </Stack>
+            </div>
           </Card.Section>
           
           {activeOverlay && (
             <Card.Section>
-              <Stack vertical>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                 <Text variant="headingSm">Active Overlay</Text>
-                <Stack distribution="equalSpacing">
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <TextContainer>
                     <Text>Version: {activeOverlay.version}</Text>
                     <Text color="subdued">Applied: {new Date(activeOverlay.appliedAt).toLocaleString()}</Text>
@@ -391,8 +390,8 @@ export const IntentOS: React.FC<IntentOSProps> = ({
                   >
                     Revert to Previous
                   </Button>
-                </Stack>
-              </Stack>
+                </div>
+              </div>
             </Card.Section>
           )}
           
@@ -429,7 +428,7 @@ export const IntentOS: React.FC<IntentOSProps> = ({
       <Layout.Section>
         <Card>
           <Card.Section>
-            <Stack distribution="equalSpacing">
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <Text variant="headingMd">Intent Blocks</Text>
               <Button 
                 primary 
@@ -450,7 +449,7 @@ export const IntentOS: React.FC<IntentOSProps> = ({
               >
                 Create Intent Block
               </Button>
-            </Stack>
+            </div>
           </Card.Section>
           
           <Card.Section>
@@ -489,15 +488,15 @@ export const IntentOS: React.FC<IntentOSProps> = ({
                       media={<Avatar customer={false} size="medium" initials={id.substring(0, 2).toUpperCase()} />}
                       accessibilityLabel={`View details for ${id}`}
                     >
-                      <Stack distribution="fillEvenly">
-                        <Stack vertical spacing="extraTight">
+                      <div distribution="fillEvenly">
+                        <div vertical spacing="extraTight">
                           <Text variant="bodyMd" fontWeight="semibold">{id}</Text>
                           <Text variant="bodySm">{hero_headline}</Text>
                           <Text variant="bodySm" color="subdued">{proof_snippet}</Text>
                           <Text variant="bodySm" color="subdued">
                             Updated: {updated_at ? new Date(updated_at).toLocaleString() : 'Never'}
                           </Text>
-                        </Stack>
+                        </div>
                         <ButtonGroup>
                           <Button
                             icon={EditIcon}
@@ -511,7 +510,7 @@ export const IntentOS: React.FC<IntentOSProps> = ({
                             Edit
                           </Button>
                         </ButtonGroup>
-                      </Stack>
+                      </div>
                     </ResourceItem>
                   );
                 }}
@@ -570,23 +569,23 @@ export const IntentOS: React.FC<IntentOSProps> = ({
           
           {utmContent && (
             <Card.Section>
-              <Stack vertical>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                 <Text variant="headingSm">Generated Content</Text>
                 <Text color="subdued">Strategy: {utmContent.strategy.urgency} urgency, {utmContent.strategy.social_proof} social proof</Text>
                 
                 {utmContent.variations.map((variation, index) => (
                   <Card key={index} sectioned>
-                    <Stack vertical spacing="tight">
+                    <div vertical spacing="tight">
                       <Text variant="headingSm">Variation {index + 1}</Text>
                       <Text><strong>Headline:</strong> {variation.hero_headline}</Text>
                       <Text><strong>Benefits:</strong> {variation.benefit_bullets.join(' • ')}</Text>
                       <Text><strong>Social Proof:</strong> {variation.proof_snippet}</Text>
                       <Text><strong>CTA:</strong> {variation.cta_text}</Text>
                       <Text><strong>URL:</strong> {variation.url_target}</Text>
-                    </Stack>
+                    </div>
                   </Card>
                 ))}
-              </Stack>
+              </div>
             </Card.Section>
           )}
         </Card>
@@ -599,7 +598,7 @@ export const IntentOS: React.FC<IntentOSProps> = ({
       <Layout.Section>
         <Card>
           <Card.Section>
-            <Stack distribution="equalSpacing">
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <Text variant="headingMd">AI Promo Page Drafts</Text>
               <Button 
                 primary 
@@ -608,7 +607,7 @@ export const IntentOS: React.FC<IntentOSProps> = ({
               >
                 Create Promo Draft
               </Button>
-            </Stack>
+            </div>
             <TextContainer>
               <p>AI-generated promotional page drafts. All pages remain as drafts and require manual review before publishing.</p>
             </TextContainer>
@@ -636,26 +635,26 @@ export const IntentOS: React.FC<IntentOSProps> = ({
                     media={<Avatar customer={false} size="medium" initials="PD" />}
                     accessibilityLabel={`View details for ${draft.title}`}
                   >
-                    <Stack distribution="fillEvenly">
-                      <Stack vertical spacing="extraTight">
+                    <div distribution="fillEvenly">
+                      <div vertical spacing="extraTight">
                         <Text variant="bodyMd" fontWeight="semibold">{draft.title}</Text>
                         <Text variant="bodySm">{draft.meta_description}</Text>
                         <Text variant="bodySm" color="subdued">Handle: /{draft.handle}</Text>
                         <Text variant="bodySm" color="subdued">
                           Created: {new Date(draft.created_at).toLocaleString()}
                         </Text>
-                        <Stack spacing="extraTight">
+                        <div spacing="extraTight">
                           <Badge status="info">DRAFT</Badge>
                           {draft.tags.map(tag => (
                             <Badge key={tag}>{tag}</Badge>
                           ))}
-                        </Stack>
-                      </Stack>
+                        </div>
+                      </div>
                       <ButtonGroup>
                         <Button size="slim">Preview</Button>
                         <Button size="slim" primary>Review & Publish</Button>
                       </ButtonGroup>
-                    </Stack>
+                    </div>
                   </ResourceItem>
                 )}
               />

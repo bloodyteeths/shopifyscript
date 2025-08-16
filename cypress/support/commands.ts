@@ -3,6 +3,16 @@
 // Global step counter
 let globalStepCounter = 0;
 
+// Ensure docs directory exists
+if (typeof window === 'undefined') {
+  const fs = require('fs');
+  const path = require('path');
+  const docsDir = path.join(process.cwd(), 'e2e-test-results', 'docs');
+  if (!fs.existsSync(docsDir)) {
+    fs.mkdirSync(docsDir, { recursive: true });
+  }
+}
+
 /**
  * Custom command to capture numbered screenshots and document funnel steps
  */

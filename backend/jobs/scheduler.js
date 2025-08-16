@@ -16,7 +16,7 @@ export class JobScheduler {
     this.jobs = new Map();
     this.running = false;
     this.intervals = new Map();
-    this.tenants = new Set(['default']); // Default tenant, add more as needed
+    this.tenants = new Set(); // Start empty, tenants added dynamically via addTenant()
     
     this.schedules = {
       // Anomaly detection - every 15 minutes

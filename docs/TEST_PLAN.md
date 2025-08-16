@@ -1,34 +1,74 @@
-## Backend Smoke
+# ProofKit E2E Testing Plan
 
-- Health: GET /api/health → { ok:true }
-- Upsert: POST /api/upsertConfig?tenant=TENANT_123&sig=HMAC("POST:TENANT_123:upsertconfig:<nonce>") body { nonce, settings }
-- Summary: GET /api/summary?tenant=TENANT_123&sig=HMAC("GET:TENANT_123:config") → { ok:true }
+## Overview
 
-Command snippet
+Comprehensive end-to-end testing strategy for ProofKit's merchant funnel covering local development, CI/CD integration, and troubleshooting procedures.
+
+## Quick Start
 
 ```bash
-TENANT=TENANT_123
-export HMAC_SECRET=change_me
-curl -sS http://localhost:3001/api/health
-nonce=$(date +%s)
-sig_upsert=$(node tools/hmac.js "POST:${TENANT}:upsertconfig:${nonce}")
-curl -sS -X POST "http://localhost:3001/api/upsertConfig?tenant=${TENANT}&sig=${sig_upsert}" -H "content-type: application/json" --data '{"nonce":'${nonce}',"settings":{"label":"PROOFKIT_AUTOMATED","default_final_url":"https://www.proofkit.net"}}'
-sig_get=$(node tools/hmac.js "GET:${TENANT}:config")
-curl -sS "http://localhost:3001/api/summary?tenant=${TENANT}&sig=${sig_get}"
+# Install and setup
+npm run install:all
+npm run seed:demo
+
+# Start services
+npm run dev
+
+# Run tests with documentation
+npm run cypress:ci && npm run build:docs
 ```
 
-## Intent OS
+## Test Coverage
 
-- Apply overlays: POST /api/intent/apply?tenant=TENANT_123&sig=HMAC("POST:TENANT_123:intentapply:<nonce>")
-- Revert overlays: POST /api/intent/revert?tenant=TENANT_123&sig=HMAC("POST:TENANT_123:intentrevert:<nonce>")
-- Acceptance: RUN_LOGS_* contains intent_apply / intent_revert entries.
+### 8-Step Merchant Funnel
+1. **Install & OAuth**: Shopify app installation and authentication
+2. **Settings**: Configuration persistence and validation
+3. **Safe First Run**: Budget caps and safety limits
+4. **Script Preview**: Idempotency testing and mutation validation
+5. **AI Drafts**: RSA generation with 30/90 character validation
+6. **Intent Blocks**: UTM-driven content preview
+7. **Audience Setup**: Google Ads audience attachment with size guards
+8. **Go Live**: PROMOTE gate enable and live execution
 
+### Test Types
+- **Functional**: Core feature workflows
+- **Accessibility**: Keyboard navigation and screen reader support
+- **Error Handling**: API failures and validation errors
+- **Performance**: Loading states and optimistic updates
 
-## Shopify Canary Wizard
+## Local Testing
 
-- Visit /app/canary
-- Enter one campaign as canary, set caps (3–5/day) and CPC (0.15–0.25)
-- Map audience in OBSERVE with +10 bid mod (backend enforces safe guards)
-- Trigger AI dry-run (no live changes)
-- Schedule Promote Window (e.g., now+2m for 60m). Verify RUN_LOGS entries.
+```bash
+# Interactive development
+npm run cypress:headed
+
+# Headless execution
+npm run test:e2e
+
+# Debug mode
+DEBUG=cypress:* npm run cypress:headed
+```
+
+## CI/CD Integration
+
+### GitHub Actions
+- Runs on push/PR to main branches
+- Tests Chrome and Firefox browsers
+- Generates artifacts: screenshots, documentation, accessibility reports
+- Uploads to GitHub Actions artifacts
+
+### Required Environment
+```bash
+TENANT_ID=demo-tenant-1
+BACKEND_URL=http://localhost:3001
+HMAC_SECRET=test-secret-key-for-demo
+```
+
+## Troubleshooting
+
+**Backend errors**: Check health endpoint and restart services
+**Rate limits**: Use test mode with mocked Google Sheets responses  
+**OAuth issues**: Verify Shopify API credentials
+
+For complete documentation see auto-generated `FUNNEL_E2E_GUIDE.md`.
 

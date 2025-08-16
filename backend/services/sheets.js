@@ -512,7 +512,7 @@ class OptimizedSheetsService {
   /**
    * Health check for the service
    */
-  async healthCheck(tenantId = 'default') {
+  async healthCheck(tenantId = 'TENANT_123') {
     const health = {
       status: 'healthy',
       timestamp: new Date().toISOString(),
@@ -562,3 +562,16 @@ const optimizedSheets = new OptimizedSheetsService();
 
 export default optimizedSheets;
 export { OptimizedSheetsService };
+
+// Export commonly used methods
+export const ensureSheet = (tenantId, sheetTitle, headers) => optimizedSheets.ensureSheet(tenantId, sheetTitle, headers);
+export const getDoc = (tenantId) => {
+  // Simple getDoc implementation with error handling
+  try {
+    const tenant = tenantRegistry.getTenant(tenantId);
+    return tenant ? { spreadsheetId: tenant.sheetId } : null;
+  } catch (error) {
+    console.warn('getDoc error:', error.message);
+    return null;
+  }
+};

@@ -5,9 +5,14 @@ export function sign(payload: string): string {
   return crypto.createHmac('sha256', secret).update(payload).digest('base64').replace(/=+$/,'');
 }
 
-export async function backendFetch(pathname: string, method: 'GET'|'POST', body?: any){
-  const base = (process.env.BACKEND_PUBLIC_URL || 'http://localhost:3001/api').replace(/\/$/, '');
-  const tenant = process.env.TENANT_ID || 'TENANT_123';
+export async function backendFetch(pathname: string, method: 'GET'|'POST', body?: any, tenantOverride?: string){
+  const base = (process.env.BACKEND_PUBLIC_URL || 'http://localhost:3005/api').replace(/\/$/, '');
+  
+  // Dynamic tenant detection (for production: get from Shopify session)
+  // For local dev: use environment variable
+  const tenant = tenantOverride || 
+                 process.env.TENANT_ID || 
+                 'mybabybymerry'; // Default to shop name from your example
   const op = opKey(method, pathname);
   const nonce = method === 'POST' ? (body?.nonce ?? Date.now()) : undefined;
   const payload = `${method}:${tenant}:${op}${nonce!==undefined?`:${nonce}`:''}`;
@@ -22,8 +27,8 @@ export async function backendFetch(pathname: string, method: 'GET'|'POST', body?
 }
 
 export async function backendFetchRaw(pathname: string, method: 'GET'|'POST'){
-  const base = (process.env.BACKEND_PUBLIC_URL || 'http://localhost:3001/api').replace(/\/$/, '');
-  const tenant = process.env.TENANT_ID || 'TENANT_123';
+  const base = (process.env.BACKEND_PUBLIC_URL || 'http://localhost:3005/api').replace(/\/$/, '');
+  const tenant = process.env.TENANT_ID || 'mybabybymerry';
   const op = opKey(method, pathname);
   const nonce = undefined; // raw used for GET CSV
   const payload = `${method}:${tenant}:${op}${nonce!==undefined?`:${nonce}`:''}`;
@@ -34,8 +39,8 @@ export async function backendFetchRaw(pathname: string, method: 'GET'|'POST'){
 }
 
 export async function backendFetchText(pathname: string){
-  const base = (process.env.BACKEND_PUBLIC_URL || 'http://localhost:3001/api').replace(/\/$/, '');
-  const tenant = process.env.TENANT_ID || 'TENANT_123';
+  const base = (process.env.BACKEND_PUBLIC_URL || 'http://localhost:3005/api').replace(/\/$/, '');
+  const tenant = process.env.TENANT_ID || 'mybabybymerry';
   const payload = `GET:${tenant}:script_raw`;
   const sig = sign(payload);
   const sep = pathname.includes('?') ? '&' : '?';

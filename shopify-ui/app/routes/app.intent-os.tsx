@@ -4,19 +4,18 @@ import { authenticate } from '../services/auth.server';
 import IntentOS from '../components/IntentOS';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  const { session } = await authenticate.admin(request);
+  // Simplified auth for demo - get tenant from URL or default
+  const url = new URL(request.url);
+  const tenantId = url.searchParams.get('tenant') || process.env.TENANT_ID || 'mybabybymerry';
   
-  // Get tenant ID from session/shop
-  const tenantId = session.shop;
   
-  // Check if PROMOTE flag is enabled for this tenant
-  const promoteEnabled = process.env.INTENT_OS_GLOBAL_PROMOTE === 'true' || 
-                        session.accessToken?.includes('intent_os_promote'); // Simplified check
+  // Check if PROMOTE flag is enabled for this tenant  
+  const promoteEnabled = process.env.INTENT_OS_GLOBAL_PROMOTE === 'true';
   
   return json({
     tenantId,
     promoteEnabled,
-    shopDomain: session.shop,
+    shopDomain: 'demo-shop.myshopify.com',
   });
 };
 

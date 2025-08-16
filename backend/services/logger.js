@@ -374,10 +374,16 @@ class Logger {
       const originalEnd = res.end;
       res.end = function(...args) {
         const duration = performance.now() - startTime;
-        originalEnd.apply(this, args);
         
         // Log completed request
-        this.logRequest(req, res, duration);
+        try {
+          this.logRequest(req, res, duration);
+        } catch (error) {
+          console.warn('Logging error:', error.message);
+        }
+        
+        // Call original end method
+        return originalEnd.apply(this, args);
       }.bind(this);
 
       next();

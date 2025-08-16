@@ -1,0 +1,24 @@
+{
+  "generatedAt": "2025-08-16T19:07:52.548Z",
+  "totalSteps": 10,
+  "stepsWithScreenshots": 10,
+  "routes": [
+    "/",
+    "/app",
+    "/app/autopilot",
+    "/app/insights",
+    "/app/intent-os",
+    "/app/advanced",
+    "/app/insights/terms"
+  ],
+  "testCoverage": {
+    "install": false,
+    "settings": true,
+    "wizard": false,
+    "preview": false,
+    "ai": true,
+    "intent": true,
+    "audience": false,
+    "promote": false
+  }
+}

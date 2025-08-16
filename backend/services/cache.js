@@ -28,7 +28,7 @@ class TenantAwareCache {
    * Generate cache key with tenant isolation
    */
   generateKey(tenantId, path, params = {}) {
-    const normalizedTenant = String(tenantId || 'default');
+    const normalizedTenant = String(tenantId || (() => { throw new Error('Tenant ID required - no default fallback'); })());
     const normalizedPath = String(path || '');
     
     // Sort params for consistent key generation
@@ -129,7 +129,7 @@ class TenantAwareCache {
    * Clear all cache entries for a tenant
    */
   clearTenant(tenantId) {
-    const normalizedTenant = String(tenantId || 'default');
+    const normalizedTenant = String(tenantId || (() => { throw new Error('Tenant ID required - no default fallback'); })());
     let cleared = 0;
     
     for (const [key, entry] of this.cache) {
@@ -148,7 +148,7 @@ class TenantAwareCache {
    * Clear cache entries by path pattern for a tenant
    */
   clearTenantPath(tenantId, pathPattern) {
-    const normalizedTenant = String(tenantId || 'default');
+    const normalizedTenant = String(tenantId || (() => { throw new Error('Tenant ID required - no default fallback'); })());
     let cleared = 0;
     
     for (const [key, entry] of this.cache) {
@@ -194,7 +194,7 @@ class TenantAwareCache {
    * Get cache size for a tenant
    */
   getTenantSize(tenantId) {
-    const normalizedTenant = String(tenantId || 'default');
+    const normalizedTenant = String(tenantId || (() => { throw new Error('Tenant ID required - no default fallback'); })());
     let count = 0;
     
     for (const entry of this.cache.values()) {
@@ -210,7 +210,7 @@ class TenantAwareCache {
    * Update cache statistics
    */
   updateStats(tenantId, operation, count = 1) {
-    const normalizedTenant = String(tenantId || 'default');
+    const normalizedTenant = String(tenantId || (() => { throw new Error('Tenant ID required - no default fallback'); })());
     
     if (!this.stats.has(normalizedTenant)) {
       this.stats.set(normalizedTenant, {
@@ -236,7 +236,7 @@ class TenantAwareCache {
    * Get cache statistics for a tenant
    */
   getTenantStats(tenantId) {
-    const normalizedTenant = String(tenantId || 'default');
+    const normalizedTenant = String(tenantId || (() => { throw new Error('Tenant ID required - no default fallback'); })());
     const stats = this.stats.get(normalizedTenant) || {
       hits: 0, misses: 0, sets: 0, deletes: 0, expired: 0, clears: 0, clearPaths: 0
     };

@@ -1,10 +1,7 @@
 /// <reference types="cypress" />
 
-// Import commands.js using ES2015 syntax:
-import './commands';
-
-// Alternatively you can use CommonJS syntax:
-// require('./commands')
+// Import commands
+require('./commands');
 
 // Global before hook to initialize tests
 beforeEach(() => {

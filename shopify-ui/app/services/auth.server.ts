@@ -211,3 +211,8 @@ export function checkRateLimit(
   current.count++;
   return true;
 }
+
+// Main authentication function
+export async function authenticate(request: Request): Promise<User> {
+  return requireUser(request);
+}

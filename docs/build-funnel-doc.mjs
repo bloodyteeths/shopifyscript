@@ -17,9 +17,10 @@ const __dirname = dirname(__filename);
 class FunnelDocGenerator {
   constructor() {
     this.docsDir = __dirname;
-    this.stepsFile = join(this.docsDir, 'funnel-steps.json');
-    this.outputFile = join(this.docsDir, 'FUNNEL_E2E_GUIDE.md');
-    this.screenshotsDir = join(this.docsDir, 'screenshots', 'funnel');
+    this.e2eResultsDir = join(process.cwd(), 'e2e-test-results');
+    this.stepsFile = join(this.e2eResultsDir, 'docs', 'funnel-steps.json');
+    this.outputFile = join(this.e2eResultsDir, 'FUNNEL_E2E_GUIDE.md');
+    this.screenshotsDir = join(this.e2eResultsDir, 'screenshots', 'funnel');
   }
 
   /**
