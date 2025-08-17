@@ -25,16 +25,34 @@ class TenantRegistry {
         this.registry.clear();
         
         for (const [tenantId, config] of Object.entries(tenants)) {
+          // Handle both string (just sheetId) and object format
+          const sheetId = typeof config === 'string' ? config : config.sheetId;
+          
           this.registry.set(tenantId, {
             id: tenantId,
-            sheetId: config.sheetId,
-            name: config.name || tenantId,
-            plan: config.plan || 'starter',
-            enabled: config.enabled !== false,
-            config: config.config || {},
-            createdAt: config.createdAt || new Date().toISOString(),
+            sheetId: sheetId,
+            name: (typeof config === 'object' ? config.name : null) || tenantId,
+            plan: (typeof config === 'object' ? config.plan : null) || 'starter',
+            enabled: (typeof config === 'object' ? config.enabled : true) !== false,
+            config: (typeof config === 'object' ? config.config : null) || {},
+            createdAt: (typeof config === 'object' ? config.createdAt : null) || new Date().toISOString(),
             updatedAt: new Date().toISOString()
           });
+        }
+        
+        // Add dev-tenant mapping to the same sheet for development
+        if (process.env.NODE_ENV === 'development' && process.env.SHEET_ID) {
+          this.registry.set('dev-tenant', {
+            id: 'dev-tenant',
+            sheetId: process.env.SHEET_ID,
+            name: 'Development Tenant',
+            plan: 'starter',
+            enabled: true,
+            config: {},
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString()
+          });
+          console.log(`🔧 Added dev-tenant mapping to Sheet: ${process.env.SHEET_ID}`);
         }
       } else {
         // Fallback to default single-tenant mode using SHEET_ID

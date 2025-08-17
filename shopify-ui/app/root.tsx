@@ -14,6 +14,8 @@ export default function App(){
   return (
     <html lang="en">
       <head>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
         <Meta />
         <Links />
       </head>
@@ -23,8 +25,15 @@ export default function App(){
             <nav style={{ width:240, padding:16, borderRight:'1px solid var(--p-color-border)' }}>
               <h3 style={{ marginBottom:12 }}>Proofkit</h3>
               <ul style={{ listStyle:'none', padding:0, display:'grid', gap:8 }}>
+                <li><NavLink to="/app/">Dashboard</NavLink></li>
                 <li><NavLink to="/app/autopilot">Autopilot</NavLink></li>
                 <li><NavLink to="/app/insights">Insights</NavLink></li>
+                <li><NavLink to="/app/advanced">Advanced</NavLink></li>
+                <li style={{ opacity: 0.5 }}>
+                  <NavLink to="/app/intent-os" style={{ color: '#999' }}>
+                    Smart Website <span style={{ fontSize: '10px' }}>(Coming Soon)</span>
+                  </NavLink>
+                </li>
               </ul>
             </nav>
             <main style={{ flex:1, padding:24 }}>

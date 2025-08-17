@@ -30,7 +30,7 @@ export default function AppIndex() {
         }}>
           <h3>🤖 Autopilot</h3>
           <p>Automated campaign management and optimization</p>
-          <Link to="/local/autopilot" style={{ 
+          <Link to="/app/autopilot" style={{ 
             background: '#007bff', 
             color: 'white', 
             padding: '0.5rem 1rem', 
@@ -66,19 +66,34 @@ export default function AppIndex() {
           border: '1px solid #ddd', 
           borderRadius: '8px', 
           padding: '1.5rem',
-          background: '#f8f9fa'
+          background: '#f8f9fa',
+          opacity: 0.7,
+          position: 'relative'
         }}>
-          <h3>🎯 Intent OS</h3>
-          <p>Intent-based content optimization</p>
+          <h3>💡 Smart Website Features</h3>
+          <p>Advanced conversion optimization tools</p>
+          <div style={{
+            position: 'absolute',
+            top: '8px',
+            right: '8px',
+            background: '#fff3cd',
+            color: '#856404',
+            padding: '4px 8px',
+            borderRadius: '12px',
+            fontSize: '12px',
+            fontWeight: 'bold'
+          }}>
+            Coming Q1 2026
+          </div>
           <Link to="/app/intent-os" style={{ 
-            background: '#ffc107', 
-            color: '#333', 
+            background: '#6c757d', 
+            color: 'white', 
             padding: '0.5rem 1rem', 
             textDecoration: 'none',
             borderRadius: '4px',
             display: 'inline-block'
           }}>
-            Configure Intent OS
+            Preview Features
           </Link>
         </div>
 

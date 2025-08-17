@@ -7,6 +7,9 @@
 import crypto from 'crypto';
 import { getDoc, ensureSheet } from '../services/sheets.js';
 
+// CSP Nonce store for request-specific nonces
+const cspNonces = new Map();
+
 class SecurityMiddleware {
   constructor() {
     // DDoS Protection
@@ -75,18 +78,63 @@ class SecurityMiddleware {
       alertQueue: []
     };
     
-    // Security Headers Configuration
+    // Enhanced Security Headers Configuration
     this.securityHeaders = {
       'X-Content-Type-Options': 'nosniff',
       'X-Frame-Options': 'DENY',
-      'X-XSS-Protection': '1; mode=block',
-      'Strict-Transport-Security': 'max-age=31536000; includeSubDomains',
-      'Content-Security-Policy': "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' https:; connect-src 'self' https:; frame-ancestors 'none';",
+      'X-XSS-Protection': '0', // Disabled in favor of CSP
+      'Strict-Transport-Security': 'max-age=63072000; includeSubDomains; preload',
       'Referrer-Policy': 'strict-origin-when-cross-origin',
-      'Permissions-Policy': 'camera=(), microphone=(), geolocation=(), payment=()',
+      'Permissions-Policy': 'camera=(), microphone=(), geolocation=(), payment=(), usb=(), bluetooth=(), magnetometer=(), gyroscope=(), accelerometer=(), ambient-light-sensor=()',
       'Cross-Origin-Embedder-Policy': 'require-corp',
       'Cross-Origin-Opener-Policy': 'same-origin',
-      'Cross-Origin-Resource-Policy': 'same-origin'
+      'Cross-Origin-Resource-Policy': 'same-origin',
+      'X-Permitted-Cross-Domain-Policies': 'none',
+      'X-Download-Options': 'noopen',
+      'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
+      'Pragma': 'no-cache',
+      'Expires': '0'
+    };
+    
+    // CSP Configuration with environment-specific policies
+    this.cspConfig = {
+      production: {
+        'default-src': ["'self'"],
+        'script-src': ["'self'", "'strict-dynamic'"],
+        'style-src': ["'self'", "'unsafe-inline'"], // Required for many CSS frameworks
+        'img-src': ["'self'", 'data:', 'https:'],
+        'font-src': ["'self'", 'https:'],
+        'connect-src': ["'self'", 'https:'],
+        'media-src': ["'self'"],
+        'object-src': ["'none'"],
+        'base-uri': ["'self'"],
+        'form-action': ["'self'"],
+        'frame-ancestors': ["'none'"],
+        'frame-src': ["'none'"],
+        'worker-src': ["'self'"],
+        'manifest-src': ["'self'"],
+        'upgrade-insecure-requests': true,
+        'block-all-mixed-content': true,
+        'report-uri': '/api/csp-report',
+        'report-to': 'csp-endpoint'
+      },
+      development: {
+        'default-src': ["'self'"],
+        'script-src': ["'self'", "'unsafe-eval'", "'strict-dynamic'"], // unsafe-eval for dev tools
+        'style-src': ["'self'", "'unsafe-inline'"],
+        'img-src': ["'self'", 'data:', 'https:', 'http:'],
+        'font-src': ["'self'", 'https:', 'http:'],
+        'connect-src': ["'self'", 'https:', 'http:', 'ws:', 'wss:'],
+        'media-src': ["'self'"],
+        'object-src': ["'none'"],
+        'base-uri': ["'self'"],
+        'form-action': ["'self'"],
+        'frame-ancestors': ["'none'"],
+        'frame-src': ["'none'"],
+        'worker-src': ["'self'"],
+        'manifest-src': ["'self'"],
+        'report-uri': '/api/csp-report'
+      }
     };
     
     // Initialize security monitoring
@@ -104,7 +152,7 @@ class SecurityMiddleware {
       
       try {
         // Apply security headers
-        this.applySecurityHeaders(res);
+        this.applySecurityHeaders(res, req);
         
         // Check if IP is banned
         if (this.isIPBanned(clientIP)) {
@@ -134,17 +182,19 @@ class SecurityMiddleware {
           return this.blockRequest(res, 'INVALID_INPUT', inputCheck.reason);
         }
         
-        // Threat Detection
-        const threatCheck = await this.detectThreats(req, clientIP);
-        if (threatCheck.threatDetected) {
-          await this.logSecurityEvent(clientIP, 'THREAT_DETECTED', {
-            threats: threatCheck.threats,
-            path: req.path,
-            severity: threatCheck.severity
-          });
-          
-          if (threatCheck.severity === 'HIGH') {
-            return this.blockRequest(res, 'THREAT_DETECTED', threatCheck.reason);
+        // Threat Detection (disabled in development)
+        if (process.env.NODE_ENV !== 'development') {
+          const threatCheck = await this.detectThreats(req, clientIP);
+          if (threatCheck.threatDetected) {
+            await this.logSecurityEvent(clientIP, 'THREAT_DETECTED', {
+              threats: threatCheck.threats,
+              path: req.path,
+              severity: threatCheck.severity
+            });
+            
+            if (threatCheck.severity === 'HIGH') {
+              return this.blockRequest(res, 'THREAT_DETECTED', threatCheck.reason);
+            }
           }
         }
         
@@ -154,7 +204,7 @@ class SecurityMiddleware {
         // Add security context to request
         req.security = {
           clientIP: clientIP,
-          threats: threatCheck.threats || [],
+          threats: [], // Empty in development mode
           riskScore: this.calculateRiskScore(clientIP, req),
           timestamp: Date.now()
         };
@@ -423,14 +473,30 @@ class SecurityMiddleware {
     );
   }
 
-  applySecurityHeaders(res) {
+  applySecurityHeaders(res, req = null) {
+    // Apply base security headers
     Object.entries(this.securityHeaders).forEach(([header, value]) => {
       res.setHeader(header, value);
     });
     
+    // Generate and apply CSP with nonce
+    if (req) {
+      const cspHeader = this.generateCSPHeader(req);
+      res.setHeader('Content-Security-Policy', cspHeader);
+      
+      // Also set report-only header for monitoring
+      const reportOnlyCSP = this.generateCSPHeader(req, true);
+      res.setHeader('Content-Security-Policy-Report-Only', reportOnlyCSP);
+    }
+    
     // Add additional dynamic headers
     res.setHeader('X-Request-ID', crypto.randomUUID());
     res.setHeader('X-Security-Timestamp', Date.now().toString());
+    res.setHeader('X-Content-Type-Options', 'nosniff');
+    res.setHeader('X-DNS-Prefetch-Control', 'off');
+    res.setHeader('X-Frame-Options', 'DENY');
+    res.setHeader('X-Permitted-Cross-Domain-Policies', 'none');
+    res.setHeader('X-Download-Options', 'noopen');
   }
 
   blockRequest(res, code, reason, retryAfter = null) {
@@ -1101,6 +1167,208 @@ class SecurityMiddleware {
   /**
    * Get security statistics and status
    */
+  /**
+   * Generate CSP nonce for request
+   */
+  generateCSPNonce(req) {
+    const requestId = req.headers['x-request-id'] || crypto.randomUUID();
+    const nonce = crypto.randomBytes(16).toString('base64');
+    
+    // Store nonce for this request
+    cspNonces.set(requestId, nonce);
+    
+    // Clean up old nonces (older than 5 minutes)
+    setTimeout(() => {
+      cspNonces.delete(requestId);
+    }, 5 * 60 * 1000);
+    
+    return nonce;
+  }
+
+  /**
+   * Generate CSP header based on environment and request
+   */
+  generateCSPHeader(req, reportOnly = false) {
+    const environment = process.env.NODE_ENV || 'development';
+    const config = this.cspConfig[environment] || this.cspConfig.development;
+    
+    // Generate nonce for this request
+    const nonce = this.generateCSPNonce(req);
+    req.cspNonce = nonce; // Make nonce available to the application
+    
+    const directives = [];
+    
+    Object.entries(config).forEach(([directive, values]) => {
+      if (directive === 'upgrade-insecure-requests' && values) {
+        directives.push('upgrade-insecure-requests');
+      } else if (directive === 'block-all-mixed-content' && values) {
+        directives.push('block-all-mixed-content');
+      } else if (directive === 'report-uri' || directive === 'report-to') {
+        if (!reportOnly) { // Only add reporting to main CSP, not report-only
+          directives.push(`${directive} ${values}`);
+        }
+      } else if (Array.isArray(values)) {
+        let directiveValues = [...values];
+        
+        // Add nonce to script-src and style-src
+        if (directive === 'script-src') {
+          directiveValues.push(`'nonce-${nonce}'`);
+          // Remove unsafe-inline when nonce is present (for modern browsers)
+          directiveValues = directiveValues.filter(v => v !== "'unsafe-inline'");
+        } else if (directive === 'style-src') {
+          directiveValues.push(`'nonce-${nonce}'`);
+        }
+        
+        directives.push(`${directive} ${directiveValues.join(' ')}`);
+      }
+    });
+    
+    return directives.join('; ');
+  }
+
+  /**
+   * Validate CSP for specific content
+   */
+  validateCSPContent(content, type = 'script') {
+    if (type === 'script') {
+      // Check for inline event handlers
+      const inlineHandlers = /on\w+\s*=\s*[\"'].*?[\"']/gi;
+      if (inlineHandlers.test(content)) {
+        return {
+          valid: false,
+          violations: ['Inline event handlers detected'],
+          recommendation: 'Use addEventListener instead of inline event handlers'
+        };
+      }
+      
+      // Check for javascript: URLs
+      const javascriptUrls = /javascript:/gi;
+      if (javascriptUrls.test(content)) {
+        return {
+          valid: false,
+          violations: ['javascript: URLs detected'],
+          recommendation: 'Replace javascript: URLs with proper event handlers'
+        };
+      }
+    }
+    
+    return { valid: true, violations: [], recommendation: null };
+  }
+
+  /**
+   * Security health check
+   */
+  performSecurityHealthCheck() {
+    const checks = {
+      csp_configuration: this.validateCSPConfiguration(),
+      security_headers: this.validateSecurityHeaders(),
+      threat_detection: this.validateThreatDetection(),
+      rate_limiting: this.validateRateLimiting(),
+      environment_security: this.validateEnvironmentSecurity()
+    };
+    
+    const overallHealth = Object.values(checks).every(check => check.status === 'healthy') ? 'healthy' : 'degraded';
+    
+    return {
+      status: overallHealth,
+      timestamp: new Date().toISOString(),
+      checks: checks
+    };
+  }
+
+  validateCSPConfiguration() {
+    try {
+      const env = process.env.NODE_ENV || 'development';
+      const config = this.cspConfig[env];
+      
+      if (!config) {
+        return { status: 'unhealthy', message: 'No CSP configuration found for environment' };
+      }
+      
+      // Check for unsafe directives in production
+      if (env === 'production') {
+        const scriptSrc = config['script-src'] || [];
+        if (scriptSrc.includes("'unsafe-inline'") || scriptSrc.includes("'unsafe-eval'")) {
+          return { status: 'degraded', message: 'Unsafe CSP directives detected in production' };
+        }
+      }
+      
+      return { status: 'healthy', message: 'CSP configuration is secure' };
+    } catch (error) {
+      return { status: 'unhealthy', message: `CSP validation error: ${error.message}` };
+    }
+  }
+
+  validateSecurityHeaders() {
+    try {
+      const requiredHeaders = [
+        'X-Content-Type-Options',
+        'X-Frame-Options',
+        'Strict-Transport-Security',
+        'Referrer-Policy'
+      ];
+      
+      const missingHeaders = requiredHeaders.filter(header => !this.securityHeaders[header]);
+      
+      if (missingHeaders.length > 0) {
+        return { status: 'degraded', message: `Missing headers: ${missingHeaders.join(', ')}` };
+      }
+      
+      return { status: 'healthy', message: 'All required security headers configured' };
+    } catch (error) {
+      return { status: 'unhealthy', message: `Header validation error: ${error.message}` };
+    }
+  }
+
+  validateThreatDetection() {
+    try {
+      if (!this.threatDetection.enabled) {
+        return { status: 'degraded', message: 'Threat detection is disabled' };
+      }
+      
+      return { status: 'healthy', message: 'Threat detection is active' };
+    } catch (error) {
+      return { status: 'unhealthy', message: `Threat detection error: ${error.message}` };
+    }
+  }
+
+  validateRateLimiting() {
+    try {
+      if (!this.rateLimiting.enabled) {
+        return { status: 'degraded', message: 'Rate limiting is disabled' };
+      }
+      
+      return { status: 'healthy', message: 'Rate limiting is active' };
+    } catch (error) {
+      return { status: 'unhealthy', message: `Rate limiting error: ${error.message}` };
+    }
+  }
+
+  validateEnvironmentSecurity() {
+    try {
+      const env = process.env.NODE_ENV || 'development';
+      const warnings = [];
+      
+      if (env === 'production') {
+        if (!process.env.HMAC_SECRET || process.env.HMAC_SECRET === 'change_me') {
+          warnings.push('Insecure HMAC secret');
+        }
+        
+        if (process.env.NODE_TLS_REJECT_UNAUTHORIZED === '0') {
+          warnings.push('TLS certificate validation disabled');
+        }
+      }
+      
+      if (warnings.length > 0) {
+        return { status: 'degraded', message: `Security warnings: ${warnings.join(', ')}` };
+      }
+      
+      return { status: 'healthy', message: 'Environment security configuration is secure' };
+    } catch (error) {
+      return { status: 'unhealthy', message: `Environment validation error: ${error.message}` };
+    }
+  }
+
   getSecurityStats() {
     return {
       ddos_protection: {
@@ -1116,6 +1384,10 @@ class SecurityMiddleware {
       threat_detection: {
         behavior_baselines: this.threatDetection.behaviorBaselines.size,
         pending_alerts: this.threatDetection.alertQueue.length
+      },
+      csp: {
+        active_nonces: cspNonces.size,
+        environment: process.env.NODE_ENV || 'development'
       }
     };
   }

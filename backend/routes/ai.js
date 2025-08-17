@@ -322,34 +322,108 @@ router.post('/jobs/autopilot_tick', async (req, res) => {
     
     const rows = Array.from(bucket.values()).sort((a, b) => b.cost - a.cost || b.clicks - a.clicks);
     
-    // Build plan
+    // Build plan with integrated AI configurations
     const plan = [];
     const targetCPA = Number(AP.target_cpa || 0) || 0;
-    const termCostThreshold = Math.max(targetCPA || 2, 2);
+    const targetROAS = Number(AP.target_roas || 0) || 0;
+    const desiredKeywords = AP.desired_keywords || [];
+    const playbook = AP.playbook_prompt || '';
+    
+    // Enhanced cost threshold considering both CPA and ROAS targets
+    let termCostThreshold = Math.max(targetCPA || 2, 2);
+    if (targetROAS > 0 && conv > 0) {
+      const revenue = cost * targetROAS; // Estimated revenue
+      const revenueBasedThreshold = revenue / conv; // Revenue per conversion
+      termCostThreshold = Math.min(termCostThreshold, revenueBasedThreshold * 0.5);
+    }
+    
+    // Filter out desired keywords from negative keyword candidates
+    const protectedTerms = new Set(desiredKeywords.map(k => k.toLowerCase().trim()));
     
     for (const r of rows) { 
-      if (r.conv === 0 && r.cost >= termCostThreshold) { 
+      // Skip if term contains any desired keywords
+      const termLower = r.term.toLowerCase();
+      const isProtected = desiredKeywords.some(keyword => 
+        termLower.includes(keyword.toLowerCase()) || keyword.toLowerCase().includes(termLower)
+      );
+      
+      if (!isProtected && r.conv === 0 && r.cost >= termCostThreshold) { 
         plan.push({ 
           type: 'add_negative', 
           term: r.term, 
           match: 'phrase', 
-          scope: 'account' 
+          scope: 'account',
+          reason: `High cost ($${r.cost.toFixed(2)}) with no conversions, above threshold ($${termCostThreshold.toFixed(2)})`
         }); 
         if (plan.length >= 10) break; 
       } 
     }
     
-    if (targetCPA && clicks > 0) {
-      const tooHigh = (conv > 0 && (cpa > 1.3 * targetCPA));
-      const tooLow  = (conv > 0 && (cpa < 0.7 * targetCPA));
+    // Enhanced optimization logic considering both CPA and ROAS
+    if ((targetCPA || targetROAS) && clicks > 0) {
+      const currentROAS = conv > 0 ? (cost * (cost / (cost / conv))) / cost : 0; // Simplified ROAS calculation
       
-      if (tooHigh || tooLow) {
+      let shouldAdjust = false;
+      let adjustmentReason = '';
+      let adjustmentFactor = 1.0;
+      
+      // CPA-based adjustments
+      if (targetCPA && conv > 0) {
+        const tooHighCPA = cpa > 1.3 * targetCPA;
+        const tooLowCPA = cpa < 0.7 * targetCPA;
+        
+        if (tooHighCPA) {
+          shouldAdjust = true;
+          adjustmentFactor = 0.9;
+          adjustmentReason = `CPA too high ($${cpa.toFixed(2)} vs target $${targetCPA})`;
+        } else if (tooLowCPA) {
+          shouldAdjust = true;
+          adjustmentFactor = 1.1;
+          adjustmentReason = `CPA below target ($${cpa.toFixed(2)} vs target $${targetCPA})`;
+        }
+      }
+      
+      // ROAS-based adjustments (override CPA if both are set)
+      if (targetROAS && conv > 0) {
+        const estimatedROAS = (cost / conv) * targetROAS / cost; // Simplified estimation
+        const tooLowROAS = estimatedROAS < 0.8 * targetROAS;
+        const tooHighROAS = estimatedROAS > 1.2 * targetROAS;
+        
+        if (tooLowROAS) {
+          shouldAdjust = true;
+          adjustmentFactor = 0.85; // More aggressive for ROAS
+          adjustmentReason = `ROAS below target (estimated ${estimatedROAS.toFixed(2)} vs target ${targetROAS})`;
+        } else if (tooHighROAS) {
+          shouldAdjust = true;
+          adjustmentFactor = 1.15;
+          adjustmentReason = `ROAS above target (estimated ${estimatedROAS.toFixed(2)} vs target ${targetROAS})`;
+        }
+      }
+      
+      // Business strategy influence on adjustments
+      if (shouldAdjust && playbook) {
+        const strategy = playbook.toLowerCase();
+        if (strategy.includes('aggressive') || strategy.includes('growth')) {
+          adjustmentFactor = adjustmentFactor < 1 ? adjustmentFactor * 0.95 : adjustmentFactor * 1.05;
+          adjustmentReason += ' (aggressive strategy applied)';
+        } else if (strategy.includes('conservative') || strategy.includes('safe')) {
+          adjustmentFactor = adjustmentFactor < 1 ? adjustmentFactor * 1.05 : adjustmentFactor * 0.95;
+          adjustmentReason += ' (conservative strategy applied)';
+        }
+      }
+      
+      if (shouldAdjust) {
         let currentStar = Number(((cfg?.CPC_CEILINGS || {})['*']) || 0) || (clicks ? cost / clicks : 0.2);
-        let next = currentStar * (tooHigh ? 0.9 : 1.1);
+        let next = currentStar * adjustmentFactor;
         next = Math.max(0.05, Math.min(1.00, Number(next.toFixed(2))));
         
         if (Math.abs(next - currentStar) >= 0.01) {
-          plan.push({ type: 'lower_cpc_ceiling', campaign: '*', amount: next });
+          plan.push({ 
+            type: 'lower_cpc_ceiling', 
+            campaign: '*', 
+            amount: next,
+            reason: adjustmentReason
+          });
         }
       }
     }
@@ -377,8 +451,11 @@ router.post('/jobs/autopilot_tick', async (req, res) => {
       }
       
       try { 
+        const roasInfo = targetROAS ? `, roas_target:${targetROAS}` : '';
+        const keywordInfo = desiredKeywords.length ? `, protected_keywords:${desiredKeywords.length}` : '';
+        const strategyInfo = playbook ? `, strategy:${playbook.substring(0, 20)}...` : '';
         await appendRows(String(tenant), 'RUN_LOGS', ['timestamp','message'], 
-          [[new Date().toISOString(), `autopilot: planned ${plan.length}, applied ${applied.length} (mode:auto, obj:${AP.objective || 'protect'}, cpa:${cpa.toFixed(2)}${targetCPA ? `/t${targetCPA}` : ''})`]]); 
+          [[new Date().toISOString(), `autopilot: planned ${plan.length}, applied ${applied.length} (mode:auto, obj:${AP.objective || 'protect'}, cpa:${cpa.toFixed(2)}${targetCPA ? `/t${targetCPA}` : ''}${roasInfo}${keywordInfo}${strategyInfo})`]]); 
       } catch {}
       
       try { 
@@ -397,7 +474,13 @@ router.post('/jobs/autopilot_tick', async (req, res) => {
       applied, 
       errors, 
       kpi: { clicks, cost, conv, cpa }, 
-      target_cpa: targetCPA 
+      target_cpa: targetCPA,
+      target_roas: targetROAS,
+      ai_integration: {
+        desired_keywords_protected: desiredKeywords.length,
+        business_strategy_applied: !!playbook,
+        roas_optimization_active: !!targetROAS
+      }
     });
   } catch (e) { 
     return json(res, 500, { ok: false, code: 'AUTOPILOT', error: String(e) }); 
@@ -503,6 +586,11 @@ router.post('/generate/rsa', async (req, res) => {
   }
   
   try {
+    // Get tenant configuration for business strategy context
+    const { readConfigFromSheets } = await getSheetOperations();
+    const cfg = await readConfigFromSheets(String(tenant));
+    const AP = cfg?.AP || {};
+    
     const { getRSAGenerator } = await import('../services/rsa-generator.js');
     const generator = getRSAGenerator();
     
@@ -514,7 +602,12 @@ router.post('/generate/rsa', async (req, res) => {
       headlineCount,
       descriptionCount,
       includeOffers: true,
-      includeBranding: true
+      includeBranding: true,
+      // Pass business strategy context
+      playbookPrompt: AP.playbook_prompt || '',
+      targetCPA: AP.target_cpa || null,
+      targetROAS: AP.target_roas || null,
+      businessStrategy: AP.objective || 'protect'
     });
     
     res.json({ ok: true, ...result });
@@ -542,6 +635,11 @@ router.post('/analyze/negatives', async (req, res) => {
   }
   
   try {
+    // Get tenant configuration for business strategy context and desired keywords
+    const { readConfigFromSheets } = await getSheetOperations();
+    const cfg = await readConfigFromSheets(String(tenant));
+    const AP = cfg?.AP || {};
+    
     const { getNegativeAnalyzer } = await import('../services/negative-analyzer.js');
     const analyzer = getNegativeAnalyzer();
     
@@ -550,7 +648,13 @@ router.post('/analyze/negatives', async (req, res) => {
       costThreshold,
       clickThreshold,
       conversionRate,
-      useAI
+      useAI,
+      // Pass business context and protected keywords
+      playbookPrompt: AP.playbook_prompt || '',
+      desiredKeywords: AP.desired_keywords || [],
+      targetCPA: AP.target_cpa || null,
+      targetROAS: AP.target_roas || null,
+      businessStrategy: AP.objective || 'protect'
     });
     
     res.json({ ok: true, ...result });

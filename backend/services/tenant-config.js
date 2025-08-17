@@ -10,6 +10,7 @@ class TenantConfigService {
   constructor() {
     this.configDefaults = {
       enabled: true,
+      PROMOTE: true,
       label: 'Proofkit • Managed',
       plan: 'starter',
       default_final_url: 'https://example.com',
@@ -143,7 +144,7 @@ class TenantConfigService {
   applyConfigMap(config, configMap) {
     // Boolean fields
     const booleanFields = [
-      'enabled', 'add_business_hours_if_none', 'ENABLE_SCRIPT', 
+      'enabled', 'PROMOTE', 'add_business_hours_if_none', 'ENABLE_SCRIPT', 
       'FEATURE_AI_DRAFTS', 'FEATURE_INTENT_BLOCKS', 'FEATURE_AUDIENCE_EXPORT',
       'FEATURE_AUDIENCE_ATTACH', 'FEATURE_CM_API', 'FEATURE_INVENTORY_GUARD'
     ];

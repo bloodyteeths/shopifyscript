@@ -16,8 +16,8 @@ export async function getDoc() {
       await tenantRegistry.initialize();
     }
     
-    // Use default tenant for backward compatibility
-    const connection = await optimizedSheets.getTenantDoc('default');
+    // Use first available tenant for backward compatibility
+    const connection = await optimizedSheets.getTenantDoc('TENANT_123');
     return connection.doc;
   } catch (error) {
     console.error('Google Sheets auth error:', error.message);
@@ -45,35 +45,38 @@ export async function getDocById(sheetId) {
 }
 
 export async function ensureSheet(doc, title, header) {
+  console.log(`🔧 ensureSheet called for title: ${title}`);
+  
   try {
-    // Extract tenant info from doc or use default
-    const tenantId = 'TENANT_123'; // Use first tenant instead of default
-    
-    // Use optimized service
-    const sheetInfo = await optimizedSheets.ensureSheet(tenantId, title, header);
-    
-    // Return the actual sheet for backward compatibility
-    return doc.sheetsByTitle[title];
-  } catch (error) {
-    console.error('ensureSheet error:', error.message);
-    
-    // Fallback to original logic if optimized service fails
+    // Always use fallback logic for reliability
     let sheet = doc.sheetsByTitle[title];
+    console.log(`📋 Checking for existing sheet "${title}": ${sheet ? 'found' : 'not found'}`);
+    
     if (!sheet) {
+      console.log(`➕ Creating new sheet "${title}" with headers:`, header);
       sheet = await doc.addSheet({ title, headerValues: header });
+      console.log(`✅ Created sheet "${title}" successfully`);
     } else {
+      console.log(`🔄 Sheet "${title}" exists, ensuring headers are set`);
       try {
         await sheet.loadHeaderRow();
         if (!sheet._headerValues || sheet._headerValues.length === 0) {
+          console.log(`📝 Setting headers for existing sheet "${title}"`);
           await sheet.setHeaderRow(header);
         }
       } catch (error) {
+        console.log(`⚠️ Header setup error for "${title}":`, error.message);
         if (header?.length) {
           await sheet.setHeaderRow(header);
         }
       }
     }
+    
+    console.log(`🎯 Returning sheet object for "${title}":`, !!sheet);
     return sheet;
+  } catch (error) {
+    console.error(`❌ ensureSheet failed for "${title}":`, error.message);
+    throw error;
   }
 }
 
