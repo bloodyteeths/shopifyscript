@@ -26,13 +26,24 @@ function main(){
   
   // Initialize safety guards
   initializeSafetyGuards_(cfg);
+  
+  // Load NEG_GUARD reserved keywords from sheet
+  loadNegGuard_(cfg);
 
   ensureLabel_(cfg.label);
   ensureSeed_(cfg);
 
-  var it = AdsApp.campaigns().withCondition("campaign.advertising_channel_type = SEARCH").withCondition("campaign.status IN ('ENABLED','PAUSED')").get();
+  var campaignQuery = AdsApp.campaigns().withCondition("campaign.advertising_channel_type = SEARCH").withCondition("campaign.status IN ('ENABLED','PAUSED')");
+  
+  // Optional label-include guard for canary testing
+  if (cfg.label_include) {
+    campaignQuery = campaignQuery.withCondition("campaign.labels CONTAINS ['" + cfg.label_include + "']");
+    log_("• Canary mode: Only processing campaigns with label '" + cfg.label_include + "'");
+  }
+  
+  var it = campaignQuery.get();
   var camps=[]; while (it.hasNext()) camps.push(it.next());
-  log_("In scope: " + camps.length + " Search campaigns");
+  log_("In scope: " + camps.length + " Search campaigns" + (cfg.label_include ? " (canary labeled)" : ""));
 
   // Budget caps with PROMOTE gate protection
   camps.forEach(function(c){
@@ -481,10 +492,77 @@ function audienceAttach_(cfg){
       }
     }
     
+    // Check for audiences to detach (removed from AUDIENCE_MAP)
+    audienceDetach_(cfg, campaigns, audienceMap);
+    
     log_('• Audience attach complete: ' + attached + ' attached, ' + skipped + ' skipped, ' + errors + ' errors');
     
   } catch (e) {
     log_('! audienceAttach_ exception: ' + e);
+  }
+}
+
+/**
+ * Detach audiences that are no longer in AUDIENCE_MAP but still attached to campaigns
+ */
+function audienceDetach_(cfg, campaigns, currentAudienceMap) {
+  try {
+    var detached = 0;
+    
+    // Process each campaign to find audiences that should be detached
+    for (var campName in campaigns) {
+      if (isExcludedCampaign_(cfg, campName)) continue;
+      
+      var campaign = campaigns[campName];
+      var currentMappings = currentAudienceMap[campName] || {};
+      
+      // Get currently attached audiences
+      var attachedAudiences = campaign.targeting().audiences().get();
+      while (attachedAudiences.hasNext()) {
+        var attachedAud = attachedAudiences.next();
+        var listId = String(attachedAud.getId());
+        
+        // Check if this audience is still in the current mapping
+        var stillMapped = false;
+        for (var adGroupName in currentMappings) {
+          var mapping = currentMappings[adGroupName];
+          if (mapping && String(mapping.user_list_id) === listId) {
+            stillMapped = true;
+            break;
+          }
+        }
+        
+        // If not mapped anymore, detach it
+        if (!stillMapped) {
+          logMutation_('AUDIENCE_DETACH', {
+            campaign: campName,
+            listId: listId,
+            reason: 'removed_from_mapping'
+          });
+          
+          if (!PREVIEW_MODE && cfg.PROMOTE) {
+            try {
+              attachedAud.remove();
+              log_('• Audience detached: ' + campName + ' id=' + listId + ' (no longer in AUDIENCE_MAP)');
+              detached++;
+            } catch (e) {
+              log_('! Failed to detach audience ' + listId + ' from ' + campName + ': ' + e);
+            }
+          } else {
+            log_('• Audience detach planned: ' + campName + ' id=' + listId + ' (no longer in AUDIENCE_MAP)' + 
+                 (PREVIEW_MODE ? ' [PREVIEW]' : ' [PROMOTE=FALSE]'));
+            detached++;
+          }
+        }
+      }
+    }
+    
+    if (detached > 0) {
+      log_('• Audience detach complete: ' + detached + ' audiences removed');
+    }
+    
+  } catch (e) {
+    log_('! audienceDetach_ exception: ' + e);
   }
 }
 
@@ -621,16 +699,7 @@ function validatePromoteGate_(cfg) {
     return false;
   }
   
-  // Check PROMOTE flag
-  var promoteEnabled = cfg.PROMOTE === true || String(cfg.PROMOTE).toLowerCase() === 'true';
-  
-  if (!promoteEnabled) {
-    log_('! PROMOTE GATE: PROMOTE=FALSE - All mutations blocked for safety');
-    log_('! To enable live changes, set PROMOTE=TRUE in configuration');
-    return false;
-  }
-  
-  // Additional safety checks
+  // Allow preview and idempotency test modes to execute read-only logic
   if (PREVIEW_MODE) {
     log_('• PROMOTE GATE: Preview mode active - mutations logged only');
     return true;
@@ -639,6 +708,15 @@ function validatePromoteGate_(cfg) {
   if (RUN_MODE === 'IDEMPOTENCY_TEST') {
     log_('• PROMOTE GATE: Idempotency test mode - mutations logged only');
     return true;
+  }
+  
+  // Check PROMOTE flag for live mutations
+  var promoteEnabled = cfg.PROMOTE === true || String(cfg.PROMOTE).toLowerCase() === 'true';
+  
+  if (!promoteEnabled) {
+    log_('! PROMOTE GATE: PROMOTE=FALSE - All mutations blocked for safety');
+    log_('! To enable live changes, set PROMOTE=TRUE in configuration');
+    return false;
   }
   
   log_('✓ PROMOTE GATE: PROMOTE=TRUE verified - live mutations enabled');
@@ -669,10 +747,30 @@ function initializeSafetyGuards_(cfg) {
 }
 
 /**
+ * Load reserved keywords from NEG_GUARD sheet
+ */
+function loadNegGuard_(cfg) {
+  try {
+    RESERVED_KEYWORDS = cfg.NEG_GUARD || [];
+    
+    // Fallback to hardcoded list if sheet is empty
+    if (RESERVED_KEYWORDS.length === 0) {
+      RESERVED_KEYWORDS = ['proofkit', 'brand', 'competitor', 'important'];
+      log_('• NEG_GUARD: Using fallback reserved keywords');
+    } else {
+      log_('• NEG_GUARD: Loaded ' + RESERVED_KEYWORDS.length + ' reserved keywords from sheet');
+    }
+  } catch (e) {
+    log_('! NEG_GUARD: Error loading from sheet, using fallback: ' + e);
+    RESERVED_KEYWORDS = ['proofkit', 'brand', 'competitor', 'important'];
+  }
+}
+
+/**
  * Check if a keyword is reserved and should not be added as negative
  */
 function isReservedKeyword_(term) {
-  if (!term) return false;
+  if (!term || RESERVED_KEYWORDS.length === 0) return false;
   var termLower = String(term).toLowerCase().trim();
   
   for (var i = 0; i < RESERVED_KEYWORDS.length; i++) {
