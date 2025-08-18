@@ -2171,13 +2171,8 @@ if (process.env.NODE_ENV === 'production') {
   }
 }
 
-// For Vercel serverless deployment, export the app
-if (process.env.VERCEL) {
-  // Use CommonJS export for Vercel compatibility
-  module.exports = app;
-} else {
-  // For local development, start the server normally
-  app.listen(PORT, ()=> {
+// Start the server (works for both local and Vercel)
+app.listen(PORT, ()=> {
     logger.info('ProofKit backend server started', {
       port: PORT,
       environment: process.env.NODE_ENV || 'development',
@@ -2617,9 +2612,6 @@ app.use('/api', async (err, req, res, next) => {
   try { await logAccess(req, 500, 'api error'); } catch {}
   return json(res, 500, { ok:false, code:'ERR', error:String(err) });
 });
-
-// Close the else block for local development
-}
 
 app.use('/api', async (req, res) => {
   try { await logAccess(req, 404, 'api not_found'); } catch {}
