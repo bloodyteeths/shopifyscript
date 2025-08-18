@@ -74,8 +74,6 @@ export default function Autopilot(){
   const [cpc, setCpc] = React.useState('0.20');
   const [url, setUrl] = React.useState('');
   
-  const [sheetId, setSheetId] = React.useState('');
-  const [tested, setTested] = React.useState(false);
   const [toast, setToast] = React.useState('');
   const [scriptCode, setScriptCode] = React.useState('');
   const [showScript, setShowScript] = React.useState(false);
@@ -99,14 +97,7 @@ Tenant: TENANT_123`;
     setToast('Demo: Configuration shown (would enable in production)');
   }
   
-  function testSheet(){ 
-    setTested(true);
-    setToast('Demo: Sheet connection would be tested');
-  }
-  
-  function saveSheet(){ 
-    setToast('Demo: Sheet configuration would be saved');
-  }
+  // Removed sheet connection functions - using automated multi-tenant setup
   function generateDynamicScript(){
     // Use server action instead of client-side crypto
     const formData = new FormData();
@@ -146,16 +137,7 @@ Tenant: TENANT_123`;
   return (
     <div>
       <h1>🤖 Autopilot</h1>
-      {!diag?.sheets_ok && (
-        <section style={{ border:'1px solid #eee', padding:12 }}>
-          <h3>Connect Sheets</h3>
-          <input value={sheetId} onChange={e=>setSheetId(e.target.value)} placeholder="Google Sheet ID" style={{ width:'100%' }} />
-          <div style={{ marginTop:8, display:'flex', gap:8 }}>
-            <button onClick={testSheet}>Test</button>
-            <button disabled={!tested} onClick={saveSheet}>Save</button>
-          </div>
-        </section>
-      )}
+      {/* Connect Sheets section removed - using automated multi-tenant Google Sheets */}
       {toast && <p>{toast}</p>}
       <section style={{ border:'1px solid #eee', padding:12 }}>
         <h3>Goal</h3>
