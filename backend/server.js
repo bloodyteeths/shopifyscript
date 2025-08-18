@@ -2171,12 +2171,17 @@ if (process.env.NODE_ENV === 'production') {
   }
 }
 
-app.listen(PORT, ()=> {
-  logger.info('ProofKit backend server started', {
-    port: PORT,
-    environment: process.env.NODE_ENV || 'development',
-    sheetsAuth: process.env.GOOGLE_SERVICE_EMAIL ? 'service_account' : 'unknown',
-    hmacSecurityInitialized: true,
+// For Vercel serverless deployment, export the app
+if (process.env.VERCEL) {
+  export default app;
+} else {
+  // For local development, start the server normally
+  app.listen(PORT, ()=> {
+    logger.info('ProofKit backend server started', {
+      port: PORT,
+      environment: process.env.NODE_ENV || 'development',
+      sheetsAuth: process.env.GOOGLE_SERVICE_EMAIL ? 'service_account' : 'unknown',
+      hmacSecurityInitialized: true,
     pid: process.pid
   });
   
@@ -2611,6 +2616,10 @@ app.use('/api', async (err, req, res, next) => {
   try { await logAccess(req, 500, 'api error'); } catch {}
   return json(res, 500, { ok:false, code:'ERR', error:String(err) });
 });
+
+// Close the else block for local development
+}
+
 app.use('/api', async (req, res) => {
   try { await logAccess(req, 404, 'api not_found'); } catch {}
   return json(res, 404, { ok:false, code:'NOT_FOUND' });
