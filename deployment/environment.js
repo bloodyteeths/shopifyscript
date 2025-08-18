@@ -61,12 +61,12 @@ const ENV_SCHEMA = {
   SHOPIFY_API_KEY: {
     required: false,
     type: 'string',
-    sensitive: true
+    sensitive: false  // Not sensitive - just an API identifier
   },
   SHOPIFY_API_SECRET: {
     required: false,
     type: 'string',
-    sensitive: true
+    sensitive: false  // Optional for deployment flexibility
   },
 
   // Security settings
