@@ -3,7 +3,7 @@ import { useLoaderData, Link } from '@remix-run/react';
 
 export const loader = async () => {
   return json({
-    message: 'Welcome to ProofKit!',
+    message: 'AI-powered Google Ads optimization on autopilot',
     timestamp: new Date().toISOString()
   });
 };
@@ -13,7 +13,7 @@ export default function AppIndex() {
 
   return (
     <div style={{ padding: '2rem' }}>
-      <h1>🚀 ProofKit Dashboard</h1>
+      <h1>🚀 Ads Autopilot AI Dashboard</h1>
       <p>{message}</p>
       
       <div style={{ 
@@ -33,12 +33,16 @@ export default function AppIndex() {
           <Link to="/app/autopilot" style={{ 
             background: '#007bff', 
             color: 'white', 
-            padding: '0.5rem 1rem', 
+            padding: '12px 24px', 
             textDecoration: 'none',
-            borderRadius: '4px',
-            display: 'inline-block'
+            borderRadius: '6px',
+            display: 'inline-block',
+            fontSize: '16px',
+            fontWeight: 'bold',
+            boxShadow: '0 2px 8px rgba(0, 123, 255, 0.3)',
+            transition: 'all 0.2s ease'
           }}>
-            Open Autopilot
+            🤖 Open Autopilot
           </Link>
         </div>
 
@@ -53,12 +57,16 @@ export default function AppIndex() {
           <Link to="/app/insights" style={{ 
             background: '#28a745', 
             color: 'white', 
-            padding: '0.5rem 1rem', 
+            padding: '12px 24px', 
             textDecoration: 'none',
-            borderRadius: '4px',
-            display: 'inline-block'
+            borderRadius: '6px',
+            display: 'inline-block',
+            fontSize: '16px',
+            fontWeight: 'bold',
+            boxShadow: '0 2px 8px rgba(40, 167, 69, 0.3)',
+            transition: 'all 0.2s ease'
           }}>
-            View Insights
+            📊 View Insights
           </Link>
         </div>
 
@@ -88,12 +96,16 @@ export default function AppIndex() {
           <Link to="/app/intent-os" style={{ 
             background: '#6c757d', 
             color: 'white', 
-            padding: '0.5rem 1rem', 
+            padding: '10px 20px', 
             textDecoration: 'none',
-            borderRadius: '4px',
-            display: 'inline-block'
+            borderRadius: '6px',
+            display: 'inline-block',
+            fontSize: '14px',
+            fontWeight: 'bold',
+            opacity: 0.8,
+            transition: 'all 0.2s ease'
           }}>
-            Preview Features
+            💡 Preview Features
           </Link>
         </div>
 
@@ -108,12 +120,16 @@ export default function AppIndex() {
           <Link to="/app/advanced" style={{ 
             background: '#6c757d', 
             color: 'white', 
-            padding: '0.5rem 1rem', 
+            padding: '12px 24px', 
             textDecoration: 'none',
-            borderRadius: '4px',
-            display: 'inline-block'
+            borderRadius: '6px',
+            display: 'inline-block',
+            fontSize: '16px',
+            fontWeight: 'bold',
+            boxShadow: '0 2px 8px rgba(108, 117, 125, 0.3)',
+            transition: 'all 0.2s ease'
           }}>
-            Advanced Settings
+            ⚙️ Advanced Settings
           </Link>
         </div>
       </div>

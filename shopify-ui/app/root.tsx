@@ -23,7 +23,7 @@ export default function App(){
         <AppProvider i18n={en}>
           <div className="Polaris-Page" style={{ display:'flex', minHeight:'100vh' }}>
             <nav style={{ width:240, padding:16, borderRight:'1px solid var(--p-color-border)' }}>
-              <h3 style={{ marginBottom:12 }}>Proofkit</h3>
+              <h3 style={{ marginBottom:12 }}>Ads Autopilot AI</h3>
               <ul style={{ listStyle:'none', padding:0, display:'grid', gap:8 }}>
                 <li><NavLink to="/app/">Dashboard</NavLink></li>
                 <li><NavLink to="/app/autopilot">Autopilot</NavLink></li>
