@@ -12,7 +12,7 @@ import { buildSegments } from './segments/materialize.js';
 // Security & Privacy Services
 import securityMiddleware from './middleware/security.js';
 import privacyService from './services/privacy.js';
-// import environmentSecurity from './services/environment-security.js'; // Temporarily disabled
+// import environmentSecurity from './services/environment-security.js'; // Disabled for Vercel compatibility
 // PROMOTE Gate functions integrated
 // DevOps Services
 import { healthService, createHealthRoutes } from './services/health.js';
@@ -2144,10 +2144,10 @@ process.on('SIGINT', async () => {
   }
 });
 
-// Production deployment safety check
-if (process.env.NODE_ENV === 'production') {
+// Production deployment safety check (disabled for Vercel compatibility)
+if (process.env.NODE_ENV === 'production' && !process.env.VERCEL) {
   try {
-    // Run comprehensive startup validation
+    // Run comprehensive startup validation (skip in Vercel serverless environment)
     const bootValidation = (await import('./services/boot-validation.js')).default;
     const results = await bootValidation.validateSystemServices();
     
