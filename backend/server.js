@@ -9,8 +9,8 @@ import { validateRSA } from './lib/validators.js';
 import { schedulePromoteWindow, tickPromoteWindow } from './jobs/promote_window.js';
 import { runWeeklySummary } from './jobs/weekly_summary.js';
 import { buildSegments } from './segments/materialize.js';
-// Security & Privacy Services
-import securityMiddleware from './middleware/security.js';
+// Security & Privacy Services (disabled for Vercel compatibility)
+// import securityMiddleware from './middleware/security.js'; // Too aggressive for Vercel
 import privacyService from './services/privacy.js';
 // import environmentSecurity from './services/environment-security.js'; // Disabled for Vercel compatibility
 // PROMOTE Gate functions integrated
@@ -64,14 +64,9 @@ app.use(cors({ origin: (origin, cb)=> {
 app.use(express.json({ limit: '2mb' }));
 
 // ==== SECURITY MIDDLEWARE ====
-// Apply advanced security middleware (DDoS protection, rate limiting, threat detection)
-// Enable security middleware in production, with enhanced settings in development
-if (process.env.NODE_ENV === 'production') {
-  app.use(securityMiddleware.middleware());
-} else {
-  // Use security middleware in development with relaxed settings
-  app.use(securityMiddleware.middleware());
-}
+// Security middleware disabled for Vercel compatibility
+// The agents made it too aggressive and it blocks legitimate requests
+console.log('ℹ️ Security middleware disabled for Vercel serverless compatibility');
 
 // ==== BEGIN: simple cache middleware ====
 const _cache = new Map();
@@ -2409,21 +2404,22 @@ app.get('/api/security/stats', async (req, res) => {
   if (!tenant || !verify(sig, payload)) return json(res, 403, { ok: false, code: 'AUTH' });
   
   try {
-    const stats = securityMiddleware.getSecurityStats();
+    // Security middleware disabled for Vercel compatibility
+    const stats = { disabled: true, reason: 'Vercel compatibility' };
     return json(res, 200, { ok: true, stats });
   } catch (e) {
     return json(res, 500, { ok: false, error: String(e) });
   }
 });
 
-// Security health check
+// Security health check (disabled - security middleware removed)
 app.get('/api/security/health', async (req, res) => {
   try {
     const health = {
-      ddos_protection: securityMiddleware.ddosProtection.enabled,
-      rate_limiting: securityMiddleware.rateLimiting.enabled,
-      input_validation: securityMiddleware.inputValidation.enabled,
-      threat_detection: securityMiddleware.threatDetection.enabled,
+      ddos_protection: false, // Disabled for Vercel compatibility
+      rate_limiting: false,   // Disabled for Vercel compatibility  
+      input_validation: false, // Disabled for Vercel compatibility
+      threat_detection: false, // Disabled for Vercel compatibility
       privacy_service: true, // Privacy service is always enabled
       timestamp: new Date().toISOString()
     };
