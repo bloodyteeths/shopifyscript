@@ -2173,7 +2173,8 @@ if (process.env.NODE_ENV === 'production') {
 
 // For Vercel serverless deployment, export the app
 if (process.env.VERCEL) {
-  export default app;
+  // Use CommonJS export for Vercel compatibility
+  module.exports = app;
 } else {
   // For local development, start the server normally
   app.listen(PORT, ()=> {
