@@ -8,6 +8,7 @@ import sheetsBackup from './sheets-backup.js';
 import optimizedSheets from './sheets.js';
 import tenantRegistry from './tenant-registry.js';
 import logger from './logger.js';
+import { validateHMACSecret } from '../utils/secret-validator.js';
 
 class BootValidationService {
   constructor() {
@@ -156,6 +157,41 @@ class BootValidationService {
     const checks = {};
     
     try {
+      // Critical: Validate HMAC secret security
+      try {
+        const secretValidation = validateHMACSecret(process.env.HMAC_SECRET, {
+          allowWeakInDev: process.env.NODE_ENV === 'development',
+          environment: process.env.NODE_ENV || 'development'
+        });
+        
+        checks.hmacSecurity = {
+          status: 'healthy',
+          entropy: secretValidation.entropy,
+          length: secretValidation.length,
+          warnings: secretValidation.warnings,
+          details: { message: 'HMAC secret validation passed' }
+        };
+        
+        if (secretValidation.warnings.length > 0) {
+          checks.hmacSecurity.status = 'warning';
+        }
+        
+      } catch (error) {
+        checks.hmacSecurity = {
+          status: 'critical',
+          error: error.message,
+          details: { 
+            message: 'HMAC secret validation failed - SECURITY VULNERABILITY',
+            recommendation: 'Generate secure secret with: node -e "console.log(require(\'crypto\').randomBytes(32).toString(\'hex\'))"'
+          }
+        };
+        
+        logger.error('🚨 CRITICAL SECURITY ISSUE: HMAC secret validation failed', {
+          error: error.message,
+          environment: process.env.NODE_ENV
+        });
+      }
+      
       // Check sheets service
       const sheetsHealth = await optimizedSheets.healthCheck();
       checks.sheetsService = {

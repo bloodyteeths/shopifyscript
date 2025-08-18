@@ -31,7 +31,11 @@ export class RSAContentGenerator {
       headlineCount = 15,
       descriptionCount = 4,
       includeOffers = true,
-      includeBranding = true
+      includeBranding = true,
+      playbookPrompt = '',
+      targetCPA = null,
+      targetROAS = null,
+      businessStrategy = 'protect'
     } = options;
 
     const prompt = this.buildRSAPrompt({
@@ -42,7 +46,11 @@ export class RSAContentGenerator {
       headlineCount,
       descriptionCount,
       includeOffers,
-      includeBranding
+      includeBranding,
+      playbookPrompt,
+      targetCPA,
+      targetROAS,
+      businessStrategy
     });
 
     try {
@@ -82,22 +90,52 @@ export class RSAContentGenerator {
       headlineCount,
       descriptionCount,
       includeOffers,
-      includeBranding
+      includeBranding,
+      playbookPrompt,
+      targetCPA,
+      targetROAS,
+      businessStrategy
     } = options;
 
     const keywordText = keywords.length > 0 ? ` Focus on these keywords: ${keywords.join(', ')}.` : '';
     const offerText = includeOffers ? ' Include compelling offers and calls-to-action.' : '';
     const brandingText = includeBranding ? ' Include trust signals and brand elements.' : '';
+    
+    // Business strategy context
+    let strategyText = '';
+    if (playbookPrompt && playbookPrompt.trim()) {
+      strategyText = ` Business Strategy Context: ${playbookPrompt.trim()}.`;
+    }
+    
+    // Performance targets context
+    let targetText = '';
+    if (targetCPA || targetROAS) {
+      const targets = [];
+      if (targetCPA) targets.push(`target CPA of $${targetCPA}`);
+      if (targetROAS) targets.push(`target ROAS of ${targetROAS}x`);
+      targetText = ` Performance Targets: Optimize for ${targets.join(' and ')}.`;
+    }
+    
+    // Strategy-based tone adjustment
+    let adjustedTone = tone;
+    if (businessStrategy === 'scale' || businessStrategy === 'grow') {
+      adjustedTone = tone === 'professional' ? 'confident and growth-oriented' : `${tone} with growth focus`;
+    } else if (businessStrategy === 'protect') {
+      adjustedTone = tone === 'professional' ? 'trustworthy and reliable' : `${tone} with trust emphasis`;
+    }
 
     return `Generate Google Ads RSA (Responsive Search Ads) content for a ${industry} business with theme "${theme}". 
     
 Requirements:
 - Generate ${headlineCount} unique headlines (each 30 characters or less)
 - Generate ${descriptionCount} unique descriptions (each 90 characters or less)
-- Use ${tone} tone
+- Use ${adjustedTone} tone
 - Ensure variety in messaging and approaches
 - Include strong calls-to-action
-${keywordText}${offerText}${brandingText}
+${keywordText}${offerText}${brandingText}${strategyText}${targetText}
+
+${strategyText ? 'IMPORTANT: Align all messaging with the provided business strategy context.' : ''}
+${targetText ? 'IMPORTANT: Create ads that will appeal to users likely to meet the performance targets.' : ''}
 
 Return ONLY valid JSON in this exact format:
 {

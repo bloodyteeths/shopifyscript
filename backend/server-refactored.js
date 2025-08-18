@@ -5,6 +5,7 @@ import fs from 'fs';
 import { setupMiddleware, setupErrorHandling } from './middleware/index.js';
 import { json, logAccess } from './utils/response.js';
 import { verify, sign } from './utils/hmac.js';
+import { getValidatedHMACSecret, initializeHMACValidation } from './utils/secret-validator.js';
 
 // Import route modules
 import configRoutes from './routes/config.js';
@@ -23,7 +24,17 @@ try {
 
 const app = express();
 const PORT = Number(process.env.PORT || 3001);
-const SECRET = process.env.HMAC_SECRET || 'change_me';
+
+// Initialize and validate HMAC secret on startup
+initializeHMACValidation({ 
+  allowWeakInDev: true,
+  environment: process.env.NODE_ENV || 'development'
+});
+
+const SECRET = getValidatedHMACSecret({ 
+  allowWeakInDev: true,
+  environment: process.env.NODE_ENV || 'development'
+});
 
 // Setup middleware
 setupMiddleware(app);

@@ -37,7 +37,12 @@ export class NegativeKeywordAnalyzer {
       clickThreshold = 3,
       conversionRate = 0,
       useAI = true,
-      includeCommonNegatives = true
+      includeCommonNegatives = true,
+      playbookPrompt = '',
+      desiredKeywords = [],
+      targetCPA = null,
+      targetROAS = null,
+      businessStrategy = 'protect'
     } = options;
 
     try {
@@ -57,15 +62,25 @@ export class NegativeKeywordAnalyzer {
       // Use AI for advanced analysis if enabled
       let aiCandidates = [];
       if (useAI && processedTerms.length > 0) {
-        aiCandidates = await this.identifyWithAI(processedTerms, industry);
+        aiCandidates = await this.identifyWithAI(processedTerms, industry, {
+          playbookPrompt,
+          targetCPA,
+          targetROAS,
+          businessStrategy
+        });
       }
 
       // Combine and score all candidates
-      const allCandidates = this.combineAndScore([
+      let allCandidates = this.combineAndScore([
         ...metricCandidates,
         ...patternCandidates,
         ...aiCandidates
       ]);
+
+      // Filter out candidates that match desired keywords
+      if (desiredKeywords.length > 0) {
+        allCandidates = this.filterProtectedKeywords(allCandidates, desiredKeywords);
+      }
 
       // Add common negatives if requested
       if (includeCommonNegatives) {
@@ -81,7 +96,10 @@ export class NegativeKeywordAnalyzer {
           metricBasedCandidates: metricCandidates.length,
           patternBasedCandidates: patternCandidates.length,
           aiBasedCandidates: aiCandidates.length,
-          recommendations: this.generateRecommendations(allCandidates)
+          recommendations: this.generateRecommendations(allCandidates),
+          protectedKeywords: desiredKeywords.length,
+          businessContextApplied: !!playbookPrompt,
+          performanceTargetsConsidered: !!(targetCPA || targetROAS)
         }
       };
     } catch (error) {
@@ -265,15 +283,16 @@ export class NegativeKeywordAnalyzer {
   /**
    * Use AI to identify sophisticated negative keyword candidates
    */
-  async identifyWithAI(terms, industry) {
-    // Create cache key
-    const cacheKey = `${industry}_${terms.length}_${terms.slice(0, 5).map(t => t.term).join(',')}`;
+  async identifyWithAI(terms, industry, businessContext = {}) {
+    // Create cache key including business context
+    const contextKey = JSON.stringify(businessContext).substring(0, 50);
+    const cacheKey = `${industry}_${terms.length}_${contextKey}_${terms.slice(0, 5).map(t => t.term).join(',')}`;
     
     if (this.analysisCache.has(cacheKey)) {
       return this.analysisCache.get(cacheKey);
     }
 
-    const prompt = this.buildAINegativePrompt(terms.slice(0, 20), industry); // Limit for cost control
+    const prompt = this.buildAINegativePrompt(terms.slice(0, 20), industry, businessContext); // Limit for cost control
     
     try {
       const aiResponse = await this.aiService.generateStructuredContent(prompt, 'json');
@@ -302,20 +321,40 @@ export class NegativeKeywordAnalyzer {
   /**
    * Build AI prompt for negative keyword analysis
    */
-  buildAINegativePrompt(terms, industry) {
+  buildAINegativePrompt(terms, industry, businessContext = {}) {
+    const { playbookPrompt, targetCPA, targetROAS, businessStrategy } = businessContext;
     const termList = terms.map(t => `"${t.term}" (${t.clicks} clicks, $${t.cost.toFixed(2)}, ${t.conversions} conv)`).join('\n');
 
-    return `Analyze these search terms from a ${industry} business and identify which should be negative keywords.
+    // Build business context text
+    let contextText = '';
+    if (playbookPrompt) {
+      contextText += `\nBusiness Strategy: ${playbookPrompt}\n`;
+    }
+    if (targetCPA || targetROAS) {
+      const targets = [];
+      if (targetCPA) targets.push(`CPA target: $${targetCPA}`);
+      if (targetROAS) targets.push(`ROAS target: ${targetROAS}x`);
+      contextText += `Performance Targets: ${targets.join(', ')}\n`;
+    }
+    if (businessStrategy) {
+      contextText += `Business Objective: ${businessStrategy}\n`;
+    }
 
+    return `Analyze these search terms from a ${industry} business and identify which should be negative keywords.
+${contextText}
 Search Terms:
 ${termList}
 
 Identify terms that are:
 - Irrelevant to the business intent
-- Likely to generate unqualified traffic
+- Likely to generate unqualified traffic based on business strategy
 - Research-only queries with low commercial intent
 - Job/career related queries
 - Competitor research queries
+${targetCPA ? `- Terms unlikely to achieve CPA target of $${targetCPA}` : ''}
+${targetROAS ? `- Terms unlikely to achieve ROAS target of ${targetROAS}x` : ''}
+
+${playbookPrompt ? 'IMPORTANT: Consider the business strategy context when determining relevance.' : ''}
 
 Return ONLY valid JSON in this format:
 {
@@ -347,6 +386,32 @@ Return ONLY valid JSON in this format:
     
     // Broad match for longer, more general terms
     return 'broad';
+  }
+
+  /**
+   * Filter out negative keyword candidates that match desired/protected keywords
+   */
+  filterProtectedKeywords(candidates, desiredKeywords) {
+    const protectedTerms = new Set(desiredKeywords.map(k => k.toLowerCase().trim()));
+    
+    return candidates.filter(candidate => {
+      const candidateKeyword = candidate.keyword.toLowerCase();
+      
+      // Check if candidate keyword matches any desired keyword
+      const isProtected = desiredKeywords.some(desired => {
+        const desiredLower = desired.toLowerCase();
+        return candidateKeyword.includes(desiredLower) || 
+               desiredLower.includes(candidateKeyword) ||
+               candidateKeyword === desiredLower;
+      });
+      
+      if (isProtected) {
+        console.log(`Filtering out negative keyword "${candidate.keyword}" - matches desired keyword`);
+        return false;
+      }
+      
+      return true;
+    });
   }
 
   /**
