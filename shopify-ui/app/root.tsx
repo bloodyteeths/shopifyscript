@@ -22,16 +22,103 @@ export default function App(){
       <body>
         <AppProvider i18n={en}>
           <div className="Polaris-Page" style={{ display:'flex', minHeight:'100vh' }}>
-            <nav style={{ width:240, padding:16, borderRight:'1px solid var(--p-color-border)' }}>
-              <h3 style={{ marginBottom:12 }}>Ads Autopilot AI</h3>
-              <ul style={{ listStyle:'none', padding:0, display:'grid', gap:8 }}>
-                <li><NavLink to="/app/">Dashboard</NavLink></li>
-                <li><NavLink to="/app/autopilot">Autopilot</NavLink></li>
-                <li><NavLink to="/app/insights">Insights</NavLink></li>
-                <li><NavLink to="/app/advanced">Advanced</NavLink></li>
-                <li style={{ opacity: 0.5 }}>
-                  <NavLink to="/app/intent-os" style={{ color: '#999' }}>
-                    Smart Website <span style={{ fontSize: '10px' }}>(Coming Soon)</span>
+            <nav style={{ width:240, padding:20, borderRight:'1px solid var(--p-color-border)', background: '#fafbfc' }}>
+              <h3 style={{ 
+                marginBottom: 20, 
+                fontSize: '18px', 
+                fontWeight: 'bold', 
+                color: '#202223',
+                borderBottom: '1px solid #e1e3e5',
+                paddingBottom: 12
+              }}>
+                Ads Autopilot AI
+              </h3>
+              <ul style={{ listStyle:'none', padding:0, display:'grid', gap:4 }}>
+                <li>
+                  <NavLink 
+                    to="/app/" 
+                    style={{ 
+                      display: 'block',
+                      padding: '8px 12px',
+                      borderRadius: '6px',
+                      textDecoration: 'none',
+                      fontSize: '14px',
+                      fontWeight: '500',
+                      color: '#202223',
+                      transition: 'all 0.2s ease'
+                    }}
+                  >
+                    🏠 Dashboard
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink 
+                    to="/app/autopilot"
+                    style={{ 
+                      display: 'block',
+                      padding: '8px 12px',
+                      borderRadius: '6px',
+                      textDecoration: 'none',
+                      fontSize: '14px',
+                      fontWeight: '500',
+                      color: '#202223',
+                      transition: 'all 0.2s ease'
+                    }}
+                  >
+                    🤖 Autopilot
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink 
+                    to="/app/insights"
+                    style={{ 
+                      display: 'block',
+                      padding: '8px 12px',
+                      borderRadius: '6px',
+                      textDecoration: 'none',
+                      fontSize: '14px',
+                      fontWeight: '500',
+                      color: '#202223',
+                      transition: 'all 0.2s ease'
+                    }}
+                  >
+                    📊 Insights
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink 
+                    to="/app/advanced"
+                    style={{ 
+                      display: 'block',
+                      padding: '8px 12px',
+                      borderRadius: '6px',
+                      textDecoration: 'none',
+                      fontSize: '14px',
+                      fontWeight: '500',
+                      color: '#202223',
+                      transition: 'all 0.2s ease'
+                    }}
+                  >
+                    ⚙️ Advanced
+                  </NavLink>
+                </li>
+                <li style={{ marginTop: 12, paddingTop: 12, borderTop: '1px solid #e1e3e5' }}>
+                  <NavLink 
+                    to="/app/intent-os" 
+                    style={{ 
+                      display: 'block',
+                      padding: '8px 12px',
+                      borderRadius: '6px',
+                      textDecoration: 'none',
+                      fontSize: '12px',
+                      fontWeight: '400',
+                      color: '#6d7175',
+                      opacity: 0.7
+                    }}
+                  >
+                    💡 Smart Website
+                    <br/>
+                    <span style={{ fontSize: '10px', color: '#8c9196' }}>Coming Q1 2026</span>
                   </NavLink>
                 </li>
               </ul>
