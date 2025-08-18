@@ -42,9 +42,20 @@ export async function loader({request}: LoaderFunctionArgs){
     }
     
     // Check headers for Shopify shop domain
-    const shopifyShop = request.headers.get('x-shopify-shop-domain');
+    const shopifyShop = request.headers.get('x-shopify-shop-domain') || 
+                       request.headers.get('shopify-shop-domain');
     if (shopifyShop) {
       tenantId = shopifyShop.replace('.myshopify.com', '');
+    }
+    
+    // Extract from referrer (Shopify admin context)
+    const referrer = request.headers.get('referer');
+    if (referrer && referrer.includes('admin.shopify.com/store/')) {
+      const match = referrer.match(/admin\.shopify\.com\/store\/([^\/\?]+)/);
+      if (match) {
+        tenantId = match[1];
+        console.log(`🏪 Extracted shop from referrer: ${tenantId}`);
+      }
     }
     
     console.log(`🔍 Detected tenant: ${tenantId}`);
@@ -234,9 +245,20 @@ export async function action({request}: ActionFunctionArgs){
     }
     
     // Check headers for Shopify shop domain
-    const shopifyShop = request.headers.get('x-shopify-shop-domain');
+    const shopifyShop = request.headers.get('x-shopify-shop-domain') || 
+                       request.headers.get('shopify-shop-domain');
     if (shopifyShop) {
       tenantId = shopifyShop.replace('.myshopify.com', '');
+    }
+    
+    // Extract from referrer (Shopify admin context)
+    const referrer = request.headers.get('referer');
+    if (referrer && referrer.includes('admin.shopify.com/store/')) {
+      const match = referrer.match(/admin\.shopify\.com\/store\/([^\/\?]+)/);
+      if (match) {
+        tenantId = match[1];
+        console.log(`🏪 Extracted shop from referrer: ${tenantId}`);
+      }
     }
     
     console.log(`🔧 Processing action for tenant: ${tenantId}`);

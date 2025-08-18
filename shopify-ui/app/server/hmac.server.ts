@@ -1,12 +1,47 @@
 import crypto from 'crypto';
 
+// Secure HMAC secret validation for Shopify UI
+function getValidatedSecret(): string {
+  const secret = process.env.HMAC_SECRET;
+  
+  if (!secret) {
+    throw new Error('HMAC_SECRET environment variable is required');
+  }
+  
+  // Check for forbidden weak secrets
+  const forbidden = ['change_me', 'dev_secret', 'test-secret', 'secret', 'password'];
+  const lowerSecret = secret.toLowerCase();
+  
+  for (const pattern of forbidden) {
+    if (lowerSecret.includes(pattern)) {
+      throw new Error(`HMAC_SECRET contains forbidden weak pattern: ${pattern}`);
+    }
+  }
+  
+  // Length validation (more lenient for UI)
+  if (secret.length < 16) {
+    throw new Error(`HMAC_SECRET must be at least 16 characters (current: ${secret.length})`);
+  }
+  
+  return secret;
+}
+
 export function sign(payload: string): string {
-  const secret = process.env.HMAC_SECRET || 'change_me';
-  return crypto.createHmac('sha256', secret).update(payload).digest('base64').replace(/=+$/,'');
+  if (!payload || typeof payload !== 'string') {
+    throw new Error('HMAC payload must be a non-empty string');
+  }
+  
+  const secret = getValidatedSecret();
+  
+  try {
+    return crypto.createHmac('sha256', secret).update(payload).digest('base64').replace(/=+$/,'');
+  } catch (error) {
+    throw new Error(`HMAC signing failed: ${error instanceof Error ? error.message : String(error)}`);
+  }
 }
 
 export async function backendFetch(pathname: string, method: 'GET'|'POST', body?: any, tenantOverride?: string){
-  const base = (process.env.BACKEND_PUBLIC_URL || 'http://localhost:3005/api').replace(/\/$/, '');
+  const base = (process.env.BACKEND_PUBLIC_URL || 'https://shopifyscript-backend-9m8gmzrux-atillas-projects-3562cb36.vercel.app/api').replace(/\/$/, '');
   
   // Dynamic tenant detection (for production: get from Shopify session)
   // For local dev: use environment variable
@@ -27,7 +62,7 @@ export async function backendFetch(pathname: string, method: 'GET'|'POST', body?
 }
 
 export async function backendFetchRaw(pathname: string, method: 'GET'|'POST'){
-  const base = (process.env.BACKEND_PUBLIC_URL || 'http://localhost:3005/api').replace(/\/$/, '');
+  const base = (process.env.BACKEND_PUBLIC_URL || 'https://shopifyscript-backend-9m8gmzrux-atillas-projects-3562cb36.vercel.app/api').replace(/\/$/, '');
   const tenant = process.env.TENANT_ID || 'mybabybymerry';
   const op = opKey(method, pathname);
   const nonce = undefined; // raw used for GET CSV
@@ -39,7 +74,7 @@ export async function backendFetchRaw(pathname: string, method: 'GET'|'POST'){
 }
 
 export async function backendFetchText(pathname: string){
-  const base = (process.env.BACKEND_PUBLIC_URL || 'http://localhost:3005/api').replace(/\/$/, '');
+  const base = (process.env.BACKEND_PUBLIC_URL || 'https://shopifyscript-backend-9m8gmzrux-atillas-projects-3562cb36.vercel.app/api').replace(/\/$/, '');
   const tenant = process.env.TENANT_ID || 'mybabybymerry';
   const payload = `GET:${tenant}:script_raw`;
   const sig = sign(payload);

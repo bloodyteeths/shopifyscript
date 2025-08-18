@@ -108,15 +108,50 @@ class TenantRegistry {
   }
 
   /**
-   * Get tenant configuration by ID
+   * Get tenant configuration by ID, with auto-registration for new Shopify stores
    */
   getTenant(tenantId) {
     if (!this.isInitialized) {
       throw new Error('TenantRegistry not initialized');
     }
     
-    // Fallback to 'default' if tenant not found and it exists
-    return this.registry.get(tenantId) || this.registry.get('default');
+    let tenant = this.registry.get(tenantId);
+    if (!tenant) {
+      // Auto-register new tenants (Shopify stores)
+      tenant = this.autoRegisterTenant(tenantId);
+    }
+    
+    return tenant || this.registry.get('default');
+  }
+
+  /**
+   * Automatically register a new tenant (for Shopify stores)
+   */
+  autoRegisterTenant(tenantId) {
+    // Skip auto-registration for system tenants
+    if (tenantId === 'default' || tenantId === 'TENANT_123') {
+      return null;
+    }
+    
+    // Use the same Google Sheet as other tenants for simplicity
+    const defaultSheetId = process.env.SHEET_ID || '1vqcqkLxY4r3tWowi6GMsoRbSJG5x4XY7QKg2mTe54rU';
+    
+    const newTenant = {
+      id: tenantId,
+      sheetId: defaultSheetId,
+      name: `${tenantId} (Auto-registered)`,
+      plan: 'starter',
+      enabled: true,
+      config: {},
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      autoRegistered: true
+    };
+    
+    this.registry.set(tenantId, newTenant);
+    console.log(`✅ Auto-registered tenant: ${tenantId} with sheet: ${defaultSheetId}`);
+    
+    return newTenant;
   }
 
   /**
