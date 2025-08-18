@@ -15,9 +15,38 @@ export async function loader({request}){
   }
   
   // Check headers for Shopify shop domain
-  const shopifyShop = request.headers.get('x-shopify-shop-domain');
+  const shopifyShop = request.headers.get('x-shopify-shop-domain') || 
+                     request.headers.get('shopify-shop-domain');
   if (shopifyShop) {
     tenantId = shopifyShop.replace('.myshopify.com', '');
+  }
+  
+  // Extract from referrer (Shopify admin context)
+  const referrer = request.headers.get('referer');
+  if (referrer && referrer.includes('admin.shopify.com/store/')) {
+    const match = referrer.match(/admin\.shopify\.com\/store\/([^\/\?]+)/);
+    if (match) {
+      tenantId = match[1];
+      console.log(`🏪 Extracted shop from referrer: ${tenantId}`);
+    }
+  }
+  
+  // Extract from Shopify host parameter (base64 encoded)
+  const hostParam = url.searchParams.get('host');
+  if (hostParam) {
+    try {
+      const decodedHost = Buffer.from(hostParam, 'base64').toString();
+      console.log(`🔍 Decoded host parameter: ${decodedHost}`);
+      if (decodedHost.includes('admin.shopify.com/store/')) {
+        const match = decodedHost.match(/admin\.shopify\.com\/store\/([^\/\?]+)/);
+        if (match) {
+          tenantId = match[1];
+          console.log(`🏪 Extracted shop from host parameter: ${tenantId}`);
+        }
+      }
+    } catch (e) {
+      console.log('Failed to decode host parameter:', e.message);
+    }
   }
   
   console.log(`🏪 Autopilot loading for tenant: ${tenantId}`);
