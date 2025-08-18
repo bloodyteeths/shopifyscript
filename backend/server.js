@@ -1970,13 +1970,15 @@ app.get('/api/ads-script/raw', async (req, res) => {
   const payload = `GET:${tenant}:script_raw`;
   if (!tenant || !verify(sig, payload)) return res.status(403).json({ ok:false, error:'auth' });
   try {
-    const tenantId = String(tenant || 'TENANT_123');
+    const tenantId = String(tenant); // Use the actual passed tenant
+    console.log(`📜 Generating script for tenant: ${tenantId}`);
+    
     const primary = path.resolve('/Users/tamsar/Downloads/proofkit-saas', 'ads-script', 'master.gs');
     const fallback = path.resolve(process.cwd(), '..', 'ads-script', 'master.gs');
     const filePath = fs.existsSync(primary) ? primary : fallback;
     const raw = await fs.promises.readFile(filePath, 'utf8');
     const out = raw
-      .replace(/__BACKEND_URL__/g, (process.env.BACKEND_PUBLIC_URL || 'http://localhost:3001/api').replace(/\/$/, ''))
+      .replace(/__BACKEND_URL__/g, 'https://shopifyscript-backend-9m8gmzrux-atillas-projects-3562cb36.vercel.app/api')
       .replace(/__TENANT_ID__/g, tenantId)
       .replace(/__HMAC_SECRET__/g, (process.env.HMAC_SECRET || ''));
     res.set('content-type', 'text/plain; charset=utf-8');

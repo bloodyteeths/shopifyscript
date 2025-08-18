@@ -6,11 +6,48 @@ export async function action({ request }: ActionFunctionArgs) {
     const body = await request.json();
     const { mode, budget, cpc, url } = body;
     
-    // Fetch the real 45KB script using the text endpoint
-    const currentTenant = process.env.TENANT_ID || 'mybabybymerry';
-    const realScript = await backendFetchText('/ads-script/raw');
+    // Extract tenant from Shopify context (same logic as other pages)
+    let currentTenant = 'dev-tenant'; // fallback
     
-    if (realScript && realScript.length > 1000) {
+    // Try to get shop from URL parameters (Shopify embedded app)
+    const requestUrl = new URL(request.url);
+    const shopParam = requestUrl.searchParams.get('shop');
+    if (shopParam) {
+      currentTenant = shopParam.replace('.myshopify.com', '');
+    }
+    
+    // Check headers for Shopify shop domain
+    const shopifyShop = request.headers.get('x-shopify-shop-domain') || 
+                       request.headers.get('shopify-shop-domain');
+    if (shopifyShop) {
+      currentTenant = shopifyShop.replace('.myshopify.com', '');
+    }
+    
+    // Extract from referrer (Shopify admin context)
+    const referrer = request.headers.get('referer');
+    if (referrer && referrer.includes('admin.shopify.com/store/')) {
+      const match = referrer.match(/admin\.shopify\.com\/store\/([^\/\?]+)/);
+      if (match) {
+        currentTenant = match[1];
+        console.log(`🏪 Script generation for shop: ${currentTenant}`);
+      }
+    }
+    
+    console.log(`🔄 Generating script for tenant: ${currentTenant}`);
+    
+    // Fetch the real script using the detected tenant
+    const { backendFetchText } = await import('../server/hmac.server');
+    // Create a modified backendFetchText that uses the detected tenant
+    const base = 'https://shopifyscript-backend-9m8gmzrux-atillas-projects-3562cb36.vercel.app/api';
+    const payload = `GET:${currentTenant}:script_raw`;
+    const { sign } = await import('../server/hmac.server');
+    const sig = sign(payload);
+    const scriptUrl = `${base}/ads-script/raw?tenant=${encodeURIComponent(currentTenant)}&sig=${encodeURIComponent(sig)}`;
+    
+    const response = await fetch(scriptUrl);
+    const realScript = await response.text();
+    
+    if (realScript && realScript.length > 1000 && !realScript.includes('<html'))  {
       const personalizedScript = `/** ProofKit Google Ads Script - Personalized for ${mode} mode
  * Tenant: ${currentTenant}
  * Generated: ${new Date().toISOString()}
