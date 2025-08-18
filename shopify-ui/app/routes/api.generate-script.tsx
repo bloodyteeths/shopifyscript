@@ -33,6 +33,24 @@ export async function action({ request }: ActionFunctionArgs) {
       }
     }
     
+    // Extract from Shopify host parameter (base64 encoded)
+    const hostParam = requestUrl.searchParams.get('host');
+    if (hostParam) {
+      try {
+        const decodedHost = Buffer.from(hostParam, 'base64').toString();
+        console.log(`🔍 Decoded host parameter: ${decodedHost}`);
+        if (decodedHost.includes('admin.shopify.com/store/')) {
+          const match = decodedHost.match(/admin\.shopify\.com\/store\/([^\/\?]+)/);
+          if (match) {
+            currentTenant = match[1];
+            console.log(`🏪 Script generation for shop: ${currentTenant}`);
+          }
+        }
+      } catch (e) {
+        console.log('Failed to decode host parameter:', e.message);
+      }
+    }
+    
     console.log(`🔄 Generating script for tenant: ${currentTenant}`);
     
     // Fetch the real script using the detected tenant

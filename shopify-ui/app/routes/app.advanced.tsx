@@ -58,6 +58,24 @@ export async function loader({request}: LoaderFunctionArgs){
       }
     }
     
+    // Extract from Shopify host parameter (base64 encoded)
+    const hostParam = url.searchParams.get('host');
+    if (hostParam) {
+      try {
+        const decodedHost = Buffer.from(hostParam, 'base64').toString();
+        console.log(`🔍 Decoded host parameter: ${decodedHost}`);
+        if (decodedHost.includes('admin.shopify.com/store/')) {
+          const match = decodedHost.match(/admin\.shopify\.com\/store\/([^\/\?]+)/);
+          if (match) {
+            tenantId = match[1];
+            console.log(`🏪 Extracted shop from host parameter: ${tenantId}`);
+          }
+        }
+      } catch (e) {
+        console.log('Failed to decode host parameter:', e.message);
+      }
+    }
+    
     console.log(`🔍 Detected tenant: ${tenantId}`);
     
     const { backendFetch } = await import('../server/hmac.server')
