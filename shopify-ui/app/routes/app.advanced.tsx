@@ -31,9 +31,23 @@ async function getTenantFromRequest(request: Request): Promise<string> {
 
 export async function loader({request}: LoaderFunctionArgs){
   try {
-    // Simplified tenant detection - use dev-tenant for development
-    const tenantId = 'dev-tenant';
-    console.log(`🔍 Using tenant: ${tenantId}`);
+    // Extract tenant from Shopify session for production or use fallback for development
+    let tenantId = 'dev-tenant'; // fallback
+    
+    // Try to get shop from URL parameters (Shopify embedded app)
+    const url = new URL(request.url);
+    const shopParam = url.searchParams.get('shop');
+    if (shopParam) {
+      tenantId = shopParam.replace('.myshopify.com', '');
+    }
+    
+    // Check headers for Shopify shop domain
+    const shopifyShop = request.headers.get('x-shopify-shop-domain');
+    if (shopifyShop) {
+      tenantId = shopifyShop.replace('.myshopify.com', '');
+    }
+    
+    console.log(`🔍 Detected tenant: ${tenantId}`);
     
     const { backendFetch } = await import('../server/hmac.server')
     const cfg = await backendFetch('/config','GET', undefined, tenantId)
@@ -209,8 +223,22 @@ function generateSuggestions(insights: any, campaigns: any, summary: any) {
 
 export async function action({request}: ActionFunctionArgs){
   try {
-    // Simplified tenant detection for development
-    const tenantId = 'dev-tenant';
+    // Extract tenant from Shopify session for production or use fallback for development
+    let tenantId = 'dev-tenant'; // fallback
+    
+    // Try to get shop from URL parameters (Shopify embedded app)
+    const url = new URL(request.url);
+    const shopParam = url.searchParams.get('shop');
+    if (shopParam) {
+      tenantId = shopParam.replace('.myshopify.com', '');
+    }
+    
+    // Check headers for Shopify shop domain
+    const shopifyShop = request.headers.get('x-shopify-shop-domain');
+    if (shopifyShop) {
+      tenantId = shopifyShop.replace('.myshopify.com', '');
+    }
+    
     console.log(`🔧 Processing action for tenant: ${tenantId}`);
     
     const fd = await request.formData()

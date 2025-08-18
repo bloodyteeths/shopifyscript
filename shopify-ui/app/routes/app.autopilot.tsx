@@ -3,13 +3,31 @@ import { useLoaderData, useFetcher } from '@remix-run/react';
 import { json, type ActionFunctionArgs } from '@remix-run/node';
 import { backendFetch, backendFetchText } from '../server/hmac.server';
 
-export async function loader(){
-  const diag = await backendFetch('/diagnostics','GET');
-  const status = await backendFetch('/promote/status','GET');
+export async function loader({request}){
+  // Extract tenant from Shopify session for production
+  let tenantId = 'dev-tenant'; // fallback
+  
+  // Try to get shop from URL parameters (Shopify embedded app)
+  const url = new URL(request.url);
+  const shopParam = url.searchParams.get('shop');
+  if (shopParam) {
+    tenantId = shopParam.replace('.myshopify.com', '');
+  }
+  
+  // Check headers for Shopify shop domain
+  const shopifyShop = request.headers.get('x-shopify-shop-domain');
+  if (shopifyShop) {
+    tenantId = shopifyShop.replace('.myshopify.com', '');
+  }
+  
+  console.log(`🏪 Autopilot loading for tenant: ${tenantId}`);
+  
+  const diag = await backendFetch('/diagnostics','GET', undefined, tenantId);
+  const status = await backendFetch('/promote/status','GET', undefined, tenantId);
   
   // Pass tenant info to client for dynamic script generation
   const tenantInfo = {
-    tenantId: process.env.TENANT_ID || 'mybabybymerry',
+    tenantId: tenantId,
     backendUrl: process.env.BACKEND_PUBLIC_URL || 'http://localhost:3005/api'
   };
   
