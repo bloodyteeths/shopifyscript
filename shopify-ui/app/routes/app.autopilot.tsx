@@ -134,7 +134,8 @@ Tenant: TENANT_123`;
         mode,
         budget,
         cpc,
-        url
+        url,
+        tenant: tenantInfo.tenantId  // Pass the tenant from loader
       })
     })
     .then(response => response.json())

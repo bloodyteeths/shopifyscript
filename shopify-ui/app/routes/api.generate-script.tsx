@@ -4,10 +4,10 @@ import { backendFetchText } from '../server/hmac.server';
 export async function action({ request }: ActionFunctionArgs) {
   try {
     const body = await request.json();
-    const { mode, budget, cpc, url } = body;
+    const { mode, budget, cpc, url, tenant } = body;
     
-    // Extract tenant from Shopify context (same logic as other pages)
-    let currentTenant = 'dev-tenant'; // fallback
+    // Use tenant passed from frontend, or extract from Shopify context
+    let currentTenant = tenant || 'dev-tenant'; // use passed tenant first
     
     // Try to get shop from URL parameters (Shopify embedded app)
     const requestUrl = new URL(request.url);
