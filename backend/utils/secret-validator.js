@@ -99,15 +99,20 @@ export function validateHMACSecret(secret, options = {}) {
       throw new Error('HMAC_SECRET cannot contain long repeated character sequences in production');
     }
     
-    // Ensure mixed character types
+    // Ensure mixed character types (relaxed for hexadecimal secrets)
     const hasLower = /[a-z]/.test(secret);
     const hasUpper = /[A-Z]/.test(secret);
     const hasNumber = /[0-9]/.test(secret);
     const hasSpecial = /[^a-zA-Z0-9]/.test(secret);
     
     const typeCount = [hasLower, hasUpper, hasNumber, hasSpecial].filter(Boolean).length;
-    if (typeCount < 3) {
-      throw new Error('HMAC_SECRET must contain at least 3 character types (lowercase, uppercase, numbers, special) in production');
+    // Relax requirement: Accept hexadecimal secrets (lowercase + numbers)
+    if (typeCount < 2) {
+      console.warn('⚠️ HMAC_SECRET could be more secure with mixed character types');
+    }
+    // Only fail if it's truly weak (single character type)
+    if (typeCount === 1 && secret.length < 64) {
+      throw new Error('HMAC_SECRET too weak - use a longer or more complex secret');
     }
   }
 
