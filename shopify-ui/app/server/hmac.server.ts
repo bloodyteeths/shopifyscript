@@ -80,10 +80,20 @@ export async function backendFetchText(pathname: string, method: 'GET'|'POST' = 
   const sig = sign(payload);
   const sep = pathname.includes('?') ? '&' : '?';
   const url = `${base}${pathname}${sep}tenant=${encodeURIComponent(shopName)}&sig=${encodeURIComponent(sig)}`;
+  
+  console.log(`🌐 backendFetchText calling URL: ${url}`);
+  console.log(`🔑 HMAC payload: ${payload}`);
+  
   const init: any = { method, headers: {} };
   if (method === 'POST'){ init.headers['content-type'] = 'application/json'; init.body = JSON.stringify(body||{}); }
+  
   const res = await fetch(url, init);
-  return res.text();
+  const responseText = await res.text();
+  
+  console.log(`📥 Backend response: status=${res.status}, length=${responseText.length}, contentType=${res.headers.get('content-type')}`);
+  console.log(`📄 Response preview: ${responseText.slice(0, 200)}...`);
+  
+  return responseText;
 }
 
 function opKey(method: string, pathname: string): string{
