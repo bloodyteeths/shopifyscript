@@ -73,14 +73,18 @@ export async function backendFetchRaw(pathname: string, method: 'GET'|'POST'){
   return fetch(url, { method });
 }
 
-export async function backendFetchText(pathname: string){
+export async function backendFetchText(pathname: string, method: 'GET'|'POST' = 'GET', body?: any, tenantOverride?: string){
   const base = (process.env.BACKEND_PUBLIC_URL || 'https://shopifyscript-backend-9m8gmzrux-atillas-projects-3562cb36.vercel.app/api').replace(/\/$/, '');
-  const tenant = process.env.TENANT_ID || 'mybabybymerry';
-  const payload = `GET:${tenant}:script_raw`;
+  const tenant = tenantOverride || process.env.TENANT_ID || 'mybabybymerry';
+  const op = opKey(method, pathname);
+  const nonce = method === 'POST' ? (body?.nonce ?? Date.now()) : undefined;
+  const payload = `${method}:${tenant}:${op}${nonce!==undefined?`:${nonce}`:''}`;
   const sig = sign(payload);
   const sep = pathname.includes('?') ? '&' : '?';
   const url = `${base}${pathname}${sep}tenant=${encodeURIComponent(tenant)}&sig=${encodeURIComponent(sig)}`;
-  const res = await fetch(url);
+  const init: any = { method, headers: {} };
+  if (method === 'POST'){ init.headers['content-type'] = 'application/json'; init.body = JSON.stringify(body||{}); }
+  const res = await fetch(url, init);
   return res.text();
 }
 
