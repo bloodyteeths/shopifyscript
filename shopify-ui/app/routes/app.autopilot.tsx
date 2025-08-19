@@ -7,22 +7,17 @@ import ShopConfig from '../components/ShopConfig';
 import ShopSetupBanner from '../components/ShopSetupBanner';
 
 export async function loader({request}){
-  // Get shop name from user configuration - prioritize manual setup over environment
-  const userShopName = getShopNameOrNull();
-  const shopName = userShopName || getServerShopName(request.headers);
+  // Pure client-side approach - server does NO backend calls
+  // Client will read shop name from localStorage and make all API calls
   
-  console.log(`🏪 Autopilot loading for shop: ${shopName}`);
+  console.log(`🏪 Autopilot loader: Client will handle all data loading`);
   
-  const diag = await backendFetch('/diagnostics','GET', undefined, shopName);
-  const status = await backendFetch('/promote/status','GET', undefined, shopName);
-  
-  // Pass shop info to client for dynamic script generation
-  const shopInfo = {
-    shopName: shopName,
+  // Return minimal config for client
+  const config = {
     backendUrl: process.env.BACKEND_PUBLIC_URL || 'http://localhost:3005/api'
   };
   
-  return { diag: diag.json||{}, status: status.json||{}, shopInfo };
+  return { config };
 }
 
 export async function action({ request }: ActionFunctionArgs) {
@@ -85,7 +80,7 @@ ${realScript}
 }
 
 export default function Autopilot(){
-  const { diag, status, shopInfo } = useLoaderData<typeof loader>();
+  const { config } = useLoaderData<typeof loader>();
   const [mode, setMode] = React.useState('protect');
   const [budget, setBudget] = React.useState('3.00');
   const [cpc, setCpc] = React.useState('0.20');
@@ -95,15 +90,19 @@ export default function Autopilot(){
   const [toast, setToast] = React.useState('');
   const [scriptCode, setScriptCode] = React.useState('');
   const [showScript, setShowScript] = React.useState(false);
+  const [shopName, setShopName] = React.useState<string | null>(null);
 
-  // Check if setup is needed on client side
+  // Load shop name from localStorage on client side
   React.useEffect(() => {
-    setShowSetupBanner(isShopSetupNeeded());
+    const userShopName = getShopNameOrNull();
+    setShopName(userShopName);
+    setShowSetupBanner(!userShopName); // Show banner only if no shop name stored
   }, []);
 
-  const handleSetupComplete = (shopName: string) => {
+  const handleSetupComplete = (newShopName: string) => {
+    setShopName(newShopName);
     setShowSetupBanner(false);
-    setToast(`Shop configured: ${shopName}.myshopify.com`);
+    setToast(`Shop configured: ${newShopName}.myshopify.com`);
   };
 
   // Auto-update script when settings change
@@ -145,7 +144,7 @@ Shop: ${shopInfo.shopName}`;
         budget,
         cpc,
         url,
-        shopName: shopInfo.shopName  // Pass the shop name from loader
+        shopName: shopName  // Pass the shop name from localStorage
       })
     })
     .then(response => response.json())
@@ -201,7 +200,7 @@ Shop: ${shopInfo.shopName}`;
           <span style={{ background: '#28a745', color: 'white', padding: '4px 8px', borderRadius: '12px', fontSize: '12px' }}>
             ✅ ALWAYS ON
           </span>
-          <span>Automation running for: <strong>{shopInfo.shopName}</strong></span>
+          <span>Automation running for: <strong>{shopName || 'Please configure shop'}</strong></span>
         </div>
         <div style={{ fontSize: '14px', color: '#666' }}>
           • Budget optimization: Active<br/>
