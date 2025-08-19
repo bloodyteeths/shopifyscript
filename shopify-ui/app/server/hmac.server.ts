@@ -42,8 +42,9 @@ export function sign(payload: string): string {
 }
 
 export async function backendFetch(pathname: string, method: 'GET'|'POST', body?: any, shopNameOverride?: string){
-  const rawBase = (process.env.BACKEND_PUBLIC_URL || 'https://shopifyscript-backend-9m8gmzrux-atillas-projects-3562cb36.vercel.app/api').replace(/\/$/, '');
-  const base = /\/api$/.test(rawBase) ? rawBase : `${rawBase}/api`;
+  const cfgBase = (process.env.BACKEND_PUBLIC_URL || 'https://shopifyscript-backend-9m8gmzrux-atillas-projects-3562cb36.vercel.app').replace(/\/$/, '');
+  const baseHost = normalizeBackendBase(cfgBase);
+  const base = /\/api$/.test(baseHost) ? baseHost : `${baseHost}/api`;
   
   // Use shop name from parameter, environment, or default
   const shopName = shopNameOverride || getServerShopName();
@@ -63,8 +64,9 @@ export async function backendFetch(pathname: string, method: 'GET'|'POST', body?
 }
 
 export async function backendFetchRaw(pathname: string, method: 'GET'|'POST', shopNameOverride?: string){
-  const rawBase = (process.env.BACKEND_PUBLIC_URL || 'https://shopifyscript-backend-9m8gmzrux-atillas-projects-3562cb36.vercel.app/api').replace(/\/$/, '');
-  const base = /\/api$/.test(rawBase) ? rawBase : `${rawBase}/api`;
+  const cfgBase = (process.env.BACKEND_PUBLIC_URL || 'https://shopifyscript-backend-9m8gmzrux-atillas-projects-3562cb36.vercel.app').replace(/\/$/, '');
+  const baseHost = normalizeBackendBase(cfgBase);
+  const base = /\/api$/.test(baseHost) ? baseHost : `${baseHost}/api`;
   const shopName = shopNameOverride || getServerShopName();
   const op = opKey(method, pathname);
   const nonce = undefined; // raw used for GET CSV
@@ -79,8 +81,9 @@ export async function backendFetchRaw(pathname: string, method: 'GET'|'POST', sh
 }
 
 export async function backendFetchText(pathname: string, method: 'GET'|'POST' = 'GET', body?: any, shopNameOverride?: string){
-  const rawBase = (process.env.BACKEND_PUBLIC_URL || 'https://shopifyscript-backend-9m8gmzrux-atillas-projects-3562cb36.vercel.app/api').replace(/\/$/, '');
-  const base = /\/api$/.test(rawBase) ? rawBase : `${rawBase}/api`;
+  const cfgBase = (process.env.BACKEND_PUBLIC_URL || 'https://shopifyscript-backend-9m8gmzrux-atillas-projects-3562cb36.vercel.app').replace(/\/$/, '');
+  const baseHost = normalizeBackendBase(cfgBase);
+  const base = /\/api$/.test(baseHost) ? baseHost : `${baseHost}/api`;
   const shopName = shopNameOverride || getServerShopName();
   const op = opKey(method, pathname);
   const nonce = method === 'POST' ? (body?.nonce ?? Date.now()) : undefined;
@@ -104,6 +107,23 @@ export async function backendFetchText(pathname: string, method: 'GET'|'POST' = 
   console.log(`📄 Response preview: ${responseText.slice(0, 200)}...`);
   
   return responseText;
+}
+
+// Normalize Vercel preview domains to production alias to avoid Preview Protection (401 HTML)
+function normalizeBackendBase(rawBase: string): string {
+  try {
+    const url = new URL(rawBase);
+    const host = url.host;
+    // Matches: <project>-git-<branch>-<team>.vercel.app → <project>.vercel.app
+    const m = host.match(/^(?<proj>[^.]+)-git-[^.]+-(?<rest>.+\.vercel\.app)$/);
+    if (m && m.groups && m.groups.proj) {
+      const prod = `${m.groups.proj}.vercel.app`;
+      return `${url.protocol}//${prod}`;
+    }
+    return rawBase;
+  } catch {
+    return rawBase;
+  }
 }
 
 function opKey(method: string, pathname: string): string{
