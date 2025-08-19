@@ -1,5 +1,5 @@
 // Full Google Ads Script Content (for embedding in server.js)
-module.exports = `
+export default `
 /** Proofkit Autopilot — Universal Google Ads Script (backend version)
  * These placeholders are replaced by the backend endpoint /api/ads-script/raw.
  */
