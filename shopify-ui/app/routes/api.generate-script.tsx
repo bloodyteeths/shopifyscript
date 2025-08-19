@@ -57,7 +57,14 @@ export async function action({ request }: ActionFunctionArgs) {
     const { backendFetchText } = await import('../server/hmac.server');
     console.log(`🔗 Fetching script from backend for tenant: ${currentTenant}`);
     
-    const realScript = await backendFetchText('/ads-script/raw', 'GET', undefined, currentTenant);
+    let realScript;
+    try {
+      realScript = await backendFetchText('/ads-script/raw', 'GET', undefined, currentTenant);
+      console.log(`✅ Backend fetch completed for ${currentTenant}, script length: ${realScript?.length || 0}`);
+    } catch (error) {
+      console.log(`❌ Backend fetch failed for ${currentTenant}:`, error.message);
+      throw error;
+    }
     
     if (realScript && realScript.length > 1000 && !realScript.includes('<html'))  {
       const personalizedScript = `/** ProofKit Google Ads Script - Personalized for ${mode} mode
