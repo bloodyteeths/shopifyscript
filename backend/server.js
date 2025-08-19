@@ -2002,38 +2002,37 @@ app.post('/api/connect/sheets/save', async (req, res) => {
   } catch (e) { res.json({ ok:false, error:String(e) }); }
 });
 
+// Import embedded Google Ads Script Content (for Vercel compatibility)
+const MASTER_SCRIPT_CONTENT = require('./embedded-script.js');
+
 // ----- Ads Script delivery (HMAC) -----
 app.get('/api/ads-script/raw', async (req, res) => {
+  console.log('🚀 /api/ads-script/raw endpoint hit', req.query);
   const { tenant, sig } = req.query;
   const payload = `GET:${tenant}:script_raw`;
-  if (!tenant || !verify(sig, payload)) return res.status(403).json({ ok:false, error:'auth' });
+  console.log('🔐 HMAC verification:', { tenant, sig, payload });
+  
+  if (!tenant || !verify(sig, payload)) {
+    console.log('🔐 Auth failed - returning 403');
+    return res.status(403).json({ ok:false, error:'auth' });
+  }
+  
   try {
-    const tenantId = String(tenant || 'default'); // Use the actual passed tenant, fallback to 'default'
+    const tenantId = String(tenant || 'default');
     console.log(`📜 Generating script for shop: ${tenantId}`);
     
-    // Resolve script file robustly across local and serverless (Vercel) environments
-    const candidates = [
-      // Prefer path relative to this file (backend/server.js -> ../ads-script/master.gs)
-      path.resolve(__dirname, '..', 'ads-script', 'master.gs'),
-      // Monorepo root at runtime (serverless bundles usually mount at /var/task)
-      path.resolve(process.cwd(), 'ads-script', 'master.gs'),
-      // Fallback to parent-of-cwd (local dev run from backend/)
-      path.resolve(process.cwd(), '..', 'ads-script', 'master.gs')
-    ];
-    let filePath = null;
-    for (const p of candidates) { if (fs.existsSync(p)) { filePath = p; break; } }
-    if (!filePath) {
-      return res.status(500).json({ ok:false, error:'master.gs_not_found' });
-    }
-    const raw = await fs.promises.readFile(filePath, 'utf8');
-    const out = raw
+    // Use embedded script content instead of file system access
+    const out = MASTER_SCRIPT_CONTENT
       .replace(/__BACKEND_URL__/g, 'https://shopifyscript-backend-9m8gmzrux-atillas-projects-3562cb36.vercel.app/api')
       .replace(/__TENANT_ID__/g, tenantId)
       .replace(/__HMAC_SECRET__/g, (process.env.HMAC_SECRET || ''));
+    
     res.set('content-type', 'text/plain; charset=utf-8');
+    console.log(`✅ Script generated successfully: ${out.length} bytes for ${tenantId}`);
     return res.status(200).send(out);
   } catch (e) {
-    return res.status(404).json({ ok:false, error:String(e) });
+    console.error('❌ Script generation error:', e);
+    return res.status(500).json({ ok:false, error:String(e) });
   }
 });
 
