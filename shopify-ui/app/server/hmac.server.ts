@@ -42,7 +42,8 @@ export function sign(payload: string): string {
 }
 
 export async function backendFetch(pathname: string, method: 'GET'|'POST', body?: any, shopNameOverride?: string){
-  const base = (process.env.BACKEND_PUBLIC_URL || 'https://shopifyscript-backend-9m8gmzrux-atillas-projects-3562cb36.vercel.app/api').replace(/\/$/, '');
+  const rawBase = (process.env.BACKEND_PUBLIC_URL || 'https://shopifyscript-backend-9m8gmzrux-atillas-projects-3562cb36.vercel.app/api').replace(/\/$/, '');
+  const base = /\/api$/.test(rawBase) ? rawBase : `${rawBase}/api`;
   
   // Use shop name from parameter, environment, or default
   const shopName = shopNameOverride || getServerShopName();
@@ -60,7 +61,8 @@ export async function backendFetch(pathname: string, method: 'GET'|'POST', body?
 }
 
 export async function backendFetchRaw(pathname: string, method: 'GET'|'POST', shopNameOverride?: string){
-  const base = (process.env.BACKEND_PUBLIC_URL || 'https://shopifyscript-backend-9m8gmzrux-atillas-projects-3562cb36.vercel.app/api').replace(/\/$/, '');
+  const rawBase = (process.env.BACKEND_PUBLIC_URL || 'https://shopifyscript-backend-9m8gmzrux-atillas-projects-3562cb36.vercel.app/api').replace(/\/$/, '');
+  const base = /\/api$/.test(rawBase) ? rawBase : `${rawBase}/api`;
   const shopName = shopNameOverride || getServerShopName();
   const op = opKey(method, pathname);
   const nonce = undefined; // raw used for GET CSV
@@ -72,7 +74,8 @@ export async function backendFetchRaw(pathname: string, method: 'GET'|'POST', sh
 }
 
 export async function backendFetchText(pathname: string, method: 'GET'|'POST' = 'GET', body?: any, shopNameOverride?: string){
-  const base = (process.env.BACKEND_PUBLIC_URL || 'https://shopifyscript-backend-9m8gmzrux-atillas-projects-3562cb36.vercel.app/api').replace(/\/$/, '');
+  const rawBase = (process.env.BACKEND_PUBLIC_URL || 'https://shopifyscript-backend-9m8gmzrux-atillas-projects-3562cb36.vercel.app/api').replace(/\/$/, '');
+  const base = /\/api$/.test(rawBase) ? rawBase : `${rawBase}/api`;
   const shopName = shopNameOverride || getServerShopName();
   const op = opKey(method, pathname);
   const nonce = method === 'POST' ? (body?.nonce ?? Date.now()) : undefined;
