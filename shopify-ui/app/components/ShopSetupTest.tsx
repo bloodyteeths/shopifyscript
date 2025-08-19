@@ -7,7 +7,7 @@ import {
   clearStoredShopName, 
   isShopSetupNeeded,
   validateShopName,
-  getShopNameOrDefault 
+  getShopNameOrNull 
 } from '../utils/shop-config';
 
 export function ShopSetupTest() {
@@ -27,7 +27,7 @@ export function ShopSetupTest() {
   const refreshStatus = React.useCallback(() => {
     setStatus({
       stored: getStoredShopName(),
-      current: getShopNameOrDefault(),
+      current: getShopNameOrNull(),
       needsSetup: isShopSetupNeeded()
     });
   }, []);

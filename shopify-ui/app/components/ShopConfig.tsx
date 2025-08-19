@@ -3,7 +3,7 @@ import {
   getStoredShopName, 
   setStoredShopName, 
   validateShopName, 
-  getShopNameOrDefault,
+  getShopNameOrNull,
   clearStoredShopName 
 } from '../utils/shop-config';
 
@@ -19,7 +19,7 @@ export function ShopConfig({ showInline = false, onShopNameChange }: ShopConfigP
   const [success, setSuccess] = React.useState('');
 
   React.useEffect(() => {
-    const currentShopName = getShopNameOrDefault();
+    const currentShopName = getShopNameOrNull() || 'dev-tenant';
     setShopName(currentShopName);
   }, []);
 
@@ -46,7 +46,7 @@ export function ShopConfig({ showInline = false, onShopNameChange }: ShopConfigP
   };
 
   const handleCancel = () => {
-    const currentShopName = getShopNameOrDefault();
+    const currentShopName = getShopNameOrNull() || 'dev-tenant';
     setShopName(currentShopName);
     setIsEditing(false);
     setError('');

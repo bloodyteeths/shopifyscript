@@ -3,7 +3,7 @@ import {
   getStoredShopName, 
   setStoredShopName, 
   validateShopName,
-  getShopNameOrDefault 
+  getShopNameOrNull 
 } from '../utils/shop-config';
 
 interface ShopSetupBannerProps {
