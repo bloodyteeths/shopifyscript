@@ -2,65 +2,26 @@ import * as React from 'react';
 import { useLoaderData, useFetcher } from '@remix-run/react';
 import { json, type ActionFunctionArgs } from '@remix-run/node';
 import { backendFetch, backendFetchText } from '../server/hmac.server';
+import { getServerShopName, isShopSetupNeeded } from '../utils/shop-config';
+import ShopConfig from '../components/ShopConfig';
+import ShopSetupBanner from '../components/ShopSetupBanner';
 
 export async function loader({request}){
-  // Extract tenant from Shopify session for production
-  let tenantId = 'dev-tenant'; // fallback
+  // Use shop name utilities instead of complex tenant detection
+  const shopName = getServerShopName(request.headers);
   
-  // Try to get shop from URL parameters (Shopify embedded app)
-  const url = new URL(request.url);
-  const shopParam = url.searchParams.get('shop');
-  if (shopParam) {
-    tenantId = shopParam.replace('.myshopify.com', '');
-  }
+  console.log(`🏪 Autopilot loading for shop: ${shopName}`);
   
-  // Check headers for Shopify shop domain
-  const shopifyShop = request.headers.get('x-shopify-shop-domain') || 
-                     request.headers.get('shopify-shop-domain');
-  if (shopifyShop) {
-    tenantId = shopifyShop.replace('.myshopify.com', '');
-  }
+  const diag = await backendFetch('/diagnostics','GET', undefined, shopName);
+  const status = await backendFetch('/promote/status','GET', undefined, shopName);
   
-  // Extract from referrer (Shopify admin context)
-  const referrer = request.headers.get('referer');
-  if (referrer && referrer.includes('admin.shopify.com/store/')) {
-    const match = referrer.match(/admin\.shopify\.com\/store\/([^\/\?]+)/);
-    if (match) {
-      tenantId = match[1];
-      console.log(`🏪 Extracted shop from referrer: ${tenantId}`);
-    }
-  }
-  
-  // Extract from Shopify host parameter (base64 encoded)
-  const hostParam = url.searchParams.get('host');
-  if (hostParam) {
-    try {
-      const decodedHost = Buffer.from(hostParam, 'base64').toString();
-      console.log(`🔍 Decoded host parameter: ${decodedHost}`);
-      if (decodedHost.includes('admin.shopify.com/store/')) {
-        const match = decodedHost.match(/admin\.shopify\.com\/store\/([^\/\?]+)/);
-        if (match) {
-          tenantId = match[1];
-          console.log(`🏪 Extracted shop from host parameter: ${tenantId}`);
-        }
-      }
-    } catch (e) {
-      console.log('Failed to decode host parameter:', e.message);
-    }
-  }
-  
-  console.log(`🏪 Autopilot loading for tenant: ${tenantId}`);
-  
-  const diag = await backendFetch('/diagnostics','GET', undefined, tenantId);
-  const status = await backendFetch('/promote/status','GET', undefined, tenantId);
-  
-  // Pass tenant info to client for dynamic script generation
-  const tenantInfo = {
-    tenantId: tenantId,
+  // Pass shop info to client for dynamic script generation
+  const shopInfo = {
+    shopName: shopName,
     backendUrl: process.env.BACKEND_PUBLIC_URL || 'http://localhost:3005/api'
   };
   
-  return { diag: diag.json||{}, status: status.json||{}, tenantInfo };
+  return { diag: diag.json||{}, status: status.json||{}, shopInfo };
 }
 
 export async function action({ request }: ActionFunctionArgs) {
@@ -68,52 +29,10 @@ export async function action({ request }: ActionFunctionArgs) {
   const actionType = formData.get('actionType');
   
   if (actionType === 'generateScript') {
-    // Extract tenant using same logic as loader - CRITICAL FIX
-    let currentTenant = 'dev-tenant'; // fallback
+    // Use shop name utilities instead of complex tenant detection
+    const currentShopName = getServerShopName(request.headers);
     
-    // Try to get shop from URL parameters (Shopify embedded app)
-    const requestUrl = new URL(request.url);
-    const shopParam = requestUrl.searchParams.get('shop');
-    if (shopParam) {
-      currentTenant = shopParam.replace('.myshopify.com', '');
-    }
-    
-    // Check headers for Shopify shop domain
-    const shopifyShop = request.headers.get('x-shopify-shop-domain') || 
-                       request.headers.get('shopify-shop-domain');
-    if (shopifyShop) {
-      currentTenant = shopifyShop.replace('.myshopify.com', '');
-    }
-    
-    // Extract from referrer (Shopify admin context)
-    const referrer = request.headers.get('referer');
-    if (referrer && referrer.includes('admin.shopify.com/store/')) {
-      const match = referrer.match(/admin\.shopify\.com\/store\/([^\/\?]+)/);
-      if (match) {
-        currentTenant = match[1];
-        console.log(`🏪 Action extracted shop from referrer: ${currentTenant}`);
-      }
-    }
-    
-    // Extract from Shopify host parameter (base64 encoded)
-    const hostParam = requestUrl.searchParams.get('host');
-    if (hostParam) {
-      try {
-        const decodedHost = Buffer.from(hostParam, 'base64').toString();
-        console.log(`🔍 Action decoded host parameter: ${decodedHost}`);
-        if (decodedHost.includes('admin.shopify.com/store/')) {
-          const match = decodedHost.match(/admin\.shopify\.com\/store\/([^\/\?]+)/);
-          if (match) {
-            currentTenant = match[1];
-            console.log(`🏪 Action extracted shop from host parameter: ${currentTenant}`);
-          }
-        }
-      } catch (e) {
-        console.log('Action failed to decode host parameter:', e.message);
-      }
-    }
-    
-    console.log(`🔄 Action generating script for tenant: ${currentTenant}`);
+    console.log(`🔄 Action generating script for shop: ${currentShopName}`);
     
     const mode = formData.get('mode') || 'protect';
     const budget = formData.get('budget') || '3.00';
@@ -121,15 +40,15 @@ export async function action({ request }: ActionFunctionArgs) {
     const url = formData.get('url') || '';
     
     try {
-      // Fetch the real script using text endpoint with correct tenant
-      const realScript = await backendFetchText('/ads-script/raw', 'GET', undefined, currentTenant);
+      // Fetch the real script using text endpoint with correct shop name
+      const realScript = await backendFetchText('/ads-script/raw', 'GET', undefined, currentShopName);
       
-      console.log(`📊 Script fetch result for ${currentTenant}: length=${realScript?.length || 0}, isHTML=${realScript?.includes('<html') || false}`);
+      console.log(`📊 Script fetch result for ${currentShopName}: length=${realScript?.length || 0}, isHTML=${realScript?.includes('<html') || false}`);
       
       if (realScript && realScript.length > 1000 && !realScript.includes('<html')) {
         
         const personalizedScript = `/** ProofKit Google Ads Script - Personalized for ${mode} mode
- * Tenant: ${currentTenant}
+ * Shop: ${currentShopName}
  * Generated: ${new Date().toISOString()}
  * Budget Cap: $${budget}/day
  * CPC Ceiling: $${cpc}
@@ -149,14 +68,14 @@ ${realScript}
           success: true, 
           script: personalizedScript,
           size: Math.round(personalizedScript.length / 1024),
-          tenant: currentTenant
+          shopName: currentShopName
         });
       } else {
-        console.log(`❌ Script validation failed for ${currentTenant}: length=${realScript?.length || 0}, hasHTML=${realScript?.includes('<html') || false}`);
+        console.log(`❌ Script validation failed for ${currentShopName}: length=${realScript?.length || 0}, hasHTML=${realScript?.includes('<html') || false}`);
         return json({ success: false, error: 'Failed to fetch complete script' });
       }
     } catch (error) {
-      console.log(`❌ Action script fetch failed for ${currentTenant}:`, error.message);
+      console.log(`❌ Action script fetch failed for ${currentShopName}:`, error.message);
       return json({ success: false, error: error.message });
     }
   }
@@ -165,15 +84,26 @@ ${realScript}
 }
 
 export default function Autopilot(){
-  const { diag, status, tenantInfo } = useLoaderData<typeof loader>();
+  const { diag, status, shopInfo } = useLoaderData<typeof loader>();
   const [mode, setMode] = React.useState('protect');
   const [budget, setBudget] = React.useState('3.00');
   const [cpc, setCpc] = React.useState('0.20');
   const [url, setUrl] = React.useState('');
+  const [showSetupBanner, setShowSetupBanner] = React.useState(false);
   
   const [toast, setToast] = React.useState('');
   const [scriptCode, setScriptCode] = React.useState('');
   const [showScript, setShowScript] = React.useState(false);
+
+  // Check if setup is needed on client side
+  React.useEffect(() => {
+    setShowSetupBanner(isShopSetupNeeded());
+  }, []);
+
+  const handleSetupComplete = (shopName: string) => {
+    setShowSetupBanner(false);
+    setToast(`Shop configured: ${shopName}.myshopify.com`);
+  };
 
   // Auto-update script when settings change
   React.useEffect(() => {
@@ -189,7 +119,7 @@ Mode: ${mode}
 Budget: $${budget}/day
 CPC: $${cpc}
 URL: ${url}
-Tenant: TENANT_123`;
+Shop: ${shopInfo.shopName}`;
     alert(`Autopilot would be enabled with:\n\n${config}\n\nIn production, this would start the automation.`);
     setToast('Demo: Configuration shown (would enable in production)');
   }
@@ -214,7 +144,7 @@ Tenant: TENANT_123`;
         budget,
         cpc,
         url,
-        tenant: tenantInfo.tenantId  // Pass the tenant from loader
+        shopName: shopInfo.shopName  // Pass the shop name from loader
       })
     })
     .then(response => response.json())
@@ -222,7 +152,7 @@ Tenant: TENANT_123`;
       if (data.success) {
         setScriptCode(data.script);
         setShowScript(true);
-        setToast(`Complete ${data.size}KB script generated for ${data.tenant}`);
+        setToast(`Complete ${data.size}KB script generated for ${data.shopName}`);
       } else {
         setToast('Error: ' + data.error);
       }
@@ -235,6 +165,18 @@ Tenant: TENANT_123`;
   return (
     <div>
       <h1>🤖 Autopilot</h1>
+      
+      {/* Shop Setup Banner - fallback if setup is needed */}
+      {showSetupBanner && (
+        <ShopSetupBanner 
+          onSetupComplete={handleSetupComplete}
+          showOnlyIfNeeded={true}
+        />
+      )}
+      
+      {/* Shop Configuration - only show if setup is complete */}
+      {!showSetupBanner && <ShopConfig showInline={false} />}
+      
       {/* Connect Sheets section removed - using automated multi-tenant Google Sheets */}
       {toast && <p>{toast}</p>}
       <section style={{ border:'1px solid #eee', padding:12 }}>
@@ -258,7 +200,7 @@ Tenant: TENANT_123`;
           <span style={{ background: '#28a745', color: 'white', padding: '4px 8px', borderRadius: '12px', fontSize: '12px' }}>
             ✅ ALWAYS ON
           </span>
-          <span>Automation running for: <strong>mybabybymerry</strong></span>
+          <span>Automation running for: <strong>{shopInfo.shopName}</strong></span>
         </div>
         <div style={{ fontSize: '14px', color: '#666' }}>
           • Budget optimization: Active<br/>

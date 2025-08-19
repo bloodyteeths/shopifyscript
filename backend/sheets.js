@@ -17,7 +17,10 @@ export async function getDoc() {
     }
     
     // Use first available tenant for backward compatibility
-    const connection = await optimizedSheets.getTenantDoc('TENANT_123');
+    const allTenants = tenantRegistry.getAllTenants();
+    const firstTenant = allTenants.length > 0 ? allTenants[0] : null;
+    const tenantId = firstTenant ? firstTenant.id : 'default';
+    const connection = await optimizedSheets.getTenantDoc(tenantId);
     return connection.doc;
   } catch (error) {
     console.error('Google Sheets auth error:', error.message);
@@ -131,7 +134,7 @@ export const sheets = {
     return await optimizedSheets.getStats();
   },
 
-  async healthCheck(tenantId = 'TENANT_123') {
+  async healthCheck(tenantId = 'default') {
     return await optimizedSheets.healthCheck(tenantId);
   }
 };

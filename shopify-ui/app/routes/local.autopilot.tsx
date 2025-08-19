@@ -9,7 +9,7 @@ export async function loader(){
   
   // Pass tenant info to client for dynamic script generation
   const tenantInfo = {
-    tenantId: process.env.TENANT_ID || 'mybabybymerry',
+    tenantId: process.env.TENANT_ID || 'proofkit',
     backendUrl: process.env.BACKEND_PUBLIC_URL || 'http://localhost:3005/api'
   };
   
@@ -28,7 +28,7 @@ export async function action({ request }: ActionFunctionArgs) {
     
     try {
       // Fetch the real script using text endpoint (returns raw script, not JSON)
-      const currentTenant = process.env.TENANT_ID || 'mybabybymerry';
+      const currentTenant = process.env.TENANT_ID || 'proofkit';
       const realScript = await backendFetchText('/ads-script/raw');
       
       if (realScript && realScript.length > 1000) {
@@ -74,17 +74,18 @@ export default function LocalAutopilot(){
   const [cpc, setCpc] = React.useState('0.20');
   const [url, setUrl] = React.useState('');
   
-  // Auto-update script when settings change
-  React.useEffect(() => {
-    if (showScript) {
-      generateDynamicScript();
-    }
-  }, [mode, budget, cpc, url]);
   const [sheetId, setSheetId] = React.useState('');
   const [tested, setTested] = React.useState(false);
   const [toast, setToast] = React.useState('');
   const [scriptCode, setScriptCode] = React.useState('');
   const [showScript, setShowScript] = React.useState(false);
+
+  // Auto-update script when settings change
+  React.useEffect(() => {
+    if (showScript) {
+      generateDynamicScript();
+    }
+  }, [mode, budget, cpc, url, showScript]);
 
   function run(){
     // Demo functionality - shows configuration
@@ -93,7 +94,7 @@ Mode: ${mode}
 Budget: $${budget}/day
 CPC: $${cpc}
 URL: ${url}
-Tenant: TENANT_123`;
+Tenant: proofkit`;
     alert(`Autopilot would be enabled with:\n\n${config}\n\nIn production, this would start the automation.`);
     setToast('Demo: Configuration shown (would enable in production)');
   }
@@ -177,7 +178,7 @@ Tenant: TENANT_123`;
           <span style={{ background: '#28a745', color: 'white', padding: '4px 8px', borderRadius: '12px', fontSize: '12px' }}>
             ✅ ALWAYS ON
           </span>
-          <span>Automation running for: <strong>mybabybymerry</strong></span>
+          <span>Automation running for: <strong>proofkit</strong></span>
         </div>
         <div style={{ fontSize: '14px', color: '#666' }}>
           • Budget optimization: Active<br/>

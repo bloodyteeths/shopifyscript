@@ -1,5 +1,8 @@
 import { json } from '@remix-run/node';
 import { useLoaderData, Link } from '@remix-run/react';
+import * as React from 'react';
+import ShopSetupBanner from '../components/ShopSetupBanner';
+import { isShopSetupNeeded } from '../utils/shop-config';
 
 export const loader = async () => {
   return json({
@@ -10,9 +13,27 @@ export const loader = async () => {
 
 export default function AppIndex() {
   const { message, timestamp } = useLoaderData<typeof loader>();
+  const [showSetupBanner, setShowSetupBanner] = React.useState(false);
+
+  // Check if setup is needed on client side
+  React.useEffect(() => {
+    setShowSetupBanner(isShopSetupNeeded());
+  }, []);
+
+  const handleSetupComplete = (shopName: string) => {
+    setShowSetupBanner(false);
+  };
 
   return (
     <div style={{ padding: '2rem' }}>
+      {/* Shop Setup Banner - only shows if needed */}
+      {showSetupBanner && (
+        <ShopSetupBanner 
+          onSetupComplete={handleSetupComplete}
+          showOnlyIfNeeded={true}
+        />
+      )}
+
       <h1>🚀 Ads Autopilot AI Dashboard</h1>
       <p>{message}</p>
       

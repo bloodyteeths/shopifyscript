@@ -25,13 +25,12 @@ import {
   Toast,
   Frame,
 } from '@shopify/polaris';
-import { 
-  CheckCircleIcon, 
-  AlertCircleIcon, 
-  InfoIcon,
-  EditIcon,
-  DeleteIcon 
-} from '@shopify/polaris-icons';
+// Note: Some Polaris icons may not be available, using safe fallbacks
+const CheckCircleIcon = () => <span>✅</span>;
+const AlertCircleIcon = () => <span>⚠️</span>;
+const InfoIcon = () => <span>ℹ️</span>;
+const EditIcon = () => <span>✏️</span>;
+const DeleteIcon = () => <span>🗑️</span>;
 
 interface IntentOSProps {
   tenantId: string;

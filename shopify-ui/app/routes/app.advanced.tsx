@@ -1,88 +1,24 @@
 import * as React from 'react'
 import { json, type LoaderFunctionArgs, type ActionFunctionArgs } from '@remix-run/node'
 import { useLoaderData, Form, useNavigation, useActionData } from '@remix-run/react'
+import { getServerShopName, isShopSetupNeeded } from '../utils/shop-config'
+import ShopConfig from '../components/ShopConfig'
+import ShopSetupBanner from '../components/ShopSetupBanner'
 
-// Simple tenant detection for development/production
-async function getTenantFromRequest(request: Request): Promise<string> {
-  // Method 1: Extract from shop parameter (Shopify app standard)
-  const url = new URL(request.url);
-  const shopParam = url.searchParams.get('shop');
-  if (shopParam) {
-    return shopParam.replace('.myshopify.com', '');
-  }
-
-  // Method 2: Extract from subdomain
-  const host = request.headers.get('host') || '';
-  if (host.includes('.proofkit.com')) {
-    const subdomain = host.split('.')[0];
-    if (subdomain && subdomain !== 'www' && subdomain !== 'app') {
-      return subdomain;
-    }
-  }
-
-  // Method 3: Development fallback
-  if (process.env.NODE_ENV === 'development') {
-    return process.env.DEFAULT_DEV_TENANT || 'dev-tenant';
-  }
-
-  // Production fallback - this should not happen
-  throw new Error('Cannot determine tenant from request');
-}
+// This function is no longer needed - replaced by shop name utilities
 
 export async function loader({request}: LoaderFunctionArgs){
   try {
-    // Extract tenant from Shopify session for production or use fallback for development
-    let tenantId = 'dev-tenant'; // fallback
+    // Use shop name utilities instead of complex tenant detection
+    const shopName = getServerShopName(request.headers);
     
-    // Try to get shop from URL parameters (Shopify embedded app)
-    const url = new URL(request.url);
-    const shopParam = url.searchParams.get('shop');
-    if (shopParam) {
-      tenantId = shopParam.replace('.myshopify.com', '');
-    }
-    
-    // Check headers for Shopify shop domain
-    const shopifyShop = request.headers.get('x-shopify-shop-domain') || 
-                       request.headers.get('shopify-shop-domain');
-    if (shopifyShop) {
-      tenantId = shopifyShop.replace('.myshopify.com', '');
-    }
-    
-    // Extract from referrer (Shopify admin context)
-    const referrer = request.headers.get('referer');
-    if (referrer && referrer.includes('admin.shopify.com/store/')) {
-      const match = referrer.match(/admin\.shopify\.com\/store\/([^\/\?]+)/);
-      if (match) {
-        tenantId = match[1];
-        console.log(`🏪 Extracted shop from referrer: ${tenantId}`);
-      }
-    }
-    
-    // Extract from Shopify host parameter (base64 encoded)
-    const hostParam = url.searchParams.get('host');
-    if (hostParam) {
-      try {
-        const decodedHost = Buffer.from(hostParam, 'base64').toString();
-        console.log(`🔍 Decoded host parameter: ${decodedHost}`);
-        if (decodedHost.includes('admin.shopify.com/store/')) {
-          const match = decodedHost.match(/admin\.shopify\.com\/store\/([^\/\?]+)/);
-          if (match) {
-            tenantId = match[1];
-            console.log(`🏪 Extracted shop from host parameter: ${tenantId}`);
-          }
-        }
-      } catch (e) {
-        console.log('Failed to decode host parameter:', e.message);
-      }
-    }
-    
-    console.log(`🔍 Detected tenant: ${tenantId}`);
+    console.log(`🔍 Detected shop: ${shopName}`);
     
     const { backendFetch } = await import('../server/hmac.server')
-    const cfg = await backendFetch('/config','GET', undefined, tenantId)
-    const insights = await backendFetch('/insights?w=7d','GET', undefined, tenantId)
-    const campaigns = await backendFetch('/campaigns','GET', undefined, tenantId) 
-    const summary = await backendFetch('/summary','GET', undefined, tenantId)
+    const cfg = await backendFetch('/config','GET', undefined, shopName)
+    const insights = await backendFetch('/insights?w=7d','GET', undefined, shopName)
+    const campaigns = await backendFetch('/campaigns','GET', undefined, shopName) 
+    const summary = await backendFetch('/summary','GET', undefined, shopName)
     
     return json({ 
       cfg: cfg.json?.config||{}, 
@@ -90,7 +26,7 @@ export async function loader({request}: LoaderFunctionArgs){
       campaigns: campaigns.json||{},
       summary: summary.json||{},
       suggestions: generateSuggestions(insights.json, campaigns.json, summary.json),
-      tenantId: tenantId
+      shopName: shopName
     })
   } catch (error) {
     console.error('Loader error:', error.message);
@@ -100,7 +36,7 @@ export async function loader({request}: LoaderFunctionArgs){
       campaigns: {},
       summary: {},
       suggestions: generateSuggestions({}, {}, {}),
-      tenantId: 'dev-tenant'
+      shopName: getServerShopName()
     })
   }
 }
@@ -252,34 +188,10 @@ function generateSuggestions(insights: any, campaigns: any, summary: any) {
 
 export async function action({request}: ActionFunctionArgs){
   try {
-    // Extract tenant from Shopify session for production or use fallback for development
-    let tenantId = 'dev-tenant'; // fallback
+    // Use shop name utilities instead of complex tenant detection
+    const shopName = getServerShopName(request.headers);
     
-    // Try to get shop from URL parameters (Shopify embedded app)
-    const url = new URL(request.url);
-    const shopParam = url.searchParams.get('shop');
-    if (shopParam) {
-      tenantId = shopParam.replace('.myshopify.com', '');
-    }
-    
-    // Check headers for Shopify shop domain
-    const shopifyShop = request.headers.get('x-shopify-shop-domain') || 
-                       request.headers.get('shopify-shop-domain');
-    if (shopifyShop) {
-      tenantId = shopifyShop.replace('.myshopify.com', '');
-    }
-    
-    // Extract from referrer (Shopify admin context)
-    const referrer = request.headers.get('referer');
-    if (referrer && referrer.includes('admin.shopify.com/store/')) {
-      const match = referrer.match(/admin\.shopify\.com\/store\/([^\/\?]+)/);
-      if (match) {
-        tenantId = match[1];
-        console.log(`🏪 Extracted shop from referrer: ${tenantId}`);
-      }
-    }
-    
-    console.log(`🔧 Processing action for tenant: ${tenantId}`);
+    console.log(`🔧 Processing action for shop: ${shopName}`);
     
     const fd = await request.formData()
     const settings:any = {
@@ -292,19 +204,19 @@ export async function action({request}: ActionFunctionArgs){
     
     // Always save settings first
     const { backendFetch } = await import('../server/hmac.server')
-    await backendFetch('/upsertConfig','POST',{ nonce: Date.now(), settings }, tenantId)
+    await backendFetch('/upsertConfig','POST',{ nonce: Date.now(), settings }, shopName)
   
     // Handle bid limits if provided
     if (fd.get('save_caps')==='1'){
       const caps_campaign = fd.getAll('caps_campaign') as string[]
       const caps_value = fd.getAll('caps_value') as string[]
       const items = caps_campaign.map((c,i)=>({ campaign:c, value:Number(caps_value[i]||0) })).filter(x=>!Number.isNaN(x.value))
-      if (items.length){ await backendFetch('/cpc-ceilings/batch','POST',{ nonce: Date.now(), items }, tenantId) }
+      if (items.length){ await backendFetch('/cpc-ceilings/batch','POST',{ nonce: Date.now(), items }, shopName) }
     }
     
     // Run optimization if requested (force=1 to bypass schedule gate)
     if (fd.get('run_optimization')==='1'){ 
-      const tickResult = await backendFetch('/jobs/autopilot_tick?force=1','POST',{ nonce: Date.now() }, tenantId) 
+      const tickResult = await backendFetch('/jobs/autopilot_tick?force=1','POST',{ nonce: Date.now() }, shopName) 
       return json({ 
         ok: true, 
         tickResult: true,
@@ -314,7 +226,7 @@ export async function action({request}: ActionFunctionArgs){
         reason: tickResult.json?.reason || '',
         kpi: tickResult.json?.kpi || {},
         message: 'Settings saved and optimization completed!',
-        tenantId: tenantId
+        shopName: shopName
       })
     }
     // SEO tools
@@ -323,27 +235,27 @@ export async function action({request}: ActionFunctionArgs){
       const strategy = String(fd.get('strategy')||'template')
       const templateTitle = String(fd.get('template_title')||'')
       const templateDescription = String(fd.get('template_description')||'')
-      const r = await backendFetch('/shopify/seo/preview','POST',{ nonce: Date.now(), productIds: ids, strategy, templateTitle, templateDescription }, tenantId)
-      return json({ ok:true, preview:r.json?.proposals||[], dry:true, tenantId })
+      const r = await backendFetch('/shopify/seo/preview','POST',{ nonce: Date.now(), productIds: ids, strategy, templateTitle, templateDescription }, shopName)
+      return json({ ok:true, preview:r.json?.proposals||[], dry:true, shopName })
     }
     if (fd.get('seo_apply')==='1'){
       const changes = JSON.parse(String(fd.get('changes_json')||'[]'))
-      const r = await backendFetch('/shopify/seo/apply','POST',{ nonce: Date.now(), changes }, tenantId)
-      return json({ ok: r.json?.ok, applied: r.json?.applied||0, tenantId })
+      const r = await backendFetch('/shopify/seo/apply','POST',{ nonce: Date.now(), changes }, shopName)
+      return json({ ok: r.json?.ok, applied: r.json?.applied||0, shopName })
     }
     if (fd.get('tags_apply')==='1'){
       const ids = String(fd.get('product_ids')||'').split(/\s|,|\|/).map(s=>s.trim()).filter(Boolean)
       const add = String(fd.get('tags_add')||'').split(/,|\|/).map(s=>s.trim()).filter(Boolean)
       const remove = String(fd.get('tags_remove')||'').split(/,|\|/).map(s=>s.trim()).filter(Boolean)
-      const r = await backendFetch('/shopify/tags/batch','POST',{ nonce: Date.now(), productIds: ids, add, remove }, tenantId)
-      return json({ ok:r.json?.ok, updated:r.json?.updated||0, tenantId })
+      const r = await backendFetch('/shopify/tags/batch','POST',{ nonce: Date.now(), productIds: ids, add, remove }, shopName)
+      return json({ ok:r.json?.ok, updated:r.json?.updated||0, shopName })
     }
   
   // Default return for other actions (SEO, etc.)
-  return json({ ok:true, message: 'Settings saved successfully!', tenantId: tenantId })
+  return json({ ok:true, message: 'Settings saved successfully!', shopName: shopName })
   } catch (error) {
     console.error('Action error:', error.message);
-    return json({ ok: false, error: error.message }, { status: 500 })
+    return json({ ok: false, error: error.message, shopName: getServerShopName(request.headers) }, { status: 500 })
   }
 }
 
@@ -360,6 +272,17 @@ export default function Advanced(){
   const [toast, setToast] = React.useState('')
   const [appliedSuggestions, setAppliedSuggestions] = React.useState<Set<string>>(new Set())
   const [buttonFeedback, setButtonFeedback] = React.useState<{[key: string]: string}>({})
+  const [showSetupBanner, setShowSetupBanner] = React.useState(false)
+
+  // Check if setup is needed on client side
+  React.useEffect(() => {
+    setShowSetupBanner(isShopSetupNeeded());
+  }, []);
+
+  const handleSetupComplete = (shopName: string) => {
+    setShowSetupBanner(false);
+    setToast(`Shop configured: ${shopName}.myshopify.com`);
+  };
   
   // State for field values and manual override
   const [targetCPAMode, setTargetCPAMode] = React.useState<'preset' | 'manual'>('preset')
@@ -472,6 +395,17 @@ export default function Advanced(){
       <p style={{color: '#666', marginBottom: '24px'}}>
         Fine-tune your ProofKit automation and optimize your store's performance.
       </p>
+
+      {/* Shop Setup Banner - fallback if setup is needed */}
+      {showSetupBanner && (
+        <ShopSetupBanner 
+          onSetupComplete={handleSetupComplete}
+          showOnlyIfNeeded={true}
+        />
+      )}
+
+      {/* Shop Configuration - only show if setup is complete */}
+      {!showSetupBanner && <ShopConfig showInline={false} />}
 
 
       {/* Personalized Suggestions */}

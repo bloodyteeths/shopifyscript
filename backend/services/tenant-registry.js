@@ -40,19 +40,19 @@ class TenantRegistry {
           });
         }
         
-        // Add dev-tenant mapping to the same sheet for development
-        if (process.env.NODE_ENV === 'development' && process.env.SHEET_ID) {
-          this.registry.set('dev-tenant', {
-            id: 'dev-tenant',
+        // Add proofkit mapping for development and default usage
+        if (process.env.SHEET_ID) {
+          this.registry.set('proofkit', {
+            id: 'proofkit',
             sheetId: process.env.SHEET_ID,
-            name: 'Development Tenant',
+            name: 'ProofKit Shop',
             plan: 'starter',
             enabled: true,
             config: {},
             createdAt: new Date().toISOString(),
             updatedAt: new Date().toISOString()
           });
-          console.log(`🔧 Added dev-tenant mapping to Sheet: ${process.env.SHEET_ID}`);
+          console.log(`🔧 Added proofkit mapping to Sheet: ${process.env.SHEET_ID}`);
         }
       } else {
         // Fallback to default single-tenant mode using SHEET_ID
@@ -125,11 +125,18 @@ class TenantRegistry {
   }
 
   /**
-   * Automatically register a new tenant (for Shopify stores)
+   * Automatically register a new tenant (for Shopify stores using shop names)
    */
   autoRegisterTenant(tenantId) {
     // Skip auto-registration for system tenants
-    if (tenantId === 'default' || tenantId === 'TENANT_123') {
+    if (tenantId === 'default' || tenantId === 'proofkit') {
+      return null;
+    }
+    
+    // Validate that this looks like a shop name (basic validation)
+    const shopNamePattern = /^[a-zA-Z0-9][a-zA-Z0-9\-._]*[a-zA-Z0-9]$|^[a-zA-Z0-9]$/;
+    if (!shopNamePattern.test(tenantId)) {
+      console.warn(`❌ Invalid shop name format for auto-registration: ${tenantId}`);
       return null;
     }
     
@@ -139,17 +146,18 @@ class TenantRegistry {
     const newTenant = {
       id: tenantId,
       sheetId: defaultSheetId,
-      name: `${tenantId} (Auto-registered)`,
+      name: `${tenantId} (Auto-registered Shop)`,
       plan: 'starter',
       enabled: true,
       config: {},
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
-      autoRegistered: true
+      autoRegistered: true,
+      type: 'shopify_store'
     };
     
     this.registry.set(tenantId, newTenant);
-    console.log(`✅ Auto-registered tenant: ${tenantId} with sheet: ${defaultSheetId}`);
+    console.log(`✅ Auto-registered Shopify store: ${tenantId} with sheet: ${defaultSheetId}`);
     
     return newTenant;
   }

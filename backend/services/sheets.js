@@ -512,7 +512,7 @@ class OptimizedSheetsService {
   /**
    * Health check for the service
    */
-  async healthCheck(tenantId = 'TENANT_123') {
+  async healthCheck(tenantId = 'default') {
     const health = {
       status: 'healthy',
       timestamp: new Date().toISOString(),

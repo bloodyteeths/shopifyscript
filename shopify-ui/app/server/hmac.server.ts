@@ -1,4 +1,5 @@
 import crypto from 'crypto';
+import { getServerShopName } from '../utils/shop-config';
 
 // Secure HMAC secret validation for Shopify UI
 function getValidatedSecret(): string {
@@ -40,20 +41,17 @@ export function sign(payload: string): string {
   }
 }
 
-export async function backendFetch(pathname: string, method: 'GET'|'POST', body?: any, tenantOverride?: string){
+export async function backendFetch(pathname: string, method: 'GET'|'POST', body?: any, shopNameOverride?: string){
   const base = (process.env.BACKEND_PUBLIC_URL || 'https://shopifyscript-backend-9m8gmzrux-atillas-projects-3562cb36.vercel.app/api').replace(/\/$/, '');
   
-  // Dynamic tenant detection (for production: get from Shopify session)
-  // For local dev: use environment variable
-  const tenant = tenantOverride || 
-                 process.env.TENANT_ID || 
-                 'mybabybymerry'; // Default to shop name from your example
+  // Use shop name from parameter, environment, or default
+  const shopName = shopNameOverride || getServerShopName();
   const op = opKey(method, pathname);
   const nonce = method === 'POST' ? (body?.nonce ?? Date.now()) : undefined;
-  const payload = `${method}:${tenant}:${op}${nonce!==undefined?`:${nonce}`:''}`;
+  const payload = `${method}:${shopName}:${op}${nonce!==undefined?`:${nonce}`:''}`;
   const sig = sign(payload);
   const sep = pathname.includes('?') ? '&' : '?';
-  const url = `${base}${pathname}${sep}tenant=${encodeURIComponent(tenant)}&sig=${encodeURIComponent(sig)}`;
+  const url = `${base}${pathname}${sep}tenant=${encodeURIComponent(shopName)}&sig=${encodeURIComponent(sig)}`;
   const init: any = { method, headers: {} };
   if (method === 'POST'){ init.headers['content-type'] = 'application/json'; init.body = JSON.stringify(body||{}); }
   const res = await fetch(url, init);
@@ -61,27 +59,27 @@ export async function backendFetch(pathname: string, method: 'GET'|'POST', body?
   return { status: res.status, json };
 }
 
-export async function backendFetchRaw(pathname: string, method: 'GET'|'POST'){
+export async function backendFetchRaw(pathname: string, method: 'GET'|'POST', shopNameOverride?: string){
   const base = (process.env.BACKEND_PUBLIC_URL || 'https://shopifyscript-backend-9m8gmzrux-atillas-projects-3562cb36.vercel.app/api').replace(/\/$/, '');
-  const tenant = process.env.TENANT_ID || 'mybabybymerry';
+  const shopName = shopNameOverride || getServerShopName();
   const op = opKey(method, pathname);
   const nonce = undefined; // raw used for GET CSV
-  const payload = `${method}:${tenant}:${op}${nonce!==undefined?`:${nonce}`:''}`;
+  const payload = `${method}:${shopName}:${op}${nonce!==undefined?`:${nonce}`:''}`;
   const sig = sign(payload);
   const sep = pathname.includes('?') ? '&' : '?';
-  const url = `${base}${pathname}${sep}tenant=${encodeURIComponent(tenant)}&sig=${encodeURIComponent(sig)}`;
+  const url = `${base}${pathname}${sep}tenant=${encodeURIComponent(shopName)}&sig=${encodeURIComponent(sig)}`;
   return fetch(url, { method });
 }
 
-export async function backendFetchText(pathname: string, method: 'GET'|'POST' = 'GET', body?: any, tenantOverride?: string){
+export async function backendFetchText(pathname: string, method: 'GET'|'POST' = 'GET', body?: any, shopNameOverride?: string){
   const base = (process.env.BACKEND_PUBLIC_URL || 'https://shopifyscript-backend-9m8gmzrux-atillas-projects-3562cb36.vercel.app/api').replace(/\/$/, '');
-  const tenant = tenantOverride || process.env.TENANT_ID || 'mybabybymerry';
+  const shopName = shopNameOverride || getServerShopName();
   const op = opKey(method, pathname);
   const nonce = method === 'POST' ? (body?.nonce ?? Date.now()) : undefined;
-  const payload = `${method}:${tenant}:${op}${nonce!==undefined?`:${nonce}`:''}`;
+  const payload = `${method}:${shopName}:${op}${nonce!==undefined?`:${nonce}`:''}`;
   const sig = sign(payload);
   const sep = pathname.includes('?') ? '&' : '?';
-  const url = `${base}${pathname}${sep}tenant=${encodeURIComponent(tenant)}&sig=${encodeURIComponent(sig)}`;
+  const url = `${base}${pathname}${sep}tenant=${encodeURIComponent(shopName)}&sig=${encodeURIComponent(sig)}`;
   const init: any = { method, headers: {} };
   if (method === 'POST'){ init.headers['content-type'] = 'application/json'; init.body = JSON.stringify(body||{}); }
   const res = await fetch(url, init);

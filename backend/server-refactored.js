@@ -534,7 +534,7 @@ app.get('/api/ads-script/raw', async (req, res) => {
   }
   
   try {
-    const tenantId = String(tenant || 'TENANT_123');
+    const tenantId = String(tenant || 'default');
     const primary = path.resolve(process.cwd(), 'ads-script', 'master.gs');
     const fallback = path.resolve(process.cwd(), 'backend', 'ads-script', 'master.gs');
     const filePath = fs.existsSync(primary) ? primary : fallback;
@@ -569,7 +569,7 @@ app.get('/api/alerts/history/:tenant', alertsConfigRoutes.getAlertHistory);
 
 // Initialize Job Scheduler
 const { jobScheduler } = await import('./jobs/scheduler.js');
-jobScheduler.addTenant('TENANT_123'); // Add default tenant
+jobScheduler.addTenant('default'); // Add default tenant
 jobScheduler.start();
 
 // Graceful shutdown
@@ -582,7 +582,7 @@ process.on('SIGTERM', () => {
 // In-process pulse for promote window (no-op if no schedule)
 const { tickPromoteWindow } = await import('./jobs/promote_window.js');
 setInterval(() => { 
-  tickPromoteWindow('TENANT_123').catch(() => {}); 
+  tickPromoteWindow('default').catch(() => {}); 
 }, 60_000);
 
 // Setup error handling (must be after all routes)

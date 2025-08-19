@@ -121,7 +121,7 @@ async function writeDrafts(tenant, themes){
 
 async function main(){
   const args = process.argv.slice(2);
-  const tenant = (args.find(a=>a.startsWith('--tenant='))||'').split('=')[1] || process.env.TENANT || 'TENANT_123';
+  const tenant = (args.find(a=>a.startsWith('--tenant='))||'').split('=')[1] || process.env.TENANT_ID || 'default';
   const dryRun = args.includes('--dry-run');
   const limit = Number((args.find(a=>a.startsWith('--limit='))||'').split('=')[1]||'5');
   if (!tenant) failFast('Missing --tenant');
