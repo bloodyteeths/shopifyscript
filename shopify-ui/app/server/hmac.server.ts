@@ -54,6 +54,8 @@ export async function backendFetch(pathname: string, method: 'GET'|'POST', body?
   const sep = pathname.includes('?') ? '&' : '?';
   const url = `${base}${pathname}${sep}tenant=${encodeURIComponent(shopName)}&sig=${encodeURIComponent(sig)}`;
   const init: any = { method, headers: {} };
+  const bypass = process.env.BACKEND_PROTECTION_BYPASS || process.env.VERCEL_PROTECTION_BYPASS || process.env.VERCEL_AUTOMATION_BYPASS_SECRET;
+  if (bypass) { init.headers['x-vercel-protection-bypass'] = bypass; }
   if (method === 'POST'){ init.headers['content-type'] = 'application/json'; init.body = JSON.stringify(body||{}); }
   const res = await fetch(url, init);
   const json = await res.json().catch(()=>({ ok:false }));
@@ -70,7 +72,10 @@ export async function backendFetchRaw(pathname: string, method: 'GET'|'POST', sh
   const sig = sign(payload);
   const sep = pathname.includes('?') ? '&' : '?';
   const url = `${base}${pathname}${sep}tenant=${encodeURIComponent(shopName)}&sig=${encodeURIComponent(sig)}`;
-  return fetch(url, { method });
+  const bypass = process.env.BACKEND_PROTECTION_BYPASS || process.env.VERCEL_PROTECTION_BYPASS || process.env.VERCEL_AUTOMATION_BYPASS_SECRET;
+  const headers: Record<string,string> = {};
+  if (bypass) { headers['x-vercel-protection-bypass'] = bypass; }
+  return fetch(url, { method, headers });
 }
 
 export async function backendFetchText(pathname: string, method: 'GET'|'POST' = 'GET', body?: any, shopNameOverride?: string){
@@ -88,6 +93,8 @@ export async function backendFetchText(pathname: string, method: 'GET'|'POST' = 
   console.log(`🔑 HMAC payload: ${payload}`);
   
   const init: any = { method, headers: {} };
+  const bypass = process.env.BACKEND_PROTECTION_BYPASS || process.env.VERCEL_PROTECTION_BYPASS || process.env.VERCEL_AUTOMATION_BYPASS_SECRET;
+  if (bypass) { init.headers['x-vercel-protection-bypass'] = bypass; }
   if (method === 'POST'){ init.headers['content-type'] = 'application/json'; init.body = JSON.stringify(body||{}); }
   
   const res = await fetch(url, init);
