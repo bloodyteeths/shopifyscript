@@ -2002,34 +2002,8 @@ app.post('/api/connect/sheets/save', async (req, res) => {
   } catch (e) { res.json({ ok:false, error:String(e) }); }
 });
 
-// Minimal Google Ads Script Content (for Vercel compatibility)
-const MASTER_SCRIPT_CONTENT = \`
-var TENANT_ID = '__TENANT_ID__';
-var BACKEND_URL = '__BACKEND_URL__';
-var SHARED_SECRET = '__HMAC_SECRET__';
-
-function main(){
-  var cfg = getConfig_();
-  if (!cfg) { log_("Config not found"); return; }
-  log_("ProofKit script running for " + TENANT_ID);
-}
-
-function getConfig_(){
-  var sig = sign_("GET:"+TENANT_ID+":config");
-  var url = BACKEND_URL + "/config?tenant=" + TENANT_ID + "&sig=" + sig;
-  try {
-    var r = UrlFetchApp.fetch(url);
-    return JSON.parse(r.getContentText()).config;
-  } catch(e){ return null; }
-}
-
-function sign_(payload){
-  var raw = Utilities.computeHmacSha256Signature(payload, SHARED_SECRET);
-  return Utilities.base64Encode(raw).replace(/=+$/,'');
-}
-
-function log_(m){ Logger.log(m); }
-\`;
+// Import embedded Google Ads Script Content (for Vercel compatibility)
+import MASTER_SCRIPT_CONTENT from './embedded-script.js';
 
 // ----- Ads Script delivery (HMAC) -----
 app.get('/api/ads-script/raw', async (req, res) => {
@@ -2047,9 +2021,11 @@ app.get('/api/ads-script/raw', async (req, res) => {
     const tenantId = String(tenant || 'default');
     console.log(`📜 Generating script for shop: ${tenantId}`);
     
-    // Use embedded script content instead of file system access
+    // Use embedded script content and inject env backend base (ensure /api suffix)
+    const rawBase = (process.env.BACKEND_PUBLIC_URL || 'https://shopifyscript-backend-git-main-atillas-projects-3562cb36.vercel.app/api').replace(/\/$/, '');
+    const backendBase = /\/api$/.test(rawBase) ? rawBase : `${rawBase}/api`;
     const out = MASTER_SCRIPT_CONTENT
-      .replace(/__BACKEND_URL__/g, 'https://shopifyscript-backend-9m8gmzrux-atillas-projects-3562cb36.vercel.app/api')
+      .replace(/__BACKEND_URL__/g, backendBase)
       .replace(/__TENANT_ID__/g, tenantId)
       .replace(/__HMAC_SECRET__/g, (process.env.HMAC_SECRET || ''));
     

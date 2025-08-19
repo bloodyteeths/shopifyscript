@@ -78,6 +78,17 @@ export function getShopNameOrNull(): string | null {
 }
 
 /**
+ * Returns a valid shop name or a safe default when none is configured
+ */
+export function getShopNameOrDefault(): string {
+  const stored = getStoredShopName();
+  if (stored && validateShopName(stored)) {
+    return stored;
+  }
+  return 'dev-tenant';
+}
+
+/**
  * Clears the stored shop name
  */
 export function clearStoredShopName(): void {
