@@ -194,7 +194,9 @@ class TenantRegistry {
       throw new Error(`Tenant disabled: ${tenantId}`);
     }
 
-    const { GOOGLE_SERVICE_EMAIL, GOOGLE_PRIVATE_KEY } = process.env;
+    // Accept both canonical and alternate env var names
+    const GOOGLE_SERVICE_EMAIL = process.env.GOOGLE_SERVICE_EMAIL || process.env.GOOGLE_SHEETS_CLIENT_EMAIL;
+    const GOOGLE_PRIVATE_KEY = process.env.GOOGLE_PRIVATE_KEY || process.env.GOOGLE_SHEETS_PRIVATE_KEY;
     if (!GOOGLE_SERVICE_EMAIL || !GOOGLE_PRIVATE_KEY) {
       throw new Error('Google Sheets authentication not configured');
     }

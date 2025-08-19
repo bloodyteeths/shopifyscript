@@ -33,6 +33,18 @@ import securityRoutes from './routes/security.js';
 dotenv.config();
 try { dotenv.config({ path: path.resolve(process.cwd(), 'backend', '.env') }); } catch {}
 
+// Env alias normalization (Vercel-friendly)
+// Accept GOOGLE_SHEETS_CLIENT_EMAIL/PRIVATE_KEY and GOOGLE_SHEETS_PROJECT_ID as aliases
+if (!process.env.GOOGLE_SERVICE_EMAIL && process.env.GOOGLE_SHEETS_CLIENT_EMAIL) {
+  process.env.GOOGLE_SERVICE_EMAIL = process.env.GOOGLE_SHEETS_CLIENT_EMAIL;
+}
+if (!process.env.GOOGLE_PRIVATE_KEY && process.env.GOOGLE_SHEETS_PRIVATE_KEY) {
+  process.env.GOOGLE_PRIVATE_KEY = process.env.GOOGLE_SHEETS_PRIVATE_KEY;
+}
+if (!process.env.SHEET_ID && process.env.GOOGLE_SHEETS_PROJECT_ID) {
+  process.env.SHEET_ID = process.env.GOOGLE_SHEETS_PROJECT_ID;
+}
+
 // Initialize environment with validation
 let envConfig;
 try {
