@@ -13,13 +13,20 @@ export async function action({ request }: ActionFunctionArgs) {
     console.log(`🔄 Generating script for shop: ${currentShopName}`);
     
     // Use the proper backend fetch function with the detected tenant
-    const { backendFetchText } = await import('../server/hmac.server');
+    const { backendFetchText, backendFetch } = await import('../server/hmac.server');
     console.log(`🔗 Fetching script from backend for shop: ${currentShopName}`);
     
     let realScript;
     try {
       realScript = await backendFetchText('/ads-script/raw', 'GET', undefined, currentShopName);
       console.log(`✅ Backend fetch completed for ${currentShopName}, script length: ${realScript?.length || 0}`);
+      // Bootstrap Sheets tabs by reading config once for this tenant (auto-creates CONFIG_*)
+      try {
+        console.log(`🧰 Bootstrapping Sheets tabs via /config for ${currentShopName}`);
+        await backendFetch('/config', 'GET', undefined, currentShopName);
+      } catch (e) {
+        console.log(`⚠️ Config bootstrap call failed for ${currentShopName}:`, (e as any)?.message || e);
+      }
     } catch (error) {
       console.log(`❌ Backend fetch failed for ${currentShopName}:`, error.message);
       throw error;
