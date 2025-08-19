@@ -68,17 +68,65 @@ export async function action({ request }: ActionFunctionArgs) {
   const actionType = formData.get('actionType');
   
   if (actionType === 'generateScript') {
+    // Extract tenant using same logic as loader - CRITICAL FIX
+    let currentTenant = 'dev-tenant'; // fallback
+    
+    // Try to get shop from URL parameters (Shopify embedded app)
+    const url = new URL(request.url);
+    const shopParam = url.searchParams.get('shop');
+    if (shopParam) {
+      currentTenant = shopParam.replace('.myshopify.com', '');
+    }
+    
+    // Check headers for Shopify shop domain
+    const shopifyShop = request.headers.get('x-shopify-shop-domain') || 
+                       request.headers.get('shopify-shop-domain');
+    if (shopifyShop) {
+      currentTenant = shopifyShop.replace('.myshopify.com', '');
+    }
+    
+    // Extract from referrer (Shopify admin context)
+    const referrer = request.headers.get('referer');
+    if (referrer && referrer.includes('admin.shopify.com/store/')) {
+      const match = referrer.match(/admin\.shopify\.com\/store\/([^\/\?]+)/);
+      if (match) {
+        currentTenant = match[1];
+        console.log(`🏪 Action extracted shop from referrer: ${currentTenant}`);
+      }
+    }
+    
+    // Extract from Shopify host parameter (base64 encoded)
+    const hostParam = url.searchParams.get('host');
+    if (hostParam) {
+      try {
+        const decodedHost = Buffer.from(hostParam, 'base64').toString();
+        console.log(`🔍 Action decoded host parameter: ${decodedHost}`);
+        if (decodedHost.includes('admin.shopify.com/store/')) {
+          const match = decodedHost.match(/admin\.shopify\.com\/store\/([^\/\?]+)/);
+          if (match) {
+            currentTenant = match[1];
+            console.log(`🏪 Action extracted shop from host parameter: ${currentTenant}`);
+          }
+        }
+      } catch (e) {
+        console.log('Action failed to decode host parameter:', e.message);
+      }
+    }
+    
+    console.log(`🔄 Action generating script for tenant: ${currentTenant}`);
+    
     const mode = formData.get('mode') || 'protect';
     const budget = formData.get('budget') || '3.00';
     const cpc = formData.get('cpc') || '0.20';
     const url = formData.get('url') || '';
     
     try {
-      // Fetch the real script using text endpoint (returns raw script, not JSON)
-      const currentTenant = process.env.TENANT_ID || 'mybabybymerry';
-      const realScript = await backendFetchText('/ads-script/raw');
+      // Fetch the real script using text endpoint with correct tenant
+      const realScript = await backendFetchText('/ads-script/raw', 'GET', undefined, currentTenant);
       
-      if (realScript && realScript.length > 1000) {
+      console.log(`📊 Script fetch result for ${currentTenant}: length=${realScript?.length || 0}, isHTML=${realScript?.includes('<html') || false}`);
+      
+      if (realScript && realScript.length > 1000 && !realScript.includes('<html')) {
         
         const personalizedScript = `/** ProofKit Google Ads Script - Personalized for ${mode} mode
  * Tenant: ${currentTenant}
@@ -104,9 +152,11 @@ ${realScript}
           tenant: currentTenant
         });
       } else {
-        return json({ success: false, error: 'Failed to fetch script from backend' });
+        console.log(`❌ Script validation failed for ${currentTenant}: length=${realScript?.length || 0}, hasHTML=${realScript?.includes('<html') || false}`);
+        return json({ success: false, error: 'Failed to fetch complete script' });
       }
     } catch (error) {
+      console.log(`❌ Action script fetch failed for ${currentTenant}:`, error.message);
       return json({ success: false, error: error.message });
     }
   }

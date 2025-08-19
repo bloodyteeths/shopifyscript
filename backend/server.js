@@ -59,7 +59,18 @@ app.set('trust proxy', 1);
 app.use(cors({ origin: (origin, cb)=> {
   const allowed = (process.env.ALLOWED_ORIGINS||'').split(',').map(s=>s.trim()).filter(Boolean);
   if (!origin || !allowed.length) return cb(null, true);
-  return cb(null, allowed.includes(origin));
+  
+  // Allow Shopify app domains and admin domains
+  if (origin && (
+    origin.includes('.myshopify.com') ||
+    origin.includes('admin.shopify.com') ||
+    origin.includes('shopifyscript-shopify-ui.vercel.app') ||
+    allowed.includes(origin)
+  )) {
+    return cb(null, true);
+  }
+  
+  return cb(null, false);
 }}));
 app.use(express.json({ limit: '2mb' }));
 
