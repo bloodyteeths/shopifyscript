@@ -2021,10 +2021,25 @@ app.get('/api/ads-script/raw', async (req, res) => {
     const tenantId = String(tenant || 'default');
     console.log(`📜 Generating script for shop: ${tenantId}`);
     
-    // Use embedded script content and inject env backend base (ensure /api suffix)
+    // Prefer real master.gs if available; fallback to embedded content
+    let scriptBody = MASTER_SCRIPT_CONTENT;
+    try {
+      const primary = path.resolve(process.cwd(), 'ads-script', 'master.gs');
+      const fallback = path.resolve(process.cwd(), 'backend', 'ads-script', 'master.gs');
+      const filePath = fs.existsSync(primary) ? primary : (fs.existsSync(fallback) ? fallback : null);
+      if (filePath) {
+        scriptBody = await fs.promises.readFile(filePath, 'utf8');
+      }
+    } catch (readErr) {
+      console.log('ℹ️ Using embedded script content (file read fallback):', String(readErr.message||readErr));
+    }
+
+    // Normalize backend base away from Vercel preview protection and ensure /api suffix
     const rawBase = (process.env.BACKEND_PUBLIC_URL || 'https://shopifyscript-backend-git-main-atillas-projects-3562cb36.vercel.app/api').replace(/\/$/, '');
-    const backendBase = /\/api$/.test(rawBase) ? rawBase : `${rawBase}/api`;
-    const out = MASTER_SCRIPT_CONTENT
+    const normalizedHost = rawBase.replace(/-git-[a-zA-Z0-9]+-atillas-projects-3562cb36\.vercel\.app/, '.vercel.app');
+    const backendBase = /\/api$/.test(normalizedHost) ? normalizedHost : `${normalizedHost}/api`;
+
+    const out = scriptBody
       .replace(/__BACKEND_URL__/g, backendBase)
       .replace(/__TENANT_ID__/g, tenantId)
       .replace(/__HMAC_SECRET__/g, (process.env.HMAC_SECRET || ''));
