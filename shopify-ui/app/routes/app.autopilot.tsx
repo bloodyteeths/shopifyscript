@@ -72,8 +72,8 @@ export async function action({ request }: ActionFunctionArgs) {
     let currentTenant = 'dev-tenant'; // fallback
     
     // Try to get shop from URL parameters (Shopify embedded app)
-    const url = new URL(request.url);
-    const shopParam = url.searchParams.get('shop');
+    const requestUrl = new URL(request.url);
+    const shopParam = requestUrl.searchParams.get('shop');
     if (shopParam) {
       currentTenant = shopParam.replace('.myshopify.com', '');
     }
@@ -96,7 +96,7 @@ export async function action({ request }: ActionFunctionArgs) {
     }
     
     // Extract from Shopify host parameter (base64 encoded)
-    const hostParam = url.searchParams.get('host');
+    const hostParam = requestUrl.searchParams.get('host');
     if (hostParam) {
       try {
         const decodedHost = Buffer.from(hostParam, 'base64').toString();

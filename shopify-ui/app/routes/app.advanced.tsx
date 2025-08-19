@@ -642,7 +642,7 @@ export default function Advanced(){
               ))}
             </div>
             
-            <div style={helpStyle} style={{marginTop: '8px'}}>
+            <div style={{...helpStyle, marginTop: '8px'}}>
               <strong>Tip:</strong> Start with "Daily" if you have active campaigns. You can change this anytime.
             </div>
           </div>
@@ -1270,7 +1270,7 @@ export default function Advanced(){
               />
             )}
             
-            <div style={helpStyle} style={{marginTop: '8px'}}>
+            <div style={{...helpStyle, marginTop: '8px'}}>
               These instructions help the AI understand your business goals and make better optimization decisions.
             </div>
           </div>
