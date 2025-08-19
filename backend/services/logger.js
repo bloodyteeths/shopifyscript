@@ -640,7 +640,8 @@ class Logger {
  */
 export const logger = new Logger({
   level: process.env.LOG_LEVEL || LogLevel.INFO,
-  enableFile: process.env.NODE_ENV === 'production',
+  // Disable file logging on serverless (Vercel) to avoid /var/task write errors
+  enableFile: process.env.VERCEL ? false : (process.env.NODE_ENV === 'production'),
   service: 'proofkit-saas',
   version: process.env.npm_package_version || '1.0.0'
 });

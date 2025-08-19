@@ -1984,9 +1984,20 @@ app.get('/api/ads-script/raw', async (req, res) => {
     const tenantId = String(tenant); // Use the actual passed tenant
     console.log(`📜 Generating script for tenant: ${tenantId}`);
     
-    const primary = path.resolve('/Users/tamsar/Downloads/proofkit-saas', 'ads-script', 'master.gs');
-    const fallback = path.resolve(process.cwd(), '..', 'ads-script', 'master.gs');
-    const filePath = fs.existsSync(primary) ? primary : fallback;
+    // Resolve script file robustly across local and serverless (Vercel) environments
+    const candidates = [
+      // Prefer path relative to this file (backend/server.js -> ../ads-script/master.gs)
+      path.resolve(__dirname, '..', 'ads-script', 'master.gs'),
+      // Monorepo root at runtime (serverless bundles usually mount at /var/task)
+      path.resolve(process.cwd(), 'ads-script', 'master.gs'),
+      // Fallback to parent-of-cwd (local dev run from backend/)
+      path.resolve(process.cwd(), '..', 'ads-script', 'master.gs')
+    ];
+    let filePath = null;
+    for (const p of candidates) { if (fs.existsSync(p)) { filePath = p; break; } }
+    if (!filePath) {
+      return res.status(500).json({ ok:false, error:'master.gs_not_found' });
+    }
     const raw = await fs.promises.readFile(filePath, 'utf8');
     const out = raw
       .replace(/__BACKEND_URL__/g, 'https://shopifyscript-backend-9m8gmzrux-atillas-projects-3562cb36.vercel.app/api')
