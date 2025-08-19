@@ -2,13 +2,14 @@ import * as React from 'react';
 import { useLoaderData, useFetcher } from '@remix-run/react';
 import { json, type ActionFunctionArgs } from '@remix-run/node';
 import { backendFetch, backendFetchText } from '../server/hmac.server';
-import { getServerShopName, isShopSetupNeeded } from '../utils/shop-config';
+import { getServerShopName, getShopNameOrNull, isShopSetupNeeded } from '../utils/shop-config';
 import ShopConfig from '../components/ShopConfig';
 import ShopSetupBanner from '../components/ShopSetupBanner';
 
 export async function loader({request}){
-  // Use shop name utilities instead of complex tenant detection
-  const shopName = getServerShopName(request.headers);
+  // Get shop name from user configuration - prioritize manual setup over environment
+  const userShopName = getShopNameOrNull();
+  const shopName = userShopName || getServerShopName(request.headers);
   
   console.log(`🏪 Autopilot loading for shop: ${shopName}`);
   

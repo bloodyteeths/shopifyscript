@@ -6,7 +6,7 @@
  */
 
 const SHOP_NAME_KEY = 'proofkit_shop_name';
-const DEFAULT_SHOP_NAME = 'proofkit';
+// No default shop name - user must enter manually
 
 /**
  * Gets the stored shop name from localStorage
@@ -64,17 +64,17 @@ export function validateShopName(shopName: string): boolean {
 }
 
 /**
- * Gets the shop name with fallback to default
- * @returns The stored shop name or default fallback
+ * Gets the shop name - NO fallback, user must enter manually
+ * @returns The stored shop name or null if not configured
  */
-export function getShopNameOrDefault(): string {
+export function getShopNameOrNull(): string | null {
   const stored = getStoredShopName();
   
   if (stored && validateShopName(stored)) {
     return stored;
   }
   
-  return DEFAULT_SHOP_NAME;
+  return null; // Force user to enter shop name manually
 }
 
 /**
@@ -94,9 +94,9 @@ export function clearStoredShopName(): void {
 
 /**
  * Gets shop name for server-side operations
- * Falls back to environment variable or default
+ * Requires manual user configuration - no automatic fallbacks
  * @param requestHeaders Optional request headers to check for shop info
- * @returns Shop name for server operations
+ * @returns Shop name for server operations or 'dev-tenant' for development
  */
 export function getServerShopName(requestHeaders?: Headers): string {
   // Check if shop name is passed in headers (for API calls)
@@ -107,14 +107,18 @@ export function getServerShopName(requestHeaders?: Headers): string {
     }
   }
   
-  // For server-side, check environment variable
+  // For server-side, check environment variable but avoid legacy values
   const envShopName = process.env.TENANT_ID || process.env.SHOP_NAME;
   
-  if (envShopName && validateShopName(envShopName)) {
+  if (envShopName && 
+      envShopName !== 'TENANT_123' && 
+      envShopName !== 'mybabybymerry' &&
+      validateShopName(envShopName)) {
     return envShopName;
   }
   
-  return DEFAULT_SHOP_NAME;
+  // Development fallback only - production should have proper shop name
+  return 'dev-tenant';
 }
 
 /**
@@ -131,13 +135,13 @@ export interface ShopConfig {
  * @returns Shop configuration object
  */
 export function getShopConfig(): ShopConfig {
-  const shopName = getShopNameOrDefault();
   const stored = getStoredShopName();
+  const shopName = stored || 'dev-tenant';
   
   return {
     shopName,
-    isDefault: shopName === DEFAULT_SHOP_NAME,
-    isValid: validateShopName(shopName)
+    isDefault: !stored, // Default if no stored shop name
+    isValid: stored ? validateShopName(stored) : false
   };
 }
 
@@ -151,15 +155,11 @@ export function isShopSetupNeeded(): boolean {
   }
   
   const storedShopName = getStoredShopName();
-  const currentShopName = getShopNameOrDefault();
   
-  // Setup needed if:
+  // Setup needed ONLY if:
   // 1. No stored shop name exists
-  // 2. Still using default shop name 
-  // 3. Stored shop name is invalid
-  return !storedShopName || 
-         currentShopName === DEFAULT_SHOP_NAME || 
-         (storedShopName && !validateShopName(storedShopName));
+  // 2. Stored shop name is invalid
+  return !storedShopName || (storedShopName && !validateShopName(storedShopName));
 }
 
 /**
