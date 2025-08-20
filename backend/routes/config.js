@@ -19,25 +19,9 @@ router.get('/config', async (req, res) => {
   }
   
   try {
-    let cfg = null;
-    
-    try {
-      cfg = await sheets.readConfig(tenant);
-    } catch (sheetsError) {
-      console.log(`⚠️ Google Sheets not available for reading config ${tenant}:`, sheetsError.message);
-      
-      // SECURITY FIX: Use secure environment validation instead of NODE_ENV
-      if (environmentSecurity.isTestingAllowed()) {
-        cfg = global.devTenantConfigs?.[tenant] || {};
-        console.log(`🔧 Using in-memory config for ${tenant} (${environmentSecurity.getEnvironmentInfo().deploymentEnv}):`, cfg);
-      }
-    }
-    
-    if (!cfg) {
-      const configManager = new TenantConfigService();
-      cfg = configManager.getDefaultConfig(tenant);
-      console.log(`📋 Using default config for ${tenant}:`, Object.keys(cfg));
-    }
+    // Always go through TenantConfigService which ensures Sheets tabs exist
+    const configManager = new TenantConfigService();
+    const cfg = await configManager.getTenantConfig(tenant);
     
     await logAccess(req, 200, 'config ok');
     return json(res, 200, { ok: true, config: cfg });

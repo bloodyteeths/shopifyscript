@@ -3,7 +3,8 @@ import {
   getStoredShopName, 
   setStoredShopName, 
   validateShopName,
-  getShopNameOrNull 
+  getShopNameOrNull,
+  getShopNameOrDefault
 } from '../utils/shop-config';
 
 interface ShopSetupBannerProps {
@@ -23,8 +24,8 @@ export function ShopSetupBanner({ onSetupComplete, showOnlyIfNeeded = true }: Sh
     const storedShopName = getStoredShopName();
     const currentShopName = getShopNameOrDefault();
     
-    // Show banner if no stored shop name or using default
-    const needsSetup = !storedShopName || currentShopName === 'proofkit';
+    // Show banner if no stored shop name or using default dev-tenant
+    const needsSetup = !storedShopName || currentShopName === 'dev-tenant';
     
     if (showOnlyIfNeeded) {
       setIsVisible(needsSetup);

@@ -4,6 +4,7 @@ import {
   setStoredShopName, 
   validateShopName, 
   getShopNameOrNull,
+  getShopNameOrDefault,
   clearStoredShopName 
 } from '../utils/shop-config';
 
