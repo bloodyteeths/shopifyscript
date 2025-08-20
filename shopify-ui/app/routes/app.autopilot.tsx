@@ -2,7 +2,7 @@ import * as React from 'react';
 import { useLoaderData, useFetcher } from '@remix-run/react';
 import { json, type ActionFunctionArgs } from '@remix-run/node';
 import { backendFetch, backendFetchText } from '../server/hmac.server';
-import { getServerShopName, getShopNameOrNull, isShopSetupNeeded } from '../utils/shop-config';
+import { getServerShopName, getShopNameOrNull, isShopSetupNeeded, dismissShopSetupForSession } from '../utils/shop-config';
 import ShopConfig from '../components/ShopConfig';
 import ShopSetupBanner from '../components/ShopSetupBanner';
 
@@ -26,7 +26,7 @@ export async function action({ request }: ActionFunctionArgs) {
   
   if (actionType === 'generateScript') {
     // Use shop name utilities instead of complex tenant detection
-    const currentShopName = getServerShopName(request.headers);
+    const currentShopName = getServerShopName(request.headers, request.url);
     
     console.log(`🔄 Action generating script for shop: ${currentShopName}`);
     
@@ -96,12 +96,13 @@ export default function Autopilot(){
   React.useEffect(() => {
     const userShopName = getShopNameOrNull();
     setShopName(userShopName);
-    setShowSetupBanner(!userShopName); // Show banner only if no shop name stored
+    setShowSetupBanner(isShopSetupNeeded()); // Use proper setup check
   }, []);
 
   const handleSetupComplete = (newShopName: string) => {
     setShopName(newShopName);
     setShowSetupBanner(false);
+    dismissShopSetupForSession(); // Prevent re-showing this session
     setToast(`Shop configured: ${newShopName}.myshopify.com`);
   };
 

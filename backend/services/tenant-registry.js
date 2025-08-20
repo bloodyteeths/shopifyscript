@@ -125,18 +125,19 @@ class TenantRegistry {
   }
 
   /**
-   * Automatically register a new tenant (for Shopify stores using shop names)
+   * Automatically register a new tenant (for any shop name)
    */
   autoRegisterTenant(tenantId) {
-    // Skip auto-registration for system tenants
-    if (tenantId === 'default' || tenantId === 'proofkit') {
+    // Allow any valid tenant ID format - no hardcoded restrictions
+    if (!tenantId || typeof tenantId !== 'string') {
+      console.warn(`❌ Invalid tenant ID for auto-registration: ${tenantId}`);
       return null;
     }
     
-    // Validate that this looks like a shop name (basic validation)
-    const shopNamePattern = /^[a-zA-Z0-9][a-zA-Z0-9\-._]*[a-zA-Z0-9]$|^[a-zA-Z0-9]$/;
-    if (!shopNamePattern.test(tenantId)) {
-      console.warn(`❌ Invalid shop name format for auto-registration: ${tenantId}`);
+    // Validate using the same pattern as the UI (shop name validation)
+    const validIdPattern = /^[a-zA-Z0-9][a-zA-Z0-9\-_]{1,63}$/;
+    if (tenantId.length < 2 || !validIdPattern.test(tenantId)) {
+      console.warn(`❌ Invalid tenant ID format for auto-registration: ${tenantId}`);
       return null;
     }
     
@@ -146,7 +147,7 @@ class TenantRegistry {
     const newTenant = {
       id: tenantId,
       sheetId: defaultSheetId,
-      name: `${tenantId} (Auto-registered Shop)`,
+      name: `${tenantId.charAt(0).toUpperCase() + tenantId.slice(1)} Shop`,
       plan: 'starter',
       enabled: true,
       config: {},

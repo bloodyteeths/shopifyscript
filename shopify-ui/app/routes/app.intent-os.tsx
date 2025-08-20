@@ -3,7 +3,7 @@ import { useLoaderData, Link } from '@remix-run/react';
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   return json({
-    tenantId: 'dev-tenant',
+    tenantId: process.env.TENANT_ID || 'proofkit',
     launchDate: 'Q1 2026'
   });
 };

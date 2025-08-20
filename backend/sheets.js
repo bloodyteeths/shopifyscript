@@ -16,15 +16,23 @@ export async function getDoc() {
       await tenantRegistry.initialize();
     }
     
-    // Prefer 'default' sheet for legacy (tenant-agnostic) operations
+    // Use first available tenant - no hardcoded preferences
     const allTenants = tenantRegistry.getAllTenants();
     let targetTenantId = 'default';
-    const hasDefault = allTenants.some(t => t.id === 'default');
-    if (!hasDefault) {
-      // If 'default' is not registered, prefer 'proofkit' if present, else first tenant
-      const proofkit = allTenants.find(t => t.id === 'proofkit');
-      targetTenantId = proofkit ? proofkit.id : (allTenants[0]?.id || 'default');
+    
+    if (allTenants.length > 0) {
+      // Use first tenant in registry, or create default if none exist
+      targetTenantId = allTenants[0].id;
+    } else if (process.env.SHEET_ID) {
+      // Auto-register default tenant if we have a SHEET_ID but no tenants
+      tenantRegistry.addTenant('default', {
+        sheetId: process.env.SHEET_ID,
+        name: 'Default Tenant',
+        plan: 'starter'
+      });
+      targetTenantId = 'default';
     }
+    
     const connection = await optimizedSheets.getTenantDoc(targetTenantId);
     return connection.doc;
   } catch (error) {

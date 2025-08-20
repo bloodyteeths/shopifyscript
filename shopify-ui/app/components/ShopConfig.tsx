@@ -5,7 +5,8 @@ import {
   validateShopName, 
   getShopNameOrNull,
   getShopNameOrDefault,
-  clearStoredShopName 
+  clearStoredShopName,
+  dismissShopSetupForSession
 } from '../utils/shop-config';
 
 interface ShopConfigProps {
@@ -20,11 +21,12 @@ export function ShopConfig({ showInline = false, onShopNameChange }: ShopConfigP
   const [success, setSuccess] = React.useState('');
 
   React.useEffect(() => {
-    const currentShopName = getShopNameOrNull() || 'dev-tenant';
+    const currentShopName = getShopNameOrNull() || getShopNameOrDefault();
     setShopName(currentShopName);
     // Ensure URL reflects saved shop for server-side loaders
     try {
-      if (currentShopName && currentShopName !== 'dev-tenant') {
+      const defaultShop = process.env.TENANT_ID || 'proofkit';
+      if (currentShopName && currentShopName !== defaultShop) {
         const url = new URL(window.location.href)
         if (url.searchParams.get('shop') !== currentShopName) {
           url.searchParams.set('shop', currentShopName)
@@ -45,6 +47,7 @@ export function ShopConfig({ showInline = false, onShopNameChange }: ShopConfigP
 
     try {
       setStoredShopName(shopName);
+      dismissShopSetupForSession(); // Prevent setup banners from re-appearing
       setSuccess('Shop name saved successfully!');
       setIsEditing(false);
       onShopNameChange?.(shopName);
@@ -57,7 +60,7 @@ export function ShopConfig({ showInline = false, onShopNameChange }: ShopConfigP
   };
 
   const handleCancel = () => {
-    const currentShopName = getShopNameOrNull() || 'dev-tenant';
+    const currentShopName = getShopNameOrNull() || getShopNameOrDefault();
     setShopName(currentShopName);
     setIsEditing(false);
     setError('');

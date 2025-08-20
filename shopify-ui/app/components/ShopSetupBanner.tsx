@@ -4,15 +4,18 @@ import {
   setStoredShopName, 
   validateShopName,
   getShopNameOrNull,
-  getShopNameOrDefault
+  getShopNameOrDefault,
+  isShopSetupNeeded,
+  dismissShopSetupForSession
 } from '../utils/shop-config';
 
 interface ShopSetupBannerProps {
   onSetupComplete?: (shopName: string) => void;
   showOnlyIfNeeded?: boolean;
+  allowDismiss?: boolean;
 }
 
-export function ShopSetupBanner({ onSetupComplete, showOnlyIfNeeded = true }: ShopSetupBannerProps) {
+export function ShopSetupBanner({ onSetupComplete, showOnlyIfNeeded = true, allowDismiss = true }: ShopSetupBannerProps) {
   const [shopName, setShopName] = React.useState('');
   const [isVisible, setIsVisible] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
@@ -20,12 +23,8 @@ export function ShopSetupBanner({ onSetupComplete, showOnlyIfNeeded = true }: Sh
   const [showSuccess, setShowSuccess] = React.useState(false);
 
   React.useEffect(() => {
-    // Check if setup is needed
-    const storedShopName = getStoredShopName();
-    const currentShopName = getShopNameOrDefault();
-    
-    // Show banner if no stored shop name or using default dev-tenant
-    const needsSetup = !storedShopName || currentShopName === 'dev-tenant';
+    // Check if setup is needed using the improved logic
+    const needsSetup = isShopSetupNeeded();
     
     if (showOnlyIfNeeded) {
       setIsVisible(needsSetup);
@@ -36,6 +35,7 @@ export function ShopSetupBanner({ onSetupComplete, showOnlyIfNeeded = true }: Sh
     if (needsSetup) {
       setShopName(''); // Start with empty for first-time setup
     } else {
+      const currentShopName = getShopNameOrDefault();
       setShopName(currentShopName);
     }
   }, [showOnlyIfNeeded]);
@@ -84,6 +84,11 @@ export function ShopSetupBanner({ onSetupComplete, showOnlyIfNeeded = true }: Sh
     }
   };
 
+  const handleDismiss = () => {
+    dismissShopSetupForSession();
+    setIsVisible(false);
+  };
+
   if (!isVisible) {
     return null;
   }
@@ -95,8 +100,40 @@ export function ShopSetupBanner({ onSetupComplete, showOnlyIfNeeded = true }: Sh
       borderRadius: '12px',
       padding: '24px',
       marginBottom: '24px',
-      boxShadow: '0 4px 12px rgba(0, 123, 255, 0.15)'
+      boxShadow: '0 4px 12px rgba(0, 123, 255, 0.15)',
+      position: 'relative'
     }}>
+      {/* Dismiss button */}
+      {allowDismiss && !showSuccess && (
+        <button
+          onClick={handleDismiss}
+          style={{
+            position: 'absolute',
+            top: '12px',
+            right: '12px',
+            background: 'transparent',
+            border: 'none',
+            color: '#007bff',
+            fontSize: '24px',
+            cursor: 'pointer',
+            padding: '4px',
+            borderRadius: '4px',
+            lineHeight: '1',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '32px',
+            height: '32px',
+            transition: 'background-color 0.2s ease'
+          }}
+          onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f8f9fa'}
+          onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+          title="Skip setup for now"
+        >
+          ✕
+        </button>
+      )}
+      
       {showSuccess ? (
         // Success State
         <div style={{

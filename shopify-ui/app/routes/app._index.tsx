@@ -2,7 +2,7 @@ import { json } from '@remix-run/node';
 import { useLoaderData, Link } from '@remix-run/react';
 import * as React from 'react';
 import ShopSetupBanner from '../components/ShopSetupBanner';
-import { isShopSetupNeeded } from '../utils/shop-config';
+import { isShopSetupNeeded, dismissShopSetupForSession } from '../utils/shop-config';
 
 export const loader = async () => {
   return json({
@@ -22,6 +22,7 @@ export default function AppIndex() {
 
   const handleSetupComplete = (shopName: string) => {
     setShowSetupBanner(false);
+    dismissShopSetupForSession(); // Prevent re-showing this session
   };
 
   return (

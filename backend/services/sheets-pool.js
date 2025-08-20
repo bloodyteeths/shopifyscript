@@ -9,18 +9,22 @@ import { JWT } from 'google-auth-library';
 class SheetsConnectionPool {
   constructor() {
     this.pool = new Map(); // tenantId -> { doc, auth, lastUsed, inUse, useCount }
-    // Hard clamp to protect quotas across all environments
-    const envMaxConns = Number(process.env.SHEETS_MAX_CONNECTIONS || 50);
-    const envMaxConcurrent = Number(process.env.SHEETS_MAX_CONCURRENT || 2);
-    const envMaxRequests = Number(process.env.SHEETS_MAX_REQUESTS || 20);
-    this.maxConnections = Math.max(1, Math.min(envMaxConns, 50));
-    this.maxConcurrent = Math.max(1, Math.min(envMaxConcurrent, 2));
+    // Reasonable limits for production while protecting quotas
+    const envMaxConns = Number(process.env.SHEETS_MAX_CONNECTIONS || 100);
+    const envMaxConcurrent = Number(process.env.SHEETS_MAX_CONCURRENT || 25);
+    const envMaxRequests = Number(process.env.SHEETS_MAX_REQUESTS || 80);
+    this.maxConnections = Math.max(1, Math.min(envMaxConns, 200)); // Increased from 50 to 200
+    this.maxConcurrent = Math.max(1, Math.min(envMaxConcurrent, 50)); // Increased from 2 to 50
     this.connectionTtl = Number(process.env.SHEETS_CONNECTION_TTL_SEC || 300) * 1000; // 5 minutes
+    
+    // Connection queue for handling concurrent limit gracefully
+    this.connectionQueue = [];
+    this.queueTimeout = Number(process.env.SHEETS_QUEUE_TIMEOUT_MS || 10000); // 10 seconds
     
     // Rate limiting - Google Sheets quota: 100 requests per 100 seconds per user
     this.rateLimiter = {
       requests: new Map(), // timestamp array per tenant
-      maxRequests: Math.max(1, Math.min(envMaxRequests, 20)), // Hard cap at 20/100s
+      maxRequests: Math.max(1, Math.min(envMaxRequests, 90)), // Increased from 20 to 90/100s
       windowMs: Number(process.env.SHEETS_RATE_WINDOW_MS || 100000) // 100 seconds
     };
     
@@ -66,14 +70,72 @@ class SheetsConnectionPool {
       };
     }
 
-    // Check connection limits
+    // Check connection limits - use queuing if at limit
     if (this.metrics.activeConnections >= this.maxConcurrent) {
-      throw new Error('Maximum concurrent connections reached. Please try again later.');
+      return await this.queueConnection(tenantId, sheetId, poolKey);
     }
 
     // Create new connection
     this.metrics.poolMisses++;
     return await this.createConnection(tenantId, sheetId, poolKey);
+  }
+
+  /**
+   * Queue connection request when at concurrent limit
+   */
+  async queueConnection(tenantId, sheetId, poolKey) {
+    return new Promise((resolve, reject) => {
+      const timeoutId = setTimeout(() => {
+        // Remove from queue if timeout
+        const index = this.connectionQueue.findIndex(item => item.resolve === resolve);
+        if (index !== -1) {
+          this.connectionQueue.splice(index, 1);
+        }
+        reject(new Error(`Connection request timed out for tenant ${tenantId} after ${this.queueTimeout}ms`));
+      }, this.queueTimeout);
+
+      this.connectionQueue.push({
+        tenantId,
+        sheetId,
+        poolKey,
+        resolve,
+        reject,
+        timeoutId,
+        queuedAt: Date.now()
+      });
+
+      // Try to process queue immediately in case a connection was just released
+      this.processQueue();
+    });
+  }
+
+  /**
+   * Process queued connection requests
+   */
+  async processQueue() {
+    if (this.connectionQueue.length === 0 || this.metrics.activeConnections >= this.maxConcurrent) {
+      return;
+    }
+
+    const queuedRequest = this.connectionQueue.shift();
+    clearTimeout(queuedRequest.timeoutId);
+
+    try {
+      this.metrics.poolMisses++;
+      const connection = await this.createConnection(
+        queuedRequest.tenantId, 
+        queuedRequest.sheetId, 
+        queuedRequest.poolKey
+      );
+      queuedRequest.resolve(connection);
+    } catch (error) {
+      queuedRequest.reject(error);
+    }
+
+    // Process next item in queue if we still have capacity
+    if (this.connectionQueue.length > 0 && this.metrics.activeConnections < this.maxConcurrent) {
+      setImmediate(() => this.processQueue());
+    }
   }
 
   /**
@@ -151,6 +213,11 @@ class SheetsConnectionPool {
       poolEntry.inUse = false;
       poolEntry.lastUsed = Date.now();
       this.metrics.activeConnections = Math.max(0, this.metrics.activeConnections - 1);
+      
+      // Process any queued connections now that we have capacity
+      if (this.connectionQueue.length > 0) {
+        setImmediate(() => this.processQueue());
+      }
     }
   }
 
@@ -296,6 +363,13 @@ class SheetsConnectionPool {
     this.pool.clear();
     this.rateLimiter.requests.clear();
     
+    // Clear and reject any queued requests
+    this.connectionQueue.forEach(item => {
+      clearTimeout(item.timeoutId);
+      item.reject(new Error('Connection pool was cleared'));
+    });
+    this.connectionQueue = [];
+    
     this.metrics.activeConnections = 0;
     this.metrics.connectionsDestroyed += size;
     
@@ -335,6 +409,10 @@ class SheetsConnectionPool {
         maxConnections: this.maxConnections,
         maxConcurrent: this.maxConcurrent,
         connectionTtl: this.connectionTtl
+      },
+      queue: {
+        pending: this.connectionQueue.length,
+        timeoutMs: this.queueTimeout
       },
       rateLimiting: {
         maxRequests: this.rateLimiter.maxRequests,

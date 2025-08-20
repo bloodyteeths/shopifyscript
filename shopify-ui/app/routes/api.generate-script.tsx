@@ -8,7 +8,7 @@ export async function action({ request }: ActionFunctionArgs) {
     const { mode, budget, cpc, url, shopName } = body;
     
     // Use shop name from request body or determine from server context
-    const currentShopName = shopName || getServerShopName(request.headers);
+    const currentShopName = shopName || getServerShopName(request.headers, request.url);
     
     console.log(`🔄 Generating script for shop: ${currentShopName}`);
     

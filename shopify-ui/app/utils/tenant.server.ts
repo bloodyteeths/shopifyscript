@@ -3,29 +3,45 @@
  * Extracts tenant ID from Shopify session, shop domain, or request context
  */
 
+import { validateShopName } from './shop-config';
+
 /**
  * Extract tenant ID from request
- * Production-ready multi-tenant detection
+ * Production-ready multi-tenant detection with user-input priority
  */
 export async function getTenantFromRequest(request: Request): Promise<string> {
   try {
-    // Method 1: Extract from Shopify shop parameter (production)
     const url = new URL(request.url);
-    const shopParam = url.searchParams.get('shop');
+    
+    // Method 1: Extract from URL parameters (highest priority - user input)
+    const shopParam = url.searchParams.get('shop') || url.searchParams.get('shopName') || url.searchParams.get('tenant');
     if (shopParam) {
-      // Convert "mystore.myshopify.com" -> "mystore"
+      // Convert "mystore.myshopify.com" -> "mystore" if needed
       const tenantId = shopParam.replace('.myshopify.com', '');
-      console.log(`🏪 Detected tenant from shop param: ${tenantId}`);
-      return tenantId;
+      if (validateShopName(tenantId)) {
+        console.log(`🏪 Detected tenant from URL param: ${tenantId}`);
+        return tenantId;
+      }
     }
 
-    // Method 2: Extract from subdomain (if using subdomain routing)
-    const host = request.headers.get('host') || '';
-    if (host.includes('.proofkit.com')) {
-      const subdomain = host.split('.')[0];
-      if (subdomain && subdomain !== 'www' && subdomain !== 'app') {
-        console.log(`🌐 Detected tenant from subdomain: ${subdomain}`);
-        return subdomain;
+    // Method 2: Check cookies for persisted shop name
+    const cookieHeader = request.headers.get('cookie') || '';
+    if (cookieHeader) {
+      try {
+        const parts = cookieHeader.split(';');
+        for (const part of parts) {
+          const [rawKey, ...rest] = part.trim().split('=');
+          const key = (rawKey || '').trim();
+          if (key === 'proofkit_shop_name') {
+            const value = decodeURIComponent(rest.join('='));
+            if (value && validateShopName(value)) {
+              console.log(`🍪 Detected tenant from cookie: ${value}`);
+              return value;
+            }
+          }
+        }
+      } catch (e) {
+        // ignore cookie parse errors
       }
     }
 
@@ -33,38 +49,51 @@ export async function getTenantFromRequest(request: Request): Promise<string> {
     const shopifyShop = request.headers.get('x-shopify-shop-domain');
     if (shopifyShop) {
       const tenantId = shopifyShop.replace('.myshopify.com', '');
-      console.log(`🛍️ Detected tenant from Shopify header: ${tenantId}`);
-      return tenantId;
+      if (validateShopName(tenantId)) {
+        console.log(`🛍️ Detected tenant from Shopify header: ${tenantId}`);
+        return tenantId;
+      }
+    }
+
+    // Method 4: Extract from subdomain (if using subdomain routing)
+    const host = request.headers.get('host') || '';
+    if (host.includes('.proofkit.com')) {
+      const subdomain = host.split('.')[0];
+      if (subdomain && subdomain !== 'www' && subdomain !== 'app' && validateShopName(subdomain)) {
+        console.log(`🌐 Detected tenant from subdomain: ${subdomain}`);
+        return subdomain;
+      }
+    }
+
+    // Method 5: Check for explicit tenant in headers (for testing/APIs)
+    const explicitTenant = request.headers.get('x-proofkit-tenant');
+    if (explicitTenant && validateShopName(explicitTenant)) {
+      console.log(`🔧 Detected tenant from header: ${explicitTenant}`);
+      return explicitTenant;
     }
     
-    // Development fallback methods
+    // Development fallback ONLY - do not override user input
     if (process.env.NODE_ENV === 'development') {
-      // 1. Check for explicit tenant in headers (for testing)
-      const explicitTenant = request.headers.get('x-proofkit-tenant');
-      if (explicitTenant) {
-        return explicitTenant;
+      const devTenant = process.env.DEFAULT_DEV_TENANT || process.env.TENANT_ID;
+      if (devTenant && validateShopName(devTenant)) {
+        console.log(`⚠️ Using development fallback tenant: ${devTenant}`);
+        return devTenant;
       }
-      
-      // 2. Check for tenant in URL parameters
-      const url = new URL(request.url);
-      const urlTenant = url.searchParams.get('tenant');
-      if (urlTenant) {
-        return urlTenant;
-      }
-      
-      // 3. Default development tenant
-      return process.env.DEFAULT_DEV_TENANT || 'dev-tenant';
+      // Even in dev, fall back to proofkit only if nothing else works
+      console.log(`⚠️ Using hardcoded development fallback: proofkit`);
+      return 'proofkit';
     }
     
-    // If we can't determine tenant, throw error
-    throw new Error('Cannot determine tenant from request');
+    // Production: no valid tenant found - should trigger setup
+    throw new Error('No valid tenant found - setup required');
     
   } catch (error) {
     console.error('Tenant detection failed:', error.message);
     
-    // Last resort: use development fallback
+    // Only use fallback in development
     if (process.env.NODE_ENV === 'development') {
-      return process.env.DEFAULT_DEV_TENANT || 'dev-tenant';
+      console.log(`⚠️ Error fallback - using development default`);
+      return process.env.DEFAULT_DEV_TENANT || process.env.TENANT_ID || 'proofkit';
     }
     
     throw error;
@@ -100,6 +129,7 @@ export function getTenantSheetId(tenantId: string): string {
   // For now, use environment variable mapping
   
   const sheetMappings = {
+    'proofkit': process.env.DEV_SHEET_ID || process.env.DEFAULT_SHEET_ID,
     'dev-tenant': process.env.DEV_SHEET_ID,
     'demo-store': process.env.DEMO_SHEET_ID,
     // Add more tenant -> sheet mappings as needed
@@ -140,6 +170,7 @@ export function getAvailableDevTenants(): string[] {
   }
   
   return [
+    process.env.TENANT_ID || 'proofkit',
     'dev-tenant',
     'demo-store',
     'test-shop'

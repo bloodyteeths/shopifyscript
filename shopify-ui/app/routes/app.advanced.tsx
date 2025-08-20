@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { json, type LoaderFunctionArgs, type ActionFunctionArgs } from '@remix-run/node'
 import { useLoaderData, Form, useNavigation, useActionData, useRevalidator } from '@remix-run/react'
-import { getServerShopName, isShopSetupNeeded, validateShopName } from '../utils/shop-config'
+import { getServerShopName, isShopSetupNeeded, validateShopName, dismissShopSetupForSession } from '../utils/shop-config'
 import ShopConfig from '../components/ShopConfig'
 import ShopSetupBanner from '../components/ShopSetupBanner'
 
@@ -9,11 +9,8 @@ import ShopSetupBanner from '../components/ShopSetupBanner'
 
 export async function loader({request}: LoaderFunctionArgs){
   try {
-    // Prefer explicit query param when present (works even when third-party cookies are blocked)
-    const url = new URL(request.url)
-    const qp = url.searchParams.get('shop') || url.searchParams.get('shopName') || url.searchParams.get('tenant')
-    const fallback = getServerShopName(request.headers)
-    const shopName = (qp && validateShopName(qp)) ? qp : fallback
+    // Use the improved server shop name detection that prioritizes URL params
+    const shopName = getServerShopName(request.headers, request.url)
     
     console.log(`🔍 Detected shop: ${shopName}`);
     
@@ -33,13 +30,24 @@ export async function loader({request}: LoaderFunctionArgs){
     })
   } catch (error) {
     console.error('Loader error:', error.message);
+    
+    // Try to get a fallback shop name for error case
+    let fallbackShopName = 'proofkit';
+    try {
+      fallbackShopName = getServerShopName(request.headers, request.url);
+    } catch (e) {
+      // If we can't get shop name at all, use development fallback
+      fallbackShopName = process.env.TENANT_ID || 'proofkit';
+    }
+    
     return json({ 
       cfg: {}, 
       insights: {},
       campaigns: {},
       summary: {},
       suggestions: generateSuggestions({}, {}, {}),
-      shopName: getServerShopName()
+      shopName: fallbackShopName,
+      error: 'Failed to load data - using fallback configuration'
     })
   }
 }
@@ -191,11 +199,8 @@ function generateSuggestions(insights: any, campaigns: any, summary: any) {
 
 export async function action({request}: ActionFunctionArgs){
   try {
-    // Prefer explicit query param when present
-    const url = new URL(request.url)
-    const qp = url.searchParams.get('shop') || url.searchParams.get('shopName') || url.searchParams.get('tenant')
-    const fallback = getServerShopName(request.headers)
-    let shopName = (qp && validateShopName(qp)) ? qp : fallback
+    // Use improved shop name detection
+    let shopName = getServerShopName(request.headers, request.url)
     
     const fd = await request.formData()
     const formShop = String(fd.get('shop')||'').trim()
@@ -265,7 +270,16 @@ export async function action({request}: ActionFunctionArgs){
   return json({ ok:true, message: 'Settings saved successfully!', shopName: shopName })
   } catch (error) {
     console.error('Action error:', error.message);
-    return json({ ok: false, error: error.message, shopName: getServerShopName(request.headers) }, { status: 500 })
+    
+    // Try to get shop name for error response
+    let errorShopName = 'proofkit';
+    try {
+      errorShopName = getServerShopName(request.headers, request.url);
+    } catch (e) {
+      errorShopName = process.env.TENANT_ID || 'proofkit';
+    }
+    
+    return json({ ok: false, error: error.message, shopName: errorShopName }, { status: 500 })
   }
 }
 
@@ -285,29 +299,36 @@ export default function Advanced(){
   const [showSetupBanner, setShowSetupBanner] = React.useState(false)
   const revalidator = useRevalidator()
 
-  // Check if setup is needed on client side
+  // Check if setup is needed on client side (only once)
   React.useEffect(() => {
     setShowSetupBanner(isShopSetupNeeded());
   }, []);
 
   // Ensure URL always carries ?shop=<name> for server loaders (cookies may be blocked in iframe)
   React.useEffect(() => {
+    // Only update URL if setup is not currently needed
+    if (showSetupBanner) {
+      return; // Skip URL updates during setup
+    }
+    
     try {
       const url = new URL(window.location.href)
       const hasShopParam = !!url.searchParams.get('shop')
       if (!hasShopParam) {
         const stored = (typeof window !== 'undefined') ? localStorage.getItem('proofkit_shop_name') : null
-        if (stored && validateShopName(stored) && stored !== 'dev-tenant') {
+        const defaultTenant = process.env.TENANT_ID || 'proofkit';
+        if (stored && validateShopName(stored) && stored !== defaultTenant) {
           url.searchParams.set('shop', stored)
           window.history.replaceState({}, '', url.toString())
           try { revalidator.revalidate(); } catch {}
         }
       }
     } catch {}
-  }, [revalidator])
+  }, [revalidator, showSetupBanner])
 
   const handleSetupComplete = (shopName: string) => {
     setShowSetupBanner(false);
+    dismissShopSetupForSession(); // Prevent re-showing this session
     setToast(`Shop configured: ${shopName}.myshopify.com`);
     try { revalidator.revalidate(); } catch {}
     try {

@@ -69,9 +69,25 @@ router.post('/upsertConfig', async (req, res) => {
   try {
     console.log(`📝 Attempting to save settings for ${tenant}:`, settings);
     
-    // Try to save to sheets, but don't fail if not available
+    // Use TenantConfigService to save settings with proper sheets handling
     try {
-      await sheets.upsertConfig(tenant, settings);
+      // Ensure tenant registry is initialized
+      const tenantRegistry = (await import('../services/tenant-registry.js')).default;
+      if (!tenantRegistry.isInitialized) {
+        await tenantRegistry.initialize();
+      }
+      
+      // If tenant doesn't exist and we have a default sheet, add it
+      if (!tenantRegistry.getTenant(tenant) && process.env.SHEET_ID) {
+        tenantRegistry.addTenant(tenant, { 
+          sheetId: process.env.SHEET_ID,
+          name: `${tenant} Shop`,
+          plan: 'starter'
+        });
+      }
+      
+      const configManager = new TenantConfigService();
+      await configManager.updateTenantConfig(tenant, settings);
       console.log(`✅ Settings successfully saved to Google Sheets for ${tenant}`);
     } catch (sheetsError) {
       console.log(`⚠️ Google Sheets not available for ${tenant}:`, sheetsError.message);
@@ -89,9 +105,11 @@ router.post('/upsertConfig', async (req, res) => {
     
     // Write a run log entry when possible (Sheets present)
     try {
-      const { appendRows } = await import('../services/sheets.js');
-      await appendRows(tenant, 'RUN_LOGS', ['timestamp', 'message'], 
-        [[new Date().toISOString(), 'config_upsert']]);
+      const { sheets } = await import('../sheets.js');
+      await sheets.addRow(tenant, 'RUN_LOGS', {
+        timestamp: new Date().toISOString(),
+        message: 'config_upsert'
+      });
     } catch {}
     
     res.json({ ok: true, saved: Object.keys(settings).length });

@@ -28,6 +28,8 @@ import path from 'path';
 import billingRoutes from './routes/billing.js';
 // Security Routes
 import securityRoutes from './routes/security.js';
+// Config Routes  
+import configRoutes from './routes/config.js';
 
 // Load env from root and backend/.env to ensure SHEET_ID and keys are available
 dotenv.config();
@@ -680,6 +682,8 @@ app.use('/api/security', securityRoutes);
 
 // ==== BILLING ROUTES ====
 app.use('/api/billing', billingRoutes);
+// ==== CONFIG ROUTES ====
+app.use('/api', configRoutes);
 
 app.get('/api/diagnostics', async (req, res) => {
   try {
@@ -863,51 +867,6 @@ app.post('/api/metrics', async (req, res) => {
   }
 });
 
-app.post('/api/upsertConfig', async (req, res) => {
-  const { tenant, sig } = req.query;
-  const { nonce=Date.now(), settings={} } = req.body || {};
-  const payload = `POST:${tenant}:upsertconfig:${nonce}`;
-  if (!tenant || !verify(sig, payload)) return res.status(403).json({ ok:false, error:'auth' });
-  
-  console.log(`📝 Attempting to save settings for ${tenant}:`, settings);
-  
-  try {
-    await upsertConfigToSheets(tenant, settings);
-    console.log(`✅ Settings successfully saved to Google Sheets for ${tenant}`);
-    
-    // Write a run log entry when possible (Sheets present)
-    try { 
-      await appendRows(tenant, 'RUN_LOGS', ['timestamp','message'], [[new Date().toISOString(), 'config_upsert']]); 
-      console.log(`📝 Run log entry added for ${tenant}`);
-    } catch {}
-    
-    res.json({ ok:true, saved: Object.keys(settings).length });
-  } catch (e) {
-    console.log(`⚠️ Google Sheets error for ${tenant}:`, e.message);
-    
-    // SECURITY FIX: Use environment validation instead of NODE_ENV
-    const isDev = process.env.NODE_ENV === 'development';
-    const isStaging = process.env.VERCEL_ENV === 'preview' || process.env.NODE_ENV === 'staging';
-    
-    if (isDev || isStaging) {
-      console.log(`🔧 Development/Staging mode: Settings would be saved for ${tenant}:`, settings);
-      
-      // Store in memory for development/staging
-      global.devTenantConfigs = global.devTenantConfigs || {};
-      global.devTenantConfigs[tenant] = { ...global.devTenantConfigs[tenant], ...settings };
-      console.log(`💾 Stored in memory for ${tenant}:`, global.devTenantConfigs[tenant]);
-      
-      res.json({ 
-        ok:true, 
-        saved: Object.keys(settings).length, 
-        mode: 'development_memory',
-        environment: process.env.VERCEL ? 'vercel' : 'local'
-      });
-    } else {
-      res.status(500).json({ ok:false, error:String(e) });
-    }
-  }
-});
 
 // ----- Autopilot tick (HMAC + PROMOTE Gate) -----
 app.post('/api/jobs/autopilot_tick', promoteGateMiddleware('AUTOPILOT_TICK'), async (req, res) => {
@@ -1042,7 +1001,7 @@ async function bootstrapTenant(tenant) {
   try { await ensureAudienceTabs(String(tenant)); } catch {}
   const defaults = {
     enabled: 'TRUE',
-    label: 'Proofkit • Managed',
+    label: `${tenant} • Automated`,
     plan: 'starter',
     default_final_url: 'https://example.com',
     daily_budget_cap_default: '3',
@@ -1051,7 +1010,7 @@ async function bootstrapTenant(tenant) {
     business_days_csv: 'MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY',
     business_start: '09:00',
     business_end: '18:00',
-    master_neg_list_name: 'Proofkit • Master Negatives',
+    master_neg_list_name: `${tenant} • Master Negatives`,
     st_lookback: 'LAST_7_DAYS',
     st_min_clicks: '2',
     st_min_cost: '2.82',
