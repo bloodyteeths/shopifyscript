@@ -9,14 +9,18 @@ import { JWT } from 'google-auth-library';
 class SheetsConnectionPool {
   constructor() {
     this.pool = new Map(); // tenantId -> { doc, auth, lastUsed, inUse, useCount }
-    this.maxConnections = Number(process.env.SHEETS_MAX_CONNECTIONS || 50);
-    this.maxConcurrent = Number(process.env.SHEETS_MAX_CONCURRENT || 3);
+    // Hard clamp to protect quotas across all environments
+    const envMaxConns = Number(process.env.SHEETS_MAX_CONNECTIONS || 50);
+    const envMaxConcurrent = Number(process.env.SHEETS_MAX_CONCURRENT || 2);
+    const envMaxRequests = Number(process.env.SHEETS_MAX_REQUESTS || 20);
+    this.maxConnections = Math.max(1, Math.min(envMaxConns, 50));
+    this.maxConcurrent = Math.max(1, Math.min(envMaxConcurrent, 2));
     this.connectionTtl = Number(process.env.SHEETS_CONNECTION_TTL_SEC || 300) * 1000; // 5 minutes
     
     // Rate limiting - Google Sheets quota: 100 requests per 100 seconds per user
     this.rateLimiter = {
       requests: new Map(), // timestamp array per tenant
-      maxRequests: Number(process.env.SHEETS_MAX_REQUESTS || 30), // More conservative limit for serverless
+      maxRequests: Math.max(1, Math.min(envMaxRequests, 20)), // Hard cap at 20/100s
       windowMs: Number(process.env.SHEETS_RATE_WINDOW_MS || 100000) // 100 seconds
     };
     
