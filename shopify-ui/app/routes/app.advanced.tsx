@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { json, type LoaderFunctionArgs, type ActionFunctionArgs } from '@remix-run/node'
 import { useLoaderData, Form, useNavigation, useActionData, useRevalidator } from '@remix-run/react'
-import { getServerShopName, isShopSetupNeeded } from '../utils/shop-config'
+import { getServerShopName, isShopSetupNeeded, validateShopName } from '../utils/shop-config'
 import ShopConfig from '../components/ShopConfig'
 import ShopSetupBanner from '../components/ShopSetupBanner'
 
@@ -9,8 +9,11 @@ import ShopSetupBanner from '../components/ShopSetupBanner'
 
 export async function loader({request}: LoaderFunctionArgs){
   try {
-    // Use shop name utilities instead of complex tenant detection
-    const shopName = getServerShopName(request.headers);
+    // Prefer explicit query param when present (works even when third-party cookies are blocked)
+    const url = new URL(request.url)
+    const qp = url.searchParams.get('shop') || url.searchParams.get('shopName') || url.searchParams.get('tenant')
+    const fallback = getServerShopName(request.headers)
+    const shopName = (qp && validateShopName(qp)) ? qp : fallback
     
     console.log(`🔍 Detected shop: ${shopName}`);
     
@@ -188,8 +191,11 @@ function generateSuggestions(insights: any, campaigns: any, summary: any) {
 
 export async function action({request}: ActionFunctionArgs){
   try {
-    // Use shop name utilities instead of complex tenant detection
-    const shopName = getServerShopName(request.headers);
+    // Prefer explicit query param when present
+    const url = new URL(request.url)
+    const qp = url.searchParams.get('shop') || url.searchParams.get('shopName') || url.searchParams.get('tenant')
+    const fallback = getServerShopName(request.headers)
+    const shopName = (qp && validateShopName(qp)) ? qp : fallback
     
     console.log(`🔧 Processing action for shop: ${shopName}`);
     
@@ -284,6 +290,11 @@ export default function Advanced(){
     setShowSetupBanner(false);
     setToast(`Shop configured: ${shopName}.myshopify.com`);
     try { revalidator.revalidate(); } catch {}
+    try {
+      const url = new URL(window.location.href)
+      url.searchParams.set('shop', shopName)
+      window.history.replaceState({}, '', url.toString())
+    } catch {}
   };
   
   // State for field values and manual override
@@ -413,6 +424,11 @@ export default function Advanced(){
           onShopNameChange={(name)=>{
             setToast(`Shop configured: ${name}.myshopify.com`)
             try { revalidator.revalidate(); } catch {}
+            try {
+              const url = new URL(window.location.href)
+              url.searchParams.set('shop', name)
+              window.history.replaceState({}, '', url.toString())
+            } catch {}
           }}
         />
       )}
