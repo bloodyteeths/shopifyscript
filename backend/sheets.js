@@ -16,11 +16,16 @@ export async function getDoc() {
       await tenantRegistry.initialize();
     }
     
-    // Use first available tenant for backward compatibility
+    // Prefer 'default' sheet for legacy (tenant-agnostic) operations
     const allTenants = tenantRegistry.getAllTenants();
-    const firstTenant = allTenants.length > 0 ? allTenants[0] : null;
-    const tenantId = firstTenant ? firstTenant.id : 'default';
-    const connection = await optimizedSheets.getTenantDoc(tenantId);
+    let targetTenantId = 'default';
+    const hasDefault = allTenants.some(t => t.id === 'default');
+    if (!hasDefault) {
+      // If 'default' is not registered, prefer 'proofkit' if present, else first tenant
+      const proofkit = allTenants.find(t => t.id === 'proofkit');
+      targetTenantId = proofkit ? proofkit.id : (allTenants[0]?.id || 'default');
+    }
+    const connection = await optimizedSheets.getTenantDoc(targetTenantId);
     return connection.doc;
   } catch (error) {
     console.error('Google Sheets auth error:', error.message);

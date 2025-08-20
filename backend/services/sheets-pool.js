@@ -10,13 +10,13 @@ class SheetsConnectionPool {
   constructor() {
     this.pool = new Map(); // tenantId -> { doc, auth, lastUsed, inUse, useCount }
     this.maxConnections = Number(process.env.SHEETS_MAX_CONNECTIONS || 50);
-    this.maxConcurrent = Number(process.env.SHEETS_MAX_CONCURRENT || 10);
+    this.maxConcurrent = Number(process.env.SHEETS_MAX_CONCURRENT || 3);
     this.connectionTtl = Number(process.env.SHEETS_CONNECTION_TTL_SEC || 300) * 1000; // 5 minutes
     
     // Rate limiting - Google Sheets quota: 100 requests per 100 seconds per user
     this.rateLimiter = {
       requests: new Map(), // timestamp array per tenant
-      maxRequests: Number(process.env.SHEETS_MAX_REQUESTS || 80), // Conservative limit
+      maxRequests: Number(process.env.SHEETS_MAX_REQUESTS || 30), // More conservative limit for serverless
       windowMs: Number(process.env.SHEETS_RATE_WINDOW_MS || 100000) // 100 seconds
     };
     

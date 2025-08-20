@@ -534,8 +534,11 @@ class OptimizedSheetsService {
 
       // Test basic operation
       try {
-        await this.ensureSheet(tenantId, 'health-check', ['timestamp', 'status']);
+        // Use a very lightweight check to avoid creating extra tabs under high load
+        const connection = await this.getTenantDoc(tenantId);
+        const docTitle = connection.doc?.title || 'unknown';
         health.checks.basicOperation = 'healthy';
+        health.checks.docTitle = docTitle;
       } catch (error) {
         health.checks.basicOperation = 'unhealthy';
         health.errors = health.errors || [];

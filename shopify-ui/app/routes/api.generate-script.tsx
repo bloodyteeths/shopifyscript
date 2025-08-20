@@ -32,7 +32,8 @@ export async function action({ request }: ActionFunctionArgs) {
       throw error;
     }
     
-    if (realScript && realScript.length > 1000 && !realScript.includes('<html'))  {
+    // Require a minimum script length to ensure full master.gs (avoid embedded 13KB fallback)
+    if (realScript && realScript.length > 30000 && !realScript.includes('<html'))  {
       const personalizedScript = `/** ProofKit Google Ads Script - Personalized for ${mode} mode
  * Shop: ${currentShopName}
  * Generated: ${new Date().toISOString()}

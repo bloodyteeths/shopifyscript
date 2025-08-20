@@ -195,11 +195,15 @@ export async function action({request}: ActionFunctionArgs){
     const url = new URL(request.url)
     const qp = url.searchParams.get('shop') || url.searchParams.get('shopName') || url.searchParams.get('tenant')
     const fallback = getServerShopName(request.headers)
-    const shopName = (qp && validateShopName(qp)) ? qp : fallback
-    
-    console.log(`🔧 Processing action for shop: ${shopName}`);
+    let shopName = (qp && validateShopName(qp)) ? qp : fallback
     
     const fd = await request.formData()
+    const formShop = String(fd.get('shop')||'').trim()
+    if (formShop && validateShopName(formShop)) {
+      shopName = formShop
+    }
+    
+    console.log(`🔧 Processing action for shop: ${shopName}`);
     const settings:any = {
       AP_SCHEDULE: String(fd.get('schedule')||'off'),
       AP_TARGET_CPA: String(fd.get('target_cpa')||''),
@@ -285,6 +289,22 @@ export default function Advanced(){
   React.useEffect(() => {
     setShowSetupBanner(isShopSetupNeeded());
   }, []);
+
+  // Ensure URL always carries ?shop=<name> for server loaders (cookies may be blocked in iframe)
+  React.useEffect(() => {
+    try {
+      const url = new URL(window.location.href)
+      const hasShopParam = !!url.searchParams.get('shop')
+      if (!hasShopParam) {
+        const stored = (typeof window !== 'undefined') ? localStorage.getItem('proofkit_shop_name') : null
+        if (stored && validateShopName(stored) && stored !== 'dev-tenant') {
+          url.searchParams.set('shop', stored)
+          window.history.replaceState({}, '', url.toString())
+          try { revalidator.revalidate(); } catch {}
+        }
+      }
+    } catch {}
+  }, [revalidator])
 
   const handleSetupComplete = (shopName: string) => {
     setShowSetupBanner(false);
@@ -567,6 +587,8 @@ export default function Advanced(){
       )}
 
       <Form method="post" style={{display:'grid', gap:20}}>
+        {/* Carry shop across POST even if query param is missing */}
+        <input type="hidden" name="shop" value={data?.shopName || ''} />
         
         {/* Automation Schedule */}
         <div style={sectionStyle}>

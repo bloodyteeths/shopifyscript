@@ -22,6 +22,16 @@ export function ShopConfig({ showInline = false, onShopNameChange }: ShopConfigP
   React.useEffect(() => {
     const currentShopName = getShopNameOrNull() || 'dev-tenant';
     setShopName(currentShopName);
+    // Ensure URL reflects saved shop for server-side loaders
+    try {
+      if (currentShopName && currentShopName !== 'dev-tenant') {
+        const url = new URL(window.location.href)
+        if (url.searchParams.get('shop') !== currentShopName) {
+          url.searchParams.set('shop', currentShopName)
+          window.history.replaceState({}, '', url.toString())
+        }
+      }
+    } catch {}
   }, []);
 
   const handleSave = () => {
