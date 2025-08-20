@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { json, type LoaderFunctionArgs, type ActionFunctionArgs } from '@remix-run/node'
-import { useLoaderData, Form, useNavigation, useActionData } from '@remix-run/react'
+import { useLoaderData, Form, useNavigation, useActionData, useRevalidator } from '@remix-run/react'
 import { getServerShopName, isShopSetupNeeded } from '../utils/shop-config'
 import ShopConfig from '../components/ShopConfig'
 import ShopSetupBanner from '../components/ShopSetupBanner'
@@ -273,6 +273,7 @@ export default function Advanced(){
   const [appliedSuggestions, setAppliedSuggestions] = React.useState<Set<string>>(new Set())
   const [buttonFeedback, setButtonFeedback] = React.useState<{[key: string]: string}>({})
   const [showSetupBanner, setShowSetupBanner] = React.useState(false)
+  const revalidator = useRevalidator()
 
   // Check if setup is needed on client side
   React.useEffect(() => {
@@ -282,6 +283,7 @@ export default function Advanced(){
   const handleSetupComplete = (shopName: string) => {
     setShowSetupBanner(false);
     setToast(`Shop configured: ${shopName}.myshopify.com`);
+    try { revalidator.revalidate(); } catch {}
   };
   
   // State for field values and manual override
@@ -405,7 +407,15 @@ export default function Advanced(){
       )}
 
       {/* Shop Configuration - only show if setup is complete */}
-      {!showSetupBanner && <ShopConfig showInline={false} />}
+      {!showSetupBanner && (
+        <ShopConfig 
+          showInline={false}
+          onShopNameChange={(name)=>{
+            setToast(`Shop configured: ${name}.myshopify.com`)
+            try { revalidator.revalidate(); } catch {}
+          }}
+        />
+      )}
 
 
       {/* Personalized Suggestions */}

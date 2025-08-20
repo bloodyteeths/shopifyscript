@@ -40,6 +40,13 @@ export function setStoredShopName(shopName: string): void {
   
   try {
     localStorage.setItem(SHOP_NAME_KEY, shopName);
+    // Persist to cookie so server can read it in loaders (Advanced page, etc.)
+    try {
+      const maxAge = 60 * 60 * 24 * 365; // 1 year
+      document.cookie = `${SHOP_NAME_KEY}=${encodeURIComponent(shopName)}; Path=/; Max-Age=${maxAge}; SameSite=Lax`;
+    } catch (e) {
+      // no-op if cookies unavailable
+    }
   } catch (error) {
     console.warn('Failed to store shop name in localStorage:', error);
   }
@@ -98,6 +105,12 @@ export function clearStoredShopName(): void {
   
   try {
     localStorage.removeItem(SHOP_NAME_KEY);
+    // Expire the cookie
+    try {
+      document.cookie = `${SHOP_NAME_KEY}=; Path=/; Max-Age=0; SameSite=Lax`;
+    } catch (e) {
+      // ignore
+    }
   } catch (error) {
     console.warn('Failed to clear shop name from localStorage:', error);
   }
@@ -115,6 +128,26 @@ export function getServerShopName(requestHeaders?: Headers): string {
     const headerShopName = requestHeaders.get('x-shop-name');
     if (headerShopName && validateShopName(headerShopName)) {
       return headerShopName;
+    }
+
+    // Check cookies (set by client when saving shop name)
+    const cookieHeader = requestHeaders.get('cookie') || requestHeaders.get('Cookie') || '';
+    if (cookieHeader) {
+      try {
+        const parts = cookieHeader.split(';');
+        for (const part of parts) {
+          const [rawKey, ...rest] = part.trim().split('=');
+          const key = (rawKey || '').trim();
+          if (key === SHOP_NAME_KEY) {
+            const value = decodeURIComponent(rest.join('='));
+            if (value && validateShopName(value)) {
+              return value;
+            }
+          }
+        }
+      } catch (e) {
+        // ignore cookie parse errors
+      }
     }
   }
   
