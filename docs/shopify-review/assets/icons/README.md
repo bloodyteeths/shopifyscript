@@ -7,6 +7,7 @@ This directory should contain the app icons in various sizes required for Shopif
 ### Icon Specifications
 
 **Primary App Icon**:
+
 - **Size**: 1024x1024px (high resolution)
 - **Format**: PNG with transparency
 - **Style**: Modern, clean, professional
@@ -15,28 +16,36 @@ This directory should contain the app icons in various sizes required for Shopif
 ### Required Icon Sizes
 
 #### 1. High Resolution Icon (`app-icon-1024.png`)
+
 **Specifications**:
+
 - **Size**: 1024x1024px
 - **Format**: PNG
 - **Usage**: Primary app store listing icon
 - **Quality**: Highest resolution for all scaling needs
 
 #### 2. Medium Resolution Icon (`app-icon-512.png`)
+
 **Specifications**:
+
 - **Size**: 512x512px
 - **Format**: PNG
 - **Usage**: App store thumbnail and medium displays
 - **Quality**: Crisp scaling from 1024px source
 
 #### 3. Standard Resolution Icon (`app-icon-256.png`)
+
 **Specifications**:
+
 - **Size**: 256x256px
 - **Format**: PNG
 - **Usage**: App dashboard and interface displays
 - **Quality**: Clean scaling for UI integration
 
 #### 4. Favicon (`favicon-32.png`)
+
 **Specifications**:
+
 - **Size**: 32x32px
 - **Format**: PNG
 - **Usage**: Browser tab and bookmark icon
@@ -45,6 +54,7 @@ This directory should contain the app icons in various sizes required for Shopif
 ### Design Guidelines
 
 **Visual Style**:
+
 - Modern and professional appearance
 - Consistent with ProofKit brand identity
 - Clear and recognizable at all sizes
@@ -52,12 +62,14 @@ This directory should contain the app icons in various sizes required for Shopif
 - High contrast for visibility
 
 **Color Scheme**:
+
 - **Primary**: ProofKit Blue (#007ACC)
 - **Secondary**: Complementary grays and whites
 - **Accent**: Optimization-themed colors (green for growth)
 - **Background**: Transparent or subtle gradient
 
 **Design Elements**:
+
 - Abstract "P" lettermark for ProofKit
 - Optimization/growth arrow or graph element
 - Clean, geometric design
@@ -67,18 +79,21 @@ This directory should contain the app icons in various sizes required for Shopif
 ### Icon Concept Themes
 
 **Option 1: Letter + Arrow**
+
 - Stylized "P" with upward arrow
 - Represents ProofKit + optimization/growth
 - Clean, corporate aesthetic
 - Easily recognizable at small sizes
 
 **Option 2: Graph + Letter**
+
 - "P" integrated with performance graph
 - Shows conversion rate improvement
 - Professional, data-driven appearance
 - Clear optimization messaging
 
 **Option 3: Shield + Optimization**
+
 - "P" within protective shield shape
 - Upward trend line element
 - Emphasizes trust and growth
@@ -87,6 +102,7 @@ This directory should contain the app icons in various sizes required for Shopif
 ### Technical Requirements
 
 **File Standards**:
+
 - PNG format with transparency
 - RGB color mode
 - 72 DPI resolution minimum
@@ -94,6 +110,7 @@ This directory should contain the app icons in various sizes required for Shopif
 - No compression artifacts
 
 **Design Standards**:
+
 - Vector-based design for scalability
 - Consistent visual weight at all sizes
 - Clear silhouette and shape recognition
@@ -103,6 +120,7 @@ This directory should contain the app icons in various sizes required for Shopif
 ### Brand Consistency
 
 **ProofKit Brand Elements**:
+
 - Consistent color palette usage
 - Professional and trustworthy appearance
 - E-commerce and optimization themes
@@ -110,6 +128,7 @@ This directory should contain the app icons in various sizes required for Shopif
 - Technology-forward design language
 
 **Shopify Ecosystem Fit**:
+
 - Complements Shopify's design language
 - Professional appearance in admin interface
 - Clear differentiation from other apps
@@ -118,6 +137,7 @@ This directory should contain the app icons in various sizes required for Shopif
 ### Quality Checklist
 
 Before submitting icons:
+
 - [ ] All required sizes created (1024px, 512px, 256px, 32px)
 - [ ] PNG format with transparency
 - [ ] High-resolution, crisp appearance
@@ -132,12 +152,14 @@ Before submitting icons:
 ### Design Tools Recommendations
 
 **Professional Design Software**:
+
 - Adobe Illustrator (vector-based, best for scalability)
 - Sketch (UI/app design focused)
 - Figma (collaborative design)
 - Adobe Photoshop (raster-based design)
 
 **Free Design Tools**:
+
 - GIMP (open-source Photoshop alternative)
 - Canva (template-based design)
 - Inkscape (open-source vector design)
@@ -146,6 +168,7 @@ Before submitting icons:
 ### Review Process
 
 **Internal Review**:
+
 1. **Design Review**: Ensure brand consistency and quality
 2. **Technical Review**: Verify all specifications met
 3. **Scalability Test**: Test appearance at all required sizes
@@ -153,6 +176,7 @@ Before submitting icons:
 5. **Quality Assurance**: Final quality check
 
 **External Review**:
+
 - Consider user testing for recognition
 - Get feedback from potential customers
 - Verify effectiveness in App Store context

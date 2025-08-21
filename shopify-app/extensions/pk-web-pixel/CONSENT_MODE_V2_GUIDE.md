@@ -17,14 +17,14 @@ Consent Mode v2 is an enhanced version of Google's consent framework that:
 
 ### Core Consent Types
 
-| Consent Type | Purpose | Default | ProofKit Behavior |
-|--------------|---------|---------|-------------------|
-| `ad_storage` | Controls whether data can be stored for advertising purposes | Denied | Required for Google Ads conversions |
-| `analytics_storage` | Controls whether data can be stored for analytics purposes | Denied | Required for GA4 enhanced ecommerce |
-| `ad_user_data` | Controls sharing of user data with Google for advertising | Denied | Required for conversion tracking |
-| `ad_personalization` | Controls whether data can be used for ad personalization | Denied | Enhances ad targeting |
-| `functionality_storage` | Controls storage needed for core site functionality | Granted | Always granted by ProofKit |
-| `security_storage` | Controls storage needed for security purposes | Granted | Always granted by ProofKit |
+| Consent Type            | Purpose                                                      | Default | ProofKit Behavior                   |
+| ----------------------- | ------------------------------------------------------------ | ------- | ----------------------------------- |
+| `ad_storage`            | Controls whether data can be stored for advertising purposes | Denied  | Required for Google Ads conversions |
+| `analytics_storage`     | Controls whether data can be stored for analytics purposes   | Denied  | Required for GA4 enhanced ecommerce |
+| `ad_user_data`          | Controls sharing of user data with Google for advertising    | Denied  | Required for conversion tracking    |
+| `ad_personalization`    | Controls whether data can be used for ad personalization     | Denied  | Enhances ad targeting               |
+| `functionality_storage` | Controls storage needed for core site functionality          | Granted | Always granted by ProofKit          |
+| `security_storage`      | Controls storage needed for security purposes                | Granted | Always granted by ProofKit          |
 
 ## Implementation in ProofKit
 
@@ -34,13 +34,13 @@ ProofKit initializes with privacy-first defaults:
 
 ```javascript
 // Automatically called when ProofKit Web Pixel loads
-gtag('consent', 'default', {
-  'ad_storage': 'denied',
-  'analytics_storage': 'denied', 
-  'ad_user_data': 'denied',
-  'ad_personalization': 'denied',
-  'functionality_storage': 'granted',
-  'security_storage': 'granted'
+gtag("consent", "default", {
+  ad_storage: "denied",
+  analytics_storage: "denied",
+  ad_user_data: "denied",
+  ad_personalization: "denied",
+  functionality_storage: "granted",
+  security_storage: "granted",
 });
 ```
 
@@ -50,12 +50,44 @@ Special handling for EEA/UK and other privacy-focused regions:
 
 ```javascript
 // EEA/UK specific defaults (stricter)
-gtag('consent', 'default', {
-  'ad_storage': 'denied',
-  'analytics_storage': 'denied',
-  'ad_user_data': 'denied', 
-  'ad_personalization': 'denied',
-  'region': ['AT', 'BE', 'BG', 'HR', 'CY', 'CZ', 'DK', 'EE', 'FI', 'FR', 'DE', 'GR', 'HU', 'IE', 'IT', 'LV', 'LT', 'LU', 'MT', 'NL', 'PL', 'PT', 'RO', 'SK', 'SI', 'ES', 'SE', 'GB', 'IS', 'LI', 'NO']
+gtag("consent", "default", {
+  ad_storage: "denied",
+  analytics_storage: "denied",
+  ad_user_data: "denied",
+  ad_personalization: "denied",
+  region: [
+    "AT",
+    "BE",
+    "BG",
+    "HR",
+    "CY",
+    "CZ",
+    "DK",
+    "EE",
+    "FI",
+    "FR",
+    "DE",
+    "GR",
+    "HU",
+    "IE",
+    "IT",
+    "LV",
+    "LT",
+    "LU",
+    "MT",
+    "NL",
+    "PL",
+    "PT",
+    "RO",
+    "SK",
+    "SI",
+    "ES",
+    "SE",
+    "GB",
+    "IS",
+    "LI",
+    "NO",
+  ],
 });
 ```
 
@@ -64,6 +96,7 @@ gtag('consent', 'default', {
 ProofKit automatically detects consent from multiple sources:
 
 #### Priority Order:
+
 1. **Shopify Customer Privacy API** (highest priority)
 2. **Google Consent Mode v2 State**
 3. **Third-party CMP Providers**
@@ -74,14 +107,14 @@ function getConsentStatus() {
   // 1. Check Shopify's native consent
   const shopifyConsent = window?.shopify?.customerPrivacy;
   if (shopifyConsent?.userDataSharingConsentGiven()) {
-    return { analytics: true, marketing: true, source: 'shopify' };
+    return { analytics: true, marketing: true, source: "shopify" };
   }
-  
+
   // 2. Check Google Consent Mode v2 state
-  if (google_tag_data?.ics?.get('ad_storage') === 'granted') {
-    return { analytics: true, marketing: true, source: 'gtag' };
+  if (google_tag_data?.ics?.get("ad_storage") === "granted") {
+    return { analytics: true, marketing: true, source: "gtag" };
   }
-  
+
   // 3. Check CMP providers...
   // 4. Use regional defaults...
 }
@@ -93,15 +126,15 @@ Real-time consent updates are handled automatically:
 
 ```javascript
 // Listen for consent changes
-window.addEventListener('consent_changed', (event) => {
+window.addEventListener("consent_changed", (event) => {
   const newConsent = event.detail;
-  
+
   // Update Google Consent Mode
-  gtag('consent', 'update', {
-    'ad_storage': newConsent.marketing ? 'granted' : 'denied',
-    'analytics_storage': newConsent.analytics ? 'granted' : 'denied',
-    'ad_user_data': newConsent.marketing ? 'granted' : 'denied',
-    'ad_personalization': newConsent.marketing ? 'granted' : 'denied'
+  gtag("consent", "update", {
+    ad_storage: newConsent.marketing ? "granted" : "denied",
+    analytics_storage: newConsent.analytics ? "granted" : "denied",
+    ad_user_data: newConsent.marketing ? "granted" : "denied",
+    ad_personalization: newConsent.marketing ? "granted" : "denied",
   });
 });
 ```
@@ -114,23 +147,25 @@ window.addEventListener('consent_changed', (event) => {
 // OneTrust specific detection
 function checkOneTrustConsent() {
   if (window.OptanonActiveGroups) {
-    const hasAnalytics = OptanonActiveGroups.includes('C0002'); // Analytics
-    const hasMarketing = OptanonActiveGroups.includes('C0004'); // Marketing
-    
+    const hasAnalytics = OptanonActiveGroups.includes("C0002"); // Analytics
+    const hasMarketing = OptanonActiveGroups.includes("C0004"); // Marketing
+
     return {
       analytics: hasAnalytics,
       marketing: hasMarketing,
-      source: 'onetrust'
+      source: "onetrust",
     };
   }
   return null;
 }
 
 // Listen for OneTrust consent changes
-window.addEventListener('OneTrustGroupsUpdated', function() {
+window.addEventListener("OneTrustGroupsUpdated", function () {
   const consent = checkOneTrustConsent();
   if (consent) {
-    window.dispatchEvent(new CustomEvent('consent_changed', { detail: consent }));
+    window.dispatchEvent(
+      new CustomEvent("consent_changed", { detail: consent }),
+    );
   }
 });
 ```
@@ -144,17 +179,19 @@ function checkCookiebotConsent() {
     return {
       analytics: Cookiebot.consent.statistics,
       marketing: Cookiebot.consent.marketing,
-      source: 'cookiebot'
+      source: "cookiebot",
     };
   }
   return null;
 }
 
 // Listen for Cookiebot consent changes
-window.addEventListener('CookiebotOnConsentReady', function() {
+window.addEventListener("CookiebotOnConsentReady", function () {
   const consent = checkCookiebotConsent();
   if (consent) {
-    window.dispatchEvent(new CustomEvent('consent_changed', { detail: consent }));
+    window.dispatchEvent(
+      new CustomEvent("consent_changed", { detail: consent }),
+    );
   }
 });
 ```
@@ -168,16 +205,18 @@ For CMPs not automatically supported:
 function integrateCustomCMP() {
   // Your CMP's consent check logic
   const userConsent = yourCMP.getConsentPreferences();
-  
+
   // Trigger ProofKit consent update
-  window.dispatchEvent(new CustomEvent('consent_changed', {
-    detail: {
-      analytics: userConsent.analytics,
-      marketing: userConsent.marketing,
-      preferences: userConsent.preferences,
-      source: 'custom_cmp'
-    }
-  }));
+  window.dispatchEvent(
+    new CustomEvent("consent_changed", {
+      detail: {
+        analytics: userConsent.analytics,
+        marketing: userConsent.marketing,
+        preferences: userConsent.preferences,
+        source: "custom_cmp",
+      },
+    }),
+  );
 }
 
 // Call when consent changes in your CMP
@@ -192,15 +231,15 @@ Check consent state in browser console:
 
 ```javascript
 // Check current consent state
-console.log('Consent State:', {
-  ad_storage: google_tag_data?.ics?.get('ad_storage'),
-  analytics_storage: google_tag_data?.ics?.get('analytics_storage'),
-  ad_user_data: google_tag_data?.ics?.get('ad_user_data'),
-  ad_personalization: google_tag_data?.ics?.get('ad_personalization')
+console.log("Consent State:", {
+  ad_storage: google_tag_data?.ics?.get("ad_storage"),
+  analytics_storage: google_tag_data?.ics?.get("analytics_storage"),
+  ad_user_data: google_tag_data?.ics?.get("ad_user_data"),
+  ad_personalization: google_tag_data?.ics?.get("ad_personalization"),
 });
 
 // Check ProofKit detection
-console.log('ProofKit Consent:', getConsentStatus());
+console.log("ProofKit Consent:", getConsentStatus());
 ```
 
 ### 2. Google Analytics Debug Mode
@@ -208,14 +247,15 @@ console.log('ProofKit Consent:', getConsentStatus());
 Enable GA4 debug mode to see consent-affected events:
 
 ```javascript
-gtag('config', 'G-XXXXXXXXXX', {
-  debug_mode: true
+gtag("config", "G-XXXXXXXXXX", {
+  debug_mode: true,
 });
 ```
 
 ### 3. Google Tag Assistant
 
 Use Google Tag Assistant to verify:
+
 - Consent signals are being sent
 - Events are properly blocked/allowed
 - Conversion tracking works with consent
@@ -223,39 +263,42 @@ Use Google Tag Assistant to verify:
 ### 4. Test Scenarios
 
 #### Scenario 1: No Consent
+
 ```javascript
 // Simulate denied consent
-gtag('consent', 'update', {
-  'ad_storage': 'denied',
-  'analytics_storage': 'denied',
-  'ad_user_data': 'denied',
-  'ad_personalization': 'denied'
+gtag("consent", "update", {
+  ad_storage: "denied",
+  analytics_storage: "denied",
+  ad_user_data: "denied",
+  ad_personalization: "denied",
 });
 
 // Expected: Events blocked, conversions use modeling
 ```
 
 #### Scenario 2: Analytics Only
+
 ```javascript
 // Simulate analytics consent only
-gtag('consent', 'update', {
-  'ad_storage': 'denied',
-  'analytics_storage': 'granted',
-  'ad_user_data': 'denied', 
-  'ad_personalization': 'denied'
+gtag("consent", "update", {
+  ad_storage: "denied",
+  analytics_storage: "granted",
+  ad_user_data: "denied",
+  ad_personalization: "denied",
 });
 
 // Expected: GA4 events sent, Ads conversions modeled
 ```
 
 #### Scenario 3: Full Consent
+
 ```javascript
 // Simulate full consent
-gtag('consent', 'update', {
-  'ad_storage': 'granted',
-  'analytics_storage': 'granted',
-  'ad_user_data': 'granted',
-  'ad_personalization': 'granted'
+gtag("consent", "update", {
+  ad_storage: "granted",
+  analytics_storage: "granted",
+  ad_user_data: "granted",
+  ad_personalization: "granted",
 });
 
 // Expected: All events and conversions tracked normally
@@ -272,7 +315,7 @@ When consent is denied, ProofKit automatically redacts sensitive data:
 {
   "timestamp": 1703123456789,
   "url": "[redacted]",
-  "referrer": "[redacted]", 
+  "referrer": "[redacted]",
   "user_agent": "[redacted]",
   "event_type": "page_viewed",
   "consent_status": {
@@ -286,6 +329,7 @@ When consent is denied, ProofKit automatically redacts sensitive data:
 ### 2. Conversion Modeling
 
 Google automatically provides conversion modeling when:
+
 - `ad_storage` is denied but sufficient modeling data exists
 - Site has enough conversion volume for statistical significance
 - Helps maintain measurement while respecting privacy
@@ -314,17 +358,20 @@ All events include consent metadata for audit purposes:
 ## Compliance Benefits
 
 ### GDPR Compliance
+
 - ✅ Respects "reject all" choices
-- ✅ Honors granular consent preferences  
+- ✅ Honors granular consent preferences
 - ✅ Provides lawful basis for processing
 - ✅ Enables data subject rights
 
 ### CCPA Compliance
+
 - ✅ Respects "Do Not Sell" preferences
 - ✅ Provides opt-out mechanisms
 - ✅ Maintains transparency in data use
 
 ### Other Privacy Laws
+
 - ✅ Works with regional privacy frameworks
 - ✅ Adapts to local consent requirements
 - ✅ Provides privacy-by-design implementation
@@ -334,11 +381,13 @@ All events include consent metadata for audit purposes:
 If you're currently using Consent Mode v1:
 
 ### Key Differences
+
 1. **New Consent Types**: `ad_user_data` and `ad_personalization` added
 2. **Enhanced Modeling**: Better conversion estimation without consent
 3. **Stricter Defaults**: More privacy-focused initial state
 
 ### Migration Steps
+
 1. Update to ProofKit Web Pixel (automatic v2 support)
 2. Review CMP consent mappings
 3. Test with new consent types
@@ -347,21 +396,25 @@ If you're currently using Consent Mode v1:
 ## Best Practices
 
 ### 1. Clear Consent Requests
+
 - Use clear, specific language for consent requests
 - Explain the benefits of granting consent
 - Provide granular controls when possible
 
 ### 2. Performance Optimization
+
 - Initialize consent state as early as possible
 - Avoid blocking page rendering on consent decisions
 - Use ProofKit's automatic detection features
 
 ### 3. Regular Testing
+
 - Test consent scenarios monthly
 - Verify CMP integration after updates
 - Monitor conversion tracking performance
 
 ### 4. Documentation
+
 - Document your consent flow
 - Train team on privacy requirements
 - Keep records of consent implementations

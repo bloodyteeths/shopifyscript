@@ -7,15 +7,18 @@ This document describes the Google Sheets optimization infrastructure implemente
 ## Architecture Components
 
 ### 1. Connection Pool (`services/sheets-pool.js`)
+
 **Purpose**: Manages connection reuse and rate limiting to prevent 429 errors
 
 **Features**:
+
 - Connection pooling with configurable limits
 - Per-tenant rate limiting (80 requests per 100 seconds)
 - Automatic connection cleanup and eviction
 - Connection metrics and monitoring
 
 **Configuration**:
+
 ```env
 SHEETS_MAX_CONNECTIONS=50          # Maximum pooled connections
 SHEETS_MAX_CONCURRENT=10           # Maximum concurrent connections
@@ -25,8 +28,9 @@ SHEETS_RATE_WINDOW_MS=100000       # Rate limit window (100 seconds)
 ```
 
 **Usage**:
+
 ```javascript
-import sheetsPool from './services/sheets-pool.js';
+import sheetsPool from "./services/sheets-pool.js";
 
 const connection = await sheetsPool.getConnection(tenantId, sheetId);
 const doc = connection.doc;
@@ -35,15 +39,18 @@ connection.release(); // Important: release connection
 ```
 
 ### 2. Smart Batch Operations (`services/sheets-batch.js`)
+
 **Purpose**: Combines multiple operations into efficient batch requests
 
 **Features**:
+
 - Automatic operation batching with 100ms delay
 - Operation grouping by type (reads, writes, updates, deletes)
 - Bulk row operations optimization
 - Batch metrics and efficiency tracking
 
 **Configuration**:
+
 ```env
 SHEETS_BATCH_DELAY_MS=100          # Batch delay (100ms)
 SHEETS_MAX_BATCH_SIZE=50           # Maximum operations per batch
@@ -51,46 +58,53 @@ SHEETS_MAX_BATCH_WAIT_MS=1000      # Maximum batch wait time
 ```
 
 **Usage**:
+
 ```javascript
-import sheetsBatch from './services/sheets-batch.js';
+import sheetsBatch from "./services/sheets-batch.js";
 
 // Operations are automatically batched
 const result = await sheetsBatch.queueOperation(tenantId, sheetId, {
-  type: 'addRow',
-  params: { sheetTitle: 'Sheet1', row: { col1: 'value' } }
+  type: "addRow",
+  params: { sheetTitle: "Sheet1", row: { col1: "value" } },
 });
 ```
 
 ### 3. Cache Invalidation Strategy (`services/cache-invalidation.js`)
+
 **Purpose**: Smart cache management with dependency tracking
 
 **Features**:
+
 - Rule-based invalidation patterns
 - Dependency cascade invalidation
 - Smart invalidation based on operation types
 - Time-based periodic invalidation
 
 **Invalidation Rules**:
+
 - `sheet:write` → Invalidates insights, config, summary, run-logs
 - `row:add` → Invalidates aggregated data and row lists
 - `row:update` → Invalidates specific row and aggregated data
 - `config:update` → Invalidates insights and summaries
 
 **Usage**:
+
 ```javascript
-import cacheInvalidation from './services/cache-invalidation.js';
+import cacheInvalidation from "./services/cache-invalidation.js";
 
 // Smart invalidation based on operation
-cacheInvalidation.smartInvalidate(tenantId, 'sheet:write', {
-  type: 'addRow',
-  sheetTitle: 'Sheet1'
+cacheInvalidation.smartInvalidate(tenantId, "sheet:write", {
+  type: "addRow",
+  sheetTitle: "Sheet1",
 });
 ```
 
 ### 4. Optimized Sheets Service (`services/sheets.js`)
+
 **Purpose**: High-level API that integrates all optimization components
 
 **Features**:
+
 - Tenant-aware operations
 - Automatic caching with configurable TTL
 - Batch operation queuing
@@ -98,6 +112,7 @@ cacheInvalidation.smartInvalidate(tenantId, 'sheet:write', {
 - Performance metrics tracking
 
 **Configuration**:
+
 ```env
 SHEETS_CACHE_TTL_SEC=300           # Default cache TTL (5 minutes)
 SHEETS_READ_CACHE_TTL_SEC=60       # Read cache TTL (1 minute)
@@ -105,25 +120,29 @@ SHEETS_WRITE_CACHE_TTL_SEC=10      # Write cache TTL (10 seconds)
 ```
 
 **Usage**:
+
 ```javascript
-import optimizedSheets from './services/sheets.js';
+import optimizedSheets from "./services/sheets.js";
 
 // Add row with batching and cache invalidation
 const result = await optimizedSheets.addRow(tenantId, sheetTitle, rowData);
 
 // Get rows with caching
-const rows = await optimizedSheets.getRows(tenantId, sheetTitle, { limit: 100 });
+const rows = await optimizedSheets.getRows(tenantId, sheetTitle, {
+  limit: 100,
+});
 
 // Bulk operations
 const results = await optimizedSheets.bulkOperations(tenantId, [
-  { type: 'addRow', params: { sheetTitle: 'Sheet1', row: data1 } },
-  { type: 'addRow', params: { sheetTitle: 'Sheet1', row: data2 } }
+  { type: "addRow", params: { sheetTitle: "Sheet1", row: data1 } },
+  { type: "addRow", params: { sheetTitle: "Sheet1", row: data2 } },
 ]);
 ```
 
 ## Performance Metrics
 
 ### Target Metrics
+
 - **API Response Time**: <200ms
 - **Cache Hit Rate**: >80%
 - **Zero 429 Errors**: Under normal load
@@ -132,24 +151,29 @@ const results = await optimizedSheets.bulkOperations(tenantId, [
 ### Monitoring Endpoints
 
 #### Dashboard
+
 ```http
 GET /api/sheets-admin/dashboard
 ```
+
 Returns overall system status and performance metrics.
 
 #### Pool Statistics
+
 ```http
 GET /api/sheets-admin/pool/stats
 GET /api/sheets-admin/pool/rate-limit/:tenantId
 ```
 
 #### Batch Statistics
+
 ```http
 GET /api/sheets-admin/batch/stats
 POST /api/sheets-admin/batch/flush
 ```
 
 #### Cache Statistics
+
 ```http
 GET /api/sheets-admin/cache/stats
 GET /api/sheets-admin/cache/tenant/:tenantId
@@ -157,9 +181,11 @@ DELETE /api/sheets-admin/cache/tenant/:tenantId
 ```
 
 #### Prometheus Metrics
+
 ```http
 GET /api/sheets-admin/metrics
 ```
+
 Returns Prometheus-compatible metrics for monitoring tools.
 
 ## Usage Examples
@@ -167,26 +193,26 @@ Returns Prometheus-compatible metrics for monitoring tools.
 ### Basic Operations
 
 ```javascript
-import { sheets } from './sheets.js';
+import { sheets } from "./sheets.js";
 
 // Get tenant document
-const connection = await sheets.getTenantDoc('tenant-123');
+const connection = await sheets.getTenantDoc("tenant-123");
 
 // Add single row
-await sheets.addRow('tenant-123', 'leads', {
+await sheets.addRow("tenant-123", "leads", {
   timestamp: new Date().toISOString(),
-  name: 'John Doe',
-  email: 'john@example.com'
+  name: "John Doe",
+  email: "john@example.com",
 });
 
 // Add multiple rows (optimized)
-await sheets.addRows('tenant-123', 'leads', [
-  { name: 'Jane Doe', email: 'jane@example.com' },
-  { name: 'Bob Smith', email: 'bob@example.com' }
+await sheets.addRows("tenant-123", "leads", [
+  { name: "Jane Doe", email: "jane@example.com" },
+  { name: "Bob Smith", email: "bob@example.com" },
 ]);
 
 // Get cached data
-const data = await sheets.getCachedData('tenant-123', 'leads');
+const data = await sheets.getCachedData("tenant-123", "leads");
 ```
 
 ### Legacy Compatibility
@@ -194,11 +220,11 @@ const data = await sheets.getCachedData('tenant-123', 'leads');
 The original API functions are maintained for backward compatibility:
 
 ```javascript
-import { getDoc, getDocById, ensureSheet } from './sheets.js';
+import { getDoc, getDocById, ensureSheet } from "./sheets.js";
 
 // Original functions still work but use optimized infrastructure
 const doc = await getDoc();
-const sheet = await ensureSheet(doc, 'Sheet1', ['col1', 'col2']);
+const sheet = await ensureSheet(doc, "Sheet1", ["col1", "col2"]);
 ```
 
 ### Bulk Operations
@@ -206,22 +232,22 @@ const sheet = await ensureSheet(doc, 'Sheet1', ['col1', 'col2']);
 ```javascript
 const operations = [
   {
-    type: 'addRow',
+    type: "addRow",
     params: {
-      sheetTitle: 'leads',
-      row: { name: 'Customer 1', email: 'customer1@example.com' }
-    }
+      sheetTitle: "leads",
+      row: { name: "Customer 1", email: "customer1@example.com" },
+    },
   },
   {
-    type: 'addRow',
+    type: "addRow",
     params: {
-      sheetTitle: 'leads',
-      row: { name: 'Customer 2', email: 'customer2@example.com' }
-    }
-  }
+      sheetTitle: "leads",
+      row: { name: "Customer 2", email: "customer2@example.com" },
+    },
+  },
 ];
 
-const results = await optimizedSheets.bulkOperations('tenant-123', operations);
+const results = await optimizedSheets.bulkOperations("tenant-123", operations);
 ```
 
 ## Testing
@@ -233,6 +259,7 @@ node backend/test-sheets-optimization.js
 ```
 
 The test suite validates:
+
 - Connection pool functionality
 - Batch operation efficiency
 - Cache hit rates
@@ -243,6 +270,7 @@ The test suite validates:
 ## Configuration Best Practices
 
 ### Production Settings
+
 ```env
 # Connection Pool
 SHEETS_MAX_CONNECTIONS=100
@@ -264,6 +292,7 @@ SHEETS_WRITE_CACHE_TTL_SEC=5
 ```
 
 ### Development Settings
+
 ```env
 # More aggressive for testing
 SHEETS_MAX_CONCURRENT=5
@@ -298,7 +327,7 @@ SHEETS_READ_CACHE_TTL_SEC=10
 ### Health Checks
 
 ```javascript
-const health = await optimizedSheets.healthCheck('tenant-123');
+const health = await optimizedSheets.healthCheck("tenant-123");
 console.log(health.status); // 'healthy' or 'unhealthy'
 ```
 
@@ -318,34 +347,37 @@ Content-Type: application/json
 ### From Legacy Code
 
 1. **Replace direct sheet operations**:
+
    ```javascript
    // Before
    const doc = await getDoc();
-   const sheet = await ensureSheet(doc, 'leads', headers);
+   const sheet = await ensureSheet(doc, "leads", headers);
    await sheet.addRow(data);
-   
+
    // After
-   await sheets.addRow('tenant-id', 'leads', data);
+   await sheets.addRow("tenant-id", "leads", data);
    ```
 
 2. **Use tenant-aware operations**:
+
    ```javascript
    // Before - single tenant
    const rows = await sheet.getRows();
-   
+
    // After - multi-tenant with caching
-   const rows = await sheets.getRows('tenant-id', 'leads');
+   const rows = await sheets.getRows("tenant-id", "leads");
    ```
 
 3. **Batch multiple operations**:
+
    ```javascript
    // Before - individual operations
    for (const row of data) {
      await sheet.addRow(row);
    }
-   
+
    // After - batched operations
-   await sheets.addRows('tenant-id', 'leads', data);
+   await sheets.addRows("tenant-id", "leads", data);
    ```
 
 ## Monitoring and Alerting

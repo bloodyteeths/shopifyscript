@@ -5,7 +5,7 @@ A privacy-compliant Shopify Web Pixel extension that provides advanced analytics
 ## 🚀 Features
 
 - **Consent Mode v2 Compliant**: Full implementation of Google's latest privacy framework
-- **GA4 Enhanced Ecommerce**: Automatic event tracking for all key customer journey events  
+- **GA4 Enhanced Ecommerce**: Automatic event tracking for all key customer journey events
 - **Google Ads Conversions**: Tracks `checkout_completed` events for advertising optimization
 - **Multi-CMP Support**: Works with OneTrust, Cookiebot, TrustArc, Didomi, and more
 - **Privacy-First**: Automatically redacts data when consent is not granted
@@ -56,14 +56,14 @@ proofkit.debug_mode = "true"
 
 ## 📊 Events Tracked
 
-| Shopify Event | GA4 Event | Google Ads | Description |
-|---------------|-----------|------------|-------------|
-| `page_viewed` | `page_view` | - | User views a page |
-| `product_viewed` | `view_item` | - | User views a product |
-| `search_submitted` | `search` | - | User performs a search |
-| `cart_viewed` | `view_cart` | - | User views cart |
-| `checkout_started` | `begin_checkout` | - | User starts checkout |
-| `checkout_completed` | `purchase` | ✅ **Conversion** | User completes purchase |
+| Shopify Event        | GA4 Event        | Google Ads        | Description             |
+| -------------------- | ---------------- | ----------------- | ----------------------- |
+| `page_viewed`        | `page_view`      | -                 | User views a page       |
+| `product_viewed`     | `view_item`      | -                 | User views a product    |
+| `search_submitted`   | `search`         | -                 | User performs a search  |
+| `cart_viewed`        | `view_cart`      | -                 | User views cart         |
+| `checkout_started`   | `begin_checkout` | -                 | User starts checkout    |
+| `checkout_completed` | `purchase`       | ✅ **Conversion** | User completes purchase |
 
 ## 🔒 Privacy & Compliance
 
@@ -102,9 +102,9 @@ Enable debug mode to see detailed console output:
 ```javascript
 // Set proofkit.debug_mode = "true" in metafields
 // Check browser console for messages like:
-console.log('ProofKit Web Pixel initialized with Consent Mode v2');
-console.log('ProofKit: Purchase conversion tracked', conversionData);
-console.log('ProofKit: GA4 event blocked due to consent: page_view');
+console.log("ProofKit Web Pixel initialized with Consent Mode v2");
+console.log("ProofKit: Purchase conversion tracked", conversionData);
+console.log("ProofKit: GA4 event blocked due to consent: page_view");
 ```
 
 ### Consent Testing
@@ -175,13 +175,13 @@ To add custom functionality:
 
 ```javascript
 // In src/index.js, add custom event handling
-analytics.subscribe('custom_event', (e) => {
+analytics.subscribe("custom_event", (e) => {
   const consent = getConsentStatus();
   if (!canSend()) return;
-  
+
   // Your custom logic here
-  postPixel('custom_event', customData);
-  fireGA4Event('custom_event_name', customParameters, consent);
+  postPixel("custom_event", customData);
+  fireGA4Event("custom_event_name", customParameters, consent);
 });
 ```
 
@@ -199,6 +199,7 @@ This extension is proprietary software owned by ProofKit. Usage is governed by t
 ## 🔄 Changelog
 
 ### v2.0.0 (Current)
+
 - ✅ Added Consent Mode v2 support
 - ✅ Enhanced GA4 integration
 - ✅ Google Ads conversion tracking
@@ -207,6 +208,7 @@ This extension is proprietary software owned by ProofKit. Usage is governed by t
 - ✅ Real-time consent updates
 
 ### v1.0.0
+
 - ✅ Basic event tracking
 - ✅ ProofKit backend integration
 - ✅ Simple consent checking

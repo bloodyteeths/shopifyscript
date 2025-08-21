@@ -65,22 +65,22 @@ RESERVED_KEYWORDS=proofkit,brand,competitor,important
 The Google Ads script includes comprehensive PROMOTE gate validation:
 
 ```javascript
-function main(){
+function main() {
   // Initialize idempotency tracking
   initializeIdempotencyTracking_();
-  
+
   var cfg = getConfig_();
   if (!cfg || !cfg.enabled) return;
-  
+
   // ===== CRITICAL PROMOTE GATE ENFORCEMENT =====
   if (!validatePromoteGate_(cfg)) {
     log_("! PROMOTE GATE FAILED - Script execution blocked for safety");
     return;
   }
-  
+
   // Initialize safety guards
   initializeSafetyGuards_(cfg);
-  
+
   // Mutations only proceed if PROMOTE=TRUE
   if (!PREVIEW_MODE && cfg.PROMOTE) {
     // Safe to proceed with live changes
@@ -98,15 +98,15 @@ function main(){
  */
 function validatePromoteGate_(cfg) {
   if (!cfg) return false;
-  
-  var promoteEnabled = cfg.PROMOTE === true || 
-                      String(cfg.PROMOTE).toLowerCase() === 'true';
-  
+
+  var promoteEnabled =
+    cfg.PROMOTE === true || String(cfg.PROMOTE).toLowerCase() === "true";
+
   if (!promoteEnabled) {
-    log_('! PROMOTE GATE: PROMOTE=FALSE - All mutations blocked');
+    log_("! PROMOTE GATE: PROMOTE=FALSE - All mutations blocked");
     return false;
   }
-  
+
   return true;
 }
 
@@ -115,11 +115,11 @@ function validatePromoteGate_(cfg) {
  */
 function initializeSafetyGuards_(cfg) {
   NEG_GUARD_ACTIVE = cfg.PROMOTE && !PREVIEW_MODE;
-  
-  log_('• Safety Guards Initialized:');
-  log_('  - PROMOTE: ' + (cfg.PROMOTE ? 'ENABLED' : 'DISABLED'));
-  log_('  - NEG_GUARD: ' + (NEG_GUARD_ACTIVE ? 'ACTIVE' : 'INACTIVE'));
-  log_('  - LABEL_GUARD: ' + (cfg.label || 'PROOFKIT_AUTOMATED'));
+
+  log_("• Safety Guards Initialized:");
+  log_("  - PROMOTE: " + (cfg.PROMOTE ? "ENABLED" : "DISABLED"));
+  log_("  - NEG_GUARD: " + (NEG_GUARD_ACTIVE ? "ACTIVE" : "INACTIVE"));
+  log_("  - LABEL_GUARD: " + (cfg.label || "PROOFKIT_AUTOMATED"));
 }
 ```
 
@@ -131,21 +131,21 @@ function initializeSafetyGuards_(cfg) {
 /**
  * PROMOTE gate middleware for Express routes
  */
-function promoteGateMiddleware(mutationType = 'GENERAL') {
+function promoteGateMiddleware(mutationType = "GENERAL") {
   return async (req, res, next) => {
     const tenant = req.query.tenant || req.body.tenant;
     const gateResult = await validatePromoteGate(tenant, mutationType);
-    
+
     if (!gateResult.ok) {
       return res.status(403).json({
         ok: false,
-        code: 'PROMOTE_GATE_BLOCKED',
-        error: 'PROMOTE gate active - Live mutations blocked for safety',
+        code: "PROMOTE_GATE_BLOCKED",
+        error: "PROMOTE gate active - Live mutations blocked for safety",
         promote: gateResult.promote,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       });
     }
-    
+
     next();
   };
 }
@@ -157,19 +157,31 @@ Apply PROMOTE gate middleware to critical mutation endpoints:
 
 ```javascript
 // Autopilot mutations
-app.post('/api/jobs/autopilot_tick', 
-  promoteGateMiddleware('AUTOPILOT_TICK'), 
-  async (req, res) => { /* handler */ });
+app.post(
+  "/api/jobs/autopilot_tick",
+  promoteGateMiddleware("AUTOPILOT_TICK"),
+  async (req, res) => {
+    /* handler */
+  },
+);
 
 // Insights actions
-app.post('/api/insights/actions/apply', 
-  promoteGateMiddleware('INSIGHTS_ACTIONS'), 
-  async (req, res) => { /* handler */ });
+app.post(
+  "/api/insights/actions/apply",
+  promoteGateMiddleware("INSIGHTS_ACTIONS"),
+  async (req, res) => {
+    /* handler */
+  },
+);
 
 // CPC ceiling changes
-app.post('/api/cpc-ceilings/batch', 
-  promoteGateMiddleware('CPC_CEILINGS_BATCH'), 
-  async (req, res) => { /* handler */ });
+app.post(
+  "/api/cpc-ceilings/batch",
+  promoteGateMiddleware("CPC_CEILINGS_BATCH"),
+  async (req, res) => {
+    /* handler */
+  },
+);
 ```
 
 ## NEG_GUARD Protection System
@@ -179,19 +191,19 @@ app.post('/api/cpc-ceilings/batch',
 The NEG_GUARD system prevents adding important terms as negative keywords:
 
 ```javascript
-var RESERVED_KEYWORDS = ['proofkit', 'brand', 'competitor', 'important'];
+var RESERVED_KEYWORDS = ["proofkit", "brand", "competitor", "important"];
 
 function isReservedKeyword_(term) {
   if (!term) return false;
   var termLower = String(term).toLowerCase().trim();
-  
+
   for (var i = 0; i < RESERVED_KEYWORDS.length; i++) {
     if (termLower.indexOf(RESERVED_KEYWORDS[i]) !== -1) {
-      log_('! NEG_GUARD: Blocked reserved keyword: ' + term);
+      log_("! NEG_GUARD: Blocked reserved keyword: " + term);
       return true;
     }
   }
-  
+
   return false;
 }
 ```
@@ -199,10 +211,10 @@ function isReservedKeyword_(term) {
 ### Negative Keyword Validation
 
 ```javascript
-function upsertListNegs_(list, terms){
-  (terms||[]).forEach(function(t){ 
-    t=String(t||"").trim(); 
-    if(t && !have[t.toLowerCase()] && !isReservedKeyword_(t)){ 
+function upsertListNegs_(list, terms) {
+  (terms || []).forEach(function (t) {
+    t = String(t || "").trim();
+    if (t && !have[t.toLowerCase()] && !isReservedKeyword_(t)) {
       if (!PREVIEW_MODE && NEG_GUARD_ACTIVE) {
         list.addNegativeKeyword(t);
       } else {
@@ -233,13 +245,13 @@ function safeLabelWithGuard_(entity, labelName) {
         break;
       }
     }
-    
+
     if (!hasLabel) {
       entity.applyLabel(labelName);
-      log_('• Label applied: ' + labelName);
+      log_("• Label applied: " + labelName);
     }
-  } catch(e) {
-    log_('! Label guard error: ' + e);
+  } catch (e) {
+    log_("! Label guard error: " + e);
   }
 }
 ```
@@ -308,18 +320,21 @@ The comprehensive test suite validates:
 Before enabling PROMOTE=TRUE for any tenant:
 
 1. ✅ **Run Idempotency Tests**
+
    ```bash
    node run-idempotency-test.cjs
    # Must show: "✓ IDEMPOTENCY TEST PASSED"
    ```
 
 2. ✅ **Run PROMOTE Gate Test Suite**
+
    ```bash
    node promote-gate-test.cjs --verbose
    # Must show: "✅ Test Suite PASSED"
    ```
 
 3. ✅ **Validate PROMOTE Gate Status**
+
    ```bash
    node promote-gate.cjs --log-dir ./run_logs
    # Must show: "✅ All safety checks passed"
@@ -343,6 +358,7 @@ Before enabling PROMOTE=TRUE for any tenant:
 If issues are detected in production:
 
 1. **Disable PROMOTE Immediately**
+
    ```sql
    UPDATE CONFIG_TENANT_ID SET value='FALSE' WHERE key='PROMOTE';
    ```
@@ -411,15 +427,15 @@ alerts:
   - name: promote_gate_failure
     condition: promote_gate_blocked_rate > 10%
     action: immediate_notification
-    
+
   - name: excessive_mutations
     condition: mutations_per_run > 100
     action: auto_disable_promote
-    
+
   - name: idempotency_test_failure
     condition: idempotency_test_failed
     action: block_deployments
-    
+
   - name: reserved_keyword_violations
     condition: reserved_keywords_blocked > 5
     action: review_required
@@ -432,11 +448,13 @@ alerts:
 #### PROMOTE Gate Blocked Unexpectedly
 
 **Symptoms:**
+
 - Script logs show "PROMOTE GATE FAILED"
 - Backend returns 403 PROMOTE_GATE_BLOCKED
 - No mutations are being applied
 
 **Diagnosis:**
+
 ```bash
 # Check PROMOTE configuration
 node promote-gate.cjs --log-dir ./run_logs
@@ -449,6 +467,7 @@ ls -la run_logs/*idempotency*.log
 ```
 
 **Solutions:**
+
 1. Verify PROMOTE=TRUE in configuration
 2. Check idempotency test results
 3. Validate safety guard configurations
@@ -457,11 +476,13 @@ ls -la run_logs/*idempotency*.log
 #### Idempotency Test Failures
 
 **Symptoms:**
+
 - Tests show mutations on second run
 - PROMOTE gate blocks deployment
 - "IDEMPOTENCY TEST FAILED" in logs
 
 **Diagnosis:**
+
 ```bash
 # Run detailed idempotency test
 node run-idempotency-test.cjs --verbose
@@ -471,6 +492,7 @@ grep "MUTATION_PLANNED" run_logs/latest_idempotency.log
 ```
 
 **Solutions:**
+
 1. Review entity creation logic for label guards
 2. Check state detection in script
 3. Validate exclusion rules
@@ -479,11 +501,13 @@ grep "MUTATION_PLANNED" run_logs/latest_idempotency.log
 #### NEG_GUARD False Positives
 
 **Symptoms:**
+
 - Valid keywords blocked as "reserved"
 - Excessive NEG_GUARD warnings in logs
 - Terms not being added as negatives
 
 **Diagnosis:**
+
 ```bash
 # Check reserved keyword list
 grep "RESERVED_KEYWORDS" ads-script/master.gs
@@ -493,6 +517,7 @@ grep "NEG_GUARD: Blocked" run_logs/*.log
 ```
 
 **Solutions:**
+
 1. Review and update reserved keyword list
 2. Implement more specific matching logic
 3. Add whitelist for approved terms
@@ -508,11 +533,11 @@ var PROMOTE_DEBUG = true;
 
 function validatePromoteGate_(cfg) {
   if (PROMOTE_DEBUG) {
-    log_('DEBUG: PROMOTE Gate validation starting');
-    log_('DEBUG: Config PROMOTE=' + cfg.PROMOTE);
-    log_('DEBUG: Config enabled=' + cfg.enabled);
+    log_("DEBUG: PROMOTE Gate validation starting");
+    log_("DEBUG: Config PROMOTE=" + cfg.PROMOTE);
+    log_("DEBUG: Config enabled=" + cfg.enabled);
   }
-  
+
   // ... validation logic
 }
 ```
@@ -525,10 +550,11 @@ All PROMOTE gate status requests require HMAC signature validation:
 
 ```javascript
 function verify(sig, payload) {
-  const expectedSig = crypto.createHmac('sha256', SECRET)
+  const expectedSig = crypto
+    .createHmac("sha256", SECRET)
     .update(payload)
-    .digest('base64')
-    .replace(/=+$/, '');
+    .digest("base64")
+    .replace(/=+$/, "");
   return sig === expectedSig;
 }
 ```
@@ -567,6 +593,7 @@ function verify(sig, payload) {
 ### Development Workflow
 
 1. **Local Testing**
+
    ```bash
    # Always run local tests
    node promote-gate-test.cjs --verbose

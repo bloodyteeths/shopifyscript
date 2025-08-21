@@ -1,7 +1,6 @@
-
 # Proofkit — Final Roadmap & Agent Contract (vFINAL 2025-08-13)
 
-> **Compatibility:** This file is the **single source of truth** going forward. It **extends** your original *Roadmap & Claude Rules (v1.0)* and the *Pricing Tiers & Master Roadmap (v2)* and **merges** the *Audience OS + Profit-Aware Retargeting* addendum.  
+> **Compatibility:** This file is the **single source of truth** going forward. It **extends** your original _Roadmap & Claude Rules (v1.0)_ and the _Pricing Tiers & Master Roadmap (v2)_ and **merges** the _Audience OS + Profit-Aware Retargeting_ addendum.  
 > **Starter ZIP:** Using the previous starter ZIP is **fine**. Keep its structure. When conflicts appear, **prefer this roadmap** and patch via small diffs.
 
 ---
@@ -34,23 +33,27 @@
 ## 1) Release Trains (what ships when)
 
 ### R0 — Foundation (Week 1)
+
 - Backend HMAC API + Sheets repo.
 - Google Ads Script Core (budgets, CPC ceiling, schedule, master neg list, ad‑group exact negatives, GAQL collectors, RSA builder + lint + label guards).
 - Shopify App bootstrap (OAuth, Embedded, Settings, Web Pixel).
 
 ### R1 — Intent OS (Weeks 2–4)
+
 - Catalog Overlays (metafields) + Apply/Revert + bulk apply.
 - Intent Blocks (Shopify OS2.0/WP block) — UTM-driven content.
-- Promo Page Generator (draft-only).  
+- Promo Page Generator (draft-only).
 - AI Drafts loop (RSA + sitelinks/callouts + n‑gram waste miner).
 
 ### R2 — Audience OS + Profit Pacer (Weeks 4–6)
+
 - Shopify→Sheets audience seeds; Segment builder; CSV exports (UI+API formats).
 - Ads Script audience attach (OBSERVE/TARGET/EXCLUDE) + bid modifiers (size guards).
 - Optional Customer Match API refresher (feature-flagged).
 - Profit- & inventory-aware pacing; ADGROUP⇄SKU map; weekly summary + Looker.
 
 ### R3 — Agency Scale (Weeks 6–8)
+
 - Template library (clone tabs/maps across tenants).
 - White-label weekly PDF; ops tools (CSV download, hashing self-check, list size checker).
 - Microsoft Ads Script port.
@@ -60,6 +63,7 @@
 ## 2) Environment & Flags
 
 **ENV (backend)**
+
 ```
 GOOGLE_SHEETS_SA_JSON
 SHEETS_ROOT_ID            # per-tenant Sheet ID looked up from registry
@@ -68,7 +72,9 @@ HMAC_SHARED_SECRET
 OPENAI_KEY / ANTHROPIC_KEY (optional for AI)
 SHOPIFY_APP_KEY / SHOPIFY_APP_SECRET
 ```
-**Feature flags (in CONFIG_{tenant} or env)**
+
+**Feature flags (in CONFIG\_{tenant} or env)**
+
 ```
 FEATURE_AI_DRAFTS=true
 FEATURE_INTENT_BLOCKS=true
@@ -83,16 +89,16 @@ ENABLE_SCRIPT=true
 
 ## 3) Sheets (brain) — canonical tabs
 
-- **CONFIG_{tenant}** — flags, defaults, PROMOTE.  
-- **METRICS_{tenant}**, **SEARCH_TERMS_{tenant}** — GAQL collectors.  
-- **MASTER_NEGATIVES_{tenant}**, **NGRAM_WASTE_{tenant}**, **NEG_GUARD_{tenant}**.  
-- **RSA_ASSETS_DEFAULT_{tenant}**, **RSA_ASSETS_MAP_{tenant}**, **ASSET_LIBRARY_{tenant}**.  
-- **KEYWORD_UPSERTS_{tenant}**, **BUDGET_CAPS_{tenant}**, **CPC_CEILINGS_{tenant}**, **SCHEDULES_{tenant}**, **EXCLUSIONS_{tenant}**.  
-- **GEO_DAYPART_HINTS_{tenant}**, **PACER_RULES_{tenant}**, **PACE_SIGNALS_{tenant}**.  
-- **LP_FIXES_QUEUE_{tenant}**, **BRAND_NONBRAND_MAP_{tenant}**.  
-- **AUDIENCE_SEEDS_{tenant}**, **AUDIENCE_SEGMENTS_{tenant}**, **AUDIENCE_EXPORT_{tenant}**, **AUDIENCE_MAP_{tenant}**.  
-- **SKU_MARGIN_{tenant}**, **SKU_STOCK_{tenant}**, **ADGROUP_SKU_MAP_{tenant}**.  
-- **RUN_LOGS_{tenant}**.
+- **CONFIG\_{tenant}** — flags, defaults, PROMOTE.
+- **METRICS\_{tenant}**, **SEARCH*TERMS*{tenant}** — GAQL collectors.
+- **MASTER*NEGATIVES*{tenant}**, **NGRAM*WASTE*{tenant}**, **NEG*GUARD*{tenant}**.
+- **RSA*ASSETS_DEFAULT*{tenant}**, **RSA*ASSETS_MAP*{tenant}**, **ASSET*LIBRARY*{tenant}**.
+- **KEYWORD*UPSERTS*{tenant}**, **BUDGET*CAPS*{tenant}**, **CPC*CEILINGS*{tenant}**, **SCHEDULES\_{tenant}**, **EXCLUSIONS\_{tenant}**.
+- **GEO*DAYPART_HINTS*{tenant}**, **PACER*RULES*{tenant}**, **PACE*SIGNALS*{tenant}**.
+- **LP*FIXES_QUEUE*{tenant}**, **BRAND*NONBRAND_MAP*{tenant}**.
+- **AUDIENCE*SEEDS*{tenant}**, **AUDIENCE*SEGMENTS*{tenant}**, **AUDIENCE*EXPORT*{tenant}**, **AUDIENCE*MAP*{tenant}**.
+- **SKU*MARGIN*{tenant}**, **SKU*STOCK*{tenant}**, **ADGROUP*SKU_MAP*{tenant}**.
+- **RUN*LOGS*{tenant}**.
 
 > If a tab is missing, backend should **auto-create headers** on first use.
 
@@ -126,11 +132,13 @@ ENABLE_SCRIPT=true
 ## 5) Milestones (with Agent Prompts)
 
 ### M0 — Backend + Sheets repo (R0/W1)
+
 **Goal:** HMAC API & Sheets repository with auto-tab creation.
 
 **Acceptance:** `curl` signed requests succeed; rows appear in `RUN_LOGS_*`; missing tabs auto-created.
 
 **Agent Prompt**
+
 ```
 SCOPE: Stand up HMAC API + Sheets repo with auto-tab creation.
 ASSUMPTIONS: GOOGLE_SHEETS_SA_JSON, SHEETS_ROOT_ID, HMAC_SHARED_SECRET.
@@ -146,11 +154,13 @@ ROLLBACK: disable /api via env; leave Sheets as-is.
 ---
 
 ### M1 — Google Ads Script Core (R0/W1)
+
 **Goal:** Budgets/CPC/schedule + master negatives + ad-group exact negatives + n‑gram miner + RSA builder (30/90) + GAQL collectors.
 
 **Acceptance:** Preview OK; re-run is no-op; RSAs satisfy 30/90; negatives deduped; label guard holds.
 
 **Agent Prompt**
+
 ```
 SCOPE: Implement idempotent universal Ads Script with collectors.
 ASSUMPTIONS: CONFIG/BUDGET_CAPS/CPC_CEILINGS/SCHEDULES exist.
@@ -167,11 +177,13 @@ ROLLBACK: set ENABLE_SCRIPT=false in CONFIG.
 ---
 
 ### M2 — Shopify App Bootstrap (R0/W1–W2)
+
 **Goal:** Embedded app with settings + Web Pixel (consent-aware).
 
 **Acceptance:** Install on dev store; settings persist to backend; pixel test order fires (no duplicates).
 
 **Agent Prompt**
+
 ```
 SCOPE: Shopify app bootstrap + settings + Web Pixel.
 ASSUMPTIONS: Partner app creds; dev store.
@@ -184,11 +196,13 @@ ROLLBACK: uninstall removes extension blocks.
 ---
 
 ### M3 — Catalog Overlays + Intent Blocks + Promo Drafts (R1/W2–W4)
+
 **Goal:** Win-the-page via UTM-personalized content + safe catalog copy.
 
 **Acceptance:** Apply/Revert works; UTM changes page content; drafts created, never auto-published.
 
 **Agent Prompt**
+
 ```
 SCOPE: Catalog overlays (metafields) + Intent Blocks + promo page drafts.
 ASSUMPTIONS: Sheets tabs exist; storefront theme OS2.0.
@@ -201,11 +215,13 @@ ROLLBACK: Remove blocks; revert metafields via overlay history.
 ---
 
 ### M4 — AI Drafts (RSA/Negatives/Sitelinks) (R1/W3–W4)
+
 **Goal:** AI writes drafts matching search intent; validated; written to Sheets.
 
 **Acceptance:** 5 sample queries produce length-valid RSAs; n‑gram waste populated; PROMOTE gate respected.
 
 **Agent Prompt**
+
 ```
 SCOPE: AI drafts for RSAs, sitelinks/callouts, and n-gram waste.
 ASSUMPTIONS: OPENAI_KEY/ANTHROPIC_KEY; rate limits.
@@ -218,11 +234,13 @@ ROLLBACK: disable FEATURE_AI_DRAFTS.
 ---
 
 ### M5 — Audience OS: Seeds + Segments + Exports (R2/W4–W5)
+
 **Goal:** Build audiences from Shopify orders with consent; output CSVs.
 
 **Acceptance:** 8 predefined segments compile; CSVs materialized (UI+API formats) with counts logged.
 
 **Agent Prompt**
+
 ```
 SCOPE: Shopify→Sheets audience seeds; segment builder; CSV exports.
 ASSUMPTIONS: Admin GraphQL scopes; hashing helpers.
@@ -235,11 +253,13 @@ ROLLBACK: disable FEATURE_AUDIENCE_EXPORT.
 ---
 
 ### M6 — Ads Script Audience Attach (No-API) (R2/W5)
+
 **Goal:** Attach Customer Match lists to campaigns/ad groups with mode+bid mod.
 
 **Acceptance:** Preview shows attach/detach; size guards respected; idempotent.
 
 **Agent Prompt**
+
 ```
 SCOPE: Extend Ads Script to attach user lists per AUDIENCE_MAP_*.
 ASSUMPTIONS: Lists created in Audience Manager; list IDs known.
@@ -252,11 +272,13 @@ ROLLBACK: clear AUDIENCE_MAP_* or set FEATURE_AUDIENCE_ATTACH=false.
 ---
 
 ### M7 — Optional CM API Refresher (R2/W5–W6)
+
 **Goal:** Auto-refresh Customer Match via Google Ads API (feature-flag).
 
 **Acceptance:** Nightly job refreshes; sizes trend up; no raw PII persisted.
 
 **Agent Prompt**
+
 ```
 SCOPE: Customer Match API refresher behind FEATURE_CM_API.
 ASSUMPTIONS: Dev token, OAuth client/secret, refresh token.
@@ -269,11 +291,13 @@ ROLLBACK: set FEATURE_CM_API=false.
 ---
 
 ### M8 — Profit & Inventory-Aware Pacer (R2/W4–W6)
+
 **Goal:** Allocate budgets by 7d **margin value**; guard against OOS inventory.
 
 **Acceptance:** Budget share shifts toward high-margin intents; OOS ad groups paused or capped; weekly summary cites reasons.
 
 **Agent Prompt**
+
 ```
 SCOPE: Compute PACE_SIGNALS_* and enforce profit/inventory-aware pacing.
 ASSUMPTIONS: SKU_MARGIN_*, SKU_STOCK_*, ADGROUP_SKU_MAP_* exist.
@@ -286,11 +310,13 @@ ROLLBACK: disable FEATURE_INVENTORY_GUARD.
 ---
 
 ### M9 — Agency Mode + Reporting + Microsoft Port (R3/W6–W8)
+
 **Goal:** Scale-through-templates and multi-store; add white-label weekly; port Script to Microsoft Ads.
 
 **Acceptance:** New tenant setup < 30 min; weekly PDF renders; Microsoft Script runs basics.
 
 **Agent Prompt**
+
 ```
 SCOPE: Agency templates + reporting + Microsoft Ads Script port.
 ASSUMPTIONS: Two tenants for clone test; Bing sandbox.
@@ -304,21 +330,21 @@ ROLLBACK: feature flags off; docs remain.
 
 ## 6) KPIs to hit $1M (operator view)
 
-- **K‑factor ≥ 0.6** (referrals/agency partners).  
-- **Trial→Paid ≥ 35%**; **Pro/Growth ≥ 60%** of paid.  
-- **Churn:** Pro ≤ 5%, Growth ≤ 3% monthly.  
-- **Weekly first‑win ≥ 80%** (negatives added, RSA draft, or intent block lift).  
+- **K‑factor ≥ 0.6** (referrals/agency partners).
+- **Trial→Paid ≥ 35%**; **Pro/Growth ≥ 60%** of paid.
+- **Churn:** Pro ≤ 5%, Growth ≤ 3% monthly.
+- **Weekly first‑win ≥ 80%** (negatives added, RSA draft, or intent block lift).
 - **Agency activation:** 200–300 partners × 3 stores avg by M12.
 
 ---
 
 ## 7) Test Plan (smoke)
 
-- Backend HMAC: unsigned 403 / signed 200; rows in `RUN_LOGS_*`.  
-- Ads Script: second preview is **no‑op**; RSA 30/90; negatives deduped; audience attach idempotent.  
-- Shopify: overlay Apply/Revert; UTM shows Intent Block content; draft page generated.  
-- Audience exports: UI and API CSV headers validate; sizes logged.  
-- Pacer: simulated data shifts budgets as expected; OOS ad group paused/capped with reason.  
+- Backend HMAC: unsigned 403 / signed 200; rows in `RUN_LOGS_*`.
+- Ads Script: second preview is **no‑op**; RSA 30/90; negatives deduped; audience attach idempotent.
+- Shopify: overlay Apply/Revert; UTM shows Intent Block content; draft page generated.
+- Audience exports: UI and API CSV headers validate; sizes logged.
+- Pacer: simulated data shifts budgets as expected; OOS ad group paused/capped with reason.
 - Weekly report: PDF generated; Looker shows live.
 
 ---
@@ -326,18 +352,22 @@ ROLLBACK: feature flags off; docs remain.
 ## 8) Appendices
 
 ### A. Predefined segments (Audience OS)
-- buyers_30d, buyers_180d, repeat_2plus, high_LTV_top20, churn_risk_90d_no_purchase, category_{X}_buyers_180d, VIP_AOV>{x}, abandoned_checkout_14d
+
+- buyers*30d, buyers_180d, repeat_2plus, high_LTV_top20, churn_risk_90d_no_purchase, category*{X}\_buyers_180d, VIP_AOV>{x}, abandoned_checkout_14d
 
 ### B. Google Ads list upload (UI) — merchant steps
-1) Tools & Settings → Audience Manager → Segments → **+**  
-2) **Customer list** → upload our **CM_UI_UNHASHED** CSV (Google hashes)  
-3) Set membership duration (e.g., 180d) → Copy **User List ID** → add to `AUDIENCE_MAP_*`
+
+1. Tools & Settings → Audience Manager → Segments → **+**
+2. **Customer list** → upload our **CM_UI_UNHASHED** CSV (Google hashes)
+3. Set membership duration (e.g., 180d) → Copy **User List ID** → add to `AUDIENCE_MAP_*`
 
 ### C. Reserved labels & config
-- Label: **PROOFKIT_AUTOMATED**, **PROOFKIT_INTENT**  
+
+- Label: **PROOFKIT_AUTOMATED**, **PROOFKIT_INTENT**
 - Respect `EXCLUSIONS_*`; never negate `NEG_GUARD_*` terms or brand.
 
 ### D. RSA limits
+
 - Headlines ≤ **30 chars**, Descriptions ≤ **90 chars** (validate at build time).
 
 ---

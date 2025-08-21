@@ -3,10 +3,10 @@
  * Manages automated execution of weekly summaries, anomaly detection, and alerting
  */
 
-import { runWeeklySummary } from './weekly_summary.js';
-import { anomalyDetectionService } from '../services/anomaly-detection.js';
-import { alertsService } from '../services/alerts.js';
-import logger from '../services/logger.js';
+import { runWeeklySummary } from "./weekly_summary.js";
+import { anomalyDetectionService } from "../services/anomaly-detection.js";
+import { alertsService } from "../services/alerts.js";
+import logger from "../services/logger.js";
 
 /**
  * Job Scheduler Class
@@ -17,7 +17,7 @@ export class JobScheduler {
     this.running = false;
     this.intervals = new Map();
     this.tenants = new Set(); // Start empty, tenants added dynamically via addTenant()
-    
+
     this.schedules = {
       // Anomaly detection - every 15 minutes
       anomaly_detection: {
@@ -25,26 +25,26 @@ export class JobScheduler {
         fn: this.runAnomalyDetectionJob.bind(this),
         enabled: true,
         lastRun: null,
-        runCount: 0
+        runCount: 0,
       },
-      
+
       // Weekly summary - Mondays at 9 AM
       weekly_summary: {
-        cron: '0 9 * * 1', // Monday 9 AM
+        cron: "0 9 * * 1", // Monday 9 AM
         fn: this.runWeeklySummaryJob.bind(this),
         enabled: true,
         lastRun: null,
-        runCount: 0
+        runCount: 0,
       },
-      
+
       // Health check - every 5 minutes
       health_check: {
         interval: 5 * 60 * 1000, // 5 minutes
         fn: this.runHealthCheckJob.bind(this),
         enabled: true,
         lastRun: null,
-        runCount: 0
-      }
+        runCount: 0,
+      },
     };
   }
 
@@ -53,12 +53,12 @@ export class JobScheduler {
    */
   start() {
     if (this.running) {
-      logger.warn('Job scheduler is already running');
+      logger.warn("Job scheduler is already running");
       return;
     }
 
     this.running = true;
-    logger.info('Starting job scheduler');
+    logger.info("Starting job scheduler");
 
     // Start interval-based jobs
     for (const [jobName, config] of Object.entries(this.schedules)) {
@@ -70,9 +70,9 @@ export class JobScheduler {
     // Start cron-based jobs
     this.startCronJobs();
 
-    logger.info('Job scheduler started successfully', {
+    logger.info("Job scheduler started successfully", {
       jobs: Object.keys(this.schedules),
-      tenants: Array.from(this.tenants)
+      tenants: Array.from(this.tenants),
     });
   }
 
@@ -81,21 +81,21 @@ export class JobScheduler {
    */
   stop() {
     if (!this.running) {
-      logger.warn('Job scheduler is not running');
+      logger.warn("Job scheduler is not running");
       return;
     }
 
     this.running = false;
-    logger.info('Stopping job scheduler');
+    logger.info("Stopping job scheduler");
 
     // Clear all intervals
     for (const [jobName, intervalId] of this.intervals) {
       clearInterval(intervalId);
-      logger.debug('Stopped interval job', { jobName });
+      logger.debug("Stopped interval job", { jobName });
     }
     this.intervals.clear();
 
-    logger.info('Job scheduler stopped');
+    logger.info("Job scheduler stopped");
   }
 
   /**
@@ -103,7 +103,7 @@ export class JobScheduler {
    */
   addTenant(tenantId) {
     this.tenants.add(tenantId);
-    logger.info('Added tenant to scheduler', { tenantId });
+    logger.info("Added tenant to scheduler", { tenantId });
   }
 
   /**
@@ -111,7 +111,7 @@ export class JobScheduler {
    */
   removeTenant(tenantId) {
     this.tenants.delete(tenantId);
-    logger.info('Removed tenant from scheduler', { tenantId });
+    logger.info("Removed tenant from scheduler", { tenantId });
   }
 
   /**
@@ -120,20 +120,23 @@ export class JobScheduler {
   startIntervalJob(jobName, config) {
     const intervalId = setInterval(async () => {
       if (!this.running) return;
-      
+
       try {
         await this.executeJob(jobName, config);
       } catch (error) {
-        logger.error('Interval job execution failed', {
+        logger.error("Interval job execution failed", {
           jobName,
           error: error.message,
-          stack: error.stack
+          stack: error.stack,
         });
       }
     }, config.interval);
 
     this.intervals.set(jobName, intervalId);
-    logger.debug('Started interval job', { jobName, interval: config.interval });
+    logger.debug("Started interval job", {
+      jobName,
+      interval: config.interval,
+    });
   }
 
   /**
@@ -145,23 +148,27 @@ export class JobScheduler {
       if (!this.running) return;
 
       const now = new Date();
-      
+
       for (const [jobName, config] of Object.entries(this.schedules)) {
-        if (config.enabled && config.cron && this.shouldRunCronJob(now, config)) {
+        if (
+          config.enabled &&
+          config.cron &&
+          this.shouldRunCronJob(now, config)
+        ) {
           try {
             await this.executeJob(jobName, config);
           } catch (error) {
-            logger.error('Cron job execution failed', {
+            logger.error("Cron job execution failed", {
               jobName,
               error: error.message,
-              stack: error.stack
+              stack: error.stack,
             });
           }
         }
       }
     }, 60000); // Check every minute
 
-    this.intervals.set('cron_checker', cronInterval);
+    this.intervals.set("cron_checker", cronInterval);
   }
 
   /**
@@ -169,15 +176,17 @@ export class JobScheduler {
    */
   shouldRunCronJob(now, config) {
     // Simple cron implementation for Monday 9 AM
-    if (config.cron === '0 9 * * 1') { // Monday 9 AM
+    if (config.cron === "0 9 * * 1") {
+      // Monday 9 AM
       const isMonday = now.getDay() === 1;
       const isNineAM = now.getHours() === 9 && now.getMinutes() === 0;
-      const hasntRunToday = !config.lastRun || 
+      const hasntRunToday =
+        !config.lastRun ||
         new Date(config.lastRun).toDateString() !== now.toDateString();
-      
+
       return isMonday && isNineAM && hasntRunToday;
     }
-    
+
     return false;
   }
 
@@ -186,7 +195,7 @@ export class JobScheduler {
    */
   async executeJob(jobName, config) {
     const startTime = Date.now();
-    logger.info('Executing job', { jobName, tenantCount: this.tenants.size });
+    logger.info("Executing job", { jobName, tenantCount: this.tenants.size });
 
     let successCount = 0;
     let errorCount = 0;
@@ -197,10 +206,10 @@ export class JobScheduler {
         successCount++;
       } catch (error) {
         errorCount++;
-        logger.error('Job execution failed for tenant', {
+        logger.error("Job execution failed for tenant", {
           jobName,
           tenantId,
-          error: error.message
+          error: error.message,
         });
       }
     }
@@ -209,12 +218,12 @@ export class JobScheduler {
     config.lastRun = new Date().toISOString();
     config.runCount++;
 
-    logger.info('Job execution completed', {
+    logger.info("Job execution completed", {
       jobName,
       duration,
       successCount,
       errorCount,
-      totalTenants: this.tenants.size
+      totalTenants: this.tenants.size,
     });
   }
 
@@ -222,26 +231,29 @@ export class JobScheduler {
    * Anomaly Detection Job
    */
   async runAnomalyDetectionJob(tenantId) {
-    logger.debug('Running anomaly detection job', { tenantId });
+    logger.debug("Running anomaly detection job", { tenantId });
 
-    const results = await anomalyDetectionService.detectAnomalies(tenantId, '1h');
-    
+    const results = await anomalyDetectionService.detectAnomalies(
+      tenantId,
+      "1h",
+    );
+
     // Send alerts for any anomalies found
     if (results.alerts.length > 0 || results.warnings.length > 0) {
       const allAnomalies = [...results.alerts, ...results.warnings];
-      
+
       for (const anomaly of allAnomalies) {
         try {
           await alertsService.sendAlert(tenantId, {
             ...anomaly,
             tenant: tenantId,
-            timestamp: results.timestamp
+            timestamp: results.timestamp,
           });
         } catch (alertError) {
-          logger.warn('Failed to send alert for anomaly', {
+          logger.warn("Failed to send alert for anomaly", {
             tenantId,
             anomaly: anomaly.type,
-            error: alertError.message
+            error: alertError.message,
           });
         }
       }
@@ -251,7 +263,7 @@ export class JobScheduler {
       tenantId,
       alertsFound: results.alerts.length,
       warningsFound: results.warnings.length,
-      timestamp: results.timestamp
+      timestamp: results.timestamp,
     };
   }
 
@@ -259,21 +271,21 @@ export class JobScheduler {
    * Weekly Summary Job
    */
   async runWeeklySummaryJob(tenantId) {
-    logger.debug('Running weekly summary job', { tenantId });
+    logger.debug("Running weekly summary job", { tenantId });
 
     const result = await runWeeklySummary(tenantId, { generateAI: true });
-    
+
     if (result.ok) {
       // Send weekly summary via configured channels
       try {
         await alertsService.sendWeeklySummary(tenantId, result.summary, {
           dashboardUrl: `https://app.proofkit.com/dashboard/${tenantId}`,
-          settingsUrl: `https://app.proofkit.com/settings/${tenantId}`
+          settingsUrl: `https://app.proofkit.com/settings/${tenantId}`,
         });
       } catch (alertError) {
-        logger.warn('Failed to send weekly summary alert', {
+        logger.warn("Failed to send weekly summary alert", {
           tenantId,
-          error: alertError.message
+          error: alertError.message,
         });
       }
     } else {
@@ -284,7 +296,7 @@ export class JobScheduler {
       tenantId,
       summary: result.summary,
       duration: result.duration,
-      hasAI: !!result.insights
+      hasAI: !!result.insights,
     };
   }
 
@@ -292,59 +304,63 @@ export class JobScheduler {
    * Health Check Job
    */
   async runHealthCheckJob(tenantId) {
-    logger.debug('Running health check job', { tenantId });
+    logger.debug("Running health check job", { tenantId });
 
     const health = {
       tenantId,
       timestamp: new Date().toISOString(),
       services: {},
-      overall: 'healthy'
+      overall: "healthy",
     };
 
     try {
       // Check anomaly detection service health
-      const anomalySummary = anomalyDetectionService.getAnomalySummary(tenantId);
+      const anomalySummary =
+        anomalyDetectionService.getAnomalySummary(tenantId);
       health.services.anomalyDetection = {
-        status: 'healthy',
+        status: "healthy",
         totalRuns: anomalySummary.totalRuns,
-        recentAlerts: anomalySummary.totalAlerts
+        recentAlerts: anomalySummary.totalAlerts,
       };
     } catch (error) {
       health.services.anomalyDetection = {
-        status: 'unhealthy',
-        error: error.message
+        status: "unhealthy",
+        error: error.message,
       };
-      health.overall = 'degraded';
+      health.overall = "degraded";
     }
 
     try {
       // Check alerts service health
       const alertStats = alertsService.getDeliveryStats(tenantId);
       health.services.alerts = {
-        status: alertStats.successRate > 80 ? 'healthy' : 'degraded',
+        status: alertStats.successRate > 80 ? "healthy" : "degraded",
         successRate: alertStats.successRate,
         totalDeliveries: alertStats.totalDeliveries,
-        recentFailures: alertStats.recentFailures
+        recentFailures: alertStats.recentFailures,
       };
-      
+
       if (alertStats.successRate <= 50) {
-        health.overall = 'unhealthy';
+        health.overall = "unhealthy";
       } else if (alertStats.successRate <= 80) {
-        health.overall = 'degraded';
+        health.overall = "degraded";
       }
     } catch (error) {
       health.services.alerts = {
-        status: 'unhealthy',
-        error: error.message
+        status: "unhealthy",
+        error: error.message,
       };
-      health.overall = 'unhealthy';
+      health.overall = "unhealthy";
     }
 
     // Log health status
-    if (health.overall !== 'healthy') {
-      logger.warn('Health check found issues', health);
+    if (health.overall !== "healthy") {
+      logger.warn("Health check found issues", health);
     } else {
-      logger.debug('Health check passed', { tenantId, services: Object.keys(health.services) });
+      logger.debug("Health check passed", {
+        tenantId,
+        services: Object.keys(health.services),
+      });
     }
 
     return health;
@@ -358,7 +374,7 @@ export class JobScheduler {
       running: this.running,
       tenants: Array.from(this.tenants),
       jobs: {},
-      uptime: this.running ? Date.now() - this.startTime : 0
+      uptime: this.running ? Date.now() - this.startTime : 0,
     };
 
     for (const [jobName, config] of Object.entries(this.schedules)) {
@@ -366,8 +382,10 @@ export class JobScheduler {
         enabled: config.enabled,
         lastRun: config.lastRun,
         runCount: config.runCount,
-        schedule: config.interval ? `${config.interval}ms interval` : config.cron,
-        nextRun: this.getNextRunTime(config)
+        schedule: config.interval
+          ? `${config.interval}ms interval`
+          : config.cron,
+        nextRun: this.getNextRunTime(config),
       };
     }
 
@@ -379,17 +397,20 @@ export class JobScheduler {
    */
   getNextRunTime(config) {
     if (config.interval && config.lastRun) {
-      return new Date(Date.parse(config.lastRun) + config.interval).toISOString();
+      return new Date(
+        Date.parse(config.lastRun) + config.interval,
+      ).toISOString();
     }
-    
-    if (config.cron === '0 9 * * 1') { // Monday 9 AM
+
+    if (config.cron === "0 9 * * 1") {
+      // Monday 9 AM
       const now = new Date();
       const nextMonday = new Date(now);
-      nextMonday.setDate(now.getDate() + (1 + 7 - now.getDay()) % 7);
+      nextMonday.setDate(now.getDate() + ((1 + 7 - now.getDay()) % 7));
       nextMonday.setHours(9, 0, 0, 0);
       return nextMonday.toISOString();
     }
-    
+
     return null;
   }
 
@@ -399,8 +420,8 @@ export class JobScheduler {
   setJobEnabled(jobName, enabled) {
     if (this.schedules[jobName]) {
       this.schedules[jobName].enabled = enabled;
-      logger.info('Job status changed', { jobName, enabled });
-      
+      logger.info("Job status changed", { jobName, enabled });
+
       // Restart scheduler to apply changes
       if (this.running) {
         this.stop();

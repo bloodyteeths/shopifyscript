@@ -11,14 +11,20 @@ class TenantAwareCache {
     this.maxSize = Number(process.env.CACHE_MAX_SIZE || 10000);
     this.defaultTtl = Number(process.env.CACHE_DEFAULT_TTL_SEC || 300) * 1000; // 5 minutes
     this.cleanupInterval = 60000; // 1 minute
-    
+
     // Configure TTL by path pattern
     this.pathTtls = new Map([
-      ['/api/insights', Number(process.env.INSIGHTS_CACHE_TTL_SEC || 60) * 1000],
-      ['/api/config', Number(process.env.CONFIG_CACHE_TTL_SEC || 15) * 1000],
-      ['/api/run-logs', Number(process.env.RUNLOGS_CACHE_TTL_SEC || 10) * 1000],
-      ['/api/summary', Number(process.env.SUMMARY_CACHE_TTL_SEC || 30) * 1000],
-      ['/api/insights/terms', Number(process.env.TERMS_CACHE_TTL_SEC || 120) * 1000]
+      [
+        "/api/insights",
+        Number(process.env.INSIGHTS_CACHE_TTL_SEC || 60) * 1000,
+      ],
+      ["/api/config", Number(process.env.CONFIG_CACHE_TTL_SEC || 15) * 1000],
+      ["/api/run-logs", Number(process.env.RUNLOGS_CACHE_TTL_SEC || 10) * 1000],
+      ["/api/summary", Number(process.env.SUMMARY_CACHE_TTL_SEC || 30) * 1000],
+      [
+        "/api/insights/terms",
+        Number(process.env.TERMS_CACHE_TTL_SEC || 120) * 1000,
+      ],
     ]);
 
     this.startCleanupTimer();
@@ -28,16 +34,21 @@ class TenantAwareCache {
    * Generate cache key with tenant isolation
    */
   generateKey(tenantId, path, params = {}) {
-    const normalizedTenant = String(tenantId || (() => { throw new Error('Tenant ID required - no default fallback'); })());
-    const normalizedPath = String(path || '');
-    
+    const normalizedTenant = String(
+      tenantId ||
+        (() => {
+          throw new Error("Tenant ID required - no default fallback");
+        })(),
+    );
+    const normalizedPath = String(path || "");
+
     // Sort params for consistent key generation
     const sortedParams = Object.keys(params)
       .sort()
-      .map(key => `${key}=${params[key]}`)
-      .join('&');
-    
-    const key = `${normalizedTenant}:${normalizedPath}${sortedParams ? `?${sortedParams}` : ''}`;
+      .map((key) => `${key}=${params[key]}`)
+      .join("&");
+
+    const key = `${normalizedTenant}:${normalizedPath}${sortedParams ? `?${sortedParams}` : ""}`;
     return key;
   }
 
@@ -60,7 +71,7 @@ class TenantAwareCache {
     const key = this.generateKey(tenantId, path, params);
     const ttl = customTtl || this.getTtlForPath(path);
     const expires = Date.now() + ttl;
-    
+
     // Implement LRU eviction if cache is full
     if (this.cache.size >= this.maxSize) {
       this.evictOldest();
@@ -73,15 +84,15 @@ class TenantAwareCache {
       path,
       createdAt: Date.now(),
       accessCount: 0,
-      lastAccessed: Date.now()
+      lastAccessed: Date.now(),
     };
 
     this.cache.set(key, entry);
     this.ttlMap.set(key, expires);
-    
+
     // Update stats
-    this.updateStats(tenantId, 'set');
-    
+    this.updateStats(tenantId, "set");
+
     return key;
   }
 
@@ -91,23 +102,23 @@ class TenantAwareCache {
   get(tenantId, path, params = {}) {
     const key = this.generateKey(tenantId, path, params);
     const entry = this.cache.get(key);
-    
+
     if (!entry) {
-      this.updateStats(tenantId, 'miss');
+      this.updateStats(tenantId, "miss");
       return null;
     }
 
     if (Date.now() > entry.expires) {
       this.delete(key);
-      this.updateStats(tenantId, 'expired');
+      this.updateStats(tenantId, "expired");
       return null;
     }
 
     // Update access stats
     entry.accessCount++;
     entry.lastAccessed = Date.now();
-    
-    this.updateStats(tenantId, 'hit');
+
+    this.updateStats(tenantId, "hit");
     return entry.data;
   }
 
@@ -119,7 +130,7 @@ class TenantAwareCache {
     if (entry) {
       this.cache.delete(key);
       this.ttlMap.delete(key);
-      this.updateStats(entry.tenantId, 'delete');
+      this.updateStats(entry.tenantId, "delete");
       return true;
     }
     return false;
@@ -129,9 +140,14 @@ class TenantAwareCache {
    * Clear all cache entries for a tenant
    */
   clearTenant(tenantId) {
-    const normalizedTenant = String(tenantId || (() => { throw new Error('Tenant ID required - no default fallback'); })());
+    const normalizedTenant = String(
+      tenantId ||
+        (() => {
+          throw new Error("Tenant ID required - no default fallback");
+        })(),
+    );
     let cleared = 0;
-    
+
     for (const [key, entry] of this.cache) {
       if (entry.tenantId === normalizedTenant) {
         this.cache.delete(key);
@@ -139,8 +155,8 @@ class TenantAwareCache {
         cleared++;
       }
     }
-    
-    this.updateStats(tenantId, 'clear', cleared);
+
+    this.updateStats(tenantId, "clear", cleared);
     return cleared;
   }
 
@@ -148,18 +164,26 @@ class TenantAwareCache {
    * Clear cache entries by path pattern for a tenant
    */
   clearTenantPath(tenantId, pathPattern) {
-    const normalizedTenant = String(tenantId || (() => { throw new Error('Tenant ID required - no default fallback'); })());
+    const normalizedTenant = String(
+      tenantId ||
+        (() => {
+          throw new Error("Tenant ID required - no default fallback");
+        })(),
+    );
     let cleared = 0;
-    
+
     for (const [key, entry] of this.cache) {
-      if (entry.tenantId === normalizedTenant && entry.path.startsWith(pathPattern)) {
+      if (
+        entry.tenantId === normalizedTenant &&
+        entry.path.startsWith(pathPattern)
+      ) {
         this.cache.delete(key);
         this.ttlMap.delete(key);
         cleared++;
       }
     }
-    
-    this.updateStats(tenantId, 'clearPath', cleared);
+
+    this.updateStats(tenantId, "clearPath", cleared);
     return cleared;
   }
 
@@ -180,13 +204,13 @@ class TenantAwareCache {
   has(tenantId, path, params = {}) {
     const key = this.generateKey(tenantId, path, params);
     const entry = this.cache.get(key);
-    
+
     if (!entry) return false;
     if (Date.now() > entry.expires) {
       this.delete(key);
       return false;
     }
-    
+
     return true;
   }
 
@@ -194,15 +218,20 @@ class TenantAwareCache {
    * Get cache size for a tenant
    */
   getTenantSize(tenantId) {
-    const normalizedTenant = String(tenantId || (() => { throw new Error('Tenant ID required - no default fallback'); })());
+    const normalizedTenant = String(
+      tenantId ||
+        (() => {
+          throw new Error("Tenant ID required - no default fallback");
+        })(),
+    );
     let count = 0;
-    
+
     for (const entry of this.cache.values()) {
       if (entry.tenantId === normalizedTenant) {
         count++;
       }
     }
-    
+
     return count;
   }
 
@@ -210,8 +239,13 @@ class TenantAwareCache {
    * Update cache statistics
    */
   updateStats(tenantId, operation, count = 1) {
-    const normalizedTenant = String(tenantId || (() => { throw new Error('Tenant ID required - no default fallback'); })());
-    
+    const normalizedTenant = String(
+      tenantId ||
+        (() => {
+          throw new Error("Tenant ID required - no default fallback");
+        })(),
+    );
+
     if (!this.stats.has(normalizedTenant)) {
       this.stats.set(normalizedTenant, {
         hits: 0,
@@ -221,10 +255,10 @@ class TenantAwareCache {
         expired: 0,
         clears: 0,
         clearPaths: 0,
-        lastActivity: Date.now()
+        lastActivity: Date.now(),
       });
     }
-    
+
     const stats = this.stats.get(normalizedTenant);
     if (operation in stats) {
       stats[operation] += count;
@@ -236,19 +270,31 @@ class TenantAwareCache {
    * Get cache statistics for a tenant
    */
   getTenantStats(tenantId) {
-    const normalizedTenant = String(tenantId || (() => { throw new Error('Tenant ID required - no default fallback'); })());
+    const normalizedTenant = String(
+      tenantId ||
+        (() => {
+          throw new Error("Tenant ID required - no default fallback");
+        })(),
+    );
     const stats = this.stats.get(normalizedTenant) || {
-      hits: 0, misses: 0, sets: 0, deletes: 0, expired: 0, clears: 0, clearPaths: 0
+      hits: 0,
+      misses: 0,
+      sets: 0,
+      deletes: 0,
+      expired: 0,
+      clears: 0,
+      clearPaths: 0,
     };
-    
-    const hitRate = stats.hits + stats.misses > 0 
-      ? (stats.hits / (stats.hits + stats.misses)) * 100 
-      : 0;
-    
+
+    const hitRate =
+      stats.hits + stats.misses > 0
+        ? (stats.hits / (stats.hits + stats.misses)) * 100
+        : 0;
+
     return {
       ...stats,
       hitRate: Number(hitRate.toFixed(2)),
-      size: this.getTenantSize(tenantId)
+      size: this.getTenantSize(tenantId),
     };
   }
 
@@ -257,26 +303,33 @@ class TenantAwareCache {
    */
   getGlobalStats() {
     const totalStats = {
-      hits: 0, misses: 0, sets: 0, deletes: 0, expired: 0, clears: 0, clearPaths: 0
+      hits: 0,
+      misses: 0,
+      sets: 0,
+      deletes: 0,
+      expired: 0,
+      clears: 0,
+      clearPaths: 0,
     };
-    
+
     for (const stats of this.stats.values()) {
-      Object.keys(totalStats).forEach(key => {
+      Object.keys(totalStats).forEach((key) => {
         totalStats[key] += stats[key] || 0;
       });
     }
-    
-    const hitRate = totalStats.hits + totalStats.misses > 0 
-      ? (totalStats.hits / (totalStats.hits + totalStats.misses)) * 100 
-      : 0;
-    
+
+    const hitRate =
+      totalStats.hits + totalStats.misses > 0
+        ? (totalStats.hits / (totalStats.hits + totalStats.misses)) * 100
+        : 0;
+
     return {
       ...totalStats,
       hitRate: Number(hitRate.toFixed(2)),
       totalSize: this.cache.size,
       maxSize: this.maxSize,
       tenantCount: this.stats.size,
-      memoryUsage: this.getMemoryUsage()
+      memoryUsage: this.getMemoryUsage(),
     };
   }
 
@@ -286,14 +339,14 @@ class TenantAwareCache {
   evictOldest() {
     let oldestKey = null;
     let oldestTime = Date.now();
-    
+
     for (const [key, entry] of this.cache) {
       if (entry.lastAccessed < oldestTime) {
         oldestTime = entry.lastAccessed;
         oldestKey = key;
       }
     }
-    
+
     if (oldestKey) {
       this.delete(oldestKey);
     }
@@ -305,22 +358,22 @@ class TenantAwareCache {
   cleanup() {
     const now = Date.now();
     const expired = [];
-    
+
     for (const [key, expires] of this.ttlMap) {
       if (now > expires) {
         expired.push(key);
       }
     }
-    
-    expired.forEach(key => {
+
+    expired.forEach((key) => {
       const entry = this.cache.get(key);
       if (entry) {
-        this.updateStats(entry.tenantId, 'expired');
+        this.updateStats(entry.tenantId, "expired");
       }
       this.cache.delete(key);
       this.ttlMap.delete(key);
     });
-    
+
     return expired.length;
   }
 
@@ -347,7 +400,7 @@ class TenantAwareCache {
     }
     return {
       estimated: `${(size / 1024 / 1024).toFixed(2)} MB`,
-      entries: this.cache.size
+      entries: this.cache.size,
     };
   }
 
@@ -359,7 +412,7 @@ class TenantAwareCache {
       maxSize: this.maxSize,
       defaultTtl: this.defaultTtl,
       cleanupInterval: this.cleanupInterval,
-      pathTtls: Object.fromEntries(this.pathTtls)
+      pathTtls: Object.fromEntries(this.pathTtls),
     };
   }
 }

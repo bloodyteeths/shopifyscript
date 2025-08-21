@@ -1,5 +1,5 @@
-import '@testing-library/jest-dom';
-import { jest } from '@jest/globals';
+const React = require('react');
+require('@testing-library/jest-dom');
 
 // Mock Remix router
 global.mockNavigate = jest.fn();

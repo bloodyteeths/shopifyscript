@@ -30,7 +30,7 @@
   "expectedMutations": {
     "firstRun": [
       "BUDGET_CHANGE",
-      "CPC_CEILING", 
+      "CPC_CEILING",
       "SCHEDULE_ADD",
       "NEGATIVE_ADD",
       "RSA_VALIDATE",

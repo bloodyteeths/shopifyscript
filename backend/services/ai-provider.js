@@ -3,7 +3,7 @@
  * Multi-provider support with intelligent fallbacks and optimization
  */
 
-import { getAIProvider as getBaseProvider } from '../lib/aiProvider.js';
+import { getAIProvider as getBaseProvider } from "../lib/aiProvider.js";
 
 /**
  * Enhanced AI provider with advanced features
@@ -16,7 +16,7 @@ export class AIProviderService {
       calls: 0,
       failures: 0,
       totalTokens: 0,
-      avgResponseTime: 0
+      avgResponseTime: 0,
     };
   }
 
@@ -25,7 +25,7 @@ export class AIProviderService {
    */
   async initialize() {
     if (this.initialized && this.provider) return this.provider;
-    
+
     try {
       this.provider = await getBaseProvider();
       this.initialized = true;
@@ -41,42 +41,45 @@ export class AIProviderService {
    */
   async generateText(prompt, options = {}) {
     const startTime = Date.now();
-    
+
     try {
       await this.initialize();
-      
+
       const result = await this.provider.generateText(prompt, options);
-      
+
       // Update metrics
       this.metrics.calls++;
       const responseTime = Date.now() - startTime;
-      this.metrics.avgResponseTime = (this.metrics.avgResponseTime * (this.metrics.calls - 1) + responseTime) / this.metrics.calls;
-      
+      this.metrics.avgResponseTime =
+        (this.metrics.avgResponseTime * (this.metrics.calls - 1) +
+          responseTime) /
+        this.metrics.calls;
+
       return result;
     } catch (error) {
       this.metrics.failures++;
-      console.error('AI generation failed:', error);
-      
+      console.error("AI generation failed:", error);
+
       // Return empty string on failure to maintain compatibility
-      return '';
+      return "";
     }
   }
 
   /**
    * Generate structured content with validation
    */
-  async generateStructuredContent(prompt, expectedFormat = 'json') {
+  async generateStructuredContent(prompt, expectedFormat = "json") {
     const content = await this.generateText(prompt);
-    
+
     if (!content) return null;
-    
+
     try {
-      if (expectedFormat === 'json') {
+      if (expectedFormat === "json") {
         return JSON.parse(content);
       }
       return content;
     } catch (error) {
-      console.warn('Failed to parse structured content:', error);
+      console.warn("Failed to parse structured content:", error);
       return content; // Return raw content if parsing fails
     }
   }
@@ -85,15 +88,17 @@ export class AIProviderService {
    * Generate multiple variations in parallel
    */
   async generateVariations(basePrompt, count = 3, options = {}) {
-    const promises = Array(count).fill(null).map((_, i) => 
-      this.generateText(`${basePrompt} (Variation ${i + 1})`, options)
-    );
-    
+    const promises = Array(count)
+      .fill(null)
+      .map((_, i) =>
+        this.generateText(`${basePrompt} (Variation ${i + 1})`, options),
+      );
+
     try {
       const results = await Promise.all(promises);
-      return results.filter(result => result && result.trim().length > 0);
+      return results.filter((result) => result && result.trim().length > 0);
     } catch (error) {
-      console.error('Failed to generate variations:', error);
+      console.error("Failed to generate variations:", error);
       return [];
     }
   }
@@ -104,9 +109,9 @@ export class AIProviderService {
   getStatus() {
     return {
       initialized: this.initialized,
-      provider: this.provider?.provider || 'none',
+      provider: this.provider?.provider || "none",
       metrics: { ...this.metrics },
-      remainingCalls: this.provider?.remainingCalls?.() || 0
+      remainingCalls: this.provider?.remainingCalls?.() || 0,
     };
   }
 
@@ -118,7 +123,7 @@ export class AIProviderService {
       calls: 0,
       failures: 0,
       totalTokens: 0,
-      avgResponseTime: 0
+      avgResponseTime: 0,
     };
   }
 }
@@ -148,36 +153,38 @@ export async function generateAIContent(prompt, options = {}) {
  * Validate AI provider configuration
  */
 export function validateAIConfig() {
-  const provider = (process.env.AI_PROVIDER || '').toLowerCase();
+  const provider = (process.env.AI_PROVIDER || "").toLowerCase();
   const errors = [];
-  
+
   if (!provider) {
-    errors.push('AI_PROVIDER environment variable not set');
+    errors.push("AI_PROVIDER environment variable not set");
   }
-  
+
   switch (provider) {
-    case 'openai':
+    case "openai":
       if (!process.env.OPENAI_API_KEY && !process.env.OPENAI_KEY) {
-        errors.push('OpenAI API key not found (OPENAI_API_KEY or OPENAI_KEY)');
+        errors.push("OpenAI API key not found (OPENAI_API_KEY or OPENAI_KEY)");
       }
       break;
-    case 'anthropic':
+    case "anthropic":
       if (!process.env.ANTHROPIC_API_KEY && !process.env.ANTHROPIC_KEY) {
-        errors.push('Anthropic API key not found (ANTHROPIC_API_KEY or ANTHROPIC_KEY)');
+        errors.push(
+          "Anthropic API key not found (ANTHROPIC_API_KEY or ANTHROPIC_KEY)",
+        );
       }
       break;
-    case 'google':
+    case "google":
       if (!process.env.GOOGLE_API_KEY) {
-        errors.push('Google API key not found (GOOGLE_API_KEY)');
+        errors.push("Google API key not found (GOOGLE_API_KEY)");
       }
       break;
     default:
       errors.push(`Unsupported AI provider: ${provider}`);
   }
-  
+
   return {
     valid: errors.length === 0,
     errors,
-    provider
+    provider,
   };
 }

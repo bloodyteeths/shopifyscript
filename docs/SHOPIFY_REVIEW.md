@@ -4,7 +4,3 @@ Review Readiness (Shopify)
 - Data flow: Backend ↔ Google Sheets; Web Pixel (optional) with consent; Ads Script runs in Google Ads account.
 - Privacy: No PII stored server-side; options live in merchant Sheets; HMAC for API calls.
 - UI: Intent, Overlays, Audiences, Canary, Docs. Draft-first; PROMOTE gate for live actions.
-
-
-
-

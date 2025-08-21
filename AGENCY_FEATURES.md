@@ -13,6 +13,7 @@ ProofKit's agency-scale utilities provide comprehensive tools for managing multi
 The template library allows agencies to create, share, and clone configurations across multiple tenants.
 
 #### Key Capabilities:
+
 - **Template Creation**: Convert existing tenant configurations into reusable templates
 - **Template Cloning**: Apply templates to new clients with customizations
 - **Bulk Operations**: Clone templates to multiple tenants simultaneously
@@ -20,6 +21,7 @@ The template library allows agencies to create, share, and clone configurations 
 - **Import/Export**: Share templates between agencies or environments
 
 #### API Endpoints:
+
 ```
 GET    /api/agency/templates                    # List all templates
 GET    /api/agency/templates/:id               # Get specific template
@@ -34,31 +36,32 @@ GET    /api/agency/templates/analytics         # Template usage analytics
 ```
 
 #### Example Usage:
+
 ```javascript
 // Create template from existing config
 const template = await templateService.createTemplate({
-    templateId: 'ecommerce-standard',
-    templateName: 'E-commerce Standard Setup',
-    description: 'Standard configuration for e-commerce clients',
-    sourceConfig: existingTenantConfig,
-    category: 'ecommerce',
-    tags: ['retail', 'standard', 'proven'],
-    createdBy: 'agency-user-123'
+  templateId: "ecommerce-standard",
+  templateName: "E-commerce Standard Setup",
+  description: "Standard configuration for e-commerce clients",
+  sourceConfig: existingTenantConfig,
+  category: "ecommerce",
+  tags: ["retail", "standard", "proven"],
+  createdBy: "agency-user-123",
 });
 
 // Clone template to new client with customizations
 const clonedConfig = await templateService.cloneToTenant(
-    'ecommerce-standard',
-    'new-client-456',
-    {
-        budgetMultiplier: 1.5,
-        finalUrl: 'https://newclient.com',
-        businessHours: {
-            start: '08:00',
-            end: '20:00',
-            days: 'MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY,SATURDAY'
-        }
-    }
+  "ecommerce-standard",
+  "new-client-456",
+  {
+    budgetMultiplier: 1.5,
+    finalUrl: "https://newclient.com",
+    businessHours: {
+      start: "08:00",
+      end: "20:00",
+      days: "MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY,SATURDAY",
+    },
+  },
 );
 ```
 
@@ -69,6 +72,7 @@ const clonedConfig = await templateService.cloneToTenant(
 Automated generation of branded performance reports for clients.
 
 #### Key Capabilities:
+
 - **Weekly Reports**: Automated weekly performance summaries
 - **Custom Branding**: Agency logos, colors, and contact information
 - **Performance Analytics**: Comprehensive metrics analysis
@@ -76,6 +80,7 @@ Automated generation of branded performance reports for clients.
 - **Bulk Generation**: Generate reports for multiple clients simultaneously
 
 #### Report Sections:
+
 1. **Executive Summary**: High-level performance overview
 2. **Performance Metrics**: Detailed campaign and ad group metrics
 3. **Key Insights**: Automated performance insights
@@ -84,6 +89,7 @@ Automated generation of branded performance reports for clients.
 6. **Appendix**: Technical details and methodology
 
 #### API Endpoints:
+
 ```
 POST   /api/agency/reports/weekly              # Generate single report
 POST   /api/agency/reports/bulk-weekly         # Generate multiple reports
@@ -91,26 +97,27 @@ GET    /api/agency/reports/history/:tenantId   # Get report history
 ```
 
 #### Example Usage:
+
 ```javascript
 // Generate weekly report
 const report = await reportService.generateWeeklyReport({
-    tenantId: 'client-123',
-    clientName: 'Acme Corp',
-    reportPeriod: '2025-08-10 - 2025-08-16',
-    agencyBranding: {
-        agencyName: 'Digital Marketing Pro',
-        logoUrl: 'https://agency.com/logo.png'
+  tenantId: "client-123",
+  clientName: "Acme Corp",
+  reportPeriod: "2025-08-10 - 2025-08-16",
+  agencyBranding: {
+    agencyName: "Digital Marketing Pro",
+    logoUrl: "https://agency.com/logo.png",
+  },
+  metricsData: {
+    metrics: campaignMetrics,
+    search_terms: searchTermData,
+  },
+  customizations: {
+    sections: {
+      hideSearchTerms: false,
+      hideCampaignDetails: false,
     },
-    metricsData: {
-        metrics: campaignMetrics,
-        search_terms: searchTermData
-    },
-    customizations: {
-        sections: {
-            hideSearchTerms: false,
-            hideCampaignDetails: false
-        }
-    }
+  },
 });
 ```
 
@@ -121,6 +128,7 @@ const report = await reportService.generateWeeklyReport({
 Complete port of Google Ads Script functionality to Microsoft Ads (Bing Ads).
 
 #### Key Features:
+
 - **API Compatibility**: Mirrors Google Ads Script API structure
 - **Safety Controls**: Same PROMOTE gate and safety features
 - **Idempotency Testing**: Prevents duplicate operations
@@ -130,6 +138,7 @@ Complete port of Google Ads Script functionality to Microsoft Ads (Bing Ads).
 - **Audience Targeting**: Audience attachment and management
 
 #### Platform Differences Handled:
+
 - Microsoft Ads reporting structure
 - Different bidding strategy names (`MAXIMIZE_CLICKS` vs `TARGET_SPEND`)
 - Campaign type differences
@@ -143,6 +152,7 @@ Complete port of Google Ads Script functionality to Microsoft Ads (Bing Ads).
 Queue-based system for processing large-scale operations across multiple clients.
 
 #### Operation Types:
+
 - **Template Cloning**: Apply templates to multiple tenants
 - **Configuration Updates**: Bulk update tenant settings
 - **Campaign Actions**: Pause/resume campaigns across accounts
@@ -151,6 +161,7 @@ Queue-based system for processing large-scale operations across multiple clients
 - **Audience Sync**: Synchronize audiences across accounts
 
 #### Features:
+
 - **Queue Management**: Asynchronous processing with configurable concurrency
 - **Progress Tracking**: Real-time progress updates
 - **Error Handling**: Individual operation error tracking
@@ -158,6 +169,7 @@ Queue-based system for processing large-scale operations across multiple clients
 - **Analytics**: Track operation success rates and performance
 
 #### API Endpoints:
+
 ```
 POST   /api/agency/bulk/config-update          # Bulk configuration updates
 POST   /api/agency/bulk/campaign-status        # Bulk campaign pause/resume
@@ -171,6 +183,7 @@ POST   /api/agency/bulk/negative-keywords      # Bulk negative keyword addition
 Comprehensive dashboard for agency-level management and monitoring.
 
 #### Dashboard Components:
+
 - **Performance Overview**: Aggregate performance across all clients
 - **Alert Management**: Critical issues requiring attention
 - **Template Analytics**: Template usage and performance
@@ -178,6 +191,7 @@ Comprehensive dashboard for agency-level management and monitoring.
 - **Client Health**: Individual client performance summaries
 
 #### API Endpoints:
+
 ```
 GET    /api/agency/dashboard/summary           # Agency overview metrics
 GET    /api/agency/dashboard/performance       # Cross-client performance data
@@ -216,6 +230,7 @@ MICROSOFT_ADS_DEVELOPER_TOKEN=your_token_here
 ### 3. Directory Structure
 
 The system will automatically create these directories:
+
 ```
 backend/
 ├── templates/          # Template storage
@@ -231,22 +246,22 @@ backend/
 ```javascript
 // 1. Create template from successful client
 const template = await templateService.createTemplate({
-    templateId: 'saas-proven',
-    templateName: 'SaaS Proven Strategy',
-    sourceConfig: clientConfig,
-    category: 'saas'
+  templateId: "saas-proven",
+  templateName: "SaaS Proven Strategy",
+  sourceConfig: clientConfig,
+  category: "saas",
 });
 
 // 2. Clone to new clients with customizations
-const results = await templateService.bulkClone('saas-proven', [
-    {
-        tenantId: 'client-a',
-        customizations: { budgetMultiplier: 1.2, finalUrl: 'https://clienta.com' }
-    },
-    {
-        tenantId: 'client-b', 
-        customizations: { budgetMultiplier: 0.8, finalUrl: 'https://clientb.com' }
-    }
+const results = await templateService.bulkClone("saas-proven", [
+  {
+    tenantId: "client-a",
+    customizations: { budgetMultiplier: 1.2, finalUrl: "https://clienta.com" },
+  },
+  {
+    tenantId: "client-b",
+    customizations: { budgetMultiplier: 0.8, finalUrl: "https://clientb.com" },
+  },
 ]);
 ```
 
@@ -255,13 +270,13 @@ const results = await templateService.bulkClone('saas-proven', [
 ```javascript
 // 1. Queue bulk operation
 const job = await bulkService.queueBulkOperation({
-    type: 'negative_keywords',
-    tenantIds: ['client-1', 'client-2', 'client-3'],
-    parameters: {
-        negativeKeywords: ['free', 'cheap', 'discount'],
-        targetLevel: 'campaign'
-    },
-    createdBy: 'agency-user-123'
+  type: "negative_keywords",
+  tenantIds: ["client-1", "client-2", "client-3"],
+  parameters: {
+    negativeKeywords: ["free", "cheap", "discount"],
+    targetLevel: "campaign",
+  },
+  createdBy: "agency-user-123",
 });
 
 // 2. Monitor progress
@@ -269,10 +284,11 @@ const status = await bulkService.getJobStatus(job.id);
 console.log(`Progress: ${status.progress}%`);
 
 // 3. Get results
-if (status.status === 'completed') {
-    console.log('Success rate:', 
-        status.results.filter(r => r.success).length / status.results.length
-    );
+if (status.status === "completed") {
+  console.log(
+    "Success rate:",
+    status.results.filter((r) => r.success).length / status.results.length,
+  );
 }
 ```
 
@@ -280,14 +296,14 @@ if (status.status === 'completed') {
 
 ```javascript
 // Generate reports for all clients
-const reportsConfig = clientList.map(client => ({
-    tenantId: client.id,
-    clientName: client.name,
-    metricsData: client.weeklyMetrics,
-    agencyBranding: {
-        agencyName: 'Your Agency',
-        logoUrl: 'https://youragency.com/logo.png'
-    }
+const reportsConfig = clientList.map((client) => ({
+  tenantId: client.id,
+  clientName: client.name,
+  metricsData: client.weeklyMetrics,
+  agencyBranding: {
+    agencyName: "Your Agency",
+    logoUrl: "https://youragency.com/logo.png",
+  },
 }));
 
 const results = await reportService.bulkGenerateReports(reportsConfig);
@@ -312,16 +328,19 @@ const results = await reportService.bulkGenerateReports(reportsConfig);
 ## Security Considerations
 
 ### Authentication
+
 - All API endpoints require HMAC authentication
 - Template access can be restricted by agency/user
 - Bulk operations are logged with user attribution
 
 ### Data Protection
+
 - Templates automatically sanitize sensitive data
 - Reports can exclude sensitive metrics
 - Bulk operations support dry-run mode
 
 ### Rate Limiting
+
 - Bulk operations respect API rate limits
 - Configurable concurrency limits
 - Automatic retry with exponential backoff
@@ -329,16 +348,19 @@ const results = await reportService.bulkGenerateReports(reportsConfig);
 ## Monitoring & Analytics
 
 ### Template Analytics
+
 - Track template usage and success rates
 - Identify most popular templates
 - Monitor template performance impact
 
 ### Bulk Operation Analytics
+
 - Success/failure rates by operation type
 - Average execution times
 - Queue performance metrics
 
 ### Report Analytics
+
 - Track report generation frequency
 - Monitor client engagement with reports
 - Identify most requested report sections
@@ -365,6 +387,7 @@ const results = await reportService.bulkGenerateReports(reportsConfig);
 ### Debug Mode
 
 Enable debug logging:
+
 ```env
 DEBUG_AGENCY_FEATURES=true
 LOG_LEVEL=debug
@@ -380,6 +403,7 @@ LOG_LEVEL=debug
 ## Roadmap
 
 ### Planned Features
+
 - **A/B Testing Framework**: Template and strategy testing
 - **Advanced Analytics**: Predictive performance modeling
 - **Client Portal**: Self-service client reporting

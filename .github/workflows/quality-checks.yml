@@ -10,13 +10,13 @@ on:
   workflow_call:
     inputs:
       skip_tests:
-        description: 'Skip test execution'
+        description: "Skip test execution"
         required: false
         default: false
         type: boolean
 
 env:
-  NODE_VERSION: '18'
+  NODE_VERSION: "18"
 
 jobs:
   # Enhanced linting with ESLint and Prettier
@@ -34,7 +34,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
+          cache: "npm"
           cache-dependency-path: |
             package-lock.json
             ${{ matrix.workspace }}/package-lock.json
@@ -99,7 +99,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
+          cache: "npm"
 
       - name: Install dependencies
         run: npm run install:all
@@ -171,7 +171,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
+          cache: "npm"
 
       - name: Install dependencies
         run: npm run install:all
@@ -219,7 +219,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
+          cache: "npm"
 
       - name: Install dependencies
         run: npm run install:all
@@ -241,7 +241,7 @@ jobs:
         if: github.ref == 'refs/heads/main'
         uses: zaproxy/action-baseline@v0.8.0
         with:
-          target: 'http://localhost:3000'
+          target: "http://localhost:3000"
           fail_action: false
 
       - name: Upload security scan results
@@ -301,7 +301,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
+          cache: "npm"
 
       - name: Install dependencies
         run: npm run install:all
@@ -310,11 +310,11 @@ jobs:
         run: |
           echo "Checking for outdated packages in root..."
           npm outdated --json > outdated-root.json || true
-          
+
           echo "Checking for outdated packages in backend..."
           cd backend && npm outdated --json > ../outdated-backend.json || true
           cd ..
-          
+
           echo "Checking for outdated packages in shopify-ui..."
           cd shopify-ui && npm outdated --json > ../outdated-frontend.json || true
 
@@ -345,7 +345,7 @@ jobs:
           echo "# ProofKit SaaS Quality Report" > quality-report.md
           echo "Generated: $(date)" >> quality-report.md
           echo "" >> quality-report.md
-          
+
           echo "## Test Results" >> quality-report.md
           echo "- Linting: ${{ needs.lint.result }}" >> quality-report.md
           echo "- Tests: ${{ needs.test.result }}" >> quality-report.md
@@ -353,14 +353,14 @@ jobs:
           echo "- Complexity: ${{ needs.complexity.result }}" >> quality-report.md
           echo "- Dependencies: ${{ needs.dependencies.result }}" >> quality-report.md
           echo "" >> quality-report.md
-          
+
           echo "## Coverage Summary" >> quality-report.md
           if [ -f "test-results-backend-unit/coverage/coverage-summary.json" ]; then
             echo "Backend coverage data found" >> quality-report.md
           else
             echo "Backend coverage: Not available" >> quality-report.md
           fi
-          
+
           echo "## Security Issues" >> quality-report.md
           if [ -f "security-scan-results/npm-audit.json" ]; then
             echo "Security scan completed" >> quality-report.md

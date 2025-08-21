@@ -10,21 +10,21 @@ on:
   workflow_call:
     inputs:
       push_image:
-        description: 'Push image to registry'
+        description: "Push image to registry"
         required: false
         default: true
         type: boolean
       target_environment:
-        description: 'Target environment for build'
+        description: "Target environment for build"
         required: false
-        default: 'development'
+        default: "development"
         type: string
     outputs:
       image_tag:
-        description: 'Built image tag'
+        description: "Built image tag"
         value: ${{ jobs.build.outputs.image_tag }}
       image_digest:
-        description: 'Built image digest'
+        description: "Built image digest"
         value: ${{ jobs.build.outputs.image_digest }}
 
 env:
@@ -119,22 +119,22 @@ jobs:
         uses: aquasecurity/trivy-action@master
         with:
           image-ref: ${{ env.REGISTRY }}/${{ github.repository }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
-          format: 'sarif'
-          output: 'trivy-results.sarif'
-          severity: 'CRITICAL,HIGH,MEDIUM'
+          format: "sarif"
+          output: "trivy-results.sarif"
+          severity: "CRITICAL,HIGH,MEDIUM"
 
       - name: Upload Trivy scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v2
         if: always()
         with:
-          sarif_file: 'trivy-results.sarif'
+          sarif_file: "trivy-results.sarif"
 
       - name: Run Trivy in table format
         uses: aquasecurity/trivy-action@master
         with:
           image-ref: ${{ env.REGISTRY }}/${{ github.repository }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
-          format: 'table'
-          exit-code: '0'
+          format: "table"
+          exit-code: "0"
 
       - name: Run Snyk container scan
         continue-on-error: true
@@ -188,7 +188,7 @@ jobs:
           curl -LO https://storage.googleapis.com/container-structure-test/latest/container-structure-test-linux-amd64
           chmod +x container-structure-test-linux-amd64
           sudo mv container-structure-test-linux-amd64 /usr/local/bin/container-structure-test
-          
+
           # Create test configuration
           cat > container-test.yaml << EOF
           schemaVersion: '2.0.0'
@@ -202,7 +202,7 @@ jobs:
               path: '/app/package.json'
               shouldExist: true
           EOF
-          
+
           # Run tests
           container-structure-test test --image ${{ env.REGISTRY }}/${{ github.repository }}/${{ env.IMAGE_NAME }}:${{ github.sha }} --config container-test.yaml || echo "Container structure test completed"
 
@@ -266,12 +266,12 @@ jobs:
       - name: Promote to production registry
         run: |
           echo "Promoting image to production..."
-          
+
           # Tag for production
           docker buildx imagetools create \
             ${{ env.REGISTRY }}/${{ github.repository }}/${{ env.IMAGE_NAME }}:${{ github.sha }} \
             --tag ${{ env.REGISTRY }}/${{ github.repository }}/${{ env.IMAGE_NAME }}:stable
-          
+
           # Tag with semantic version if available
           if [ -n "${{ github.event.release.tag_name }}" ]; then
             docker buildx imagetools create \
@@ -289,7 +289,7 @@ jobs:
         uses: actions/delete-package-versions@v4
         with:
           package-name: ${{ env.IMAGE_NAME }}
-          package-type: 'container'
+          package-type: "container"
           min-versions-to-keep: 10
           delete-only-untagged-versions: true
 
@@ -308,7 +308,7 @@ jobs:
           echo "# Container Build Report" > build-report.md
           echo "Generated: $(date)" >> build-report.md
           echo "" >> build-report.md
-          
+
           echo "## Build Summary" >> build-report.md
           echo "- Build Status: ${{ needs.build.result }}" >> build-report.md
           echo "- Security Scan: ${{ needs.security-scan.result }}" >> build-report.md
@@ -316,17 +316,17 @@ jobs:
           echo "- Image Tag: ${{ needs.build.outputs.image_tag }}" >> build-report.md
           echo "- Image Size: ${{ needs.build.outputs.image_size }}" >> build-report.md
           echo "" >> build-report.md
-          
+
           echo "## Security Findings" >> build-report.md
           if [ -f "trivy-results.sarif" ]; then
             echo "Trivy scan completed - check Security tab for details" >> build-report.md
           fi
-          
+
           echo "## Compliance Status" >> build-report.md
           if [ -f "compliance-results/docker-bench-results.txt" ]; then
             echo "Docker Bench Security scan completed" >> build-report.md
           fi
-          
+
           if [ -f "hadolint-results.sarif" ]; then
             echo "Hadolint Dockerfile analysis completed" >> build-report.md
           fi

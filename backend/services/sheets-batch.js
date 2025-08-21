@@ -3,15 +3,17 @@
  * Combines multiple operations into efficient batch requests
  */
 
-import sheetsPool from './sheets-pool.js';
+import sheetsPool from "./sheets-pool.js";
 
 class SheetsBatchOperations {
   constructor() {
     this.pendingBatches = new Map(); // tenantId -> { operations: [], timer, callback }
     this.batchDelay = Number(process.env.SHEETS_BATCH_DELAY_MS || 100); // 100ms delay
     this.maxBatchSize = Number(process.env.SHEETS_MAX_BATCH_SIZE || 50);
-    this.maxBatchWaitTime = Number(process.env.SHEETS_MAX_BATCH_WAIT_MS || 1000); // 1 second
-    
+    this.maxBatchWaitTime = Number(
+      process.env.SHEETS_MAX_BATCH_WAIT_MS || 1000,
+    ); // 1 second
+
     // Batch metrics
     this.metrics = {
       totalOperations: 0,
@@ -19,7 +21,7 @@ class SheetsBatchOperations {
       batchesExecuted: 0,
       averageBatchSize: 0,
       timesSaved: 0, // Estimated API calls saved
-      errors: 0
+      errors: 0,
     };
   }
 
@@ -29,7 +31,7 @@ class SheetsBatchOperations {
   async queueOperation(tenantId, sheetId, operation) {
     return new Promise((resolve, reject) => {
       const batchKey = `${tenantId}:${sheetId}`;
-      
+
       if (!this.pendingBatches.has(batchKey)) {
         this.pendingBatches.set(batchKey, {
           operations: [],
@@ -37,7 +39,7 @@ class SheetsBatchOperations {
           tenantId,
           sheetId,
           timer: null,
-          createdAt: Date.now()
+          createdAt: Date.now(),
         });
       }
 
@@ -84,11 +86,15 @@ class SheetsBatchOperations {
 
     try {
       const connection = await sheetsPool.getConnection(tenantId, sheetId);
-      const results = await this.executeBatchOperations(connection.doc, operations);
+      const results = await this.executeBatchOperations(
+        connection.doc,
+        operations,
+      );
       connection.release();
 
       // Update average batch size
-      this.metrics.averageBatchSize = this.metrics.batchedOperations / this.metrics.batchesExecuted;
+      this.metrics.averageBatchSize =
+        this.metrics.batchedOperations / this.metrics.batchesExecuted;
 
       // Resolve all callbacks with their respective results
       callbacks.forEach((callback, index) => {
@@ -98,12 +104,11 @@ class SheetsBatchOperations {
           callback.reject(new Error(results[index].error));
         }
       });
-
     } catch (error) {
       this.metrics.errors++;
-      
+
       // Reject all callbacks
-      callbacks.forEach(callback => {
+      callbacks.forEach((callback) => {
         callback.reject(error);
       });
     }
@@ -125,29 +130,37 @@ class SheetsBatchOperations {
 
       // Execute writes (must be sequential for data consistency)
       if (groupedOps.writes.length > 0) {
-        const writeResults = await this.executeWriteBatch(doc, groupedOps.writes);
+        const writeResults = await this.executeWriteBatch(
+          doc,
+          groupedOps.writes,
+        );
         results.push(...writeResults);
       }
 
       // Execute updates
       if (groupedOps.updates.length > 0) {
-        const updateResults = await this.executeUpdateBatch(doc, groupedOps.updates);
+        const updateResults = await this.executeUpdateBatch(
+          doc,
+          groupedOps.updates,
+        );
         results.push(...updateResults);
       }
 
       // Execute deletes last
       if (groupedOps.deletes.length > 0) {
-        const deleteResults = await this.executeDeleteBatch(doc, groupedOps.deletes);
+        const deleteResults = await this.executeDeleteBatch(
+          doc,
+          groupedOps.deletes,
+        );
         results.push(...deleteResults);
       }
 
       return results;
-
     } catch (error) {
       // Return error for all operations
       return operations.map(() => ({
         success: false,
-        error: error.message
+        error: error.message,
       }));
     }
   }
@@ -160,30 +173,30 @@ class SheetsBatchOperations {
       reads: [],
       writes: [],
       updates: [],
-      deletes: []
+      deletes: [],
     };
 
     operations.forEach((op, index) => {
       const opWithIndex = { ...op, originalIndex: index };
-      
+
       switch (op.type) {
-        case 'read':
-        case 'getRows':
-        case 'loadHeaderRow':
+        case "read":
+        case "getRows":
+        case "loadHeaderRow":
           groups.reads.push(opWithIndex);
           break;
-        case 'write':
-        case 'addRow':
-        case 'addRows':
+        case "write":
+        case "addRow":
+        case "addRows":
           groups.writes.push(opWithIndex);
           break;
-        case 'update':
-        case 'updateRow':
-        case 'save':
+        case "update":
+        case "updateRow":
+        case "save":
           groups.updates.push(opWithIndex);
           break;
-        case 'delete':
-        case 'deleteRow':
+        case "delete":
+        case "deleteRow":
           groups.deletes.push(opWithIndex);
           break;
         default:
@@ -202,7 +215,7 @@ class SheetsBatchOperations {
     const sheetOperations = new Map(); // Group by sheet
 
     // Group operations by sheet for efficiency
-    operations.forEach(op => {
+    operations.forEach((op) => {
       const sheetTitle = op.params.sheetTitle || op.params.sheet;
       if (!sheetOperations.has(sheetTitle)) {
         sheetOperations.set(sheetTitle, []);
@@ -215,10 +228,10 @@ class SheetsBatchOperations {
       try {
         const sheet = doc.sheetsByTitle[sheetTitle];
         if (!sheet) {
-          ops.forEach(op => {
+          ops.forEach((op) => {
             results[op.originalIndex] = {
               success: false,
-              error: `Sheet '${sheetTitle}' not found`
+              error: `Sheet '${sheetTitle}' not found`,
             };
           });
           continue;
@@ -231,15 +244,15 @@ class SheetsBatchOperations {
         for (const op of ops) {
           try {
             let data;
-            
+
             switch (op.type) {
-              case 'getRows':
+              case "getRows":
                 data = await sheet.getRows(op.params.options || {});
                 break;
-              case 'loadHeaderRow':
+              case "loadHeaderRow":
                 data = sheet.headerValues;
                 break;
-              case 'read':
+              case "read":
               default:
                 data = await sheet.getRows({ limit: op.params.limit || 100 });
                 break;
@@ -247,22 +260,20 @@ class SheetsBatchOperations {
 
             results[op.originalIndex] = {
               success: true,
-              data: this.sanitizeSheetData(data)
+              data: this.sanitizeSheetData(data),
             };
-
           } catch (error) {
             results[op.originalIndex] = {
               success: false,
-              error: error.message
+              error: error.message,
             };
           }
         }
-
       } catch (error) {
-        ops.forEach(op => {
+        ops.forEach((op) => {
           results[op.originalIndex] = {
             success: false,
-            error: error.message
+            error: error.message,
           };
         });
       }
@@ -276,10 +287,10 @@ class SheetsBatchOperations {
    */
   async executeWriteBatch(doc, operations) {
     const results = [];
-    
+
     // Group by sheet for efficiency
     const sheetOperations = new Map();
-    operations.forEach(op => {
+    operations.forEach((op) => {
       const sheetTitle = op.params.sheetTitle || op.params.sheet;
       if (!sheetOperations.has(sheetTitle)) {
         sheetOperations.set(sheetTitle, []);
@@ -291,53 +302,59 @@ class SheetsBatchOperations {
       try {
         const sheet = doc.sheetsByTitle[sheetTitle];
         if (!sheet) {
-          ops.forEach(op => {
+          ops.forEach((op) => {
             results[op.originalIndex] = {
               success: false,
-              error: `Sheet '${sheetTitle}' not found`
+              error: `Sheet '${sheetTitle}' not found`,
             };
           });
           continue;
         }
 
         // Batch multiple rows into single addRows call when possible
-        const addRowsOps = ops.filter(op => op.type === 'addRows' || op.type === 'addRow');
-        const otherOps = ops.filter(op => op.type !== 'addRows' && op.type !== 'addRow');
+        const addRowsOps = ops.filter(
+          (op) => op.type === "addRows" || op.type === "addRow",
+        );
+        const otherOps = ops.filter(
+          (op) => op.type !== "addRows" && op.type !== "addRow",
+        );
 
         // Handle bulk row additions
         if (addRowsOps.length > 0) {
           try {
             const allRows = [];
-            addRowsOps.forEach(op => {
-              if (op.type === 'addRows' && Array.isArray(op.params.rows)) {
+            addRowsOps.forEach((op) => {
+              if (op.type === "addRows" && Array.isArray(op.params.rows)) {
                 allRows.push(...op.params.rows);
-              } else if (op.type === 'addRow' && op.params.row) {
+              } else if (op.type === "addRow" && op.params.row) {
                 allRows.push(op.params.row);
               }
             });
 
             if (allRows.length > 0) {
               const addedRows = await sheet.addRows(allRows);
-              
+
               // Map results back to original operations
               let rowIndex = 0;
-              addRowsOps.forEach(op => {
-                const rowCount = op.type === 'addRows' ? op.params.rows.length : 1;
+              addRowsOps.forEach((op) => {
+                const rowCount =
+                  op.type === "addRows" ? op.params.rows.length : 1;
                 const opRows = addedRows.slice(rowIndex, rowIndex + rowCount);
                 rowIndex += rowCount;
 
                 results[op.originalIndex] = {
                   success: true,
-                  data: this.sanitizeSheetData(opRows.length === 1 ? opRows[0] : opRows)
+                  data: this.sanitizeSheetData(
+                    opRows.length === 1 ? opRows[0] : opRows,
+                  ),
                 };
               });
             }
-
           } catch (error) {
-            addRowsOps.forEach(op => {
+            addRowsOps.forEach((op) => {
               results[op.originalIndex] = {
                 success: false,
-                error: error.message
+                error: error.message,
               };
             });
           }
@@ -347,9 +364,9 @@ class SheetsBatchOperations {
         for (const op of otherOps) {
           try {
             let data;
-            
+
             switch (op.type) {
-              case 'write':
+              case "write":
                 if (op.params.rows) {
                   data = await sheet.addRows(op.params.rows);
                 } else if (op.params.row) {
@@ -362,22 +379,20 @@ class SheetsBatchOperations {
 
             results[op.originalIndex] = {
               success: true,
-              data: this.sanitizeSheetData(data)
+              data: this.sanitizeSheetData(data),
             };
-
           } catch (error) {
             results[op.originalIndex] = {
               success: false,
-              error: error.message
+              error: error.message,
             };
           }
         }
-
       } catch (error) {
-        ops.forEach(op => {
+        ops.forEach((op) => {
           results[op.originalIndex] = {
             success: false,
-            error: error.message
+            error: error.message,
           };
         });
       }
@@ -391,48 +406,47 @@ class SheetsBatchOperations {
    */
   async executeUpdateBatch(doc, operations) {
     const results = [];
-    
+
     for (const op of operations) {
       try {
         let data;
-        
+
         switch (op.type) {
-          case 'updateRow':
-            if (op.params.row && typeof op.params.row.save === 'function') {
+          case "updateRow":
+            if (op.params.row && typeof op.params.row.save === "function") {
               await op.params.row.save();
               data = this.sanitizeSheetData(op.params.row);
             } else {
-              throw new Error('Invalid row object for update');
+              throw new Error("Invalid row object for update");
             }
             break;
-          case 'save':
-            if (op.params.row && typeof op.params.row.save === 'function') {
+          case "save":
+            if (op.params.row && typeof op.params.row.save === "function") {
               await op.params.row.save();
               data = this.sanitizeSheetData(op.params.row);
             } else {
-              throw new Error('Invalid row object for save');
+              throw new Error("Invalid row object for save");
             }
             break;
-          case 'update':
+          case "update":
           default:
-            if (op.params.row && typeof op.params.row.save === 'function') {
+            if (op.params.row && typeof op.params.row.save === "function") {
               await op.params.row.save();
               data = this.sanitizeSheetData(op.params.row);
             } else {
-              throw new Error('Invalid update operation');
+              throw new Error("Invalid update operation");
             }
             break;
         }
 
         results[op.originalIndex] = {
           success: true,
-          data
+          data,
         };
-
       } catch (error) {
         results[op.originalIndex] = {
           success: false,
-          error: error.message
+          error: error.message,
         };
       }
     }
@@ -445,7 +459,7 @@ class SheetsBatchOperations {
    */
   async executeDeleteBatch(doc, operations) {
     const results = [];
-    
+
     // Sort delete operations by row index (descending) to avoid index shifting issues
     const sortedOps = [...operations].sort((a, b) => {
       const aIndex = a.params.row?._rowNumber || a.params.rowIndex || 0;
@@ -456,32 +470,31 @@ class SheetsBatchOperations {
     for (const op of sortedOps) {
       try {
         switch (op.type) {
-          case 'deleteRow':
-            if (op.params.row && typeof op.params.row.delete === 'function') {
+          case "deleteRow":
+            if (op.params.row && typeof op.params.row.delete === "function") {
               await op.params.row.delete();
             } else {
-              throw new Error('Invalid row object for delete');
+              throw new Error("Invalid row object for delete");
             }
             break;
-          case 'delete':
+          case "delete":
           default:
-            if (op.params.row && typeof op.params.row.delete === 'function') {
+            if (op.params.row && typeof op.params.row.delete === "function") {
               await op.params.row.delete();
             } else {
-              throw new Error('Invalid delete operation');
+              throw new Error("Invalid delete operation");
             }
             break;
         }
 
         results[op.originalIndex] = {
           success: true,
-          data: null
+          data: null,
         };
-
       } catch (error) {
         results[op.originalIndex] = {
           success: false,
-          error: error.message
+          error: error.message,
         };
       }
     }
@@ -494,32 +507,32 @@ class SheetsBatchOperations {
    */
   sanitizeSheetData(data) {
     if (!data) return data;
-    
+
     if (Array.isArray(data)) {
-      return data.map(item => this.sanitizeSheetData(item));
+      return data.map((item) => this.sanitizeSheetData(item));
     }
-    
-    if (typeof data === 'object' && data._sheet) {
+
+    if (typeof data === "object" && data._sheet) {
       // Convert GoogleSpreadsheetRow to plain object
       const sanitized = {};
-      
+
       // Copy row data
       if (data._rawData) {
-        Object.keys(data._rawData).forEach(key => {
-          if (typeof data._rawData[key] !== 'function') {
+        Object.keys(data._rawData).forEach((key) => {
+          if (typeof data._rawData[key] !== "function") {
             sanitized[key] = data._rawData[key];
           }
         });
       }
-      
+
       // Add row metadata
       if (data._rowNumber !== undefined) {
         sanitized._rowNumber = data._rowNumber;
       }
-      
+
       return sanitized;
     }
-    
+
     return data;
   }
 
@@ -528,8 +541,8 @@ class SheetsBatchOperations {
    */
   async flushAll() {
     const pendingKeys = Array.from(this.pendingBatches.keys());
-    const promises = pendingKeys.map(key => this.executeBatch(key));
-    
+    const promises = pendingKeys.map((key) => this.executeBatch(key));
+
     await Promise.allSettled(promises);
     return pendingKeys.length;
   }
@@ -538,12 +551,13 @@ class SheetsBatchOperations {
    * Force execution of pending batches for a specific tenant
    */
   async flushTenant(tenantId) {
-    const pendingKeys = Array.from(this.pendingBatches.keys())
-      .filter(key => key.startsWith(`${tenantId}:`));
-    
-    const promises = pendingKeys.map(key => this.executeBatch(key));
+    const pendingKeys = Array.from(this.pendingBatches.keys()).filter((key) =>
+      key.startsWith(`${tenantId}:`),
+    );
+
+    const promises = pendingKeys.map((key) => this.executeBatch(key));
     await Promise.allSettled(promises);
-    
+
     return pendingKeys.length;
   }
 
@@ -555,13 +569,13 @@ class SheetsBatchOperations {
       if (batch.timer) {
         clearTimeout(batch.timer);
       }
-      
+
       // Reject all pending callbacks
-      batch.callbacks.forEach(callback => {
-        callback.reject(new Error('Batch operations cleared'));
+      batch.callbacks.forEach((callback) => {
+        callback.reject(new Error("Batch operations cleared"));
       });
     }
-    
+
     const count = this.pendingBatches.size;
     this.pendingBatches.clear();
     return count;
@@ -571,8 +585,10 @@ class SheetsBatchOperations {
    * Get batch statistics
    */
   getStats() {
-    const pendingOps = Array.from(this.pendingBatches.values())
-      .reduce((sum, batch) => sum + batch.operations.length, 0);
+    const pendingOps = Array.from(this.pendingBatches.values()).reduce(
+      (sum, batch) => sum + batch.operations.length,
+      0,
+    );
 
     const tenantBatches = new Map();
     for (const [key, batch] of this.pendingBatches) {
@@ -585,9 +601,10 @@ class SheetsBatchOperations {
       stats.operations += batch.operations.length;
     }
 
-    const efficiencyRate = this.metrics.totalOperations > 0
-      ? (this.metrics.timesSaved / this.metrics.totalOperations) * 100
-      : 0;
+    const efficiencyRate =
+      this.metrics.totalOperations > 0
+        ? (this.metrics.timesSaved / this.metrics.totalOperations) * 100
+        : 0;
 
     return {
       batch: {
@@ -595,13 +612,13 @@ class SheetsBatchOperations {
         batchDelay: this.batchDelay,
         maxBatchWaitTime: this.maxBatchWaitTime,
         pendingBatches: this.pendingBatches.size,
-        pendingOperations: pendingOps
+        pendingOperations: pendingOps,
       },
       metrics: {
         ...this.metrics,
-        efficiencyRate: Number(efficiencyRate.toFixed(2))
+        efficiencyRate: Number(efficiencyRate.toFixed(2)),
       },
-      tenants: Object.fromEntries(tenantBatches)
+      tenants: Object.fromEntries(tenantBatches),
     };
   }
 }

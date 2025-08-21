@@ -3,29 +3,29 @@
  * Handles Shopify App Billing API for embedded app subscriptions
  */
 
-import { PRICING_TIERS } from './billing.js';
+import { PRICING_TIERS } from "./billing.js";
 
 export const SHOPIFY_PRICING_TIERS = {
   STARTER: {
     ...PRICING_TIERS.STARTER,
-    shopifyPlanId: 'proofkit_starter',
-    test: process.env.SHOPIFY_BILLING_TEST === 'true'
+    shopifyPlanId: "proofkit_starter",
+    test: process.env.SHOPIFY_BILLING_TEST === "true",
   },
   PRO: {
     ...PRICING_TIERS.PRO,
-    shopifyPlanId: 'proofkit_pro',
-    test: process.env.SHOPIFY_BILLING_TEST === 'true'
+    shopifyPlanId: "proofkit_pro",
+    test: process.env.SHOPIFY_BILLING_TEST === "true",
   },
   GROWTH: {
     ...PRICING_TIERS.GROWTH,
-    shopifyPlanId: 'proofkit_growth',
-    test: process.env.SHOPIFY_BILLING_TEST === 'true'
+    shopifyPlanId: "proofkit_growth",
+    test: process.env.SHOPIFY_BILLING_TEST === "true",
   },
   ENTERPRISE: {
     ...PRICING_TIERS.ENTERPRISE,
-    shopifyPlanId: 'proofkit_enterprise',
-    test: process.env.SHOPIFY_BILLING_TEST === 'true'
-  }
+    shopifyPlanId: "proofkit_enterprise",
+    test: process.env.SHOPIFY_BILLING_TEST === "true",
+  },
 };
 
 export class ShopifyBillingService {
@@ -39,7 +39,7 @@ export class ShopifyBillingService {
   async createSubscription(shop, accessToken, tierIndex, returnUrl) {
     const tiers = Object.values(SHOPIFY_PRICING_TIERS);
     if (tierIndex < 0 || tierIndex >= tiers.length) {
-      throw new Error('Invalid pricing tier');
+      throw new Error("Invalid pricing tier");
     }
 
     const tier = tiers[tierIndex];
@@ -81,31 +81,40 @@ export class ShopifyBillingService {
 
       const variables = {
         name: `ProofKit ${tier.name} Plan`,
-        lineItems: [{
-          plan: {
-            appRecurringPricingDetails: {
-              price: {
-                amount: tier.price,
-                currencyCode: 'USD'
+        lineItems: [
+          {
+            plan: {
+              appRecurringPricingDetails: {
+                price: {
+                  amount: tier.price,
+                  currencyCode: "USD",
+                },
+                interval: "EVERY_30_DAYS",
               },
-              interval: 'EVERY_30_DAYS'
-            }
-          }
-        }],
+            },
+          },
+        ],
         returnUrl,
-        test: tier.test
+        test: tier.test,
       };
 
-      const response = await this.makeGraphQLRequest(shop, accessToken, mutation, variables);
-      
+      const response = await this.makeGraphQLRequest(
+        shop,
+        accessToken,
+        mutation,
+        variables,
+      );
+
       if (response.data.appSubscriptionCreate.userErrors.length > 0) {
-        throw new Error(`Shopify billing error: ${response.data.appSubscriptionCreate.userErrors[0].message}`);
+        throw new Error(
+          `Shopify billing error: ${response.data.appSubscriptionCreate.userErrors[0].message}`,
+        );
       }
 
       return response.data.appSubscriptionCreate;
     } catch (error) {
-      console.error('Error creating Shopify subscription:', error);
-      throw new Error('Failed to create Shopify subscription');
+      console.error("Error creating Shopify subscription:", error);
+      throw new Error("Failed to create Shopify subscription");
     }
   }
 
@@ -145,14 +154,16 @@ export class ShopifyBillingService {
       `;
 
       const response = await this.makeGraphQLRequest(shop, accessToken, query);
-      
+
       if (response.data.currentAppInstallation?.activeSubscriptions) {
-        return response.data.currentAppInstallation.activeSubscriptions[0] || null;
+        return (
+          response.data.currentAppInstallation.activeSubscriptions[0] || null
+        );
       }
-      
+
       return null;
     } catch (error) {
-      console.error('Error getting current subscription:', error);
+      console.error("Error getting current subscription:", error);
       return null;
     }
   }
@@ -178,26 +189,39 @@ export class ShopifyBillingService {
       `;
 
       const variables = {
-        id: subscriptionId
+        id: subscriptionId,
       };
 
-      const response = await this.makeGraphQLRequest(shop, accessToken, mutation, variables);
-      
+      const response = await this.makeGraphQLRequest(
+        shop,
+        accessToken,
+        mutation,
+        variables,
+      );
+
       if (response.data.appSubscriptionCancel.userErrors.length > 0) {
-        throw new Error(`Shopify billing error: ${response.data.appSubscriptionCancel.userErrors[0].message}`);
+        throw new Error(
+          `Shopify billing error: ${response.data.appSubscriptionCancel.userErrors[0].message}`,
+        );
       }
 
       return response.data.appSubscriptionCancel.appSubscription;
     } catch (error) {
-      console.error('Error canceling Shopify subscription:', error);
-      throw new Error('Failed to cancel Shopify subscription');
+      console.error("Error canceling Shopify subscription:", error);
+      throw new Error("Failed to cancel Shopify subscription");
     }
   }
 
   /**
    * Update subscription (upgrade/downgrade)
    */
-  async updateSubscription(shop, accessToken, subscriptionId, newTierIndex, returnUrl) {
+  async updateSubscription(
+    shop,
+    accessToken,
+    subscriptionId,
+    newTierIndex,
+    returnUrl,
+  ) {
     // Shopify doesn't support direct subscription updates, so we need to:
     // 1. Cancel current subscription
     // 2. Create new subscription
@@ -206,14 +230,19 @@ export class ShopifyBillingService {
     try {
       // Cancel current subscription
       await this.cancelSubscription(shop, accessToken, subscriptionId);
-      
+
       // Create new subscription
-      const newSubscription = await this.createSubscription(shop, accessToken, newTierIndex, returnUrl);
-      
+      const newSubscription = await this.createSubscription(
+        shop,
+        accessToken,
+        newTierIndex,
+        returnUrl,
+      );
+
       return newSubscription;
     } catch (error) {
-      console.error('Error updating Shopify subscription:', error);
-      throw new Error('Failed to update Shopify subscription');
+      console.error("Error updating Shopify subscription:", error);
+      throw new Error("Failed to update Shopify subscription");
     }
   }
 
@@ -223,9 +252,9 @@ export class ShopifyBillingService {
   async hasActiveSubscription(shop, accessToken) {
     try {
       const subscription = await this.getCurrentSubscription(shop, accessToken);
-      return subscription && subscription.status === 'ACTIVE';
+      return subscription && subscription.status === "ACTIVE";
     } catch (error) {
-      console.error('Error checking subscription status:', error);
+      console.error("Error checking subscription status:", error);
       return false;
     }
   }
@@ -234,16 +263,22 @@ export class ShopifyBillingService {
    * Get subscription tier from Shopify subscription
    */
   getSubscriptionTier(subscription) {
-    if (!subscription || !subscription.lineItems || subscription.lineItems.length === 0) {
+    if (
+      !subscription ||
+      !subscription.lineItems ||
+      subscription.lineItems.length === 0
+    ) {
       return null;
     }
 
-    const amount = parseFloat(subscription.lineItems[0].plan.pricingDetails.price.amount);
-    
+    const amount = parseFloat(
+      subscription.lineItems[0].plan.pricingDetails.price.amount,
+    );
+
     // Map amount to tier
     const tiers = Object.values(SHOPIFY_PRICING_TIERS);
-    const tier = tiers.find(t => t.price === amount);
-    
+    const tier = tiers.find((t) => t.price === amount);
+
     return tier || null;
   }
 
@@ -251,12 +286,12 @@ export class ShopifyBillingService {
    * Verify subscription webhook
    */
   verifyWebhook(body, signature) {
-    const hmac = signature.replace('sha256=', '');
+    const hmac = signature.replace("sha256=", "");
     const computed = crypto
-      .createHmac('sha256', process.env.SHOPIFY_WEBHOOK_SECRET)
-      .update(body, 'utf8')
-      .digest('base64');
-    
+      .createHmac("sha256", process.env.SHOPIFY_WEBHOOK_SECRET)
+      .update(body, "utf8")
+      .digest("base64");
+
     return hmac === computed;
   }
 
@@ -266,33 +301,39 @@ export class ShopifyBillingService {
   async handleWebhook(topic, shop, data) {
     try {
       switch (topic) {
-        case 'app_subscriptions/update':
+        case "app_subscriptions/update":
           return await this.handleSubscriptionUpdate(shop, data);
-        
+
         default:
           console.log(`Unhandled Shopify webhook topic: ${topic}`);
           return { received: true };
       }
     } catch (error) {
-      console.error('Error handling Shopify webhook:', error);
+      console.error("Error handling Shopify webhook:", error);
       throw error;
     }
   }
 
   async handleSubscriptionUpdate(shop, subscription) {
     console.log(`Subscription updated for shop ${shop}:`, subscription.id);
-    
+
     // Update database with subscription changes
     // Adjust feature access based on subscription status
     // Send notifications if needed
-    
+
     return { processed: true };
   }
 
   /**
    * Create a usage charge for one-time fees
    */
-  async createUsageCharge(shop, accessToken, subscriptionId, description, amount) {
+  async createUsageCharge(
+    shop,
+    accessToken,
+    subscriptionId,
+    description,
+    amount,
+  ) {
     try {
       const mutation = `
         mutation appUsageRecordCreate($subscriptionLineItemId: ID!, $price: MoneyInput!, $description: String!) {
@@ -318,21 +359,28 @@ export class ShopifyBillingService {
         subscriptionLineItemId: subscriptionId,
         price: {
           amount: amount,
-          currencyCode: 'USD'
+          currencyCode: "USD",
         },
-        description
+        description,
       };
 
-      const response = await this.makeGraphQLRequest(shop, accessToken, mutation, variables);
-      
+      const response = await this.makeGraphQLRequest(
+        shop,
+        accessToken,
+        mutation,
+        variables,
+      );
+
       if (response.data.appUsageRecordCreate.userErrors.length > 0) {
-        throw new Error(`Shopify usage charge error: ${response.data.appUsageRecordCreate.userErrors[0].message}`);
+        throw new Error(
+          `Shopify usage charge error: ${response.data.appUsageRecordCreate.userErrors[0].message}`,
+        );
       }
 
       return response.data.appUsageRecordCreate.appUsageRecord;
     } catch (error) {
-      console.error('Error creating usage charge:', error);
-      throw new Error('Failed to create usage charge');
+      console.error("Error creating usage charge:", error);
+      throw new Error("Failed to create usage charge");
     }
   }
 
@@ -341,25 +389,27 @@ export class ShopifyBillingService {
    */
   async makeGraphQLRequest(shop, accessToken, query, variables = {}) {
     const url = `https://${shop}/admin/api/2023-10/graphql.json`;
-    
+
     const response = await fetch(url, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'X-Shopify-Access-Token': accessToken
+        "Content-Type": "application/json",
+        "X-Shopify-Access-Token": accessToken,
       },
       body: JSON.stringify({
         query,
-        variables
-      })
+        variables,
+      }),
     });
 
     if (!response.ok) {
-      throw new Error(`Shopify API error: ${response.status} ${response.statusText}`);
+      throw new Error(
+        `Shopify API error: ${response.status} ${response.statusText}`,
+      );
     }
 
     const data = await response.json();
-    
+
     if (data.errors) {
       throw new Error(`GraphQL error: ${JSON.stringify(data.errors)}`);
     }
@@ -371,7 +421,9 @@ export class ShopifyBillingService {
    * Get tier information by Shopify plan ID
    */
   getTierByShopifyPlan(planId) {
-    return Object.values(SHOPIFY_PRICING_TIERS).find(tier => tier.shopifyPlanId === planId);
+    return Object.values(SHOPIFY_PRICING_TIERS).find(
+      (tier) => tier.shopifyPlanId === planId,
+    );
   }
 
   /**
@@ -390,7 +442,7 @@ export class ShopifyBillingService {
     if (!tier) return false;
 
     const limits = tier.limits;
-    
+
     // Check each limit (-1 means unlimited)
     for (const [key, limit] of Object.entries(limits)) {
       if (limit === -1) continue; // unlimited
@@ -398,7 +450,7 @@ export class ShopifyBillingService {
         return false;
       }
     }
-    
+
     return true;
   }
 
@@ -416,15 +468,15 @@ export class ShopifyBillingService {
    */
   parseSubscriptionStatus(status) {
     const statusMap = {
-      'ACTIVE': 'active',
-      'CANCELLED': 'cancelled',
-      'DECLINED': 'declined',
-      'EXPIRED': 'expired',
-      'FROZEN': 'suspended',
-      'PENDING': 'pending'
+      ACTIVE: "active",
+      CANCELLED: "cancelled",
+      DECLINED: "declined",
+      EXPIRED: "expired",
+      FROZEN: "suspended",
+      PENDING: "pending",
     };
-    
-    return statusMap[status] || 'unknown';
+
+    return statusMap[status] || "unknown";
   }
 }
 

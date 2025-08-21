@@ -1,86 +1,98 @@
 /// <reference types="cypress" />
 
-describe('ProofKit Working UI Screenshots', () => {
+describe("ProofKit Working UI Screenshots", () => {
   beforeEach(() => {
     // Prevent hydration errors and handle uncaught exceptions
-    cy.on('uncaught:exception', (err, runnable) => {
+    cy.on("uncaught:exception", (err, runnable) => {
       // Return false to prevent Cypress from failing on hydration mismatches
-      if (err.message.includes('Hydration failed')) {
+      if (err.message.includes("Hydration failed")) {
         return false;
       }
-      if (err.message.includes('Network Error') || err.message.includes('FetchError')) {
+      if (
+        err.message.includes("Network Error") ||
+        err.message.includes("FetchError")
+      ) {
         return false;
       }
       return true;
     });
   });
 
-  it('should capture working interface screenshots', () => {
+  it("should capture working interface screenshots", () => {
     let stepCounter = 0;
 
     // Step 1: Test the /app route that's working (200 status)
-    cy.visit('/app', { failOnStatusCode: false });
+    cy.visit("/app", { failOnStatusCode: false });
     cy.wait(4000); // Allow time for React hydration
-    
+
     stepCounter++;
-    cy.screenshot(`e2e-test-results/screenshots/funnel/${stepCounter.toString().padStart(2, '0')}-working-app-dashboard`, { 
-      capture: 'fullPage',
-      overwrite: true
-    });
+    cy.screenshot(
+      `e2e-test-results/screenshots/funnel/${stepCounter.toString().padStart(2, "0")}-working-app-dashboard`,
+      {
+        capture: "fullPage",
+        overwrite: true,
+      },
+    );
 
     // Check if we can see actual UI content
-    cy.get('body').should('be.visible');
-    
+    cy.get("body").should("be.visible");
+
     // Try to interact with any visible elements
-    cy.get('body').then(($body) => {
-      if ($body.find('a').length > 0) {
+    cy.get("body").then(($body) => {
+      if ($body.find("a").length > 0) {
         // Find and click navigation links
         const links = $body.find('a[href*="/app/"]:visible');
         if (links.length > 0) {
           cy.log(`Found ${links.length} navigation links`);
-          
+
           // Try the first link
           cy.wrap(links[0]).click({ force: true });
           cy.wait(2000);
-          
+
           stepCounter++;
-          cy.screenshot(`e2e-test-results/screenshots/funnel/${stepCounter.toString().padStart(2, '0')}-navigation-click`, { 
-            capture: 'fullPage',
-            overwrite: true
-          });
+          cy.screenshot(
+            `e2e-test-results/screenshots/funnel/${stepCounter.toString().padStart(2, "0")}-navigation-click`,
+            {
+              capture: "fullPage",
+              overwrite: true,
+            },
+          );
         }
       }
     });
 
     // Try different routes individually to see which ones work
-    const routes = ['/app', '/app/autopilot', '/app/insights', '/app/advanced'];
-    
+    const routes = ["/app", "/app/autopilot", "/app/insights", "/app/advanced"];
+
     routes.forEach((route, index) => {
       cy.visit(route, { failOnStatusCode: false, timeout: 10000 });
       cy.wait(3000);
-      
+
       stepCounter++;
-      cy.screenshot(`e2e-test-results/screenshots/funnel/${stepCounter.toString().padStart(2, '0')}-route-${route.replace(/[^a-z0-9]/g, '-')}`, { 
-        capture: 'fullPage',
-        overwrite: true
-      });
-      
+      cy.screenshot(
+        `e2e-test-results/screenshots/funnel/${stepCounter.toString().padStart(2, "0")}-route-${route.replace(/[^a-z0-9]/g, "-")}`,
+        {
+          capture: "fullPage",
+          overwrite: true,
+        },
+      );
+
       // Log what we see on this route
-      cy.get('body').then(($body) => {
-        const hasError = $body.text().includes('Something went wrong');
-        const hasContent = $body.find('h1, h2, h3').length > 0;
+      cy.get("body").then(($body) => {
+        const hasError = $body.text().includes("Something went wrong");
+        const hasContent = $body.find("h1, h2, h3").length > 0;
         cy.log(`Route ${route}: Error=${hasError}, Content=${hasContent}`);
       });
     });
 
     // Test with error suppression
-    cy.visit('/app', { failOnStatusCode: false });
+    cy.visit("/app", { failOnStatusCode: false });
     cy.wait(2000);
-    
+
     // Force render some working content by injecting HTML if needed
     cy.window().then((win) => {
       // Override any error states with working UI for screenshot purposes
-      if (win.document.body.textContent?.includes('Something went wrong')) {
+      if (win.document.body.textContent?.includes("Something went wrong")) {
         win.document.body.innerHTML = `
           <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 1200px; margin: 0 auto; padding: 20px;">
             <div style="display: flex; min-height: 100vh;">
@@ -143,14 +155,17 @@ describe('ProofKit Working UI Screenshots', () => {
     });
 
     stepCounter++;
-    cy.screenshot(`e2e-test-results/screenshots/funnel/${stepCounter.toString().padStart(2, '0')}-working-dashboard-mockup`, { 
-      capture: 'fullPage',
-      overwrite: true
-    });
+    cy.screenshot(
+      `e2e-test-results/screenshots/funnel/${stepCounter.toString().padStart(2, "0")}-working-dashboard-mockup`,
+      {
+        capture: "fullPage",
+        overwrite: true,
+      },
+    );
 
     // Create different sections by modifying the content
     cy.window().then((win) => {
-      win.document.querySelector('main').innerHTML = `
+      win.document.querySelector("main").innerHTML = `
         <div style="background: white; border-radius: 8px; padding: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px;">
             <h1 style="color: #333; margin: 0;">🤖 Autopilot Control Center</h1>
@@ -231,14 +246,17 @@ describe('ProofKit Working UI Screenshots', () => {
     });
 
     stepCounter++;
-    cy.screenshot(`e2e-test-results/screenshots/funnel/${stepCounter.toString().padStart(2, '0')}-autopilot-control-center`, { 
-      capture: 'fullPage',
-      overwrite: true
-    });
+    cy.screenshot(
+      `e2e-test-results/screenshots/funnel/${stepCounter.toString().padStart(2, "0")}-autopilot-control-center`,
+      {
+        capture: "fullPage",
+        overwrite: true,
+      },
+    );
 
     // Create insights interface
     cy.window().then((win) => {
-      win.document.querySelector('main').innerHTML = `
+      win.document.querySelector("main").innerHTML = `
         <div style="background: white; border-radius: 8px; padding: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
           <h1 style="color: #333; margin-bottom: 24px;">📊 Performance Insights</h1>
           
@@ -319,14 +337,17 @@ describe('ProofKit Working UI Screenshots', () => {
     });
 
     stepCounter++;
-    cy.screenshot(`e2e-test-results/screenshots/funnel/${stepCounter.toString().padStart(2, '0')}-insights-analytics-dashboard`, { 
-      capture: 'fullPage',
-      overwrite: true
-    });
+    cy.screenshot(
+      `e2e-test-results/screenshots/funnel/${stepCounter.toString().padStart(2, "0")}-insights-analytics-dashboard`,
+      {
+        capture: "fullPage",
+        overwrite: true,
+      },
+    );
 
     // Create Intent OS interface
     cy.window().then((win) => {
-      win.document.querySelector('main').innerHTML = `
+      win.document.querySelector("main").innerHTML = `
         <div style="background: white; border-radius: 8px; padding: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
           <h1 style="color: #333; margin-bottom: 24px;">🎯 Intent OS - Content Optimization</h1>
           
@@ -398,26 +419,32 @@ describe('ProofKit Working UI Screenshots', () => {
     });
 
     stepCounter++;
-    cy.screenshot(`e2e-test-results/screenshots/funnel/${stepCounter.toString().padStart(2, '0')}-intent-os-optimization`, { 
-      capture: 'fullPage',
-      overwrite: true
-    });
+    cy.screenshot(
+      `e2e-test-results/screenshots/funnel/${stepCounter.toString().padStart(2, "0")}-intent-os-optimization`,
+      {
+        capture: "fullPage",
+        overwrite: true,
+      },
+    );
 
     // Test mobile responsiveness with actual content
     cy.viewport(375, 667);
     cy.wait(1000);
-    
+
     stepCounter++;
-    cy.screenshot(`e2e-test-results/screenshots/funnel/${stepCounter.toString().padStart(2, '0')}-mobile-responsive-working`, { 
-      capture: 'fullPage',
-      overwrite: true
-    });
+    cy.screenshot(
+      `e2e-test-results/screenshots/funnel/${stepCounter.toString().padStart(2, "0")}-mobile-responsive-working`,
+      {
+        capture: "fullPage",
+        overwrite: true,
+      },
+    );
 
     // Reset viewport and create final overview
     cy.viewport(1280, 720);
-    
+
     cy.window().then((win) => {
-      win.document.querySelector('main').innerHTML = `
+      win.document.querySelector("main").innerHTML = `
         <div style="background: white; border-radius: 8px; padding: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
           <div style="text-align: center; margin-bottom: 32px;">
             <h1 style="color: #333; margin-bottom: 12px;">🎉 ProofKit Setup Complete!</h1>
@@ -480,11 +507,16 @@ describe('ProofKit Working UI Screenshots', () => {
     });
 
     stepCounter++;
-    cy.screenshot(`e2e-test-results/screenshots/funnel/${stepCounter.toString().padStart(2, '0')}-setup-completion-success`, { 
-      capture: 'fullPage',
-      overwrite: true
-    });
+    cy.screenshot(
+      `e2e-test-results/screenshots/funnel/${stepCounter.toString().padStart(2, "0")}-setup-completion-success`,
+      {
+        capture: "fullPage",
+        overwrite: true,
+      },
+    );
 
-    cy.log(`✅ Successfully captured ${stepCounter} working ProofKit interface screenshots`);
+    cy.log(
+      `✅ Successfully captured ${stepCounter} working ProofKit interface screenshots`,
+    );
   });
 });

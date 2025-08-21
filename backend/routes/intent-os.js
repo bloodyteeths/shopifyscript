@@ -3,10 +3,10 @@
  * All mutations protected by PROMOTE flag for safety
  */
 
-import express from 'express';
-import { getIntentOSService } from '../services/intent-os.js';
-import { verify } from '../utils/hmac.js';
-import { json } from '../utils/response.js';
+import express from "express";
+import { getIntentOSService } from "../services/intent-os.js";
+import { verify } from "../utils/hmac.js";
+import { json } from "../utils/response.js";
 
 const router = express.Router();
 const intentOS = getIntentOSService();
@@ -24,11 +24,11 @@ const validateAndInit = async (req, res, next) => {
 
     // Initialize Intent OS service
     await intentOS.initialize();
-    
+
     next();
   } catch (error) {
-    console.error('Intent OS validation/init failed:', error);
-    json(res, 500, { ok: false, error: 'Service initialization failed' });
+    console.error("Intent OS validation/init failed:", error);
+    json(res, 500, { ok: false, error: "Service initialization failed" });
   }
 };
 
@@ -36,19 +36,18 @@ const validateAndInit = async (req, res, next) => {
  * GET /api/intent-os/status
  * Get Intent OS status and configuration
  */
-router.get('/status', validateAndInit, async (req, res) => {
+router.get("/status", validateAndInit, async (req, res) => {
   try {
     const { tenantId } = req.query;
-    
+
     if (!tenantId) {
-      return json(res, 400, { ok: false, error: 'tenantId required' });
+      return json(res, 400, { ok: false, error: "tenantId required" });
     }
 
     const status = intentOS.getStatus(tenantId);
     json(res, 200, { ok: true, data: status });
-    
   } catch (error) {
-    console.error('Failed to get Intent OS status:', error);
+    console.error("Failed to get Intent OS status:", error);
     json(res, 500, { ok: false, error: error.message });
   }
 });
@@ -58,20 +57,26 @@ router.get('/status', validateAndInit, async (req, res) => {
  * Apply metafield overlay with versioning
  * GATED BY PROMOTE FLAG
  */
-router.post('/apply-overlay', validateAndInit, async (req, res) => {
+router.post("/apply-overlay", validateAndInit, async (req, res) => {
   try {
     const { tenantId, overlayConfig, promote = false } = req.body;
-    
+
     if (!tenantId || !overlayConfig) {
-      return json(res, 400, { ok: false, error: 'tenantId and overlayConfig required' });
+      return json(res, 400, {
+        ok: false,
+        error: "tenantId and overlayConfig required",
+      });
     }
 
-    const result = await intentOS.applyMetafieldOverlay(tenantId, overlayConfig, promote);
+    const result = await intentOS.applyMetafieldOverlay(
+      tenantId,
+      overlayConfig,
+      promote,
+    );
     json(res, 200, { ok: true, data: result });
-    
   } catch (error) {
-    console.error('Failed to apply overlay:', error);
-    const statusCode = error.message.includes('PROMOTE') ? 403 : 500;
+    console.error("Failed to apply overlay:", error);
+    const statusCode = error.message.includes("PROMOTE") ? 403 : 500;
     json(res, statusCode, { ok: false, error: error.message });
   }
 });
@@ -81,20 +86,23 @@ router.post('/apply-overlay', validateAndInit, async (req, res) => {
  * Revert metafield overlay to previous version
  * GATED BY PROMOTE FLAG
  */
-router.post('/revert-overlay', validateAndInit, async (req, res) => {
+router.post("/revert-overlay", validateAndInit, async (req, res) => {
   try {
     const { tenantId, targetVersion = null, promote = false } = req.body;
-    
+
     if (!tenantId) {
-      return json(res, 400, { ok: false, error: 'tenantId required' });
+      return json(res, 400, { ok: false, error: "tenantId required" });
     }
 
-    const result = await intentOS.revertMetafieldOverlay(tenantId, targetVersion, promote);
+    const result = await intentOS.revertMetafieldOverlay(
+      tenantId,
+      targetVersion,
+      promote,
+    );
     json(res, 200, { ok: true, data: result });
-    
   } catch (error) {
-    console.error('Failed to revert overlay:', error);
-    const statusCode = error.message.includes('PROMOTE') ? 403 : 500;
+    console.error("Failed to revert overlay:", error);
+    const statusCode = error.message.includes("PROMOTE") ? 403 : 500;
     json(res, statusCode, { ok: false, error: error.message });
   }
 });
@@ -103,19 +111,18 @@ router.post('/revert-overlay', validateAndInit, async (req, res) => {
  * GET /api/intent-os/overlay-history
  * Get overlay application history
  */
-router.get('/overlay-history', validateAndInit, async (req, res) => {
+router.get("/overlay-history", validateAndInit, async (req, res) => {
   try {
     const { tenantId, limit = 10 } = req.query;
-    
+
     if (!tenantId) {
-      return json(res, 400, { ok: false, error: 'tenantId required' });
+      return json(res, 400, { ok: false, error: "tenantId required" });
     }
 
     const history = await intentOS.getOverlayHistory(tenantId, parseInt(limit));
     json(res, 200, { ok: true, data: history });
-    
   } catch (error) {
-    console.error('Failed to get overlay history:', error);
+    console.error("Failed to get overlay history:", error);
     json(res, 500, { ok: false, error: error.message });
   }
 });
@@ -124,22 +131,24 @@ router.get('/overlay-history', validateAndInit, async (req, res) => {
  * GET /api/intent-os/overlay-active
  * Get currently active overlay
  */
-router.get('/overlay-active', validateAndInit, async (req, res) => {
+router.get("/overlay-active", validateAndInit, async (req, res) => {
   try {
     const { tenantId } = req.query;
-    
+
     if (!tenantId) {
-      return json(res, 400, { ok: false, error: 'tenantId required' });
+      return json(res, 400, { ok: false, error: "tenantId required" });
     }
 
     // Get active overlay from cache
-    const tenantCache = (await import('../services/cache.js')).default;
-    const activeOverlay = tenantCache.get(tenantId, '/intent-os/overlay/active');
-    
+    const tenantCache = (await import("../services/cache.js")).default;
+    const activeOverlay = tenantCache.get(
+      tenantId,
+      "/intent-os/overlay/active",
+    );
+
     json(res, 200, { ok: true, data: activeOverlay });
-    
   } catch (error) {
-    console.error('Failed to get active overlay:', error);
+    console.error("Failed to get active overlay:", error);
     json(res, 500, { ok: false, error: error.message });
   }
 });
@@ -148,19 +157,18 @@ router.get('/overlay-active', validateAndInit, async (req, res) => {
  * GET /api/intent-os/intent-blocks
  * Get Intent Blocks for tenant
  */
-router.get('/intent-blocks', validateAndInit, async (req, res) => {
+router.get("/intent-blocks", validateAndInit, async (req, res) => {
   try {
     const { tenantId, intentKey = null } = req.query;
-    
+
     if (!tenantId) {
-      return json(res, 400, { ok: false, error: 'tenantId required' });
+      return json(res, 400, { ok: false, error: "tenantId required" });
     }
 
     const blocks = await intentOS.getIntentBlocks(tenantId, intentKey);
     json(res, 200, { ok: true, data: blocks });
-    
   } catch (error) {
-    console.error('Failed to get intent blocks:', error);
+    console.error("Failed to get intent blocks:", error);
     json(res, 500, { ok: false, error: error.message });
   }
 });
@@ -170,20 +178,27 @@ router.get('/intent-blocks', validateAndInit, async (req, res) => {
  * Create or update Intent Block
  * GATED BY PROMOTE FLAG
  */
-router.post('/intent-blocks', validateAndInit, async (req, res) => {
+router.post("/intent-blocks", validateAndInit, async (req, res) => {
   try {
     const { tenantId, intentKey, blockData, promote = false } = req.body;
-    
+
     if (!tenantId || !intentKey || !blockData) {
-      return json(res, 400, { ok: false, error: 'tenantId, intentKey, and blockData required' });
+      return json(res, 400, {
+        ok: false,
+        error: "tenantId, intentKey, and blockData required",
+      });
     }
 
-    const result = await intentOS.updateIntentBlock(tenantId, intentKey, blockData, promote);
+    const result = await intentOS.updateIntentBlock(
+      tenantId,
+      intentKey,
+      blockData,
+      promote,
+    );
     json(res, 200, { ok: true, data: result });
-    
   } catch (error) {
-    console.error('Failed to update intent block:', error);
-    const statusCode = error.message.includes('PROMOTE') ? 403 : 500;
+    console.error("Failed to update intent block:", error);
+    const statusCode = error.message.includes("PROMOTE") ? 403 : 500;
     json(res, statusCode, { ok: false, error: error.message });
   }
 });
@@ -192,19 +207,25 @@ router.post('/intent-blocks', validateAndInit, async (req, res) => {
  * POST /api/intent-os/utm-content
  * Generate UTM-driven content variations
  */
-router.post('/utm-content', validateAndInit, async (req, res) => {
+router.post("/utm-content", validateAndInit, async (req, res) => {
   try {
     const { tenantId, utmTerm, productContext = {} } = req.body;
-    
+
     if (!tenantId || !utmTerm) {
-      return json(res, 400, { ok: false, error: 'tenantId and utmTerm required' });
+      return json(res, 400, {
+        ok: false,
+        error: "tenantId and utmTerm required",
+      });
     }
 
-    const content = await intentOS.generateUTMContent(tenantId, utmTerm, productContext);
+    const content = await intentOS.generateUTMContent(
+      tenantId,
+      utmTerm,
+      productContext,
+    );
     json(res, 200, { ok: true, data: content });
-    
   } catch (error) {
-    console.error('Failed to generate UTM content:', error);
+    console.error("Failed to generate UTM content:", error);
     json(res, 500, { ok: false, error: error.message });
   }
 });
@@ -213,23 +234,25 @@ router.post('/utm-content', validateAndInit, async (req, res) => {
  * GET /api/intent-os/utm-content
  * Get cached UTM content
  */
-router.get('/utm-content', validateAndInit, async (req, res) => {
+router.get("/utm-content", validateAndInit, async (req, res) => {
   try {
     const { tenantId, utmTerm } = req.query;
-    
+
     if (!tenantId || !utmTerm) {
-      return json(res, 400, { ok: false, error: 'tenantId and utmTerm required' });
+      return json(res, 400, {
+        ok: false,
+        error: "tenantId and utmTerm required",
+      });
     }
 
     // Get cached content
-    const tenantCache = (await import('../services/cache.js')).default;
+    const tenantCache = (await import("../services/cache.js")).default;
     const cacheKey = `/intent-os/utm-content/${utmTerm}`;
     const content = tenantCache.get(tenantId, cacheKey);
-    
+
     json(res, 200, { ok: true, data: content });
-    
   } catch (error) {
-    console.error('Failed to get UTM content:', error);
+    console.error("Failed to get UTM content:", error);
     json(res, 500, { ok: false, error: error.message });
   }
 });
@@ -239,20 +262,26 @@ router.get('/utm-content', validateAndInit, async (req, res) => {
  * Create AI-powered promo page draft
  * GATED BY PROMOTE FLAG
  */
-router.post('/promo-draft', validateAndInit, async (req, res) => {
+router.post("/promo-draft", validateAndInit, async (req, res) => {
   try {
     const { tenantId, promoConfig, promote = false } = req.body;
-    
+
     if (!tenantId || !promoConfig) {
-      return json(res, 400, { ok: false, error: 'tenantId and promoConfig required' });
+      return json(res, 400, {
+        ok: false,
+        error: "tenantId and promoConfig required",
+      });
     }
 
-    const draft = await intentOS.createPromoDraft(tenantId, promoConfig, promote);
+    const draft = await intentOS.createPromoDraft(
+      tenantId,
+      promoConfig,
+      promote,
+    );
     json(res, 200, { ok: true, data: draft });
-    
   } catch (error) {
-    console.error('Failed to create promo draft:', error);
-    const statusCode = error.message.includes('PROMOTE') ? 403 : 500;
+    console.error("Failed to create promo draft:", error);
+    const statusCode = error.message.includes("PROMOTE") ? 403 : 500;
     json(res, statusCode, { ok: false, error: error.message });
   }
 });
@@ -261,45 +290,47 @@ router.post('/promo-draft', validateAndInit, async (req, res) => {
  * GET /api/intent-os/promo-drafts
  * Get promo drafts for tenant
  */
-router.get('/promo-drafts', validateAndInit, async (req, res) => {
+router.get("/promo-drafts", validateAndInit, async (req, res) => {
   try {
     const { tenantId, limit = 20 } = req.query;
-    
+
     if (!tenantId) {
-      return json(res, 400, { ok: false, error: 'tenantId required' });
+      return json(res, 400, { ok: false, error: "tenantId required" });
     }
 
     // Load drafts from sheets
-    const tenantRegistry = (await import('../services/tenant-registry.js')).default;
+    const tenantRegistry = (await import("../services/tenant-registry.js"))
+      .default;
     const doc = await tenantRegistry.getTenantDoc(tenantId);
-    
+
     let drafts = [];
     try {
       const sheet = doc.sheetsByTitle[`PROMO_DRAFTS_${tenantId}`];
       if (sheet) {
         await sheet.loadHeaderRow();
         const rows = await sheet.getRows();
-        
-        drafts = rows.map(row => ({
-          id: row.id,
-          title: row.title,
-          handle: row.handle,
-          status: row.status,
-          content: row.content,
-          meta_description: row.meta_description,
-          created_at: row.created_at,
-          created_by: row.created_by,
-          tags: (row.tags_csv || '').split(',').filter(Boolean)
-        })).slice(0, parseInt(limit));
+
+        drafts = rows
+          .map((row) => ({
+            id: row.id,
+            title: row.title,
+            handle: row.handle,
+            status: row.status,
+            content: row.content,
+            meta_description: row.meta_description,
+            created_at: row.created_at,
+            created_by: row.created_by,
+            tags: (row.tags_csv || "").split(",").filter(Boolean),
+          }))
+          .slice(0, parseInt(limit));
       }
     } catch (error) {
-      console.warn('Failed to load promo drafts:', error);
+      console.warn("Failed to load promo drafts:", error);
     }
-    
+
     json(res, 200, { ok: true, data: drafts });
-    
   } catch (error) {
-    console.error('Failed to get promo drafts:', error);
+    console.error("Failed to get promo drafts:", error);
     json(res, 500, { ok: false, error: error.message });
   }
 });
@@ -308,31 +339,35 @@ router.get('/promo-drafts', validateAndInit, async (req, res) => {
  * GET /api/intent-os/promo-draft/:draftId
  * Get specific promo draft
  */
-router.get('/promo-draft/:draftId', validateAndInit, async (req, res) => {
+router.get("/promo-draft/:draftId", validateAndInit, async (req, res) => {
   try {
     const { tenantId } = req.query;
     const { draftId } = req.params;
-    
+
     if (!tenantId || !draftId) {
-      return json(res, 400, { ok: false, error: 'tenantId and draftId required' });
+      return json(res, 400, {
+        ok: false,
+        error: "tenantId and draftId required",
+      });
     }
 
     // Get cached draft first
-    const tenantCache = (await import('../services/cache.js')).default;
+    const tenantCache = (await import("../services/cache.js")).default;
     const cacheKey = `/intent-os/promo-drafts/${draftId}`;
     let draft = tenantCache.get(tenantId, cacheKey);
-    
+
     if (!draft) {
       // Load from sheets if not cached
-      const tenantRegistry = (await import('../services/tenant-registry.js')).default;
+      const tenantRegistry = (await import("../services/tenant-registry.js"))
+        .default;
       const doc = await tenantRegistry.getTenantDoc(tenantId);
-      
+
       const sheet = doc.sheetsByTitle[`PROMO_DRAFTS_${tenantId}`];
       if (sheet) {
         await sheet.loadHeaderRow();
         const rows = await sheet.getRows();
-        
-        const row = rows.find(r => r.id === draftId);
+
+        const row = rows.find((r) => r.id === draftId);
         if (row) {
           draft = {
             id: row.id,
@@ -343,20 +378,19 @@ router.get('/promo-draft/:draftId', validateAndInit, async (req, res) => {
             meta_description: row.meta_description,
             created_at: row.created_at,
             created_by: row.created_by,
-            tags: (row.tags_csv || '').split(',').filter(Boolean)
+            tags: (row.tags_csv || "").split(",").filter(Boolean),
           };
         }
       }
     }
-    
+
     if (!draft) {
-      return json(res, 404, { ok: false, error: 'Promo draft not found' });
+      return json(res, 404, { ok: false, error: "Promo draft not found" });
     }
-    
+
     json(res, 200, { ok: true, data: draft });
-    
   } catch (error) {
-    console.error('Failed to get promo draft:', error);
+    console.error("Failed to get promo draft:", error);
     json(res, 500, { ok: false, error: error.message });
   }
 });
@@ -365,25 +399,32 @@ router.get('/promo-draft/:draftId', validateAndInit, async (req, res) => {
  * POST /api/intent-os/theme-section
  * Generate Shopify theme section code for UTM-driven content
  */
-router.post('/theme-section', validateAndInit, async (req, res) => {
+router.post("/theme-section", validateAndInit, async (req, res) => {
   try {
-    const { tenantId, sectionName = 'intent-os-utm', defaultContent = {} } = req.body;
-    
+    const {
+      tenantId,
+      sectionName = "intent-os-utm",
+      defaultContent = {},
+    } = req.body;
+
     if (!tenantId) {
-      return json(res, 400, { ok: false, error: 'tenantId required' });
+      return json(res, 400, { ok: false, error: "tenantId required" });
     }
 
     // Generate Liquid theme section
     const themeSection = generateThemeSection(sectionName, defaultContent);
-    
-    json(res, 200, { ok: true, data: {
-      sectionName,
-      code: themeSection,
-      instructions: 'Add this section to your theme and configure UTM-driven content swapping'
-    }});
-    
+
+    json(res, 200, {
+      ok: true,
+      data: {
+        sectionName,
+        code: themeSection,
+        instructions:
+          "Add this section to your theme and configure UTM-driven content swapping",
+      },
+    });
   } catch (error) {
-    console.error('Failed to generate theme section:', error);
+    console.error("Failed to generate theme section:", error);
     json(res, 500, { ok: false, error: error.message });
   }
 });

@@ -2,14 +2,14 @@
 
 /**
  * ProofKit Screenshot Annotation Tool
- * 
+ *
  * Optional image annotation using Sharp to overlay step numbers on screenshots.
  * Falls back gracefully if Sharp is not available.
  */
 
-import { readFileSync, writeFileSync, existsSync, readdirSync } from 'fs';
-import { join, dirname, extname, basename } from 'path';
-import { fileURLToPath } from 'url';
+import { readFileSync, writeFileSync, existsSync, readdirSync } from "fs";
+import { join, dirname, extname, basename } from "path";
+import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -17,10 +17,10 @@ const __dirname = dirname(__filename);
 class ImageAnnotator {
   constructor() {
     this.docsDir = __dirname;
-    this.screenshotsDir = join(this.docsDir, 'screenshots', 'funnel');
-    this.annotatedDir = join(this.docsDir, 'screenshots', 'funnel-annotated');
+    this.screenshotsDir = join(this.docsDir, "screenshots", "funnel");
+    this.annotatedDir = join(this.docsDir, "screenshots", "funnel-annotated");
     this.sharp = null;
-    
+
     // Try to load Sharp (optional dependency)
     this.initializeSharp();
   }
@@ -31,13 +31,13 @@ class ImageAnnotator {
   async initializeSharp() {
     try {
       // Dynamic import to handle optional dependency
-      const sharp = await import('sharp');
+      const sharp = await import("sharp");
       this.sharp = sharp.default;
-      console.log('✅ Sharp loaded successfully for image annotation');
+      console.log("✅ Sharp loaded successfully for image annotation");
       return true;
     } catch (error) {
-      console.log('ℹ️  Sharp not available - skipping image annotation');
-      console.log('   Install with: npm install sharp (optional)');
+      console.log("ℹ️  Sharp not available - skipping image annotation");
+      console.log("   Install with: npm install sharp (optional)");
       return false;
     }
   }
@@ -47,46 +47,50 @@ class ImageAnnotator {
    */
   async annotateScreenshots() {
     if (!this.sharp) {
-      console.log('⏭️  Skipping image annotation (Sharp not available)');
-      return { success: true, annotated: 0, message: 'Sharp not available' };
+      console.log("⏭️  Skipping image annotation (Sharp not available)");
+      return { success: true, annotated: 0, message: "Sharp not available" };
     }
 
     try {
-      console.log('🎨 Annotating funnel screenshots...');
-      
+      console.log("🎨 Annotating funnel screenshots...");
+
       // Ensure output directory exists
       if (!existsSync(this.annotatedDir)) {
         mkdirSync(this.annotatedDir, { recursive: true });
       }
-      
+
       // Get all PNG files from screenshots directory
       const screenshots = this.getScreenshots();
       console.log(`📸 Found ${screenshots.length} screenshots to annotate`);
-      
+
       let annotatedCount = 0;
-      
+
       for (const screenshot of screenshots) {
         try {
           await this.annotateImage(screenshot);
           annotatedCount++;
         } catch (error) {
-          console.warn(`⚠️  Failed to annotate ${screenshot.filename}:`, error.message);
+          console.warn(
+            `⚠️  Failed to annotate ${screenshot.filename}:`,
+            error.message,
+          );
         }
       }
-      
-      console.log(`✅ Annotated ${annotatedCount} of ${screenshots.length} screenshots`);
-      
+
+      console.log(
+        `✅ Annotated ${annotatedCount} of ${screenshots.length} screenshots`,
+      );
+
       return {
         success: true,
         annotated: annotatedCount,
-        total: screenshots.length
+        total: screenshots.length,
       };
-      
     } catch (error) {
-      console.error('❌ Screenshot annotation failed:', error);
+      console.error("❌ Screenshot annotation failed:", error);
       return {
         success: false,
-        error: error.message
+        error: error.message,
       };
     }
   }
@@ -98,22 +102,22 @@ class ImageAnnotator {
     if (!existsSync(this.screenshotsDir)) {
       return [];
     }
-    
+
     const files = readdirSync(this.screenshotsDir)
-      .filter(file => extname(file).toLowerCase() === '.png')
-      .filter(file => /^\d{2}-/.test(file)) // Only numbered screenshots
-      .map(file => {
+      .filter((file) => extname(file).toLowerCase() === ".png")
+      .filter((file) => /^\d{2}-/.test(file)) // Only numbered screenshots
+      .map((file) => {
         const stepMatch = file.match(/^(\d{2})-(.+)\.png$/);
         return {
           filename: file,
           filepath: join(this.screenshotsDir, file),
           outputPath: join(this.annotatedDir, file),
           stepNumber: stepMatch ? parseInt(stepMatch[1]) : 0,
-          stepName: stepMatch ? stepMatch[2] : file
+          stepName: stepMatch ? stepMatch[2] : file,
         };
       })
       .sort((a, b) => a.stepNumber - b.stepNumber);
-    
+
     return files;
   }
 
@@ -122,18 +126,18 @@ class ImageAnnotator {
    */
   async annotateImage(screenshot) {
     const { filepath, outputPath, stepNumber } = screenshot;
-    
+
     // Create step number overlay
     const stepText = stepNumber.toString();
     const circleSize = 60;
     const fontSize = 24;
-    
+
     // Create SVG overlay with step number
     const svgOverlay = `
       <svg width="${circleSize}" height="${circleSize}">
-        <circle cx="${circleSize/2}" cy="${circleSize/2}" r="${(circleSize-4)/2}" 
+        <circle cx="${circleSize / 2}" cy="${circleSize / 2}" r="${(circleSize - 4) / 2}" 
                 fill="#FF6B35" stroke="#FFFFFF" stroke-width="3"/>
-        <text x="${circleSize/2}" y="${circleSize/2 + fontSize/3}" 
+        <text x="${circleSize / 2}" y="${circleSize / 2 + fontSize / 3}" 
               text-anchor="middle" 
               font-family="Arial, sans-serif" 
               font-size="${fontSize}" 
@@ -143,17 +147,19 @@ class ImageAnnotator {
         </text>
       </svg>
     `;
-    
+
     // Apply overlay to top-left corner
     await this.sharp(filepath)
-      .composite([{
-        input: Buffer.from(svgOverlay),
-        top: 20,
-        left: 20
-      }])
+      .composite([
+        {
+          input: Buffer.from(svgOverlay),
+          top: 20,
+          left: 20,
+        },
+      ])
       .png()
       .toFile(outputPath);
-    
+
     console.log(`✨ Annotated: ${screenshot.filename} → step ${stepNumber}`);
   }
 
@@ -161,38 +167,38 @@ class ImageAnnotator {
    * Generate a test execution summary
    */
   generateSummary(steps) {
-    const summaryFile = join(this.docsDir, 'funnel-generation-summary.json');
-    
+    const summaryFile = join(this.docsDir, "funnel-generation-summary.json");
+
     const summary = {
       generatedAt: new Date().toISOString(),
-      generator: 'ProofKit Funnel Doc Generator v1.0',
+      generator: "ProofKit Funnel Doc Generator v1.0",
       input: {
         stepsFile: this.stepsFile,
         screenshotsDir: this.screenshotsDir,
-        totalSteps: steps.length
+        totalSteps: steps.length,
       },
       output: {
         documentationFile: this.outputFile,
         annotatedDir: this.annotatedDir,
-        generatedPages: 1
+        generatedPages: 1,
       },
       coverage: {
-        hasScreenshots: steps.filter(step => step.screenshot).length,
-        hasRoutes: steps.filter(step => step.route).length,
-        hasExpectations: steps.filter(step => step.expect).length,
-        completeCoverage: steps.length > 0 && steps.every(step => 
-          step.screenshot && step.expect && step.label
-        )
+        hasScreenshots: steps.filter((step) => step.screenshot).length,
+        hasRoutes: steps.filter((step) => step.route).length,
+        hasExpectations: steps.filter((step) => step.expect).length,
+        completeCoverage:
+          steps.length > 0 &&
+          steps.every((step) => step.screenshot && step.expect && step.label),
       },
-      steps: steps.map(step => ({
+      steps: steps.map((step) => ({
         number: step.stepNumber,
         label: step.label,
         hasScreenshot: !!step.screenshot,
         hasExpectation: !!step.expect,
-        timestamp: step.timestamp
-      }))
+        timestamp: step.timestamp,
+      })),
     };
-    
+
     writeFileSync(summaryFile, JSON.stringify(summary, null, 2));
     console.log(`📋 Generation summary: ${summaryFile}`);
   }
@@ -200,35 +206,37 @@ class ImageAnnotator {
 
 // CLI execution
 if (import.meta.url === `file://${process.argv[1]}`) {
-  console.log('ProofKit Funnel Documentation Generator');
-  console.log('=====================================');
-  
+  console.log("ProofKit Funnel Documentation Generator");
+  console.log("=====================================");
+
   const generator = new ImageAnnotator();
-  
+
   Promise.resolve()
     .then(() => generator.generate())
-    .then(result => {
+    .then((result) => {
       if (result.success) {
-        console.log('\n🎉 Documentation generation completed successfully!');
-        
+        console.log("\n🎉 Documentation generation completed successfully!");
+
         // Also run image annotation if Sharp is available
         return generator.annotateScreenshots();
       } else {
         throw new Error(result.error);
       }
     })
-    .then(annotationResult => {
+    .then((annotationResult) => {
       if (annotationResult.success && annotationResult.annotated > 0) {
-        console.log(`\n🎨 Image annotation completed: ${annotationResult.annotated} images`);
+        console.log(
+          `\n🎨 Image annotation completed: ${annotationResult.annotated} images`,
+        );
       } else if (annotationResult.message) {
         console.log(`\nℹ️  ${annotationResult.message}`);
       }
-      
-      console.log('\n✅ All tasks completed successfully!');
+
+      console.log("\n✅ All tasks completed successfully!");
       process.exit(0);
     })
-    .catch(error => {
-      console.error('\n💥 Fatal error:', error.message);
+    .catch((error) => {
+      console.error("\n💥 Fatal error:", error.message);
       process.exit(1);
     });
 }

@@ -28,20 +28,20 @@ In your Shopify Admin, configure the following metafields under `proofkit` names
 
 #### Required Settings
 
-| Metafield Key | Description | Example Value |
-|---------------|-------------|---------------|
-| `backend_url` | ProofKit backend API endpoint | `https://api.proofkit.com/api` |
-| `tenant_id` | Your ProofKit tenant identifier | `TENANT_123` |
-| `secret_key` | HMAC secret for secure communication | `your_secret_key_here` |
+| Metafield Key | Description                          | Example Value                  |
+| ------------- | ------------------------------------ | ------------------------------ |
+| `backend_url` | ProofKit backend API endpoint        | `https://api.proofkit.com/api` |
+| `tenant_id`   | Your ProofKit tenant identifier      | `TENANT_123`                   |
+| `secret_key`  | HMAC secret for secure communication | `your_secret_key_here`         |
 
 #### Optional Settings (for GA4/Google Ads)
 
-| Metafield Key | Description | Example Value |
-|---------------|-------------|---------------|
-| `ga4_measurement_id` | Google Analytics 4 Measurement ID | `G-XXXXXXXXXX` |
-| `google_ads_id` | Google Ads Account ID | `AW-XXXXXXXXX` |
-| `conversion_label` | Google Ads Conversion Label | `abc123def456` |
-| `debug_mode` | Enable debug logging | `true` or `false` |
+| Metafield Key        | Description                       | Example Value     |
+| -------------------- | --------------------------------- | ----------------- |
+| `ga4_measurement_id` | Google Analytics 4 Measurement ID | `G-XXXXXXXXXX`    |
+| `google_ads_id`      | Google Ads Account ID             | `AW-XXXXXXXXX`    |
+| `conversion_label`   | Google Ads Conversion Label       | `abc123def456`    |
+| `debug_mode`         | Enable debug logging              | `true` or `false` |
 
 ### Step 3: Configure Your Consent Management Platform
 
@@ -62,14 +62,16 @@ If your CMP is not automatically detected, you can trigger consent updates manua
 
 ```javascript
 // Trigger consent change event when user updates preferences
-window.dispatchEvent(new CustomEvent('consent_changed', {
-  detail: {
-    analytics: true,    // User consented to analytics
-    marketing: true,    // User consented to marketing
-    preferences: true,  // User consented to preferences
-    source: 'custom'
-  }
-}));
+window.dispatchEvent(
+  new CustomEvent("consent_changed", {
+    detail: {
+      analytics: true, // User consented to analytics
+      marketing: true, // User consented to marketing
+      preferences: true, // User consented to preferences
+      source: "custom",
+    },
+  }),
+);
 ```
 
 ### Step 4: Configure Google Analytics 4 (Optional)
@@ -81,16 +83,21 @@ If you want to send events to GA4:
 
 ```html
 <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script
+  async
+  src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"
+></script>
 <script>
   window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  
+  function gtag() {
+    dataLayer.push(arguments);
+  }
+
   // ProofKit Web Pixel will handle consent initialization
-  gtag('js', new Date());
-  gtag('config', 'G-XXXXXXXXXX', {
+  gtag("js", new Date());
+  gtag("config", "G-XXXXXXXXXX", {
     // Don't send page_view automatically - ProofKit handles this
-    send_page_view: false
+    send_page_view: false,
   });
 </script>
 ```
@@ -127,12 +134,12 @@ Enable debug mode by setting the `debug_mode` metafield to `true`. This will log
 
 ```javascript
 // Check console for ProofKit debug messages
-console.log('ProofKit: GA4 event blocked due to consent: page_view');
-console.log('ProofKit: Purchase conversion tracked', {
-  transaction_id: 'order_123',
+console.log("ProofKit: GA4 event blocked due to consent: page_view");
+console.log("ProofKit: Purchase conversion tracked", {
+  transaction_id: "order_123",
   value: 99.99,
-  currency: 'USD',
-  consent_status: { analytics: true, marketing: true, source: 'shopify' }
+  currency: "USD",
+  consent_status: { analytics: true, marketing: true, source: "shopify" },
 });
 ```
 
@@ -140,14 +147,14 @@ console.log('ProofKit: Purchase conversion tracked', {
 
 The ProofKit Web Pixel automatically tracks the following Shopify events:
 
-| Shopify Event | GA4 Event | Description |
-|---------------|-----------|-------------|
-| `page_viewed` | `page_view` | User views a page |
-| `product_viewed` | `view_item` | User views a product |
-| `search_submitted` | `search` | User performs a search |
-| `cart_viewed` | `view_cart` | User views their cart |
-| `checkout_started` | `begin_checkout` | User starts checkout |
-| `checkout_completed` | `purchase` | User completes purchase (+ Google Ads conversion) |
+| Shopify Event        | GA4 Event        | Description                                       |
+| -------------------- | ---------------- | ------------------------------------------------- |
+| `page_viewed`        | `page_view`      | User views a page                                 |
+| `product_viewed`     | `view_item`      | User views a product                              |
+| `search_submitted`   | `search`         | User performs a search                            |
+| `cart_viewed`        | `view_cart`      | User views their cart                             |
+| `checkout_started`   | `begin_checkout` | User starts checkout                              |
+| `checkout_completed` | `purchase`       | User completes purchase (+ Google Ads conversion) |
 
 ## Privacy Features
 
@@ -156,7 +163,7 @@ The ProofKit Web Pixel automatically tracks the following Shopify events:
 The extension implements Google's Consent Mode v2 with the following consent types:
 
 - `ad_storage`: Controls ads data storage
-- `analytics_storage`: Controls analytics data storage  
+- `analytics_storage`: Controls analytics data storage
 - `ad_user_data`: Controls user data sharing for ads
 - `ad_personalization`: Controls ad personalization
 - `functionality_storage`: Always granted (required for core functionality)
@@ -215,7 +222,7 @@ For technical support or questions:
 ## Compliance Certifications
 
 - ✅ GDPR Compliant
-- ✅ CCPA Compliant  
+- ✅ CCPA Compliant
 - ✅ Google Consent Mode v2 Certified
 - ✅ Shopify App Store Privacy Standards
 - ✅ IAB TCF v2.0 Compatible

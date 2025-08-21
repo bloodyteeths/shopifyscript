@@ -1,38 +1,146 @@
 {
   "maxParallel": 8,
   "tasks": [
-    { "id": "verify_runlog_append", "cmd": "grep -q \"appendRows(tenant, 'RUN_LOGS'\" backend/server.js", "cwd": "." },
-    { "id": "verify_wp_textdomain", "cmd": "grep -q 'Text Domain:' wordpress-plugin/pk-proofkit.php", "cwd": "." },
-    { "id": "verify_consent_docs", "cmd": "test -f docs/CONSENT_MODE_V2.md", "cwd": "." },
+    {
+      "id": "verify_runlog_append",
+      "cmd": "grep -q \"appendRows(tenant, 'RUN_LOGS'\" backend/server.js",
+      "cwd": "."
+    },
+    {
+      "id": "verify_wp_textdomain",
+      "cmd": "grep -q 'Text Domain:' wordpress-plugin/pk-proofkit.php",
+      "cwd": "."
+    },
+    {
+      "id": "verify_consent_docs",
+      "cmd": "test -f docs/CONSENT_MODE_V2.md",
+      "cwd": "."
+    },
 
-    { "id": "verify_exclusions_helpers", "cmd": "grep -q 'isExcludedCampaign_' ads-script/master.gs && grep -q 'isExcludedAdGroup_' ads-script/master.gs", "cwd": "." },
-    { "id": "verify_pixel_consent", "cmd": "grep -q 'consentGranted' shopify-app/extensions/pk-web-pixel/src/index.js", "cwd": "." },
-    { "id": "verify_wp_uninstaller", "cmd": "test -f wordpress-plugin/uninstall.php", "cwd": "." },
+    {
+      "id": "verify_exclusions_helpers",
+      "cmd": "grep -q 'isExcludedCampaign_' ads-script/master.gs && grep -q 'isExcludedAdGroup_' ads-script/master.gs",
+      "cwd": "."
+    },
+    {
+      "id": "verify_pixel_consent",
+      "cmd": "grep -q 'consentGranted' shopify-app/extensions/pk-web-pixel/src/index.js",
+      "cwd": "."
+    },
+    {
+      "id": "verify_wp_uninstaller",
+      "cmd": "test -f wordpress-plugin/uninstall.php",
+      "cwd": "."
+    },
 
-    { "id": "clone_shopify_remix", "cmd": "test -d third_party/shopify-app-template-remix || git clone --depth=1 https://github.com/Shopify/shopify-app-template-remix.git third_party/shopify-app-template-remix", "cwd": "." },
-    { "id": "clone_shopify_node", "cmd": "test -d third_party/shopify-app-template-node || git clone --depth=1 https://github.com/Shopify/shopify-app-template-node.git third_party/shopify-app-template-node", "cwd": "." },
-    { "id": "clone_wp_boilerplate", "cmd": "test -d third_party/WordPress-Plugin-Boilerplate || git clone --depth=1 https://github.com/DevinVinson/WordPress-Plugin-Boilerplate.git third_party/WordPress-Plugin-Boilerplate", "cwd": "." },
+    {
+      "id": "clone_shopify_remix",
+      "cmd": "test -d third_party/shopify-app-template-remix || git clone --depth=1 https://github.com/Shopify/shopify-app-template-remix.git third_party/shopify-app-template-remix",
+      "cwd": "."
+    },
+    {
+      "id": "clone_shopify_node",
+      "cmd": "test -d third_party/shopify-app-template-node || git clone --depth=1 https://github.com/Shopify/shopify-app-template-node.git third_party/shopify-app-template-node",
+      "cwd": "."
+    },
+    {
+      "id": "clone_wp_boilerplate",
+      "cmd": "test -d third_party/WordPress-Plugin-Boilerplate || git clone --depth=1 https://github.com/DevinVinson/WordPress-Plugin-Boilerplate.git third_party/WordPress-Plugin-Boilerplate",
+      "cwd": "."
+    },
 
-    { "id": "verify_remix_cloned", "cmd": "test -d third_party/shopify-app-template-remix", "cwd": "." },
-    { "id": "verify_node_cloned", "cmd": "test -d third_party/shopify-app-template-node", "cwd": "." },
-    { "id": "verify_wp_boilerplate_cloned", "cmd": "test -f third_party/WordPress-Plugin-Boilerplate/README.md", "cwd": "." },
-    { "id": "verify_backend_endpoints", "cmd": "grep -q '/api/config' backend/server.js && grep -q '/api/metrics' backend/server.js && grep -q '/api/upsertConfig' backend/server.js", "cwd": "." },
-    { "id": "verify_ads_script", "cmd": "grep -q 'buildSafeRSAs_' ads-script/master.gs && grep -q 'autoNegateAndCollectST_' ads-script/master.gs", "cwd": "." },
-    { "id": "verify_shopify_pixel", "cmd": "grep -q 'checkout_completed' shopify-app/extensions/pk-web-pixel/src/index.js", "cwd": "." },
-    { "id": "verify_wp_settings", "cmd": "grep -q 'add_options_page' wordpress-plugin/pk-proofkit.php", "cwd": "." },
+    {
+      "id": "verify_remix_cloned",
+      "cmd": "test -d third_party/shopify-app-template-remix",
+      "cwd": "."
+    },
+    {
+      "id": "verify_node_cloned",
+      "cmd": "test -d third_party/shopify-app-template-node",
+      "cwd": "."
+    },
+    {
+      "id": "verify_wp_boilerplate_cloned",
+      "cmd": "test -f third_party/WordPress-Plugin-Boilerplate/README.md",
+      "cwd": "."
+    },
+    {
+      "id": "verify_backend_endpoints",
+      "cmd": "grep -q '/api/config' backend/server.js && grep -q '/api/metrics' backend/server.js && grep -q '/api/upsertConfig' backend/server.js",
+      "cwd": "."
+    },
+    {
+      "id": "verify_ads_script",
+      "cmd": "grep -q 'buildSafeRSAs_' ads-script/master.gs && grep -q 'autoNegateAndCollectST_' ads-script/master.gs",
+      "cwd": "."
+    },
+    {
+      "id": "verify_shopify_pixel",
+      "cmd": "grep -q 'checkout_completed' shopify-app/extensions/pk-web-pixel/src/index.js",
+      "cwd": "."
+    },
+    {
+      "id": "verify_wp_settings",
+      "cmd": "grep -q 'add_options_page' wordpress-plugin/pk-proofkit.php",
+      "cwd": "."
+    },
 
-    { "id": "backend_install", "cmd": "npm --prefix backend install", "cwd": "." },
-    { "id": "ensure_backend_running", "cmd": "lsof -i :3001 || (HMAC_SECRET=change_me PORT=3001 node backend/server.js & sleep 1)", "cwd": "." },
-    { "id": "wait_backend_health", "cmd": "for i in 1 2 3 4 5; do curl -sS http://localhost:3001/api/health && exit 0 || sleep 1; done; exit 1", "cwd": "." },
-    { "id": "backend_hmac_bad", "cmd": "sig=bad; curl -sS 'http://localhost:3001/api/config?tenant=TENANT_123&sig='\"$sig\" | grep -q 'auth'", "cwd": "." },
-    { "id": "backend_hmac_good_upsert", "cmd": "nonce=$(node -e 'console.log(Date.now())'); sig=$(HMAC_SECRET=change_me node tools/hmac.js \"POST:TENANT_123:upsertconfig:$nonce\"); curl -sS -X POST \"http://localhost:3001/api/upsertConfig?tenant=TENANT_123&sig=$sig\" -H 'content-type: application/json' --data \"{\\\"nonce\\\":$nonce,\\\"settings\\\":{\\\"default_final_url\\\":\\\"https://example.com\\\"}}\" | grep -q 'ok'", "cwd": "." },
-    { "id": "backend_hmac_good_get", "cmd": "sig=$(HMAC_SECRET=change_me node tools/hmac.js \"GET:TENANT_123:config\"); curl -sS \"http://localhost:3001/api/config?tenant=TENANT_123&sig=$sig\" | grep -q 'example.com'", "cwd": "." },
+    {
+      "id": "backend_install",
+      "cmd": "npm --prefix backend install",
+      "cwd": "."
+    },
+    {
+      "id": "ensure_backend_running",
+      "cmd": "lsof -i :3001 || (HMAC_SECRET=change_me PORT=3001 node backend/server.js & sleep 1)",
+      "cwd": "."
+    },
+    {
+      "id": "wait_backend_health",
+      "cmd": "for i in 1 2 3 4 5; do curl -sS http://localhost:3001/api/health && exit 0 || sleep 1; done; exit 1",
+      "cwd": "."
+    },
+    {
+      "id": "backend_hmac_bad",
+      "cmd": "sig=bad; curl -sS 'http://localhost:3001/api/config?tenant=TENANT_123&sig='\"$sig\" | grep -q 'auth'",
+      "cwd": "."
+    },
+    {
+      "id": "backend_hmac_good_upsert",
+      "cmd": "nonce=$(node -e 'console.log(Date.now())'); sig=$(HMAC_SECRET=change_me node tools/hmac.js \"POST:TENANT_123:upsertconfig:$nonce\"); curl -sS -X POST \"http://localhost:3001/api/upsertConfig?tenant=TENANT_123&sig=$sig\" -H 'content-type: application/json' --data \"{\\\"nonce\\\":$nonce,\\\"settings\\\":{\\\"default_final_url\\\":\\\"https://example.com\\\"}}\" | grep -q 'ok'",
+      "cwd": "."
+    },
+    {
+      "id": "backend_hmac_good_get",
+      "cmd": "sig=$(HMAC_SECRET=change_me node tools/hmac.js \"GET:TENANT_123:config\"); curl -sS \"http://localhost:3001/api/config?tenant=TENANT_123&sig=$sig\" | grep -q 'example.com'",
+      "cwd": "."
+    },
 
-    { "id": "shopify_install", "cmd": "npm --prefix shopify-app install", "cwd": "." },
-    { "id": "ensure_shopify_running", "cmd": "lsof -i :3002 || (PORT=3002 HMAC_SECRET=change_me BACKEND_URL=http://localhost:3001/api TENANT_ID=TENANT_123 node shopify-app/server.js & sleep 1)", "cwd": "." },
-    { "id": "wait_shopify_health", "cmd": "for i in 1 2 3 4 5 6 7 8 9 10; do curl -sS http://localhost:3002/health | grep -q 'ok' && exit 0 || sleep 1; done; exit 1", "cwd": "." },
+    {
+      "id": "shopify_install",
+      "cmd": "npm --prefix shopify-app install",
+      "cwd": "."
+    },
+    {
+      "id": "ensure_shopify_running",
+      "cmd": "lsof -i :3002 || (PORT=3002 HMAC_SECRET=change_me BACKEND_URL=http://localhost:3001/api TENANT_ID=TENANT_123 node shopify-app/server.js & sleep 1)",
+      "cwd": "."
+    },
+    {
+      "id": "wait_shopify_health",
+      "cmd": "for i in 1 2 3 4 5 6 7 8 9 10; do curl -sS http://localhost:3002/health | grep -q 'ok' && exit 0 || sleep 1; done; exit 1",
+      "cwd": "."
+    },
 
-    { "id": "lint_rsa_lengths", "cmd": "node -e \"const fs=require('fs');const s=fs.readFileSync('ads-script/master.gs','utf8');if(!/30/.test(s)||!/90/.test(s))process.exit(1);\"", "cwd": "." },
-    { "id": "lint_idempotent_labelguard", "cmd": "grep -q 'hasLabelledAd_' ads-script/master.gs && grep -q 'label' ads-script/master.gs", "cwd": "." }
+    {
+      "id": "lint_rsa_lengths",
+      "cmd": "node -e \"const fs=require('fs');const s=fs.readFileSync('ads-script/master.gs','utf8');if(!/30/.test(s)||!/90/.test(s))process.exit(1);\"",
+      "cwd": "."
+    },
+    {
+      "id": "lint_idempotent_labelguard",
+      "cmd": "grep -q 'hasLabelledAd_' ads-script/master.gs && grep -q 'label' ads-script/master.gs",
+      "cwd": "."
+    }
   ]
 }

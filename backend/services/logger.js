@@ -4,12 +4,12 @@
  * Supports multiple log levels, formats, and outputs
  */
 
-import { createWriteStream } from 'fs';
-import { mkdir } from 'fs/promises';
-import { join, dirname } from 'path';
-import { fileURLToPath } from 'url';
-import { performance } from 'perf_hooks';
-import os from 'os';
+import { createWriteStream } from "fs";
+import { mkdir } from "fs/promises";
+import { join, dirname } from "path";
+import { fileURLToPath } from "url";
+import { performance } from "perf_hooks";
+import os from "os";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -18,11 +18,11 @@ const __dirname = dirname(__filename);
  * Log Levels
  */
 export const LogLevel = {
-  ERROR: 'error',
-  WARN: 'warn',
-  INFO: 'info',
-  DEBUG: 'debug',
-  TRACE: 'trace'
+  ERROR: "error",
+  WARN: "warn",
+  INFO: "info",
+  DEBUG: "debug",
+  TRACE: "trace",
 };
 
 /**
@@ -33,7 +33,7 @@ const LOG_PRIORITIES = {
   [LogLevel.WARN]: 4,
   [LogLevel.INFO]: 3,
   [LogLevel.DEBUG]: 2,
-  [LogLevel.TRACE]: 1
+  [LogLevel.TRACE]: 1,
 };
 
 /**
@@ -43,23 +43,23 @@ class Logger {
   constructor(options = {}) {
     this.options = {
       level: options.level || LogLevel.INFO,
-      format: options.format || 'json',
+      format: options.format || "json",
       enableConsole: options.enableConsole !== false,
       enableFile: options.enableFile || false,
       enableMetrics: options.enableMetrics !== false,
-      logDir: options.logDir || join(dirname(__dirname), '..', 'logs'),
+      logDir: options.logDir || join(dirname(__dirname), "..", "logs"),
       maxFileSize: options.maxFileSize || 10 * 1024 * 1024, // 10MB
       maxFiles: options.maxFiles || 5,
       includeTrace: options.includeTrace || false,
-      ...options
+      ...options,
     };
 
     this.context = {
-      service: options.service || 'proofkit-saas',
-      version: options.version || '1.0.0',
-      environment: process.env.NODE_ENV || 'development',
+      service: options.service || "proofkit-saas",
+      version: options.version || "1.0.0",
+      environment: process.env.NODE_ENV || "development",
       hostname: os.hostname(),
-      pid: process.pid
+      pid: process.pid,
     };
 
     this.metrics = {
@@ -70,7 +70,7 @@ class Logger {
       debugCount: 0,
       traceCount: 0,
       startTime: Date.now(),
-      lastLog: null
+      lastLog: null,
     };
 
     this.fileStreams = new Map();
@@ -92,9 +92,9 @@ class Logger {
     }
 
     this.isInitialized = true;
-    this.info('Logger initialized', { 
+    this.info("Logger initialized", {
       options: this.options,
-      context: this.context 
+      context: this.context,
     });
   }
 
@@ -104,17 +104,17 @@ class Logger {
   async initializeFileLogging() {
     try {
       await mkdir(this.options.logDir, { recursive: true });
-      
+
       // Create separate streams for different log levels
-      const logFiles = ['all', 'error', 'warn'];
-      
+      const logFiles = ["all", "error", "warn"];
+
       for (const type of logFiles) {
         const filename = join(this.options.logDir, `${type}.log`);
-        const stream = createWriteStream(filename, { flags: 'a' });
+        const stream = createWriteStream(filename, { flags: "a" });
         this.fileStreams.set(type, stream);
       }
     } catch (error) {
-      console.error('Failed to initialize file logging:', error);
+      console.error("Failed to initialize file logging:", error);
     }
   }
 
@@ -124,7 +124,7 @@ class Logger {
   createLogEntry(level, message, data = {}, context = {}) {
     const timestamp = new Date().toISOString();
     const traceId = context.traceId || this.generateTraceId();
-    
+
     const entry = {
       timestamp,
       level: level.toUpperCase(),
@@ -135,7 +135,7 @@ class Logger {
       hostname: this.context.hostname,
       pid: this.context.pid,
       traceId,
-      ...data
+      ...data,
     };
 
     // Add stack trace for errors
@@ -172,10 +172,10 @@ class Logger {
     }
 
     const entry = this.createLogEntry(level, message, data, context);
-    
+
     // Update metrics
     this.updateMetrics(level);
-    
+
     // Output to console
     if (this.options.enableConsole) {
       this.outputToConsole(entry);
@@ -218,17 +218,21 @@ class Logger {
   startTimer(name, context = {}) {
     const startTime = performance.now();
     const traceId = context.traceId || this.generateTraceId();
-    
+
     this.performanceMarks.set(name, {
       startTime,
       traceId,
-      context
+      context,
     });
 
-    this.debug('Performance timer started', { 
-      timer: name, 
-      traceId 
-    }, context);
+    this.debug(
+      "Performance timer started",
+      {
+        timer: name,
+        traceId,
+      },
+      context,
+    );
 
     return traceId;
   }
@@ -239,23 +243,23 @@ class Logger {
   endTimer(name, additionalData = {}) {
     const mark = this.performanceMarks.get(name);
     if (!mark) {
-      this.warn('Performance timer not found', { timer: name });
+      this.warn("Performance timer not found", { timer: name });
       return null;
     }
 
     const endTime = performance.now();
     const duration = endTime - mark.startTime;
-    
+
     this.performanceMarks.delete(name);
 
     const performanceData = {
       timer: name,
       duration: Math.round(duration * 100) / 100, // Round to 2 decimal places
       traceId: mark.traceId,
-      ...additionalData
+      ...additionalData,
     };
 
-    this.info('Performance timer completed', performanceData, mark.context);
+    this.info("Performance timer completed", performanceData, mark.context);
 
     return performanceData;
   }
@@ -267,15 +271,18 @@ class Logger {
     const requestData = {
       request: this.extractRequestInfo(req),
       response: this.extractResponseInfo(res),
-      duration: duration ? Math.round(duration * 100) / 100 : null
+      duration: duration ? Math.round(duration * 100) / 100 : null,
     };
 
-    const level = res.statusCode >= 500 ? LogLevel.ERROR : 
-                  res.statusCode >= 400 ? LogLevel.WARN : 
-                  LogLevel.INFO;
+    const level =
+      res.statusCode >= 500
+        ? LogLevel.ERROR
+        : res.statusCode >= 400
+          ? LogLevel.WARN
+          : LogLevel.INFO;
 
     const message = `HTTP ${req.method} ${req.originalUrl} - ${res.statusCode}`;
-    
+
     this.log(level, message, requestData, { req, res });
   }
 
@@ -287,9 +294,9 @@ class Logger {
       database: {
         operation,
         table,
-        duration: duration ? Math.round(duration * 100) / 100 : null
+        duration: duration ? Math.round(duration * 100) / 100 : null,
       },
-      ...data
+      ...data,
     };
 
     this.info(`Database ${operation} on ${table}`, dbData);
@@ -304,9 +311,9 @@ class Logger {
         service,
         endpoint,
         method,
-        duration: duration ? Math.round(duration * 100) / 100 : null
+        duration: duration ? Math.round(duration * 100) / 100 : null,
       },
-      ...data
+      ...data,
     };
 
     this.info(`External API call to ${service}`, apiData);
@@ -320,8 +327,8 @@ class Logger {
       event: {
         type: eventType,
         timestamp: new Date().toISOString(),
-        data: eventData
-      }
+        data: eventData,
+      },
     };
 
     this.info(`Business event: ${eventType}`, eventEntry, context);
@@ -336,11 +343,11 @@ class Logger {
         event: eventType,
         details,
         timestamp: new Date().toISOString(),
-        severity: details.severity || 'medium'
-      }
+        severity: details.severity || "medium",
+      },
     };
 
-    const level = details.severity === 'high' ? LogLevel.ERROR : LogLevel.WARN;
+    const level = details.severity === "high" ? LogLevel.ERROR : LogLevel.WARN;
     this.log(level, `Security event: ${eventType}`, securityData, context);
   }
 
@@ -360,28 +367,32 @@ class Logger {
     return (req, res, next) => {
       const startTime = performance.now();
       const traceId = this.generateTraceId();
-      
+
       // Add trace ID to request for correlation
       req.traceId = traceId;
-      
+
       // Log incoming request
-      this.info('Incoming request', {
-        request: this.extractRequestInfo(req),
-        traceId
-      }, { req });
+      this.info(
+        "Incoming request",
+        {
+          request: this.extractRequestInfo(req),
+          traceId,
+        },
+        { req },
+      );
 
       // Override res.end to log when response is sent
       const originalEnd = res.end;
-      res.end = function(...args) {
+      res.end = function (...args) {
         const duration = performance.now() - startTime;
-        
+
         // Log completed request
         try {
           this.logRequest(req, res, duration);
         } catch (error) {
-          console.warn('Logging error:', error.message);
+          console.warn("Logging error:", error.message);
         }
-        
+
         // Call original end method
         return originalEnd.apply(this, args);
       }.bind(this);
@@ -395,15 +406,19 @@ class Logger {
    */
   errorMiddleware() {
     return (error, req, res, next) => {
-      this.error('Request error', {
-        error: {
-          name: error.name,
-          message: error.message,
-          stack: error.stack
+      this.error(
+        "Request error",
+        {
+          error: {
+            name: error.name,
+            message: error.message,
+            stack: error.stack,
+          },
+          request: this.extractRequestInfo(req),
+          traceId: req.traceId,
         },
-        request: this.extractRequestInfo(req),
-        traceId: req.traceId
-      }, { req, res });
+        { req, res },
+      );
 
       next(error);
     };
@@ -417,11 +432,11 @@ class Logger {
       method: req.method,
       url: req.originalUrl || req.url,
       headers: this.sanitizeHeaders(req.headers),
-      userAgent: req.get('user-agent'),
+      userAgent: req.get("user-agent"),
       ip: req.ip || req.connection.remoteAddress,
       query: req.query,
       params: req.params,
-      body: this.sanitizeBody(req.body)
+      body: this.sanitizeBody(req.body),
     };
   }
 
@@ -432,7 +447,7 @@ class Logger {
     return {
       statusCode: res.statusCode,
       statusMessage: res.statusMessage,
-      headers: this.sanitizeHeaders(res.getHeaders())
+      headers: this.sanitizeHeaders(res.getHeaders()),
     };
   }
 
@@ -441,11 +456,16 @@ class Logger {
    */
   sanitizeHeaders(headers) {
     const sanitized = { ...headers };
-    const sensitiveHeaders = ['authorization', 'cookie', 'x-api-key', 'x-auth-token'];
-    
-    sensitiveHeaders.forEach(header => {
+    const sensitiveHeaders = [
+      "authorization",
+      "cookie",
+      "x-api-key",
+      "x-auth-token",
+    ];
+
+    sensitiveHeaders.forEach((header) => {
       if (sanitized[header]) {
-        sanitized[header] = '[REDACTED]';
+        sanitized[header] = "[REDACTED]";
       }
     });
 
@@ -456,16 +476,16 @@ class Logger {
    * Sanitize request body (remove sensitive data)
    */
   sanitizeBody(body) {
-    if (!body || typeof body !== 'object') {
+    if (!body || typeof body !== "object") {
       return body;
     }
 
     const sanitized = { ...body };
-    const sensitiveFields = ['password', 'token', 'secret', 'key', 'apiKey'];
-    
-    sensitiveFields.forEach(field => {
+    const sensitiveFields = ["password", "token", "secret", "key", "apiKey"];
+
+    sensitiveFields.forEach((field) => {
       if (sanitized[field]) {
-        sanitized[field] = '[REDACTED]';
+        sanitized[field] = "[REDACTED]";
       }
     });
 
@@ -487,7 +507,7 @@ class Logger {
   updateMetrics(level) {
     this.metrics.totalLogs++;
     this.metrics.lastLog = new Date().toISOString();
-    
+
     switch (level) {
       case LogLevel.ERROR:
         this.metrics.errorCount++;
@@ -511,19 +531,20 @@ class Logger {
    * Output to console
    */
   outputToConsole(entry) {
-    const output = this.options.format === 'json' 
-      ? JSON.stringify(entry)
-      : this.formatHuman(entry);
+    const output =
+      this.options.format === "json"
+        ? JSON.stringify(entry)
+        : this.formatHuman(entry);
 
     switch (entry.level) {
-      case 'ERROR':
+      case "ERROR":
         console.error(output);
         break;
-      case 'WARN':
+      case "WARN":
         console.warn(output);
         break;
-      case 'DEBUG':
-      case 'TRACE':
+      case "DEBUG":
+      case "TRACE":
         console.debug(output);
         break;
       default:
@@ -535,22 +556,22 @@ class Logger {
    * Output to file
    */
   outputToFile(entry) {
-    const line = JSON.stringify(entry) + '\n';
-    
+    const line = JSON.stringify(entry) + "\n";
+
     // Write to all logs file
-    const allStream = this.fileStreams.get('all');
+    const allStream = this.fileStreams.get("all");
     if (allStream) {
       allStream.write(line);
     }
 
     // Write to specific level files
-    if (entry.level === 'ERROR') {
-      const errorStream = this.fileStreams.get('error');
+    if (entry.level === "ERROR") {
+      const errorStream = this.fileStreams.get("error");
       if (errorStream) {
         errorStream.write(line);
       }
-    } else if (entry.level === 'WARN') {
-      const warnStream = this.fileStreams.get('warn');
+    } else if (entry.level === "WARN") {
+      const warnStream = this.fileStreams.get("warn");
       if (warnStream) {
         warnStream.write(line);
       }
@@ -564,7 +585,7 @@ class Logger {
     const timestamp = new Date(entry.timestamp).toLocaleString();
     const level = entry.level.padEnd(5);
     let output = `[${timestamp}] ${level} ${entry.message}`;
-    
+
     if (entry.traceId) {
       output += ` [${entry.traceId}]`;
     }
@@ -595,7 +616,7 @@ class Logger {
       ...this.metrics,
       uptime: Date.now() - this.metrics.startTime,
       memoryUsage: process.memoryUsage(),
-      activeTimers: this.performanceMarks.size
+      activeTimers: this.performanceMarks.size,
     };
   }
 
@@ -605,9 +626,9 @@ class Logger {
   setLevel(level) {
     if (LOG_PRIORITIES[level] !== undefined) {
       this.options.level = level;
-      this.info('Log level changed', { newLevel: level });
+      this.info("Log level changed", { newLevel: level });
     } else {
-      this.warn('Invalid log level', { attemptedLevel: level });
+      this.warn("Invalid log level", { attemptedLevel: level });
     }
   }
 
@@ -616,11 +637,13 @@ class Logger {
    */
   async flush() {
     const promises = [];
-    
+
     for (const stream of this.fileStreams.values()) {
-      promises.push(new Promise((resolve) => {
-        stream.end(resolve);
-      }));
+      promises.push(
+        new Promise((resolve) => {
+          stream.end(resolve);
+        }),
+      );
     }
 
     await Promise.all(promises);
@@ -630,7 +653,7 @@ class Logger {
    * Graceful shutdown
    */
   async shutdown() {
-    this.info('Logger shutting down');
+    this.info("Logger shutting down");
     await this.flush();
   }
 }
@@ -641,9 +664,11 @@ class Logger {
 export const logger = new Logger({
   level: process.env.LOG_LEVEL || LogLevel.INFO,
   // Disable file logging on serverless (Vercel) to avoid /var/task write errors
-  enableFile: process.env.VERCEL ? false : (process.env.NODE_ENV === 'production'),
-  service: 'proofkit-saas',
-  version: process.env.npm_package_version || '1.0.0'
+  enableFile: process.env.VERCEL
+    ? false
+    : process.env.NODE_ENV === "production",
+  service: "proofkit-saas",
+  version: process.env.npm_package_version || "1.0.0",
 });
 
 /**

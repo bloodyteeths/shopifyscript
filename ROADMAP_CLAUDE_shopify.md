@@ -1,7 +1,6 @@
-
 # Proofkit SaaS — Roadmap & Claude Rules (v1.0)
 
-**Goal:** Ship a pair of merchant-friendly apps (Shopify + WordPress) powered by a backend + a universal Google Ads Script that optimizes Search campaigns without the Google Ads API. Win on *time-to-value*, *hands‑off optimization*, and *privacy‑first pixels*. Fast approval, zero gray areas.
+**Goal:** Ship a pair of merchant-friendly apps (Shopify + WordPress) powered by a backend + a universal Google Ads Script that optimizes Search campaigns without the Google Ads API. Win on _time-to-value_, _hands‑off optimization_, and _privacy‑first pixels_. Fast approval, zero gray areas.
 
 ---
 
@@ -11,7 +10,7 @@ These rules keep every task crisp and reviewable. Claude should echo the checkli
 
 **Always begin with:**
 
-- **SCOPE:** One sentence on what you are changing and *why it matters to merchants*.
+- **SCOPE:** One sentence on what you are changing and _why it matters to merchants_.
 - **ASSUMPTIONS:** List env vars, IDs, and preconditions you expect.
 - **PLAN:** Bullets of steps, each with an acceptance test.
 - **ARTIFACTS:** Filenames and diffs (unified diff "+/-" lines), plus any new code.
@@ -20,7 +19,7 @@ These rules keep every task crisp and reviewable. Claude should echo the checkli
 
 **Coding standards:**
 
-- **Fail fast:** If a dependency or secret is missing, return a *single actionable command* to provide it.
+- **Fail fast:** If a dependency or secret is missing, return a _single actionable command_ to provide it.
 - **Small diffs:** Prefer focused patches over monolithic rewrites.
 - **Guardrails:** Never hardcode secrets; read from `.env`/WP options/Shopify app config.
 - **Idempotent scripts:** Re‑runs must not duplicate labels, schedules, negatives, or RSAs.
@@ -30,7 +29,7 @@ These rules keep every task crisp and reviewable. Claude should echo the checkli
 
 **Prompt patterns (for tasks that use AI):**
 
-- **Retrieve → Reason → Generate → Validate → Write**. Always show the *validation* (length checks, duplicates, policy triggers).
+- **Retrieve → Reason → Generate → Validate → Write**. Always show the _validation_ (length checks, duplicates, policy triggers).
 - **Source‑aware:** Cite docs for any policy-sensitive action (Shopify review checklists, WP guidelines, Google Ads Script limits).
 
 References (best practices): Anthropic prompt engineering & Claude Code guidelines. See links in _Appendix A_.
@@ -51,63 +50,82 @@ References (best practices): Anthropic prompt engineering & Claude Code guidelin
 ## 2) Delivery Plan (Epics → Milestones → Acceptance)
 
 ### EPIC A — Backend (Week 1)
+
 **A1. HMAC API + Sheets storage**
+
 - Endpoints: `GET /api/config`, `POST /api/metrics`, `POST /api/upsertConfig`.
 - **Acceptance:** `curl` tests with valid/invalid HMAC; rows appear in Sheets tabs for `RUN_LOGS`, `METRICS`, `SEARCH_TERMS`.
 
 **A2. Tenant Config schema**
+
 - Tabs: `CONFIG_{tenant}`, `BUDGET_CAPS_{tenant}`, `CPC_CEILINGS_{tenant}`, `SCHEDULES_{tenant}`, `MASTER_NEGATIVES_{tenant}`, `WASTE_NEGATIVE_MAP_{tenant}`, `RSA_ASSETS_DEFAULT_{tenant}`, `RSA_ASSETS_MAP_{tenant}`, `EXCLUSIONS_{tenant}`, `DESIRED_STATE_{tenant}`.
 - **Acceptance:** Repo layer returns typed object; empty tabs auto‑create with headers.
 
 **A3. Security & Ops**
+
 - Rate limit by IP + tenant, request logging, health endpoint.
 - **Acceptance:** Load test 10 rps; 429s appear post‑threshold.
 
 ### EPIC B — Google Ads Script (Week 1–2)
+
 **B1. Universal script** (Search only)
+
 - Budget caps, `TARGET_SPEND` + CPC ceiling, ad schedule if none, master negative list attach, ad‑group exact negatives, auto‑negate waste from ST report, RSA builder with 30/90 lint + dedupe + label guard, GAQL collectors.
 - **Acceptance:** Preview logs show actions; rerun is idempotent; RSAs comply with 30/90; no duplicate shared set links.
 
 **B2. Zero‑state seeding**
+
 - Safe campaign + ad group + one RSA when the account has zero Search campaigns.
 - **Acceptance:** New account → seeded with default budget/schedule/final URL.
 
 **B3. Change safety**
+
 - Skip entities listed in `EXCLUSIONS`.
 - **Acceptance:** Entities in the map are untouched across runs.
 
 ### EPIC C — Shopify App (Week 2–3)
+
 **C1. Bootstrap app using official template**
+
 - Start from Shopify’s Remix or Node template; Polaris UI; App Bridge.
 - **Acceptance:** OAuth works on a dev store; app loads embedded; health page.
 
 **C2. Web Pixel Extension**
+
 - Subscribes to checkout_completed; emits GA4/AW if configured.
 - **Acceptance:** Test order fires client events; docs page instructs merchants to add Consent Mode v2 (CMP).
 
 **C3. Settings UI**
+
 - Tenant ID, HMAC secret, Backend URL, GA4/AW IDs; save + push subset via `/api/upsertConfig` (default_final_url).
 - **Acceptance:** Settings persist; backend receives update; config GET returns merged value.
 
 **C4. Review readiness (Built for Shopify)**
+
 - Implement checklist items from Shopify’s **App Requirements** (UX, performance, support, privacy, billing if applicable).
 - **Acceptance:** Internal review sheet with each requirement linked and evidenced (screenshots, Loom).
 
 ### EPIC D — WordPress Plugin (Week 3)
+
 **D1. Build from WordPress Plugin Boilerplate**
+
 - Settings page with GA4/AW + backend creds; Woo hooks for purchase event; optional run log forward.
 - **Acceptance:** Install/activate on a test store; GA4/AW fires on thank you; settings saved.
 
 **D2. Compliance**
+
 - GPL license, i18n ready, sanitization/escaping, uninstaller.
 - **Acceptance:** `phpcs` clean; passes plugin guidelines checklist.
 
 ### EPIC E — AI Assist (Week 4, optional for v1)
+
 **E1. RSA & negatives generator**
+
 - Worker reads last 100 search terms + top LP; drafts H/D & negatives with justifications and 30/90 validation; writes to `RSA_ASSETS_*` and `WASTE_NEGATIVE_MAP_*`.
 - **Acceptance:** Human sets `PROMOTE=TRUE` → next script run creates/updates RSAs and negatives; if FALSE, no changes.
 
 ### EPIC F — Docs, Pricing, GTM (Week 4)
+
 - One‑page onboarding; pricing page; privacy & data‑processing appendix; support policy & SLA.
 - **Acceptance:** New merchant can deploy in <30 minutes end‑to‑end.
 
@@ -116,8 +134,8 @@ References (best practices): Anthropic prompt engineering & Claude Code guidelin
 ## 3) Open‑Source Accelerators (fork/borrow)
 
 - **Shopify App templates (official):**
-  - Node + React template (OAuth/Embedded/Polaris) — GitHub: `shopify-app-template-node`.  
-  - Remix template (recommended) — GitHub: `shopify-app-template-remix`.  
+  - Node + React template (OAuth/Embedded/Polaris) — GitHub: `shopify-app-template-node`.
+  - Remix template (recommended) — GitHub: `shopify-app-template-remix`.
 - **Polaris UI + App Bridge:** Use Polaris components & guidelines; follow App Design docs.
 - **Web Pixel Extension docs:** “Web Pixels API / pixels” + community threads for activation gotchas.
 - **WordPress Plugin Boilerplate:** Devin Vinson’s boilerplate (plus demo plugin). Use WP‑CLI `scaffold plugin` as needed.
@@ -172,12 +190,12 @@ See links in _Appendix A_.
 ## Appendix A — Source Links
 
 - **Shopify app requirements checklist:** https://shopify.dev/docs/apps/launch/app-requirements-checklist
-- **Built for Shopify program & annual reviews:** https://community.shopify.dev/t/preparing-for-annual-reviews-in-2025/3124  •  https://www.shopify.com/partners/blog/built-for-shopify-updates
-- **Shopify app templates:** Remix — https://github.com/Shopify/shopify-app-template-remix  •  Node — https://github.com/Shopify/shopify-app-template-node
+- **Built for Shopify program & annual reviews:** https://community.shopify.dev/t/preparing-for-annual-reviews-in-2025/3124 • https://www.shopify.com/partners/blog/built-for-shopify-updates
+- **Shopify app templates:** Remix — https://github.com/Shopify/shopify-app-template-remix • Node — https://github.com/Shopify/shopify-app-template-node
 - **Polaris UI:** https://polaris-react.shopify.com/
-- **Web Pixels API / pixel extension:** https://shopify.dev/docs/api/pixels  •  https://shopify.dev/docs/api/web-pixels-api
-- **WordPress plugin guidelines & boilerplate:** Guidelines — https://developer.wordpress.org/plugins/wordpress-org/  •  Detailed — https://developer.wordpress.org/plugins/wordpress-org/detailed-plugin-guidelines/  •  Boilerplate — https://github.com/DevinVinson/WordPress-Plugin-Boilerplate
-- **Google Ads Scripts & GAQL:** AdsApp reference — https://developers.google.com/google-ads/scripts/docs/reference/adsapp/adsapp  •  Reporting GAQL — https://developers.google.com/google-ads/scripts/docs/features/reports  •  Negative keyword lists example — https://developers.google.com/google-ads/scripts/docs/examples/negative-keyword-lists
+- **Web Pixels API / pixel extension:** https://shopify.dev/docs/api/pixels • https://shopify.dev/docs/api/web-pixels-api
+- **WordPress plugin guidelines & boilerplate:** Guidelines — https://developer.wordpress.org/plugins/wordpress-org/ • Detailed — https://developer.wordpress.org/plugins/wordpress-org/detailed-plugin-guidelines/ • Boilerplate — https://github.com/DevinVinson/WordPress-Plugin-Boilerplate
+- **Google Ads Scripts & GAQL:** AdsApp reference — https://developers.google.com/google-ads/scripts/docs/reference/adsapp/adsapp • Reporting GAQL — https://developers.google.com/google-ads/scripts/docs/features/reports • Negative keyword lists example — https://developers.google.com/google-ads/scripts/docs/examples/negative-keyword-lists
 - **RSA limits (30/90):** https://support.google.com/google-ads/answer/7684791
 - **Consent Mode v2:** https://developers.google.com/tag-platform/security/guides/consent
 
@@ -203,7 +221,7 @@ See links in _Appendix A_.
 
 - A1. HMAC API + Sheets storage — done
   - Evidence: `/api/health` OK; signed `/api/upsertConfig` 200; unsigned `/api/config` 403; signed `/api/config` 200 (returns updated `default_final_url`).
-  - Notes: In-memory fallback active if Sheets creds absent; repo layer present (`sheets.js`). Next agent: wire GOOGLE_SERVICE_EMAIL/GOOGLE_PRIVATE_KEY/SHEET_ID and validate row writes to `RUN_LOGS_*`.
+  - Notes: In-memory fallback active if Sheets creds absent; repo layer present (`sheets.js`). Next agent: wire GOOGLE*SERVICE_EMAIL/GOOGLE_PRIVATE_KEY/SHEET_ID and validate row writes to `RUN_LOGS*\*`.
 - A2. Tenant Config schema — done
   - Evidence: Backend auto-creates and reads tabs via `ensureSheet` and returns typed `config` object with `BUDGET_CAPS`, `CPC_CEILINGS`, `SCHEDULES`, `MASTER_NEGATIVES`, `WASTE_NEGATIVE_MAP`, `RSA_ASSETS_*`, `EXCLUSIONS`.
   - Next: add a task to assert empty tabs get headers on first access.
@@ -236,7 +254,7 @@ See links in _Appendix A_.
   - Gap: i18n, `phpcs` config/run.
 
 Notes for future Cursor agents
+
 - Shopify: OAuth/Embedded + Polaris UI; Consent Mode v2 docs; pixel consent coverage.
 - WordPress: add i18n and run `phpcs`.
 - Backend: enable Sheets creds and validate writes; weekly summary job.
-

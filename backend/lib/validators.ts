@@ -1,10 +1,14 @@
 export type RSAAssets = { H: string[]; D: string[] };
 
-export function validateHeadlines(headlines: string[]): { ok: boolean; errors: string[]; deduped: string[] } {
+export function validateHeadlines(headlines: string[]): {
+  ok: boolean;
+  errors: string[];
+  deduped: string[];
+} {
   const seen = new Set<string>();
   const errors: string[] = [];
   const deduped = headlines
-    .map((h) => (h || '').trim())
+    .map((h) => (h || "").trim())
     .filter((h) => {
       if (h.length === 0) return false;
       const key = h.toLowerCase();
@@ -18,11 +22,15 @@ export function validateHeadlines(headlines: string[]): { ok: boolean; errors: s
   return { ok: errors.length === 0, errors, deduped };
 }
 
-export function validateDescriptions(descriptions: string[]): { ok: boolean; errors: string[]; deduped: string[] } {
+export function validateDescriptions(descriptions: string[]): {
+  ok: boolean;
+  errors: string[];
+  deduped: string[];
+} {
   const seen = new Set<string>();
   const errors: string[] = [];
   const deduped = descriptions
-    .map((d) => (d || '').trim())
+    .map((d) => (d || "").trim())
     .filter((d) => {
       if (d.length === 0) return false;
       const key = d.toLowerCase();
@@ -35,7 +43,3 @@ export function validateDescriptions(descriptions: string[]): { ok: boolean; err
   });
   return { ok: errors.length === 0, errors, deduped };
 }
-
-
-
-

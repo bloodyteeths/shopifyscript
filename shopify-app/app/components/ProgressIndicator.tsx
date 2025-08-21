@@ -1,5 +1,5 @@
-import { Stack, Badge, Icon, ProgressBar } from '@shopify/polaris';
-import { CheckmarkIcon, ClockIcon } from '@shopify/polaris-icons';
+import { Stack, Badge, Icon, ProgressBar } from "@shopify/polaris";
+import { CheckmarkIcon, ClockIcon } from "@shopify/polaris-icons";
 
 interface Step {
   id: string;
@@ -16,48 +16,70 @@ interface ProgressIndicatorProps {
   testId?: string;
 }
 
-export default function ProgressIndicator({ 
-  steps, 
-  currentStep, 
+export default function ProgressIndicator({
+  steps,
+  currentStep,
   onStepClick,
-  testId = 'progress-indicator'
+  testId = "progress-indicator",
 }: ProgressIndicatorProps) {
-  const completedCount = steps.filter(step => step.isComplete).length;
+  const completedCount = steps.filter((step) => step.isComplete).length;
   const progress = (completedCount / steps.length) * 100;
 
   return (
-    <div data-testid={testId} role="progressbar" aria-valuenow={progress} aria-valuemin={0} aria-valuemax={100}>
+    <div
+      data-testid={testId}
+      role="progressbar"
+      aria-valuenow={progress}
+      aria-valuemin={0}
+      aria-valuemax={100}
+    >
       <Stack vertical spacing="loose">
         <div>
-          <p style={{ marginBottom: '0.5rem', fontSize: '0.9rem', color: '#666' }}>
-            {Math.round(progress)}% Complete ({completedCount} of {steps.length} steps)
+          <p
+            style={{
+              marginBottom: "0.5rem",
+              fontSize: "0.9rem",
+              color: "#666",
+            }}
+          >
+            {Math.round(progress)}% Complete ({completedCount} of {steps.length}{" "}
+            steps)
           </p>
           <ProgressBar progress={progress} size="small" />
         </div>
-        
+
         <Stack wrap spacing="tight">
           {steps.map((step, index) => {
-            const isClickable = onStepClick && (step.isComplete || index <= currentStep);
-            
+            const isClickable =
+              onStepClick && (step.isComplete || index <= currentStep);
+
             return (
-              <div key={step.id} style={{ minWidth: 'fit-content' }}>
+              <div key={step.id} style={{ minWidth: "fit-content" }}>
                 {isClickable ? (
                   <button
                     onClick={() => onStepClick(index)}
                     style={{
-                      background: 'none',
-                      border: 'none',
+                      background: "none",
+                      border: "none",
                       padding: 0,
-                      cursor: 'pointer'
+                      cursor: "pointer",
                     }}
                     data-testid={`step-${index}`}
                     aria-label={`Go to step ${index + 1}: ${step.title}`}
                   >
-                    <StepBadge step={step} index={index} currentStep={currentStep} />
+                    <StepBadge
+                      step={step}
+                      index={index}
+                      currentStep={currentStep}
+                    />
                   </button>
                 ) : (
                   <div data-testid={`step-${index}`}>
-                    <StepBadge step={step} index={index} currentStep={currentStep} />
+                    <StepBadge
+                      step={step}
+                      index={index}
+                      currentStep={currentStep}
+                    />
                   </div>
                 )}
               </div>
@@ -69,15 +91,19 @@ export default function ProgressIndicator({
   );
 }
 
-function StepBadge({ step, index, currentStep }: { 
-  step: Step; 
-  index: number; 
+function StepBadge({
+  step,
+  index,
+  currentStep,
+}: {
+  step: Step;
+  index: number;
   currentStep: number;
 }) {
   const getStatus = () => {
-    if (step.isComplete) return 'success';
-    if (index === currentStep) return 'attention';
-    return 'default';
+    if (step.isComplete) return "success";
+    if (index === currentStep) return "attention";
+    return "default";
   };
 
   const getIcon = () => {
@@ -91,7 +117,7 @@ function StepBadge({ step, index, currentStep }: {
   return (
     <Badge status={getStatus()}>
       {icon && <Icon source={icon} />}
-      {icon && ' '}
+      {icon && " "}
       {step.title}
     </Badge>
   );

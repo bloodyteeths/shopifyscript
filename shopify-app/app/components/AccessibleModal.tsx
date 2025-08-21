@@ -1,5 +1,5 @@
-import { Modal, Button } from '@shopify/polaris';
-import { useEffect, useRef } from 'react';
+import { Modal, Button } from "@shopify/polaris";
+import { useEffect, useRef } from "react";
 
 interface AccessibleModalProps {
   open: boolean;
@@ -27,7 +27,7 @@ export default function AccessibleModal({
   children,
   primaryAction,
   secondaryActions,
-  testId
+  testId,
 }: AccessibleModalProps) {
   const modalRef = useRef<HTMLDivElement>(null);
 
@@ -35,7 +35,7 @@ export default function AccessibleModal({
   useEffect(() => {
     if (open && modalRef.current) {
       const focusableElements = modalRef.current.querySelectorAll(
-        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
       );
       if (focusableElements.length > 0) {
         (focusableElements[0] as HTMLElement).focus();
@@ -46,13 +46,13 @@ export default function AccessibleModal({
   // Handle Escape key
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === 'Escape' && open) {
+      if (event.key === "Escape" && open) {
         onClose();
       }
     };
 
-    document.addEventListener('keydown', handleEscape);
-    return () => document.removeEventListener('keydown', handleEscape);
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
   }, [open, onClose]);
 
   return (
@@ -70,9 +70,7 @@ export default function AccessibleModal({
         aria-describedby="modal-content"
         data-testid={testId}
       >
-        <Modal.Section id="modal-content">
-          {children}
-        </Modal.Section>
+        <Modal.Section id="modal-content">{children}</Modal.Section>
       </div>
     </Modal>
   );

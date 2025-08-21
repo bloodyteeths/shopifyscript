@@ -1,12 +1,11 @@
-
 /**
  * Google Sheets Helper - Optimized Multi-Tenant Infrastructure
  * Enhanced with connection pooling, smart batching, and caching
  */
 
 // Import optimized service
-import optimizedSheets from './services/sheets.js';
-import tenantRegistry from './services/tenant-registry.js';
+import optimizedSheets from "./services/sheets.js";
+import tenantRegistry from "./services/tenant-registry.js";
 
 // Legacy compatibility functions for existing code
 export async function getDoc() {
@@ -15,28 +14,28 @@ export async function getDoc() {
     if (!tenantRegistry.isInitialized) {
       await tenantRegistry.initialize();
     }
-    
+
     // Use first available tenant - no hardcoded preferences
     const allTenants = tenantRegistry.getAllTenants();
-    let targetTenantId = 'default';
-    
+    let targetTenantId = "default";
+
     if (allTenants.length > 0) {
       // Use first tenant in registry, or create default if none exist
       targetTenantId = allTenants[0].id;
     } else if (process.env.SHEET_ID) {
       // Auto-register default tenant if we have a SHEET_ID but no tenants
-      tenantRegistry.addTenant('default', {
+      tenantRegistry.addTenant("default", {
         sheetId: process.env.SHEET_ID,
-        name: 'Default Tenant',
-        plan: 'starter'
+        name: "Default Tenant",
+        plan: "starter",
       });
-      targetTenantId = 'default';
+      targetTenantId = "default";
     }
-    
+
     const connection = await optimizedSheets.getTenantDoc(targetTenantId);
     return connection.doc;
   } catch (error) {
-    console.error('Google Sheets auth error:', error.message);
+    console.error("Google Sheets auth error:", error.message);
     return null;
   }
 }
@@ -47,27 +46,29 @@ export async function getDocById(sheetId) {
     if (sheetId && sheetId !== process.env.SHEET_ID) {
       const tempTenantId = `temp_${sheetId.slice(-8)}`;
       tenantRegistry.addTenant(tempTenantId, { sheetId });
-      
+
       const connection = await optimizedSheets.getTenantDoc(tempTenantId);
       return connection.doc;
     }
-    
+
     // Use default tenant
     return await getDoc();
   } catch (error) {
-    console.error('Google Sheets auth error (by id):', error.message);
+    console.error("Google Sheets auth error (by id):", error.message);
     return null;
   }
 }
 
 export async function ensureSheet(doc, title, header) {
   console.log(`🔧 ensureSheet called for title: ${title}`);
-  
+
   try {
     // Always use fallback logic for reliability
     let sheet = doc.sheetsByTitle[title];
-    console.log(`📋 Checking for existing sheet "${title}": ${sheet ? 'found' : 'not found'}`);
-    
+    console.log(
+      `📋 Checking for existing sheet "${title}": ${sheet ? "found" : "not found"}`,
+    );
+
     if (!sheet) {
       console.log(`➕ Creating new sheet "${title}" with headers:`, header);
       sheet = await doc.addSheet({ title, headerValues: header });
@@ -87,7 +88,7 @@ export async function ensureSheet(doc, title, header) {
         }
       }
     }
-    
+
     console.log(`🎯 Returning sheet object for "${title}":`, !!sheet);
     return sheet;
   } catch (error) {
@@ -147,9 +148,9 @@ export const sheets = {
     return await optimizedSheets.getStats();
   },
 
-  async healthCheck(tenantId = 'default') {
+  async healthCheck(tenantId = "default") {
     return await optimizedSheets.healthCheck(tenantId);
-  }
+  },
 };
 
 // Export optimized service for direct access

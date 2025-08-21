@@ -27,9 +27,11 @@ ProofKit implements a comprehensive billing system supporting both Shopify App B
 ## Pricing Tiers
 
 ### Starter - $29/month
+
 **Target:** Small stores getting started with Google Ads automation
 
 **Features:**
+
 - Instant "safe starter" Search campaigns
 - Daily optimizer with budget caps, CPC ceilings, business-hours schedule
 - Auto-block money-wasting queries (exact negatives)
@@ -41,15 +43,18 @@ ProofKit implements a comprehensive billing system supporting both Shopify App B
 - Campaign/ad group exclusions
 
 **Limits:**
+
 - Campaigns: 5
 - Ad Groups: 25
 - Keywords: 500
 - Monthly Spend: $5,000
 
 ### Pro - $99/month
+
 **Target:** Growing stores that want AI-powered optimization
 
 **Features:**
+
 - Everything in Starter, plus:
 - AI ad copywriter (RSA) with 30/90 character limits
 - RSA Test Queue with statistical significance testing
@@ -61,15 +66,18 @@ ProofKit implements a comprehensive billing system supporting both Shopify App B
 - Plain-English change explanations
 
 **Limits:**
+
 - Campaigns: 20
 - Ad Groups: 100
 - Keywords: 2,000
 - Monthly Spend: $25,000
 
 ### Growth - $249/month
+
 **Target:** Multi-catalog stores pushing for scale and conversion rate lift
 
 **Features:**
+
 - Everything in Pro, plus:
 - Asset Library (pooled headlines/descriptions by theme)
 - Geo & daypart optimization hints
@@ -81,6 +89,7 @@ ProofKit implements a comprehensive billing system supporting both Shopify App B
 - Looker Studio template
 
 **Limits:**
+
 - Campaigns: 50
 - Ad Groups: 250
 - Keywords: 5,000
@@ -89,9 +98,11 @@ ProofKit implements a comprehensive billing system supporting both Shopify App B
 - Team Members: 5
 
 ### Enterprise - $699+/month
+
 **Target:** High-spend brands and agencies
 
 **Features:**
+
 - Everything in Growth, plus:
 - Custom rules & guardrails
 - Server-side tagging/Enhanced Conversions consultation
@@ -101,6 +112,7 @@ ProofKit implements a comprehensive billing system supporting both Shopify App B
 - SLA support
 
 **Limits:**
+
 - All limits: Unlimited
 
 ## Implementation Guide
@@ -216,20 +228,24 @@ CREATE TABLE usage_metrics (
 Use the tier enforcement middleware to protect features:
 
 ```javascript
-import { requireFeature, checkUsageLimit, requireTier } from './middleware/tier-enforcement.js';
+import {
+  requireFeature,
+  checkUsageLimit,
+  requireTier,
+} from "./middleware/tier-enforcement.js";
 
 // Require specific feature
-app.get('/api/ai-copywriter', requireFeature('ai_copywriter'), (req, res) => {
+app.get("/api/ai-copywriter", requireFeature("ai_copywriter"), (req, res) => {
   // Feature implementation
 });
 
 // Check usage limits
-app.post('/api/campaigns', checkUsageLimit('campaigns'), (req, res) => {
+app.post("/api/campaigns", checkUsageLimit("campaigns"), (req, res) => {
   // Create campaign with remaining quota check
 });
 
 // Require minimum tier
-app.get('/api/asset-library', requireTier(2), (req, res) => {
+app.get("/api/asset-library", requireTier(2), (req, res) => {
   // Growth tier or higher required
 });
 ```
@@ -276,6 +292,7 @@ POST /api/billing/webhooks/shopify
 The billing page is located at `/billing` in the Shopify app and uses Polaris components for a native Shopify experience.
 
 Key features:
+
 - Displays current subscription status
 - Shows all available plans with feature comparison
 - Handles upgrade/downgrade flows
@@ -286,6 +303,7 @@ Key features:
 The billing interface is integrated into the WordPress admin at `admin.php?page=proofkit-billing`.
 
 Key features:
+
 - Native WordPress admin styling
 - AJAX-powered plan changes
 - Stripe Checkout integration
@@ -322,6 +340,7 @@ The system handles the following Stripe events:
 ### Stripe Testing
 
 Use Stripe's test mode with test card numbers:
+
 - Success: `4242424242424242`
 - Decline: `4000000000000002`
 - Requires authentication: `4000002500003155`
@@ -352,6 +371,7 @@ Enable test mode in Shopify billing to avoid real charges during development.
 ### Logging
 
 The system logs all billing events including:
+
 - Subscription changes
 - Payment events
 - Feature access attempts
@@ -379,6 +399,7 @@ The system logs all billing events including:
 ### Support Contacts
 
 For billing integration support:
+
 - Stripe: https://stripe.com/support
 - Shopify: https://partners.shopify.com/support
 

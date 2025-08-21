@@ -5,7 +5,7 @@
 This testing procedure validates 100% functionality of the ProofKit SaaS application based on the latest fixes and architecture analysis. The app consists of:
 
 - **Backend API** (Node.js/Express) - Port 3001
-- **Shopify UI** (Remix) - Port 3000 
+- **Shopify UI** (Remix) - Port 3000
 - **Google Sheets Integration** - Multi-tenant data storage
 - **AI Integration** (Google Gemini) - Content generation
 - **Google Ads Script** - Campaign automation
@@ -13,9 +13,11 @@ This testing procedure validates 100% functionality of the ProofKit SaaS applica
 ## Prerequisites
 
 ### Required Environment Variables
+
 Create `.env` files with these critical settings:
 
 **Backend (.env):**
+
 ```bash
 # Core Configuration
 HMAC_SECRET=test-secret-key-strong-32chars
@@ -47,6 +49,7 @@ SHOPIFY_APP_URL=http://localhost:3000
 ```
 
 **Shopify UI (.env):**
+
 ```bash
 SHOPIFY_API_KEY=your-shopify-api-key
 SHOPIFY_API_SECRET=your-shopify-secret
@@ -61,13 +64,16 @@ BACKEND_URL=http://localhost:3001
 ### 1.1 Backend Startup Verification
 
 **Steps:**
+
 1. Install dependencies:
+
    ```bash
    cd /Users/tamsar/Downloads/proofkit-saas/backend
    npm install
    ```
 
 2. Start backend server:
+
    ```bash
    npm run dev
    ```
@@ -81,11 +87,13 @@ BACKEND_URL=http://localhost:3001
    ```
 
 **Expected Results:**
+
 - Server starts without errors
 - Port 3001 is accessible
 - No missing environment variable warnings
 
 **Validation Commands:**
+
 ```bash
 # Health check
 curl -s http://localhost:3001/health | jq
@@ -99,6 +107,7 @@ curl -s http://localhost:3001/api/diagnostics | jq
 ```
 
 **Common Issues & Fixes:**
+
 - **Google Sheets auth error**: Check `GOOGLE_SERVICE_EMAIL` and `GOOGLE_PRIVATE_KEY` format
 - **Port already in use**: Kill existing processes: `lsof -ti:3001 | xargs kill`
 - **Missing HMAC_SECRET**: Must be at least 32 characters
@@ -106,13 +115,16 @@ curl -s http://localhost:3001/api/diagnostics | jq
 ### 1.2 Frontend Startup Verification
 
 **Steps:**
+
 1. Install dependencies:
+
    ```bash
    cd /Users/tamsar/Downloads/proofkit-saas/shopify-ui
    npm install
    ```
 
 2. Start frontend:
+
    ```bash
    npm run dev
    ```
@@ -125,18 +137,22 @@ curl -s http://localhost:3001/api/diagnostics | jq
    ```
 
 **Expected Results:**
+
 - Frontend starts on port 3000
 - No TypeScript compilation errors
 - Can reach http://localhost:3000
 
 **Validation:**
+
 - Open browser to `http://localhost:3000`
 - Should see Shopify app interface (may show authentication required)
 
 ### 1.3 Environment Variable Validation
 
 **Steps:**
+
 1. Test backend config endpoint:
+
    ```bash
    curl -s "http://localhost:3001/api/config" \
      -H "X-Shop: proofkit" \
@@ -155,6 +171,7 @@ curl -s http://localhost:3001/api/diagnostics | jq
    ```
 
 **Expected Results:**
+
 - Tenant detection works
 - Google Sheets connection established
 - Configuration loaded properly
@@ -166,16 +183,18 @@ curl -s http://localhost:3001/api/diagnostics | jq
 ### 2.1 App Installation Process
 
 **Steps:**
+
 1. Set up Shopify Partner account and test store
 2. Create app with ngrok tunnel:
+
    ```bash
    # Install ngrok if not present
    npm install -g ngrok
-   
+
    # Tunnel backend
    ngrok http 3001 &
-   
-   # Tunnel frontend  
+
+   # Tunnel frontend
    ngrok http 3000 &
    ```
 
@@ -186,18 +205,22 @@ curl -s http://localhost:3001/api/diagnostics | jq
 4. Install app in test store
 
 **Expected Results:**
+
 - OAuth flow completes successfully
 - App appears in Shopify admin
 - No authentication errors
 
 **Validation:**
+
 - Check Shopify app admin shows "Connected"
 - Verify session data in browser dev tools
 
 ### 2.2 Shop Parameter Detection
 
 **Steps:**
+
 1. Access app with shop parameter:
+
    ```
    http://localhost:3000/app?shop=test-store.myshopify.com
    ```
@@ -208,29 +231,34 @@ curl -s http://localhost:3001/api/diagnostics | jq
    - Cookie/localStorage contains shop name
 
 **Expected Results:**
+
 - Shop parameter detected: `🔍 Detected shop: test-store`
 - Tenant routing to correct Google Sheet
 - Shop name persisted in UI
 
 **Validation:**
+
 - Check network tab for backend calls include shop header
 - Verify `X-Shop: test-store` in request headers
 
 ### 2.3 Multi-Tenant Routing
 
 **Steps:**
+
 1. Test with different shop parameters:
+
    ```bash
    # Test shop A
    curl -s "http://localhost:3001/api/config" -H "X-Shop: shop-a"
-   
-   # Test shop B  
+
+   # Test shop B
    curl -s "http://localhost:3001/api/config" -H "X-Shop: shop-b"
    ```
 
 2. Verify different tenant configs returned
 
 **Expected Results:**
+
 - Different tenants get isolated data
 - Correct Google Sheet ID for each tenant
 - No data bleeding between tenants
@@ -242,7 +270,9 @@ curl -s http://localhost:3001/api/diagnostics | jq
 ### 3.1 Initial Sheet/Tab Creation
 
 **Steps:**
+
 1. Test sheet initialization:
+
    ```bash
    curl -X POST "http://localhost:3001/api/ensureAudienceTabs" \
      -H "X-Shop: proofkit" \
@@ -254,18 +284,22 @@ curl -s http://localhost:3001/api/diagnostics | jq
    - Verify tabs are created: `CONFIG`, `AUDIENCES`, `CAMPAIGNS`, `RUN_LOGS`
 
 **Expected Results:**
+
 - All required tabs created
 - Headers populated correctly
 - No permission errors
 
 **Validation:**
+
 - Console logs: `✅ Created sheet "CONFIG" successfully`
 - Google Sheet has proper structure
 
 ### 3.2 Data Read/Write Operations
 
 **Steps:**
+
 1. Write test configuration:
+
    ```bash
    curl -X POST "http://localhost:3001/api/config" \
      -H "X-Shop: proofkit" \
@@ -274,6 +308,7 @@ curl -s http://localhost:3001/api/diagnostics | jq
    ```
 
 2. Read configuration back:
+
    ```bash
    curl -s "http://localhost:3001/api/config" -H "X-Shop: proofkit"
    ```
@@ -281,6 +316,7 @@ curl -s http://localhost:3001/api/diagnostics | jq
 3. Check Google Sheet manually to verify data written
 
 **Expected Results:**
+
 - Data written to CONFIG tab
 - Read operation returns same data
 - Proper error handling if sheet access fails
@@ -288,7 +324,9 @@ curl -s http://localhost:3001/api/diagnostics | jq
 ### 3.3 Connection Pool Functionality
 
 **Steps:**
+
 1. Make multiple concurrent requests:
+
    ```bash
    # Run 5 concurrent requests
    for i in {1..5}; do
@@ -304,6 +342,7 @@ curl -s http://localhost:3001/api/diagnostics | jq
    ```
 
 **Expected Results:**
+
 - No connection errors
 - Pool manages connections efficiently
 - Rate limiting prevents API quota exhaustion
@@ -315,6 +354,7 @@ curl -s http://localhost:3001/api/diagnostics | jq
 ### 4.1 Advanced Settings Configuration
 
 **Steps:**
+
 1. Access Advanced page: `http://localhost:3000/app/advanced`
 
 2. Test configuration form:
@@ -329,12 +369,14 @@ curl -s http://localhost:3001/api/diagnostics | jq
    - Check Google Sheets CONFIG tab
 
 **Expected Results:**
+
 - Form saves without errors
 - Data persists across page refreshes
 - Values appear in Google Sheets
 - Shop parameter maintained in URL
 
 **Screenshots to Validate:**
+
 - Form with populated values
 - Success message after save
 - Google Sheets CONFIG tab with data
@@ -342,7 +384,9 @@ curl -s http://localhost:3001/api/diagnostics | jq
 ### 4.2 AI Integration (Content Generation)
 
 **Steps:**
+
 1. Test AI writer endpoint:
+
    ```bash
    curl -X POST "http://localhost:3001/api/jobs/ai_writer" \
      -H "X-Shop: proofkit" \
@@ -360,11 +404,13 @@ curl -s http://localhost:3001/api/diagnostics | jq
    - Proper character count validation
 
 **Expected Results:**
+
 - AI generates valid RSA content
 - Character limits enforced
 - Content quality appropriate
 
 **Validation:**
+
 ```bash
 # Check drafts created
 curl -s "http://localhost:3001/api/insights" -H "X-Shop: proofkit" | jq '.drafts'
@@ -373,7 +419,9 @@ curl -s "http://localhost:3001/api/insights" -H "X-Shop: proofkit" | jq '.drafts
 ### 4.3 Google Ads Script Generation
 
 **Steps:**
+
 1. Test script generation:
+
    ```bash
    curl -s "http://localhost:3001/api/generate-script" \
      -H "X-Shop: proofkit" \
@@ -387,6 +435,7 @@ curl -s "http://localhost:3001/api/insights" -H "X-Shop: proofkit" | jq '.drafts
    - Safety checks
 
 **Expected Results:**
+
 - Valid Google Ads script generated
 - All configured limits included
 - Idempotency checks present
@@ -394,7 +443,9 @@ curl -s "http://localhost:3001/api/insights" -H "X-Shop: proofkit" | jq '.drafts
 ### 4.4 Automation Triggers
 
 **Steps:**
+
 1. Set promote window:
+
    ```bash
    curl -X POST "http://localhost:3001/api/promote/window" \
      -H "X-Shop: proofkit" \
@@ -413,6 +464,7 @@ curl -s "http://localhost:3001/api/insights" -H "X-Shop: proofkit" | jq '.drafts
    ```
 
 **Expected Results:**
+
 - Promote window activated
 - Time-based automation enabled
 - Safety limits enforced
@@ -457,6 +509,7 @@ curl -s "http://localhost:3001/api/insights" -H "X-Shop: proofkit" | jq '.drafts
    - Monitor run logs
 
 **Validation Checklist:**
+
 - [ ] Shop parameter persisted throughout
 - [ ] All data saved to correct Google Sheet
 - [ ] No errors in browser console
@@ -466,6 +519,7 @@ curl -s "http://localhost:3001/api/insights" -H "X-Shop: proofkit" | jq '.drafts
 ### 5.2 Data Flow Validation
 
 **Steps:**
+
 1. Complete workflow above
 2. Verify data in Google Sheets:
    - CONFIG tab has all settings
@@ -478,6 +532,7 @@ curl -s "http://localhost:3001/api/insights" -H "X-Shop: proofkit" | jq '.drafts
    - Verify data doesn't mix between tenants
 
 **Expected Results:**
+
 - Clean data flow from UI → API → Google Sheets
 - Multi-tenant isolation working
 - Audit trail in run logs
@@ -513,7 +568,9 @@ curl -s "http://localhost:3001/api/insights" -H "X-Shop: proofkit" | jq '.drafts
 ### 6.1 Loading Performance
 
 **Steps:**
+
 1. Measure page load times:
+
    ```bash
    curl -o /dev/null -s -w "%{time_total}" \
      "http://localhost:3000/app/advanced?shop=test-store"
@@ -526,6 +583,7 @@ curl -s "http://localhost:3001/api/insights" -H "X-Shop: proofkit" | jq '.drafts
    ```
 
 **Expected Results:**
+
 - Page loads < 2 seconds
 - API responses < 500ms
 - No memory leaks
@@ -533,12 +591,14 @@ curl -s "http://localhost:3001/api/insights" -H "X-Shop: proofkit" | jq '.drafts
 ### 6.2 Data Persistence Verification
 
 **Complete Data Integrity Test:**
+
 1. Configure all settings in Advanced page
 2. Create audiences and content
 3. Restart both backend and frontend servers
 4. Verify all data still present
 
 **Validation:**
+
 - Settings preserved after restart
 - Google Sheets data intact
 - No data corruption
@@ -550,6 +610,7 @@ curl -s "http://localhost:3001/api/insights" -H "X-Shop: proofkit" | jq '.drafts
 ### 7.1 HMAC Validation
 
 **Steps:**
+
 1. Test with invalid HMAC:
    ```bash
    curl -X POST "http://localhost:3001/api/config" \
@@ -559,18 +620,21 @@ curl -s "http://localhost:3001/api/insights" -H "X-Shop: proofkit" | jq '.drafts
    ```
 
 **Expected Results:**
+
 - Request rejected with 403 Forbidden
 - No data modification allowed
 
 ### 7.2 Input Validation
 
 **Test edge cases:**
+
 1. Very long shop names
-2. Special characters in parameters  
+2. Special characters in parameters
 3. Malformed JSON requests
 4. XSS attempts in form fields
 
 **Expected Results:**
+
 - Proper validation and sanitization
 - No crashes or data corruption
 - Clear error messages
@@ -580,19 +644,22 @@ curl -s "http://localhost:3001/api/insights" -H "X-Shop: proofkit" | jq '.drafts
 ## SUCCESS CRITERIA CHECKLIST
 
 ### Environment Setup ✅
+
 - [ ] Backend starts successfully
-- [ ] Frontend starts successfully  
+- [ ] Frontend starts successfully
 - [ ] All environment variables loaded
 - [ ] Health checks pass
 - [ ] Google Sheets connection works
 
 ### Shopify Integration ✅
+
 - [ ] OAuth flow completes
 - [ ] Shop parameter detection works
 - [ ] Multi-tenant routing functional
 - [ ] Session management works
 
 ### Core Features ✅
+
 - [ ] Advanced settings save/load
 - [ ] AI content generation (if enabled)
 - [ ] Google Ads script generation
@@ -600,12 +667,14 @@ curl -s "http://localhost:3001/api/insights" -H "X-Shop: proofkit" | jq '.drafts
 - [ ] Promote window automation
 
 ### Data & Persistence ✅
+
 - [ ] Google Sheets read/write
 - [ ] Configuration persistence
 - [ ] Multi-tenant data isolation
 - [ ] Audit logging
 
 ### Performance & Reliability ✅
+
 - [ ] Page loads < 2 seconds
 - [ ] API responses < 500ms
 - [ ] Connection pooling works
@@ -613,6 +682,7 @@ curl -s "http://localhost:3001/api/insights" -H "X-Shop: proofkit" | jq '.drafts
 - [ ] Error handling graceful
 
 ### End-to-End ✅
+
 - [ ] Complete user workflow successful
 - [ ] Data survives server restart
 - [ ] No console errors
@@ -625,21 +695,25 @@ curl -s "http://localhost:3001/api/insights" -H "X-Shop: proofkit" | jq '.drafts
 ### Common Issues
 
 **"Cannot connect to Google Sheets"**
+
 - Check service account credentials
 - Verify Sheet ID is correct
 - Ensure sheet is shared with service account
 
 **"Shop parameter not detected"**
+
 - Check URL contains `?shop=` parameter
 - Verify cookies/localStorage in browser
 - Check tenant routing logs
 
 **"HMAC validation failed"**
+
 - Verify HMAC_SECRET is set correctly
 - Check Shopify webhook configuration
 - Ensure content-type headers correct
 
 **"AI content generation failed"**
+
 - Check GOOGLE_API_KEY is valid
 - Verify AI_PROVIDER is set to 'google'
 - Check rate limits not exceeded
@@ -656,7 +730,7 @@ curl -s "http://localhost:3001/api/config" -H "X-Shop: YOUR_SHOP"
 # Test Google Sheets connection
 curl -X POST http://localhost:3001/api/ensureAudienceTabs -H "X-Shop: YOUR_SHOP"
 
-# Check promote gate status  
+# Check promote gate status
 curl -s "http://localhost:3001/api/promote/gate/status" -H "X-Shop: YOUR_SHOP"
 ```
 
@@ -667,7 +741,7 @@ curl -s "http://localhost:3001/api/promote/gate/status" -H "X-Shop: YOUR_SHOP"
 Upon completing all tests, you should have:
 
 1. ✅ **Fully functional ProofKit SaaS application**
-2. ✅ **Shopify integration working end-to-end** 
+2. ✅ **Shopify integration working end-to-end**
 3. ✅ **Multi-tenant data isolation verified**
 4. ✅ **Google Sheets integration validated**
 5. ✅ **All core features tested and working**

@@ -5,6 +5,7 @@ This directory contains the production-ready DevOps infrastructure for ProofKit 
 ## 🚀 Quick Start
 
 ### Development
+
 ```bash
 # Install dependencies
 npm run install:all
@@ -14,6 +15,7 @@ npm run dev
 ```
 
 ### Production Deployment
+
 ```bash
 # Using deployment script (recommended)
 ./deployment/deploy.sh
@@ -42,6 +44,7 @@ deployment/
 ## 🐳 Docker Configuration
 
 ### Multi-Stage Build
+
 The `Dockerfile` uses a multi-stage build approach for optimal production images:
 
 1. **Base**: Node.js 18 Alpine with security updates
@@ -50,6 +53,7 @@ The `Dockerfile` uses a multi-stage build approach for optimal production images
 4. **Runtime**: Minimal production runtime with security hardening
 
 ### Security Features
+
 - Non-root user execution
 - Security-hardened Alpine base
 - Minimal attack surface
@@ -57,6 +61,7 @@ The `Dockerfile` uses a multi-stage build approach for optimal production images
 - Signal handling with dumb-init
 
 ### Usage
+
 ```bash
 # Build production image
 docker build -t proofkit-saas:latest .
@@ -78,6 +83,7 @@ The environment management system (`environment.js`) provides:
 ### Environment Variables
 
 #### Required
+
 ```bash
 NODE_ENV=production
 PORT=3000
@@ -89,6 +95,7 @@ HMAC_SECRET=your_very_strong_secret_key_at_least_32_characters_long
 ```
 
 #### Optional with Defaults
+
 ```bash
 HOST=0.0.0.0
 CORS_ORIGIN=*
@@ -101,8 +108,9 @@ METRICS_ENABLED=true
 ```
 
 ### Usage
+
 ```javascript
-import { createEnvironment } from './deployment/environment.js';
+import { createEnvironment } from "./deployment/environment.js";
 
 const { config, isProduction } = createEnvironment();
 ```
@@ -111,12 +119,12 @@ const { config, isProduction } = createEnvironment();
 
 ### Health Check Endpoints
 
-| Endpoint | Purpose | Kubernetes |
-|----------|---------|------------|
-| `/health` | Overall application health | - |
-| `/ready` | Readiness probe | ✅ |
-| `/live` | Liveness probe | ✅ |
-| `/metrics` | Prometheus metrics | - |
+| Endpoint   | Purpose                    | Kubernetes |
+| ---------- | -------------------------- | ---------- |
+| `/health`  | Overall application health | -          |
+| `/ready`   | Readiness probe            | ✅         |
+| `/live`    | Liveness probe             | ✅         |
+| `/metrics` | Prometheus metrics         | -          |
 
 ### Built-in Health Checks
 
@@ -128,18 +136,24 @@ const { config, isProduction } = createEnvironment();
 6. **Gemini AI** - AI service availability
 
 ### Custom Health Checks
-```javascript
-import { healthService } from './services/health.js';
 
-healthService.registerCheck('custom-service', async () => {
-  // Your health check logic
-  return { message: 'Service is healthy' };
-}, { critical: true, timeout: 5000 });
+```javascript
+import { healthService } from "./services/health.js";
+
+healthService.registerCheck(
+  "custom-service",
+  async () => {
+    // Your health check logic
+    return { message: "Service is healthy" };
+  },
+  { critical: true, timeout: 5000 },
+);
 ```
 
 ## 📊 Logging & Observability
 
 ### Structured Logging
+
 The logging system provides:
 
 - **Multiple log levels** (error, warn, info, debug, trace)
@@ -150,24 +164,28 @@ The logging system provides:
 - **Sensitive data masking**
 
 ### Log Levels
-```javascript
-import logger from './services/logger.js';
 
-logger.error('Error message', { error: errorObject });
-logger.warn('Warning message', { context: data });
-logger.info('Info message', { user: userId });
-logger.debug('Debug message', { details: debugData });
+```javascript
+import logger from "./services/logger.js";
+
+logger.error("Error message", { error: errorObject });
+logger.warn("Warning message", { context: data });
+logger.info("Info message", { user: userId });
+logger.debug("Debug message", { details: debugData });
 ```
 
 ### Performance Tracking
+
 ```javascript
-const traceId = logger.startTimer('database-query');
+const traceId = logger.startTimer("database-query");
 // ... perform operation
-logger.endTimer('database-query', { query: 'SELECT * FROM users' });
+logger.endTimer("database-query", { query: "SELECT * FROM users" });
 ```
 
 ### Request Logging
+
 Automatic request/response logging with:
+
 - Request details (method, URL, headers, body)
 - Response status and timing
 - User identification and tracing
@@ -187,6 +205,7 @@ The `deploy.sh` script provides:
 - **Log management** and cleanup
 
 #### Usage
+
 ```bash
 # Full deployment
 ./deployment/deploy.sh
@@ -216,6 +235,7 @@ The `production-start.sh` script handles:
 - **Process management**
 
 #### Usage
+
 ```bash
 # Start application
 ./deployment/production-start.sh start
@@ -254,6 +274,7 @@ The `production-start.sh` script handles:
 - **Monitoring**: Adds Prometheus, Grafana, exporters
 
 #### Usage
+
 ```bash
 # Start basic stack
 docker-compose up -d
@@ -271,6 +292,7 @@ docker-compose up -d --scale proofkit-app=3
 ## 🔒 Security Features
 
 ### Nginx Configuration
+
 - **Rate limiting** per IP and endpoint
 - **Security headers** (HSTS, CSP, etc.)
 - **SSL/TLS termination** ready
@@ -278,6 +300,7 @@ docker-compose up -d --scale proofkit-app=3
 - **Static file optimization**
 
 ### Application Security
+
 - **HMAC signature verification**
 - **Input validation and sanitization**
 - **DDoS protection**
@@ -285,6 +308,7 @@ docker-compose up -d --scale proofkit-app=3
 - **Security event logging**
 
 ### Container Security
+
 - **Non-root execution**
 - **Minimal base images**
 - **Security scanning ready**
@@ -294,19 +318,23 @@ docker-compose up -d --scale proofkit-app=3
 ## 📈 Monitoring & Alerting
 
 ### Prometheus Metrics
+
 - Application-specific metrics
 - System performance metrics
 - Container resource usage
 - Custom business metrics
 
 ### Health Monitoring
+
 - Continuous health checks
 - Service dependency monitoring
 - Performance threshold alerts
 - Automated recovery attempts
 
 ### Grafana Dashboards
+
 Pre-configured dashboards for:
+
 - Application performance
 - System resources
 - Error rates and latency
@@ -315,6 +343,7 @@ Pre-configured dashboards for:
 ## 🔄 CI/CD Integration
 
 ### GitHub Actions
+
 ```yaml
 # Example workflow integration
 - name: Deploy to Production
@@ -323,6 +352,7 @@ Pre-configured dashboards for:
 ```
 
 ### Kubernetes
+
 ```yaml
 # Health check configuration
 livenessProbe:
@@ -345,18 +375,21 @@ readinessProbe:
 ### Common Issues
 
 1. **Environment validation fails**
+
    ```bash
    # Check environment variables
    ./deployment/deploy.sh build
    ```
 
 2. **Health checks failing**
+
    ```bash
    # View health status
    curl http://localhost:3000/health | jq .
    ```
 
 3. **Application startup issues**
+
    ```bash
    # Check logs
    ./deployment/production-start.sh logs
@@ -369,6 +402,7 @@ readinessProbe:
    ```
 
 ### Log Analysis
+
 ```bash
 # View structured logs
 tail -f logs/all.log | jq .
@@ -381,6 +415,7 @@ grep "health_check" logs/all.log | jq .
 ```
 
 ### Performance Debugging
+
 ```bash
 # View metrics
 curl http://localhost:3000/metrics
@@ -395,24 +430,28 @@ docker stats proofkit-app
 ## 🔮 Production Considerations
 
 ### Scaling
+
 - Use load balancer (Nginx) for multiple instances
 - Redis for shared session storage
 - Database connection pooling
 - Horizontal pod autoscaling in Kubernetes
 
 ### Backup Strategy
+
 - Automated configuration backups
 - Database backup integration
 - Log rotation and archival
 - Disaster recovery procedures
 
 ### Security Hardening
+
 - Regular dependency updates
 - Security scanning in CI/CD
 - Network segmentation
 - Access control and authentication
 
 ### Performance Optimization
+
 - Enable HTTP/2 in Nginx
 - Implement CDN for static assets
 - Database query optimization

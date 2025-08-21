@@ -1,12 +1,13 @@
-
 # Proofkit — Pricing Tiers & Master Roadmap (v2)
 
 ## Pricing & Features (merchant-friendly)
 
 ### STARTER — $29/mo
+
 **Who it’s for:** Small stores that want Google Search ads that “just run” safely.
 
 **Included**
+
 - Instant “safe starter” Search campaign if you have none.
 - Daily optimizer: budget caps, smart CPC ceilings, business-hours schedule.
 - Auto-block money-wasting queries (exact negatives) from real search terms.
@@ -18,9 +19,11 @@
 - Exclusions: mark any campaign/ad group “hands-off”.
 
 ### PRO — $99/mo
+
 **Who it’s for:** Stores that want AI-generated ads and steady testing.
 
 **Everything in Starter, plus**
+
 - AI ad copywriter (RSA) that respects 30/90 limits.
 - **RSA Test Queue:** rotates one new ad at a time; auto-pauses losers with significance.
 - **Keyword Promotions:** converts winning search terms into new PHRASE/EXACT keywords.
@@ -31,9 +34,11 @@
 - Plain-English “why we changed this” notes in your Sheet.
 
 ### GROWTH — $249/mo
+
 **Who it’s for:** Multi-catalog stores pushing for scale and conversion rate lift.
 
 **Everything in Pro, plus**
+
 - **Asset Library:** pooled headlines/descriptions by theme; per-ad-group pulls.
 - **Geo & daypart hints:** AI suggests regional/hour blocks; script applies schedules/modifiers where allowed.
 - **Promo page generator:** AI drafts full landing pages for high‑intent themes.
@@ -43,9 +48,11 @@
 - Looker Studio template (one click) powered by your Sheet.
 
 ### ENTERPRISE — $699+/mo
+
 **Who it’s for:** High‑spend brands and agencies that need deeper controls.
 
 **Everything in Growth, plus**
+
 - Custom rules & guardrails; allow/deny lists by campaign or theme.
 - Server‑side tagging/Enhanced Conversions consultation & playbooks.
 - Private model prompts for your category (regulated copy tone, claims control).
@@ -56,16 +63,19 @@
 ## Master Roadmap (build order)
 
 ### Phase 0 — Foundation
+
 - **Sheets schema** (per tenant): CONFIG, METRICS, SEARCH_TERMS, MASTER_NEGATIVES, KEYWORD_UPSERTS, BUDGET_CAPS, CPC_CEILINGS, EXCLUSIONS.
 - **Backend** (HMAC API): `/api/config`, `/api/metrics`, `/api/upsertConfig` (Sheets storage).
 
 ### Phase 1 — Ads Script Core
+
 - Budget caps + CPC ceilings + business-hours schedule (idempotent).
 - Shared negative list + ad‑group exact negatives from Search Terms.
 - RSA builder with 30/90 lint and label guard (no duplicates).
 - Metrics & Search Terms collectors (GAQL) → write to Sheet.
 
 ### Phase 2 — AI Loop (Pro)
+
 - **AI service** reads Sheets + landing page, writes:
   - RSA_ASSETS_DEFAULT (linted H/D); KEYWORD_UPSERTS; NGRAM_WASTE; CPC_CEILINGS; BUDGET_CAPS.
 - Script applies **KEYWORD_UPSERTS** idempotently.
@@ -73,6 +83,7 @@
 - **LP Fixes Queue**: title/CTA/above‑the‑fold suggestions (Shopify/WP draft endpoints).
 
 ### Phase 3 — Growth Features
+
 - **Asset Library** + per‑ad‑group pulls; protect brand terms (NEG_GUARD).
 - **Geo/Daypart hints** → schedules/modifiers.
 - **Promo Pages** (Shopify/WP): create drafts, never publish automatically.
@@ -80,12 +91,14 @@
 - **Pacer Rules** UI → budget reallocation with min/max guardrails.
 
 ### Phase 4 — Apps & Compliance
+
 - Shopify app (Remix template, Polaris, App Bridge). OAuth + Embedded settings.
 - Web Pixel extension (purchase events) + Consent Mode v2 guidance.
 - WordPress plugin (Boilerplate): settings, Woo purchase hook, Enhanced Conversions option.
 - Listing & review prep (Shopify app requirements; WP guidelines).
 
 ### Phase 5 — Observability & GTM
+
 - Weekly summary builder; Slack/email alerts.
 - Looker Studio dashboard prebuilt on Sheets.
 - Pricing/billing (Shopify Billing for app; Stripe for WP users).
@@ -108,12 +121,12 @@
 
 ## Open‑Source starters to fork/borrow
 
-- **Shopify App Template (Remix)** — OAuth + Embedded app baseline.  
-- **Shopify App Template (Node)** — alternative foundation.  
-- **Polaris UI & App Bridge** — admin UI components/patterns.  
-- **Web Pixels API** — official pixel extension docs.  
-- **WordPress Plugin Boilerplate** — clean plugin structure.  
-- **WP Plugin Guidelines** — compliance for .org listing.  
+- **Shopify App Template (Remix)** — OAuth + Embedded app baseline.
+- **Shopify App Template (Node)** — alternative foundation.
+- **Polaris UI & App Bridge** — admin UI components/patterns.
+- **Web Pixels API** — official pixel extension docs.
+- **WordPress Plugin Boilerplate** — clean plugin structure.
+- **WP Plugin Guidelines** — compliance for .org listing.
 - **Google Ads Scripts** — AdsApp reference; GAQL reporting.
 
 (Links referenced in the spec; keep them in docs when forking.)
@@ -121,6 +134,7 @@
 ---
 
 ## Claude rules (quick)
+
 - Start each task with: **SCOPE / ASSUMPTIONS / PLAN / ARTIFACTS (diffs) / TESTS / ROLLBACK**.
 - Idempotent by design; secrets from env; no hardcoding.
 - Validate RSA 30/90, duplicate checks, and NEG_GUARD before any live changes.
@@ -143,7 +157,7 @@
 - Phase 5 — Observability & GTM: partial (orchestrator + monitor; request logging & rate limit)
 
 Notes for future Cursor agents
+
 - Add Polaris/App Bridge settings UI + OAuth; Consent Mode docs.
 - WP: i18n + `phpcs`.
 - Enable Sheets creds and validate end-to-end flows + weekly summary job.
-

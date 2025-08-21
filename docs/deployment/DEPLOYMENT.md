@@ -20,12 +20,14 @@ Complete guide for deploying ProofKit SaaS to production with Docker, monitoring
 ### System Requirements
 
 **Minimum Production Requirements:**
+
 - **CPU**: 4 vCPUs
-- **RAM**: 8GB 
+- **RAM**: 8GB
 - **Storage**: 100GB SSD
 - **OS**: Ubuntu 22.04 LTS or CentOS 8+
 
 **Recommended Production Requirements:**
+
 - **CPU**: 8 vCPUs
 - **RAM**: 16GB
 - **Storage**: 200GB SSD with backup storage
@@ -258,6 +260,7 @@ server {
 ```
 
 Enable site:
+
 ```bash
 sudo ln -s /etc/nginx/sites-available/proofkit /etc/nginx/sites-enabled/
 sudo nginx -t
@@ -269,12 +272,14 @@ sudo systemctl restart nginx
 ### Google Sheets Configuration
 
 1. **Create Master Spreadsheet**
+
    ```bash
    # Use the provided sheet template or create new
    # Note the SHEET_ID from the URL
    ```
 
 2. **Service Account Setup**
+
    ```bash
    # Share spreadsheet with service account email
    # Grant "Editor" permissions
@@ -284,7 +289,7 @@ sudo systemctl restart nginx
    ```javascript
    // The application auto-creates required sheets:
    // - CONFIG_{tenant}
-   // - METRICS_{tenant}  
+   // - METRICS_{tenant}
    // - SEARCH_TERMS_{tenant}
    // - RUN_LOGS_{tenant}
    // - AUDIENCE_SEGMENTS_{tenant}
@@ -298,7 +303,7 @@ sudo systemctl restart nginx
 Create `docker-compose.prod.yml`:
 
 ```yaml
-version: '3.8'
+version: "3.8"
 
 services:
   app:
@@ -364,11 +369,11 @@ services:
       - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
       - prometheus-data:/prometheus
     command:
-      - '--config.file=/etc/prometheus/prometheus.yml'
-      - '--storage.tsdb.path=/prometheus'
-      - '--web.console.libraries=/etc/prometheus/console_libraries'
-      - '--web.console.templates=/etc/prometheus/consoles'
-      - '--web.enable-lifecycle'
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+      - "--web.console.libraries=/etc/prometheus/console_libraries"
+      - "--web.console.templates=/etc/prometheus/consoles"
+      - "--web.enable-lifecycle"
     profiles:
       - monitoring
 
@@ -478,35 +483,37 @@ Configure structured logging in production:
 
 ```javascript
 // backend/services/logger.js
-const winston = require('winston');
+const winston = require("winston");
 
 const logger = winston.createLogger({
-  level: process.env.LOG_LEVEL || 'info',
+  level: process.env.LOG_LEVEL || "info",
   format: winston.format.combine(
     winston.format.timestamp(),
     winston.format.errors({ stack: true }),
-    winston.format.json()
+    winston.format.json(),
   ),
-  defaultMeta: { service: 'proofkit-api' },
+  defaultMeta: { service: "proofkit-api" },
   transports: [
-    new winston.transports.File({ 
-      filename: '/app/logs/error.log', 
-      level: 'error',
+    new winston.transports.File({
+      filename: "/app/logs/error.log",
+      level: "error",
       maxsize: 10485760, // 10MB
-      maxFiles: 5
+      maxFiles: 5,
     }),
-    new winston.transports.File({ 
-      filename: '/app/logs/combined.log',
+    new winston.transports.File({
+      filename: "/app/logs/combined.log",
       maxsize: 10485760,
-      maxFiles: 5
-    })
+      maxFiles: 5,
+    }),
   ],
 });
 
-if (process.env.NODE_ENV !== 'production') {
-  logger.add(new winston.transports.Console({
-    format: winston.format.simple()
-  }));
+if (process.env.NODE_ENV !== "production") {
+  logger.add(
+    new winston.transports.Console({
+      format: winston.format.simple(),
+    }),
+  );
 }
 ```
 
@@ -542,19 +549,19 @@ global:
 rule_files: []
 
 scrape_configs:
-  - job_name: 'proofkit-api'
+  - job_name: "proofkit-api"
     static_configs:
-      - targets: ['app:3001']
-    metrics_path: '/metrics'
+      - targets: ["app:3001"]
+    metrics_path: "/metrics"
     scrape_interval: 30s
 
-  - job_name: 'redis'
+  - job_name: "redis"
     static_configs:
-      - targets: ['redis:6379']
+      - targets: ["redis:6379"]
 
-  - job_name: 'node-exporter'
+  - job_name: "node-exporter"
     static_configs:
-      - targets: ['host.docker.internal:9100']
+      - targets: ["host.docker.internal:9100"]
 ```
 
 ## Health Checks
@@ -595,7 +602,7 @@ log() {
 check_health() {
     local endpoint=$1
     local name=$2
-    
+
     if curl -f -s --max-time 10 "$API_URL$endpoint" > /dev/null; then
         log "✓ $name check passed"
         return 0
@@ -607,7 +614,7 @@ check_health() {
 
 # Run health checks
 check_health "/health" "Health"
-check_health "/ready" "Readiness" 
+check_health "/ready" "Readiness"
 check_health "/live" "Liveness"
 
 # Check Docker containers
@@ -620,6 +627,7 @@ log "✓ All health checks passed"
 ```
 
 Add to crontab:
+
 ```bash
 # Monitor every 5 minutes
 */5 * * * * /opt/proofkit/scripts/health-monitor.sh
@@ -756,31 +764,34 @@ curl -f http://localhost:3001/health
 ### Immediate Response
 
 1. **Service Down**
+
    ```bash
    # Check container status
    docker-compose -f /opt/proofkit/docker-compose.prod.yml ps
-   
+
    # View recent logs
    docker-compose -f /opt/proofkit/docker-compose.prod.yml logs --tail=100 app
-   
+
    # Restart if needed
    docker-compose -f /opt/proofkit/docker-compose.prod.yml restart app
    ```
 
 2. **High Memory Usage**
+
    ```bash
    # Check container resources
    docker stats proofkit-app
-   
+
    # Scale horizontally (if load balancer configured)
    docker-compose -f /opt/proofkit/docker-compose.prod.yml up -d --scale app=2
    ```
 
 3. **Database Issues**
+
    ```bash
    # Check Google Sheets API status
    curl -s "https://status.cloud.google.com/"
-   
+
    # Verify service account permissions
    # Check SHEET_ID and credentials
    ```

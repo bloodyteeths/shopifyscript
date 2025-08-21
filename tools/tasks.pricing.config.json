@@ -1,14 +1,40 @@
 {
   "maxParallel": 8,
   "tasks": [
-    { "id": "verify_foundation_endpoints", "cmd": "grep -q '/api/config' backend/server.js && grep -q '/api/metrics' backend/server.js && grep -q '/api/upsertConfig' backend/server.js", "cwd": "." },
-    { "id": "verify_ads_core", "cmd": "grep -q 'buildSafeRSAs_' ads-script/master.gs && grep -q 'autoNegateAndCollectST_' ads-script/master.gs && grep -q 'isExcludedCampaign_' ads-script/master.gs", "cwd": "." },
-    { "id": "verify_wp_plugin", "cmd": "grep -q 'add_options_page' wordpress-plugin/pk-proofkit.php && test -f wordpress-plugin/uninstall.php", "cwd": "." },
-    { "id": "backend_install", "cmd": "npm --prefix backend install", "cwd": "." },
-    { "id": "ensure_backend_running", "cmd": "lsof -i :3001 || (HMAC_SECRET=change_me PORT=3001 node backend/server.js & sleep 1)", "cwd": "." },
-    { "id": "wait_backend_health", "cmd": "for i in 1 2 3 4 5; do curl -sS http://localhost:3001/api/health && exit 0 || sleep 1; done; exit 1", "cwd": "." },
-    { "id": "backend_hmac_bad", "cmd": "sig=bad; curl -sS 'http://localhost:3001/api/config?tenant=TENANT_123&sig='\"$sig\" | grep -q 'auth'", "cwd": "." }
+    {
+      "id": "verify_foundation_endpoints",
+      "cmd": "grep -q '/api/config' backend/server.js && grep -q '/api/metrics' backend/server.js && grep -q '/api/upsertConfig' backend/server.js",
+      "cwd": "."
+    },
+    {
+      "id": "verify_ads_core",
+      "cmd": "grep -q 'buildSafeRSAs_' ads-script/master.gs && grep -q 'autoNegateAndCollectST_' ads-script/master.gs && grep -q 'isExcludedCampaign_' ads-script/master.gs",
+      "cwd": "."
+    },
+    {
+      "id": "verify_wp_plugin",
+      "cmd": "grep -q 'add_options_page' wordpress-plugin/pk-proofkit.php && test -f wordpress-plugin/uninstall.php",
+      "cwd": "."
+    },
+    {
+      "id": "backend_install",
+      "cmd": "npm --prefix backend install",
+      "cwd": "."
+    },
+    {
+      "id": "ensure_backend_running",
+      "cmd": "lsof -i :3001 || (HMAC_SECRET=change_me PORT=3001 node backend/server.js & sleep 1)",
+      "cwd": "."
+    },
+    {
+      "id": "wait_backend_health",
+      "cmd": "for i in 1 2 3 4 5; do curl -sS http://localhost:3001/api/health && exit 0 || sleep 1; done; exit 1",
+      "cwd": "."
+    },
+    {
+      "id": "backend_hmac_bad",
+      "cmd": "sig=bad; curl -sS 'http://localhost:3001/api/config?tenant=TENANT_123&sig='\"$sig\" | grep -q 'auth'",
+      "cwd": "."
+    }
   ]
 }
-
-

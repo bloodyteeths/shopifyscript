@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from "react";
 import {
   Card,
   Page,
@@ -24,7 +24,7 @@ import {
   FormLayout,
   Toast,
   Frame,
-} from '@shopify/polaris';
+} from "@shopify/polaris";
 // Note: Some Polaris icons may not be available, using safe fallbacks
 const CheckCircleIcon = () => <span>✅</span>;
 const AlertCircleIcon = () => <span>⚠️</span>;
@@ -83,47 +83,49 @@ interface UTMContent {
   generated_at: string;
 }
 
-export const IntentOS: React.FC<IntentOSProps> = ({ 
-  tenantId, 
-  promoteEnabled = false 
+export const IntentOS: React.FC<IntentOSProps> = ({
+  tenantId,
+  promoteEnabled = false,
 }) => {
   const [selectedTab, setSelectedTab] = useState(0);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [toastActive, setToastActive] = useState(false);
-  const [toastMessage, setToastMessage] = useState('');
+  const [toastMessage, setToastMessage] = useState("");
   const [toastError, setToastError] = useState(false);
 
   // Metafield Overlay State
   const [overlayConfig, setOverlayConfig] = useState<OverlayConfig>({
-    selector: '',
-    channel: 'web',
+    selector: "",
+    channel: "web",
     metafields: {},
-    description: ''
+    description: "",
   });
   const [overlayHistory, setOverlayHistory] = useState<any[]>([]);
   const [activeOverlay, setActiveOverlay] = useState<any>(null);
   const [overlayModalActive, setOverlayModalActive] = useState(false);
 
   // Intent Blocks State
-  const [intentBlocks, setIntentBlocks] = useState<Record<string, IntentBlock>>({});
+  const [intentBlocks, setIntentBlocks] = useState<Record<string, IntentBlock>>(
+    {},
+  );
   const [intentModalActive, setIntentModalActive] = useState(false);
   const [editingIntent, setEditingIntent] = useState<IntentBlock | null>(null);
 
   // UTM Content State
   const [utmContent, setUtmContent] = useState<UTMContent | null>(null);
-  const [utmTerm, setUtmTerm] = useState('high-intent');
+  const [utmTerm, setUtmTerm] = useState("high-intent");
   const [productContext, setProductContext] = useState<Record<string, any>>({});
 
   // Promo Drafts State
   const [promoDrafts, setPromoDrafts] = useState<PromoDraft[]>([]);
   const [promoModalActive, setPromoModalActive] = useState(false);
   const [promoConfig, setPromoConfig] = useState({
-    campaign_name: '',
-    offer_details: '',
-    target_audience: '',
-    industry: 'ecommerce',
-    campaign_type: 'sale'
+    campaign_name: "",
+    offer_details: "",
+    target_audience: "",
+    industry: "ecommerce",
+    campaign_type: "sale",
   });
 
   const showToast = useCallback((message: string, isError = false) => {
@@ -132,28 +134,31 @@ export const IntentOS: React.FC<IntentOSProps> = ({
     setToastActive(true);
   }, []);
 
-  const apiCall = useCallback(async (endpoint: string, options: RequestInit = {}) => {
-    try {
-      const response = await fetch(`/api/intent-os/${endpoint}`, {
-        headers: {
-          'Content-Type': 'application/json',
-          ...options.headers,
-        },
-        ...options,
-      });
-      
-      const data = await response.json();
-      
-      if (!data.success) {
-        throw new Error(data.error || 'API call failed');
+  const apiCall = useCallback(
+    async (endpoint: string, options: RequestInit = {}) => {
+      try {
+        const response = await fetch(`/api/intent-os/${endpoint}`, {
+          headers: {
+            "Content-Type": "application/json",
+            ...options.headers,
+          },
+          ...options,
+        });
+
+        const data = await response.json();
+
+        if (!data.success) {
+          throw new Error(data.error || "API call failed");
+        }
+
+        return data.data;
+      } catch (error) {
+        console.error(`API call failed: ${endpoint}`, error);
+        throw error;
       }
-      
-      return data.data;
-    } catch (error) {
-      console.error(`API call failed: ${endpoint}`, error);
-      throw error;
-    }
-  }, []);
+    },
+    [],
+  );
 
   // Load initial data
   useEffect(() => {
@@ -167,7 +172,7 @@ export const IntentOS: React.FC<IntentOSProps> = ({
       const blocks = await apiCall(`intent-blocks?tenantId=${tenantId}`);
       setIntentBlocks(blocks || {});
     } catch (error) {
-      console.error('Failed to load intent blocks:', error);
+      console.error("Failed to load intent blocks:", error);
     }
   };
 
@@ -175,11 +180,11 @@ export const IntentOS: React.FC<IntentOSProps> = ({
     try {
       const history = await apiCall(`overlay-history?tenantId=${tenantId}`);
       setOverlayHistory(history || []);
-      
+
       const active = await apiCall(`overlay-active?tenantId=${tenantId}`);
       setActiveOverlay(active);
     } catch (error) {
-      console.error('Failed to load overlay history:', error);
+      console.error("Failed to load overlay history:", error);
     }
   };
 
@@ -188,28 +193,28 @@ export const IntentOS: React.FC<IntentOSProps> = ({
       const drafts = await apiCall(`promo-drafts?tenantId=${tenantId}`);
       setPromoDrafts(drafts || []);
     } catch (error) {
-      console.error('Failed to load promo drafts:', error);
+      console.error("Failed to load promo drafts:", error);
     }
   };
 
   const applyOverlay = async () => {
     if (!promoteEnabled) {
-      showToast('PROMOTE flag must be enabled to apply overlays', true);
+      showToast("PROMOTE flag must be enabled to apply overlays", true);
       return;
     }
 
     setLoading(true);
     try {
-      await apiCall('apply-overlay', {
-        method: 'POST',
+      await apiCall("apply-overlay", {
+        method: "POST",
         body: JSON.stringify({
           tenantId,
           overlayConfig,
-          promote: true
-        })
+          promote: true,
+        }),
       });
-      
-      showToast('Metafield overlay applied successfully');
+
+      showToast("Metafield overlay applied successfully");
       setOverlayModalActive(false);
       loadOverlayHistory();
     } catch (error) {
@@ -221,22 +226,22 @@ export const IntentOS: React.FC<IntentOSProps> = ({
 
   const revertOverlay = async (targetVersion?: string) => {
     if (!promoteEnabled) {
-      showToast('PROMOTE flag must be enabled to revert overlays', true);
+      showToast("PROMOTE flag must be enabled to revert overlays", true);
       return;
     }
 
     setLoading(true);
     try {
-      await apiCall('revert-overlay', {
-        method: 'POST',
+      await apiCall("revert-overlay", {
+        method: "POST",
         body: JSON.stringify({
           tenantId,
           targetVersion,
-          promote: true
-        })
+          promote: true,
+        }),
       });
-      
-      showToast('Metafield overlay reverted successfully');
+
+      showToast("Metafield overlay reverted successfully");
       loadOverlayHistory();
     } catch (error) {
       showToast(`Failed to revert overlay: ${error.message}`, true);
@@ -248,17 +253,17 @@ export const IntentOS: React.FC<IntentOSProps> = ({
   const generateUTMContent = async () => {
     setLoading(true);
     try {
-      const content = await apiCall('utm-content', {
-        method: 'POST',
+      const content = await apiCall("utm-content", {
+        method: "POST",
         body: JSON.stringify({
           tenantId,
           utmTerm,
-          productContext
-        })
+          productContext,
+        }),
       });
-      
+
       setUtmContent(content);
-      showToast('UTM content generated successfully');
+      showToast("UTM content generated successfully");
     } catch (error) {
       showToast(`Failed to generate UTM content: ${error.message}`, true);
     } finally {
@@ -268,23 +273,23 @@ export const IntentOS: React.FC<IntentOSProps> = ({
 
   const saveIntentBlock = async () => {
     if (!editingIntent || !promoteEnabled) {
-      showToast('PROMOTE flag must be enabled to save intent blocks', true);
+      showToast("PROMOTE flag must be enabled to save intent blocks", true);
       return;
     }
 
     setLoading(true);
     try {
-      await apiCall('intent-blocks', {
-        method: 'POST',
+      await apiCall("intent-blocks", {
+        method: "POST",
         body: JSON.stringify({
           tenantId,
           intentKey: editingIntent.intent_key,
           blockData: editingIntent,
-          promote: true
-        })
+          promote: true,
+        }),
       });
-      
-      showToast('Intent block saved successfully');
+
+      showToast("Intent block saved successfully");
       setIntentModalActive(false);
       setEditingIntent(null);
       loadIntentBlocks();
@@ -297,21 +302,21 @@ export const IntentOS: React.FC<IntentOSProps> = ({
 
   const createPromoDraft = async () => {
     if (!promoteEnabled) {
-      showToast('PROMOTE flag must be enabled to create promo drafts', true);
+      showToast("PROMOTE flag must be enabled to create promo drafts", true);
       return;
     }
 
     setLoading(true);
     try {
-      const draft = await apiCall('promo-draft', {
-        method: 'POST',
+      const draft = await apiCall("promo-draft", {
+        method: "POST",
         body: JSON.stringify({
           tenantId,
           promoConfig,
-          promote: true
-        })
+          promote: true,
+        }),
       });
-      
+
       showToast(`Promo draft created: ${draft.draft.title}`);
       setPromoModalActive(false);
       loadPromoDrafts();
@@ -324,28 +329,28 @@ export const IntentOS: React.FC<IntentOSProps> = ({
 
   const tabs = [
     {
-      id: 'overlays',
-      content: 'Catalog Overlays',
-      accessibilityLabel: 'Metafield overlay management',
-      panelID: 'overlays-panel',
+      id: "overlays",
+      content: "Catalog Overlays",
+      accessibilityLabel: "Metafield overlay management",
+      panelID: "overlays-panel",
     },
     {
-      id: 'intent-blocks',
-      content: 'Intent Blocks',
-      accessibilityLabel: 'Intent block management',
-      panelID: 'intent-blocks-panel',
+      id: "intent-blocks",
+      content: "Intent Blocks",
+      accessibilityLabel: "Intent block management",
+      panelID: "intent-blocks-panel",
     },
     {
-      id: 'utm-content',
-      content: 'UTM Content',
-      accessibilityLabel: 'UTM-driven content generation',
-      panelID: 'utm-content-panel',
+      id: "utm-content",
+      content: "UTM Content",
+      accessibilityLabel: "UTM-driven content generation",
+      panelID: "utm-content-panel",
     },
     {
-      id: 'promo-drafts',
-      content: 'Promo Drafts',
-      accessibilityLabel: 'AI-generated promo page drafts',
-      panelID: 'promo-drafts-panel',
+      id: "promo-drafts",
+      content: "Promo Drafts",
+      accessibilityLabel: "AI-generated promo page drafts",
+      panelID: "promo-drafts-panel",
     },
   ];
 
@@ -354,16 +359,25 @@ export const IntentOS: React.FC<IntentOSProps> = ({
       <Layout.Section>
         {!promoteEnabled && (
           <Banner status="warning" title="PROMOTE flag disabled">
-            <p>Overlay mutations are disabled. Enable PROMOTE flag to apply changes.</p>
+            <p>
+              Overlay mutations are disabled. Enable PROMOTE flag to apply
+              changes.
+            </p>
           </Banner>
         )}
-        
+
         <Card>
           <Card.Section>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
               <Text variant="headingMd">Metafield Overlays</Text>
-              <Button 
-                primary 
+              <Button
+                primary
                 onClick={() => setOverlayModalActive(true)}
                 disabled={!promoteEnabled}
               >
@@ -371,18 +385,33 @@ export const IntentOS: React.FC<IntentOSProps> = ({
               </Button>
             </div>
           </Card.Section>
-          
+
           {activeOverlay && (
             <Card.Section>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "1rem",
+                }}
+              >
                 <Text variant="headingSm">Active Overlay</Text>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
                   <TextContainer>
                     <Text>Version: {activeOverlay.version}</Text>
-                    <Text color="subdued">Applied: {new Date(activeOverlay.appliedAt).toLocaleString()}</Text>
+                    <Text color="subdued">
+                      Applied:{" "}
+                      {new Date(activeOverlay.appliedAt).toLocaleString()}
+                    </Text>
                   </TextContainer>
-                  <Button 
-                    destructive 
+                  <Button
+                    destructive
                     onClick={() => revertOverlay()}
                     disabled={!promoteEnabled}
                     loading={loading}
@@ -393,27 +422,33 @@ export const IntentOS: React.FC<IntentOSProps> = ({
               </div>
             </Card.Section>
           )}
-          
+
           <Card.Section>
             <DataTable
-              columnContentTypes={['text', 'text', 'text', 'text', 'text']}
-              headings={['Timestamp', 'Action', 'Selector', 'Channel', 'Actions']}
-              rows={overlayHistory.map(entry => [
+              columnContentTypes={["text", "text", "text", "text", "text"]}
+              headings={[
+                "Timestamp",
+                "Action",
+                "Selector",
+                "Channel",
+                "Actions",
+              ]}
+              rows={overlayHistory.map((entry) => [
                 new Date(entry.timestamp).toLocaleString(),
-                <Badge status={entry.action === 'APPLY' ? 'success' : 'info'}>
+                <Badge status={entry.action === "APPLY" ? "success" : "info"}>
                   {entry.action}
                 </Badge>,
-                entry.selector || '-',
-                entry.channel || 'web',
+                entry.selector || "-",
+                entry.channel || "web",
                 <ButtonGroup>
-                  <Button 
-                    size="slim" 
+                  <Button
+                    size="slim"
                     onClick={() => revertOverlay(entry.timestamp)}
                     disabled={!promoteEnabled}
                   >
                     Revert to This
                   </Button>
-                </ButtonGroup>
+                </ButtonGroup>,
               ])}
             />
           </Card.Section>
@@ -427,20 +462,26 @@ export const IntentOS: React.FC<IntentOSProps> = ({
       <Layout.Section>
         <Card>
           <Card.Section>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
               <Text variant="headingMd">Intent Blocks</Text>
-              <Button 
-                primary 
+              <Button
+                primary
                 onClick={() => {
                   setEditingIntent({
-                    intent_key: '',
-                    hero_headline: '',
+                    intent_key: "",
+                    hero_headline: "",
                     benefit_bullets: [],
-                    proof_snippet: '',
-                    cta_text: '',
-                    url_target: '',
-                    updated_at: '',
-                    updated_by: ''
+                    proof_snippet: "",
+                    cta_text: "",
+                    url_target: "",
+                    updated_at: "",
+                    updated_by: "",
                   });
                   setIntentModalActive(true);
                 }}
@@ -450,50 +491,72 @@ export const IntentOS: React.FC<IntentOSProps> = ({
               </Button>
             </div>
           </Card.Section>
-          
+
           <Card.Section>
             {Object.keys(intentBlocks).length === 0 ? (
               <EmptyState
                 heading="No intent blocks yet"
                 action={{
-                  content: 'Create your first intent block',
+                  content: "Create your first intent block",
                   onAction: () => {
                     setEditingIntent({
-                      intent_key: '',
-                      hero_headline: '',
+                      intent_key: "",
+                      hero_headline: "",
                       benefit_bullets: [],
-                      proof_snippet: '',
-                      cta_text: '',
-                      url_target: '',
-                      updated_at: '',
-                      updated_by: ''
+                      proof_snippet: "",
+                      cta_text: "",
+                      url_target: "",
+                      updated_at: "",
+                      updated_by: "",
                     });
                     setIntentModalActive(true);
-                  }
+                  },
                 }}
                 image="https://cdn.shopify.com/s/files/1/0005/4175/0643/files/empty-state.svg"
               >
-                <p>Intent blocks help you create targeted content for different user intents and UTM campaigns.</p>
+                <p>
+                  Intent blocks help you create targeted content for different
+                  user intents and UTM campaigns.
+                </p>
               </EmptyState>
             ) : (
               <ResourceList
-                resourceName={{ singular: 'intent block', plural: 'intent blocks' }}
-                items={Object.entries(intentBlocks).map(([key, block]) => ({ id: key, ...block }))}
+                resourceName={{
+                  singular: "intent block",
+                  plural: "intent blocks",
+                }}
+                items={Object.entries(intentBlocks).map(([key, block]) => ({
+                  id: key,
+                  ...block,
+                }))}
                 renderItem={(item) => {
                   const { id, hero_headline, proof_snippet, updated_at } = item;
                   return (
                     <ResourceItem
                       id={id}
-                      media={<Avatar customer={false} size="medium" initials={id.substring(0, 2).toUpperCase()} />}
+                      media={
+                        <Avatar
+                          customer={false}
+                          size="medium"
+                          initials={id.substring(0, 2).toUpperCase()}
+                        />
+                      }
                       accessibilityLabel={`View details for ${id}`}
                     >
                       <div distribution="fillEvenly">
                         <div vertical spacing="extraTight">
-                          <Text variant="bodyMd" fontWeight="semibold">{id}</Text>
+                          <Text variant="bodyMd" fontWeight="semibold">
+                            {id}
+                          </Text>
                           <Text variant="bodySm">{hero_headline}</Text>
-                          <Text variant="bodySm" color="subdued">{proof_snippet}</Text>
                           <Text variant="bodySm" color="subdued">
-                            Updated: {updated_at ? new Date(updated_at).toLocaleString() : 'Never'}
+                            {proof_snippet}
+                          </Text>
+                          <Text variant="bodySm" color="subdued">
+                            Updated:{" "}
+                            {updated_at
+                              ? new Date(updated_at).toLocaleString()
+                              : "Never"}
                           </Text>
                         </div>
                         <ButtonGroup>
@@ -528,59 +591,86 @@ export const IntentOS: React.FC<IntentOSProps> = ({
           <Card.Section>
             <Text variant="headingMd">UTM-Driven Content Generator</Text>
             <TextContainer>
-              <p>Generate dynamic content variations based on UTM parameters for improved conversion rates.</p>
+              <p>
+                Generate dynamic content variations based on UTM parameters for
+                improved conversion rates.
+              </p>
             </TextContainer>
           </Card.Section>
-          
+
           <Card.Section>
             <FormLayout>
               <Select
                 label="UTM Term"
                 options={[
-                  { label: 'High Intent', value: 'high-intent' },
-                  { label: 'Research Phase', value: 'research' },
-                  { label: 'Comparison Shopping', value: 'comparison' },
+                  { label: "High Intent", value: "high-intent" },
+                  { label: "Research Phase", value: "research" },
+                  { label: "Comparison Shopping", value: "comparison" },
                 ]}
                 value={utmTerm}
                 onChange={(value) => setUtmTerm(value)}
               />
-              
+
               <TextField
                 label="Product Category"
-                value={productContext.category || ''}
-                onChange={(value) => setProductContext({ ...productContext, category: value })}
+                value={productContext.category || ""}
+                onChange={(value) =>
+                  setProductContext({ ...productContext, category: value })
+                }
                 placeholder="e.g., shoes, electronics, furniture"
               />
-              
+
               <TextField
                 label="Discount Percentage"
-                value={productContext.discount || ''}
-                onChange={(value) => setProductContext({ ...productContext, discount: value })}
+                value={productContext.discount || ""}
+                onChange={(value) =>
+                  setProductContext({ ...productContext, discount: value })
+                }
                 placeholder="e.g., 20"
                 suffix="%"
               />
-              
+
               <Button primary onClick={generateUTMContent} loading={loading}>
                 Generate Content Variations
               </Button>
             </FormLayout>
           </Card.Section>
-          
+
           {utmContent && (
             <Card.Section>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "1rem",
+                }}
+              >
                 <Text variant="headingSm">Generated Content</Text>
-                <Text color="subdued">Strategy: {utmContent.strategy.urgency} urgency, {utmContent.strategy.social_proof} social proof</Text>
-                
+                <Text color="subdued">
+                  Strategy: {utmContent.strategy.urgency} urgency,{" "}
+                  {utmContent.strategy.social_proof} social proof
+                </Text>
+
                 {utmContent.variations.map((variation, index) => (
                   <Card key={index} sectioned>
                     <div vertical spacing="tight">
                       <Text variant="headingSm">Variation {index + 1}</Text>
-                      <Text><strong>Headline:</strong> {variation.hero_headline}</Text>
-                      <Text><strong>Benefits:</strong> {variation.benefit_bullets.join(' • ')}</Text>
-                      <Text><strong>Social Proof:</strong> {variation.proof_snippet}</Text>
-                      <Text><strong>CTA:</strong> {variation.cta_text}</Text>
-                      <Text><strong>URL:</strong> {variation.url_target}</Text>
+                      <Text>
+                        <strong>Headline:</strong> {variation.hero_headline}
+                      </Text>
+                      <Text>
+                        <strong>Benefits:</strong>{" "}
+                        {variation.benefit_bullets.join(" • ")}
+                      </Text>
+                      <Text>
+                        <strong>Social Proof:</strong> {variation.proof_snippet}
+                      </Text>
+                      <Text>
+                        <strong>CTA:</strong> {variation.cta_text}
+                      </Text>
+                      <Text>
+                        <strong>URL:</strong> {variation.url_target}
+                      </Text>
                     </div>
                   </Card>
                 ))}
@@ -597,10 +687,16 @@ export const IntentOS: React.FC<IntentOSProps> = ({
       <Layout.Section>
         <Card>
           <Card.Section>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
               <Text variant="headingMd">AI Promo Page Drafts</Text>
-              <Button 
-                primary 
+              <Button
+                primary
                 onClick={() => setPromoModalActive(true)}
                 disabled={!promoteEnabled}
               >
@@ -608,50 +704,67 @@ export const IntentOS: React.FC<IntentOSProps> = ({
               </Button>
             </div>
             <TextContainer>
-              <p>AI-generated promotional page drafts. All pages remain as drafts and require manual review before publishing.</p>
+              <p>
+                AI-generated promotional page drafts. All pages remain as drafts
+                and require manual review before publishing.
+              </p>
             </TextContainer>
           </Card.Section>
-          
+
           <Card.Section>
             {promoDrafts.length === 0 ? (
               <EmptyState
                 heading="No promo drafts yet"
                 action={{
-                  content: 'Create your first promo draft',
-                  onAction: () => setPromoModalActive(true)
+                  content: "Create your first promo draft",
+                  onAction: () => setPromoModalActive(true),
                 }}
                 image="https://cdn.shopify.com/s/files/1/0005/4175/0643/files/empty-state.svg"
               >
-                <p>Generate AI-powered promotional page drafts for your campaigns and offers.</p>
+                <p>
+                  Generate AI-powered promotional page drafts for your campaigns
+                  and offers.
+                </p>
               </EmptyState>
             ) : (
               <ResourceList
-                resourceName={{ singular: 'promo draft', plural: 'promo drafts' }}
+                resourceName={{
+                  singular: "promo draft",
+                  plural: "promo drafts",
+                }}
                 items={promoDrafts}
                 renderItem={(draft) => (
                   <ResourceItem
                     id={draft.id}
-                    media={<Avatar customer={false} size="medium" initials="PD" />}
+                    media={
+                      <Avatar customer={false} size="medium" initials="PD" />
+                    }
                     accessibilityLabel={`View details for ${draft.title}`}
                   >
                     <div distribution="fillEvenly">
                       <div vertical spacing="extraTight">
-                        <Text variant="bodyMd" fontWeight="semibold">{draft.title}</Text>
+                        <Text variant="bodyMd" fontWeight="semibold">
+                          {draft.title}
+                        </Text>
                         <Text variant="bodySm">{draft.meta_description}</Text>
-                        <Text variant="bodySm" color="subdued">Handle: /{draft.handle}</Text>
+                        <Text variant="bodySm" color="subdued">
+                          Handle: /{draft.handle}
+                        </Text>
                         <Text variant="bodySm" color="subdued">
                           Created: {new Date(draft.created_at).toLocaleString()}
                         </Text>
                         <div spacing="extraTight">
                           <Badge status="info">DRAFT</Badge>
-                          {draft.tags.map(tag => (
+                          {draft.tags.map((tag) => (
                             <Badge key={tag}>{tag}</Badge>
                           ))}
                         </div>
                       </div>
                       <ButtonGroup>
                         <Button size="slim">Preview</Button>
-                        <Button size="slim" primary>Review & Publish</Button>
+                        <Button size="slim" primary>
+                          Review & Publish
+                        </Button>
                       </ButtonGroup>
                     </div>
                   </ResourceItem>
@@ -678,7 +791,11 @@ export const IntentOS: React.FC<IntentOSProps> = ({
         <Layout>
           <Layout.Section>
             <Card>
-              <Tabs tabs={tabs} selected={selectedTab} onSelect={setSelectedTab}>
+              <Tabs
+                tabs={tabs}
+                selected={selectedTab}
+                onSelect={setSelectedTab}
+              >
                 <Card.Section>
                   {selectedTab === 0 && renderOverlaysTab()}
                   {selectedTab === 1 && renderIntentBlocksTab()}
@@ -696,14 +813,14 @@ export const IntentOS: React.FC<IntentOSProps> = ({
           onClose={() => setOverlayModalActive(false)}
           title="Apply Metafield Overlay"
           primaryAction={{
-            content: 'Apply Overlay',
+            content: "Apply Overlay",
             onAction: applyOverlay,
             loading,
-            disabled: !promoteEnabled
+            disabled: !promoteEnabled,
           }}
           secondaryActions={[
             {
-              content: 'Cancel',
+              content: "Cancel",
               onAction: () => setOverlayModalActive(false),
             },
           ]}
@@ -713,26 +830,32 @@ export const IntentOS: React.FC<IntentOSProps> = ({
               <TextField
                 label="CSS Selector"
                 value={overlayConfig.selector}
-                onChange={(value) => setOverlayConfig({ ...overlayConfig, selector: value })}
+                onChange={(value) =>
+                  setOverlayConfig({ ...overlayConfig, selector: value })
+                }
                 placeholder="e.g., .product-title, #price-display"
                 helpText="Target element for the overlay"
               />
-              
+
               <Select
                 label="Channel"
                 options={[
-                  { label: 'Web', value: 'web' },
-                  { label: 'Mobile App', value: 'mobile' },
-                  { label: 'Email', value: 'email' },
+                  { label: "Web", value: "web" },
+                  { label: "Mobile App", value: "mobile" },
+                  { label: "Email", value: "email" },
                 ]}
                 value={overlayConfig.channel}
-                onChange={(value) => setOverlayConfig({ ...overlayConfig, channel: value })}
+                onChange={(value) =>
+                  setOverlayConfig({ ...overlayConfig, channel: value })
+                }
               />
-              
+
               <TextField
                 label="Description"
-                value={overlayConfig.description || ''}
-                onChange={(value) => setOverlayConfig({ ...overlayConfig, description: value })}
+                value={overlayConfig.description || ""}
+                onChange={(value) =>
+                  setOverlayConfig({ ...overlayConfig, description: value })
+                }
                 placeholder="Brief description of this overlay"
                 multiline={2}
               />
@@ -747,16 +870,20 @@ export const IntentOS: React.FC<IntentOSProps> = ({
             setIntentModalActive(false);
             setEditingIntent(null);
           }}
-          title={editingIntent?.intent_key ? 'Edit Intent Block' : 'Create Intent Block'}
+          title={
+            editingIntent?.intent_key
+              ? "Edit Intent Block"
+              : "Create Intent Block"
+          }
           primaryAction={{
-            content: 'Save Intent Block',
+            content: "Save Intent Block",
             onAction: saveIntentBlock,
             loading,
-            disabled: !promoteEnabled
+            disabled: !promoteEnabled,
           }}
           secondaryActions={[
             {
-              content: 'Cancel',
+              content: "Cancel",
               onAction: () => {
                 setIntentModalActive(false);
                 setEditingIntent(null);
@@ -770,46 +897,58 @@ export const IntentOS: React.FC<IntentOSProps> = ({
                 <TextField
                   label="Intent Key"
                   value={editingIntent.intent_key}
-                  onChange={(value) => setEditingIntent({ ...editingIntent, intent_key: value })}
+                  onChange={(value) =>
+                    setEditingIntent({ ...editingIntent, intent_key: value })
+                  }
                   placeholder="e.g., high-intent-sale, brand-awareness"
                 />
-                
+
                 <TextField
                   label="Hero Headline"
                   value={editingIntent.hero_headline}
-                  onChange={(value) => setEditingIntent({ ...editingIntent, hero_headline: value })}
+                  onChange={(value) =>
+                    setEditingIntent({ ...editingIntent, hero_headline: value })
+                  }
                   placeholder="Compelling headline for this intent"
                 />
-                
+
                 <TextField
                   label="Benefit Bullets (one per line)"
-                  value={editingIntent.benefit_bullets.join('\n')}
-                  onChange={(value) => setEditingIntent({ 
-                    ...editingIntent, 
-                    benefit_bullets: value.split('\n').filter(Boolean) 
-                  })}
+                  value={editingIntent.benefit_bullets.join("\n")}
+                  onChange={(value) =>
+                    setEditingIntent({
+                      ...editingIntent,
+                      benefit_bullets: value.split("\n").filter(Boolean),
+                    })
+                  }
                   multiline={4}
                   placeholder="Fast Shipping&#10;Money-Back Guarantee&#10;Expert Support"
                 />
-                
+
                 <TextField
                   label="Social Proof Snippet"
                   value={editingIntent.proof_snippet}
-                  onChange={(value) => setEditingIntent({ ...editingIntent, proof_snippet: value })}
+                  onChange={(value) =>
+                    setEditingIntent({ ...editingIntent, proof_snippet: value })
+                  }
                   placeholder="Join 10,000+ satisfied customers"
                 />
-                
+
                 <TextField
                   label="CTA Text"
                   value={editingIntent.cta_text}
-                  onChange={(value) => setEditingIntent({ ...editingIntent, cta_text: value })}
+                  onChange={(value) =>
+                    setEditingIntent({ ...editingIntent, cta_text: value })
+                  }
                   placeholder="Shop Now & Save"
                 />
-                
+
                 <TextField
                   label="Target URL"
                   value={editingIntent.url_target}
-                  onChange={(value) => setEditingIntent({ ...editingIntent, url_target: value })}
+                  onChange={(value) =>
+                    setEditingIntent({ ...editingIntent, url_target: value })
+                  }
                   placeholder="/collections/sale"
                 />
               </FormLayout>
@@ -823,14 +962,14 @@ export const IntentOS: React.FC<IntentOSProps> = ({
           onClose={() => setPromoModalActive(false)}
           title="Create AI Promo Draft"
           primaryAction={{
-            content: 'Generate Draft',
+            content: "Generate Draft",
             onAction: createPromoDraft,
             loading,
-            disabled: !promoteEnabled
+            disabled: !promoteEnabled,
           }}
           secondaryActions={[
             {
-              content: 'Cancel',
+              content: "Cancel",
               onAction: () => setPromoModalActive(false),
             },
           ]}
@@ -840,46 +979,56 @@ export const IntentOS: React.FC<IntentOSProps> = ({
               <TextField
                 label="Campaign Name"
                 value={promoConfig.campaign_name}
-                onChange={(value) => setPromoConfig({ ...promoConfig, campaign_name: value })}
+                onChange={(value) =>
+                  setPromoConfig({ ...promoConfig, campaign_name: value })
+                }
                 placeholder="Summer Sale 2024"
               />
-              
+
               <TextField
                 label="Offer Details"
                 value={promoConfig.offer_details}
-                onChange={(value) => setPromoConfig({ ...promoConfig, offer_details: value })}
+                onChange={(value) =>
+                  setPromoConfig({ ...promoConfig, offer_details: value })
+                }
                 placeholder="25% off all summer items + free shipping"
                 multiline={2}
               />
-              
+
               <TextField
                 label="Target Audience"
                 value={promoConfig.target_audience}
-                onChange={(value) => setPromoConfig({ ...promoConfig, target_audience: value })}
+                onChange={(value) =>
+                  setPromoConfig({ ...promoConfig, target_audience: value })
+                }
                 placeholder="Fashion-conscious millennials"
               />
-              
+
               <Select
                 label="Industry"
                 options={[
-                  { label: 'E-commerce', value: 'ecommerce' },
-                  { label: 'SaaS', value: 'saas' },
-                  { label: 'Services', value: 'services' },
+                  { label: "E-commerce", value: "ecommerce" },
+                  { label: "SaaS", value: "saas" },
+                  { label: "Services", value: "services" },
                 ]}
                 value={promoConfig.industry}
-                onChange={(value) => setPromoConfig({ ...promoConfig, industry: value })}
+                onChange={(value) =>
+                  setPromoConfig({ ...promoConfig, industry: value })
+                }
               />
-              
+
               <Select
                 label="Campaign Type"
                 options={[
-                  { label: 'Sale/Discount', value: 'sale' },
-                  { label: 'Product Launch', value: 'launch' },
-                  { label: 'Seasonal', value: 'seasonal' },
-                  { label: 'Flash Sale', value: 'flash' },
+                  { label: "Sale/Discount", value: "sale" },
+                  { label: "Product Launch", value: "launch" },
+                  { label: "Seasonal", value: "seasonal" },
+                  { label: "Flash Sale", value: "flash" },
                 ]}
                 value={promoConfig.campaign_type}
-                onChange={(value) => setPromoConfig({ ...promoConfig, campaign_type: value })}
+                onChange={(value) =>
+                  setPromoConfig({ ...promoConfig, campaign_type: value })
+                }
               />
             </FormLayout>
           </Modal.Section>

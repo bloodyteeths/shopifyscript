@@ -3,8 +3,8 @@
  * Enforces feature access and usage limits based on subscription tiers
  */
 
-import BillingService from '../services/billing.js';
-import ShopifyBillingService from '../services/shopify-billing.js';
+import BillingService from "../services/billing.js";
+import ShopifyBillingService from "../services/shopify-billing.js";
 
 const billingService = new BillingService();
 
@@ -16,11 +16,11 @@ export function requireFeature(featureName, options = {}) {
     try {
       const user = req.user;
       const shop = req.shop;
-      
+
       if (!user && !shop) {
         return res.status(401).json({
-          error: 'Authentication required',
-          code: 'AUTH_REQUIRED'
+          error: "Authentication required",
+          code: "AUTH_REQUIRED",
         });
       }
 
@@ -41,12 +41,12 @@ export function requireFeature(featureName, options = {}) {
 
       if (!hasAccess) {
         return res.status(403).json({
-          error: `Feature '${featureName}' requires ${options.requiredTier || 'a higher'} subscription tier`,
-          code: 'FEATURE_ACCESS_DENIED',
+          error: `Feature '${featureName}' requires ${options.requiredTier || "a higher"} subscription tier`,
+          code: "FEATURE_ACCESS_DENIED",
           feature: featureName,
-          currentTier: tier?.name || 'none',
+          currentTier: tier?.name || "none",
           requiredTier: options.requiredTier,
-          upgradeUrl: options.upgradeUrl || '/billing/upgrade'
+          upgradeUrl: options.upgradeUrl || "/billing/upgrade",
         });
       }
 
@@ -55,10 +55,10 @@ export function requireFeature(featureName, options = {}) {
       req.featureAccess = true;
       next();
     } catch (error) {
-      console.error('Error in feature gate middleware:', error);
+      console.error("Error in feature gate middleware:", error);
       res.status(500).json({
-        error: 'Internal server error',
-        code: 'FEATURE_CHECK_ERROR'
+        error: "Internal server error",
+        code: "FEATURE_CHECK_ERROR",
       });
     }
   };
@@ -72,11 +72,11 @@ export function checkUsageLimit(limitType, options = {}) {
     try {
       const user = req.user;
       const shop = req.shop;
-      
+
       if (!user && !shop) {
         return res.status(401).json({
-          error: 'Authentication required',
-          code: 'AUTH_REQUIRED'
+          error: "Authentication required",
+          code: "AUTH_REQUIRED",
         });
       }
 
@@ -87,35 +87,35 @@ export function checkUsageLimit(limitType, options = {}) {
       if (shop) {
         const shopifyBilling = new ShopifyBillingService();
         tier = shopifyBilling.getSubscriptionTier(shop.subscription);
-        currentUsage = await getCurrentUsage(shop.id, 'shopify');
+        currentUsage = await getCurrentUsage(shop.id, "shopify");
       }
       // Get tier and usage for WordPress/Stripe
       else if (user) {
         tier = billingService.getTierById(user.subscription?.tier);
-        currentUsage = await getCurrentUsage(user.id, 'wordpress');
+        currentUsage = await getCurrentUsage(user.id, "wordpress");
       }
 
       if (!tier) {
         return res.status(403).json({
-          error: 'Valid subscription required',
-          code: 'NO_SUBSCRIPTION'
+          error: "Valid subscription required",
+          code: "NO_SUBSCRIPTION",
         });
       }
 
       // Check specific limit
       const limit = tier.limits[limitType];
       const usage = currentUsage[limitType] || 0;
-      
+
       // -1 means unlimited
       if (limit !== -1 && usage >= limit) {
         return res.status(429).json({
           error: `${limitType} limit exceeded`,
-          code: 'USAGE_LIMIT_EXCEEDED',
+          code: "USAGE_LIMIT_EXCEEDED",
           limitType,
           currentUsage: usage,
           limit,
           tier: tier.name,
-          upgradeUrl: options.upgradeUrl || '/billing/upgrade'
+          upgradeUrl: options.upgradeUrl || "/billing/upgrade",
         });
       }
 
@@ -125,10 +125,10 @@ export function checkUsageLimit(limitType, options = {}) {
       req.remainingQuota = limit === -1 ? -1 : limit - usage;
       next();
     } catch (error) {
-      console.error('Error in usage limit middleware:', error);
+      console.error("Error in usage limit middleware:", error);
       res.status(500).json({
-        error: 'Internal server error',
-        code: 'USAGE_CHECK_ERROR'
+        error: "Internal server error",
+        code: "USAGE_CHECK_ERROR",
       });
     }
   };
@@ -142,11 +142,11 @@ export function requireTier(requiredTierIndex) {
     try {
       const user = req.user;
       const shop = req.shop;
-      
+
       if (!user && !shop) {
         return res.status(401).json({
-          error: 'Authentication required',
-          code: 'AUTH_REQUIRED'
+          error: "Authentication required",
+          code: "AUTH_REQUIRED",
         });
       }
 
@@ -172,23 +172,23 @@ export function requireTier(requiredTierIndex) {
       if (currentTierIndex < requiredTierIndex) {
         const requiredTiers = Object.values(billingService.PRICING_TIERS);
         const requiredTier = requiredTiers[requiredTierIndex];
-        
+
         return res.status(403).json({
           error: `This feature requires ${requiredTier.name} tier or higher`,
-          code: 'TIER_UPGRADE_REQUIRED',
-          currentTier: tier?.name || 'none',
+          code: "TIER_UPGRADE_REQUIRED",
+          currentTier: tier?.name || "none",
           requiredTier: requiredTier.name,
-          upgradeUrl: '/billing/upgrade'
+          upgradeUrl: "/billing/upgrade",
         });
       }
 
       req.tier = tier;
       next();
     } catch (error) {
-      console.error('Error in tier requirement middleware:', error);
+      console.error("Error in tier requirement middleware:", error);
       res.status(500).json({
-        error: 'Internal server error',
-        code: 'TIER_CHECK_ERROR'
+        error: "Internal server error",
+        code: "TIER_CHECK_ERROR",
       });
     }
   };
@@ -202,11 +202,11 @@ export function requireActiveSubscription(options = {}) {
     try {
       const user = req.user;
       const shop = req.shop;
-      
+
       if (!user && !shop) {
         return res.status(401).json({
-          error: 'Authentication required',
-          code: 'AUTH_REQUIRED'
+          error: "Authentication required",
+          code: "AUTH_REQUIRED",
         });
       }
 
@@ -216,31 +216,35 @@ export function requireActiveSubscription(options = {}) {
       // Check Shopify subscription
       if (shop) {
         subscription = shop.subscription;
-        hasActiveSubscription = subscription && subscription.status === 'ACTIVE';
+        hasActiveSubscription =
+          subscription && subscription.status === "ACTIVE";
       }
       // Check Stripe subscription for WordPress users
       else if (user) {
         subscription = user.subscription;
-        hasActiveSubscription = subscription && 
-          (subscription.status === 'active' || subscription.status === 'trialing');
+        hasActiveSubscription =
+          subscription &&
+          (subscription.status === "active" ||
+            subscription.status === "trialing");
       }
 
       if (!hasActiveSubscription) {
         return res.status(402).json({
-          error: 'Active subscription required',
-          code: 'SUBSCRIPTION_REQUIRED',
-          message: options.message || 'This feature requires an active subscription',
-          subscribeUrl: options.subscribeUrl || '/billing/subscribe'
+          error: "Active subscription required",
+          code: "SUBSCRIPTION_REQUIRED",
+          message:
+            options.message || "This feature requires an active subscription",
+          subscribeUrl: options.subscribeUrl || "/billing/subscribe",
         });
       }
 
       req.subscription = subscription;
       next();
     } catch (error) {
-      console.error('Error in subscription validation middleware:', error);
+      console.error("Error in subscription validation middleware:", error);
       res.status(500).json({
-        error: 'Internal server error',
-        code: 'SUBSCRIPTION_CHECK_ERROR'
+        error: "Internal server error",
+        code: "SUBSCRIPTION_CHECK_ERROR",
       });
     }
   };
@@ -252,20 +256,20 @@ export function requireActiveSubscription(options = {}) {
 export function tierBasedRateLimit(endpoint) {
   const rateLimits = {
     starter: { requests: 100, window: 3600 }, // 100 requests per hour
-    pro: { requests: 500, window: 3600 },     // 500 requests per hour
+    pro: { requests: 500, window: 3600 }, // 500 requests per hour
     growth: { requests: 2000, window: 3600 }, // 2000 requests per hour
-    enterprise: { requests: -1, window: 3600 } // unlimited
+    enterprise: { requests: -1, window: 3600 }, // unlimited
   };
 
   return async (req, res, next) => {
     try {
       const user = req.user;
       const shop = req.shop;
-      
+
       if (!user && !shop) {
         return res.status(401).json({
-          error: 'Authentication required',
-          code: 'AUTH_REQUIRED'
+          error: "Authentication required",
+          code: "AUTH_REQUIRED",
         });
       }
 
@@ -285,11 +289,11 @@ export function tierBasedRateLimit(endpoint) {
       }
 
       if (!tier) {
-        tier = { id: 'starter' }; // Default to starter limits for free users
+        tier = { id: "starter" }; // Default to starter limits for free users
       }
 
       const limit = rateLimits[tier.id] || rateLimits.starter;
-      
+
       // Skip rate limiting for unlimited tiers
       if (limit.requests === -1) {
         return next();
@@ -297,24 +301,24 @@ export function tierBasedRateLimit(endpoint) {
 
       // Check current rate limit usage
       const usage = await getRateLimitUsage(userId, endpoint, limit.window);
-      
+
       if (usage >= limit.requests) {
         return res.status(429).json({
-          error: 'Rate limit exceeded',
-          code: 'RATE_LIMIT_EXCEEDED',
+          error: "Rate limit exceeded",
+          code: "RATE_LIMIT_EXCEEDED",
           limit: limit.requests,
           window: limit.window,
           tier: tier.name,
-          retryAfter: limit.window
+          retryAfter: limit.window,
         });
       }
 
       // Increment usage counter
       await incrementRateLimitUsage(userId, endpoint);
-      
+
       next();
     } catch (error) {
-      console.error('Error in rate limit middleware:', error);
+      console.error("Error in rate limit middleware:", error);
       next(); // Don't block on rate limit errors
     }
   };
@@ -323,18 +327,18 @@ export function tierBasedRateLimit(endpoint) {
 /**
  * Feature flag middleware with tier-based access
  */
-export function featureFlag(flagName, tierRequirement = 'starter') {
+export function featureFlag(flagName, tierRequirement = "starter") {
   return async (req, res, next) => {
     try {
       const user = req.user;
       const shop = req.shop;
-      
+
       // Check if feature is enabled globally
       const isEnabled = await getFeatureFlagStatus(flagName);
       if (!isEnabled) {
         return res.status(404).json({
-          error: 'Feature not available',
-          code: 'FEATURE_DISABLED'
+          error: "Feature not available",
+          code: "FEATURE_DISABLED",
         });
       }
 
@@ -347,22 +351,25 @@ export function featureFlag(flagName, tierRequirement = 'starter') {
         tier = billingService.getTierById(user.subscription?.tier);
       }
 
-      const requiredTierIndex = billingService.getTierIndexById(tierRequirement);
-      const currentTierIndex = tier ? billingService.getTierIndexById(tier.id) : -1;
+      const requiredTierIndex =
+        billingService.getTierIndexById(tierRequirement);
+      const currentTierIndex = tier
+        ? billingService.getTierIndexById(tier.id)
+        : -1;
 
       if (currentTierIndex < requiredTierIndex) {
         return res.status(403).json({
           error: `Feature requires ${tierRequirement} tier or higher`,
-          code: 'TIER_REQUIRED_FOR_FEATURE',
+          code: "TIER_REQUIRED_FOR_FEATURE",
           feature: flagName,
           requiredTier: tierRequirement,
-          currentTier: tier?.id || 'none'
+          currentTier: tier?.id || "none",
         });
       }
 
       next();
     } catch (error) {
-      console.error('Error in feature flag middleware:', error);
+      console.error("Error in feature flag middleware:", error);
       next(); // Don't block on feature flag errors
     }
   };
@@ -379,7 +386,7 @@ async function getCurrentUsage(userId, platform) {
     keywords: 0,
     monthlySpend: 0,
     stores: 1,
-    teamMembers: 1
+    teamMembers: 1,
   };
 }
 
@@ -407,5 +414,5 @@ export default {
   requireTier,
   requireActiveSubscription,
   tierBasedRateLimit,
-  featureFlag
+  featureFlag,
 };

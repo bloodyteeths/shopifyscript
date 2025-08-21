@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import {
   Card,
   Page,
@@ -18,7 +18,7 @@ import {
   Banner,
   Link,
   Tooltip,
-} from '@shopify/polaris';
+} from "@shopify/polaris";
 import {
   LineChart,
   Line,
@@ -34,8 +34,8 @@ import {
   Cell,
   BarChart,
   Bar,
-} from 'recharts';
-import type { DashboardMetrics } from '../services/api.server';
+} from "recharts";
+import type { DashboardMetrics } from "../services/api.server";
 
 interface DashboardProps {
   initialMetrics?: DashboardMetrics;
@@ -47,13 +47,13 @@ interface MetricCardProps {
   value: string | number;
   change?: {
     value: number;
-    trend: 'up' | 'down' | 'neutral';
+    trend: "up" | "down" | "neutral";
     period: string;
   };
   prefix?: string;
   suffix?: string;
   loading?: boolean;
-  color?: 'success' | 'warning' | 'critical' | 'info';
+  color?: "success" | "warning" | "critical" | "info";
 }
 
 interface ChartColors {
@@ -61,24 +61,24 @@ interface ChartColors {
 }
 
 const chartColors: ChartColors = {
-  primary: '#5C6AC4',
-  success: '#00A047',
-  warning: '#EEC200',
-  critical: '#D72C0D',
-  neutral: '#637381',
+  primary: "#5C6AC4",
+  success: "#00A047",
+  warning: "#EEC200",
+  critical: "#D72C0D",
+  neutral: "#637381",
 };
 
 const MetricCard: React.FC<MetricCardProps> = ({
   title,
   value,
   change,
-  prefix = '',
-  suffix = '',
+  prefix = "",
+  suffix = "",
   loading = false,
-  color = 'info',
+  color = "info",
 }) => {
   const formatValue = (val: string | number): string => {
-    if (typeof val === 'number') {
+    if (typeof val === "number") {
       if (val >= 1000000) {
         return `${(val / 1000000).toFixed(1)}M`;
       } else if (val >= 1000) {
@@ -89,11 +89,16 @@ const MetricCard: React.FC<MetricCardProps> = ({
     return val;
   };
 
-  const getTrendColor = (trend: 'up' | 'down' | 'neutral'): 'success' | 'critical' | 'subdued' => {
+  const getTrendColor = (
+    trend: "up" | "down" | "neutral",
+  ): "success" | "critical" | "subdued" => {
     switch (trend) {
-      case 'up': return 'success';
-      case 'down': return 'critical';
-      default: return 'subdued';
+      case "up":
+        return "success";
+      case "down":
+        return "critical";
+      default:
+        return "subdued";
     }
   };
 
@@ -104,24 +109,28 @@ const MetricCard: React.FC<MetricCardProps> = ({
           <Text variant="headingMd" as="h3">
             {title}
           </Text>
-          
+
           {loading ? (
             <Stack alignment="center">
               <Spinner size="small" />
-              <Text variant="bodyMd" color="subdued">Loading...</Text>
+              <Text variant="bodyMd" color="subdued">
+                Loading...
+              </Text>
             </Stack>
           ) : (
             <>
               <DisplayText size="medium">
-                {prefix}{formatValue(value)}{suffix}
+                {prefix}
+                {formatValue(value)}
+                {suffix}
               </DisplayText>
-              
+
               {change && (
                 <Stack spacing="extraTight" alignment="center">
                   <TextStyle variation={getTrendColor(change.trend)}>
-                    {change.trend === 'up' && '↗'} 
-                    {change.trend === 'down' && '↘'} 
-                    {change.trend === 'neutral' && '→'} 
+                    {change.trend === "up" && "↗"}
+                    {change.trend === "down" && "↘"}
+                    {change.trend === "neutral" && "→"}
                     {Math.abs(change.value)}%
                   </TextStyle>
                   <Text variant="bodySm" color="subdued">
@@ -141,53 +150,69 @@ const TrendChart: React.FC<{
   data: Array<{ date: string; value: number }>;
   title: string;
   color?: string;
-  type?: 'line' | 'area';
-}> = ({ data, title, color = chartColors.primary, type = 'line' }) => {
+  type?: "line" | "area";
+}> = ({ data, title, color = chartColors.primary, type = "line" }) => {
   return (
     <Card>
       <Card.Section>
         <Stack vertical>
-          <Text variant="headingMd" as="h3">{title}</Text>
-          <div style={{ height: '200px', width: '100%' }}>
+          <Text variant="headingMd" as="h3">
+            {title}
+          </Text>
+          <div style={{ height: "200px", width: "100%" }}>
             <ResponsiveContainer>
-              {type === 'area' ? (
+              {type === "area" ? (
                 <AreaChart data={data}>
                   <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis 
-                    dataKey="date" 
+                  <XAxis
+                    dataKey="date"
                     tick={{ fontSize: 12 }}
-                    tickFormatter={(value) => new Date(value).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                    tickFormatter={(value) =>
+                      new Date(value).toLocaleDateString("en-US", {
+                        month: "short",
+                        day: "numeric",
+                      })
+                    }
                   />
                   <YAxis tick={{ fontSize: 12 }} />
-                  <RechartsTooltip 
-                    labelFormatter={(value) => new Date(value).toLocaleDateString()}
+                  <RechartsTooltip
+                    labelFormatter={(value) =>
+                      new Date(value).toLocaleDateString()
+                    }
                     formatter={(value: any) => [value.toLocaleString(), title]}
                   />
-                  <Area 
-                    type="monotone" 
-                    dataKey="value" 
-                    stroke={color} 
-                    fill={color} 
+                  <Area
+                    type="monotone"
+                    dataKey="value"
+                    stroke={color}
+                    fill={color}
                     fillOpacity={0.3}
                   />
                 </AreaChart>
               ) : (
                 <LineChart data={data}>
                   <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis 
-                    dataKey="date" 
+                  <XAxis
+                    dataKey="date"
                     tick={{ fontSize: 12 }}
-                    tickFormatter={(value) => new Date(value).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                    tickFormatter={(value) =>
+                      new Date(value).toLocaleDateString("en-US", {
+                        month: "short",
+                        day: "numeric",
+                      })
+                    }
                   />
                   <YAxis tick={{ fontSize: 12 }} />
-                  <RechartsTooltip 
-                    labelFormatter={(value) => new Date(value).toLocaleDateString()}
+                  <RechartsTooltip
+                    labelFormatter={(value) =>
+                      new Date(value).toLocaleDateString()
+                    }
                     formatter={(value: any) => [value.toLocaleString(), title]}
                   />
-                  <Line 
-                    type="monotone" 
-                    dataKey="value" 
-                    stroke={color} 
+                  <Line
+                    type="monotone"
+                    dataKey="value"
+                    stroke={color}
                     strokeWidth={2}
                     dot={{ r: 4 }}
                   />
@@ -209,8 +234,10 @@ const PerformanceDonut: React.FC<{
     <Card>
       <Card.Section>
         <Stack vertical>
-          <Text variant="headingMd" as="h3">{title}</Text>
-          <div style={{ height: '200px', width: '100%' }}>
+          <Text variant="headingMd" as="h3">
+            {title}
+          </Text>
+          <div style={{ height: "200px", width: "100%" }}>
             <ResponsiveContainer>
               <PieChart>
                 <Pie
@@ -220,13 +247,17 @@ const PerformanceDonut: React.FC<{
                   innerRadius={40}
                   outerRadius={80}
                   dataKey="value"
-                  label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(1)}%`}
+                  label={({ name, percent }) =>
+                    `${name}: ${(percent * 100).toFixed(1)}%`
+                  }
                 >
                   {data.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={entry.color} />
                   ))}
                 </Pie>
-                <RechartsTooltip formatter={(value: any) => [value.toLocaleString(), 'Count']} />
+                <RechartsTooltip
+                  formatter={(value: any) => [value.toLocaleString(), "Count"]}
+                />
               </PieChart>
             </ResponsiveContainer>
           </div>
@@ -241,25 +272,26 @@ const QuickActions: React.FC<{
   onCreateAudience: () => void;
   onViewInsights: () => void;
   onRunAutopilot: () => void;
-}> = ({ onCreateCampaign, onCreateAudience, onViewInsights, onRunAutopilot }) => {
+}> = ({
+  onCreateCampaign,
+  onCreateAudience,
+  onViewInsights,
+  onRunAutopilot,
+}) => {
   return (
     <Card>
       <Card.Section>
         <Stack vertical>
-          <Text variant="headingMd" as="h3">Quick Actions</Text>
+          <Text variant="headingMd" as="h3">
+            Quick Actions
+          </Text>
           <Stack vertical spacing="tight">
             <Button primary onClick={onCreateCampaign}>
               Create Campaign
             </Button>
-            <Button onClick={onCreateAudience}>
-              Build Audience
-            </Button>
-            <Button onClick={onViewInsights}>
-              View Insights
-            </Button>
-            <Button onClick={onRunAutopilot}>
-              Run Autopilot
-            </Button>
+            <Button onClick={onCreateAudience}>Build Audience</Button>
+            <Button onClick={onViewInsights}>View Insights</Button>
+            <Button onClick={onRunAutopilot}>Run Autopilot</Button>
           </Stack>
         </Stack>
       </Card.Section>
@@ -270,32 +302,37 @@ const QuickActions: React.FC<{
 const RecentActivity: React.FC<{
   activities: Array<{
     id: string;
-    type: 'campaign' | 'audience' | 'conversion' | 'optimization';
+    type: "campaign" | "audience" | "conversion" | "optimization";
     title: string;
     description: string;
     timestamp: string;
-    status?: 'success' | 'warning' | 'critical';
+    status?: "success" | "warning" | "critical";
   }>;
 }> = ({ activities }) => {
   const getActivityIcon = (type: string) => {
     switch (type) {
-      case 'campaign': return '📢';
-      case 'audience': return '👥';
-      case 'conversion': return '💰';
-      case 'optimization': return '⚡';
-      default: return '📊';
+      case "campaign":
+        return "📢";
+      case "audience":
+        return "👥";
+      case "conversion":
+        return "💰";
+      case "optimization":
+        return "⚡";
+      default:
+        return "📊";
     }
   };
 
   const getStatusBadge = (status?: string) => {
     if (!status) return null;
-    
+
     const statusMap = {
-      success: { color: 'success' as const, text: 'Success' },
-      warning: { color: 'warning' as const, text: 'Warning' },
-      critical: { color: 'critical' as const, text: 'Error' },
+      success: { color: "success" as const, text: "Success" },
+      warning: { color: "warning" as const, text: "Warning" },
+      critical: { color: "critical" as const, text: "Error" },
     };
-    
+
     const config = statusMap[status as keyof typeof statusMap];
     return config ? <Badge status={config.color}>{config.text}</Badge> : null;
   };
@@ -304,13 +341,16 @@ const RecentActivity: React.FC<{
     <Card>
       <Card.Section>
         <Stack vertical>
-          <Text variant="headingMd" as="h3">Recent Activity</Text>
+          <Text variant="headingMd" as="h3">
+            Recent Activity
+          </Text>
           <ResourceList
-            resourceName={{ singular: 'activity', plural: 'activities' }}
+            resourceName={{ singular: "activity", plural: "activities" }}
             items={activities}
             renderItem={(activity) => {
-              const { id, type, title, description, timestamp, status } = activity;
-              
+              const { id, type, title, description, timestamp, status } =
+                activity;
+
               return (
                 <ResourceItem
                   id={id}
@@ -351,10 +391,12 @@ export const Dashboard: React.FC<DashboardProps> = ({
   initialMetrics,
   refreshInterval = 30000, // 30 seconds
 }) => {
-  const [metrics, setMetrics] = useState<DashboardMetrics | null>(initialMetrics || null);
+  const [metrics, setMetrics] = useState<DashboardMetrics | null>(
+    initialMetrics || null,
+  );
   const [loading, setLoading] = useState(!initialMetrics);
   const [error, setError] = useState<string | null>(null);
-  const [dateRange, setDateRange] = useState('30d');
+  const [dateRange, setDateRange] = useState("30d");
   const [lastRefresh, setLastRefresh] = useState<Date>(new Date());
 
   // Refresh metrics
@@ -362,18 +404,18 @@ export const Dashboard: React.FC<DashboardProps> = ({
     try {
       setLoading(true);
       setError(null);
-      
+
       const response = await fetch(`/api/dashboard/metrics?range=${dateRange}`);
       const data = await response.json();
-      
+
       if (data.success) {
         setMetrics(data.data);
         setLastRefresh(new Date());
       } else {
-        setError(data.error || 'Failed to fetch metrics');
+        setError(data.error || "Failed to fetch metrics");
       }
     } catch (err) {
-      setError('Network error while fetching metrics');
+      setError("Network error while fetching metrics");
     } finally {
       setLoading(false);
     }
@@ -395,18 +437,18 @@ export const Dashboard: React.FC<DashboardProps> = ({
   }, [dateRange]);
 
   const dateRangeOptions = [
-    { label: 'Last 7 days', value: '7d' },
-    { label: 'Last 30 days', value: '30d' },
-    { label: 'Last 90 days', value: '90d' },
+    { label: "Last 7 days", value: "7d" },
+    { label: "Last 30 days", value: "30d" },
+    { label: "Last 90 days", value: "90d" },
   ];
 
   const handleQuickAction = {
-    createCampaign: () => window.location.href = '/app/campaigns/new',
-    createAudience: () => window.location.href = '/app/audiences/new',
-    viewInsights: () => window.location.href = '/app/insights',
+    createCampaign: () => (window.location.href = "/app/campaigns/new"),
+    createAudience: () => (window.location.href = "/app/audiences/new"),
+    viewInsights: () => (window.location.href = "/app/insights"),
     runAutopilot: async () => {
       try {
-        await fetch('/api/autopilot/run', { method: 'POST' });
+        await fetch("/api/autopilot/run", { method: "POST" });
         // Show success notification
       } catch (err) {
         // Show error notification
@@ -417,27 +459,27 @@ export const Dashboard: React.FC<DashboardProps> = ({
   // Mock recent activities (replace with real data)
   const recentActivities = [
     {
-      id: '1',
-      type: 'campaign' as const,
-      title: 'Summer Sale Campaign',
-      description: 'Campaign performance increased by 15%',
+      id: "1",
+      type: "campaign" as const,
+      title: "Summer Sale Campaign",
+      description: "Campaign performance increased by 15%",
       timestamp: new Date(Date.now() - 3600000).toISOString(),
-      status: 'success' as const,
+      status: "success" as const,
     },
     {
-      id: '2',
-      type: 'audience' as const,
-      title: 'High-Value Customers',
-      description: 'New audience created with 2.5K users',
+      id: "2",
+      type: "audience" as const,
+      title: "High-Value Customers",
+      description: "New audience created with 2.5K users",
       timestamp: new Date(Date.now() - 7200000).toISOString(),
     },
     {
-      id: '3',
-      type: 'optimization' as const,
-      title: 'Bid Optimization',
-      description: 'Autopilot adjusted bids for better ROAS',
+      id: "3",
+      type: "optimization" as const,
+      title: "Bid Optimization",
+      description: "Autopilot adjusted bids for better ROAS",
       timestamp: new Date(Date.now() - 10800000).toISOString(),
-      status: 'success' as const,
+      status: "success" as const,
     },
   ];
 
@@ -457,13 +499,13 @@ export const Dashboard: React.FC<DashboardProps> = ({
       title="Dashboard"
       subtitle={`Last updated: ${lastRefresh.toLocaleTimeString()}`}
       primaryAction={{
-        content: 'Refresh',
+        content: "Refresh",
         onAction: refreshMetrics,
         loading,
       }}
       secondaryActions={[
         {
-          content: 'Export Report',
+          content: "Export Report",
           onAction: () => {
             // Implement export functionality
           },
@@ -493,30 +535,34 @@ export const Dashboard: React.FC<DashboardProps> = ({
                 suffix=""
                 loading={loading}
                 change={
-                  metrics ? {
-                    value: 12.5,
-                    trend: 'up',
-                    period: 'last period',
-                  } : undefined
+                  metrics
+                    ? {
+                        value: 12.5,
+                        trend: "up",
+                        period: "last period",
+                      }
+                    : undefined
                 }
               />
             </Layout.Section>
-            
+
             <Layout.Section oneThird>
               <MetricCard
                 title="Conversions"
                 value={metrics?.conversions || 0}
                 loading={loading}
                 change={
-                  metrics ? {
-                    value: 8.3,
-                    trend: 'up',
-                    period: 'last period',
-                  } : undefined
+                  metrics
+                    ? {
+                        value: 8.3,
+                        trend: "up",
+                        period: "last period",
+                      }
+                    : undefined
                 }
               />
             </Layout.Section>
-            
+
             <Layout.Section oneThird>
               <MetricCard
                 title="Conversion Rate"
@@ -524,11 +570,13 @@ export const Dashboard: React.FC<DashboardProps> = ({
                 suffix="%"
                 loading={loading}
                 change={
-                  metrics ? {
-                    value: 2.1,
-                    trend: 'down',
-                    period: 'last period',
-                  } : undefined
+                  metrics
+                    ? {
+                        value: 2.1,
+                        trend: "down",
+                        period: "last period",
+                      }
+                    : undefined
                 }
               />
             </Layout.Section>
@@ -544,15 +592,17 @@ export const Dashboard: React.FC<DashboardProps> = ({
                 prefix="$"
                 loading={loading}
                 change={
-                  metrics ? {
-                    value: 15.7,
-                    trend: 'up',
-                    period: 'last period',
-                  } : undefined
+                  metrics
+                    ? {
+                        value: 15.7,
+                        trend: "up",
+                        period: "last period",
+                      }
+                    : undefined
                 }
               />
             </Layout.Section>
-            
+
             <Layout.Section oneThird>
               <MetricCard
                 title="Average CPC"
@@ -560,15 +610,17 @@ export const Dashboard: React.FC<DashboardProps> = ({
                 prefix="$"
                 loading={loading}
                 change={
-                  metrics ? {
-                    value: 5.2,
-                    trend: 'down',
-                    period: 'last period',
-                  } : undefined
+                  metrics
+                    ? {
+                        value: 5.2,
+                        trend: "down",
+                        period: "last period",
+                      }
+                    : undefined
                 }
               />
             </Layout.Section>
-            
+
             <Layout.Section oneThird>
               <MetricCard
                 title="Click-Through Rate"
@@ -576,11 +628,13 @@ export const Dashboard: React.FC<DashboardProps> = ({
                 suffix="%"
                 loading={loading}
                 change={
-                  metrics ? {
-                    value: 3.4,
-                    trend: 'up',
-                    period: 'last period',
-                  } : undefined
+                  metrics
+                    ? {
+                        value: 3.4,
+                        trend: "up",
+                        period: "last period",
+                      }
+                    : undefined
                 }
               />
             </Layout.Section>
@@ -600,7 +654,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
                 />
               )}
             </Layout.Section>
-            
+
             <Layout.Section oneThird>
               <QuickActions
                 onCreateCampaign={handleQuickAction.createCampaign}
@@ -623,7 +677,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
                 />
               )}
             </Layout.Section>
-            
+
             <Layout.Section oneHalf>
               {metrics?.trends?.revenue && (
                 <TrendChart
@@ -643,20 +697,20 @@ export const Dashboard: React.FC<DashboardProps> = ({
               <PerformanceDonut
                 title="Campaign Status Distribution"
                 data={[
-                  { 
-                    name: 'Active', 
-                    value: metrics?.campaigns?.active || 0, 
-                    color: chartColors.success 
+                  {
+                    name: "Active",
+                    value: metrics?.campaigns?.active || 0,
+                    color: chartColors.success,
                   },
-                  { 
-                    name: 'Paused', 
-                    value: metrics?.campaigns?.paused || 0, 
-                    color: chartColors.warning 
+                  {
+                    name: "Paused",
+                    value: metrics?.campaigns?.paused || 0,
+                    color: chartColors.warning,
                   },
                 ]}
               />
             </Layout.Section>
-            
+
             <Layout.Section oneHalf>
               <RecentActivity activities={recentActivities} />
             </Layout.Section>

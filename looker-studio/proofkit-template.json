@@ -15,7 +15,14 @@
     "timezone": "auto",
     "dateRange": {
       "default": "last_30_days",
-      "options": ["today", "yesterday", "last_7_days", "last_30_days", "last_90_days", "custom"]
+      "options": [
+        "today",
+        "yesterday",
+        "last_7_days",
+        "last_30_days",
+        "last_90_days",
+        "custom"
+      ]
     },
     "permissions": {
       "viewer": ["read"],
@@ -33,11 +40,23 @@
         {
           "name": "METRICS_{TENANT}",
           "range": "A:K",
-          "headers": ["date", "level", "campaign", "ad_group", "id", "name", "clicks", "cost", "conversions", "impr", "ctr"],
+          "headers": [
+            "date",
+            "level",
+            "campaign",
+            "ad_group",
+            "id",
+            "name",
+            "clicks",
+            "cost",
+            "conversions",
+            "impr",
+            "ctr"
+          ],
           "dataTypes": {
             "date": "datetime",
             "level": "text",
-            "campaign": "text", 
+            "campaign": "text",
             "ad_group": "text",
             "id": "text",
             "name": "text",
@@ -51,11 +70,19 @@
         {
           "name": "SEARCH_TERMS_{TENANT}",
           "range": "A:G",
-          "headers": ["date", "campaign", "ad_group", "search_term", "clicks", "cost", "conversions"],
+          "headers": [
+            "date",
+            "campaign",
+            "ad_group",
+            "search_term",
+            "clicks",
+            "cost",
+            "conversions"
+          ],
           "dataTypes": {
             "date": "datetime",
             "campaign": "text",
-            "ad_group": "text", 
+            "ad_group": "text",
             "search_term": "text",
             "clicks": "number",
             "cost": "number",
@@ -76,7 +103,16 @@
         {
           "name": "ANOMALIES_{TENANT}",
           "range": "A:H",
-          "headers": ["timestamp", "type", "severity", "message", "value", "threshold", "confidence", "metadata"],
+          "headers": [
+            "timestamp",
+            "type",
+            "severity",
+            "message",
+            "value",
+            "threshold",
+            "confidence",
+            "metadata"
+          ],
           "dataTypes": {
             "timestamp": "datetime",
             "type": "text",
@@ -121,7 +157,7 @@
       "format": "percent"
     },
     {
-      "name": "Cost_Per_Click", 
+      "name": "Cost_Per_Click",
       "formula": "IF(clicks > 0, cost / clicks, 0)",
       "description": "Average cost per click",
       "dataType": "number",
@@ -163,7 +199,7 @@
         {
           "type": "scorecard",
           "title": "Total Spend (30 Days)",
-          "position": {"row": 1, "col": 1, "width": 2, "height": 2},
+          "position": { "row": 1, "col": 1, "width": 2, "height": 2 },
           "dataSource": "primary",
           "metric": "SUM(cost)",
           "comparison": {
@@ -178,9 +214,9 @@
           }
         },
         {
-          "type": "scorecard", 
+          "type": "scorecard",
           "title": "Total Conversions (30 Days)",
-          "position": {"row": 1, "col": 3, "width": 2, "height": 2},
+          "position": { "row": 1, "col": 3, "width": 2, "height": 2 },
           "dataSource": "primary",
           "metric": "SUM(conversions)",
           "comparison": {
@@ -191,8 +227,8 @@
         },
         {
           "type": "scorecard",
-          "title": "Average CPA (30 Days)", 
-          "position": {"row": 1, "col": 5, "width": 2, "height": 2},
+          "title": "Average CPA (30 Days)",
+          "position": { "row": 1, "col": 5, "width": 2, "height": 2 },
           "dataSource": "primary",
           "metric": "AVG(CPA)",
           "comparison": {
@@ -209,7 +245,7 @@
         {
           "type": "time_series",
           "title": "Daily Performance Trends",
-          "position": {"row": 3, "col": 1, "width": 6, "height": 4},
+          "position": { "row": 3, "col": 1, "width": 6, "height": 4 },
           "dataSource": "primary",
           "dimensions": ["date"],
           "metrics": ["SUM(cost)", "SUM(conversions)", "AVG(CPA)"],
@@ -223,11 +259,16 @@
         {
           "type": "table",
           "title": "Top Performing Campaigns",
-          "position": {"row": 7, "col": 1, "width": 3, "height": 4},
+          "position": { "row": 7, "col": 1, "width": 3, "height": 4 },
           "dataSource": "primary",
           "dimensions": ["campaign"],
-          "metrics": ["SUM(cost)", "SUM(conversions)", "AVG(CPA)", "CTR_Percent"],
-          "sort": {"metric": "SUM(conversions)", "order": "DESC"},
+          "metrics": [
+            "SUM(cost)",
+            "SUM(conversions)",
+            "AVG(CPA)",
+            "CTR_Percent"
+          ],
+          "sort": { "metric": "SUM(conversions)", "order": "DESC" },
           "limit": 10,
           "conditionalFormatting": [
             {
@@ -241,7 +282,7 @@
         {
           "type": "geo_chart",
           "title": "Performance by Location",
-          "position": {"row": 7, "col": 4, "width": 3, "height": 4},
+          "position": { "row": 7, "col": 4, "width": 3, "height": 4 },
           "dataSource": "primary",
           "dimension": "location",
           "metric": "SUM(conversions)",
@@ -258,7 +299,7 @@
         {
           "type": "filter_control",
           "title": "Campaign Filter",
-          "position": {"row": 1, "col": 1, "width": 2, "height": 1},
+          "position": { "row": 1, "col": 1, "width": 2, "height": 1 },
           "dataSource": "primary",
           "dimension": "campaign",
           "controlType": "dropdown",
@@ -267,7 +308,7 @@
         {
           "type": "filter_control",
           "title": "Date Range",
-          "position": {"row": 1, "col": 3, "width": 2, "height": 1},
+          "position": { "row": 1, "col": 3, "width": 2, "height": 1 },
           "dataSource": "primary",
           "dimension": "date",
           "controlType": "date_range"
@@ -275,18 +316,23 @@
         {
           "type": "pivot_table",
           "title": "Campaign Performance Matrix",
-          "position": {"row": 2, "col": 1, "width": 6, "height": 5},
+          "position": { "row": 2, "col": 1, "width": 6, "height": 5 },
           "dataSource": "primary",
           "rowDimensions": ["campaign", "ad_group"],
           "columnDimensions": ["Day_of_Week"],
-          "metrics": ["SUM(cost)", "SUM(conversions)", "AVG(CPA)", "CTR_Percent"],
+          "metrics": [
+            "SUM(cost)",
+            "SUM(conversions)",
+            "AVG(CPA)",
+            "CTR_Percent"
+          ],
           "subtotals": true,
           "grandTotal": true
         },
         {
           "type": "bubble_chart",
           "title": "Campaign Efficiency Analysis",
-          "position": {"row": 7, "col": 1, "width": 3, "height": 4},
+          "position": { "row": 7, "col": 1, "width": 3, "height": 4 },
           "dataSource": "primary",
           "dimension": "campaign",
           "xAxis": "SUM(cost)",
@@ -297,11 +343,11 @@
         {
           "type": "bar_chart",
           "title": "Campaign Performance Rankings",
-          "position": {"row": 7, "col": 4, "width": 3, "height": 4},
+          "position": { "row": 7, "col": 4, "width": 3, "height": 4 },
           "dataSource": "primary",
           "dimension": "campaign",
           "metrics": ["SUM(conversions)", "AVG(CPA)"],
-          "sort": {"metric": "SUM(conversions)", "order": "DESC"},
+          "sort": { "metric": "SUM(conversions)", "order": "DESC" },
           "limit": 15,
           "orientation": "horizontal"
         }
@@ -315,7 +361,7 @@
         {
           "type": "word_cloud",
           "title": "Top Converting Search Terms",
-          "position": {"row": 1, "col": 1, "width": 3, "height": 3},
+          "position": { "row": 1, "col": 1, "width": 3, "height": 3 },
           "dataSource": "primary",
           "table": "SEARCH_TERMS_{TENANT}",
           "dimension": "search_term",
@@ -326,12 +372,17 @@
         {
           "type": "table",
           "title": "Search Term Performance",
-          "position": {"row": 1, "col": 4, "width": 3, "height": 6},
+          "position": { "row": 1, "col": 4, "width": 3, "height": 6 },
           "dataSource": "primary",
           "table": "SEARCH_TERMS_{TENANT}",
           "dimensions": ["search_term", "campaign"],
-          "metrics": ["SUM(clicks)", "SUM(cost)", "SUM(conversions)", "AVG(CPA)"],
-          "sort": {"metric": "SUM(conversions)", "order": "DESC"},
+          "metrics": [
+            "SUM(clicks)",
+            "SUM(cost)",
+            "SUM(conversions)",
+            "AVG(CPA)"
+          ],
+          "sort": { "metric": "SUM(conversions)", "order": "DESC" },
           "limit": 100,
           "searchEnabled": true,
           "conditionalFormatting": [
@@ -350,7 +401,7 @@
         {
           "type": "scatter_plot",
           "title": "Search Term Efficiency (Cost vs Conversions)",
-          "position": {"row": 4, "col": 1, "width": 3, "height": 3},
+          "position": { "row": 4, "col": 1, "width": 3, "height": 3 },
           "dataSource": "primary",
           "table": "SEARCH_TERMS_{TENANT}",
           "dimension": "search_term",
@@ -361,7 +412,7 @@
         {
           "type": "histogram",
           "title": "CPA Distribution",
-          "position": {"row": 7, "col": 1, "width": 3, "height": 3},
+          "position": { "row": 7, "col": 1, "width": 3, "height": 3 },
           "dataSource": "primary",
           "table": "SEARCH_TERMS_{TENANT}",
           "metric": "AVG(CPA)",
@@ -371,7 +422,7 @@
         {
           "type": "heatmap",
           "title": "Search Term Performance by Hour",
-          "position": {"row": 7, "col": 4, "width": 3, "height": 3},
+          "position": { "row": 7, "col": 4, "width": 3, "height": 3 },
           "dataSource": "primary",
           "table": "SEARCH_TERMS_{TENANT}",
           "xDimension": "Hour_of_Day",
@@ -390,7 +441,7 @@
         {
           "type": "scorecard",
           "title": "Active High Severity Alerts",
-          "position": {"row": 1, "col": 1, "width": 2, "height": 2},
+          "position": { "row": 1, "col": 1, "width": 2, "height": 2 },
           "dataSource": "primary",
           "table": "ANOMALIES_{TENANT}",
           "metric": "COUNT(*)",
@@ -405,7 +456,7 @@
         {
           "type": "scorecard",
           "title": "Alerts This Week",
-          "position": {"row": 1, "col": 3, "width": 2, "height": 2},
+          "position": { "row": 1, "col": 3, "width": 2, "height": 2 },
           "dataSource": "primary",
           "table": "ANOMALIES_{TENANT}",
           "metric": "COUNT(*)",
@@ -419,7 +470,7 @@
         {
           "type": "time_series",
           "title": "Alert Frequency Over Time",
-          "position": {"row": 3, "col": 1, "width": 4, "height": 3},
+          "position": { "row": 3, "col": 1, "width": 4, "height": 3 },
           "dataSource": "primary",
           "table": "ANOMALIES_{TENANT}",
           "dimensions": ["DATE(timestamp)", "severity"],
@@ -430,11 +481,11 @@
         {
           "type": "table",
           "title": "Recent Alerts",
-          "position": {"row": 3, "col": 5, "width": 2, "height": 6},
+          "position": { "row": 3, "col": 5, "width": 2, "height": 6 },
           "dataSource": "primary",
           "table": "ANOMALIES_{TENANT}",
           "dimensions": ["timestamp", "type", "severity", "message"],
-          "sort": {"dimension": "timestamp", "order": "DESC"},
+          "sort": { "dimension": "timestamp", "order": "DESC" },
           "limit": 20,
           "conditionalFormatting": [
             {
@@ -442,7 +493,7 @@
               "type": "color_by_value",
               "values": {
                 "high": "red",
-                "medium": "orange", 
+                "medium": "orange",
                 "low": "yellow"
               }
             }
@@ -451,7 +502,7 @@
         {
           "type": "pie_chart",
           "title": "Alert Types Distribution",
-          "position": {"row": 6, "col": 1, "width": 2, "height": 3},
+          "position": { "row": 6, "col": 1, "width": 2, "height": 3 },
           "dataSource": "primary",
           "table": "ANOMALIES_{TENANT}",
           "dimension": "type",
@@ -461,7 +512,7 @@
         {
           "type": "bar_chart",
           "title": "Alert Severity Breakdown",
-          "position": {"row": 6, "col": 3, "width": 2, "height": 3},
+          "position": { "row": 6, "col": 3, "width": 2, "height": 3 },
           "dataSource": "primary",
           "table": "ANOMALIES_{TENANT}",
           "dimension": "severity",
@@ -479,12 +530,12 @@
         {
           "type": "text_widget",
           "title": "Latest AI Insights",
-          "position": {"row": 1, "col": 1, "width": 6, "height": 2},
+          "position": { "row": 1, "col": 1, "width": 6, "height": 2 },
           "dataSource": "primary",
           "table": "RUN_LOGS_{TENANT}",
           "textField": "message",
           "filter": "type = 'weekly_summary'",
-          "sort": {"dimension": "timestamp", "order": "DESC"},
+          "sort": { "dimension": "timestamp", "order": "DESC" },
           "limit": 1,
           "formatting": {
             "fontSize": "medium",
@@ -495,22 +546,27 @@
         {
           "type": "time_series",
           "title": "Weekly Performance Trends",
-          "position": {"row": 3, "col": 1, "width": 6, "height": 4},
+          "position": { "row": 3, "col": 1, "width": 6, "height": 4 },
           "dataSource": "primary",
           "dimensions": ["WEEK(date)"],
-          "metrics": ["SUM(cost)", "SUM(conversions)", "AVG(CPA)", "CTR_Percent"],
+          "metrics": [
+            "SUM(cost)",
+            "SUM(conversions)",
+            "AVG(CPA)",
+            "CTR_Percent"
+          ],
           "chartType": "combo",
           "dateRange": "last_90_days"
         },
         {
           "type": "table",
           "title": "Weekly Summary History",
-          "position": {"row": 7, "col": 1, "width": 6, "height": 4},
+          "position": { "row": 7, "col": 1, "width": 6, "height": 4 },
           "dataSource": "primary",
           "table": "RUN_LOGS_{TENANT}",
           "dimensions": ["timestamp", "message"],
           "filter": "type = 'weekly_summary'",
-          "sort": {"dimension": "timestamp", "order": "DESC"},
+          "sort": { "dimension": "timestamp", "order": "DESC" },
           "limit": 10,
           "columnWidth": {
             "timestamp": 150,
@@ -527,7 +583,7 @@
         {
           "type": "heatmap",
           "title": "Performance by Day of Week & Hour",
-          "position": {"row": 1, "col": 1, "width": 4, "height": 4},
+          "position": { "row": 1, "col": 1, "width": 4, "height": 4 },
           "dataSource": "primary",
           "xDimension": "Hour_of_Day",
           "yDimension": "Day_of_Week",
@@ -537,7 +593,7 @@
         {
           "type": "line_chart",
           "title": "Hourly Performance Patterns",
-          "position": {"row": 1, "col": 5, "width": 2, "height": 4},
+          "position": { "row": 1, "col": 5, "width": 2, "height": 4 },
           "dataSource": "primary",
           "dimension": "Hour_of_Day",
           "metrics": ["AVG(Cost_Per_Click)", "AVG(Conversion_Rate)"],
@@ -546,7 +602,7 @@
         {
           "type": "bar_chart",
           "title": "Day of Week Performance",
-          "position": {"row": 5, "col": 1, "width": 3, "height": 3},
+          "position": { "row": 5, "col": 1, "width": 3, "height": 3 },
           "dataSource": "primary",
           "dimension": "Day_of_Week",
           "metrics": ["SUM(cost)", "SUM(conversions)"],
@@ -555,7 +611,7 @@
         {
           "type": "calendar_heatmap",
           "title": "Daily Performance Calendar",
-          "position": {"row": 5, "col": 4, "width": 3, "height": 3},
+          "position": { "row": 5, "col": 4, "width": 3, "height": 3 },
           "dataSource": "primary",
           "dimension": "date",
           "metric": "SUM(conversions)",
@@ -605,8 +661,16 @@
   "styles": {
     "theme": "modern",
     "colorPalette": [
-      "#1f77b4", "#ff7f0e", "#2ca02c", "#d62728", "#9467bd",
-      "#8c564b", "#e377c2", "#7f7f7f", "#bcbd22", "#17becf"
+      "#1f77b4",
+      "#ff7f0e",
+      "#2ca02c",
+      "#d62728",
+      "#9467bd",
+      "#8c564b",
+      "#e377c2",
+      "#7f7f7f",
+      "#bcbd22",
+      "#17becf"
     ],
     "fonts": {
       "title": "Roboto",

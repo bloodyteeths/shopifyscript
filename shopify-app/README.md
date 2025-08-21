@@ -2,7 +2,7 @@
 
 Local dev
 
-1) env
+1. env
 
 ```
 SHOPIFY_API_KEY=changeme
@@ -13,7 +13,7 @@ HMAC_SECRET=change_me
 TENANT_ID=TENANT_123
 ```
 
-2) run
+2. run
 
 ```
 npm install
@@ -24,4 +24,4 @@ Routes
 
 - /app (static canary wizard)
 - /app/intent, /app/overlays, /app/canary
-- /app/api/* proxies sign HMAC server-side (no secrets in browser)
+- /app/api/\* proxies sign HMAC server-side (no secrets in browser)

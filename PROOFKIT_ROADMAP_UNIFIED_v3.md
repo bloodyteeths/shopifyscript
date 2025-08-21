@@ -1,4 +1,3 @@
-
 # Proofkit — Unified Roadmap & Claude Rules (v3)
 
 > **What this is:** A single, build-ready roadmap that **merges** your original **Roadmap & Claude Rules (v1.0)**, the **Pricing Tiers & Master Roadmap (v2)** feature scope, and the new **Audience OS + Profit-Aware Retargeting** addendum. Hand this file to Cursor/Claude; each milestone includes exact **Agent Prompts**.
@@ -8,7 +7,8 @@
 ## 0) Claude Rules (Agent Contract) — unchanged, plus audience/privacy add-ons
 
 **Always begin with:**
-- **SCOPE** — one sentence on what you are changing and *why it matters to merchants*.
+
+- **SCOPE** — one sentence on what you are changing and _why it matters to merchants_.
 - **ASSUMPTIONS** — env vars, IDs, and preconditions you expect.
 - **PLAN** — steps with acceptance tests.
 - **ARTIFACTS** — filenames and diffs (unified diff), plus any new code.
@@ -16,6 +16,7 @@
 - **ROLLBACK** — what to revert if acceptance fails.
 
 **Coding standards:**
+
 - **Fail fast** on missing secrets/deps (return a single actionable command).
 - **Small diffs** over big rewrites.
 - **Guardrails** — no hardcoded secrets; read from `.env`/Shopify/WP settings.
@@ -53,27 +54,29 @@
 
 ## 3) Sheets (brain) — consolidated tables
 
-- **CONFIG_{tenant}** — flags, tenant info, default URLs, PROMOTE.
-- **METRICS_{tenant}**, **SEARCH_TERMS_{tenant}** — GAQL collectors.
-- **MASTER_NEGATIVES_{tenant}**, **NGRAM_WASTE_{tenant}**, **NEG_GUARD_{tenant}**.
-- **RSA_ASSETS_DEFAULT_{tenant}**, **RSA_ASSETS_MAP_{tenant}**, **ASSET_LIBRARY_{tenant}**.
-- **KEYWORD_UPSERTS_{tenant}**, **BUDGET_CAPS_{tenant}**, **CPC_CEILINGS_{tenant}**, **SCHEDULES_{tenant}**, **EXCLUSIONS_{tenant}**.
-- **GEO_DAYPART_HINTS_{tenant}**, **PACER_RULES_{tenant}**, **PACE_SIGNALS_{tenant}**.
-- **LP_FIXES_QUEUE_{tenant}**, **BRAND_NONBRAND_MAP_{tenant}**.
-- **AUDIENCE_SEEDS_{tenant}**, **AUDIENCE_SEGMENTS_{tenant}**, **AUDIENCE_EXPORT_{tenant}**, **AUDIENCE_MAP_{tenant}**.
-- **SKU_MARGIN_{tenant}**, **SKU_STOCK_{tenant}**, **ADGROUP_SKU_MAP_{tenant}**.
-- **RUN_LOGS_{tenant}** — audit.
+- **CONFIG\_{tenant}** — flags, tenant info, default URLs, PROMOTE.
+- **METRICS\_{tenant}**, **SEARCH*TERMS*{tenant}** — GAQL collectors.
+- **MASTER*NEGATIVES*{tenant}**, **NGRAM*WASTE*{tenant}**, **NEG*GUARD*{tenant}**.
+- **RSA*ASSETS_DEFAULT*{tenant}**, **RSA*ASSETS_MAP*{tenant}**, **ASSET*LIBRARY*{tenant}**.
+- **KEYWORD*UPSERTS*{tenant}**, **BUDGET*CAPS*{tenant}**, **CPC*CEILINGS*{tenant}**, **SCHEDULES\_{tenant}**, **EXCLUSIONS\_{tenant}**.
+- **GEO*DAYPART_HINTS*{tenant}**, **PACER*RULES*{tenant}**, **PACE*SIGNALS*{tenant}**.
+- **LP*FIXES_QUEUE*{tenant}**, **BRAND*NONBRAND_MAP*{tenant}**.
+- **AUDIENCE*SEEDS*{tenant}**, **AUDIENCE*SEGMENTS*{tenant}**, **AUDIENCE*EXPORT*{tenant}**, **AUDIENCE*MAP*{tenant}**.
+- **SKU*MARGIN*{tenant}**, **SKU*STOCK*{tenant}**, **ADGROUP*SKU_MAP*{tenant}**.
+- **RUN*LOGS*{tenant}** — audit.
 
 ---
 
 ## 4) Delivery Plan (Epics & Milestones)
 
 ### EPIC A — Backend (Week 1)
+
 **A1. HMAC API + Sheets storage** — endpoints `/api/config`, `/api/metrics`, `/api/upsertConfig`; 429 & health checks.  
 **A2. Tenant Config schema** — auto-create missing tabs with headers.  
 **A3. Security & Ops** — rate limit; request logs.
 
 **Agent Prompt**
+
 ```
 SCOPE: Stand up HMAC API + Sheets repo; create config tabs if missing.
 ASSUMPTIONS: GOOGLE_SA creds; SHEET_ID per tenant.
@@ -85,11 +88,13 @@ ROLLBACK: Disable route prefix /api via env.
 ---
 
 ### EPIC B — Google Ads Script Core (Week 1–2)
+
 **B1. Universal script (Search)** — budget caps; `TARGET_SPEND` + CPC ceiling; schedule; master neg list; ad-group exact negatives; n-gram miner; RSA builder (30/90) with dedupe + label guard; GAQL collectors.  
 **B2. Zero‑state seed** — safe Search campaign if none.  
 **B3. Exclusions** — skip entities in `EXCLUSIONS_*`.
 
 **Agent Prompt**
+
 ```
 SCOPE: Universal Ads Script with idempotent budgets, RSA build, negatives, collectors.
 ASSUMPTIONS: CONFIG/BUDGET_CAPS/CPC_CEILINGS/SCHEDULES tabs exist.
@@ -101,12 +106,14 @@ ROLLBACK: disable ENABLE_SCRIPT in CONFIG.
 ---
 
 ### EPIC C — Shopify App (Week 2–3)
+
 **C1. Template bootstrap** — Remix/Node starter, Polaris, App Bridge.  
 **C2. Web Pixel Extension** — checkout_completed & standard events (consent-aware).  
 **C3. Settings UI** — Tenant ID, backend URL, HMAC, GA4/AW IDs; saves to backend.  
 **C4. Review readiness** — App Requirements checklist, Built for Shopify hygiene.
 
 **Agent Prompt**
+
 ```
 SCOPE: Shopify embedded app + Web Pixel + settings.
 ASSUMPTIONS: Partner app creds; dev store.
@@ -118,10 +125,12 @@ ROLLBACK: Remove extension & app blocks; revoke app.
 ---
 
 ### EPIC D — WordPress Plugin (Week 3)
+
 **D1. Boilerplate plugin** — settings, Woo purchase hook, GA4/AW send.  
 **D2. Compliance** — GPL, i18n, sanitization, uninstaller.
 
 **Agent Prompt**
+
 ```
 SCOPE: WP plugin for purchase events + settings.
 ASSUMPTIONS: Woo dev store.
@@ -133,10 +142,12 @@ ROLLBACK: Uninstall hook removes options.
 ---
 
 ### EPIC E — AI Loop (Week 4)
+
 **E1. RSA & negatives generator** — reads ST + LP, drafts H/D & n-grams with validation; writes to Sheets.  
 **E2. LP Fixes Queue** — title/CTA suggestions; Promo Page drafts (never auto-publish).
 
 **Agent Prompt**
+
 ```
 SCOPE: AI drafts for RSAs/negatives + LP fixes.
 ASSUMPTIONS: OpenAI/Anthropic key; rate limits.
@@ -148,11 +159,13 @@ ROLLBACK: Disable AI worker via env.
 ---
 
 ### EPIC F — Observability & GTM (Week 4)
+
 **F1. Weekly summary** — plain-English: what changed/why/next.  
 **F2. Alerts** — spend/CPA spikes; Slack/email.  
 **F3. Looker Studio** — prebuilt dashboard.
 
 **Agent Prompt**
+
 ```
 SCOPE: Summaries + alerts + Looker.
 PLAN: Build weekly job; thresholds; Looker datasource = Sheets.
@@ -164,9 +177,11 @@ TESTS: Trigger test events; email/slack webhook fires.
 ### EPIC G — Audience OS (Weeks 1–6, parallelizable)
 
 #### G1. Shopify → Sheets backbone (Week 1)
+
 Create: `AUDIENCE_SEEDS_*`, `SKU_MARGIN_*`, `SKU_STOCK_*`. Backfill 24m; add webhooks. Hash email/phone (SHA‑256) in RAM only; write hashes.
 
 **Agent Prompt**
+
 ```
 SCOPE: Shopify→Sheets ingestion for audiences and margin/stock.
 ASSUMPTIONS: Admin GraphQL scopes; Web Pixel aggregates via app proxy.
@@ -175,9 +190,11 @@ TESTS: 100 synthetic orders; idempotent upsert; margin computed.
 ```
 
 #### G2. Segment builder + CSV exports (Week 2)
-Add: `AUDIENCE_SEGMENTS_*` (logic_sqlish), materialize to `AUDIENCE_EXPORT_*` as **CM_UI_UNHASHED** and **CM_API_HASHED** with counts & URLs.
+
+Add: `AUDIENCE_SEGMENTS_*` (logic*sqlish), materialize to `AUDIENCE_EXPORT*\*` as **CM_UI_UNHASHED** and **CM_API_HASHED** with counts & URLs.
 
 **Agent Prompt**
+
 ```
 SCOPE: Segment engine and CSV materializer (UI/API formats).
 PLAN: Parser (AND/OR, >=, NOW-Xd); evaluator; exporters; run log.
@@ -185,9 +202,11 @@ TESTS: 8 predefined segments compile; CSV headers validated.
 ```
 
 #### G3. Google Ads wiring (No‑API attach) (Week 3)
-Add: `AUDIENCE_MAP_*` and **Ads Script audienceAttach_()** to attach/detach user lists to campaigns with `mode` (OBSERVE/TARGET/EXCLUDE) + optional bid modifiers (skip if list too small). Provide **UI playbook** for merchants to upload CSVs and copy list IDs.
+
+Add: `AUDIENCE_MAP_*` and **Ads Script audienceAttach\_()** to attach/detach user lists to campaigns with `mode` (OBSERVE/TARGET/EXCLUDE) + optional bid modifiers (skip if list too small). Provide **UI playbook** for merchants to upload CSVs and copy list IDs.
 
 **Agent Prompt**
+
 ```
 SCOPE: Ads Script audience attach using AUDIENCE_MAP_*.
 PLAN: Load map; resolve campaigns; attach user lists; idempotent; log size guards.
@@ -195,9 +214,11 @@ TESTS: Preview shows attach; re-run no-op; detach works.
 ```
 
 #### G4. Optional Customer Match API refresher (Weeks 4–6)
+
 Feature-flagged service to auto-refresh lists (hash & upload via API) per segment `refresh_freq`; membership duration = cadence + 3 days; consent filter.
 
 **Agent Prompt**
+
 ```
 SCOPE: CM API refresher behind FEATURE_CM_API.
 ASSUMPTIONS: Dev token, OAuth client/secret, refresh token.
@@ -206,9 +227,11 @@ TESTS: Sandbox list refresh; no raw PII persisted.
 ```
 
 #### G5. Profit & inventory-aware pacing (Week 4–5)
+
 Compute `PACE_SIGNALS_*` (margin-weighted conv share). In Ads Script: reallocate within min/max caps; reduce bids/pause ad groups mapped to OOS/low-stock SKUs; audience gating by margin/LTV.
 
 **Agent Prompt**
+
 ```
 SCOPE: Profit/inventory-aware pacer + audience gating.
 PLAN: Compute 7d_margin_value; apply caps & reallocation; inventory guard; LTV/margin checks for bid modifiers.
@@ -216,9 +239,11 @@ TESTS: Simulated data proves allocation math and guard logs.
 ```
 
 #### G6. Agency scale & reporting (Week 5–6)
+
 Templates library (clone segments & maps), white-label weekly PDF + Looker template; ops tools (CSV download; hashing self-check; list size checker).
 
 **Agent Prompt**
+
 ```
 SCOPE: Agency templates and reporting.
 PLAN: Export/import tabs across tenants; weekly PDF; Looker template.
@@ -228,12 +253,14 @@ TESTS: Clone to new tenant <30 min; weekly report auto-generates.
 ---
 
 ## 5) Intent OS (landing + catalog) — highlights to build first
+
 - **Catalog overlays (metafields)** per channel with Apply/Revert & bulk by collection.
 - **Intent Blocks** (Shopify OS2.0 / WP block) — personalize content by UTM intent using `INTENT_BLOCKS_*`.
 - **Promo Page Generator** — draft pages for high‑intent clusters (never auto-publish).
 - **UTM template pusher** — standardize UTMs for analytics.
 
 **Agent Prompt**
+
 ```
 SCOPE: Catalog overlays + Intent Blocks (UTM-driven) + promo drafts.
 PLAN: Metafields overlay service; OS2.0 section that reads Sheet rows by intent_key; generate drafts via AI; PROMOTE gate.
@@ -243,6 +270,7 @@ TESTS: Apply/Revert works; UTM changes page copy; drafts created.
 ---
 
 ## 6) Compliance & Privacy
+
 - Customer Match: consent notice; UI uploads hash in Google; API uploads use SHA‑256; no raw PII at rest.
 - Consent Mode v2 guidance in docs; Web Pixel respects privacy API.
 - Uninstall cleanup: remove theme blocks, stop jobs; leave Sheets for audit.
@@ -250,6 +278,7 @@ TESTS: Apply/Revert works; UTM changes page copy; drafts created.
 ---
 
 ## 7) Shopify & WP Review Readiness
+
 - Follow Shopify **App Requirements checklist**; use Polaris; performance budget.
 - WP plugin guidelines (GPL, i18n, sanitization, uninstaller).
 - Provide Test Plan and screencast; changelog on resubmits.
@@ -257,6 +286,7 @@ TESTS: Apply/Revert works; UTM changes page copy; drafts created.
 ---
 
 ## 8) KPIs to reach $1M
+
 - K‑factor ≥ 0.6 via agency referrals & viral tools.
 - Trial → Paid ≥ 35%; Pro/Growth mix ≥ 60% of paid.
 - Churn: Pro ≤ 5%, Growth ≤ 3%.
@@ -268,14 +298,17 @@ TESTS: Apply/Revert works; UTM changes page copy; drafts created.
 ## 9) Appendices
 
 ### 9.1 Predefined segments
-- buyers_30d, buyers_180d, repeat_2plus, high_LTV_top20, churn_risk_90d_no_purchase, category_{X}_buyers_180d, VIP_AOV>{x}, abandoned_checkout_14d.
+
+- buyers*30d, buyers_180d, repeat_2plus, high_LTV_top20, churn_risk_90d_no_purchase, category*{X}\_buyers_180d, VIP_AOV>{x}, abandoned_checkout_14d.
 
 ### 9.2 Google Ads UI Upload Playbook (for lists)
-1) Tools & Settings → Audience Manager → Segments → **+**.  
-2) **Customer list** → upload **CM_UI_UNHASHED** CSV; select fields; set duration (e.g., 180d).  
-3) After processing, copy **User List ID** → paste into `AUDIENCE_MAP_*`.
+
+1. Tools & Settings → Audience Manager → Segments → **+**.
+2. **Customer list** → upload **CM_UI_UNHASHED** CSV; select fields; set duration (e.g., 180d).
+3. After processing, copy **User List ID** → paste into `AUDIENCE_MAP_*`.
 
 ### 9.3 Feature flags
+
 - `FEATURE_AUDIENCE_EXPORT=true` (G2), `FEATURE_AUDIENCE_ATTACH=true` (G3), `FEATURE_CM_API=false` (G4 default), `FEATURE_INVENTORY_GUARD=true` (G5).
 
 ---
@@ -296,7 +329,7 @@ TESTS: Apply/Revert works; UTM changes page copy; drafts created.
 - A1 HMAC API + Sheets storage — done
   - Evidence: `/api/health` OK; signed `/api/upsertConfig` 200; signed `/api/config` 200; unsigned 403; repo `sheets.js` abstraction with auto-headers.
 - A2 Tenant Config schema — done
-  - Evidence: `readConfigFromSheets()` assembles typed blobs for BUDGET_CAPS/CPC_CEILINGS/SCHEDULES/MASTER_NEGATIVES/WASTE_NEGATIVE_MAP/RSA_* /EXCLUSIONS.
+  - Evidence: `readConfigFromSheets()` assembles typed blobs for BUDGET*CAPS/CPC_CEILINGS/SCHEDULES/MASTER_NEGATIVES/WASTE_NEGATIVE_MAP/RSA*\* /EXCLUSIONS.
 - A3 Security & Ops — done
   - Evidence: Request logging, rate limiting by IP+tenant, health endpoint.
 
@@ -322,4 +355,5 @@ TESTS: Apply/Revert works; UTM changes page copy; drafts created.
 - G Audience OS — not started
 
 Notes for future Cursor agents
+
 - Proceed to Audience OS seeds (G1) and Shopify embedded UI; add preview no‑op test harness for Ads Script runs; complete WP compliance (i18n, phpcs).

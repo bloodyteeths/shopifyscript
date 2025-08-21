@@ -13,22 +13,26 @@ The system consists of three main components:
 ## Key Features
 
 ### 🎯 PACE_SIGNALS Computation
+
 - Calculates profit-based pacing signals from SKU margin and stock data
 - Combines margin analysis with inventory levels for intelligent prioritization
 - Provides actionable signals: PAUSE, REDUCE_BUDGET, INCREASE_BUDGET, MONITOR_MARGIN, MAINTAIN
 
 ### 💰 Profit-Aware Budget Reallocation
+
 - Automatically reallocates budgets within min/max caps based on profitability
 - High-margin products get increased budget allocation
 - Low-margin products get reduced spending
 - Respects campaign-level budget constraints
 
 ### 📦 Out-of-Stock Management
+
 - Automatically pauses ad groups mapped to out-of-stock SKUs
 - Prevents wasted ad spend on unavailable products
 - Real-time inventory monitoring with configurable thresholds
 
 ### 🔄 Real-Time Monitoring
+
 - Continuous inventory level monitoring
 - Automated alerts for critical stock levels
 - Performance tracking and optimization recommendations
@@ -38,41 +42,46 @@ The system consists of three main components:
 ### Required Google Sheets Tabs
 
 #### `SKU_MARGIN_{tenant}`
-| Column | Description | Example |
-|--------|-------------|---------|
-| sku | Product SKU identifier | "PROD-001" |
-| margin | Profit margin (0.0-1.0) | 0.35 |
+
+| Column | Description             | Example    |
+| ------ | ----------------------- | ---------- |
+| sku    | Product SKU identifier  | "PROD-001" |
+| margin | Profit margin (0.0-1.0) | 0.35       |
 
 #### `SKU_STOCK_{tenant}`
-| Column | Description | Example |
-|--------|-------------|---------|
-| sku | Product SKU identifier | "PROD-001" |
-| stock | Current stock level | 45 |
+
+| Column | Description            | Example    |
+| ------ | ---------------------- | ---------- |
+| sku    | Product SKU identifier | "PROD-001" |
+| stock  | Current stock level    | 45         |
 
 #### `ADGROUP_SKU_MAP_{tenant}`
-| Column | Description | Example |
-|--------|-------------|---------|
+
+| Column      | Description            | Example     |
+| ----------- | ---------------------- | ----------- |
 | ad_group_id | Google Ads Ad Group ID | "123456789" |
-| sku | Product SKU identifier | "PROD-001" |
+| sku         | Product SKU identifier | "PROD-001"  |
 
 #### `PACE_SIGNALS_{tenant}` (Auto-generated)
-| Column | Description |
-|--------|-------------|
-| ad_group_id | Google Ads Ad Group ID |
-| skus | Comma-separated SKU list |
-| avg_margin | Average profit margin |
-| total_stock | Total stock across SKUs |
-| min_stock | Minimum stock level |
-| pace_signal | Computed pace multiplier |
-| action | Recommended action |
-| timestamp | Signal generation time |
-| reason | Human-readable explanation |
+
+| Column      | Description                |
+| ----------- | -------------------------- |
+| ad_group_id | Google Ads Ad Group ID     |
+| skus        | Comma-separated SKU list   |
+| avg_margin  | Average profit margin      |
+| total_stock | Total stock across SKUs    |
+| min_stock   | Minimum stock level        |
+| pace_signal | Computed pace multiplier   |
+| action      | Recommended action         |
+| timestamp   | Signal generation time     |
+| reason      | Human-readable explanation |
 
 ## API Endpoints
 
 ### Core Operations
 
 #### Compute PACE_SIGNALS
+
 ```http
 POST /api/profit/compute-signals?tenant={tenant}&sig={signature}
 Content-Type: application/json
@@ -84,11 +93,13 @@ Content-Type: application/json
 ```
 
 #### Get PACE_SIGNALS
+
 ```http
 GET /api/profit/signals?tenant={tenant}&sig={signature}&refresh=1
 ```
 
 #### Reallocate Budgets
+
 ```http
 POST /api/profit/reallocate-budgets?tenant={tenant}&sig={signature}
 Content-Type: application/json
@@ -105,11 +116,13 @@ Content-Type: application/json
 ```
 
 #### Get Out-of-Stock Ad Groups
+
 ```http
 GET /api/profit/out-of-stock?tenant={tenant}&sig={signature}
 ```
 
 #### Monitor Inventory
+
 ```http
 GET /api/profit/monitor-inventory?tenant={tenant}&sig={signature}&critical_stock=5&low_stock=10
 ```
@@ -117,6 +130,7 @@ GET /api/profit/monitor-inventory?tenant={tenant}&sig={signature}&critical_stock
 ### Data Management
 
 #### Update SKU Margins
+
 ```http
 POST /api/profit/sku-margins?tenant={tenant}&sig={signature}
 Content-Type: application/json
@@ -131,6 +145,7 @@ Content-Type: application/json
 ```
 
 #### Update SKU Stock
+
 ```http
 POST /api/profit/sku-stock?tenant={tenant}&sig={signature}
 Content-Type: application/json
@@ -145,6 +160,7 @@ Content-Type: application/json
 ```
 
 #### Update Ad Group SKU Mapping
+
 ```http
 POST /api/profit/adgroup-sku-map?tenant={tenant}&sig={signature}
 Content-Type: application/json
@@ -222,15 +238,18 @@ Based on the computed pace signal and inventory data:
 ## Safety Features
 
 ### PROMOTE Gate Protection
+
 - All mutations respect the PROMOTE gate system
 - Preview mode available for testing
 - Comprehensive mutation logging
 
 ### Exclusions Support
+
 - Respects campaign and ad group exclusions
 - Configurable via `EXCLUSIONS_{tenant}` sheet
 
 ### Bounds and Limits
+
 - Budget changes capped at min/max values
 - Significant change threshold (>5%) prevents noise
 - Reserved keyword protection for negatives
@@ -238,11 +257,13 @@ Based on the computed pace signal and inventory data:
 ## Monitoring and Alerts
 
 ### Inventory Alerts
+
 - **CRITICAL**: Out of stock
 - **HIGH**: Critical stock levels (≤5)
 - **MEDIUM**: Low stock levels (≤10)
 
 ### Performance Tracking
+
 - Signal computation timestamps
 - Applied action counts
 - Error tracking and reporting
@@ -251,21 +272,25 @@ Based on the computed pace signal and inventory data:
 ## Implementation Steps
 
 ### 1. Backend Setup
+
 1. Ensure `backend/services/profit-pacer.js` is deployed
 2. Verify API endpoints are accessible
 3. Configure profit pacer settings
 
 ### 2. Google Sheets Setup
+
 1. Create required sheets: `SKU_MARGIN_{tenant}`, `SKU_STOCK_{tenant}`, `ADGROUP_SKU_MAP_{tenant}`
 2. Populate with initial data
 3. Verify sheet permissions
 
 ### 3. Google Ads Script Update
+
 1. Deploy enhanced `master.gs` with profit-aware functions
 2. Enable `FEATURE_INVENTORY_GUARD=TRUE` in configuration
 3. Test in preview mode first
 
 ### 4. Data Integration
+
 1. Set up automated feeds for SKU margin data
 2. Configure inventory level synchronization
 3. Map ad groups to SKUs
@@ -273,13 +298,17 @@ Based on the computed pace signal and inventory data:
 ## Testing
 
 ### Preview Mode
+
 Enable preview mode to test without making live changes:
+
 ```javascript
 PREVIEW_MODE = true;
 ```
 
 ### API Testing
+
 Use the provided API endpoints to verify data flow:
+
 ```bash
 # Compute signals
 curl -X POST "http://localhost:3001/api/profit/compute-signals?tenant=TEST&sig={signature}"
@@ -289,6 +318,7 @@ curl "http://localhost:3001/api/profit/signals?tenant=TEST&sig={signature}"
 ```
 
 ### Validation Checklist
+
 - [ ] SKU margin data populated
 - [ ] Stock levels synchronized
 - [ ] Ad group mapping complete
@@ -299,12 +329,14 @@ curl "http://localhost:3001/api/profit/signals?tenant=TEST&sig={signature}"
 ## Performance Impact
 
 ### Expected Benefits
+
 - **Improved ROAS**: Focus spend on high-margin products
 - **Reduced Waste**: Eliminate spend on out-of-stock items
 - **Automated Optimization**: Continuous profit-based adjustments
 - **Real-time Response**: Immediate reaction to inventory changes
 
 ### Monitoring Metrics
+
 - Budget reallocation count
 - Out-of-stock pause actions
 - Profit margin improvements
@@ -315,21 +347,25 @@ curl "http://localhost:3001/api/profit/signals?tenant=TEST&sig={signature}"
 ### Common Issues
 
 #### No PACE_SIGNALS Generated
+
 - Verify SKU margin and stock data exists
 - Check ad group to SKU mapping
 - Ensure API endpoints are accessible
 
 #### Signals Not Applied
+
 - Confirm `FEATURE_INVENTORY_GUARD=TRUE`
 - Check PROMOTE gate status
 - Verify ad group IDs are correct
 
 #### Budget Changes Not Significant
+
 - Adjust change threshold in configuration
 - Review min/max budget settings
 - Check pace signal calculations
 
 ### Debug Information
+
 Enable detailed logging by checking run logs in the `RUN_LOGS_{tenant}` sheet.
 
 ## Security Considerations

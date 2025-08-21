@@ -6,12 +6,12 @@ A comprehensive testing infrastructure for the ProofKit SaaS application, achiev
 
 ### 🧪 Test Coverage Overview
 
-| Test Type | Location | Coverage Target | Status |
-|-----------|----------|----------------|--------|
-| **Backend Unit Tests** | `backend/tests/unit/` | >90% | ✅ Complete |
-| **Integration Tests** | `backend/tests/integration/` | >85% | ✅ Complete |
-| **Frontend Component Tests** | `shopify-ui/app/tests/` | >85% | ✅ Complete |
-| **Performance Tests** | `tests/performance/` | All critical paths | ✅ Complete |
+| Test Type                    | Location                     | Coverage Target    | Status      |
+| ---------------------------- | ---------------------------- | ------------------ | ----------- |
+| **Backend Unit Tests**       | `backend/tests/unit/`        | >90%               | ✅ Complete |
+| **Integration Tests**        | `backend/tests/integration/` | >85%               | ✅ Complete |
+| **Frontend Component Tests** | `shopify-ui/app/tests/`      | >85%               | ✅ Complete |
+| **Performance Tests**        | `tests/performance/`         | All critical paths | ✅ Complete |
 
 ### 📊 Current Metrics
 
@@ -79,12 +79,12 @@ cd tests/performance && npm run test:stress
 **Location**: `/Users/tamsar/Downloads/proofkit-saas/backend/tests/unit/`
 
 #### Services Tested:
+
 - **OptimizedSheetsService** (`services/sheets.test.js`)
   - Connection pooling and batch operations
   - Cache integration and invalidation
   - Error handling and retries
   - Performance metrics tracking
-  
 - **AIProviderService** (`services/ai-provider.test.js`)
   - Content generation with Gemini AI
   - Rate limiting and caching
@@ -92,6 +92,7 @@ cd tests/performance && npm run test:stress
   - Usage tracking and validation
 
 #### Utilities Tested:
+
 - **HMAC Utils** (`utils/hmac.test.js`)
   - Signature creation and verification
   - Timing attack resistance
@@ -105,6 +106,7 @@ cd tests/performance && npm run test:stress
 **Location**: `/Users/tamsar/Downloads/proofkit-saas/backend/tests/integration/`
 
 #### API Endpoints Tested:
+
 - **Health Check** (`/api/health`)
 - **Configuration Management** (`/api/upsertConfig`, `/api/summary`)
 - **Insights API** (`/api/insights`, `/api/insights/terms`)
@@ -113,6 +115,7 @@ cd tests/performance && npm run test:stress
 - **Metrics and Analytics** (`/api/metrics`)
 
 #### Integration Scenarios:
+
 - HMAC authentication flow
 - Concurrent request handling
 - Error response patterns
@@ -126,13 +129,13 @@ cd tests/performance && npm run test:stress
 **Location**: `/Users/tamsar/Downloads/proofkit-saas/shopify-ui/app/tests/`
 
 #### Components Tested:
+
 - **Dashboard Component** (`components/Dashboard.test.tsx`)
   - Metric display and formatting
   - Chart rendering and interactions
   - Real-time data refresh
   - Time range filtering
   - Responsive design behavior
-  
 - **Audiences Component** (`components/Audiences.test.tsx`)
   - Audience CRUD operations
   - Performance metrics display
@@ -141,6 +144,7 @@ cd tests/performance && npm run test:stress
   - Accessibility compliance
 
 #### Testing Features:
+
 - **User Interactions**: Click, type, form submission
 - **Data Loading**: Loading states, error handling, retry logic
 - **Accessibility**: ARIA labels, keyboard navigation
@@ -154,6 +158,7 @@ cd tests/performance && npm run test:stress
 **Location**: `/Users/tamsar/Downloads/proofkit-saas/tests/performance/`
 
 #### Load Testing (`load-test.js`):
+
 - **Concurrent Users**: Up to 100 simultaneous connections
 - **Endpoints Tested**: All critical API endpoints
 - **Performance Targets**:
@@ -162,6 +167,7 @@ cd tests/performance && npm run test:stress
   - Mixed workload: >200 req/sec, <150ms avg latency
 
 #### Stress Testing (`stress-test.js`):
+
 - **Extreme Concurrency**: 1000+ simultaneous operations
 - **Memory Pressure**: Large payload handling
 - **Resource Exhaustion**: File descriptor limits, CPU intensive tasks
@@ -169,6 +175,7 @@ cd tests/performance && npm run test:stress
 - **Data Consistency**: Concurrent write operations
 
 #### Benchmarking (`benchmark.js`):
+
 - **Micro-benchmarks**: HMAC generation, JSON processing, data validation
 - **Performance Regression Detection**: Baseline comparison
 - **Memory Usage Analysis**: Heap utilization tracking
@@ -177,21 +184,25 @@ cd tests/performance && npm run test:stress
 ## Performance Requirements & SLAs
 
 ### API Response Times
+
 - **Health Check**: <50ms average, <200ms 99th percentile
 - **Configuration API**: <100ms average, <250ms 95th percentile
 - **Analytics API**: <200ms average, <500ms 99th percentile
 
 ### Throughput Targets
+
 - **Health Endpoint**: >1000 requests/second
 - **Configuration API**: >400 requests/second
 - **Mixed Workload**: >200 requests/second
 
 ### Error Rates
+
 - **Normal Load**: <1% error rate
 - **Peak Load**: <5% error rate
 - **Stress Conditions**: Graceful degradation
 
 ### Resource Utilization
+
 - **Memory Growth**: <100MB under normal load
 - **CPU Usage**: <80% under peak load
 - **Connection Pool**: Efficient connection reuse
@@ -199,6 +210,7 @@ cd tests/performance && npm run test:stress
 ## Test Configuration
 
 ### Backend Jest Config (`backend/jest.config.js`)
+
 ```javascript
 {
   testEnvironment: 'node',
@@ -214,6 +226,7 @@ cd tests/performance && npm run test:stress
 ```
 
 ### Frontend Jest Config (`shopify-ui/jest.config.js`)
+
 ```javascript
 {
   testEnvironment: 'jsdom',
@@ -229,6 +242,7 @@ cd tests/performance && npm run test:stress
 ```
 
 ### Performance Test Config (`tests/performance/jest.config.js`)
+
 ```javascript
 {
   testTimeout: 120000, // 2 minutes for performance tests
@@ -240,11 +254,13 @@ cd tests/performance && npm run test:stress
 ## Mock Strategy
 
 ### Backend Mocks
+
 - **Google Sheets API**: Controlled responses for deterministic testing
 - **Google Generative AI**: Predictable AI responses
 - **External APIs**: Network request simulation
 
 ### Frontend Mocks
+
 - **Remix Router**: Navigation and data loading simulation
 - **Shopify Polaris**: UI component mocking
 - **Recharts**: Chart component mocking
@@ -253,6 +269,7 @@ cd tests/performance && npm run test:stress
 ## Continuous Integration
 
 ### Test Pipeline
+
 1. **Unit Tests**: Fast feedback on individual components
 2. **Integration Tests**: API contract validation
 3. **Component Tests**: UI behavior verification
@@ -260,6 +277,7 @@ cd tests/performance && npm run test:stress
 5. **Coverage Report**: Quality gate enforcement
 
 ### Quality Gates
+
 - Minimum 90% test coverage for backend
 - Minimum 85% test coverage for frontend
 - All performance tests must pass
@@ -268,6 +286,7 @@ cd tests/performance && npm run test:stress
 ## Development Workflow
 
 ### Running Tests During Development
+
 ```bash
 # Watch mode for rapid feedback
 npm run test:watch
@@ -290,6 +309,7 @@ npx jest --inspect-brk backend/tests/unit/services/sheets.test.js
 4. **Performance Tests**: Add to `tests/performance/`
 
 ### Test Naming Conventions
+
 - **Unit Tests**: `*.test.js` or `*.spec.js`
 - **Integration Tests**: `*-integration.test.js`
 - **Component Tests**: `*.test.tsx`
@@ -298,11 +318,13 @@ npx jest --inspect-brk backend/tests/unit/services/sheets.test.js
 ## Reporting
 
 ### Coverage Reports
+
 - **HTML Report**: `coverage/lcov-report/index.html`
 - **LCOV Format**: `coverage/lcov.info`
 - **Text Summary**: Console output
 
 ### Performance Reports
+
 - **Benchmark Results**: `benchmark-results-{timestamp}.json`
 - **Load Test Reports**: Autocannon output
 - **HTML Performance Report**: `performance-report.html`
@@ -312,12 +334,14 @@ npx jest --inspect-brk backend/tests/unit/services/sheets.test.js
 ### Common Issues
 
 1. **Tests Timing Out**
+
    ```bash
    # Increase timeout in jest.config.js
    testTimeout: 30000
    ```
 
 2. **Memory Issues in Performance Tests**
+
    ```bash
    # Run with increased memory
    node --max-old-space-size=4096 node_modules/.bin/jest
@@ -330,6 +354,7 @@ npx jest --inspect-brk backend/tests/unit/services/sheets.test.js
    ```
 
 ### Debug Mode
+
 ```bash
 # Run with debugging
 npx jest --inspect-brk --runInBand
@@ -344,12 +369,14 @@ npx jest --testPathPattern=sheets
 ## Contributing
 
 ### Before Submitting PRs
+
 1. Run all tests: `npm test`
 2. Check coverage: `npm run test:coverage`
 3. Run performance tests: `npm run test:performance`
 4. Verify no regressions in benchmarks
 
 ### Adding New Features
+
 1. Write tests first (TDD approach)
 2. Ensure >90% coverage for new code
 3. Add performance tests for critical paths
@@ -362,4 +389,4 @@ MIT License - See LICENSE file for details
 ---
 
 **Generated by Claude Code QA-Test-Engineer Agent**
-*Comprehensive testing suite with >90% coverage targeting production-ready quality assurance*
+_Comprehensive testing suite with >90% coverage targeting production-ready quality assurance_

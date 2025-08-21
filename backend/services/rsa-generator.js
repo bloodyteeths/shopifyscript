@@ -3,8 +3,8 @@
  * Generates intelligent RSA content with 30/90 character validation
  */
 
-import { getAIProviderService } from './ai-provider.js';
-import { validateRSA } from '../lib/validators.js';
+import { getAIProviderService } from "./ai-provider.js";
+import { validateRSA } from "../lib/validators.js";
 
 /**
  * RSA Content Generator with intelligent validation and optimization
@@ -15,7 +15,7 @@ export class RSAContentGenerator {
     this.generationStats = {
       totalGenerated: 0,
       validGenerated: 0,
-      rejectedByValidation: 0
+      rejectedByValidation: 0,
     };
   }
 
@@ -24,18 +24,18 @@ export class RSAContentGenerator {
    */
   async generateRSAContent(options = {}) {
     const {
-      theme = 'Business',
-      industry = 'general',
+      theme = "Business",
+      industry = "general",
       keywords = [],
-      tone = 'professional',
+      tone = "professional",
       headlineCount = 15,
       descriptionCount = 4,
       includeOffers = true,
       includeBranding = true,
-      playbookPrompt = '',
+      playbookPrompt = "",
       targetCPA = null,
       targetROAS = null,
-      businessStrategy = 'protect'
+      businessStrategy = "protect",
     } = options;
 
     const prompt = this.buildRSAPrompt({
@@ -50,14 +50,17 @@ export class RSAContentGenerator {
       playbookPrompt,
       targetCPA,
       targetROAS,
-      businessStrategy
+      businessStrategy,
     });
 
     try {
-      const rawContent = await this.aiService.generateStructuredContent(prompt, 'json');
-      
+      const rawContent = await this.aiService.generateStructuredContent(
+        prompt,
+        "json",
+      );
+
       if (!rawContent || !rawContent.headlines || !rawContent.descriptions) {
-        throw new Error('Invalid response format from AI provider');
+        throw new Error("Invalid response format from AI provider");
       }
 
       const processedContent = this.processAndValidateContent(rawContent);
@@ -66,14 +69,14 @@ export class RSAContentGenerator {
       return {
         success: true,
         content: processedContent,
-        stats: { ...this.generationStats }
+        stats: { ...this.generationStats },
       };
     } catch (error) {
-      console.error('RSA generation failed:', error);
+      console.error("RSA generation failed:", error);
       return {
         success: false,
         error: error.message,
-        fallback: this.generateFallbackContent(options)
+        fallback: this.generateFallbackContent(options),
       };
     }
   }
@@ -94,34 +97,47 @@ export class RSAContentGenerator {
       playbookPrompt,
       targetCPA,
       targetROAS,
-      businessStrategy
+      businessStrategy,
     } = options;
 
-    const keywordText = keywords.length > 0 ? ` Focus on these keywords: ${keywords.join(', ')}.` : '';
-    const offerText = includeOffers ? ' Include compelling offers and calls-to-action.' : '';
-    const brandingText = includeBranding ? ' Include trust signals and brand elements.' : '';
-    
+    const keywordText =
+      keywords.length > 0
+        ? ` Focus on these keywords: ${keywords.join(", ")}.`
+        : "";
+    const offerText = includeOffers
+      ? " Include compelling offers and calls-to-action."
+      : "";
+    const brandingText = includeBranding
+      ? " Include trust signals and brand elements."
+      : "";
+
     // Business strategy context
-    let strategyText = '';
+    let strategyText = "";
     if (playbookPrompt && playbookPrompt.trim()) {
       strategyText = ` Business Strategy Context: ${playbookPrompt.trim()}.`;
     }
-    
+
     // Performance targets context
-    let targetText = '';
+    let targetText = "";
     if (targetCPA || targetROAS) {
       const targets = [];
       if (targetCPA) targets.push(`target CPA of $${targetCPA}`);
       if (targetROAS) targets.push(`target ROAS of ${targetROAS}x`);
-      targetText = ` Performance Targets: Optimize for ${targets.join(' and ')}.`;
+      targetText = ` Performance Targets: Optimize for ${targets.join(" and ")}.`;
     }
-    
+
     // Strategy-based tone adjustment
     let adjustedTone = tone;
-    if (businessStrategy === 'scale' || businessStrategy === 'grow') {
-      adjustedTone = tone === 'professional' ? 'confident and growth-oriented' : `${tone} with growth focus`;
-    } else if (businessStrategy === 'protect') {
-      adjustedTone = tone === 'professional' ? 'trustworthy and reliable' : `${tone} with trust emphasis`;
+    if (businessStrategy === "scale" || businessStrategy === "grow") {
+      adjustedTone =
+        tone === "professional"
+          ? "confident and growth-oriented"
+          : `${tone} with growth focus`;
+    } else if (businessStrategy === "protect") {
+      adjustedTone =
+        tone === "professional"
+          ? "trustworthy and reliable"
+          : `${tone} with trust emphasis`;
     }
 
     return `Generate Google Ads RSA (Responsive Search Ads) content for a ${industry} business with theme "${theme}". 
@@ -134,8 +150,8 @@ Requirements:
 - Include strong calls-to-action
 ${keywordText}${offerText}${brandingText}${strategyText}${targetText}
 
-${strategyText ? 'IMPORTANT: Align all messaging with the provided business strategy context.' : ''}
-${targetText ? 'IMPORTANT: Create ads that will appeal to users likely to meet the performance targets.' : ''}
+${strategyText ? "IMPORTANT: Align all messaging with the provided business strategy context." : ""}
+${targetText ? "IMPORTANT: Create ads that will appeal to users likely to meet the performance targets." : ""}
 
 Return ONLY valid JSON in this exact format:
 {
@@ -150,8 +166,12 @@ Headlines must be under 30 characters. Descriptions must be under 90 characters.
    * Process and validate generated content
    */
   processAndValidateContent(rawContent) {
-    const headlines = this.validateAndCleanHeadlines(rawContent.headlines || []);
-    const descriptions = this.validateAndCleanDescriptions(rawContent.descriptions || []);
+    const headlines = this.validateAndCleanHeadlines(
+      rawContent.headlines || [],
+    );
+    const descriptions = this.validateAndCleanDescriptions(
+      rawContent.descriptions || [],
+    );
 
     // Use existing RSA validator for comprehensive validation
     const validation = validateRSA(headlines, descriptions);
@@ -161,7 +181,7 @@ Headlines must be under 30 characters. Descriptions must be under 90 characters.
       descriptions: validation.clipped?.d || descriptions,
       validation: validation,
       quality: this.assessContentQuality(headlines, descriptions),
-      suggestions: this.generateImprovementSuggestions(headlines, descriptions)
+      suggestions: this.generateImprovementSuggestions(headlines, descriptions),
     };
   }
 
@@ -170,9 +190,9 @@ Headlines must be under 30 characters. Descriptions must be under 90 characters.
    */
   validateAndCleanHeadlines(headlines) {
     return headlines
-      .filter(h => typeof h === 'string' && h.trim().length > 0)
-      .map(h => h.trim())
-      .filter(h => h.length <= 30)
+      .filter((h) => typeof h === "string" && h.trim().length > 0)
+      .map((h) => h.trim())
+      .filter((h) => h.length <= 30)
       .slice(0, 15); // Max 15 headlines for RSA
   }
 
@@ -181,9 +201,9 @@ Headlines must be under 30 characters. Descriptions must be under 90 characters.
    */
   validateAndCleanDescriptions(descriptions) {
     return descriptions
-      .filter(d => typeof d === 'string' && d.trim().length > 0)
-      .map(d => d.trim())
-      .filter(d => d.length <= 90)
+      .filter((d) => typeof d === "string" && d.trim().length > 0)
+      .map((d) => d.trim())
+      .filter((d) => d.length <= 90)
       .slice(0, 4); // Max 4 descriptions for RSA
   }
 
@@ -197,28 +217,54 @@ Headlines must be under 30 characters. Descriptions must be under 90 characters.
         variety: 0,
         length: 0,
         callsToAction: 0,
-        keywordCoverage: 0
-      }
+        keywordCoverage: 0,
+      },
     };
 
     // Variety assessment
-    const uniqueHeadlines = new Set(headlines.map(h => h.toLowerCase()));
-    const uniqueDescriptions = new Set(descriptions.map(d => d.toLowerCase()));
-    score.breakdown.variety = Math.min(100, (uniqueHeadlines.size / headlines.length) * 100);
+    const uniqueHeadlines = new Set(headlines.map((h) => h.toLowerCase()));
+    const uniqueDescriptions = new Set(
+      descriptions.map((d) => d.toLowerCase()),
+    );
+    score.breakdown.variety = Math.min(
+      100,
+      (uniqueHeadlines.size / headlines.length) * 100,
+    );
 
     // Length optimization assessment
-    const avgHeadlineLength = headlines.reduce((sum, h) => sum + h.length, 0) / headlines.length;
-    const avgDescriptionLength = descriptions.reduce((sum, d) => sum + d.length, 0) / descriptions.length;
-    score.breakdown.length = Math.min(100, ((avgHeadlineLength / 30) + (avgDescriptionLength / 90)) * 50);
+    const avgHeadlineLength =
+      headlines.reduce((sum, h) => sum + h.length, 0) / headlines.length;
+    const avgDescriptionLength =
+      descriptions.reduce((sum, d) => sum + d.length, 0) / descriptions.length;
+    score.breakdown.length = Math.min(
+      100,
+      (avgHeadlineLength / 30 + avgDescriptionLength / 90) * 50,
+    );
 
     // Call-to-action assessment
-    const ctaWords = ['get', 'buy', 'shop', 'call', 'visit', 'try', 'start', 'learn', 'download', 'sign up'];
-    const ctaCount = [...headlines, ...descriptions].filter(text => 
-      ctaWords.some(cta => text.toLowerCase().includes(cta))
+    const ctaWords = [
+      "get",
+      "buy",
+      "shop",
+      "call",
+      "visit",
+      "try",
+      "start",
+      "learn",
+      "download",
+      "sign up",
+    ];
+    const ctaCount = [...headlines, ...descriptions].filter((text) =>
+      ctaWords.some((cta) => text.toLowerCase().includes(cta)),
     ).length;
-    score.breakdown.callsToAction = Math.min(100, (ctaCount / (headlines.length + descriptions.length)) * 200);
+    score.breakdown.callsToAction = Math.min(
+      100,
+      (ctaCount / (headlines.length + descriptions.length)) * 200,
+    );
 
-    score.total = Object.values(score.breakdown).reduce((sum, val) => sum + val, 0) / Object.keys(score.breakdown).length;
+    score.total =
+      Object.values(score.breakdown).reduce((sum, val) => sum + val, 0) /
+      Object.keys(score.breakdown).length;
 
     return score;
   }
@@ -230,21 +276,29 @@ Headlines must be under 30 characters. Descriptions must be under 90 characters.
     const suggestions = [];
 
     if (headlines.length < 10) {
-      suggestions.push('Consider generating more headlines for better ad performance');
+      suggestions.push(
+        "Consider generating more headlines for better ad performance",
+      );
     }
 
     if (descriptions.length < 3) {
-      suggestions.push('Add more descriptions to provide Google with more options');
+      suggestions.push(
+        "Add more descriptions to provide Google with more options",
+      );
     }
 
-    const shortHeadlines = headlines.filter(h => h.length < 20).length;
+    const shortHeadlines = headlines.filter((h) => h.length < 20).length;
     if (shortHeadlines / headlines.length > 0.7) {
-      suggestions.push('Consider using more characters in headlines for better messaging');
+      suggestions.push(
+        "Consider using more characters in headlines for better messaging",
+      );
     }
 
-    const shortDescriptions = descriptions.filter(d => d.length < 60).length;
+    const shortDescriptions = descriptions.filter((d) => d.length < 60).length;
     if (shortDescriptions / descriptions.length > 0.5) {
-      suggestions.push('Consider longer descriptions to provide more compelling details');
+      suggestions.push(
+        "Consider longer descriptions to provide more compelling details",
+      );
     }
 
     return suggestions;
@@ -254,8 +308,8 @@ Headlines must be under 30 characters. Descriptions must be under 90 characters.
    * Generate fallback content when AI fails
    */
   generateFallbackContent(options) {
-    const { theme = 'Business', industry = 'general' } = options;
-    
+    const { theme = "Business", industry = "general" } = options;
+
     return {
       headlines: [
         `${theme} Solutions`,
@@ -267,16 +321,26 @@ Headlines must be under 30 characters. Descriptions must be under 90 characters.
         `${theme} Specialists`,
         `Trusted ${theme}`,
         `${theme} Online`,
-        `${theme} Today`
+        `${theme} Today`,
       ].slice(0, 10),
       descriptions: [
         `Professional ${theme.toLowerCase()} services for your business. Get started today.`,
         `Quality ${theme.toLowerCase()} solutions with expert support. Contact us now.`,
-        `Trusted ${theme.toLowerCase()} provider with proven results. Learn more today.`
+        `Trusted ${theme.toLowerCase()} provider with proven results. Learn more today.`,
       ],
       validation: { ok: true, errors: [], warnings: [] },
-      quality: { total: 60, breakdown: { variety: 60, length: 60, callsToAction: 60, keywordCoverage: 60 } },
-      suggestions: ['This is fallback content. Configure AI provider for better results.']
+      quality: {
+        total: 60,
+        breakdown: {
+          variety: 60,
+          length: 60,
+          callsToAction: 60,
+          keywordCoverage: 60,
+        },
+      },
+      suggestions: [
+        "This is fallback content. Configure AI provider for better results.",
+      ],
     };
   }
 
@@ -285,10 +349,10 @@ Headlines must be under 30 characters. Descriptions must be under 90 characters.
    */
   async generateThemeVariations(baseTheme, variationCount = 3) {
     const variations = [];
-    
+
     for (let i = 0; i < variationCount; i++) {
       const prompt = `Generate ${i + 1} unique variation of the theme "${baseTheme}" for advertising. Return only the theme name, no additional text.`;
-      
+
       try {
         const variation = await this.aiService.generateText(prompt);
         if (variation && variation.trim().length > 0) {
@@ -304,7 +368,7 @@ Headlines must be under 30 characters. Descriptions must be under 90 characters.
       variations.push(
         `${baseTheme} Pro`,
         `${baseTheme} Plus`,
-        `${baseTheme} Expert`
+        `${baseTheme} Expert`,
       );
     }
 
@@ -316,7 +380,7 @@ Headlines must be under 30 characters. Descriptions must be under 90 characters.
    */
   updateStats(content) {
     this.generationStats.totalGenerated++;
-    
+
     if (content.validation?.ok) {
       this.generationStats.validGenerated++;
     } else {
@@ -338,7 +402,7 @@ Headlines must be under 30 characters. Descriptions must be under 90 characters.
     this.generationStats = {
       totalGenerated: 0,
       validGenerated: 0,
-      rejectedByValidation: 0
+      rejectedByValidation: 0,
     };
   }
 }
@@ -376,11 +440,11 @@ export async function batchGenerateRSA(themes, options = {}) {
       const result = await generator.generateRSAContent({ theme, ...options });
       results.push({ theme, ...result });
     } catch (error) {
-      results.push({ 
-        theme, 
-        success: false, 
+      results.push({
+        theme,
+        success: false,
         error: error.message,
-        fallback: generator.generateFallbackContent({ theme, ...options })
+        fallback: generator.generateFallbackContent({ theme, ...options }),
       });
     }
   }

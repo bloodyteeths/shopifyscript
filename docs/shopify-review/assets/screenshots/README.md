@@ -7,6 +7,7 @@ This directory should contain 5 high-quality screenshots showcasing ProofKit's k
 ### Screenshot Requirements
 
 **Technical Specifications**:
+
 - **Resolution**: 1280x800px minimum (desktop screenshots)
 - **Format**: PNG with transparency support
 - **Quality**: High-resolution, crisp, and professional
@@ -16,8 +17,10 @@ This directory should contain 5 high-quality screenshots showcasing ProofKit's k
 ### Required Screenshots
 
 #### 1. Dashboard Overview (`dashboard-overview.png`)
+
 **Focus**: Intent OS main dashboard
 **Elements to Include**:
+
 - Complete Intent OS interface with all tabs visible
 - Performance metrics and analytics
 - Clean Polaris UI design
@@ -25,8 +28,10 @@ This directory should contain 5 high-quality screenshots showcasing ProofKit's k
 - Navigation breadcrumbs showing Shopify Admin context
 
 #### 2. Audience Management (`audience-management.png`)
+
 **Focus**: Smart audience segmentation interface
 **Elements to Include**:
+
 - Audience creation and management interface
 - Segment criteria configuration
 - Audience size and targeting options
@@ -34,8 +39,10 @@ This directory should contain 5 high-quality screenshots showcasing ProofKit's k
 - Privacy-compliant anonymous targeting
 
 #### 3. Campaign Configuration (`campaign-setup.png`)
+
 **Focus**: Campaign setup and optimization
 **Elements to Include**:
+
 - Campaign creation modal or interface
 - UTM parameter configuration
 - Content variation generator
@@ -43,8 +50,10 @@ This directory should contain 5 high-quality screenshots showcasing ProofKit's k
 - Intent block configuration
 
 #### 4. Analytics Dashboard (`analytics-view.png`)
+
 **Focus**: Performance analytics and insights
 **Elements to Include**:
+
 - Performance dashboard with charts and metrics
 - Conversion rate tracking
 - Campaign performance data
@@ -52,8 +61,10 @@ This directory should contain 5 high-quality screenshots showcasing ProofKit's k
 - Export and reporting options
 
 #### 5. Settings Panel (`settings-panel.png`)
+
 **Focus**: App configuration and settings
 **Elements to Include**:
+
 - Settings and configuration interface
 - Integration setup (Google Ads, Sheets)
 - Privacy controls and consent management
@@ -63,6 +74,7 @@ This directory should contain 5 high-quality screenshots showcasing ProofKit's k
 ### Screenshot Guidelines
 
 **Content Quality**:
+
 - Use realistic store names and data
 - Show actual ProofKit features in action
 - Demonstrate clear value proposition
@@ -70,6 +82,7 @@ This directory should contain 5 high-quality screenshots showcasing ProofKit's k
 - Show professional, clean interface
 
 **Visual Standards**:
+
 - Consistent with Shopify Admin design
 - High contrast and readable text
 - Professional color scheme
@@ -77,6 +90,7 @@ This directory should contain 5 high-quality screenshots showcasing ProofKit's k
 - Logical information hierarchy
 
 **Technical Standards**:
+
 - No browser chrome or OS elements
 - Focus on ProofKit interface only
 - Proper aspect ratios maintained
@@ -86,12 +100,14 @@ This directory should contain 5 high-quality screenshots showcasing ProofKit's k
 ### Screenshot Optimization
 
 **File Optimization**:
+
 - Compress images for web while maintaining quality
 - Use PNG format for crisp UI elements
 - Optimize file sizes (under 500KB each)
 - Ensure fast loading in App Store
 
 **SEO Optimization**:
+
 - Descriptive file names
 - Alt text for accessibility
 - Consistent branding and messaging
@@ -100,6 +116,7 @@ This directory should contain 5 high-quality screenshots showcasing ProofKit's k
 ### Review Checklist
 
 Before submitting screenshots:
+
 - [ ] All 5 required screenshots created
 - [ ] Technical specifications met
 - [ ] Content is realistic and professional

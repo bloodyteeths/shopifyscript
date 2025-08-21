@@ -77,6 +77,7 @@ The system tracks and validates all critical Google Ads operations:
 ## 📊 Test Results Format
 
 ### PASS Example ✅
+
 ```
 ✓ IDEMPOTENCY TEST PASSED - Script is idempotent
 First run: 15 mutations planned
@@ -84,6 +85,7 @@ Second run: 0 mutations planned
 ```
 
 ### FAIL Example ❌
+
 ```
 ✗ IDEMPOTENCY TEST FAILED - Second run planned 3 mutations
 Action Required: Fix script before production deployment
@@ -107,7 +109,7 @@ The system integrates with CI/CD pipelines to prevent unsafe deployments:
 Before deploying to production, ensure:
 
 - [ ] ✅ Idempotency test passes (0 second-run mutations)
-- [ ] ✅ Test logs available in `run_logs/` directory  
+- [ ] ✅ Test logs available in `run_logs/` directory
 - [ ] ✅ Promote gate shows `canPromote: true`
 - [ ] ✅ All mutation types properly tracked
 - [ ] ✅ Manual review of first-run mutations completed
@@ -164,6 +166,7 @@ This is a critical safety system. For questions or issues:
 ## 🔄 Maintenance
 
 This system requires:
+
 - Regular log cleanup (automated via CI/CD)
 - Periodic validation against Google Ads API changes
 - Team training on proper usage and interpretation

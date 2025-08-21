@@ -3,28 +3,28 @@
  * Manages tenant-specific configurations with caching and validation
  */
 
-import tenantRegistry from './tenant-registry.js';
-import tenantCache from './cache.js';
+import tenantRegistry from "./tenant-registry.js";
+import tenantCache from "./cache.js";
 
 class TenantConfigService {
   constructor() {
     this.configDefaults = {
       enabled: true,
       PROMOTE: true,
-      label: 'Proofkit • Managed',
-      plan: 'starter',
-      default_final_url: 'https://example.com',
-      daily_budget_cap_default: 3.00,
-      cpc_ceiling_default: 0.20,
+      label: "Proofkit • Managed",
+      plan: "starter",
+      default_final_url: "https://example.com",
+      daily_budget_cap_default: 3.0,
+      cpc_ceiling_default: 0.2,
       add_business_hours_if_none: true,
-      business_days_csv: 'MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY',
-      business_start: '09:00',
-      business_end: '18:00',
-      st_lookback: 'LAST_7_DAYS',
+      business_days_csv: "MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY",
+      business_start: "09:00",
+      business_end: "18:00",
+      st_lookback: "LAST_7_DAYS",
       st_min_clicks: 2,
       st_min_cost: 2.82,
-      master_neg_list_name: 'Proofkit • Master Negatives',
-      
+      master_neg_list_name: "Proofkit • Master Negatives",
+
       // Feature flags
       ENABLE_SCRIPT: true,
       FEATURE_AI_DRAFTS: true,
@@ -33,17 +33,17 @@ class TenantConfigService {
       FEATURE_AUDIENCE_ATTACH: true,
       FEATURE_CM_API: false,
       FEATURE_INVENTORY_GUARD: true,
-      
+
       // Autopilot settings
       AP: {
-        objective: 'protect',
-        mode: 'auto',
-        schedule: 'off',
+        objective: "protect",
+        mode: "auto",
+        schedule: "off",
         target_cpa: null,
         target_roas: null,
         desired_keywords: [],
-        playbook_prompt: ''
-      }
+        playbook_prompt: "",
+      },
     };
 
     this.planLimits = {
@@ -52,22 +52,27 @@ class TenantConfigService {
         maxAdGroups: 50,
         maxKeywords: 500,
         maxAudienceSegments: 5,
-        features: ['basic_insights', 'keyword_optimization']
+        features: ["basic_insights", "keyword_optimization"],
       },
       growth: {
         maxCampaigns: 50,
         maxAdGroups: 250,
         maxKeywords: 2500,
         maxAudienceSegments: 20,
-        features: ['basic_insights', 'keyword_optimization', 'ai_drafts', 'audience_export']
+        features: [
+          "basic_insights",
+          "keyword_optimization",
+          "ai_drafts",
+          "audience_export",
+        ],
       },
       pro: {
         maxCampaigns: -1, // unlimited
         maxAdGroups: -1,
         maxKeywords: -1,
         maxAudienceSegments: -1,
-        features: ['all']
-      }
+        features: ["all"],
+      },
     };
   }
 
@@ -76,27 +81,30 @@ class TenantConfigService {
    */
   async getTenantConfig(tenantId) {
     // Check cache first
-    const cached = tenantCache.get(tenantId, '/api/config');
+    const cached = tenantCache.get(tenantId, "/api/config");
     if (cached) {
       return cached;
     }
 
     try {
       const config = await this.loadConfigFromSheets(tenantId);
-      
+
       // Cache the config
-      tenantCache.set(tenantId, '/api/config', {}, config);
-      
+      tenantCache.set(tenantId, "/api/config", {}, config);
+
       return config;
     } catch (error) {
-      console.error(`TenantConfigService: Failed to load config for ${tenantId}:`, error.message);
-      
+      console.error(
+        `TenantConfigService: Failed to load config for ${tenantId}:`,
+        error.message,
+      );
+
       // Return defaults if loading fails
       const defaultConfig = this.getDefaultConfig(tenantId);
-      
+
       // Cache defaults briefly
-      tenantCache.set(tenantId, '/api/config', {}, defaultConfig, 30000); // 30 seconds
-      
+      tenantCache.set(tenantId, "/api/config", {}, defaultConfig, 30000); // 30 seconds
+
       return defaultConfig;
     }
   }
@@ -107,34 +115,37 @@ class TenantConfigService {
   async loadConfigFromSheets(tenantId) {
     const doc = await tenantRegistry.getTenantDoc(tenantId);
     const config = { ...this.configDefaults };
-    
+
     // Load main config table
-    const configSheet = await this.ensureSheet(doc, `CONFIG_${tenantId}`, ['key', 'value']);
+    const configSheet = await this.ensureSheet(doc, `CONFIG_${tenantId}`, [
+      "key",
+      "value",
+    ]);
     const configRows = await configSheet.getRows();
-    
+
     // Parse config key-value pairs
     const configMap = {};
-    configRows.forEach(row => {
+    configRows.forEach((row) => {
       if (row.key) {
-        configMap[String(row.key).trim()] = String(row.value || '').trim();
+        configMap[String(row.key).trim()] = String(row.value || "").trim();
       }
     });
-    
+
     // Apply config values with type conversion
     this.applyConfigMap(config, configMap);
-    
+
     // Load complex configuration tables
     await this.loadComplexConfigs(doc, tenantId, config);
-    
+
     // Apply tenant-specific overrides from registry
     const tenant = tenantRegistry.getTenant(tenantId);
     if (tenant && tenant.config) {
       Object.assign(config, tenant.config);
     }
-    
+
     // Validate and normalize config
     this.validateConfig(config);
-    
+
     return config;
   }
 
@@ -144,24 +155,33 @@ class TenantConfigService {
   applyConfigMap(config, configMap) {
     // Boolean fields
     const booleanFields = [
-      'enabled', 'PROMOTE', 'add_business_hours_if_none', 'ENABLE_SCRIPT', 
-      'FEATURE_AI_DRAFTS', 'FEATURE_INTENT_BLOCKS', 'FEATURE_AUDIENCE_EXPORT',
-      'FEATURE_AUDIENCE_ATTACH', 'FEATURE_CM_API', 'FEATURE_INVENTORY_GUARD'
+      "enabled",
+      "PROMOTE",
+      "add_business_hours_if_none",
+      "ENABLE_SCRIPT",
+      "FEATURE_AI_DRAFTS",
+      "FEATURE_INTENT_BLOCKS",
+      "FEATURE_AUDIENCE_EXPORT",
+      "FEATURE_AUDIENCE_ATTACH",
+      "FEATURE_CM_API",
+      "FEATURE_INVENTORY_GUARD",
     ];
-    
+
     // Numeric fields
     const numericFields = [
-      'daily_budget_cap_default', 'cpc_ceiling_default', 
-      'st_min_clicks', 'st_min_cost'
+      "daily_budget_cap_default",
+      "cpc_ceiling_default",
+      "st_min_clicks",
+      "st_min_cost",
     ];
-    
+
     // Apply values with type conversion
     Object.entries(configMap).forEach(([key, value]) => {
       if (booleanFields.includes(key)) {
-        config[key] = value.toLowerCase() !== 'false';
+        config[key] = value.toLowerCase() !== "false";
       } else if (numericFields.includes(key)) {
         config[key] = Number(value) || 0;
-      } else if (key.startsWith('AP_')) {
+      } else if (key.startsWith("AP_")) {
         // Handle autopilot settings
         this.applyAutopilotConfig(config, key, value);
       } else {
@@ -175,27 +195,30 @@ class TenantConfigService {
    */
   applyAutopilotConfig(config, key, value) {
     if (!config.AP) config.AP = {};
-    
+
     switch (key) {
-      case 'AP_OBJECTIVE':
+      case "AP_OBJECTIVE":
         config.AP.objective = value.toLowerCase();
         break;
-      case 'AP_MODE':
+      case "AP_MODE":
         config.AP.mode = value.toLowerCase();
         break;
-      case 'AP_SCHEDULE':
+      case "AP_SCHEDULE":
         config.AP.schedule = value.toLowerCase();
         break;
-      case 'AP_TARGET_CPA':
+      case "AP_TARGET_CPA":
         config.AP.target_cpa = Number(value) || null;
         break;
-      case 'AP_TARGET_ROAS':
+      case "AP_TARGET_ROAS":
         config.AP.target_roas = Number(value) || null;
         break;
-      case 'AP_DESIRED_KEYWORDS_PIPE':
-        config.AP.desired_keywords = value.split('|').map(s => s.trim()).filter(Boolean);
+      case "AP_DESIRED_KEYWORDS_PIPE":
+        config.AP.desired_keywords = value
+          .split("|")
+          .map((s) => s.trim())
+          .filter(Boolean);
         break;
-      case 'AP_PLAYBOOK_PROMPT':
+      case "AP_PLAYBOOK_PROMPT":
         config.AP.playbook_prompt = value;
         break;
     }
@@ -207,29 +230,47 @@ class TenantConfigService {
   async loadComplexConfigs(doc, tenantId, config) {
     try {
       // Load budget caps
-      config.BUDGET_CAPS = await this.loadMapTable(doc, `BUDGET_CAPS_${tenantId}`, ['campaign', 'value']);
-      
+      config.BUDGET_CAPS = await this.loadMapTable(
+        doc,
+        `BUDGET_CAPS_${tenantId}`,
+        ["campaign", "value"],
+      );
+
       // Load CPC ceilings
-      config.CPC_CEILINGS = await this.loadMapTable(doc, `CPC_CEILINGS_${tenantId}`, ['campaign', 'value']);
-      
+      config.CPC_CEILINGS = await this.loadMapTable(
+        doc,
+        `CPC_CEILINGS_${tenantId}`,
+        ["campaign", "value"],
+      );
+
       // Load schedules
       config.SCHEDULES = await this.loadSchedules(doc, tenantId);
-      
+
       // Load master negatives
-      config.MASTER_NEGATIVES = await this.loadList(doc, `MASTER_NEGATIVES_${tenantId}`, ['term']);
-      
+      config.MASTER_NEGATIVES = await this.loadList(
+        doc,
+        `MASTER_NEGATIVES_${tenantId}`,
+        ["term"],
+      );
+
       // Load waste negative map
-      config.WASTE_NEGATIVE_MAP = await this.loadNested(doc, `WASTE_NEGATIVE_MAP_${tenantId}`, ['campaign', 'ad_group', 'term']);
-      
+      config.WASTE_NEGATIVE_MAP = await this.loadNested(
+        doc,
+        `WASTE_NEGATIVE_MAP_${tenantId}`,
+        ["campaign", "ad_group", "term"],
+      );
+
       // Load RSA assets
       config.RSA_DEFAULT = await this.loadRSADefault(doc, tenantId);
       config.RSA_MAP = await this.loadRSAMap(doc, tenantId);
-      
+
       // Load exclusions
       config.EXCLUSIONS = await this.loadExclusions(doc, tenantId);
-      
     } catch (error) {
-      console.warn(`TenantConfigService: Failed to load some complex configs for ${tenantId}:`, error.message);
+      console.warn(
+        `TenantConfigService: Failed to load some complex configs for ${tenantId}:`,
+        error.message,
+      );
     }
   }
 
@@ -240,14 +281,14 @@ class TenantConfigService {
     const sheet = await this.ensureSheet(doc, sheetName, headers);
     const rows = await sheet.getRows();
     const map = {};
-    
-    rows.forEach(row => {
-      const key = String(row.campaign || '').trim();
+
+    rows.forEach((row) => {
+      const key = String(row.campaign || "").trim();
       if (key) {
         map[key] = Number(row.value || 0);
       }
     });
-    
+
     return map;
   }
 
@@ -258,14 +299,14 @@ class TenantConfigService {
     const sheet = await this.ensureSheet(doc, sheetName, headers);
     const rows = await sheet.getRows();
     const list = [];
-    
-    rows.forEach(row => {
-      const term = String(row.term || '').trim();
+
+    rows.forEach((row) => {
+      const term = String(row.term || "").trim();
       if (term) {
         list.push(term);
       }
     });
-    
+
     return list;
   }
 
@@ -276,19 +317,21 @@ class TenantConfigService {
     const sheet = await this.ensureSheet(doc, sheetName, headers);
     const rows = await sheet.getRows();
     const nested = {};
-    
-    rows.forEach(row => {
-      const campaign = String(row.campaign || '').trim();
-      const adGroup = String(row.ad_group || '').trim();
-      const term = String(row.term || '').trim().toLowerCase();
-      
+
+    rows.forEach((row) => {
+      const campaign = String(row.campaign || "").trim();
+      const adGroup = String(row.ad_group || "").trim();
+      const term = String(row.term || "")
+        .trim()
+        .toLowerCase();
+
       if (campaign && adGroup && term) {
         if (!nested[campaign]) nested[campaign] = {};
         if (!nested[campaign][adGroup]) nested[campaign][adGroup] = [];
         nested[campaign][adGroup].push(term);
       }
     });
-    
+
     return nested;
   }
 
@@ -296,21 +339,26 @@ class TenantConfigService {
    * Load schedules
    */
   async loadSchedules(doc, tenantId) {
-    const sheet = await this.ensureSheet(doc, `SCHEDULES_${tenantId}`, ['campaign', 'days_csv', 'start_hh:mm', 'end_hh:mm']);
+    const sheet = await this.ensureSheet(doc, `SCHEDULES_${tenantId}`, [
+      "campaign",
+      "days_csv",
+      "start_hh:mm",
+      "end_hh:mm",
+    ]);
     const rows = await sheet.getRows();
     const schedules = {};
-    
-    rows.forEach(row => {
-      const campaign = String(row.campaign || '').trim();
+
+    rows.forEach((row) => {
+      const campaign = String(row.campaign || "").trim();
       if (campaign) {
         schedules[campaign] = {
-          days: String(row.days_csv || '').trim(),
-          start: String(row['start_hh:mm'] || '').trim(),
-          end: String(row['end_hh:mm'] || '').trim()
+          days: String(row.days_csv || "").trim(),
+          start: String(row["start_hh:mm"] || "").trim(),
+          end: String(row["end_hh:mm"] || "").trim(),
         };
       }
     });
-    
+
     return schedules;
   }
 
@@ -318,14 +366,24 @@ class TenantConfigService {
    * Load RSA default assets
    */
   async loadRSADefault(doc, tenantId) {
-    const sheet = await this.ensureSheet(doc, `RSA_ASSETS_DEFAULT_${tenantId}`, ['headlines_pipe', 'descriptions_pipe']);
+    const sheet = await this.ensureSheet(
+      doc,
+      `RSA_ASSETS_DEFAULT_${tenantId}`,
+      ["headlines_pipe", "descriptions_pipe"],
+    );
     const rows = await sheet.getRows();
-    
+
     if (!rows.length) return { H: [], D: [] };
-    
-    const H = String(rows[0].headlines_pipe || '').split('|').map(s => s.trim()).filter(Boolean);
-    const D = String(rows[0].descriptions_pipe || '').split('|').map(s => s.trim()).filter(Boolean);
-    
+
+    const H = String(rows[0].headlines_pipe || "")
+      .split("|")
+      .map((s) => s.trim())
+      .filter(Boolean);
+    const D = String(rows[0].descriptions_pipe || "")
+      .split("|")
+      .map((s) => s.trim())
+      .filter(Boolean);
+
     return { H, D };
   }
 
@@ -333,23 +391,34 @@ class TenantConfigService {
    * Load RSA map
    */
   async loadRSAMap(doc, tenantId) {
-    const sheet = await this.ensureSheet(doc, `RSA_ASSETS_MAP_${tenantId}`, ['campaign', 'ad_group', 'headlines_pipe', 'descriptions_pipe']);
+    const sheet = await this.ensureSheet(doc, `RSA_ASSETS_MAP_${tenantId}`, [
+      "campaign",
+      "ad_group",
+      "headlines_pipe",
+      "descriptions_pipe",
+    ]);
     const rows = await sheet.getRows();
     const map = {};
-    
-    rows.forEach(row => {
-      const campaign = String(row.campaign || '').trim();
-      const adGroup = String(row.ad_group || '').trim();
-      
+
+    rows.forEach((row) => {
+      const campaign = String(row.campaign || "").trim();
+      const adGroup = String(row.ad_group || "").trim();
+
       if (campaign && adGroup) {
-        const H = String(row.headlines_pipe || '').split('|').map(s => s.trim()).filter(Boolean);
-        const D = String(row.descriptions_pipe || '').split('|').map(s => s.trim()).filter(Boolean);
-        
+        const H = String(row.headlines_pipe || "")
+          .split("|")
+          .map((s) => s.trim())
+          .filter(Boolean);
+        const D = String(row.descriptions_pipe || "")
+          .split("|")
+          .map((s) => s.trim())
+          .filter(Boolean);
+
         if (!map[campaign]) map[campaign] = {};
         map[campaign][adGroup] = { H, D };
       }
     });
-    
+
     return map;
   }
 
@@ -357,20 +426,23 @@ class TenantConfigService {
    * Load exclusions
    */
   async loadExclusions(doc, tenantId) {
-    const sheet = await this.ensureSheet(doc, `EXCLUSIONS_${tenantId}`, ['campaign', 'ad_group']);
+    const sheet = await this.ensureSheet(doc, `EXCLUSIONS_${tenantId}`, [
+      "campaign",
+      "ad_group",
+    ]);
     const rows = await sheet.getRows();
     const exclusions = {};
-    
-    rows.forEach(row => {
-      const campaign = String(row.campaign || '').trim();
-      const adGroup = String(row.ad_group || '').trim();
-      
+
+    rows.forEach((row) => {
+      const campaign = String(row.campaign || "").trim();
+      const adGroup = String(row.ad_group || "").trim();
+
       if (campaign && adGroup) {
         if (!exclusions[campaign]) exclusions[campaign] = {};
         exclusions[campaign][adGroup] = true;
       }
     });
-    
+
     return exclusions;
   }
 
@@ -380,14 +452,14 @@ class TenantConfigService {
   getDefaultConfig(tenantId) {
     const tenant = tenantRegistry.getTenant(tenantId);
     const config = { ...this.configDefaults };
-    
+
     if (tenant) {
       config.plan = tenant.plan;
       if (tenant.config) {
         Object.assign(config, tenant.config);
       }
     }
-    
+
     // Initialize empty complex configs
     config.BUDGET_CAPS = {};
     config.CPC_CEILINGS = {};
@@ -397,7 +469,7 @@ class TenantConfigService {
     config.RSA_DEFAULT = { H: [], D: [] };
     config.RSA_MAP = {};
     config.EXCLUSIONS = {};
-    
+
     return config;
   }
 
@@ -406,15 +478,33 @@ class TenantConfigService {
    */
   async updateTenantConfig(tenantId, updates) {
     try {
+      console.log(`🔄 Updating tenant config for ${tenantId}:`, {
+        updateKeys: Object.keys(updates),
+        updateCount: Object.keys(updates).length,
+      });
+
       const doc = await tenantRegistry.getTenantDoc(tenantId);
       await this.upsertConfigToSheets(doc, tenantId, updates);
-      
-      // Clear cache
-      tenantCache.clearTenantPath(tenantId, '/api/config');
-      
+
+      console.log(`✅ Config updated in sheets for ${tenantId}`);
+
+      // Clear all related cache entries
+      console.log(`🗑️ Clearing cache for ${tenantId}`);
+      tenantCache.clearTenantPath(tenantId, "/api/config");
+
+      // Also clear any cached insights/summary that might depend on config
+      tenantCache.clearTenantPath(tenantId, "/api/insights");
+      tenantCache.clearTenantPath(tenantId, "/api/summary");
+
+      console.log(`🔄 Cache cleared for ${tenantId}`);
+
       return true;
     } catch (error) {
-      console.error(`TenantConfigService: Failed to update config for ${tenantId}:`, error.message);
+      console.error(
+        `TenantConfigService: Failed to update config for ${tenantId}:`,
+        error.message,
+        error.stack,
+      );
       throw error;
     }
   }
@@ -423,28 +513,60 @@ class TenantConfigService {
    * Upsert configuration to sheets
    */
   async upsertConfigToSheets(doc, tenantId, settings) {
-    const sheet = await this.ensureSheet(doc, `CONFIG_${tenantId}`, ['key', 'value']);
-    const rows = await sheet.getRows();
-    
-    // Build current config map
-    const configMap = {};
-    rows.forEach(row => {
-      if (row.key) {
-        configMap[String(row.key).trim()] = String(row.value || '').trim();
+    try {
+      console.log(`📊 Upserting config to sheets for ${tenantId}:`, {
+        docTitle: doc.title,
+        settingsKeys: Object.keys(settings),
+      });
+
+      const sheetName = `CONFIG_${tenantId}`;
+      const sheet = await this.ensureSheet(doc, sheetName, ["key", "value"]);
+
+      console.log(`📄 Sheet "${sheetName}" ready, loading existing rows`);
+      const rows = await sheet.getRows();
+      console.log(`📋 Found ${rows.length} existing config rows`);
+
+      // Build current config map
+      const configMap = {};
+      rows.forEach((row) => {
+        if (row.key) {
+          configMap[String(row.key).trim()] = String(row.value || "").trim();
+        }
+      });
+
+      console.log(
+        `🗂️ Current config has ${Object.keys(configMap).length} keys`,
+      );
+
+      // Apply updates
+      Object.entries(settings || {}).forEach(([key, value]) => {
+        const oldValue = configMap[key];
+        configMap[key] = String(value);
+        console.log(`🔄 Setting ${key}: "${oldValue}" → "${String(value)}"`);
+      });
+
+      console.log(
+        `📝 Final config will have ${Object.keys(configMap).length} keys`,
+      );
+
+      // Clear and rebuild sheet
+      console.log(`🗑️ Clearing existing rows in sheet "${sheetName}"`);
+      await sheet.clearRows();
+      await sheet.setHeaderRow(["key", "value"]);
+
+      console.log(`✍️ Writing ${Object.keys(configMap).length} config entries`);
+      for (const [key, value] of Object.entries(configMap)) {
+        await sheet.addRow({ key, value });
       }
-    });
-    
-    // Apply updates
-    Object.entries(settings || {}).forEach(([key, value]) => {
-      configMap[key] = String(value);
-    });
-    
-    // Clear and rebuild sheet
-    await sheet.clearRows();
-    await sheet.setHeaderRow(['key', 'value']);
-    
-    for (const [key, value] of Object.entries(configMap)) {
-      await sheet.addRow({ key, value });
+
+      console.log(`✅ Successfully upserted config to sheets for ${tenantId}`);
+    } catch (error) {
+      console.error(
+        `❌ Failed to upsert config to sheets for ${tenantId}:`,
+        error.message,
+        error.stack,
+      );
+      throw new Error(`Sheets upsert failed: ${error.message}`);
     }
   }
 
@@ -454,20 +576,24 @@ class TenantConfigService {
   validateConfig(config) {
     // Ensure required fields
     if (!config.plan || !this.planLimits[config.plan]) {
-      config.plan = 'starter';
+      config.plan = "starter";
     }
-    
+
     // Validate numeric ranges
-    if (config.daily_budget_cap_default < 0) config.daily_budget_cap_default = 3.00;
-    if (config.cpc_ceiling_default < 0) config.cpc_ceiling_default = 0.20;
+    if (config.daily_budget_cap_default < 0)
+      config.daily_budget_cap_default = 3.0;
+    if (config.cpc_ceiling_default < 0) config.cpc_ceiling_default = 0.2;
     if (config.st_min_clicks < 0) config.st_min_clicks = 2;
     if (config.st_min_cost < 0) config.st_min_cost = 2.82;
-    
+
     // Validate URLs
-    if (config.default_final_url && !this.isValidUrl(config.default_final_url)) {
-      config.default_final_url = 'https://example.com';
+    if (
+      config.default_final_url &&
+      !this.isValidUrl(config.default_final_url)
+    ) {
+      config.default_final_url = "https://example.com";
     }
-    
+
     // Ensure AP object exists
     if (!config.AP) {
       config.AP = this.configDefaults.AP;
@@ -491,7 +617,7 @@ class TenantConfigService {
    */
   getPlanLimits(tenantId) {
     const tenant = tenantRegistry.getTenant(tenantId);
-    const plan = tenant?.plan || 'starter';
+    const plan = tenant?.plan || "starter";
     return this.planLimits[plan] || this.planLimits.starter;
   }
 
@@ -500,7 +626,7 @@ class TenantConfigService {
    */
   hasFeatureAccess(tenantId, feature) {
     const limits = this.getPlanLimits(tenantId);
-    return limits.features.includes('all') || limits.features.includes(feature);
+    return limits.features.includes("all") || limits.features.includes(feature);
   }
 
   /**
@@ -532,13 +658,16 @@ class TenantConfigService {
     try {
       const defaults = this.getDefaultConfig(tenantId);
       await this.updateTenantConfig(tenantId, defaults);
-      
+
       // Ensure audience tabs exist
       await this.ensureAudienceTabs(tenantId);
-      
+
       return true;
     } catch (error) {
-      console.error(`TenantConfigService: Failed to bootstrap ${tenantId}:`, error.message);
+      console.error(
+        `TenantConfigService: Failed to bootstrap ${tenantId}:`,
+        error.message,
+      );
       return false;
     }
   }
@@ -549,17 +678,59 @@ class TenantConfigService {
   async ensureAudienceTabs(tenantId) {
     const doc = await tenantRegistry.getTenantDoc(tenantId);
     const audienceTabs = [
-      { name: `AUDIENCE_SEEDS_${tenantId}`, headers: ['customer_id', 'email_hash', 'phone_hash', 'total_spent', 'order_count', 'last_order_at', 'top_category', 'last_product_ids_csv'] },
-      { name: `SKU_MARGIN_${tenantId}`, headers: ['sku', 'margin'] },
-      { name: `SKU_STOCK_${tenantId}`, headers: ['sku', 'stock'] },
-      { name: `AUDIENCE_SEGMENTS_${tenantId}`, headers: ['segment_key', 'logic_sqlish', 'active'] },
-      { name: `AUDIENCE_EXPORT_${tenantId}`, headers: ['segment_key', 'format', 'url', 'row_count', 'generated_at'] },
-      { name: `AUDIENCE_MAP_${tenantId}`, headers: ['campaign', 'ad_group', 'user_list_id', 'mode', 'bid_modifier'] },
-      { name: `ADGROUP_SKU_MAP_${tenantId}`, headers: ['ad_group_id', 'sku'] },
-      { name: `INTENT_BLOCKS_${tenantId}`, headers: ['intent_key', 'hero_headline', 'benefit_bullets_pipe', 'proof_snippet', 'cta_text', 'url_target', 'updated_at', 'updated_by'] },
-      { name: `OVERLAY_HISTORY_${tenantId}`, headers: ['timestamp', 'action', 'selector', 'channel', 'fields_json'] }
+      {
+        name: `AUDIENCE_SEEDS_${tenantId}`,
+        headers: [
+          "customer_id",
+          "email_hash",
+          "phone_hash",
+          "total_spent",
+          "order_count",
+          "last_order_at",
+          "top_category",
+          "last_product_ids_csv",
+        ],
+      },
+      { name: `SKU_MARGIN_${tenantId}`, headers: ["sku", "margin"] },
+      { name: `SKU_STOCK_${tenantId}`, headers: ["sku", "stock"] },
+      {
+        name: `AUDIENCE_SEGMENTS_${tenantId}`,
+        headers: ["segment_key", "logic_sqlish", "active"],
+      },
+      {
+        name: `AUDIENCE_EXPORT_${tenantId}`,
+        headers: ["segment_key", "format", "url", "row_count", "generated_at"],
+      },
+      {
+        name: `AUDIENCE_MAP_${tenantId}`,
+        headers: [
+          "campaign",
+          "ad_group",
+          "user_list_id",
+          "mode",
+          "bid_modifier",
+        ],
+      },
+      { name: `ADGROUP_SKU_MAP_${tenantId}`, headers: ["ad_group_id", "sku"] },
+      {
+        name: `INTENT_BLOCKS_${tenantId}`,
+        headers: [
+          "intent_key",
+          "hero_headline",
+          "benefit_bullets_pipe",
+          "proof_snippet",
+          "cta_text",
+          "url_target",
+          "updated_at",
+          "updated_by",
+        ],
+      },
+      {
+        name: `OVERLAY_HISTORY_${tenantId}`,
+        headers: ["timestamp", "action", "selector", "channel", "fields_json"],
+      },
     ];
-    
+
     for (const tab of audienceTabs) {
       await this.ensureSheet(doc, tab.name, tab.headers);
     }

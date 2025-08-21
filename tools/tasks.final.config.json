@@ -1,20 +1,64 @@
 {
   "maxParallel": 8,
   "tasks": [
-    { "id": "verify_backend_endpoints_final", "cmd": "grep -q '/api/config' backend/server.js && grep -q '/api/metrics' backend/server.js && grep -q '/api/upsertConfig' backend/server.js && node tools/audit.js PROOFKIT_ROADMAP_FINAL.md M0-backend 'Endpoints present'", "cwd": "." },
-    { "id": "verify_sheets_repo_final", "cmd": "grep -q 'ensureSheet' backend/sheets.js && grep -q 'setHeaderRow' backend/sheets.js && node tools/audit.js PROOFKIT_ROADMAP_FINAL.md M0-sheets 'Repo ensures headers'", "cwd": "." },
+    {
+      "id": "verify_backend_endpoints_final",
+      "cmd": "grep -q '/api/config' backend/server.js && grep -q '/api/metrics' backend/server.js && grep -q '/api/upsertConfig' backend/server.js && node tools/audit.js PROOFKIT_ROADMAP_FINAL.md M0-backend 'Endpoints present'",
+      "cwd": "."
+    },
+    {
+      "id": "verify_sheets_repo_final",
+      "cmd": "grep -q 'ensureSheet' backend/sheets.js && grep -q 'setHeaderRow' backend/sheets.js && node tools/audit.js PROOFKIT_ROADMAP_FINAL.md M0-sheets 'Repo ensures headers'",
+      "cwd": "."
+    },
 
-    { "id": "backend_install", "cmd": "npm --prefix backend install", "cwd": "." },
-    { "id": "ensure_backend_running", "cmd": "lsof -i :3001 || (HMAC_SECRET=change_me PORT=3001 node backend/server.js & sleep 1)", "cwd": "." },
-    { "id": "wait_backend_health", "cmd": "for i in 1 2 3 4 5; do curl -sS http://localhost:3001/api/health && node tools/audit.js PROOFKIT_ROADMAP_FINAL.md M0-health 'Health OK' && exit 0 || sleep 1; done; exit 1", "cwd": "." },
+    {
+      "id": "backend_install",
+      "cmd": "npm --prefix backend install",
+      "cwd": "."
+    },
+    {
+      "id": "ensure_backend_running",
+      "cmd": "lsof -i :3001 || (HMAC_SECRET=change_me PORT=3001 node backend/server.js & sleep 1)",
+      "cwd": "."
+    },
+    {
+      "id": "wait_backend_health",
+      "cmd": "for i in 1 2 3 4 5; do curl -sS http://localhost:3001/api/health && node tools/audit.js PROOFKIT_ROADMAP_FINAL.md M0-health 'Health OK' && exit 0 || sleep 1; done; exit 1",
+      "cwd": "."
+    },
 
-    { "id": "verify_ads_m1_core", "cmd": "grep -q 'buildSafeRSAs_' ads-script/master.gs && grep -q 'autoNegateAndCollectST_' ads-script/master.gs && grep -q 'isExcludedCampaign_' ads-script/master.gs && grep -q 'ensureSeed_' ads-script/master.gs && node tools/audit.js PROOFKIT_ROADMAP_FINAL.md M1-ads 'Core features present'", "cwd": "." },
-    { "id": "lint_rsa_lengths_final", "cmd": "node -e \"const fs=require('fs');const s=fs.readFileSync('ads-script/master.gs','utf8');if(!/30/.test(s)||!/90/.test(s))process.exit(1);\" && node tools/audit.js PROOFKIT_ROADMAP_FINAL.md M1-ads-lint 'RSA 30/90 present'", "cwd": "." },
+    {
+      "id": "verify_ads_m1_core",
+      "cmd": "grep -q 'buildSafeRSAs_' ads-script/master.gs && grep -q 'autoNegateAndCollectST_' ads-script/master.gs && grep -q 'isExcludedCampaign_' ads-script/master.gs && grep -q 'ensureSeed_' ads-script/master.gs && node tools/audit.js PROOFKIT_ROADMAP_FINAL.md M1-ads 'Core features present'",
+      "cwd": "."
+    },
+    {
+      "id": "lint_rsa_lengths_final",
+      "cmd": "node -e \"const fs=require('fs');const s=fs.readFileSync('ads-script/master.gs','utf8');if(!/30/.test(s)||!/90/.test(s))process.exit(1);\" && node tools/audit.js PROOFKIT_ROADMAP_FINAL.md M1-ads-lint 'RSA 30/90 present'",
+      "cwd": "."
+    },
 
-    { "id": "verify_wp_uninstaller_final", "cmd": "test -f wordpress-plugin/uninstall.php && node tools/audit.js PROOFKIT_ROADMAP_FINAL.md M1-wp 'Uninstaller present'", "cwd": "." },
-    { "id": "verify_consent_docs_final", "cmd": "test -f docs/CONSENT_MODE_V2.md && node tools/audit.js PROOFKIT_ROADMAP_FINAL.md M1-consent 'Consent docs present'", "cwd": "." },
+    {
+      "id": "verify_wp_uninstaller_final",
+      "cmd": "test -f wordpress-plugin/uninstall.php && node tools/audit.js PROOFKIT_ROADMAP_FINAL.md M1-wp 'Uninstaller present'",
+      "cwd": "."
+    },
+    {
+      "id": "verify_consent_docs_final",
+      "cmd": "test -f docs/CONSENT_MODE_V2.md && node tools/audit.js PROOFKIT_ROADMAP_FINAL.md M1-consent 'Consent docs present'",
+      "cwd": "."
+    },
 
-    { "id": "ensure_audience_tabs_final", "cmd": "if [ -n \"$GOOGLE_SERVICE_EMAIL\" ] && [ -n \"$SHEET_ID\" ]; then nonce=123; sig=$(HMAC_SECRET=change_me node tools/hmac.js POST:TENANT_123:ensureaudiencetabs:$nonce); curl -sS -X POST 'http://localhost:3001/api/ensureAudienceTabs?tenant=TENANT_123&sig='$sig -H 'content-type: application/json' --data '{\"nonce\":123}' | grep -q true && node tools/audit.js PROOFKIT_ROADMAP_FINAL.md G1-tabs 'Audience tabs ensured'; else node tools/audit.js PROOFKIT_ROADMAP_FINAL.md G1-tabs 'Skipped: missing Sheets creds'; fi", "cwd": "." },
-    { "id": "summary_endpoint_final", "cmd": "sig=$(HMAC_SECRET=change_me node tools/hmac.js GET:TENANT_123:config); (curl -sS 'http://localhost:3001/api/summary?tenant=TENANT_123&sig='$sig | grep -q ok && node tools/audit.js PROOFKIT_ROADMAP_FINAL.md M0-summary 'Summary endpoint OK') || node tools/audit.js PROOFKIT_ROADMAP_FINAL.md M0-summary 'Skipped: summary check failed (likely missing in-memory config)'", "cwd": "." }
+    {
+      "id": "ensure_audience_tabs_final",
+      "cmd": "if [ -n \"$GOOGLE_SERVICE_EMAIL\" ] && [ -n \"$SHEET_ID\" ]; then nonce=123; sig=$(HMAC_SECRET=change_me node tools/hmac.js POST:TENANT_123:ensureaudiencetabs:$nonce); curl -sS -X POST 'http://localhost:3001/api/ensureAudienceTabs?tenant=TENANT_123&sig='$sig -H 'content-type: application/json' --data '{\"nonce\":123}' | grep -q true && node tools/audit.js PROOFKIT_ROADMAP_FINAL.md G1-tabs 'Audience tabs ensured'; else node tools/audit.js PROOFKIT_ROADMAP_FINAL.md G1-tabs 'Skipped: missing Sheets creds'; fi",
+      "cwd": "."
+    },
+    {
+      "id": "summary_endpoint_final",
+      "cmd": "sig=$(HMAC_SECRET=change_me node tools/hmac.js GET:TENANT_123:config); (curl -sS 'http://localhost:3001/api/summary?tenant=TENANT_123&sig='$sig | grep -q ok && node tools/audit.js PROOFKIT_ROADMAP_FINAL.md M0-summary 'Summary endpoint OK') || node tools/audit.js PROOFKIT_ROADMAP_FINAL.md M0-summary 'Skipped: summary check failed (likely missing in-memory config)'",
+      "cwd": "."
+    }
   ]
 }

@@ -1,7 +1,7 @@
 /// <reference types="cypress" />
 
 // Import commands
-require('./commands');
+require("./commands");
 
 // Global before hook to initialize tests
 beforeEach(() => {
@@ -14,18 +14,18 @@ beforeEach(() => {
 // Global after hook to ensure screenshots are taken
 afterEach(() => {
   // Take screenshot if test failed
-  if (Cypress.currentTest.state === 'failed') {
+  if (Cypress.currentTest.state === "failed") {
     cy.screenshot(`failed-${Cypress.currentTest.title}`, {
-      capture: 'fullPage'
+      capture: "fullPage",
     });
   }
 });
 
 // Configure global error handling
-Cypress.on('uncaught:exception', (err, runnable) => {
+Cypress.on("uncaught:exception", (err, runnable) => {
   // Prevent Cypress from failing on uncaught exceptions in development
-  if (Cypress.env('ENVIRONMENT') === 'development') {
-    console.warn('Uncaught exception:', err);
+  if (Cypress.env("ENVIRONMENT") === "development") {
+    console.warn("Uncaught exception:", err);
     return false;
   }
   return true;

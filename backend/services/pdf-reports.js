@@ -4,17 +4,17 @@
  * Supports multiple clients and customizable templates
  */
 
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import fs from "fs";
+import path from "path";
+import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 class PDFReportService {
   constructor() {
-    this.reportsDir = path.join(__dirname, '../reports');
-    this.templatesDir = path.join(__dirname, '../report-templates');
+    this.reportsDir = path.join(__dirname, "../reports");
+    this.templatesDir = path.join(__dirname, "../report-templates");
     this.ensureDirectories();
   }
 
@@ -22,7 +22,7 @@ class PDFReportService {
    * Ensure required directories exist
    */
   ensureDirectories() {
-    [this.reportsDir, this.templatesDir].forEach(dir => {
+    [this.reportsDir, this.templatesDir].forEach((dir) => {
       if (!fs.existsSync(dir)) {
         fs.mkdirSync(dir, { recursive: true });
       }
@@ -40,19 +40,21 @@ class PDFReportService {
         reportPeriod,
         agencyBranding = {},
         metricsData,
-        customizations = {}
+        customizations = {},
       } = reportConfig;
 
       console.log(`Generating weekly report for ${clientName} (${tenantId})`);
 
       // Validate required data
       if (!tenantId || !clientName || !metricsData) {
-        throw new Error('Missing required report data: tenantId, clientName, or metricsData');
+        throw new Error(
+          "Missing required report data: tenantId, clientName, or metricsData",
+        );
       }
 
       // Process metrics data
       const processedMetrics = this.processMetricsData(metricsData);
-      
+
       // Generate report structure
       const reportData = {
         reportId: this.generateReportId(tenantId, reportPeriod),
@@ -61,7 +63,7 @@ class PDFReportService {
           clientName,
           reportPeriod: reportPeriod || this.getCurrentWeekPeriod(),
           generatedAt: new Date().toISOString(),
-          agencyBranding
+          agencyBranding,
         },
         executiveSummary: this.generateExecutiveSummary(processedMetrics),
         performanceMetrics: processedMetrics,
@@ -70,18 +72,24 @@ class PDFReportService {
         appendix: {
           searchTerms: metricsData.search_terms || [],
           campaignDetails: this.processCampaignDetails(metricsData.metrics),
-          technicalNotes: this.generateTechnicalNotes()
-        }
+          technicalNotes: this.generateTechnicalNotes(),
+        },
       };
 
       // Apply customizations
-      const customizedReport = this.applyReportCustomizations(reportData, customizations);
+      const customizedReport = this.applyReportCustomizations(
+        reportData,
+        customizations,
+      );
 
       // Generate HTML report
       const htmlContent = await this.generateHTMLReport(customizedReport);
-      
+
       // Save HTML version
-      const htmlPath = path.join(this.reportsDir, `${reportData.reportId}.html`);
+      const htmlPath = path.join(
+        this.reportsDir,
+        `${reportData.reportId}.html`,
+      );
       fs.writeFileSync(htmlPath, htmlContent);
 
       // Generate PDF (placeholder for actual PDF generation)
@@ -89,16 +97,15 @@ class PDFReportService {
       await this.generatePDFFromHTML(htmlContent, pdfPath);
 
       console.log(`Report generated: ${reportData.reportId}`);
-      
+
       return {
         reportId: reportData.reportId,
         htmlPath,
         pdfPath,
-        reportData: customizedReport
+        reportData: customizedReport,
       };
-
     } catch (error) {
-      console.error('Error generating weekly report:', error);
+      console.error("Error generating weekly report:", error);
       throw error;
     }
   }
@@ -108,20 +115,20 @@ class PDFReportService {
    */
   processMetricsData(metricsData) {
     const { metrics = [], search_terms = [] } = metricsData;
-    
+
     // Group metrics by type
-    const campaignMetrics = metrics.filter(m => m[1] === 'campaign');
-    const adGroupMetrics = metrics.filter(m => m[1] === 'ad_group');
+    const campaignMetrics = metrics.filter((m) => m[1] === "campaign");
+    const adGroupMetrics = metrics.filter((m) => m[1] === "ad_group");
 
     // Calculate totals
     const totals = this.calculateTotals(campaignMetrics);
-    
+
     // Calculate period-over-period changes (placeholder)
     const periodChanges = this.calculatePeriodChanges(totals);
 
     // Top performing campaigns
     const topCampaigns = this.getTopPerformers(campaignMetrics, 5);
-    
+
     // Search term analysis
     const searchTermAnalysis = this.analyzeSearchTerms(search_terms);
 
@@ -133,10 +140,10 @@ class PDFReportService {
       topPerformers: topCampaigns,
       searchTerms: searchTermAnalysis,
       summary: {
-        totalCampaigns: new Set(campaignMetrics.map(m => m[2])).size,
-        totalAdGroups: new Set(adGroupMetrics.map(m => m[3])).size,
-        activeSearchTerms: search_terms.length
-      }
+        totalCampaigns: new Set(campaignMetrics.map((m) => m[2])).size,
+        totalAdGroups: new Set(adGroupMetrics.map((m) => m[3])).size,
+        activeSearchTerms: search_terms.length,
+      },
     };
   }
 
@@ -152,10 +159,10 @@ class PDFReportService {
       ctr: 0,
       cpc: 0,
       conversionRate: 0,
-      costPerConversion: 0
+      costPerConversion: 0,
     };
 
-    metrics.forEach(metric => {
+    metrics.forEach((metric) => {
       totals.clicks += metric[6] || 0;
       totals.cost += metric[7] || 0;
       totals.conversions += metric[8] || 0;
@@ -163,10 +170,13 @@ class PDFReportService {
     });
 
     // Calculate derived metrics
-    totals.ctr = totals.impressions > 0 ? (totals.clicks / totals.impressions) * 100 : 0;
+    totals.ctr =
+      totals.impressions > 0 ? (totals.clicks / totals.impressions) * 100 : 0;
     totals.cpc = totals.clicks > 0 ? totals.cost / totals.clicks : 0;
-    totals.conversionRate = totals.clicks > 0 ? (totals.conversions / totals.clicks) * 100 : 0;
-    totals.costPerConversion = totals.conversions > 0 ? totals.cost / totals.conversions : 0;
+    totals.conversionRate =
+      totals.clicks > 0 ? (totals.conversions / totals.clicks) * 100 : 0;
+    totals.costPerConversion =
+      totals.conversions > 0 ? totals.cost / totals.conversions : 0;
 
     return totals;
   }
@@ -178,14 +188,14 @@ class PDFReportService {
     // In a real implementation, this would compare with previous period data
     // For now, returning placeholder values
     return {
-      clicks: { change: 15.2, trend: 'up' },
-      cost: { change: 8.7, trend: 'up' },
-      conversions: { change: 22.1, trend: 'up' },
-      impressions: { change: 12.3, trend: 'up' },
-      ctr: { change: 2.8, trend: 'up' },
-      cpc: { change: -5.2, trend: 'down' },
-      conversionRate: { change: 18.4, trend: 'up' },
-      costPerConversion: { change: -12.1, trend: 'down' }
+      clicks: { change: 15.2, trend: "up" },
+      cost: { change: 8.7, trend: "up" },
+      conversions: { change: 22.1, trend: "up" },
+      impressions: { change: 12.3, trend: "up" },
+      ctr: { change: 2.8, trend: "up" },
+      cpc: { change: -5.2, trend: "down" },
+      conversionRate: { change: 18.4, trend: "up" },
+      costPerConversion: { change: -12.1, trend: "down" },
     };
   }
 
@@ -194,8 +204,8 @@ class PDFReportService {
    */
   getTopPerformers(metrics, limit = 5) {
     const campaignPerformance = {};
-    
-    metrics.forEach(metric => {
+
+    metrics.forEach((metric) => {
       const campaignName = metric[2];
       if (!campaignPerformance[campaignName]) {
         campaignPerformance[campaignName] = {
@@ -203,10 +213,10 @@ class PDFReportService {
           clicks: 0,
           cost: 0,
           conversions: 0,
-          impressions: 0
+          impressions: 0,
         };
       }
-      
+
       campaignPerformance[campaignName].clicks += metric[6] || 0;
       campaignPerformance[campaignName].cost += metric[7] || 0;
       campaignPerformance[campaignName].conversions += metric[8] || 0;
@@ -214,10 +224,12 @@ class PDFReportService {
     });
 
     // Calculate performance scores and sort
-    const scored = Object.values(campaignPerformance).map(campaign => ({
-      ...campaign,
-      performanceScore: this.calculatePerformanceScore(campaign)
-    })).sort((a, b) => b.performanceScore - a.performanceScore);
+    const scored = Object.values(campaignPerformance)
+      .map((campaign) => ({
+        ...campaign,
+        performanceScore: this.calculatePerformanceScore(campaign),
+      }))
+      .sort((a, b) => b.performanceScore - a.performanceScore);
 
     return scored.slice(0, limit);
   }
@@ -229,9 +241,9 @@ class PDFReportService {
     const { clicks, conversions, cost } = campaign;
     const conversionRate = clicks > 0 ? conversions / clicks : 0;
     const costPerConversion = conversions > 0 ? cost / conversions : Infinity;
-    
+
     // Weighted performance score
-    return (conversions * 10) + (conversionRate * 100) - (costPerConversion * 0.1);
+    return conversions * 10 + conversionRate * 100 - costPerConversion * 0.1;
   }
 
   /**
@@ -243,7 +255,7 @@ class PDFReportService {
       withConversions: 0,
       averageCost: 0,
       topTerms: [],
-      costlyTerms: []
+      costlyTerms: [],
     };
 
     if (searchTerms.length === 0) return analysis;
@@ -251,9 +263,9 @@ class PDFReportService {
     let totalCost = 0;
     const termPerformance = {};
 
-    searchTerms.forEach(term => {
+    searchTerms.forEach((term) => {
       const [, campaign, adGroup, searchTerm, clicks, cost, conversions] = term;
-      
+
       totalCost += cost || 0;
       if (conversions > 0) analysis.withConversions++;
 
@@ -262,7 +274,7 @@ class PDFReportService {
           term: searchTerm,
           totalClicks: 0,
           totalCost: 0,
-          totalConversions: 0
+          totalConversions: 0,
         };
       }
 
@@ -275,13 +287,15 @@ class PDFReportService {
 
     // Top converting terms
     analysis.topTerms = Object.values(termPerformance)
-      .filter(t => t.totalConversions > 0)
+      .filter((t) => t.totalConversions > 0)
       .sort((a, b) => b.totalConversions - a.totalConversions)
       .slice(0, 10);
 
     // Most costly terms without conversions
     analysis.costlyTerms = Object.values(termPerformance)
-      .filter(t => t.totalConversions === 0 && t.totalCost > analysis.averageCost)
+      .filter(
+        (t) => t.totalConversions === 0 && t.totalCost > analysis.averageCost,
+      )
       .sort((a, b) => b.totalCost - a.totalCost)
       .slice(0, 10);
 
@@ -293,8 +307,8 @@ class PDFReportService {
    */
   groupCampaignMetrics(metrics) {
     const grouped = {};
-    
-    metrics.forEach(metric => {
+
+    metrics.forEach((metric) => {
       const campaignName = metric[2];
       if (!grouped[campaignName]) {
         grouped[campaignName] = {
@@ -302,10 +316,10 @@ class PDFReportService {
           clicks: 0,
           cost: 0,
           conversions: 0,
-          impressions: 0
+          impressions: 0,
         };
       }
-      
+
       grouped[campaignName].clicks += metric[6] || 0;
       grouped[campaignName].cost += metric[7] || 0;
       grouped[campaignName].conversions += metric[8] || 0;
@@ -320,12 +334,12 @@ class PDFReportService {
    */
   groupAdGroupMetrics(metrics) {
     const grouped = {};
-    
-    metrics.forEach(metric => {
+
+    metrics.forEach((metric) => {
       const campaignName = metric[2];
       const adGroupName = metric[3];
       const key = `${campaignName}|${adGroupName}`;
-      
+
       if (!grouped[key]) {
         grouped[key] = {
           campaign: campaignName,
@@ -333,10 +347,10 @@ class PDFReportService {
           clicks: 0,
           cost: 0,
           conversions: 0,
-          impressions: 0
+          impressions: 0,
         };
       }
-      
+
       grouped[key].clicks += metric[6] || 0;
       grouped[key].cost += metric[7] || 0;
       grouped[key].conversions += metric[8] || 0;
@@ -351,16 +365,16 @@ class PDFReportService {
    */
   generateExecutiveSummary(metrics) {
     const { totals, periodChanges, summary } = metrics;
-    
+
     return {
       headline: this.generateHeadline(totals, periodChanges),
       keyHighlights: [
         `Generated ${totals.conversions.toFixed(0)} conversions with a ${totals.conversionRate.toFixed(2)}% conversion rate`,
         `Maintained average CPC of $${totals.cpc.toFixed(2)} across ${summary.totalCampaigns} campaigns`,
         `Achieved ${totals.clicks.toFixed(0)} clicks from ${totals.impressions.toFixed(0)} impressions`,
-        `Total advertising spend: $${totals.cost.toFixed(2)}`
+        `Total advertising spend: $${totals.cost.toFixed(2)}`,
       ],
-      periodComparison: this.generatePeriodComparison(periodChanges)
+      periodComparison: this.generatePeriodComparison(periodChanges),
     };
   }
 
@@ -368,9 +382,11 @@ class PDFReportService {
    * Generate report headline
    */
   generateHeadline(totals, changes) {
-    const conversionTrend = changes.conversions.trend === 'up' ? 'increased' : 'decreased';
-    const costTrend = changes.costPerConversion.trend === 'down' ? 'while reducing' : 'with';
-    
+    const conversionTrend =
+      changes.conversions.trend === "up" ? "increased" : "decreased";
+    const costTrend =
+      changes.costPerConversion.trend === "down" ? "while reducing" : "with";
+
     return `Conversions ${conversionTrend} by ${Math.abs(changes.conversions.change).toFixed(1)}% ${costTrend} cost per conversion by ${Math.abs(changes.costPerConversion.change).toFixed(1)}%`;
   }
 
@@ -382,11 +398,13 @@ class PDFReportService {
     const challenges = [];
 
     Object.entries(changes).forEach(([metric, data]) => {
-      const isImprovement = (metric === 'costPerConversion' || metric === 'cpc') ? 
-        data.trend === 'down' : data.trend === 'up';
-      
-      const text = `${metric}: ${data.trend === 'up' ? '+' : ''}${data.change.toFixed(1)}%`;
-      
+      const isImprovement =
+        metric === "costPerConversion" || metric === "cpc"
+          ? data.trend === "down"
+          : data.trend === "up";
+
+      const text = `${metric}: ${data.trend === "up" ? "+" : ""}${data.change.toFixed(1)}%`;
+
       if (isImprovement) {
         improvements.push(text);
       } else {
@@ -407,26 +425,26 @@ class PDFReportService {
     // Performance insights
     if (totals.conversionRate > 3) {
       insights.push({
-        type: 'success',
-        title: 'Strong Conversion Performance',
-        description: `Your ${totals.conversionRate.toFixed(2)}% conversion rate is above industry average, indicating effective ad targeting and landing page optimization.`
+        type: "success",
+        title: "Strong Conversion Performance",
+        description: `Your ${totals.conversionRate.toFixed(2)}% conversion rate is above industry average, indicating effective ad targeting and landing page optimization.`,
       });
     }
 
-    if (totals.cpc < 1.50) {
+    if (totals.cpc < 1.5) {
       insights.push({
-        type: 'success',
-        title: 'Cost-Efficient Clicks',
-        description: `Average CPC of $${totals.cpc.toFixed(2)} demonstrates efficient bid management and keyword selection.`
+        type: "success",
+        title: "Cost-Efficient Clicks",
+        description: `Average CPC of $${totals.cpc.toFixed(2)} demonstrates efficient bid management and keyword selection.`,
       });
     }
 
     // Search term insights
     if (searchTerms.costlyTerms.length > 0) {
       insights.push({
-        type: 'warning',
-        title: 'Costly Non-Converting Terms',
-        description: `${searchTerms.costlyTerms.length} search terms are generating significant cost without conversions. Consider adding negative keywords.`
+        type: "warning",
+        title: "Costly Non-Converting Terms",
+        description: `${searchTerms.costlyTerms.length} search terms are generating significant cost without conversions. Consider adding negative keywords.`,
       });
     }
 
@@ -434,9 +452,9 @@ class PDFReportService {
     if (topPerformers.length > 0) {
       const topCampaign = topPerformers[0];
       insights.push({
-        type: 'info',
-        title: 'Top Performing Campaign',
-        description: `"${topCampaign.name}" is your strongest performer with ${topCampaign.conversions} conversions. Consider increasing budget allocation.`
+        type: "info",
+        title: "Top Performing Campaign",
+        description: `"${topCampaign.name}" is your strongest performer with ${topCampaign.conversions} conversions. Consider increasing budget allocation.`,
       });
     }
 
@@ -454,43 +472,45 @@ class PDFReportService {
     if (topPerformers.length > 0) {
       const topCampaign = topPerformers[0];
       recommendations.push({
-        priority: 'high',
-        category: 'Budget Optimization',
-        title: 'Increase Budget for Top Performer',
+        priority: "high",
+        category: "Budget Optimization",
+        title: "Increase Budget for Top Performer",
         description: `Consider increasing budget for "${topCampaign.name}" by 20-30% to capture more conversions.`,
-        impact: 'Could increase conversions by 15-25%'
+        impact: "Could increase conversions by 15-25%",
       });
     }
 
     // Negative keyword recommendations
     if (searchTerms.costlyTerms.length > 5) {
       recommendations.push({
-        priority: 'medium',
-        category: 'Keyword Optimization',
-        title: 'Add Negative Keywords',
+        priority: "medium",
+        category: "Keyword Optimization",
+        title: "Add Negative Keywords",
         description: `${searchTerms.costlyTerms.length} terms are generating cost without conversions. Add these as negative keywords.`,
-        impact: 'Could reduce wasted spend by 10-15%'
+        impact: "Could reduce wasted spend by 10-15%",
       });
     }
 
     // Bid optimization
-    if (totals.cpc > 2.00) {
+    if (totals.cpc > 2.0) {
       recommendations.push({
-        priority: 'medium',
-        category: 'Bid Management',
-        title: 'Optimize Bid Strategy',
-        description: 'Current CPC is above optimal range. Review bid strategy and keyword quality scores.',
-        impact: 'Could reduce CPC by 15-20%'
+        priority: "medium",
+        category: "Bid Management",
+        title: "Optimize Bid Strategy",
+        description:
+          "Current CPC is above optimal range. Review bid strategy and keyword quality scores.",
+        impact: "Could reduce CPC by 15-20%",
       });
     }
 
     // Ad copy recommendations
     recommendations.push({
-      priority: 'low',
-      category: 'Ad Optimization',
-      title: 'Test New Ad Variations',
-      description: 'Create new responsive search ads with additional headlines and descriptions to improve CTR.',
-      impact: 'Could improve CTR by 5-10%'
+      priority: "low",
+      category: "Ad Optimization",
+      title: "Test New Ad Variations",
+      description:
+        "Create new responsive search ads with additional headlines and descriptions to improve CTR.",
+      impact: "Could improve CTR by 5-10%",
     });
 
     return recommendations;
@@ -500,8 +520,14 @@ class PDFReportService {
    * Generate HTML report
    */
   async generateHTMLReport(reportData) {
-    const { metadata, executiveSummary, performanceMetrics, insights, recommendations } = reportData;
-    
+    const {
+      metadata,
+      executiveSummary,
+      performanceMetrics,
+      insights,
+      recommendations,
+    } = reportData;
+
     return `
 <!DOCTYPE html>
 <html lang="en">
@@ -529,7 +555,7 @@ class PDFReportService {
             <h2>Executive Summary</h2>
             <div class="headline">${executiveSummary.headline}</div>
             <div class="highlights">
-                ${executiveSummary.keyHighlights.map(highlight => `<div class="highlight">${highlight}</div>`).join('')}
+                ${executiveSummary.keyHighlights.map((highlight) => `<div class="highlight">${highlight}</div>`).join("")}
             </div>
         </section>
 
@@ -541,12 +567,12 @@ class PDFReportService {
 
         <section class="insights">
             <h2>Key Insights</h2>
-            ${insights.map(insight => this.generateInsightCard(insight)).join('')}
+            ${insights.map((insight) => this.generateInsightCard(insight)).join("")}
         </section>
 
         <section class="recommendations">
             <h2>Recommendations</h2>
-            ${recommendations.map(rec => this.generateRecommendationCard(rec)).join('')}
+            ${recommendations.map((rec) => this.generateRecommendationCard(rec)).join("")}
         </section>
 
         <section class="appendix">
@@ -607,12 +633,12 @@ class PDFReportService {
    * Generate agency branding section
    */
   generateAgencyBranding(branding) {
-    if (!branding.logoUrl && !branding.agencyName) return '';
-    
+    if (!branding.logoUrl && !branding.agencyName) return "";
+
     return `
         <div class="agency-branding">
-            ${branding.logoUrl ? `<img src="${branding.logoUrl}" alt="Agency Logo" class="agency-logo">` : ''}
-            ${branding.agencyName ? `<h3>${branding.agencyName}</h3>` : ''}
+            ${branding.logoUrl ? `<img src="${branding.logoUrl}" alt="Agency Logo" class="agency-logo">` : ""}
+            ${branding.agencyName ? `<h3>${branding.agencyName}</h3>` : ""}
         </div>
     `;
   }
@@ -635,10 +661,10 @@ class PDFReportService {
                 <tr><td>Total Cost</td><td>$${totals.cost.toFixed(2)}</td><td>-</td></tr>
                 <tr><td>Total Conversions</td><td>${totals.conversions.toFixed(0)}</td><td>-</td></tr>
                 <tr><td>Total Impressions</td><td>${totals.impressions.toLocaleString()}</td><td>-</td></tr>
-                <tr><td>Click-Through Rate</td><td>${totals.ctr.toFixed(2)}%</td><td>${totals.ctr > 2 ? '✅ Good' : '⚠️ Needs Improvement'}</td></tr>
-                <tr><td>Average CPC</td><td>$${totals.cpc.toFixed(2)}</td><td>${totals.cpc < 2 ? '✅ Efficient' : '⚠️ High'}</td></tr>
-                <tr><td>Conversion Rate</td><td>${totals.conversionRate.toFixed(2)}%</td><td>${totals.conversionRate > 3 ? '✅ Excellent' : '⚠️ Needs Improvement'}</td></tr>
-                <tr><td>Cost per Conversion</td><td>$${totals.costPerConversion.toFixed(2)}</td><td>${totals.costPerConversion < 50 ? '✅ Efficient' : '⚠️ High'}</td></tr>
+                <tr><td>Click-Through Rate</td><td>${totals.ctr.toFixed(2)}%</td><td>${totals.ctr > 2 ? "✅ Good" : "⚠️ Needs Improvement"}</td></tr>
+                <tr><td>Average CPC</td><td>$${totals.cpc.toFixed(2)}</td><td>${totals.cpc < 2 ? "✅ Efficient" : "⚠️ High"}</td></tr>
+                <tr><td>Conversion Rate</td><td>${totals.conversionRate.toFixed(2)}%</td><td>${totals.conversionRate > 3 ? "✅ Excellent" : "⚠️ Needs Improvement"}</td></tr>
+                <tr><td>Cost per Conversion</td><td>$${totals.costPerConversion.toFixed(2)}</td><td>${totals.costPerConversion < 50 ? "✅ Efficient" : "⚠️ High"}</td></tr>
             </tbody>
         </table>
     `;
@@ -648,9 +674,12 @@ class PDFReportService {
    * Generate campaign breakdown
    */
   generateCampaignBreakdown(campaigns) {
-    if (!campaigns.length) return '';
-    
-    const rows = campaigns.slice(0, 10).map(campaign => `
+    if (!campaigns.length) return "";
+
+    const rows = campaigns
+      .slice(0, 10)
+      .map(
+        (campaign) => `
         <tr>
             <td>${campaign.name}</td>
             <td>${campaign.clicks}</td>
@@ -658,7 +687,9 @@ class PDFReportService {
             <td>${campaign.conversions}</td>
             <td>${campaign.clicks > 0 ? ((campaign.conversions / campaign.clicks) * 100).toFixed(2) : 0}%</td>
         </tr>
-    `).join('');
+    `,
+      )
+      .join("");
 
     return `
         <div class="campaign-breakdown">
@@ -710,7 +741,8 @@ class PDFReportService {
    * Generate search terms section
    */
   generateSearchTermsSection(searchTerms) {
-    if (!searchTerms.topTerms.length && !searchTerms.costlyTerms.length) return '';
+    if (!searchTerms.topTerms.length && !searchTerms.costlyTerms.length)
+      return "";
 
     return `
         <div class="search-terms">
@@ -718,21 +750,31 @@ class PDFReportService {
             <div class="terms-grid">
                 <div class="terms-list">
                     <h4>Top Converting Terms</h4>
-                    ${searchTerms.topTerms.slice(0, 10).map(term => `
+                    ${searchTerms.topTerms
+                      .slice(0, 10)
+                      .map(
+                        (term) => `
                         <div class="term-item">
                             <strong>${term.term}</strong><br>
                             ${term.totalConversions} conversions, $${term.totalCost.toFixed(2)} cost
                         </div>
-                    `).join('')}
+                    `,
+                      )
+                      .join("")}
                 </div>
                 <div class="terms-list">
                     <h4>Costly Non-Converting Terms</h4>
-                    ${searchTerms.costlyTerms.slice(0, 10).map(term => `
+                    ${searchTerms.costlyTerms
+                      .slice(0, 10)
+                      .map(
+                        (term) => `
                         <div class="term-item">
                             <strong>${term.term}</strong><br>
                             $${term.totalCost.toFixed(2)} cost, ${term.totalClicks} clicks
                         </div>
-                    `).join('')}
+                    `,
+                      )
+                      .join("")}
                 </div>
             </div>
         </div>
@@ -763,7 +805,7 @@ Generated at: ${new Date().toISOString()}`;
     const weekStart = new Date(now.setDate(now.getDate() - now.getDay()));
     const weekEnd = new Date(weekStart);
     weekEnd.setDate(weekStart.getDate() + 6);
-    
+
     return `${weekStart.toLocaleDateString()} - ${weekEnd.toLocaleDateString()}`;
   }
 
@@ -771,7 +813,7 @@ Generated at: ${new Date().toISOString()}`;
    * Generate unique report ID
    */
   generateReportId(tenantId, period) {
-    const timestamp = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+    const timestamp = new Date().toISOString().slice(0, 10).replace(/-/g, "");
     return `report_${tenantId}_${timestamp}_${Math.random().toString(36).substr(2, 6)}`;
   }
 
@@ -780,12 +822,12 @@ Generated at: ${new Date().toISOString()}`;
    */
   applyReportCustomizations(reportData, customizations) {
     const customized = JSON.parse(JSON.stringify(reportData));
-    
+
     // Apply branding customizations
     if (customizations.branding) {
       customized.metadata.agencyBranding = {
         ...customized.metadata.agencyBranding,
-        ...customizations.branding
+        ...customizations.branding,
       };
     }
 
@@ -801,7 +843,7 @@ Generated at: ${new Date().toISOString()}`;
 
     // Apply metric customizations
     if (customizations.metrics && customizations.metrics.excludeMetrics) {
-      customizations.metrics.excludeMetrics.forEach(metric => {
+      customizations.metrics.excludeMetrics.forEach((metric) => {
         delete customized.performanceMetrics.totals[metric];
       });
     }
@@ -815,18 +857,20 @@ Generated at: ${new Date().toISOString()}`;
   processCampaignDetails(metrics) {
     // Group and process campaign-level details
     const campaignDetails = {};
-    
-    metrics.filter(m => m[1] === 'campaign').forEach(metric => {
-      const campaignName = metric[2];
-      campaignDetails[campaignName] = {
-        name: campaignName,
-        id: metric[4],
-        clicks: metric[6] || 0,
-        cost: metric[7] || 0,
-        conversions: metric[8] || 0,
-        impressions: metric[9] || 0
-      };
-    });
+
+    metrics
+      .filter((m) => m[1] === "campaign")
+      .forEach((metric) => {
+        const campaignName = metric[2];
+        campaignDetails[campaignName] = {
+          name: campaignName,
+          id: metric[4],
+          clicks: metric[6] || 0,
+          cost: metric[7] || 0,
+          conversions: metric[8] || 0,
+          impressions: metric[9] || 0,
+        };
+      });
 
     return Object.values(campaignDetails);
   }
@@ -836,11 +880,11 @@ Generated at: ${new Date().toISOString()}`;
    */
   generateTechnicalNotes() {
     return [
-      'Data collected from Google Ads API for the specified reporting period',
-      'Metrics are aggregated at campaign and ad group levels',
-      'Search term data includes terms with at least 1 click',
-      'Performance comparisons are calculated against previous period',
-      'Recommendations are generated based on industry benchmarks and historical performance'
+      "Data collected from Google Ads API for the specified reporting period",
+      "Metrics are aggregated at campaign and ad group levels",
+      "Search term data includes terms with at least 1 click",
+      "Performance comparisons are calculated against previous period",
+      "Recommendations are generated based on industry benchmarks and historical performance",
     ];
   }
 
@@ -850,7 +894,7 @@ Generated at: ${new Date().toISOString()}`;
   async bulkGenerateReports(reportsConfig) {
     try {
       const results = [];
-      
+
       for (const config of reportsConfig) {
         try {
           const report = await this.generateWeeklyReport(config);
@@ -861,24 +905,25 @@ Generated at: ${new Date().toISOString()}`;
             reportId: report.reportId,
             paths: {
               html: report.htmlPath,
-              pdf: report.pdfPath
-            }
+              pdf: report.pdfPath,
+            },
           });
         } catch (error) {
           results.push({
             tenantId: config.tenantId,
             clientName: config.clientName,
             success: false,
-            error: error.message
+            error: error.message,
           });
         }
       }
 
-      console.log(`Bulk report generation completed: ${results.filter(r => r.success).length}/${results.length} successful`);
+      console.log(
+        `Bulk report generation completed: ${results.filter((r) => r.success).length}/${results.length} successful`,
+      );
       return results;
-
     } catch (error) {
-      console.error('Error in bulk report generation:', error);
+      console.error("Error in bulk report generation:", error);
       throw error;
     }
   }
@@ -888,24 +933,24 @@ Generated at: ${new Date().toISOString()}`;
    */
   async getReportHistory(tenantId, limit = 20) {
     try {
-      const reportFiles = fs.readdirSync(this.reportsDir)
-        .filter(file => file.includes(tenantId) && file.endsWith('.html'))
-        .map(file => {
+      const reportFiles = fs
+        .readdirSync(this.reportsDir)
+        .filter((file) => file.includes(tenantId) && file.endsWith(".html"))
+        .map((file) => {
           const stats = fs.statSync(path.join(this.reportsDir, file));
           return {
             filename: file,
-            reportId: file.replace('.html', ''),
+            reportId: file.replace(".html", ""),
             created: stats.birthtime,
-            size: stats.size
+            size: stats.size,
           };
         })
         .sort((a, b) => b.created - a.created)
         .slice(0, limit);
 
       return reportFiles;
-
     } catch (error) {
-      console.error('Error getting report history:', error);
+      console.error("Error getting report history:", error);
       throw error;
     }
   }

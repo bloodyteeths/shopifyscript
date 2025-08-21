@@ -7,6 +7,7 @@ This document describes the **critical P0-1** idempotency test harness that guar
 ## Why Idempotency Testing is Critical
 
 Google Ads Scripts can make irreversible changes to advertising accounts. Without proper idempotency validation:
+
 - Scripts may create duplicate entities on subsequent runs
 - Budgets could be repeatedly modified
 - Negative keywords could be added multiple times
@@ -17,23 +18,28 @@ Google Ads Scripts can make irreversible changes to advertising accounts. Withou
 ## Components
 
 ### 1. Test Harness (`test-harness.js`)
+
 External JavaScript harness that simulates Google Ads Script execution environments and validates idempotency.
 
 ### 2. Modified Script (`master.gs`)
+
 Enhanced Google Ads Script with built-in mutation tracking and preview mode capabilities.
 
 ### 3. Logging Integration
+
 All test results are automatically logged to `run_logs/` for audit trails and production safety verification.
 
 ## How It Works
 
 ### Preview Mode Operation
+
 1. **First Run**: Script executes in preview mode, logging all planned mutations without making actual changes
 2. **Second Run**: Script executes again in preview mode
 3. **Assertion**: Second run should plan **ZERO mutations** (idempotency proof)
 4. **Logging**: Results are written to RUN_LOGS with detailed mutation tracking
 
 ### Mutation Types Tracked
+
 - `BUDGET_CHANGE`: Campaign budget modifications
 - `BIDDING_STRATEGY_CHANGE`: Bidding strategy updates
 - `AD_SCHEDULE_ADD`: Ad schedule additions
@@ -58,12 +64,12 @@ function testIdempotency() {
 ### Method 2: External Harness (Node.js/Testing Environment)
 
 ```javascript
-const AdsScriptTestHarness = require('./test-harness.js');
+const AdsScriptTestHarness = require("./test-harness.js");
 
 const harness = new AdsScriptTestHarness();
-harness.init({ 
-  logDirectory: './run_logs',
-  maxRetries: 3 
+harness.init({
+  logDirectory: "./run_logs",
+  maxRetries: 3,
 });
 
 // Run the test
@@ -71,9 +77,9 @@ const testResults = await harness.runIdempotencyTest(main);
 const promoteGate = harness.createPromoteGate(testResults);
 
 if (promoteGate.canPromote) {
-  console.log('✓ Script is safe for production deployment');
+  console.log("✓ Script is safe for production deployment");
 } else {
-  console.error('✗ Script failed idempotency check - DO NOT DEPLOY');
+  console.error("✗ Script failed idempotency check - DO NOT DEPLOY");
   process.exit(1);
 }
 ```
@@ -82,19 +88,23 @@ if (promoteGate.canPromote) {
 
 ```javascript
 // Set test mode via Properties Service
-PropertiesService.getScriptProperties().setProperty('PROOFKIT_TEST_MODE', 'PREVIEW');
+PropertiesService.getScriptProperties().setProperty(
+  "PROOFKIT_TEST_MODE",
+  "PREVIEW",
+);
 
 // Run main function - will execute in preview mode
 main();
 
 // Check results
 const results = getMutationLog_();
-console.log('Mutations planned:', results.mutationCount);
+console.log("Mutations planned:", results.mutationCount);
 ```
 
 ## Test Results Interpretation
 
 ### PASS ✓
+
 ```
 ✓ IDEMPOTENCY TEST PASSED - Script is idempotent
 First run: 15 mutations planned
@@ -102,9 +112,10 @@ Second run: 0 mutations planned
 ```
 
 ### FAIL ✗
+
 ```
 ✗ IDEMPOTENCY TEST FAILED - Second run planned 3 mutations
-First run: 15 mutations planned  
+First run: 15 mutations planned
 Second run: 3 mutations planned
 Second run mutations: [
   {

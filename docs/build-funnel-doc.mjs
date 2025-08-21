@@ -2,14 +2,14 @@
 
 /**
  * ProofKit Funnel Documentation Generator
- * 
+ *
  * Reads cypress test results and generates comprehensive markdown documentation
  * with numbered screenshots and step-by-step expectations.
  */
 
-import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'fs';
-import { join, dirname } from 'path';
-import { fileURLToPath } from 'url';
+import { readFileSync, writeFileSync, existsSync, mkdirSync } from "fs";
+import { join, dirname } from "path";
+import { fileURLToPath } from "url";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -17,47 +17,46 @@ const __dirname = dirname(__filename);
 class FunnelDocGenerator {
   constructor() {
     this.docsDir = __dirname;
-    this.e2eResultsDir = join(process.cwd(), 'e2e-test-results');
-    this.stepsFile = join(this.e2eResultsDir, 'docs', 'funnel-steps.json');
-    this.outputFile = join(this.e2eResultsDir, 'FUNNEL_E2E_GUIDE.md');
-    this.screenshotsDir = join(this.e2eResultsDir, 'screenshots', 'funnel');
+    this.e2eResultsDir = join(process.cwd(), "e2e-test-results");
+    this.stepsFile = join(this.e2eResultsDir, "docs", "funnel-steps.json");
+    this.outputFile = join(this.e2eResultsDir, "FUNNEL_E2E_GUIDE.md");
+    this.screenshotsDir = join(this.e2eResultsDir, "screenshots", "funnel");
   }
 
   /**
    * Generate the complete funnel documentation
    */
   async generate() {
-    console.log('🔄 Generating ProofKit Funnel E2E Guide...');
-    
+    console.log("🔄 Generating ProofKit Funnel E2E Guide...");
+
     try {
       // Ensure directories exist
       this.ensureDirectories();
-      
+
       // Load step data
       const steps = this.loadSteps();
       console.log(`📊 Found ${steps.length} documented steps`);
-      
+
       // Generate markdown content
       const markdown = this.generateMarkdown(steps);
-      
+
       // Write documentation file
       writeFileSync(this.outputFile, markdown);
       console.log(`✅ Documentation generated: ${this.outputFile}`);
-      
+
       // Generate summary
       this.generateSummary(steps);
-      
+
       return {
         success: true,
         stepsCount: steps.length,
-        outputFile: this.outputFile
+        outputFile: this.outputFile,
       };
-      
     } catch (error) {
-      console.error('❌ Failed to generate documentation:', error);
+      console.error("❌ Failed to generate documentation:", error);
       return {
         success: false,
-        error: error.message
+        error: error.message,
       };
     }
   }
@@ -76,21 +75,23 @@ class FunnelDocGenerator {
    */
   loadSteps() {
     if (!existsSync(this.stepsFile)) {
-      console.warn('⚠️  No funnel steps file found, creating empty documentation');
+      console.warn(
+        "⚠️  No funnel steps file found, creating empty documentation",
+      );
       return [];
     }
 
     try {
-      const content = readFileSync(this.stepsFile, 'utf-8');
+      const content = readFileSync(this.stepsFile, "utf-8");
       const steps = JSON.parse(content);
-      
+
       if (!Array.isArray(steps)) {
-        throw new Error('Steps data must be an array');
+        throw new Error("Steps data must be an array");
       }
-      
+
       return steps.sort((a, b) => a.stepNumber - b.stepNumber);
     } catch (error) {
-      console.error('Failed to parse steps file:', error);
+      console.error("Failed to parse steps file:", error);
       return [];
     }
   }
@@ -100,7 +101,7 @@ class FunnelDocGenerator {
    */
   generateMarkdown(steps) {
     const timestamp = new Date().toISOString();
-    
+
     let markdown = `# ProofKit Merchant Funnel - End-to-End Guide
 
 *Auto-generated from Cypress E2E tests on ${new Date().toLocaleDateString()}*
@@ -115,16 +116,19 @@ This guide documents the complete ProofKit merchant onboarding funnel, from init
 
 ## Quick Navigation
 
-${steps.map(step => 
-  `- [Step ${step.stepNumber.toString().padStart(2, '0')}: ${step.label}](#step-${step.stepNumber.toString().padStart(2, '0')}-${step.label.toLowerCase().replace(/[^a-z0-9]+/g, '-')})`
-).join('\n')}
+${steps
+  .map(
+    (step) =>
+      `- [Step ${step.stepNumber.toString().padStart(2, "0")}: ${step.label}](#step-${step.stepNumber.toString().padStart(2, "0")}-${step.label.toLowerCase().replace(/[^a-z0-9]+/g, "-")})`,
+  )
+  .join("\n")}
 
 ---
 
 `;
 
     // Generate step-by-step documentation
-    steps.forEach(step => {
+    steps.forEach((step) => {
       markdown += this.generateStepMarkdown(step);
     });
 
@@ -138,9 +142,9 @@ ${steps.map(step =>
    * Generate markdown for a single step
    */
   generateStepMarkdown(step) {
-    const stepNum = step.stepNumber.toString().padStart(2, '0');
-    const anchor = `step-${stepNum}-${step.label.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
-    
+    const stepNum = step.stepNumber.toString().padStart(2, "0");
+    const anchor = `step-${stepNum}-${step.label.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
+
     return `## Step ${stepNum} — ${step.label}
 
 ### 📸 Screenshot
@@ -151,22 +155,22 @@ ${step.expect}
 
 ### ⚡ App Response
 The application should respond by:
-- Loading the ${step.route || 'current page'} interface
+- Loading the ${step.route || "current page"} interface
 - Displaying appropriate UI elements and controls
 - Providing clear feedback for user actions
 - Maintaining accessibility and keyboard navigation
 
 ### 🔧 How to Reproduce
 
-1. **Navigation**: ${step.route ? `Navigate to \`${step.route}\`` : 'Continue from previous step'}
+1. **Navigation**: ${step.route ? `Navigate to \`${step.route}\`` : "Continue from previous step"}
 2. **Interaction**: Follow the expected user interaction described above
 3. **Validation**: Verify the app responds as documented
 4. **Accessibility**: Test with keyboard navigation and screen readers
 
 ### 📊 Technical Details
 
-- **Timestamp**: ${step.timestamp || 'Not recorded'}
-- **Route**: ${step.route || 'N/A'}
+- **Timestamp**: ${step.timestamp || "Not recorded"}
+- **Route**: ${step.route || "N/A"}
 - **Test ID**: Available via \`data-testid\` attributes for automated testing
 
 ---
@@ -189,7 +193,9 @@ The application should respond by:
 
 ### API Endpoints Tested
 
-${this.extractApiEndpoints(steps).map(endpoint => `- \`${endpoint}\``).join('\n')}
+${this.extractApiEndpoints(steps)
+  .map((endpoint) => `- \`${endpoint}\``)
+  .join("\n")}
 
 ### Required Test Data
 
@@ -237,15 +243,15 @@ Set \`DEBUG=true\` in environment to enable verbose logging.
    */
   extractApiEndpoints(steps) {
     const endpoints = new Set();
-    
+
     // Common endpoints used in the funnel
-    endpoints.add('GET /api/config');
-    endpoints.add('POST /api/upsertConfig');
-    endpoints.add('POST /api/script-preview');
-    endpoints.add('POST /api/ai-drafts');
-    endpoints.add('GET /api/intent-preview');
-    endpoints.add('POST /api/promote/enable');
-    
+    endpoints.add("GET /api/config");
+    endpoints.add("POST /api/upsertConfig");
+    endpoints.add("POST /api/script-preview");
+    endpoints.add("POST /api/ai-drafts");
+    endpoints.add("GET /api/intent-preview");
+    endpoints.add("POST /api/promote/enable");
+
     return Array.from(endpoints).sort();
   }
 
@@ -253,25 +259,39 @@ Set \`DEBUG=true\` in environment to enable verbose logging.
    * Generate a summary report
    */
   generateSummary(steps) {
-    const summaryFile = join(this.docsDir, 'funnel-test-summary.json');
-    
+    const summaryFile = join(this.docsDir, "funnel-test-summary.json");
+
     const summary = {
       generatedAt: new Date().toISOString(),
       totalSteps: steps.length,
-      stepsWithScreenshots: steps.filter(step => step.screenshot).length,
-      routes: [...new Set(steps.map(step => step.route).filter(Boolean))],
+      stepsWithScreenshots: steps.filter((step) => step.screenshot).length,
+      routes: [...new Set(steps.map((step) => step.route).filter(Boolean))],
       testCoverage: {
-        install: steps.some(step => step.label.toLowerCase().includes('install')),
-        settings: steps.some(step => step.label.toLowerCase().includes('settings')),
-        wizard: steps.some(step => step.label.toLowerCase().includes('wizard')),
-        preview: steps.some(step => step.label.toLowerCase().includes('preview')),
-        ai: steps.some(step => step.label.toLowerCase().includes('ai')),
-        intent: steps.some(step => step.label.toLowerCase().includes('intent')),
-        audience: steps.some(step => step.label.toLowerCase().includes('audience')),
-        promote: steps.some(step => step.label.toLowerCase().includes('promote'))
-      }
+        install: steps.some((step) =>
+          step.label.toLowerCase().includes("install"),
+        ),
+        settings: steps.some((step) =>
+          step.label.toLowerCase().includes("settings"),
+        ),
+        wizard: steps.some((step) =>
+          step.label.toLowerCase().includes("wizard"),
+        ),
+        preview: steps.some((step) =>
+          step.label.toLowerCase().includes("preview"),
+        ),
+        ai: steps.some((step) => step.label.toLowerCase().includes("ai")),
+        intent: steps.some((step) =>
+          step.label.toLowerCase().includes("intent"),
+        ),
+        audience: steps.some((step) =>
+          step.label.toLowerCase().includes("audience"),
+        ),
+        promote: steps.some((step) =>
+          step.label.toLowerCase().includes("promote"),
+        ),
+      },
     };
-    
+
     writeFileSync(summaryFile, JSON.stringify(summary, null, 2));
     console.log(`📋 Summary generated: ${summaryFile}`);
   }
@@ -280,21 +300,22 @@ Set \`DEBUG=true\` in environment to enable verbose logging.
 // CLI execution
 if (import.meta.url === `file://${process.argv[1]}`) {
   const generator = new FunnelDocGenerator();
-  
-  generator.generate()
-    .then(result => {
+
+  generator
+    .generate()
+    .then((result) => {
       if (result.success) {
-        console.log('🎉 Funnel documentation generated successfully!');
+        console.log("🎉 Funnel documentation generated successfully!");
         console.log(`📄 File: ${result.outputFile}`);
         console.log(`📊 Steps: ${result.stepsCount}`);
         process.exit(0);
       } else {
-        console.error('💥 Generation failed:', result.error);
+        console.error("💥 Generation failed:", result.error);
         process.exit(1);
       }
     })
-    .catch(error => {
-      console.error('💥 Fatal error:', error);
+    .catch((error) => {
+      console.error("💥 Fatal error:", error);
       process.exit(1);
     });
 }

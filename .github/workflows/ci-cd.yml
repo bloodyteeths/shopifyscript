@@ -10,21 +10,21 @@ on:
   workflow_dispatch:
     inputs:
       environment:
-        description: 'Environment to deploy to'
+        description: "Environment to deploy to"
         required: true
-        default: 'staging'
+        default: "staging"
         type: choice
         options:
           - staging
           - production
       skip_tests:
-        description: 'Skip test execution'
+        description: "Skip test execution"
         required: false
         default: false
         type: boolean
 
 env:
-  NODE_VERSION: '18'
+  NODE_VERSION: "18"
   DOCKER_REGISTRY: ghcr.io
   IMAGE_NAME: proofkit-saas
 
@@ -42,7 +42,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
+          cache: "npm"
           cache-dependency-path: |
             package-lock.json
             backend/package-lock.json
@@ -81,7 +81,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
+          cache: "npm"
 
       - name: Install dependencies
         run: npm run install:all
@@ -124,7 +124,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
+          cache: "npm"
 
       - name: Install dependencies
         run: npm run install:all
@@ -182,7 +182,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: ${{ env.NODE_VERSION }}
-          cache: 'npm'
+          cache: "npm"
 
       - name: Install dependencies
         run: npm run install:all
@@ -248,14 +248,14 @@ jobs:
         uses: aquasecurity/trivy-action@master
         with:
           image-ref: ${{ env.DOCKER_REGISTRY }}/${{ github.repository }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
-          format: 'sarif'
-          output: 'trivy-results.sarif'
+          format: "sarif"
+          output: "trivy-results.sarif"
 
       - name: Upload Trivy scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v2
         if: always()
         with:
-          sarif_file: 'trivy-results.sarif'
+          sarif_file: "trivy-results.sarif"
 
   # Staging deployment
   deploy-staging:
@@ -384,7 +384,7 @@ jobs:
           echo "Starting blue-green deployment to production..."
           # Implement blue-green deployment logic
           # This ensures zero-downtime deployments
-          
+
           # For now, we'll simulate the deployment
           echo "Production deployment simulated successfully"
           echo "deployment_id=prod-$(date +%s)" >> $GITHUB_OUTPUT
@@ -447,7 +447,7 @@ jobs:
         uses: 8398a7/action-slack@v3
         with:
           status: ${{ job.status }}
-          channel: '#deployments'
+          channel: "#deployments"
           webhook_url: ${{ secrets.SLACK_WEBHOOK }}
           fields: repo,message,commit,author,action,eventName,ref,workflow
 
@@ -461,7 +461,7 @@ jobs:
       - name: Monitor deployment health
         run: |
           echo "Monitoring deployment health for 5 minutes..."
-          
+
           if [ "${{ needs.deploy-production.result }}" == "success" ]; then
             ENVIRONMENT="production"
             URL="https://app.proofkit.com"
@@ -469,7 +469,7 @@ jobs:
             ENVIRONMENT="staging"
             URL="https://staging.proofkit.app"
           fi
-          
+
           # Monitor for 5 minutes
           for i in {1..30}; do
             if ! curl -f -s "$URL/health" > /dev/null; then

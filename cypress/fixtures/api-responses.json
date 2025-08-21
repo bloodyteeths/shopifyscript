@@ -5,8 +5,8 @@
       "config": {
         "enabled": true,
         "label": "PROOFKIT_AUTOMATED",
-        "daily_budget_cap_default": 25.00,
-        "cpc_ceiling_default": 2.50,
+        "daily_budget_cap_default": 25.0,
+        "cpc_ceiling_default": 2.5,
         "business_start": "09:00",
         "business_end": "17:00",
         "business_days_csv": "MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY",
@@ -49,22 +49,33 @@
         {
           "type": "BUDGET_CHANGE",
           "description": "Budget capped: Test Campaign → $25.00",
-          "details": { "campaign": "Test Campaign", "oldAmount": 50.00, "newAmount": 25.00 }
+          "details": {
+            "campaign": "Test Campaign",
+            "oldAmount": 50.0,
+            "newAmount": 25.0
+          }
         },
         {
           "type": "CPC_CEILING",
           "description": "CPC ceiling: Test Campaign → $2.50",
-          "details": { "campaign": "Test Campaign", "ceiling": 2.50 }
+          "details": { "campaign": "Test Campaign", "ceiling": 2.5 }
         },
         {
           "type": "SCHEDULE_ADD",
           "description": "Schedule added: Mon-Fri 9AM-5PM",
-          "details": { "days": "MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY", "start": "09:00", "end": "17:00" }
+          "details": {
+            "days": "MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY",
+            "start": "09:00",
+            "end": "17:00"
+          }
         },
         {
           "type": "NEGATIVE_ADD",
           "description": "5 master negatives attached",
-          "details": { "count": 5, "terms": ["waste", "cheap", "free", "job", "career"] }
+          "details": {
+            "count": 5,
+            "terms": ["waste", "cheap", "free", "job", "career"]
+          }
         },
         {
           "type": "RSA_VALIDATE",
@@ -74,7 +85,11 @@
         {
           "type": "AUDIENCE_ATTACH",
           "description": "Audience attached in OBSERVE mode",
-          "details": { "listId": "123456789", "mode": "OBSERVE", "sizeGuard": true }
+          "details": {
+            "listId": "123456789",
+            "mode": "OBSERVE",
+            "sizeGuard": true
+          }
         }
       ],
       "logs": [
@@ -150,7 +165,11 @@
       "utmTerm": "comparison",
       "headline": "See Why We're #1",
       "urgencyBadge": "BEST VALUE",
-      "benefits": ["Price Match Guarantee", "Superior Quality", "5-Star Service"],
+      "benefits": [
+        "Price Match Guarantee",
+        "Superior Quality",
+        "5-Star Service"
+      ],
       "socialProof": "Rated #1 by independent reviews",
       "ctaText": "Compare Now"
     },

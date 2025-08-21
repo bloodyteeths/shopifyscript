@@ -1,11 +1,11 @@
 /**
  * Shop Configuration Utilities
- * 
+ *
  * Manages shop name storage and retrieval for tenant identification.
  * Replaces complex automatic Shopify tenant detection with simple manual shop name input.
  */
 
-const SHOP_NAME_KEY = 'proofkit_shop_name';
+const SHOP_NAME_KEY = "proofkit_shop_name";
 // No default shop name - user must enter manually
 
 /**
@@ -13,14 +13,14 @@ const SHOP_NAME_KEY = 'proofkit_shop_name';
  * @returns The stored shop name or null if not set
  */
 export function getStoredShopName(): string | null {
-  if (typeof window === 'undefined') {
+  if (typeof window === "undefined") {
     return null; // Server-side rendering
   }
-  
+
   try {
     return localStorage.getItem(SHOP_NAME_KEY);
   } catch (error) {
-    console.warn('Failed to read shop name from localStorage:', error);
+    console.warn("Failed to read shop name from localStorage:", error);
     return null;
   }
 }
@@ -30,19 +30,19 @@ export function getStoredShopName(): string | null {
  * @param shopName The shop name to store
  */
 export function setStoredShopName(shopName: string): void {
-  if (typeof window === 'undefined') {
+  if (typeof window === "undefined") {
     return; // Server-side rendering
   }
-  
+
   if (!validateShopName(shopName)) {
-    throw new Error('Invalid shop name provided');
+    throw new Error("Invalid shop name provided");
   }
-  
+
   try {
     localStorage.setItem(SHOP_NAME_KEY, shopName);
     // Mark that user explicitly set this shop name
-    localStorage.setItem(`${SHOP_NAME_KEY}_user_set`, 'true');
-    
+    localStorage.setItem(`${SHOP_NAME_KEY}_user_set`, "true");
+
     // Persist to cookie so server can read it in loaders (Advanced page, etc.)
     try {
       const maxAge = 60 * 60 * 24 * 365; // 1 year
@@ -53,7 +53,7 @@ export function setStoredShopName(shopName: string): void {
       // no-op if cookies unavailable
     }
   } catch (error) {
-    console.warn('Failed to store shop name in localStorage:', error);
+    console.warn("Failed to store shop name in localStorage:", error);
   }
 }
 
@@ -63,15 +63,15 @@ export function setStoredShopName(shopName: string): void {
  * @returns True if valid, false otherwise
  */
 export function validateShopName(shopName: string): boolean {
-  if (!shopName || typeof shopName !== 'string') {
+  if (!shopName || typeof shopName !== "string") {
     return false;
   }
-  
+
   const trimmed = shopName.trim();
-  
+
   // Must be at least 2 characters, alphanumeric with hyphens/underscores allowed
   const validPattern = /^[a-zA-Z0-9][a-zA-Z0-9\-_]{1,63}$/;
-  
+
   return validPattern.test(trimmed);
 }
 
@@ -81,11 +81,11 @@ export function validateShopName(shopName: string): boolean {
  */
 export function getShopNameOrNull(): string | null {
   const stored = getStoredShopName();
-  
+
   if (stored && validateShopName(stored)) {
     return stored;
   }
-  
+
   return null; // Force user to enter shop name manually
 }
 
@@ -98,21 +98,21 @@ export function getShopNameOrDefault(): string {
     return stored;
   }
   // Use environment TENANT_ID or fallback to proofkit
-  return process.env.TENANT_ID || 'proofkit';
+  return process.env.TENANT_ID || "proofkit";
 }
 
 /**
  * Clears the stored shop name
  */
 export function clearStoredShopName(): void {
-  if (typeof window === 'undefined') {
+  if (typeof window === "undefined") {
     return; // Server-side rendering
   }
-  
+
   try {
     localStorage.removeItem(SHOP_NAME_KEY);
     localStorage.removeItem(`${SHOP_NAME_KEY}_user_set`);
-    
+
     // Expire the cookies
     try {
       document.cookie = `${SHOP_NAME_KEY}=; Path=/; Max-Age=0; SameSite=Lax`;
@@ -121,7 +121,7 @@ export function clearStoredShopName(): void {
       // ignore
     }
   } catch (error) {
-    console.warn('Failed to clear shop name from localStorage:', error);
+    console.warn("Failed to clear shop name from localStorage:", error);
   }
 }
 
@@ -132,12 +132,18 @@ export function clearStoredShopName(): void {
  * @param requestUrl Optional request URL to check for shop query params
  * @returns Shop name for server operations
  */
-export function getServerShopName(requestHeaders?: Headers, requestUrl?: string): string {
+export function getServerShopName(
+  requestHeaders?: Headers,
+  requestUrl?: string,
+): string {
   // 1. First check URL query parameters (highest priority for user input)
   if (requestUrl) {
     try {
       const url = new URL(requestUrl);
-      const shopParam = url.searchParams.get('shop') || url.searchParams.get('shopName') || url.searchParams.get('tenant');
+      const shopParam =
+        url.searchParams.get("shop") ||
+        url.searchParams.get("shopName") ||
+        url.searchParams.get("tenant");
       if (shopParam && validateShopName(shopParam)) {
         return shopParam;
       }
@@ -148,21 +154,22 @@ export function getServerShopName(requestHeaders?: Headers, requestUrl?: string)
 
   // 2. Check if shop name is passed in headers (for API calls)
   if (requestHeaders) {
-    const headerShopName = requestHeaders.get('x-shop-name');
+    const headerShopName = requestHeaders.get("x-shop-name");
     if (headerShopName && validateShopName(headerShopName)) {
       return headerShopName;
     }
 
     // 3. Check cookies (set by client when saving shop name)
-    const cookieHeader = requestHeaders.get('cookie') || requestHeaders.get('Cookie') || '';
+    const cookieHeader =
+      requestHeaders.get("cookie") || requestHeaders.get("Cookie") || "";
     if (cookieHeader) {
       try {
-        const parts = cookieHeader.split(';');
+        const parts = cookieHeader.split(";");
         for (const part of parts) {
-          const [rawKey, ...rest] = part.trim().split('=');
-          const key = (rawKey || '').trim();
+          const [rawKey, ...rest] = part.trim().split("=");
+          const key = (rawKey || "").trim();
           if (key === SHOP_NAME_KEY) {
-            const value = decodeURIComponent(rest.join('='));
+            const value = decodeURIComponent(rest.join("="));
             if (value && validateShopName(value)) {
               return value;
             }
@@ -173,23 +180,25 @@ export function getServerShopName(requestHeaders?: Headers, requestUrl?: string)
       }
     }
   }
-  
+
   // 4. Check environment variable but avoid legacy values
   const envShopName = process.env.TENANT_ID || process.env.SHOP_NAME;
-  if (envShopName && 
-      envShopName !== 'TENANT_123' && 
-      envShopName !== 'mybabybymerry' &&
-      validateShopName(envShopName)) {
+  if (
+    envShopName &&
+    envShopName !== "TENANT_123" &&
+    envShopName !== "mybabybymerry" &&
+    validateShopName(envShopName)
+  ) {
     return envShopName;
   }
-  
+
   // 5. Last resort: return 'proofkit' but only in development
-  if (process.env.NODE_ENV === 'development') {
-    return 'proofkit';
+  if (process.env.NODE_ENV === "development") {
+    return "proofkit";
   }
-  
+
   // 6. In production, we need a valid shop name - this should trigger setup
-  throw new Error('No valid shop name found - setup required');
+  throw new Error("No valid shop name found - setup required");
 }
 
 /**
@@ -207,12 +216,12 @@ export interface ShopConfig {
  */
 export function getShopConfig(): ShopConfig {
   const stored = getStoredShopName();
-  const shopName = stored || process.env.TENANT_ID || 'proofkit';
-  
+  const shopName = stored || process.env.TENANT_ID || "proofkit";
+
   return {
     shopName,
     isDefault: !stored, // Default if no stored shop name
-    isValid: stored ? validateShopName(stored) : false
+    isValid: stored ? validateShopName(stored) : false,
   };
 }
 
@@ -221,22 +230,22 @@ export function getShopConfig(): ShopConfig {
  * @returns True if setup is needed
  */
 export function isShopSetupNeeded(): boolean {
-  if (typeof window === 'undefined') {
+  if (typeof window === "undefined") {
     return false; // Server-side rendering
   }
-  
+
   // Check if user explicitly dismissed setup for this session
   try {
-    const setupDismissed = sessionStorage.getItem('proofkit_setup_dismissed');
-    if (setupDismissed === 'true') {
+    const setupDismissed = sessionStorage.getItem("proofkit_setup_dismissed");
+    if (setupDismissed === "true") {
       return false;
     }
   } catch (e) {
     // sessionStorage not available
   }
-  
+
   const storedShopName = getStoredShopName();
-  
+
   // Setup needed if:
   // 1. No stored shop name exists
   // 2. Stored shop name is invalid
@@ -244,13 +253,16 @@ export function isShopSetupNeeded(): boolean {
   if (!storedShopName || !validateShopName(storedShopName)) {
     return true;
   }
-  
+
   // If we're only using the default 'proofkit' and no explicit user choice was made
-  const defaultTenant = process.env.TENANT_ID || 'proofkit';
-  if (storedShopName === defaultTenant && !localStorage.getItem(`${SHOP_NAME_KEY}_user_set`)) {
+  const defaultTenant = process.env.TENANT_ID || "proofkit";
+  if (
+    storedShopName === defaultTenant &&
+    !localStorage.getItem(`${SHOP_NAME_KEY}_user_set`)
+  ) {
     return true;
   }
-  
+
   return false;
 }
 
@@ -264,17 +276,17 @@ export function completeShopSetup(shopName: string): boolean {
     if (!validateShopName(shopName)) {
       return false;
     }
-    
+
     setStoredShopName(shopName);
     // Mark that user explicitly set this shop name
     try {
-      localStorage.setItem(`${SHOP_NAME_KEY}_user_set`, 'true');
+      localStorage.setItem(`${SHOP_NAME_KEY}_user_set`, "true");
     } catch (e) {
       // localStorage not available
     }
     return true;
   } catch (error) {
-    console.warn('Failed to complete shop setup:', error);
+    console.warn("Failed to complete shop setup:", error);
     return false;
   }
 }
@@ -285,7 +297,7 @@ export function completeShopSetup(shopName: string): boolean {
  */
 export function dismissShopSetupForSession(): void {
   try {
-    sessionStorage.setItem('proofkit_setup_dismissed', 'true');
+    sessionStorage.setItem("proofkit_setup_dismissed", "true");
   } catch (e) {
     // sessionStorage not available
   }

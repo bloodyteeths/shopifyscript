@@ -7,18 +7,20 @@ This replaces the earlier Google Apps Script Web App. It powers BOTH your Shopif
 The backend now uses a manual shop name system instead of automatic tenant detection. The default shop name is "proofkit" but can be customized via environment variables.
 
 ## Endpoints
-- GET  /api/config?tenant=SHOP_NAME&sig=HMAC
+
+- GET /api/config?tenant=SHOP_NAME&sig=HMAC
   - payload to sign: `GET:{shop_name}:config`
 - POST /api/metrics?tenant=SHOP_NAME&sig=HMAC
   - payload to sign: `POST:{shop_name}:metrics:{nonce}`
 - POST /api/upsertConfig?tenant=SHOP_NAME&sig=HMAC
   - payload to sign: `POST:{shop_name}:upsertconfig:{nonce}`
-- GET  /api/ads-script/raw?tenant=SHOP_NAME&sig=HMAC
+- GET /api/ads-script/raw?tenant=SHOP_NAME&sig=HMAC
   - payload to sign: `GET:{shop_name}:script_raw`
 
 ## Configuration
 
 ### Environment Variables
+
 Set these in your `.env` file:
 
 ```env
@@ -40,6 +42,7 @@ HMAC_SECRET=your_hmac_secret_here
 ```
 
 ### Multiple Shop Support
+
 To support multiple shops, update the TENANT_REGISTRY_JSON:
 
 ```env
@@ -47,6 +50,7 @@ TENANT_REGISTRY_JSON='{"shop1":"sheet_id_1","shop2":"sheet_id_2","proofkit":"she
 ```
 
 ## Storage
+
 - Uses Google Sheets if you set GOOGLE_SERVICE_EMAIL, GOOGLE_PRIVATE_KEY, and TENANT_REGISTRY_JSON in `.env`.
 - Falls back to in-memory store for quick testing.
 

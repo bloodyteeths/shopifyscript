@@ -9,9 +9,6 @@ Google Gemini (AI drafts)
   - AI_MAX_CALLS_PER_RUN=20
 
 Notes
+
 - Keep `.env` out of source control; use a secret manager in production.
 - If `GOOGLE_API_KEY` is missing, AI drafts are disabled with a single actionable message.
-
-
-
-

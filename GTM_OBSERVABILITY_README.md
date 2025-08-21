@@ -5,7 +5,7 @@
 The ProofKit GTM/Observability system provides comprehensive monitoring, alerting, and analytics for Google Ads campaigns. This unified system delivers:
 
 - **AI-powered weekly summaries** with plain-English insights
-- **Real-time anomaly detection** for spend/CPA spikes  
+- **Real-time anomaly detection** for spend/CPA spikes
 - **Multi-channel alerting** via Slack, email, and webhooks
 - **Looker Studio templates** for merchant dashboards
 - **Automated job scheduling** for continuous monitoring
@@ -27,11 +27,11 @@ curl -X POST "http://localhost:3007/api/alerts/channels/TENANT_123" \
     }
   }'
 
-# Create email channel  
+# Create email channel
 curl -X POST "http://localhost:3007/api/alerts/channels/TENANT_123" \
   -H "Content-Type: application/json" \
   -d '{
-    "type": "email", 
+    "type": "email",
     "name": "Admin Notifications",
     "config": {
       "recipients": ["admin@yourstore.com"],
@@ -75,113 +75,125 @@ curl -X POST "http://localhost:3007/api/alerts/anomaly-detection/TENANT_123/run"
 ## 📊 Core Components
 
 ### Weekly Summary Service
+
 **File:** `backend/jobs/weekly_summary.js`
 
 Enhanced with AI insights and comprehensive analytics:
 
 ```javascript
-import { runWeeklySummary } from './jobs/weekly_summary.js';
+import { runWeeklySummary } from "./jobs/weekly_summary.js";
 
-const result = await runWeeklySummary('TENANT_123', {
-  generateAI: true  // Include AI-powered insights
+const result = await runWeeklySummary("TENANT_123", {
+  generateAI: true, // Include AI-powered insights
 });
 
 console.log(result.summary.structured);
 ```
 
 **Features:**
+
 - Week-over-week performance comparisons
 - Top performing campaigns and search terms
-- AI-generated insights and recommendations  
+- AI-generated insights and recommendations
 - Plain-English explanations of trends
 - Automated anomaly detection integration
 
 ### Anomaly Detection Service
+
 **File:** `backend/services/anomaly-detection.js`
 
 Intelligent monitoring with multiple detection algorithms:
 
 ```javascript
-import { anomalyDetectionService } from './services/anomaly-detection.js';
+import { anomalyDetectionService } from "./services/anomaly-detection.js";
 
 // Set custom thresholds
-anomalyDetectionService.setThresholds('TENANT_123', {
+anomalyDetectionService.setThresholds("TENANT_123", {
   cpa_spike_percent: 75,
-  cost_spike_percent: 100
+  cost_spike_percent: 100,
 });
 
 // Run detection
-const results = await anomalyDetectionService.detectAnomalies('TENANT_123', '24h');
+const results = await anomalyDetectionService.detectAnomalies(
+  "TENANT_123",
+  "24h",
+);
 ```
 
 **Detection Types:**
+
 - **Statistical:** Z-score analysis vs historical performance
 - **Threshold:** Absolute limits for cost, CPA, conversion rates
 - **Pattern:** Unusual spending distributions and campaign divergence
 - **Time-based:** Hour-of-day and day-of-week anomalies
 
 ### Alerts Service
+
 **File:** `backend/services/alerts.js`
 
 Multi-channel alert delivery with intelligent throttling:
 
 ```javascript
-import { alertsService } from './services/alerts.js';
+import { alertsService } from "./services/alerts.js";
 
 // Register Slack channel
-alertsService.registerChannel('TENANT_123', 'slack_main', {
-  type: 'slack',
-  name: 'Main Alerts',
-  webhookUrl: 'https://hooks.slack.com/...',
-  minSeverity: 'medium',
-  businessHoursOnly: false
+alertsService.registerChannel("TENANT_123", "slack_main", {
+  type: "slack",
+  name: "Main Alerts",
+  webhookUrl: "https://hooks.slack.com/...",
+  minSeverity: "medium",
+  businessHoursOnly: false,
 });
 
 // Send alert
-await alertsService.sendAlert('TENANT_123', {
-  type: 'cost_spike',
-  severity: 'high',
-  message: 'Daily cost exceeded threshold',
+await alertsService.sendAlert("TENANT_123", {
+  type: "cost_spike",
+  severity: "high",
+  message: "Daily cost exceeded threshold",
   currentCost: 1500,
-  threshold: 1000
+  threshold: 1000,
 });
 ```
 
 **Channel Types:**
+
 - **Slack:** Rich formatted alerts with action buttons
-- **Email:** HTML templates with metrics and trends  
+- **Email:** HTML templates with metrics and trends
 - **Webhook:** JSON payloads for custom integrations
 
 ### Job Scheduler
+
 **File:** `backend/jobs/scheduler.js`
 
 Automated execution of monitoring tasks:
 
 ```javascript
-import { jobScheduler } from './jobs/scheduler.js';
+import { jobScheduler } from "./jobs/scheduler.js";
 
 // Start scheduler
-jobScheduler.addTenant('TENANT_123');
+jobScheduler.addTenant("TENANT_123");
 jobScheduler.start();
 
 // Manual job execution
-await jobScheduler.triggerJob('weekly_summary', 'TENANT_123');
+await jobScheduler.triggerJob("weekly_summary", "TENANT_123");
 ```
 
 **Scheduled Jobs:**
+
 - **Anomaly Detection:** Every 15 minutes
-- **Weekly Summary:** Mondays at 9 AM  
+- **Weekly Summary:** Mondays at 9 AM
 - **Health Checks:** Every 5 minutes
 
 ## 🎨 Looker Studio Integration
 
 ### Template Configuration
+
 **File:** `looker-studio/proofkit-template.json`
 
 Comprehensive dashboard template with:
 
 - **Executive Summary:** High-level KPIs and trends
-- **Campaign Performance:** Detailed campaign analysis  
+- **Campaign Performance:** Detailed campaign analysis
 - **Search Terms:** Keyword performance insights
 - **Alerts & Anomalies:** Real-time monitoring dashboard
 - **Time Analysis:** Performance patterns by hour/day
@@ -189,6 +201,7 @@ Comprehensive dashboard template with:
 ### Setup Instructions
 
 1. **Connect Data Source:**
+
    ```
    - Add Google Sheets connector
    - URL: Your ProofKit Google Sheets document
@@ -196,6 +209,7 @@ Comprehensive dashboard template with:
    ```
 
 2. **Configure Parameters:**
+
    ```json
    {
      "tenant_id": "TENANT_123",
@@ -217,11 +231,11 @@ Comprehensive dashboard template with:
 # List channels
 GET /api/alerts/channels/:tenant
 
-# Create channel  
+# Create channel
 POST /api/alerts/channels/:tenant
 {
   "type": "slack|email|webhook",
-  "name": "Channel Name", 
+  "name": "Channel Name",
   "config": { ... }
 }
 
@@ -253,7 +267,7 @@ POST /api/alerts/anomaly-detection/:tenant/run
 { "timeWindow": "24h" }
 
 # Suppress alerts
-POST /api/alerts/suppress/:tenant  
+POST /api/alerts/suppress/:tenant
 {
   "alertType": "cost_spike",
   "severity": "medium",
@@ -275,13 +289,14 @@ GET /api/alerts/history/:tenant?limit=50&severity=high
 ## 🧪 Testing
 
 ### Comprehensive Test Suite
+
 **File:** `backend/test-gtm-observability.js`
 
 ```bash
 # Run full test suite
 node backend/test-gtm-observability.js
 
-# Quick tests only  
+# Quick tests only
 node backend/test-gtm-observability.js --quick
 
 # Keep test data for inspection
@@ -292,11 +307,12 @@ node backend/test-gtm-observability.js --verbose
 ```
 
 **Test Coverage:**
+
 - Weekly summary generation with AI
 - Anomaly detection algorithms
 - Alert channel management
 - Multi-channel alert delivery
-- Job scheduler functionality  
+- Job scheduler functionality
 - Looker template validation
 - End-to-end workflow testing
 
@@ -311,7 +327,7 @@ node backend/test-gtm-observability.js --verbose
 
 🧪 Testing: Weekly Summary Generation
 ✓ Weekly summary generation should succeed
-✓ Weekly summary should contain summary data  
+✓ Weekly summary should contain summary data
 ✓ Weekly summary should contain metrics
 ✅ Weekly Summary Generation - PASSED
 
@@ -353,16 +369,16 @@ SENDGRID_API_KEY=SG.your_sendgrid_key
 
 The system requires the following sheet tabs per tenant:
 
-1. **METRICS_{TENANT}:** Campaign performance data
+1. **METRICS\_{TENANT}:** Campaign performance data
    - Columns: date, level, campaign, ad_group, id, name, clicks, cost, conversions, impr, ctr
 
-2. **SEARCH_TERMS_{TENANT}:** Search query performance  
+2. **SEARCH*TERMS*{TENANT}:** Search query performance
    - Columns: date, campaign, ad_group, search_term, clicks, cost, conversions
 
-3. **RUN_LOGS_{TENANT}:** System execution logs
+3. **RUN*LOGS*{TENANT}:** System execution logs
    - Columns: timestamp, type, message, data
 
-4. **ANOMALIES_{TENANT}:** Detected anomalies (auto-created)
+4. **ANOMALIES\_{TENANT}:** Detected anomalies (auto-created)
    - Columns: timestamp, type, severity, message, value, threshold, confidence, metadata
 
 ## 📈 Performance & Scaling
@@ -371,7 +387,7 @@ The system requires the following sheet tabs per tenant:
 
 - **Connection Pooling:** Efficient Google Sheets API usage
 - **Smart Caching:** Reduced API calls and faster responses
-- **Batch Processing:** Optimized data operations  
+- **Batch Processing:** Optimized data operations
 - **Throttled Alerting:** Prevents alert spam
 - **Background Jobs:** Non-blocking execution
 
@@ -381,7 +397,7 @@ The system requires the following sheet tabs per tenant:
 # Check scheduler status
 curl "http://localhost:3007/api/alerts/history/TENANT_123"
 
-# View delivery statistics  
+# View delivery statistics
 curl "http://localhost:3007/api/alerts/channels/TENANT_123"
 ```
 
@@ -389,13 +405,13 @@ curl "http://localhost:3007/api/alerts/channels/TENANT_123"
 
 ### Supported Alert Types
 
-| Type | Severity | Trigger | Template |
-|------|----------|---------|----------|
-| `cost_spike` | High | Daily cost >150% of average | Slack, Email |
-| `cpa_spike` | Medium | CPA increase >50% | Slack, Email |
-| `zero_conversions` | High | No conversions for 24h with spend | Slack, Email |
-| `conversion_drop` | Medium | Conversions down >30% | Slack, Email |
-| `weekly_summary` | Info | Weekly (Mondays 9 AM) | Email |
+| Type               | Severity | Trigger                           | Template     |
+| ------------------ | -------- | --------------------------------- | ------------ |
+| `cost_spike`       | High     | Daily cost >150% of average       | Slack, Email |
+| `cpa_spike`        | Medium   | CPA increase >50%                 | Slack, Email |
+| `zero_conversions` | High     | No conversions for 24h with spend | Slack, Email |
+| `conversion_drop`  | Medium   | Conversions down >30%             | Slack, Email |
+| `weekly_summary`   | Info     | Weekly (Mondays 9 AM)             | Email        |
 
 ### Custom Templates
 
@@ -412,16 +428,19 @@ Templates support variable interpolation:
 ## 🔒 Security & Compliance
 
 ### Authentication
+
 - HMAC-based request signing for external APIs
 - Service account authentication for Google Sheets
 - Webhook URL validation
 
 ### Data Privacy
+
 - Sensitive data sanitization in logs
 - Configurable data retention periods
 - GDPR-compliant data handling
 
 ### Rate Limiting
+
 - API endpoint throttling
 - Alert frequency limits
 - Google Sheets API quota management
@@ -431,6 +450,7 @@ Templates support variable interpolation:
 ### Common Issues
 
 **Sheets Connection Fails:**
+
 ```bash
 # Check service account permissions
 # Verify GOOGLE_SERVICE_EMAIL and GOOGLE_PRIVATE_KEY
@@ -438,6 +458,7 @@ Templates support variable interpolation:
 ```
 
 **Alerts Not Sending:**
+
 ```bash
 # Test channel configuration
 curl -X POST "http://localhost:3007/api/alerts/channels/TENANT_123/slack_main/test"
@@ -447,6 +468,7 @@ curl -X POST "http://localhost:3007/api/alerts/channels/TENANT_123/slack_main/te
 ```
 
 **No Anomalies Detected:**
+
 ```bash
 # Check data availability and date ranges
 # Adjust detection thresholds
@@ -467,7 +489,7 @@ node backend/test-gtm-observability.js --verbose
 ## 📚 Additional Resources
 
 - **API Documentation:** `/docs/API.md`
-- **Google Sheets Setup:** `/docs/SHEETS_SETUP.md`  
+- **Google Sheets Setup:** `/docs/SHEETS_SETUP.md`
 - **Looker Studio Guide:** `/looker-studio/README.md`
 - **Deployment Guide:** `/deployment/README.md`
 

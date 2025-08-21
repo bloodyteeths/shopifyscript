@@ -1,20 +1,20 @@
 #!/usr/bin/env node
 
-const { spawn } = require('child_process');
-const fs = require('fs');
-const path = require('path');
+const { spawn } = require("child_process");
+const fs = require("fs");
+const path = require("path");
 
 function parseArgs(argv) {
   const args = { run: false, plan: false, maxParallel: 2, config: null };
   argv.forEach((arg, i) => {
-    if (arg === '--run') args.run = true;
-    if (arg === '--plan') args.plan = true;
-    if (arg.startsWith('--max-parallel=')) {
-      const v = Number(arg.split('=')[1]);
+    if (arg === "--run") args.run = true;
+    if (arg === "--plan") args.plan = true;
+    if (arg.startsWith("--max-parallel=")) {
+      const v = Number(arg.split("=")[1]);
       if (!Number.isNaN(v) && v > 0) args.maxParallel = v;
     }
-    if (arg.startsWith('--config=')) {
-      const p = arg.split('=')[1];
+    if (arg.startsWith("--config=")) {
+      const p = arg.split("=")[1];
       if (p) args.config = p;
     }
   });
@@ -26,7 +26,7 @@ function ensureDir(p) {
 }
 
 function timestamp() {
-  return new Date().toISOString().replace(/[:.]/g, '-');
+  return new Date().toISOString().replace(/[:.]/g, "-");
 }
 
 function loadConfig(configPath) {
@@ -35,13 +35,13 @@ function loadConfig(configPath) {
     console.error(`Missing tasks config at ${fullPath}`);
     process.exit(1);
   }
-  const raw = fs.readFileSync(fullPath, 'utf8');
+  const raw = fs.readFileSync(fullPath, "utf8");
   try {
     const cfg = JSON.parse(raw);
-    if (!Array.isArray(cfg.tasks)) throw new Error('tasks must be an array');
+    if (!Array.isArray(cfg.tasks)) throw new Error("tasks must be an array");
     return cfg;
   } catch (e) {
-    console.error('Invalid tasks.config.json:', e.message);
+    console.error("Invalid tasks.config.json:", e.message);
     process.exit(1);
   }
 }
@@ -52,30 +52,30 @@ function runTask(task, options) {
     const runLogsDir = options.runLogsDir;
 
     if (task.skipIf && fs.existsSync(path.resolve(rootDir, task.skipIf))) {
-      return resolve({ id: task.id, status: 'skipped', code: 0 });
+      return resolve({ id: task.id, status: "skipped", code: 0 });
     }
 
     const logFile = path.resolve(runLogsDir, `${timestamp()}_${task.id}.log`);
-    const outStream = fs.createWriteStream(logFile, { flags: 'a' });
+    const outStream = fs.createWriteStream(logFile, { flags: "a" });
 
     const child = spawn(task.cmd, {
-      cwd: path.resolve(rootDir, task.cwd || '.'),
+      cwd: path.resolve(rootDir, task.cwd || "."),
       shell: true,
       env: process.env,
     });
 
-    child.stdout.on('data', (d) => {
+    child.stdout.on("data", (d) => {
       process.stdout.write(`[${task.id}] ${d}`);
       outStream.write(d);
     });
-    child.stderr.on('data', (d) => {
+    child.stderr.on("data", (d) => {
       process.stderr.write(`[${task.id}] ${d}`);
       outStream.write(d);
     });
 
-    child.on('close', (code) => {
+    child.on("close", (code) => {
       outStream.end();
-      resolve({ id: task.id, status: code === 0 ? 'ok' : 'error', code });
+      resolve({ id: task.id, status: code === 0 ? "ok" : "error", code });
     });
   });
 }
@@ -107,31 +107,40 @@ async function runQueue(tasks, maxParallel, options) {
 async function main() {
   const args = parseArgs(process.argv.slice(2));
   const rootDir = process.cwd();
-  const runLogsDir = path.resolve(rootDir, 'run_logs');
-  const thirdPartyDir = path.resolve(rootDir, 'third_party');
+  const runLogsDir = path.resolve(rootDir, "run_logs");
+  const thirdPartyDir = path.resolve(rootDir, "third_party");
   ensureDir(runLogsDir);
   ensureDir(thirdPartyDir);
 
-  const cfgPath = args.config ? path.resolve(rootDir, args.config) : path.resolve(rootDir, 'tools', 'tasks.config.json');
+  const cfgPath = args.config
+    ? path.resolve(rootDir, args.config)
+    : path.resolve(rootDir, "tools", "tasks.config.json");
   const cfg = loadConfig(cfgPath);
 
   if (args.plan) {
-    console.log('Planned tasks:');
+    console.log("Planned tasks:");
     cfg.tasks.forEach((t) => {
       console.log(`- ${t.id}: ${t.cmd}`);
     });
   }
 
   if (args.run) {
-    const results = await runQueue(cfg.tasks, args.maxParallel || cfg.maxParallel || 2, { rootDir, runLogsDir });
+    const results = await runQueue(
+      cfg.tasks,
+      args.maxParallel || cfg.maxParallel || 2,
+      { rootDir, runLogsDir },
+    );
     const summary = results.reduce((acc, r) => {
       acc[r.status] = (acc[r.status] || 0) + 1;
       return acc;
     }, {});
-    console.log('Task summary:', summary);
-    const failed = results.filter((r) => r.status !== 'ok');
+    console.log("Task summary:", summary);
+    const failed = results.filter((r) => r.status !== "ok");
     if (failed.length > 0) {
-      console.error('Some tasks failed:', failed.map((f) => `${f.id} (code ${f.code})`).join(', '));
+      console.error(
+        "Some tasks failed:",
+        failed.map((f) => `${f.id} (code ${f.code})`).join(", "),
+      );
       process.exit(1);
     }
   }

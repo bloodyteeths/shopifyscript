@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from "react";
 import {
   Page,
   Card,
@@ -30,7 +30,7 @@ import {
   DisplayText,
   ProgressBar,
   Divider,
-} from '@shopify/polaris';
+} from "@shopify/polaris";
 import {
   PieChart,
   Pie,
@@ -44,8 +44,8 @@ import {
   Tooltip as RechartsTooltip,
   LineChart,
   Line,
-} from 'recharts';
-import type { Audience } from '../services/api.server';
+} from "recharts";
+import type { Audience } from "../services/api.server";
 
 interface AudiencesProps {
   initialAudiences?: Audience[];
@@ -53,17 +53,23 @@ interface AudiencesProps {
 
 interface AudienceCondition {
   field: string;
-  operator: 'equals' | 'contains' | 'greater_than' | 'less_than' | 'in' | 'not_in';
+  operator:
+    | "equals"
+    | "contains"
+    | "greater_than"
+    | "less_than"
+    | "in"
+    | "not_in";
   value: any;
 }
 
 interface AudienceFormData {
   name: string;
   description: string;
-  type: 'custom' | 'lookalike' | 'interest' | 'behavioral';
+  type: "custom" | "lookalike" | "interest" | "behavioral";
   rules: {
     conditions: AudienceCondition[];
-    logic: 'and' | 'or';
+    logic: "and" | "or";
   };
 }
 
@@ -75,32 +81,32 @@ interface AudienceBuilderProps {
 }
 
 const FIELD_OPTIONS = [
-  { label: 'Purchase History', value: 'purchase_history' },
-  { label: 'Page Views', value: 'page_views' },
-  { label: 'Time on Site', value: 'time_on_site' },
-  { label: 'Purchase Amount', value: 'purchase_amount' },
-  { label: 'Visit Frequency', value: 'visit_frequency' },
-  { label: 'Product Category', value: 'product_category' },
-  { label: 'Geography', value: 'geography' },
-  { label: 'Device Type', value: 'device_type' },
-  { label: 'Traffic Source', value: 'traffic_source' },
-  { label: 'Customer Lifetime Value', value: 'clv' },
+  { label: "Purchase History", value: "purchase_history" },
+  { label: "Page Views", value: "page_views" },
+  { label: "Time on Site", value: "time_on_site" },
+  { label: "Purchase Amount", value: "purchase_amount" },
+  { label: "Visit Frequency", value: "visit_frequency" },
+  { label: "Product Category", value: "product_category" },
+  { label: "Geography", value: "geography" },
+  { label: "Device Type", value: "device_type" },
+  { label: "Traffic Source", value: "traffic_source" },
+  { label: "Customer Lifetime Value", value: "clv" },
 ];
 
 const OPERATOR_OPTIONS = [
-  { label: 'Equals', value: 'equals' },
-  { label: 'Contains', value: 'contains' },
-  { label: 'Greater than', value: 'greater_than' },
-  { label: 'Less than', value: 'less_than' },
-  { label: 'Is in', value: 'in' },
-  { label: 'Is not in', value: 'not_in' },
+  { label: "Equals", value: "equals" },
+  { label: "Contains", value: "contains" },
+  { label: "Greater than", value: "greater_than" },
+  { label: "Less than", value: "less_than" },
+  { label: "Is in", value: "in" },
+  { label: "Is not in", value: "not_in" },
 ];
 
 const AUDIENCE_TYPES = [
-  { label: 'Custom Audience', value: 'custom' },
-  { label: 'Lookalike Audience', value: 'lookalike' },
-  { label: 'Interest-based', value: 'interest' },
-  { label: 'Behavioral', value: 'behavioral' },
+  { label: "Custom Audience", value: "custom" },
+  { label: "Lookalike Audience", value: "lookalike" },
+  { label: "Interest-based", value: "interest" },
+  { label: "Behavioral", value: "behavioral" },
 ];
 
 const ConditionBuilder: React.FC<{
@@ -109,17 +115,26 @@ const ConditionBuilder: React.FC<{
   onRemove: () => void;
 }> = ({ condition, onUpdate, onRemove }) => {
   const getValueInput = () => {
-    const isNumeric = ['greater_than', 'less_than'].includes(condition.operator);
-    const isMultiple = ['in', 'not_in'].includes(condition.operator);
+    const isNumeric = ["greater_than", "less_than"].includes(
+      condition.operator,
+    );
+    const isMultiple = ["in", "not_in"].includes(condition.operator);
 
     if (isMultiple) {
       return (
         <TextField
-          value={Array.isArray(condition.value) ? condition.value.join(', ') : condition.value || ''}
-          onChange={(value) => 
-            onUpdate({ 
-              ...condition, 
-              value: value.split(',').map(v => v.trim()).filter(Boolean) 
+          value={
+            Array.isArray(condition.value)
+              ? condition.value.join(", ")
+              : condition.value || ""
+          }
+          onChange={(value) =>
+            onUpdate({
+              ...condition,
+              value: value
+                .split(",")
+                .map((v) => v.trim())
+                .filter(Boolean),
             })
           }
           placeholder="value1, value2, value3"
@@ -130,15 +145,15 @@ const ConditionBuilder: React.FC<{
 
     return (
       <TextField
-        type={isNumeric ? 'number' : 'text'}
-        value={condition.value?.toString() || ''}
-        onChange={(value) => 
-          onUpdate({ 
-            ...condition, 
-            value: isNumeric ? parseFloat(value) || 0 : value 
+        type={isNumeric ? "number" : "text"}
+        value={condition.value?.toString() || ""}
+        onChange={(value) =>
+          onUpdate({
+            ...condition,
+            value: isNumeric ? parseFloat(value) || 0 : value,
           })
         }
-        placeholder={isNumeric ? '100' : 'Enter value'}
+        placeholder={isNumeric ? "100" : "Enter value"}
       />
     );
   };
@@ -156,22 +171,26 @@ const ConditionBuilder: React.FC<{
                   value={condition.field}
                   onChange={(value) => onUpdate({ ...condition, field: value })}
                 />
-                
+
                 <Select
                   label="Operator"
                   options={OPERATOR_OPTIONS}
                   value={condition.operator}
-                  onChange={(value) => onUpdate({ ...condition, operator: value as any })}
+                  onChange={(value) =>
+                    onUpdate({ ...condition, operator: value as any })
+                  }
                 />
               </FormLayout.Group>
-              
+
               <div>
-                <Text variant="bodyMd" fontWeight="medium">Value</Text>
+                <Text variant="bodyMd" fontWeight="medium">
+                  Value
+                </Text>
                 {getValueInput()}
               </div>
             </FormLayout>
           </Stack.Item>
-          
+
           <Stack.Item>
             <Button destructive onClick={onRemove} size="slim">
               Remove
@@ -190,14 +209,14 @@ const AudienceBuilder: React.FC<AudienceBuilderProps> = ({
   loading = false,
 }) => {
   const [formData, setFormData] = useState<AudienceFormData>({
-    name: audience?.name || '',
-    description: audience?.description || '',
-    type: audience?.type || 'custom',
+    name: audience?.name || "",
+    description: audience?.description || "",
+    type: audience?.type || "custom",
     rules: {
       conditions: audience?.rules?.conditions || [
-        { field: 'purchase_history', operator: 'equals', value: '' }
+        { field: "purchase_history", operator: "equals", value: "" },
       ],
-      logic: audience?.rules?.logic || 'and',
+      logic: audience?.rules?.logic || "and",
     },
   });
 
@@ -209,30 +228,32 @@ const AudienceBuilder: React.FC<AudienceBuilderProps> = ({
   };
 
   const addCondition = () => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       rules: {
         ...prev.rules,
         conditions: [
           ...prev.rules.conditions,
-          { field: 'purchase_history', operator: 'equals', value: '' }
+          { field: "purchase_history", operator: "equals", value: "" },
         ],
       },
     }));
   };
 
   const updateCondition = (index: number, condition: AudienceCondition) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       rules: {
         ...prev.rules,
-        conditions: prev.rules.conditions.map((c, i) => i === index ? condition : c),
+        conditions: prev.rules.conditions.map((c, i) =>
+          i === index ? condition : c,
+        ),
       },
     }));
   };
 
   const removeCondition = (index: number) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       rules: {
         ...prev.rules,
@@ -245,9 +266,9 @@ const AudienceBuilder: React.FC<AudienceBuilderProps> = ({
   const estimateAudienceSize = async () => {
     setSizeLoading(true);
     try {
-      const response = await fetch('/api/audiences/estimate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const response = await fetch("/api/audiences/estimate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData.rules),
       });
       const data = await response.json();
@@ -255,15 +276,15 @@ const AudienceBuilder: React.FC<AudienceBuilderProps> = ({
         setEstimatedSize(data.size);
       }
     } catch (error) {
-      console.error('Error estimating audience size:', error);
+      console.error("Error estimating audience size:", error);
     } finally {
       setSizeLoading(false);
     }
   };
 
   const logicOptions = [
-    { label: 'AND (all conditions must match)', value: 'and' },
-    { label: 'OR (any condition can match)', value: 'or' },
+    { label: "AND (all conditions must match)", value: "and" },
+    { label: "OR (any condition can match)", value: "or" },
   ];
 
   return (
@@ -271,7 +292,7 @@ const AudienceBuilder: React.FC<AudienceBuilderProps> = ({
       <TextField
         label="Audience Name"
         value={formData.name}
-        onChange={(value) => setFormData(prev => ({ ...prev, name: value }))}
+        onChange={(value) => setFormData((prev) => ({ ...prev, name: value }))}
         placeholder="High-value customers"
         autoComplete="off"
       />
@@ -279,7 +300,9 @@ const AudienceBuilder: React.FC<AudienceBuilderProps> = ({
       <TextField
         label="Description"
         value={formData.description}
-        onChange={(value) => setFormData(prev => ({ ...prev, description: value }))}
+        onChange={(value) =>
+          setFormData((prev) => ({ ...prev, description: value }))
+        }
         placeholder="Customers who have made purchases over $500"
         multiline={3}
       />
@@ -288,7 +311,9 @@ const AudienceBuilder: React.FC<AudienceBuilderProps> = ({
         label="Audience Type"
         options={AUDIENCE_TYPES}
         value={formData.type}
-        onChange={(value) => setFormData(prev => ({ ...prev, type: value as any }))}
+        onChange={(value) =>
+          setFormData((prev) => ({ ...prev, type: value as any }))
+        }
       />
 
       <Card title="Audience Rules">
@@ -305,8 +330,8 @@ const AudienceBuilder: React.FC<AudienceBuilderProps> = ({
               label="Logic"
               options={logicOptions}
               value={formData.rules.logic}
-              onChange={(value) => 
-                setFormData(prev => ({
+              onChange={(value) =>
+                setFormData((prev) => ({
                   ...prev,
                   rules: { ...prev.rules, logic: value as any },
                 }))
@@ -318,7 +343,7 @@ const AudienceBuilder: React.FC<AudienceBuilderProps> = ({
               {formData.rules.conditions.map((condition, index) => (
                 <div key={index}>
                   {index > 0 && (
-                    <div style={{ textAlign: 'center', margin: '8px 0' }}>
+                    <div style={{ textAlign: "center", margin: "8px 0" }}>
                       <Badge status="info">
                         {formData.rules.logic.toUpperCase()}
                       </Badge>
@@ -340,7 +365,7 @@ const AudienceBuilder: React.FC<AudienceBuilderProps> = ({
             <Button onClick={estimateAudienceSize} loading={sizeLoading}>
               Estimate Audience Size
             </Button>
-            
+
             {estimatedSize !== null && (
               <Stack spacing="tight">
                 <Text variant="bodyMd">Estimated size:</Text>
@@ -356,13 +381,13 @@ const AudienceBuilder: React.FC<AudienceBuilderProps> = ({
       <Stack distribution="trailing">
         <ButtonGroup>
           <Button onClick={onCancel}>Cancel</Button>
-          <Button 
-            primary 
-            onClick={handleSubmit} 
+          <Button
+            primary
+            onClick={handleSubmit}
             loading={loading}
             disabled={!formData.name || formData.rules.conditions.length === 0}
           >
-            {audience ? 'Update Audience' : 'Create Audience'}
+            {audience ? "Update Audience" : "Create Audience"}
           </Button>
         </ButtonGroup>
       </Stack>
@@ -380,31 +405,42 @@ const AudienceCard: React.FC<{
 
   const getStatusBadge = (status: string) => {
     const statusMap = {
-      active: { color: 'success' as const, text: 'Active' },
-      inactive: { color: 'subdued' as const, text: 'Inactive' },
+      active: { color: "success" as const, text: "Active" },
+      inactive: { color: "subdued" as const, text: "Inactive" },
     };
-    
-    const config = statusMap[status as keyof typeof statusMap] || statusMap.inactive;
+
+    const config =
+      statusMap[status as keyof typeof statusMap] || statusMap.inactive;
     return <Badge status={config.color}>{config.text}</Badge>;
   };
 
   const getTypeBadge = (type: string) => {
     const typeMap = {
-      custom: { color: 'info' as const, text: 'Custom' },
-      lookalike: { color: 'attention' as const, text: 'Lookalike' },
-      interest: { color: 'success' as const, text: 'Interest' },
-      behavioral: { color: 'warning' as const, text: 'Behavioral' },
+      custom: { color: "info" as const, text: "Custom" },
+      lookalike: { color: "attention" as const, text: "Lookalike" },
+      interest: { color: "success" as const, text: "Interest" },
+      behavioral: { color: "warning" as const, text: "Behavioral" },
     };
-    
+
     const config = typeMap[type as keyof typeof typeMap];
-    return config ? <Badge status={config.color}>{config.text}</Badge> : <Badge>{type}</Badge>;
+    return config ? (
+      <Badge status={config.color}>{config.text}</Badge>
+    ) : (
+      <Badge>{type}</Badge>
+    );
   };
 
   const formatCondition = (condition: AudienceCondition) => {
-    const field = FIELD_OPTIONS.find(f => f.value === condition.field)?.label || condition.field;
-    const operator = OPERATOR_OPTIONS.find(o => o.value === condition.operator)?.label || condition.operator;
-    const value = Array.isArray(condition.value) ? condition.value.join(', ') : condition.value;
-    
+    const field =
+      FIELD_OPTIONS.find((f) => f.value === condition.field)?.label ||
+      condition.field;
+    const operator =
+      OPERATOR_OPTIONS.find((o) => o.value === condition.operator)?.label ||
+      condition.operator;
+    const value = Array.isArray(condition.value)
+      ? condition.value.join(", ")
+      : condition.value;
+
     return `${field} ${operator} "${value}"`;
   };
 
@@ -420,13 +456,13 @@ const AudienceCard: React.FC<{
               {getStatusBadge(audience.status)}
               {getTypeBadge(audience.type)}
             </Stack>
-            
+
             {audience.description && (
               <Text variant="bodyMd" color="subdued">
                 {audience.description}
               </Text>
             )}
-            
+
             <Stack spacing="tight">
               <Text variant="bodySm" color="subdued">
                 Size: <strong>{audience.size.toLocaleString()}</strong> users
@@ -442,7 +478,10 @@ const AudienceCard: React.FC<{
                   CTR: <strong>{audience.performance.ctr.toFixed(2)}%</strong>
                 </Text>
                 <Text variant="bodySm">
-                  Conv. Rate: <strong>{audience.performance.conversionRate.toFixed(2)}%</strong>
+                  Conv. Rate:{" "}
+                  <strong>
+                    {audience.performance.conversionRate.toFixed(2)}%
+                  </strong>
                 </Text>
               </Stack>
             )}
@@ -452,13 +491,14 @@ const AudienceCard: React.FC<{
             <Button size="slim" onClick={() => onEdit(audience)}>
               Edit
             </Button>
-            <Button 
-              size="slim" 
-              onClick={() => onToggleStatus(audience.id)}
-            >
-              {audience.status === 'active' ? 'Deactivate' : 'Activate'}
+            <Button size="slim" onClick={() => onToggleStatus(audience.id)}>
+              {audience.status === "active" ? "Deactivate" : "Activate"}
             </Button>
-            <Button size="slim" destructive onClick={() => onDelete(audience.id)}>
+            <Button
+              size="slim"
+              destructive
+              onClick={() => onDelete(audience.id)}
+            >
               Delete
             </Button>
           </ButtonGroup>
@@ -472,20 +512,21 @@ const AudienceCard: React.FC<{
           ariaExpanded={expanded}
           ariaControls="audience-rules"
         >
-          {expanded ? 'Hide' : 'Show'} Rules ({audience.rules.conditions.length})
+          {expanded ? "Hide" : "Show"} Rules ({audience.rules.conditions.length}
+          )
         </Button>
-        
+
         <Collapsible
           open={expanded}
           id="audience-rules"
-          transition={{ duration: '150ms', timingFunction: 'ease' }}
+          transition={{ duration: "150ms", timingFunction: "ease" }}
         >
-          <div style={{ marginTop: '16px' }}>
+          <div style={{ marginTop: "16px" }}>
             <Stack vertical spacing="tight">
               <Text variant="bodyMd" fontWeight="medium">
                 Logic: {audience.rules.logic.toUpperCase()}
               </Text>
-              
+
               {audience.rules.conditions.map((condition, index) => (
                 <div key={index}>
                   {index > 0 && (
@@ -508,9 +549,12 @@ const AudiencePerformanceChart: React.FC<{
   audiences: Audience[];
 }> = ({ audiences }) => {
   const data = audiences
-    .filter(a => a.performance)
-    .map(audience => ({
-      name: audience.name.length > 15 ? `${audience.name.slice(0, 15)}...` : audience.name,
+    .filter((a) => a.performance)
+    .map((audience) => ({
+      name:
+        audience.name.length > 15
+          ? `${audience.name.slice(0, 15)}...`
+          : audience.name,
       ctr: audience.performance!.ctr,
       conversionRate: audience.performance!.conversionRate,
       size: audience.size,
@@ -521,26 +565,33 @@ const AudiencePerformanceChart: React.FC<{
       <Card.Section>
         <Stack vertical>
           <Text variant="headingMd">Audience Performance</Text>
-          <div style={{ height: '300px', width: '100%' }}>
+          <div style={{ height: "300px", width: "100%" }}>
             <ResponsiveContainer>
-              <BarChart data={data} margin={{ top: 20, right: 30, left: 20, bottom: 60 }}>
+              <BarChart
+                data={data}
+                margin={{ top: 20, right: 30, left: 20, bottom: 60 }}
+              >
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis 
-                  dataKey="name" 
+                <XAxis
+                  dataKey="name"
                   angle={-45}
                   textAnchor="end"
                   height={80}
                   tick={{ fontSize: 12 }}
                 />
                 <YAxis tick={{ fontSize: 12 }} />
-                <RechartsTooltip 
+                <RechartsTooltip
                   formatter={(value: any, name: string) => [
-                    `${value.toFixed(2)}%`, 
-                    name === 'ctr' ? 'CTR' : 'Conversion Rate'
+                    `${value.toFixed(2)}%`,
+                    name === "ctr" ? "CTR" : "Conversion Rate",
                   ]}
                 />
                 <Bar dataKey="ctr" fill="#5C6AC4" name="ctr" />
-                <Bar dataKey="conversionRate" fill="#00A047" name="conversionRate" />
+                <Bar
+                  dataKey="conversionRate"
+                  fill="#00A047"
+                  name="conversionRate"
+                />
               </BarChart>
             </ResponsiveContainer>
           </div>
@@ -553,24 +604,27 @@ const AudiencePerformanceChart: React.FC<{
 const AudienceTypeDistribution: React.FC<{
   audiences: Audience[];
 }> = ({ audiences }) => {
-  const typeCounts = audiences.reduce((acc, audience) => {
-    acc[audience.type] = (acc[audience.type] || 0) + 1;
-    return acc;
-  }, {} as Record<string, number>);
+  const typeCounts = audiences.reduce(
+    (acc, audience) => {
+      acc[audience.type] = (acc[audience.type] || 0) + 1;
+      return acc;
+    },
+    {} as Record<string, number>,
+  );
 
   const data = Object.entries(typeCounts).map(([type, count]) => ({
     name: type.charAt(0).toUpperCase() + type.slice(1),
     value: count,
   }));
 
-  const colors = ['#5C6AC4', '#00A047', '#EEC200', '#D72C0D'];
+  const colors = ["#5C6AC4", "#00A047", "#EEC200", "#D72C0D"];
 
   return (
     <Card>
       <Card.Section>
         <Stack vertical>
           <Text variant="headingMd">Audience Types</Text>
-          <div style={{ height: '250px', width: '100%' }}>
+          <div style={{ height: "250px", width: "100%" }}>
             <ResponsiveContainer>
               <PieChart>
                 <Pie
@@ -579,10 +633,15 @@ const AudienceTypeDistribution: React.FC<{
                   cy="50%"
                   outerRadius={80}
                   dataKey="value"
-                  label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(1)}%`}
+                  label={({ name, percent }) =>
+                    `${name}: ${(percent * 100).toFixed(1)}%`
+                  }
                 >
                   {data.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={colors[index % colors.length]}
+                    />
                   ))}
                 </Pie>
                 <RechartsTooltip />
@@ -595,19 +654,21 @@ const AudienceTypeDistribution: React.FC<{
   );
 };
 
-export const Audiences: React.FC<AudiencesProps> = ({ initialAudiences = [] }) => {
+export const Audiences: React.FC<AudiencesProps> = ({
+  initialAudiences = [],
+}) => {
   const [audiences, setAudiences] = useState<Audience[]>(initialAudiences);
   const [loading, setLoading] = useState(!initialAudiences.length);
   const [error, setError] = useState<string | null>(null);
   const [selectedTab, setSelectedTab] = useState(0);
-  
+
   // Modal states
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [editingAudience, setEditingAudience] = useState<Audience | null>(null);
   const [formLoading, setFormLoading] = useState(false);
-  
+
   // Filter states
-  const [queryValue, setQueryValue] = useState('');
+  const [queryValue, setQueryValue] = useState("");
   const [statusFilter, setStatusFilter] = useState<string[]>([]);
   const [typeFilter, setTypeFilter] = useState<string[]>([]);
 
@@ -616,17 +677,17 @@ export const Audiences: React.FC<AudiencesProps> = ({ initialAudiences = [] }) =
     try {
       setLoading(true);
       setError(null);
-      
-      const response = await fetch('/api/audiences');
+
+      const response = await fetch("/api/audiences");
       const data = await response.json();
-      
+
       if (data.success) {
         setAudiences(data.data);
       } else {
-        setError(data.error || 'Failed to load audiences');
+        setError(data.error || "Failed to load audiences");
       }
     } catch (err) {
-      setError('Network error while loading audiences');
+      setError("Network error while loading audiences");
     } finally {
       setLoading(false);
     }
@@ -640,22 +701,25 @@ export const Audiences: React.FC<AudiencesProps> = ({ initialAudiences = [] }) =
   }, []);
 
   // Filter audiences
-  const filteredAudiences = audiences.filter(audience => {
+  const filteredAudiences = audiences.filter((audience) => {
     // Text search
-    if (queryValue && !audience.name.toLowerCase().includes(queryValue.toLowerCase())) {
+    if (
+      queryValue &&
+      !audience.name.toLowerCase().includes(queryValue.toLowerCase())
+    ) {
       return false;
     }
-    
+
     // Status filter
     if (statusFilter.length > 0 && !statusFilter.includes(audience.status)) {
       return false;
     }
-    
+
     // Type filter
     if (typeFilter.length > 0 && !typeFilter.includes(audience.type)) {
       return false;
     }
-    
+
     return true;
   });
 
@@ -663,23 +727,23 @@ export const Audiences: React.FC<AudiencesProps> = ({ initialAudiences = [] }) =
   const handleCreateAudience = async (data: AudienceFormData) => {
     try {
       setFormLoading(true);
-      
-      const response = await fetch('/api/audiences', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+
+      const response = await fetch("/api/audiences", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
-      
+
       const result = await response.json();
-      
+
       if (result.success) {
-        setAudiences(prev => [...prev, result.data]);
+        setAudiences((prev) => [...prev, result.data]);
         setShowCreateModal(false);
       } else {
-        setError(result.error || 'Failed to create audience');
+        setError(result.error || "Failed to create audience");
       }
     } catch (err) {
-      setError('Network error while creating audience');
+      setError("Network error while creating audience");
     } finally {
       setFormLoading(false);
     }
@@ -687,110 +751,120 @@ export const Audiences: React.FC<AudiencesProps> = ({ initialAudiences = [] }) =
 
   const handleUpdateAudience = async (data: AudienceFormData) => {
     if (!editingAudience) return;
-    
+
     try {
       setFormLoading(true);
-      
+
       const response = await fetch(`/api/audiences/${editingAudience.id}`, {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
       });
-      
+
       const result = await response.json();
-      
+
       if (result.success) {
-        setAudiences(prev => 
-          prev.map(a => a.id === editingAudience.id ? result.data : a)
+        setAudiences((prev) =>
+          prev.map((a) => (a.id === editingAudience.id ? result.data : a)),
         );
         setEditingAudience(null);
       } else {
-        setError(result.error || 'Failed to update audience');
+        setError(result.error || "Failed to update audience");
       }
     } catch (err) {
-      setError('Network error while updating audience');
+      setError("Network error while updating audience");
     } finally {
       setFormLoading(false);
     }
   };
 
   const handleToggleStatus = async (id: string) => {
-    const audience = audiences.find(a => a.id === id);
+    const audience = audiences.find((a) => a.id === id);
     if (!audience) return;
-    
-    const newStatus = audience.status === 'active' ? 'inactive' : 'active';
-    
+
+    const newStatus = audience.status === "active" ? "inactive" : "active";
+
     try {
       const response = await fetch(`/api/audiences/${id}/status`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status: newStatus }),
       });
-      
+
       const result = await response.json();
-      
+
       if (result.success) {
-        setAudiences(prev => 
-          prev.map(a => a.id === id ? { ...a, status: newStatus } : a)
+        setAudiences((prev) =>
+          prev.map((a) => (a.id === id ? { ...a, status: newStatus } : a)),
         );
       } else {
-        setError(result.error || 'Failed to update audience status');
+        setError(result.error || "Failed to update audience status");
       }
     } catch (err) {
-      setError('Network error while updating audience status');
+      setError("Network error while updating audience status");
     }
   };
 
   const handleDeleteAudience = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this audience?')) return;
-    
+    if (!confirm("Are you sure you want to delete this audience?")) return;
+
     try {
-      const response = await fetch(`/api/audiences/${id}`, { method: 'DELETE' });
+      const response = await fetch(`/api/audiences/${id}`, {
+        method: "DELETE",
+      });
       const result = await response.json();
-      
+
       if (result.success) {
-        setAudiences(prev => prev.filter(a => a.id !== id));
+        setAudiences((prev) => prev.filter((a) => a.id !== id));
       } else {
-        setError(result.error || 'Failed to delete audience');
+        setError(result.error || "Failed to delete audience");
       }
     } catch (err) {
-      setError('Network error while deleting audience');
+      setError("Network error while deleting audience");
     }
   };
 
   // Filter options
   const statusOptions = [
-    { label: 'Active', value: 'active' },
-    { label: 'Inactive', value: 'inactive' },
+    { label: "Active", value: "active" },
+    { label: "Inactive", value: "inactive" },
   ];
 
   const typeOptions = [
-    { label: 'Custom', value: 'custom' },
-    { label: 'Lookalike', value: 'lookalike' },
-    { label: 'Interest', value: 'interest' },
-    { label: 'Behavioral', value: 'behavioral' },
+    { label: "Custom", value: "custom" },
+    { label: "Lookalike", value: "lookalike" },
+    { label: "Interest", value: "interest" },
+    { label: "Behavioral", value: "behavioral" },
   ];
 
   // Applied filters for display
   const appliedFilters: any[] = [];
   if (statusFilter.length > 0) {
     appliedFilters.push({
-      key: 'status',
-      label: `Status: ${statusFilter.join(', ')}`,
+      key: "status",
+      label: `Status: ${statusFilter.join(", ")}`,
       onRemove: () => setStatusFilter([]),
     });
   }
   if (typeFilter.length > 0) {
     appliedFilters.push({
-      key: 'type',
-      label: `Type: ${typeFilter.join(', ')}`,
+      key: "type",
+      label: `Type: ${typeFilter.join(", ")}`,
       onRemove: () => setTypeFilter([]),
     });
   }
 
   const tabs = [
-    { id: 'audiences', content: 'All Audiences', accessibilityLabel: 'All audiences' },
-    { id: 'analytics', content: 'Analytics', accessibilityLabel: 'Audience analytics' },
+    {
+      id: "audiences",
+      content: "All Audiences",
+      accessibilityLabel: "All audiences",
+    },
+    {
+      id: "analytics",
+      content: "Analytics",
+      accessibilityLabel: "Audience analytics",
+    },
   ];
 
   if (error) {
@@ -809,12 +883,12 @@ export const Audiences: React.FC<AudiencesProps> = ({ initialAudiences = [] }) =
       title="Audiences"
       subtitle={`${audiences.length} total audiences`}
       primaryAction={{
-        content: 'Create Audience',
+        content: "Create Audience",
         onAction: () => setShowCreateModal(true),
       }}
       secondaryActions={[
         {
-          content: 'Refresh',
+          content: "Refresh",
           onAction: loadAudiences,
         },
       ]}
@@ -824,16 +898,16 @@ export const Audiences: React.FC<AudiencesProps> = ({ initialAudiences = [] }) =
           <Tabs tabs={tabs} selected={selectedTab} onSelect={setSelectedTab}>
             {selectedTab === 0 && (
               <Card>
-                <div style={{ padding: '16px' }}>
+                <div style={{ padding: "16px" }}>
                   <Filters
                     queryValue={queryValue}
                     queryPlaceholder="Search audiences..."
                     onQueryChange={setQueryValue}
-                    onQueryClear={() => setQueryValue('')}
+                    onQueryClear={() => setQueryValue("")}
                     filters={[
                       {
-                        key: 'status',
-                        label: 'Status',
+                        key: "status",
+                        label: "Status",
                         filter: (
                           <ChoiceList
                             title="Status"
@@ -847,8 +921,8 @@ export const Audiences: React.FC<AudiencesProps> = ({ initialAudiences = [] }) =
                         shortcut: true,
                       },
                       {
-                        key: 'type',
-                        label: 'Type',
+                        key: "type",
+                        label: "Type",
                         filter: (
                           <ChoiceList
                             title="Type"
@@ -884,14 +958,14 @@ export const Audiences: React.FC<AudiencesProps> = ({ initialAudiences = [] }) =
                       description="Create your first audience to start targeting specific customer segments"
                       image="https://cdn.shopify.com/s/files/1/0262/4071/2726/files/emptystate-files.png"
                       primaryAction={{
-                        content: 'Create Audience',
+                        content: "Create Audience",
                         onAction: () => setShowCreateModal(true),
                       }}
                     />
                   </Card.Section>
                 ) : (
                   <Layout>
-                    {filteredAudiences.map(audience => (
+                    {filteredAudiences.map((audience) => (
                       <Layout.Section key={audience.id}>
                         <AudienceCard
                           audience={audience}
@@ -911,7 +985,7 @@ export const Audiences: React.FC<AudiencesProps> = ({ initialAudiences = [] }) =
                 <Layout.Section oneHalf>
                   <AudiencePerformanceChart audiences={filteredAudiences} />
                 </Layout.Section>
-                
+
                 <Layout.Section oneHalf>
                   <AudienceTypeDistribution audiences={filteredAudiences} />
                 </Layout.Section>

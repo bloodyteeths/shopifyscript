@@ -1,4 +1,8 @@
-import { validateHeadlines, validateDescriptions, RSAAssets } from '../lib/validators';
+import {
+  validateHeadlines,
+  validateDescriptions,
+  RSAAssets,
+} from "../lib/validators";
 
 export type DraftRequest = {
   queries: string[];
@@ -15,7 +19,7 @@ export async function buildDrafts(request: DraftRequest): Promise<DraftResult> {
   const candidatesD: string[] = [];
 
   for (const q of request.queries) {
-    const base = (q || '').trim().slice(0, 26);
+    const base = (q || "").trim().slice(0, 26);
     candidatesH.push(`${base} Deals`);
     candidatesH.push(`${base} Official Site`);
     candidatesD.push(`${base} — shop now with fast shipping and easy returns.`);
@@ -25,9 +29,9 @@ export async function buildDrafts(request: DraftRequest): Promise<DraftResult> {
   const vh = validateHeadlines(candidatesH);
   const vd = validateDescriptions(candidatesD);
   const ok = vh.ok && vd.ok;
-  return { ok, assets: { H: vh.deduped, D: vd.deduped }, errors: [...vh.errors, ...vd.errors] };
+  return {
+    ok,
+    assets: { H: vh.deduped, D: vd.deduped },
+    errors: [...vh.errors, ...vd.errors],
+  };
 }
-
-
-
-

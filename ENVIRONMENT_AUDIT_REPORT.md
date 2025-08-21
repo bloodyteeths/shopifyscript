@@ -7,27 +7,32 @@
 ## Issues Identified & Fixed
 
 ### 1. Port Configuration Mismatch ✅ FIXED
+
 **Issue:** Backend was configured to run on port 3005, but UI was expecting to run on port 3001
 **Impact:** Potential port conflicts and confusion during development
 **Fix:** Standardized UI port to 3000, backend remains on 3005 (correct configuration)
 
 **Before:**
+
 ```env
 # shopify-ui/.env
 PORT=3001  # ❌ Conflicted with backend URLs
 ```
 
 **After:**
+
 ```env
 # shopify-ui/.env
 PORT=3000  # ✅ Clean separation
 ```
 
 ### 2. Missing Critical Environment Variables in UI ✅ FIXED
+
 **Issue:** Shopify UI was missing several critical environment variables needed for proper functionality
 **Impact:** UI couldn't access tenant registry, Google Sheets, or fallback properly to development defaults
 
 **Added to shopify-ui/.env:**
+
 ```env
 # Tenant Registry - Multi-tenant configuration
 TENANT_REGISTRY_JSON='{"proofkit":"1vqcqkLxY4r3tWowi6GMsoRbSJG5x4XY7QKg2mTe54rU"}'
@@ -42,19 +47,23 @@ DEFAULT_DEV_TENANT=proofkit
 ```
 
 ### 3. Inconsistent NODE_ENV Configuration ✅ FIXED
+
 **Issue:** Backend .env file was missing explicit NODE_ENV setting
 **Impact:** Could cause inconsistent behavior between development and production environments
 
 **Fix:** Added explicit NODE_ENV to backend/.env:
+
 ```env
 NODE_ENV=development
 ```
 
 ### 4. Backend URL Inconsistencies ✅ FIXED
+
 **Issue:** Backend had internal URLs pointing to wrong ports
 **Impact:** Internal service communication could fail
 
 **Fixed in backend/.env:**
+
 ```env
 # Before
 BACKEND_URL=http://localhost:3001        # ❌ Wrong port
@@ -117,6 +126,7 @@ Overall Status: ✅ ALL SYSTEMS GO
 ## Architecture Overview
 
 ### Final Configuration
+
 - **Backend**: Runs on port 3005 with complete environment configuration
 - **Shopify UI**: Runs on port 3000, communicates with backend via http://localhost:3005/api
 - **Environment Loading**: Both applications properly load their respective .env files
@@ -125,6 +135,7 @@ Overall Status: ✅ ALL SYSTEMS GO
 ### Key Environment Variables by Application
 
 #### Backend (.env)
+
 - `NODE_ENV=development`
 - `PORT=3005`
 - `HMAC_SECRET` (secure secret)
@@ -134,6 +145,7 @@ Overall Status: ✅ ALL SYSTEMS GO
 - `BACKEND_PUBLIC_URL=http://localhost:3005/api`
 
 #### Shopify UI (.env)
+
 - `NODE_ENV=development`
 - `PORT=3000`
 - `TENANT_ID=proofkit`
@@ -148,7 +160,7 @@ Overall Status: ✅ ALL SYSTEMS GO
 ✅ **HMAC Secret**: Strong, consistent secret used across both applications  
 ✅ **Google Sheets**: Private key properly configured and secured  
 ✅ **Tenant Isolation**: Proper tenant registry configuration ensures data isolation  
-✅ **Environment Separation**: Clear separation between development and production configs  
+✅ **Environment Separation**: Clear separation between development and production configs
 
 ## Benefits of These Fixes
 
@@ -176,6 +188,6 @@ Overall Status: ✅ ALL SYSTEMS GO
 
 **Audit Status**: COMPLETE  
 **All Issues**: RESOLVED  
-**System Status**: READY FOR DEVELOPMENT  
+**System Status**: READY FOR DEVELOPMENT
 
 The ProofKit SaaS environment is now properly configured with consistent, secure, and reliable environment variable management across both the backend and Shopify UI applications.

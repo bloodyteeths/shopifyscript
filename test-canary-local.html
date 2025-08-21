@@ -1,107 +1,147 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
+  <head>
     <title>Proofkit Canary Test - Local Mode</title>
     <style>
-        body { font-family: Arial, sans-serif; padding: 20px; max-width: 800px; margin: 0 auto; }
-        .status { padding: 10px; margin: 10px 0; border-radius: 4px; }
-        .success { background: #d4edda; border: 1px solid #c3e6cb; }
-        .error { background: #f8d7da; border: 1px solid #f5c6cb; }
-        .warning { background: #fff3cd; border: 1px solid #ffeaa7; }
-        button { padding: 10px 20px; margin: 5px; background: #007cba; color: white; border: none; border-radius: 4px; cursor: pointer; }
-        button:hover { background: #005a87; }
-        .logs { background: #f8f9fa; padding: 15px; margin: 10px 0; border-radius: 4px; font-family: monospace; white-space: pre-wrap; }
+      body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+        max-width: 800px;
+        margin: 0 auto;
+      }
+      .status {
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 4px;
+      }
+      .success {
+        background: #d4edda;
+        border: 1px solid #c3e6cb;
+      }
+      .error {
+        background: #f8d7da;
+        border: 1px solid #f5c6cb;
+      }
+      .warning {
+        background: #fff3cd;
+        border: 1px solid #ffeaa7;
+      }
+      button {
+        padding: 10px 20px;
+        margin: 5px;
+        background: #007cba;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      button:hover {
+        background: #005a87;
+      }
+      .logs {
+        background: #f8f9fa;
+        padding: 15px;
+        margin: 10px 0;
+        border-radius: 4px;
+        font-family: monospace;
+        white-space: pre-wrap;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <h1>🕊️ Canary Test - Local Mode</h1>
-    
+
     <div class="warning">
-        <strong>Local Testing Mode:</strong> This simulates what would happen when Google Ads Scripts runs.
-        Since Google Ads Scripts can't reach localhost, we're testing the logic locally.
+      <strong>Local Testing Mode:</strong> This simulates what would happen when
+      Google Ads Scripts runs. Since Google Ads Scripts can't reach localhost,
+      we're testing the logic locally.
     </div>
 
     <h2>Current Issues:</h2>
     <div class="error">
-        <strong>Issue 1:</strong> Google Ads Scripts can't reach http://localhost:3001 (DNS error)<br>
-        <strong>Issue 2:</strong> Backend config endpoint needs Google Sheets structure setup
+      <strong>Issue 1:</strong> Google Ads Scripts can't reach
+      http://localhost:3001 (DNS error)<br />
+      <strong>Issue 2:</strong> Backend config endpoint needs Google Sheets
+      structure setup
     </div>
 
     <h2>Testing Steps:</h2>
-    
-    <button onclick="testBackendConnection()">1. Test Backend Connection</button>
+
+    <button onclick="testBackendConnection()">
+      1. Test Backend Connection
+    </button>
     <button onclick="testConfig()">2. Test Config Endpoint</button>
     <button onclick="simulateScript()">3. Simulate Google Ads Script</button>
-    
+
     <div id="results"></div>
 
     <h2>Solutions:</h2>
     <div class="warning">
-        <h3>Option A: Use ngrok for testing</h3>
-        <ol>
-            <li>Install ngrok: <code>brew install ngrok</code></li>
-            <li>Run: <code>ngrok http 3001</code></li>
-            <li>Update Google Ads Script with ngrok URL</li>
-            <li>Test with real Google Ads Scripts</li>
-        </ol>
-        
-        <h3>Option B: Deploy to cloud for testing</h3>
-        <ol>
-            <li>Deploy backend to Vercel/Railway/Heroku</li>
-            <li>Update Google Ads Script with public URL</li>
-            <li>Test with real Google Ads Scripts</li>
-        </ol>
-        
-        <h3>Option C: Continue with simulation</h3>
-        <ol>
-            <li>Test logic locally</li>
-            <li>Verify expected behavior</li>
-            <li>Deploy when ready for production</li>
-        </ol>
+      <h3>Option A: Use ngrok for testing</h3>
+      <ol>
+        <li>Install ngrok: <code>brew install ngrok</code></li>
+        <li>Run: <code>ngrok http 3001</code></li>
+        <li>Update Google Ads Script with ngrok URL</li>
+        <li>Test with real Google Ads Scripts</li>
+      </ol>
+
+      <h3>Option B: Deploy to cloud for testing</h3>
+      <ol>
+        <li>Deploy backend to Vercel/Railway/Heroku</li>
+        <li>Update Google Ads Script with public URL</li>
+        <li>Test with real Google Ads Scripts</li>
+      </ol>
+
+      <h3>Option C: Continue with simulation</h3>
+      <ol>
+        <li>Test logic locally</li>
+        <li>Verify expected behavior</li>
+        <li>Deploy when ready for production</li>
+      </ol>
     </div>
 
     <script>
-        function showResult(message, type = 'success') {
-            const results = document.getElementById('results');
-            const div = document.createElement('div');
-            div.className = `status ${type}`;
-            div.innerHTML = message;
-            results.appendChild(div);
-        }
+              function showResult(message, type = 'success') {
+                  const results = document.getElementById('results');
+                  const div = document.createElement('div');
+                  div.className = `status ${type}`;
+                  div.innerHTML = message;
+                  results.appendChild(div);
+              }
 
-        async function testBackendConnection() {
-            try {
-                const response = await fetch('http://localhost:3001/api/diagnostics');
-                const data = await response.json();
-                showResult(`✅ Backend Connected: ${JSON.stringify(data, null, 2)}`, 'success');
-            } catch (error) {
-                showResult(`❌ Backend Connection Failed: ${error.message}`, 'error');
-            }
-        }
+              async function testBackendConnection() {
+                  try {
+                      const response = await fetch('http://localhost:3001/api/diagnostics');
+                      const data = await response.json();
+                      showResult(`✅ Backend Connected: ${JSON.stringify(data, null, 2)}`, 'success');
+                  } catch (error) {
+                      showResult(`❌ Backend Connection Failed: ${error.message}`, 'error');
+                  }
+              }
 
-        async function testConfig() {
-            showResult('⚠️ Config endpoint requires Google Sheets setup. This is the current blocker.', 'warning');
-        }
+              async function testConfig() {
+                  showResult('⚠️ Config endpoint requires Google Sheets setup. This is the current blocker.', 'warning');
+              }
 
-        async function simulateScript() {
-            const logs = \`🕊️ SIMULATED GOOGLE ADS SCRIPT EXECUTION
-=====================================
+              async function simulateScript() {
+                  const logs = \`🕊️ SIMULATED GOOGLE ADS SCRIPT EXECUTION
+      =====================================
 
-8/13/2025 11:50:00 PM    Starting Proofkit script...
-8/13/2025 11:50:01 PM    ! Config fetch error: DNS error: http://localhost:3001/api/config
-8/13/2025 11:50:01 PM    Config disabled or not found.
+      8/13/2025 11:50:00 PM    Starting Proofkit script...
+      8/13/2025 11:50:01 PM    ! Config fetch error: DNS error: http://localhost:3001/api/config
+      8/13/2025 11:50:01 PM    Config disabled or not found.
 
-EXPECTED BEHAVIOR WHEN WORKING:
-8/13/2025 11:50:00 PM    Starting Proofkit script...
-8/13/2025 11:50:01 PM    ✓ Config loaded: enabled=true, label=PROOFKIT_AUTOMATED
-8/13/2025 11:50:01 PM    In scope: 2 Search campaigns
-8/13/2025 11:50:02 PM    • Budget capped: Test Campaign → 4.00
-8/13/2025 11:50:02 PM    • Bidding: Test Campaign → TARGET_SPEND, ceiling 0.20
-8/13/2025 11:50:03 PM    • Audience attached: Test Campaign id=123456789 mode=OBSERVE bid=0.10
-8/13/2025 11:50:04 PM    ✓ Proofkit run complete\`;
+      EXPECTED BEHAVIOR WHEN WORKING:
+      8/13/2025 11:50:00 PM    Starting Proofkit script...
+      8/13/2025 11:50:01 PM    ✓ Config loaded: enabled=true, label=PROOFKIT_AUTOMATED
+      8/13/2025 11:50:01 PM    In scope: 2 Search campaigns
+      8/13/2025 11:50:02 PM    • Budget capped: Test Campaign → 4.00
+      8/13/2025 11:50:02 PM    • Bidding: Test Campaign → TARGET_SPEND, ceiling 0.20
+      8/13/2025 11:50:03 PM    • Audience attached: Test Campaign id=123456789 mode=OBSERVE bid=0.10
+      8/13/2025 11:50:04 PM    ✓ Proofkit run complete\`;
 
-            showResult(logs, 'warning');
-        }
+                  showResult(logs, 'warning');
+              }
     </script>
-</body>
+  </body>
 </html>

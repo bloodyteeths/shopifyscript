@@ -34,6 +34,7 @@ This document provides a comprehensive overview of ProofKit's data architecture,
 ```
 
 **Process**:
+
 1. **Store Owner** initiates app installation from Shopify App Store
 2. **Shopify OAuth** handles authentication and permission grants
 3. **ProofKit App** receives OAuth tokens and establishes session
@@ -84,7 +85,7 @@ Store Data → Product Analysis → Intent Detection → Content Generation → 
     ▼              ▼                ▼                 ▼                    ▼
 Product       AI Analysis      UTM Params        Dynamic            Metafield
 Catalog       & Patterns      & User Intent      Content            Updates
-              
+
 Customer      Audience         Campaign          A/B Testing        Performance
 Behavior   → Segmentation  →  Configuration  →  & Canary       →  Tracking
 ```
@@ -105,6 +106,7 @@ Behavior   → Segmentation  →  Configuration  →  & Canary       →  Tracki
 ```
 
 **Implementation**:
+
 - All API requests include HMAC signature
 - Shared secret validates request authenticity
 - Prevents tampering and replay attacks
@@ -124,6 +126,7 @@ Encryption             Secure Context               Validation
 ### 1. Configuration Data (Stored in Google Sheets)
 
 **Intent Blocks**:
+
 ```json
 {
   "intent_key": "high-intent-sale",
@@ -136,6 +139,7 @@ Encryption             Secure Context               Validation
 ```
 
 **Audience Segments**:
+
 ```json
 {
   "segment_id": "high-value-customers",
@@ -152,6 +156,7 @@ Encryption             Secure Context               Validation
 ### 2. Analytics Data (Google Analytics Integration)
 
 **Conversion Events**:
+
 ```json
 {
   "event_name": "intent_conversion",
@@ -167,12 +172,14 @@ Encryption             Secure Context               Validation
 ### 3. No PII Storage
 
 **What We DON'T Store**:
+
 - ❌ Customer names or contact information
 - ❌ Payment or billing details
 - ❌ Personal identifiers
 - ❌ Sensitive customer data
 
 **What We DO Store**:
+
 - ✅ Anonymized behavior patterns
 - ✅ Aggregated conversion metrics
 - ✅ Campaign performance data
@@ -257,22 +264,26 @@ to API     (Fast)       (Refresh)     (Fallback)
 ## 🔄 Data Lifecycle
 
 ### 1. Data Creation
+
 - Merchant configures Intent OS settings
 - Campaign data created in Google Sheets
 - Performance baselines established
 
 ### 2. Data Processing
+
 - Real-time event processing
 - Audience segmentation updates
 - Campaign optimization cycles
 
 ### 3. Data Retention
+
 - Configuration data: Indefinite (merchant-controlled)
 - Analytics data: 2 years maximum
 - Log data: 90 days
 - Error data: 30 days
 
 ### 4. Data Deletion
+
 - Merchant-initiated deletion: Immediate
 - App uninstall: 30-day grace period
 - GDPR requests: 48-hour compliance
@@ -298,6 +309,7 @@ Pixel Load     Consent Mode      Yes/No/Partial      Anonymized Data
 ## 📞 Emergency Procedures
 
 ### Data Breach Response
+
 1. **Detection** (< 5 minutes): Automated monitoring alerts
 2. **Assessment** (< 15 minutes): Determine scope and impact
 3. **Containment** (< 30 minutes): Isolate affected systems
@@ -305,6 +317,7 @@ Pixel Load     Consent Mode      Yes/No/Partial      Anonymized Data
 5. **Recovery** (< 72 hours): Restore normal operations
 
 ### Service Outage Response
+
 1. **Immediate**: Switch to cached/fallback data
 2. **5 minutes**: Emergency maintenance page
 3. **15 minutes**: Status page update

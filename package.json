@@ -29,7 +29,7 @@
     "install:all": "npm install && cd backend && npm install && cd ../shopify-ui && npm install && cd ../shopify-app && npm install && cd ../tests/performance && npm install",
     "build": "cd shopify-ui && npm run build",
     "start": "cd shopify-ui && npm run start",
-    "lint": "eslint . --ext .ts,.tsx,.js,.jsx",
+    "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
   },

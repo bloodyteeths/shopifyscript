@@ -23,27 +23,31 @@ ProofKit implements industry-standard SHA-256 hashing for all PII data sent to G
 #### Key Implementation Points:
 
 1. **Email Hashing**:
+
    ```javascript
    // Email normalization and hashing process
    function normalizeEmail(email) {
-     return String(email || '').trim().toLowerCase();
+     return String(email || "")
+       .trim()
+       .toLowerCase();
    }
-   
+
    function sha256(data) {
-     return crypto.createHash('sha256').update(data).digest('hex');
+     return crypto.createHash("sha256").update(data).digest("hex");
    }
-   
+
    // Usage in Customer Match API export
    const hashedEmail = sha256(normalizeEmail(customerEmail));
    ```
 
 2. **Phone Number Hashing**:
+
    ```javascript
    // Phone normalization (removes all non-digit characters)
    function normalizePhone(phone) {
-     return String(phone || '').replace(/\D+/g, '');
+     return String(phone || "").replace(/\D+/g, "");
    }
-   
+
    const hashedPhone = sha256(normalizePhone(customerPhone));
    ```
 
@@ -54,6 +58,7 @@ ProofKit implements industry-standard SHA-256 hashing for all PII data sent to G
    ```
 
 #### File Location:
+
 - **Backend**: `/backend/segments/materialize.js` (lines 22-23, 93-99)
 - **Privacy Service**: `/backend/services/privacy.js` (lines 635-647)
 
@@ -73,11 +78,13 @@ ProofKit implements a strict "no raw PII at rest" policy, ensuring that all pers
 ### Implementation Across Components:
 
 #### 1. WordPress Plugin
+
 - **Configuration Data**: Only stores API keys and configuration settings
 - **No Customer Data**: WordPress database contains no customer PII
 - **Secure Transmission**: All data sent to backend via HMAC-secured API calls
 
 #### 2. Backend Services
+
 - **Hashed User IDs**: All user identifiers are SHA-256 hashed
   ```javascript
   hashUserId(userId) {
@@ -93,13 +100,14 @@ ProofKit implements a strict "no raw PII at rest" policy, ensuring that all pers
   ```
 
 #### 3. Google Sheets Storage
+
 - **Audience Seeds**: Contains only hashed emails and phones in production sheets
 - **Consent Records**: User IDs are hashed before storage
 - **Processing Logs**: All user identifiers are pseudonymized
 
 ### Verification Points:
 
-1. **Audit Sheet Headers**: 
+1. **Audit Sheet Headers**:
    - `AUDIENCE_SEEDS_${tenant}`: `['customer_id','email_hash','phone_hash',...]`
    - `CONSENT_RECORDS_${tenant}`: Uses hashed `user_id` field
 
@@ -114,25 +122,29 @@ ProofKit implements a strict "no raw PII at rest" policy, ensuring that all pers
 ProofKit implements comprehensive consent filtering at multiple levels:
 
 #### 1. Shopify Web Pixel Consent Mode v2
+
 - **Privacy-First Defaults**: All tracking starts as "denied"
 - **Real-time Consent Updates**: Dynamic consent change handling
 - **CMP Integration**: Supports OneTrust, Cookiebot, TrustArc, Didomi
 
 #### 2. Backend Consent Filtering
+
 - **Consent Status Check**: Only processes users with `consent_status: 'granted'`
   ```javascript
-  const filtered = seeds.filter(r => 
-    (r.consent_status || 'granted').toLowerCase() === 'granted'
+  const filtered = seeds.filter(
+    (r) => (r.consent_status || "granted").toLowerCase() === "granted",
   );
   ```
 
 #### 3. WordPress Plugin Consent Respect
+
 - **GDPR Compliance**: Respects user consent preferences
 - **Cookie Consent Integration**: Works with popular consent management plugins
 
 ### Consent Management Features:
 
 1. **Consent Recording**:
+
    ```javascript
    async recordConsent(tenantId, userId, consentData) {
      const record = {
@@ -147,6 +159,7 @@ ProofKit implements comprehensive consent filtering at multiple levels:
    ```
 
 2. **Consent Withdrawal**:
+
    ```javascript
    async withdrawConsent(tenantId, userId, consentId, reason) {
      // Triggers automatic data deletion
@@ -163,6 +176,7 @@ ProofKit implements comprehensive consent filtering at multiple levels:
 The uninstall procedure has been enhanced to provide comprehensive cleanup while preserving necessary audit trails:
 
 #### Current Implementation:
+
 ```php
 // File: /wordpress-plugin-release/proofkit-pixels-ads-helper/uninstall.php
 function pk_proofkit_uninstall_cleanup() {
@@ -170,7 +184,7 @@ function pk_proofkit_uninstall_cleanup() {
     'pk_ga4_id', 'pk_aw_id', 'pk_aw_label',
     'pk_backend_url', 'pk_tenant', 'pk_secret'
   );
-  
+
   // Multisite and single-site cleanup
   foreach ($options as $option) {
     delete_option($option);
@@ -206,13 +220,13 @@ function pk_proofkit_uninstall_cleanup() {
 function pk_proofkit_enhanced_uninstall_cleanup() {
   // 1. Remove theme customizations
   pk_remove_theme_pixels();
-  
+
   // 2. Clean database options
   pk_remove_plugin_options();
-  
+
   // 3. Trigger backend cleanup (preserve audit trails)
   pk_trigger_backend_cleanup();
-  
+
   // 4. Log uninstall for compliance
   pk_log_uninstall_event();
 }
@@ -226,7 +240,7 @@ function pk_remove_theme_pixels() {
 function pk_trigger_backend_cleanup() {
   $backend_url = get_option('pk_backend_url');
   $tenant = get_option('pk_tenant');
-  
+
   if ($backend_url && $tenant) {
     // Trigger privacy-compliant data deletion
     wp_remote_post($backend_url . '/privacy/uninstall', array(
@@ -247,17 +261,18 @@ function pk_trigger_backend_cleanup() {
 ProofKit includes automated privacy compliance verification:
 
 #### 1. Data Retention Compliance:
+
 ```javascript
 async checkRetentionCompliance(tenantId) {
   const retentionPeriods = {
     user_data: 365 * 3,      // 3 years
-    analytics_data: 365 * 2,  // 2 years  
+    analytics_data: 365 * 2,  // 2 years
     marketing_data: 365 * 1,  // 1 year
     logs: 90,                 // 90 days
     consent_records: 365 * 7, // 7 years (legal requirement)
     financial_data: 365 * 7   // 7 years
   };
-  
+
   // Check each category for expired data
   // Generate compliance report
   // Recommend cleanup actions
@@ -265,11 +280,13 @@ async checkRetentionCompliance(tenantId) {
 ```
 
 #### 2. PII Leak Detection:
+
 - Automated scanning for unhashed PII in storage
 - Verification of encryption status
 - Detection of data in wrong categories
 
 #### 3. Consent Audit:
+
 - Verification of consent status for all processed data
 - Detection of processing without valid consent
 - Expired consent identification
@@ -282,16 +299,16 @@ const complianceReport = {
   checked_at: timestamp,
   violations: [
     {
-      category: 'user_data',
+      category: "user_data",
       expired_records: 150,
-      recommendation: 'Delete expired user data records'
-    }
+      recommendation: "Delete expired user data records",
+    },
   ],
   summary: {
     total_records: 10000,
     expired_records: 150,
-    compliance_score: 98.5
-  }
+    compliance_score: 98.5,
+  },
 };
 ```
 
@@ -300,11 +317,13 @@ const complianceReport = {
 ### Core GDPR Rights Implementation:
 
 #### 1. Right to be Informed:
+
 - Clear privacy policy documentation
 - Data processing activity logs
 - Purpose limitation enforcement
 
 #### 2. Right of Access:
+
 ```javascript
 async exportUserData(tenantId, userId, format = 'json') {
   // Export all user data across all systems
@@ -314,11 +333,13 @@ async exportUserData(tenantId, userId, format = 'json') {
 ```
 
 #### 3. Right to Rectification:
+
 - Data update APIs
 - Audit trail of changes
 - Propagation to all systems
 
 #### 4. Right to Erasure (Right to be Forgotten):
+
 ```javascript
 async processDataDeletionRequest(tenantId, userId, requestData) {
   // Execute deletion across all systems
@@ -328,11 +349,13 @@ async processDataDeletionRequest(tenantId, userId, requestData) {
 ```
 
 #### 5. Right to Data Portability:
+
 - Structured data export
 - Multiple format support
 - Machine-readable outputs
 
 #### 6. Right to Object:
+
 - Consent withdrawal mechanisms
 - Opt-out from marketing
 - Processing cessation
@@ -341,12 +364,12 @@ async processDataDeletionRequest(tenantId, userId, requestData) {
 
 ```javascript
 const legalBases = {
-  CONSENT: 'consent',
-  CONTRACT: 'contract',
-  LEGAL_OBLIGATION: 'legal_obligation',
-  VITAL_INTERESTS: 'vital_interests',
-  PUBLIC_TASK: 'public_task',
-  LEGITIMATE_INTERESTS: 'legitimate_interests'
+  CONSENT: "consent",
+  CONTRACT: "contract",
+  LEGAL_OBLIGATION: "legal_obligation",
+  VITAL_INTERESTS: "vital_interests",
+  PUBLIC_TASK: "public_task",
+  LEGITIMATE_INTERESTS: "legitimate_interests",
 };
 ```
 
@@ -376,49 +399,54 @@ All data processing activities are logged with:
 
 ```javascript
 const processingActivity = {
-  activity_id: 'uuid-v4',
-  activity_type: 'customer_match_export',
-  user_id: 'hashed-user-id',
-  data_categories: ['email_hash', 'phone_hash'],
-  legal_basis: 'consent',
-  purpose: 'advertising_personalization',
-  timestamp: '2024-01-01T00:00:00Z',
-  retention_applied: '365_days',
+  activity_id: "uuid-v4",
+  activity_type: "customer_match_export",
+  user_id: "hashed-user-id",
+  data_categories: ["email_hash", "phone_hash"],
+  legal_basis: "consent",
+  purpose: "advertising_personalization",
+  timestamp: "2024-01-01T00:00:00Z",
+  retention_applied: "365_days",
   metadata: {
-    export_format: 'CM_API_HASHED',
+    export_format: "CM_API_HASHED",
     record_count: 1500,
-    destination: 'google_ads'
-  }
+    destination: "google_ads",
+  },
 };
 ```
 
 ## Implementation Verification Checklist
 
 ### ✅ SHA-256 Hashing Verification:
+
 - [x] Customer Match API uses SHA-256 for emails and phones
 - [x] User IDs are hashed before storage
 - [x] IP addresses are hashed in logs
 - [x] Consistent hashing implementation across all services
 
 ### ✅ No Raw PII at Rest Verification:
+
 - [x] WordPress plugin stores no customer PII
 - [x] Backend services hash all user identifiers
 - [x] Google Sheets contain only hashed/pseudonymized data
 - [x] Raw PII exists only in memory during processing
 
 ### ✅ Consent Filtering Verification:
+
 - [x] Consent Mode v2 implemented in Shopify pixel
 - [x] Backend respects consent status filtering
 - [x] Automatic consent withdrawal triggers deletion
 - [x] Consent expiry handling implemented
 
 ### ✅ Uninstall Cleanup Verification:
+
 - [x] WordPress plugin options completely removed
 - [x] Theme customizations cleaned up
 - [x] Backend data deletion triggered
 - [x] Audit trails preserved for compliance
 
 ### ✅ Privacy Compliance Verification:
+
 - [x] GDPR rights implementation complete
 - [x] Data retention policies enforced
 - [x] Processing activity logging implemented
@@ -433,6 +461,7 @@ All implementations follow privacy-by-design principles and provide strong prote
 ## Support and Compliance Questions
 
 For technical privacy implementation questions or compliance verification, contact:
+
 - Technical Support: support@proofkit.com
 - Privacy Officer: privacy@proofkit.com
 - Legal Compliance: legal@proofkit.com

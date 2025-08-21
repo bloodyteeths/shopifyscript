@@ -1,6 +1,6 @@
 /**
  * Advanced Cache Optimizer - Production Performance Enhancement
- * 
+ *
  * Features:
  * - Intelligent cache prediction and warming
  * - Multi-level caching (memory, redis-ready)
@@ -9,8 +9,8 @@
  * - Performance monitoring integration
  */
 
-import tenantCache from './cache.js';
-import logger from './logger.js';
+import tenantCache from "./cache.js";
+import logger from "./logger.js";
 
 class CacheOptimizer {
   constructor() {
@@ -21,9 +21,9 @@ class CacheOptimizer {
       warmingHits: 0,
       warmingMisses: 0,
       optimizations: 0,
-      performanceGains: 0
+      performanceGains: 0,
     };
-    
+
     // Configuration
     this.config = {
       predictionThreshold: Number(process.env.CACHE_PREDICTION_THRESHOLD || 5),
@@ -32,8 +32,8 @@ class CacheOptimizer {
       performanceTargets: {
         hitRate: 80, // Target 80% cache hit rate
         responseTime: 200, // Target <200ms response time
-        memoryUsage: 100 * 1024 * 1024 // 100MB memory limit
-      }
+        memoryUsage: 100 * 1024 * 1024, // 100MB memory limit
+      },
     };
 
     this.startAnalyticsTimer();
@@ -45,25 +45,25 @@ class CacheOptimizer {
    */
   async get(tenantId, path, params = {}) {
     const startTime = Date.now();
-    
+
     // Record access pattern
     this.recordAccess(tenantId, path, params);
-    
+
     const result = tenantCache.get(tenantId, path, params);
     const responseTime = Date.now() - startTime;
-    
+
     if (result) {
       // Cache hit - update warming analytics
-      this.updateWarmingAnalytics('hit', responseTime);
-      
+      this.updateWarmingAnalytics("hit", responseTime);
+
       // Trigger predictive warming for related cache entries
       this.triggerPredictiveWarming(tenantId, path, params);
     } else {
       // Cache miss - record for prediction
-      this.updateWarmingAnalytics('miss', responseTime);
+      this.updateWarmingAnalytics("miss", responseTime);
       this.queueForWarming(tenantId, path, params);
     }
-    
+
     return result;
   }
 
@@ -73,10 +73,10 @@ class CacheOptimizer {
   async set(tenantId, path, params, data, customTtl = null) {
     const optimizedTtl = this.optimizeTtl(tenantId, path, params, customTtl);
     const key = tenantCache.set(tenantId, path, params, data, optimizedTtl);
-    
+
     // Record successful cache population
     this.recordCachePopulation(tenantId, path, params, data);
-    
+
     return key;
   }
 
@@ -93,34 +93,34 @@ class CacheOptimizer {
 
     for (const rule of warmingRules) {
       if (warmingCount >= this.config.warmingBatchSize) break;
-      
+
       try {
         const { path, params, generator } = rule;
-        
+
         // Check if already cached
         if (!tenantCache.has(tenantId, path, params)) {
           // Generate data for warming
           const data = await generator(tenantId, path, params);
-          
+
           if (data !== null && data !== undefined) {
             await this.set(tenantId, path, params, data);
             warmed.push({ path, params });
             warmingCount++;
-            
-            logger.debug('Cache warmed', {
+
+            logger.debug("Cache warmed", {
               tenantId,
               path,
               params,
-              operation: 'cache_warming'
+              operation: "cache_warming",
             });
           }
         }
       } catch (error) {
-        logger.warn('Cache warming failed', {
+        logger.warn("Cache warming failed", {
           tenantId,
           rule: rule.path,
           error: error.message,
-          operation: 'cache_warming_error'
+          operation: "cache_warming_error",
         });
       }
     }
@@ -134,10 +134,10 @@ class CacheOptimizer {
    */
   optimizeTtl(tenantId, path, params, customTtl) {
     if (customTtl) return customTtl;
-    
+
     const accessKey = this.generateAccessKey(tenantId, path, params);
     const pattern = this.accessPatterns.get(accessKey);
-    
+
     if (!pattern) {
       return tenantCache.getTtlForPath(path);
     }
@@ -145,14 +145,16 @@ class CacheOptimizer {
     // Calculate optimal TTL based on access frequency
     const frequency = pattern.accesses / Math.max(1, pattern.timeSpan);
     const baseTtl = tenantCache.getTtlForPath(path);
-    
+
     // High frequency = longer TTL, Low frequency = shorter TTL
-    if (frequency > 10) { // High frequency (>10 accesses per time span)
+    if (frequency > 10) {
+      // High frequency (>10 accesses per time span)
       return baseTtl * 2;
-    } else if (frequency < 1) { // Low frequency (<1 access per time span)
+    } else if (frequency < 1) {
+      // Low frequency (<1 access per time span)
       return Math.max(baseTtl * 0.5, 10000); // Minimum 10 seconds
     }
-    
+
     return baseTtl;
   }
 
@@ -162,22 +164,22 @@ class CacheOptimizer {
   generateWarmingRules(tenantId) {
     const rules = [];
     const tenantPatterns = this.getTenantAccessPatterns(tenantId);
-    
+
     for (const [accessKey, pattern] of tenantPatterns) {
       if (pattern.accesses >= this.config.predictionThreshold) {
         const { path, params } = this.parseAccessKey(accessKey);
-        
+
         // Create warming rule with data generator
         rules.push({
           path,
           params,
           priority: pattern.accesses,
           lastAccess: pattern.lastAccess,
-          generator: this.createDataGenerator(path)
+          generator: this.createDataGenerator(path),
         });
       }
     }
-    
+
     // Sort by priority (access count)
     return rules.sort((a, b) => b.priority - a.priority);
   }
@@ -188,10 +190,10 @@ class CacheOptimizer {
   createDataGenerator(path) {
     // Return appropriate generator based on path
     const generators = {
-      '/api/insights': this.generateInsightsData.bind(this),
-      '/api/config': this.generateConfigData.bind(this),
-      '/api/summary': this.generateSummaryData.bind(this),
-      '/api/run-logs': this.generateRunLogsData.bind(this)
+      "/api/insights": this.generateInsightsData.bind(this),
+      "/api/config": this.generateConfigData.bind(this),
+      "/api/summary": this.generateSummaryData.bind(this),
+      "/api/run-logs": this.generateRunLogsData.bind(this),
     };
 
     for (const [pattern, generator] of Object.entries(generators)) {
@@ -213,9 +215,9 @@ class CacheOptimizer {
     return {
       generated: true,
       timestamp: Date.now(),
-      type: 'insights',
+      type: "insights",
       tenantId,
-      data: { placeholder: 'insights_data' }
+      data: { placeholder: "insights_data" },
     };
   }
 
@@ -223,9 +225,9 @@ class CacheOptimizer {
     return {
       generated: true,
       timestamp: Date.now(),
-      type: 'config',
+      type: "config",
       tenantId,
-      data: { placeholder: 'config_data' }
+      data: { placeholder: "config_data" },
     };
   }
 
@@ -233,9 +235,9 @@ class CacheOptimizer {
     return {
       generated: true,
       timestamp: Date.now(),
-      type: 'summary',
+      type: "summary",
       tenantId,
-      data: { placeholder: 'summary_data' }
+      data: { placeholder: "summary_data" },
     };
   }
 
@@ -243,9 +245,9 @@ class CacheOptimizer {
     return {
       generated: true,
       timestamp: Date.now(),
-      type: 'run-logs',
+      type: "run-logs",
       tenantId,
-      data: { placeholder: 'run_logs_data' }
+      data: { placeholder: "run_logs_data" },
     };
   }
 
@@ -259,13 +261,13 @@ class CacheOptimizer {
   recordAccess(tenantId, path, params) {
     const accessKey = this.generateAccessKey(tenantId, path, params);
     const now = Date.now();
-    
+
     if (!this.accessPatterns.has(accessKey)) {
       this.accessPatterns.set(accessKey, {
         accesses: 1,
         firstAccess: now,
         lastAccess: now,
-        timeSpan: 1
+        timeSpan: 1,
       });
     } else {
       const pattern = this.accessPatterns.get(accessKey);
@@ -281,14 +283,14 @@ class CacheOptimizer {
   recordCachePopulation(tenantId, path, params, data) {
     // Track successful cache populations
     this.analytics.optimizations++;
-    
+
     // Log cache population for monitoring
-    logger.debug('Cache populated', {
+    logger.debug("Cache populated", {
       tenantId,
       path,
       params,
       dataSize: JSON.stringify(data).length,
-      operation: 'cache_population'
+      operation: "cache_population",
     });
   }
 
@@ -298,7 +300,7 @@ class CacheOptimizer {
   triggerPredictiveWarming(tenantId, path, params) {
     // Predict related cache entries that might be accessed next
     const relatedPaths = this.findRelatedPaths(path);
-    
+
     for (const relatedPath of relatedPaths) {
       this.queueForWarming(tenantId, relatedPath, params);
     }
@@ -309,13 +311,13 @@ class CacheOptimizer {
    */
   findRelatedPaths(path) {
     const related = [];
-    
+
     // Define path relationships
     const relationships = {
-      '/api/insights': ['/api/config', '/api/summary'],
-      '/api/config': ['/api/insights'],
-      '/api/summary': ['/api/insights', '/api/run-logs'],
-      '/api/run-logs': ['/api/summary']
+      "/api/insights": ["/api/config", "/api/summary"],
+      "/api/config": ["/api/insights"],
+      "/api/summary": ["/api/insights", "/api/run-logs"],
+      "/api/run-logs": ["/api/summary"],
     };
 
     for (const [pattern, relatedPatterns] of Object.entries(relationships)) {
@@ -341,12 +343,12 @@ class CacheOptimizer {
    */
   async processWarmingQueue() {
     const processed = [];
-    
+
     for (const accessKey of this.warmingQueue) {
       try {
         const { tenantId, path, params } = this.parseAccessKey(accessKey);
         const generator = this.createDataGenerator(path);
-        
+
         if (generator) {
           const data = await generator(tenantId, path, params);
           if (data) {
@@ -354,13 +356,13 @@ class CacheOptimizer {
             processed.push(accessKey);
           }
         }
-        
+
         this.warmingQueue.delete(accessKey);
       } catch (error) {
-        logger.warn('Warming queue processing failed', {
+        logger.warn("Warming queue processing failed", {
           accessKey,
           error: error.message,
-          operation: 'warming_queue_error'
+          operation: "warming_queue_error",
         });
       }
     }
@@ -379,7 +381,7 @@ class CacheOptimizer {
    * Parse access key back to components
    */
   parseAccessKey(accessKey) {
-    const [tenantId, path, paramsStr] = accessKey.split(':');
+    const [tenantId, path, paramsStr] = accessKey.split(":");
     const params = paramsStr ? JSON.parse(paramsStr) : {};
     return { tenantId, path, params };
   }
@@ -389,13 +391,13 @@ class CacheOptimizer {
    */
   getTenantAccessPatterns(tenantId) {
     const tenantPatterns = new Map();
-    
+
     for (const [accessKey, pattern] of this.accessPatterns) {
       if (accessKey.startsWith(`${tenantId}:`)) {
         tenantPatterns.set(accessKey, pattern);
       }
     }
-    
+
     return tenantPatterns;
   }
 
@@ -403,12 +405,12 @@ class CacheOptimizer {
    * Update warming analytics
    */
   updateWarmingAnalytics(type, responseTime) {
-    if (type === 'hit') {
+    if (type === "hit") {
       this.analytics.warmingHits++;
     } else {
       this.analytics.warmingMisses++;
     }
-    
+
     // Track performance gains
     if (responseTime < this.config.performanceTargets.responseTime) {
       this.analytics.performanceGains++;
@@ -425,20 +427,25 @@ class CacheOptimizer {
       performance: {
         hitRate: globalStats.hitRate,
         targetHitRate: this.config.performanceTargets.hitRate,
-        hitRateStatus: globalStats.hitRate >= this.config.performanceTargets.hitRate ? 'GOOD' : 'NEEDS_IMPROVEMENT'
+        hitRateStatus:
+          globalStats.hitRate >= this.config.performanceTargets.hitRate
+            ? "GOOD"
+            : "NEEDS_IMPROVEMENT",
       },
       patterns: {
         totalPatterns: this.accessPatterns.size,
-        predictablePatterns: Array.from(this.accessPatterns.values()).filter(p => p.accesses >= this.config.predictionThreshold).length,
-        warmingQueueSize: this.warmingQueue.size
+        predictablePatterns: Array.from(this.accessPatterns.values()).filter(
+          (p) => p.accesses >= this.config.predictionThreshold,
+        ).length,
+        warmingQueueSize: this.warmingQueue.size,
       },
       analytics: this.analytics,
-      recommendations: this.generateOptimizationRecommendations(globalStats)
+      recommendations: this.generateOptimizationRecommendations(globalStats),
     };
 
-    logger.info('Cache optimization analysis', {
+    logger.info("Cache optimization analysis", {
       analysis,
-      operation: 'cache_optimization_analysis'
+      operation: "cache_optimization_analysis",
     });
 
     return analysis;
@@ -453,31 +460,33 @@ class CacheOptimizer {
     // Hit rate recommendations
     if (globalStats.hitRate < this.config.performanceTargets.hitRate) {
       recommendations.push({
-        type: 'HIT_RATE',
-        priority: 'HIGH',
+        type: "HIT_RATE",
+        priority: "HIGH",
         message: `Cache hit rate (${globalStats.hitRate}%) is below target (${this.config.performanceTargets.hitRate}%)`,
-        action: 'Increase cache warming frequency or TTL values'
+        action: "Increase cache warming frequency or TTL values",
       });
     }
 
     // Memory usage recommendations
     if (globalStats.totalSize > this.config.performanceTargets.memoryUsage) {
       recommendations.push({
-        type: 'MEMORY',
-        priority: 'MEDIUM',
-        message: 'Cache memory usage is approaching limits',
-        action: 'Consider implementing more aggressive eviction policies'
+        type: "MEMORY",
+        priority: "MEDIUM",
+        message: "Cache memory usage is approaching limits",
+        action: "Consider implementing more aggressive eviction policies",
       });
     }
 
     // Warming efficiency recommendations
-    const warmingEfficiency = this.analytics.warmingHits / Math.max(1, this.analytics.warmingHits + this.analytics.warmingMisses);
+    const warmingEfficiency =
+      this.analytics.warmingHits /
+      Math.max(1, this.analytics.warmingHits + this.analytics.warmingMisses);
     if (warmingEfficiency < 0.5) {
       recommendations.push({
-        type: 'WARMING',
-        priority: 'MEDIUM',
+        type: "WARMING",
+        priority: "MEDIUM",
         message: `Cache warming efficiency (${(warmingEfficiency * 100).toFixed(1)}%) needs improvement`,
-        action: 'Review warming rules and prediction algorithms'
+        action: "Review warming rules and prediction algorithms",
       });
     }
 
@@ -503,14 +512,14 @@ class CacheOptimizer {
       try {
         // Get active tenants and warm their common paths
         const activeTenants = this.getActiveTenants();
-        
+
         for (const tenantId of activeTenants) {
           await this.warmCache(tenantId);
         }
       } catch (error) {
-        logger.warn('Predictive warming failed', {
+        logger.warn("Predictive warming failed", {
           error: error.message,
-          operation: 'predictive_warming_error'
+          operation: "predictive_warming_error",
         });
       }
     }, 30000); // Every 30 seconds
@@ -521,7 +530,7 @@ class CacheOptimizer {
    */
   getActiveTenants() {
     const activeTenants = new Set();
-    const recentThreshold = Date.now() - (5 * 60 * 1000); // 5 minutes ago
+    const recentThreshold = Date.now() - 5 * 60 * 1000; // 5 minutes ago
 
     for (const [accessKey, pattern] of this.accessPatterns) {
       if (pattern.lastAccess > recentThreshold) {
@@ -541,7 +550,7 @@ class CacheOptimizer {
       ...this.analytics,
       patterns: this.accessPatterns.size,
       warmingQueue: this.warmingQueue.size,
-      config: this.config
+      config: this.config,
     };
   }
 
@@ -554,7 +563,7 @@ class CacheOptimizer {
       warmingHits: 0,
       warmingMisses: 0,
       optimizations: 0,
-      performanceGains: 0
+      performanceGains: 0,
     };
   }
 }

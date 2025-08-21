@@ -2,10 +2,10 @@
 
 /**
  * ProofKit PROMOTE Gate - Comprehensive Test Suite
- * 
+ *
  * Critical production safety test suite that validates PROMOTE gate
  * functionality and idempotency requirements before production deployment.
- * 
+ *
  * This test suite ensures:
  * - PROMOTE gate blocks mutations when PROMOTE=FALSE
  * - Idempotency is maintained across multiple runs
@@ -14,25 +14,25 @@
  * - NEG_GUARD prevents reserved keyword conflicts
  */
 
-const fs = require('fs');
-const path = require('path');
-const crypto = require('crypto');
+const fs = require("fs");
+const path = require("path");
+const crypto = require("crypto");
 
 class PromoteGateTestSuite {
   constructor(options = {}) {
     this.options = {
-      logDirectory: options.logDirectory || './run_logs',
-      testOutputDir: options.testOutputDir || './test_results',
+      logDirectory: options.logDirectory || "./run_logs",
+      testOutputDir: options.testOutputDir || "./test_results",
       verbose: options.verbose || false,
-      ...options
+      ...options,
     };
-    
+
     this.testResults = [];
     this.summary = {
       total: 0,
       passed: 0,
       failed: 0,
-      warnings: 0
+      warnings: 0,
     };
   }
 
@@ -40,8 +40,8 @@ class PromoteGateTestSuite {
    * Run the complete PROMOTE gate test suite
    */
   async runTestSuite() {
-    console.log('🧪 Starting ProofKit PROMOTE Gate Test Suite...\n');
-    
+    console.log("🧪 Starting ProofKit PROMOTE Gate Test Suite...\n");
+
     try {
       // Ensure test output directory exists
       if (!fs.existsSync(this.options.testOutputDir)) {
@@ -56,18 +56,21 @@ class PromoteGateTestSuite {
       await this.testLabelGuardProtection();
       await this.testMutationLimits();
       await this.testBackendIntegration();
-      
+
       // Generate final report
       this.generateTestReport();
-      
+
       const success = this.summary.failed === 0;
-      console.log(`\n${success ? '✅' : '❌'} Test Suite ${success ? 'PASSED' : 'FAILED'}`);
-      console.log(`Total: ${this.summary.total} | Passed: ${this.summary.passed} | Failed: ${this.summary.failed} | Warnings: ${this.summary.warnings}`);
-      
+      console.log(
+        `\n${success ? "✅" : "❌"} Test Suite ${success ? "PASSED" : "FAILED"}`,
+      );
+      console.log(
+        `Total: ${this.summary.total} | Passed: ${this.summary.passed} | Failed: ${this.summary.failed} | Warnings: ${this.summary.warnings}`,
+      );
+
       return success;
-      
     } catch (error) {
-      console.error('💥 Test suite execution failed:', error);
+      console.error("💥 Test suite execution failed:", error);
       return false;
     }
   }
@@ -76,53 +79,53 @@ class PromoteGateTestSuite {
    * Test PROMOTE gate validation logic
    */
   async testPromoteGateValidation() {
-    console.log('🔒 Testing PROMOTE Gate Validation...');
-    
+    console.log("🔒 Testing PROMOTE Gate Validation...");
+
     // Test 1: PROMOTE=FALSE should block mutations
-    await this.runTest('PROMOTE_FALSE_BLOCKS_MUTATIONS', async () => {
+    await this.runTest("PROMOTE_FALSE_BLOCKS_MUTATIONS", async () => {
       const mockConfig = { PROMOTE: false, enabled: true };
       const result = this.simulatePromoteGateCheck(mockConfig);
-      
+
       if (result.allowed) {
-        throw new Error('PROMOTE=FALSE should block mutations');
+        throw new Error("PROMOTE=FALSE should block mutations");
       }
-      
-      return { 
-        success: true, 
-        message: 'PROMOTE=FALSE correctly blocked mutations',
-        config: mockConfig 
+
+      return {
+        success: true,
+        message: "PROMOTE=FALSE correctly blocked mutations",
+        config: mockConfig,
       };
     });
 
     // Test 2: PROMOTE=TRUE should allow mutations
-    await this.runTest('PROMOTE_TRUE_ALLOWS_MUTATIONS', async () => {
+    await this.runTest("PROMOTE_TRUE_ALLOWS_MUTATIONS", async () => {
       const mockConfig = { PROMOTE: true, enabled: true };
       const result = this.simulatePromoteGateCheck(mockConfig);
-      
+
       if (!result.allowed) {
-        throw new Error('PROMOTE=TRUE should allow mutations');
+        throw new Error("PROMOTE=TRUE should allow mutations");
       }
-      
-      return { 
-        success: true, 
-        message: 'PROMOTE=TRUE correctly allowed mutations',
-        config: mockConfig 
+
+      return {
+        success: true,
+        message: "PROMOTE=TRUE correctly allowed mutations",
+        config: mockConfig,
       };
     });
 
     // Test 3: Missing PROMOTE should default to FALSE
-    await this.runTest('MISSING_PROMOTE_DEFAULTS_FALSE', async () => {
+    await this.runTest("MISSING_PROMOTE_DEFAULTS_FALSE", async () => {
       const mockConfig = { enabled: true }; // No PROMOTE field
       const result = this.simulatePromoteGateCheck(mockConfig);
-      
+
       if (result.allowed) {
-        throw new Error('Missing PROMOTE should default to blocking mutations');
+        throw new Error("Missing PROMOTE should default to blocking mutations");
       }
-      
-      return { 
-        success: true, 
-        message: 'Missing PROMOTE correctly defaulted to FALSE',
-        config: mockConfig 
+
+      return {
+        success: true,
+        message: "Missing PROMOTE correctly defaulted to FALSE",
+        config: mockConfig,
       };
     });
   }
@@ -131,59 +134,63 @@ class PromoteGateTestSuite {
    * Test idempotency validation
    */
   async testIdempotencyValidation() {
-    console.log('🔄 Testing Idempotency Validation...');
-    
+    console.log("🔄 Testing Idempotency Validation...");
+
     // Test 1: Check for idempotency test logs
-    await this.runTest('IDEMPOTENCY_LOG_EXISTS', async () => {
+    await this.runTest("IDEMPOTENCY_LOG_EXISTS", async () => {
       const logDir = this.options.logDirectory;
-      
+
       if (!fs.existsSync(logDir)) {
         throw new Error(`Log directory not found: ${logDir}`);
       }
-      
-      const idempotencyLogs = fs.readdirSync(logDir)
-        .filter(file => file.includes('idempotency') && file.endsWith('.log'));
-      
+
+      const idempotencyLogs = fs
+        .readdirSync(logDir)
+        .filter(
+          (file) => file.includes("idempotency") && file.endsWith(".log"),
+        );
+
       if (idempotencyLogs.length === 0) {
-        throw new Error('No idempotency test logs found');
+        throw new Error("No idempotency test logs found");
       }
-      
-      return { 
-        success: true, 
+
+      return {
+        success: true,
         message: `Found ${idempotencyLogs.length} idempotency test logs`,
-        logs: idempotencyLogs 
+        logs: idempotencyLogs,
       };
     });
 
     // Test 2: Validate idempotency test results
-    await this.runTest('IDEMPOTENCY_TEST_PASSED', async () => {
+    await this.runTest("IDEMPOTENCY_TEST_PASSED", async () => {
       const logDir = this.options.logDirectory;
-      const idempotencyLogs = fs.readdirSync(logDir)
-        .filter(file => file.includes('idempotency') && file.endsWith('.log'))
+      const idempotencyLogs = fs
+        .readdirSync(logDir)
+        .filter((file) => file.includes("idempotency") && file.endsWith(".log"))
         .sort()
         .slice(-1); // Get most recent
-      
+
       if (idempotencyLogs.length === 0) {
-        throw new Error('No idempotency logs to validate');
+        throw new Error("No idempotency logs to validate");
       }
-      
+
       const logPath = path.join(logDir, idempotencyLogs[0]);
-      const logContent = fs.readFileSync(logPath, 'utf8');
-      
+      const logContent = fs.readFileSync(logPath, "utf8");
+
       const passedMatch = logContent.match(/IDEMPOTENCY TEST (PASSED|FAILED)/);
-      
+
       if (!passedMatch) {
-        throw new Error('Could not find idempotency test result in log');
+        throw new Error("Could not find idempotency test result in log");
       }
-      
-      if (passedMatch[1] !== 'PASSED') {
+
+      if (passedMatch[1] !== "PASSED") {
         throw new Error(`Idempotency test failed: ${passedMatch[1]}`);
       }
-      
-      return { 
-        success: true, 
-        message: 'Idempotency test passed',
-        logFile: idempotencyLogs[0] 
+
+      return {
+        success: true,
+        message: "Idempotency test passed",
+        logFile: idempotencyLogs[0],
       };
     });
   }
@@ -192,45 +199,47 @@ class PromoteGateTestSuite {
    * Test safety guard configurations
    */
   async testSafetyGuards() {
-    console.log('🛡️ Testing Safety Guards...');
-    
+    console.log("🛡️ Testing Safety Guards...");
+
     // Test 1: Label guard configuration
-    await this.runTest('LABEL_GUARD_CONFIGURED', async () => {
-      const expectedLabel = 'PROOFKIT_AUTOMATED';
-      
+    await this.runTest("LABEL_GUARD_CONFIGURED", async () => {
+      const expectedLabel = "PROOFKIT_AUTOMATED";
+
       // Simulate checking for label configuration
-      const mockConfig = { 
+      const mockConfig = {
         label: expectedLabel,
-        PROMOTE: true 
+        PROMOTE: true,
       };
-      
+
       if (!mockConfig.label || mockConfig.label !== expectedLabel) {
-        throw new Error(`Label guard not properly configured: ${mockConfig.label}`);
+        throw new Error(
+          `Label guard not properly configured: ${mockConfig.label}`,
+        );
       }
-      
-      return { 
-        success: true, 
+
+      return {
+        success: true,
         message: `Label guard configured: ${expectedLabel}`,
-        label: expectedLabel 
+        label: expectedLabel,
       };
     });
 
     // Test 2: Preview mode protection
-    await this.runTest('PREVIEW_MODE_PROTECTION', async () => {
+    await this.runTest("PREVIEW_MODE_PROTECTION", async () => {
       const mockPreviewMode = true;
       const mockConfig = { PROMOTE: true, enabled: true };
-      
+
       const result = this.simulatePromoteGateCheck(mockConfig, mockPreviewMode);
-      
+
       // Preview mode should be indicated in the response
       if (!result.previewMode) {
-        throw new Error('Preview mode not properly detected');
+        throw new Error("Preview mode not properly detected");
       }
-      
-      return { 
-        success: true, 
-        message: 'Preview mode protection active',
-        previewMode: true 
+
+      return {
+        success: true,
+        message: "Preview mode protection active",
+        previewMode: true,
       };
     });
   }
@@ -239,54 +248,61 @@ class PromoteGateTestSuite {
    * Test NEG_GUARD protection system
    */
   async testNegGuardProtection() {
-    console.log('🚫 Testing NEG_GUARD Protection...');
-    
+    console.log("🚫 Testing NEG_GUARD Protection...");
+
     // Test 1: Reserved keyword protection
-    await this.runTest('RESERVED_KEYWORD_PROTECTION', async () => {
-      const reservedKeywords = ['proofkit', 'brand', 'competitor', 'important'];
-      const testTerms = ['proofkit automation', 'competitor analysis', 'test keyword'];
-      
+    await this.runTest("RESERVED_KEYWORD_PROTECTION", async () => {
+      const reservedKeywords = ["proofkit", "brand", "competitor", "important"];
+      const testTerms = [
+        "proofkit automation",
+        "competitor analysis",
+        "test keyword",
+      ];
+
       const blockedTerms = [];
       const allowedTerms = [];
-      
+
       for (const term of testTerms) {
-        const isReserved = reservedKeywords.some(reserved => 
-          term.toLowerCase().includes(reserved.toLowerCase()));
-        
+        const isReserved = reservedKeywords.some((reserved) =>
+          term.toLowerCase().includes(reserved.toLowerCase()),
+        );
+
         if (isReserved) {
           blockedTerms.push(term);
         } else {
           allowedTerms.push(term);
         }
       }
-      
+
       if (blockedTerms.length === 0) {
-        throw new Error('Reserved keyword protection not working');
+        throw new Error("Reserved keyword protection not working");
       }
-      
-      return { 
-        success: true, 
+
+      return {
+        success: true,
         message: `Blocked ${blockedTerms.length} reserved terms, allowed ${allowedTerms.length}`,
         blocked: blockedTerms,
-        allowed: allowedTerms 
+        allowed: allowedTerms,
       };
     });
 
     // Test 2: NEG_GUARD activation
-    await this.runTest('NEG_GUARD_ACTIVATION', async () => {
+    await this.runTest("NEG_GUARD_ACTIVATION", async () => {
       const mockConfig = { PROMOTE: true, enabled: true };
       const mockPreviewMode = false;
-      
+
       const negGuardActive = mockConfig.PROMOTE && !mockPreviewMode;
-      
+
       if (!negGuardActive) {
-        throw new Error('NEG_GUARD should be active when PROMOTE=TRUE and not in preview');
+        throw new Error(
+          "NEG_GUARD should be active when PROMOTE=TRUE and not in preview",
+        );
       }
-      
-      return { 
-        success: true, 
-        message: 'NEG_GUARD correctly activated',
-        active: negGuardActive 
+
+      return {
+        success: true,
+        message: "NEG_GUARD correctly activated",
+        active: negGuardActive,
       };
     });
   }
@@ -295,46 +311,46 @@ class PromoteGateTestSuite {
    * Test label guard protection
    */
   async testLabelGuardProtection() {
-    console.log('🏷️ Testing Label Guard Protection...');
-    
+    console.log("🏷️ Testing Label Guard Protection...");
+
     // Test 1: Label application simulation
-    await this.runTest('LABEL_APPLICATION_SIMULATION', async () => {
-      const mockEntity = { id: 'test-entity-123' };
-      const labelName = 'PROOFKIT_AUTOMATED';
-      
+    await this.runTest("LABEL_APPLICATION_SIMULATION", async () => {
+      const mockEntity = { id: "test-entity-123" };
+      const labelName = "PROOFKIT_AUTOMATED";
+
       // Simulate label application
       const labelApplied = this.simulateLabelApplication(mockEntity, labelName);
-      
+
       if (!labelApplied.success) {
-        throw new Error('Label application failed');
+        throw new Error("Label application failed");
       }
-      
-      return { 
-        success: true, 
+
+      return {
+        success: true,
         message: `Label "${labelName}" applied successfully`,
         entity: mockEntity.id,
-        label: labelName 
+        label: labelName,
       };
     });
 
     // Test 2: Duplicate label handling
-    await this.runTest('DUPLICATE_LABEL_HANDLING', async () => {
-      const mockEntity = { 
-        id: 'test-entity-456', 
-        labels: ['PROOFKIT_AUTOMATED'] // Already has label
+    await this.runTest("DUPLICATE_LABEL_HANDLING", async () => {
+      const mockEntity = {
+        id: "test-entity-456",
+        labels: ["PROOFKIT_AUTOMATED"], // Already has label
       };
-      const labelName = 'PROOFKIT_AUTOMATED';
-      
+      const labelName = "PROOFKIT_AUTOMATED";
+
       const labelApplied = this.simulateLabelApplication(mockEntity, labelName);
-      
+
       if (!labelApplied.skipped) {
-        throw new Error('Duplicate label should be skipped');
+        throw new Error("Duplicate label should be skipped");
       }
-      
-      return { 
-        success: true, 
-        message: 'Duplicate label correctly skipped',
-        entity: mockEntity.id 
+
+      return {
+        success: true,
+        message: "Duplicate label correctly skipped",
+        entity: mockEntity.id,
       };
     });
   }
@@ -343,40 +359,42 @@ class PromoteGateTestSuite {
    * Test mutation limits and thresholds
    */
   async testMutationLimits() {
-    console.log('⚖️ Testing Mutation Limits...');
-    
+    console.log("⚖️ Testing Mutation Limits...");
+
     // Test 1: Normal mutation count
-    await this.runTest('NORMAL_MUTATION_COUNT', async () => {
+    await this.runTest("NORMAL_MUTATION_COUNT", async () => {
       const maxMutations = 100;
       const currentMutations = 25;
-      
+
       if (currentMutations > maxMutations) {
-        throw new Error(`Mutation count ${currentMutations} exceeds limit ${maxMutations}`);
+        throw new Error(
+          `Mutation count ${currentMutations} exceeds limit ${maxMutations}`,
+        );
       }
-      
-      return { 
-        success: true, 
+
+      return {
+        success: true,
         message: `Mutation count within limits: ${currentMutations}/${maxMutations}`,
         count: currentMutations,
-        limit: maxMutations 
+        limit: maxMutations,
       };
     });
 
     // Test 2: Excessive mutation count
-    await this.runTest('EXCESSIVE_MUTATION_COUNT', async () => {
+    await this.runTest("EXCESSIVE_MUTATION_COUNT", async () => {
       const maxMutations = 100;
       const currentMutations = 150;
-      
+
       const shouldBlock = currentMutations > maxMutations;
-      
+
       if (!shouldBlock) {
-        throw new Error('Excessive mutations should be blocked');
+        throw new Error("Excessive mutations should be blocked");
       }
-      
-      return { 
-        success: true, 
+
+      return {
+        success: true,
         message: `Excessive mutation count correctly detected: ${currentMutations}/${maxMutations}`,
-        blocked: true 
+        blocked: true,
       };
     });
   }
@@ -385,44 +403,44 @@ class PromoteGateTestSuite {
    * Test backend integration
    */
   async testBackendIntegration() {
-    console.log('🔌 Testing Backend Integration...');
-    
+    console.log("🔌 Testing Backend Integration...");
+
     // Test 1: HMAC signature validation
-    await this.runTest('HMAC_SIGNATURE_VALIDATION', async () => {
-      const secret = 'test-secret-key';
-      const payload = 'GET:test-tenant:promote_gate_status';
-      
+    await this.runTest("HMAC_SIGNATURE_VALIDATION", async () => {
+      const secret = "test-secret-key";
+      const payload = "GET:test-tenant:promote_gate_status";
+
       const signature = this.generateHMACSignature(payload, secret);
       const isValid = this.validateHMACSignature(payload, signature, secret);
-      
+
       if (!isValid) {
-        throw new Error('HMAC signature validation failed');
+        throw new Error("HMAC signature validation failed");
       }
-      
-      return { 
-        success: true, 
-        message: 'HMAC signature validation working',
-        payload: payload 
+
+      return {
+        success: true,
+        message: "HMAC signature validation working",
+        payload: payload,
       };
     });
 
     // Test 2: Backend gate status simulation
-    await this.runTest('BACKEND_GATE_STATUS', async () => {
+    await this.runTest("BACKEND_GATE_STATUS", async () => {
       const mockBackendResponse = {
         ok: true,
         promote: true,
-        gateStatus: 'OPEN',
-        timestamp: new Date().toISOString()
+        gateStatus: "OPEN",
+        timestamp: new Date().toISOString(),
       };
-      
+
       if (!mockBackendResponse.ok || !mockBackendResponse.promote) {
-        throw new Error('Backend gate should be open when PROMOTE=TRUE');
+        throw new Error("Backend gate should be open when PROMOTE=TRUE");
       }
-      
-      return { 
-        success: true, 
-        message: 'Backend gate status correctly simulated',
-        status: mockBackendResponse.gateStatus 
+
+      return {
+        success: true,
+        message: "Backend gate status correctly simulated",
+        status: mockBackendResponse.gateStatus,
       };
     });
   }
@@ -431,14 +449,15 @@ class PromoteGateTestSuite {
    * Simulate PROMOTE gate check
    */
   simulatePromoteGateCheck(config, previewMode = false) {
-    const promoteEnabled = config.PROMOTE === true || 
-                         String(config.PROMOTE).toLowerCase() === 'true';
-    
+    const promoteEnabled =
+      config.PROMOTE === true ||
+      String(config.PROMOTE).toLowerCase() === "true";
+
     return {
       allowed: promoteEnabled && !previewMode,
       promote: config.PROMOTE,
       previewMode: previewMode,
-      reason: promoteEnabled ? 'PROMOTE=TRUE' : 'PROMOTE=FALSE'
+      reason: promoteEnabled ? "PROMOTE=TRUE" : "PROMOTE=FALSE",
     };
   }
 
@@ -451,15 +470,15 @@ class PromoteGateTestSuite {
       return {
         success: true,
         skipped: true,
-        reason: 'Label already exists'
+        reason: "Label already exists",
       };
     }
-    
+
     // Simulate successful label application
     return {
       success: true,
       skipped: false,
-      reason: 'Label applied'
+      reason: "Label applied",
     };
   }
 
@@ -467,10 +486,11 @@ class PromoteGateTestSuite {
    * Generate HMAC signature for testing
    */
   generateHMACSignature(payload, secret) {
-    return crypto.createHmac('sha256', secret)
+    return crypto
+      .createHmac("sha256", secret)
       .update(payload)
-      .digest('base64')
-      .replace(/=+$/, '');
+      .digest("base64")
+      .replace(/=+$/, "");
   }
 
   /**
@@ -486,33 +506,32 @@ class PromoteGateTestSuite {
    */
   async runTest(testName, testFunction) {
     this.summary.total++;
-    
+
     try {
       const result = await testFunction();
-      
+
       this.testResults.push({
         name: testName,
-        status: 'PASSED',
+        status: "PASSED",
         message: result.message,
         details: result,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       });
-      
+
       this.summary.passed++;
-      
+
       if (this.options.verbose) {
         console.log(`  ✅ ${testName}: ${result.message}`);
       }
-      
     } catch (error) {
       this.testResults.push({
         name: testName,
-        status: 'FAILED',
+        status: "FAILED",
         message: error.message,
         error: error.stack,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
       });
-      
+
       this.summary.failed++;
       console.log(`  ❌ ${testName}: ${error.message}`);
     }
@@ -522,26 +541,32 @@ class PromoteGateTestSuite {
    * Generate comprehensive test report
    */
   generateTestReport() {
-    const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-    const reportFile = path.join(this.options.testOutputDir, `promote_gate_test_${timestamp}.json`);
-    
+    const timestamp = new Date().toISOString().replace(/[:.]/g, "-");
+    const reportFile = path.join(
+      this.options.testOutputDir,
+      `promote_gate_test_${timestamp}.json`,
+    );
+
     const report = {
-      suite: 'ProofKit PROMOTE Gate Test Suite',
+      suite: "ProofKit PROMOTE Gate Test Suite",
       timestamp: new Date().toISOString(),
       summary: this.summary,
       results: this.testResults,
       environment: {
         nodeVersion: process.version,
         platform: process.platform,
-        logDirectory: this.options.logDirectory
-      }
+        logDirectory: this.options.logDirectory,
+      },
     };
-    
+
     fs.writeFileSync(reportFile, JSON.stringify(report, null, 2));
     console.log(`\n📄 Test report saved: ${reportFile}`);
-    
+
     // Generate summary report for CI/CD
-    const summaryFile = path.join(this.options.testOutputDir, 'promote_gate_test_summary.txt');
+    const summaryFile = path.join(
+      this.options.testOutputDir,
+      "promote_gate_test_summary.txt",
+    );
     const summaryText = `
 ProofKit PROMOTE Gate Test Suite Results
 ========================================
@@ -552,12 +577,12 @@ Failed: ${this.summary.failed}
 Warnings: ${this.summary.warnings}
 Success Rate: ${((this.summary.passed / this.summary.total) * 100).toFixed(1)}%
 
-Status: ${this.summary.failed === 0 ? 'PASSED' : 'FAILED'}
+Status: ${this.summary.failed === 0 ? "PASSED" : "FAILED"}
 `;
-    
+
     fs.writeFileSync(summaryFile, summaryText);
     console.log(`📄 Summary report saved: ${summaryFile}`);
-    
+
     return report;
   }
 
@@ -567,37 +592,37 @@ Status: ${this.summary.failed === 0 ? 'PASSED' : 'FAILED'}
   static async runCLI() {
     const args = process.argv.slice(2);
     const options = {};
-    
+
     // Parse CLI arguments
     for (let i = 0; i < args.length; i += 2) {
-      const key = args[i].replace(/^--/, '');
+      const key = args[i].replace(/^--/, "");
       const value = args[i + 1];
-      
+
       switch (key) {
-        case 'log-dir':
+        case "log-dir":
           options.logDirectory = value;
           break;
-        case 'output-dir':
+        case "output-dir":
           options.testOutputDir = value;
           break;
-        case 'verbose':
+        case "verbose":
           options.verbose = true;
           i -= 1; // No value for this flag
           break;
       }
     }
-    
+
     const testSuite = new PromoteGateTestSuite(options);
     const success = await testSuite.runTestSuite();
-    
+
     process.exit(success ? 0 : 1);
   }
 }
 
 // CLI usage
 if (require.main === module) {
-  PromoteGateTestSuite.runCLI().catch(error => {
-    console.error('Fatal test suite error:', error.message);
+  PromoteGateTestSuite.runCLI().catch((error) => {
+    console.error("Fatal test suite error:", error.message);
     process.exit(1);
   });
 }

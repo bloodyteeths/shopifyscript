@@ -3,9 +3,9 @@
  * Handles CSP reporting, security health checks, and security monitoring
  */
 
-import express from 'express';
-import securityMiddleware from '../middleware/security.js';
-import { getDoc, ensureSheet } from '../services/sheets.js';
+import express from "express";
+import securityMiddleware from "../middleware/security.js";
+import { getDoc, ensureSheet } from "../services/sheets.js";
 
 const router = express.Router();
 
@@ -13,74 +13,84 @@ const router = express.Router();
  * CSP Violation Reporting Endpoint
  * Handles reports from Content-Security-Policy violations
  */
-router.post('/csp-report', express.json({ type: 'application/csp-report' }), async (req, res) => {
-  try {
-    const report = req.body;
-    const cspReport = report['csp-report'] || report;
-    
-    // Log CSP violation
-    console.warn('CSP Violation:', {
-      'blocked-uri': cspReport['blocked-uri'],
-      'document-uri': cspReport['document-uri'],
-      'violated-directive': cspReport['violated-directive'],
-      'effective-directive': cspReport['effective-directive'],
-      'original-policy': cspReport['original-policy'],
-      'referrer': cspReport['referrer'],
-      'status-code': cspReport['status-code'],
-      'script-sample': cspReport['script-sample']?.substring(0, 100) + '...',
-      'timestamp': new Date().toISOString()
-    });
-    
-    // Store in security logs
+router.post(
+  "/csp-report",
+  express.json({ type: "application/csp-report" }),
+  async (req, res) => {
     try {
-      const doc = await getDoc();
-      if (doc) {
-        const sheet = await ensureSheet(doc, 'CSP_VIOLATIONS', [
-          'timestamp', 'blocked_uri', 'document_uri', 'violated_directive', 
-          'effective_directive', 'status_code', 'script_sample', 'referrer'
-        ]);
-        
-        await sheet.addRow({
-          timestamp: new Date().toISOString(),
-          blocked_uri: cspReport['blocked-uri'] || '',
-          document_uri: cspReport['document-uri'] || '',
-          violated_directive: cspReport['violated-directive'] || '',
-          effective_directive: cspReport['effective-directive'] || '',
-          status_code: cspReport['status-code'] || '',
-          script_sample: (cspReport['script-sample'] || '').substring(0, 500),
-          referrer: cspReport['referrer'] || ''
-        });
+      const report = req.body;
+      const cspReport = report["csp-report"] || report;
+
+      // Log CSP violation
+      console.warn("CSP Violation:", {
+        "blocked-uri": cspReport["blocked-uri"],
+        "document-uri": cspReport["document-uri"],
+        "violated-directive": cspReport["violated-directive"],
+        "effective-directive": cspReport["effective-directive"],
+        "original-policy": cspReport["original-policy"],
+        referrer: cspReport["referrer"],
+        "status-code": cspReport["status-code"],
+        "script-sample": cspReport["script-sample"]?.substring(0, 100) + "...",
+        timestamp: new Date().toISOString(),
+      });
+
+      // Store in security logs
+      try {
+        const doc = await getDoc();
+        if (doc) {
+          const sheet = await ensureSheet(doc, "CSP_VIOLATIONS", [
+            "timestamp",
+            "blocked_uri",
+            "document_uri",
+            "violated_directive",
+            "effective_directive",
+            "status_code",
+            "script_sample",
+            "referrer",
+          ]);
+
+          await sheet.addRow({
+            timestamp: new Date().toISOString(),
+            blocked_uri: cspReport["blocked-uri"] || "",
+            document_uri: cspReport["document-uri"] || "",
+            violated_directive: cspReport["violated-directive"] || "",
+            effective_directive: cspReport["effective-directive"] || "",
+            status_code: cspReport["status-code"] || "",
+            script_sample: (cspReport["script-sample"] || "").substring(0, 500),
+            referrer: cspReport["referrer"] || "",
+          });
+        }
+      } catch (storageError) {
+        console.error("Failed to store CSP violation:", storageError);
       }
-    } catch (storageError) {
-      console.error('Failed to store CSP violation:', storageError);
+
+      res.status(204).end(); // No content response for CSP reports
+    } catch (error) {
+      console.error("Error processing CSP report:", error);
+      res.status(400).json({ error: "Invalid CSP report" });
     }
-    
-    res.status(204).end(); // No content response for CSP reports
-  } catch (error) {
-    console.error('Error processing CSP report:', error);
-    res.status(400).json({ error: 'Invalid CSP report' });
-  }
-});
+  },
+);
 
 /**
  * Security Health Check Endpoint
  * Returns current security status and configuration
  */
-router.get('/health', async (req, res) => {
+router.get("/health", async (req, res) => {
   try {
     const healthCheck = securityMiddleware.performSecurityHealthCheck();
     const stats = securityMiddleware.getSecurityStats();
-    
+
     res.json({
       health: healthCheck,
       statistics: stats,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    console.error('Error in security health check:', error);
+    console.error("Error in security health check:", error);
     res.status(500).json({
-      error: 'Security health check failed',
-      message: error.message
+      error: "Security health check failed",
+      message: error.message,
     });
   }
 });
@@ -89,29 +99,29 @@ router.get('/health', async (req, res) => {
  * Security Configuration Endpoint
  * Returns current security configuration (admin only)
  */
-router.get('/config', async (req, res) => {
+router.get("/config", async (req, res) => {
   try {
     // Basic admin check (you might want to enhance this)
-    const isAdmin = req.headers['x-admin-key'] === process.env.ADMIN_SECRET;
+    const isAdmin = req.headers["x-admin-key"] === process.env.ADMIN_SECRET;
     if (!isAdmin) {
-      return res.status(403).json({ error: 'Admin access required' });
+      return res.status(403).json({ error: "Admin access required" });
     }
-    
-    const environment = process.env.NODE_ENV || 'development';
-    
+
+    const environment = process.env.NODE_ENV || "development";
+
     res.json({
       environment: environment,
       csp_configuration: securityMiddleware.cspConfig[environment],
       security_headers: securityMiddleware.securityHeaders,
       threat_detection_enabled: securityMiddleware.threatDetection.enabled,
       rate_limiting_enabled: securityMiddleware.rateLimiting.enabled,
-      ddos_protection_enabled: securityMiddleware.ddosProtection.enabled
+      ddos_protection_enabled: securityMiddleware.ddosProtection.enabled,
     });
   } catch (error) {
-    console.error('Error fetching security config:', error);
+    console.error("Error fetching security config:", error);
     res.status(500).json({
-      error: 'Failed to fetch security configuration',
-      message: error.message
+      error: "Failed to fetch security configuration",
+      message: error.message,
     });
   }
 });
@@ -120,22 +130,24 @@ router.get('/config', async (req, res) => {
  * CSP Nonce Endpoint
  * Returns current CSP nonce for the request (for client-side use)
  */
-router.get('/nonce', (req, res) => {
+router.get("/nonce", (req, res) => {
   try {
     const nonce = req.cspNonce;
     if (!nonce) {
-      return res.status(404).json({ error: 'No CSP nonce found for this request' });
+      return res
+        .status(404)
+        .json({ error: "No CSP nonce found for this request" });
     }
-    
+
     res.json({
       nonce: nonce,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     });
   } catch (error) {
-    console.error('Error fetching CSP nonce:', error);
+    console.error("Error fetching CSP nonce:", error);
     res.status(500).json({
-      error: 'Failed to fetch CSP nonce',
-      message: error.message
+      error: "Failed to fetch CSP nonce",
+      message: error.message,
     });
   }
 });
@@ -144,11 +156,11 @@ router.get('/nonce', (req, res) => {
  * Security Metrics Endpoint
  * Returns security metrics for monitoring
  */
-router.get('/metrics', async (req, res) => {
+router.get("/metrics", async (req, res) => {
   try {
     const stats = securityMiddleware.getSecurityStats();
     const healthCheck = securityMiddleware.performSecurityHealthCheck();
-    
+
     // Format metrics for monitoring systems (Prometheus-style)
     const metrics = [
       `# HELP security_ddos_blacklisted_ips Number of blacklisted IPs`,
@@ -177,17 +189,17 @@ router.get('/metrics', async (req, res) => {
       ``,
       `# HELP security_health_status Overall security health status (1=healthy, 0=degraded)`,
       `# TYPE security_health_status gauge`,
-      `security_health_status ${healthCheck.status === 'healthy' ? 1 : 0}`,
-      ``
-    ].join('\n');
-    
-    res.setHeader('Content-Type', 'text/plain');
+      `security_health_status ${healthCheck.status === "healthy" ? 1 : 0}`,
+      ``,
+    ].join("\n");
+
+    res.setHeader("Content-Type", "text/plain");
     res.send(metrics);
   } catch (error) {
-    console.error('Error generating security metrics:', error);
+    console.error("Error generating security metrics:", error);
     res.status(500).json({
-      error: 'Failed to generate security metrics',
-      message: error.message
+      error: "Failed to generate security metrics",
+      message: error.message,
     });
   }
 });
@@ -196,10 +208,10 @@ router.get('/metrics', async (req, res) => {
  * CSP Test Endpoint
  * Allows testing CSP policies
  */
-router.get('/csp-test', (req, res) => {
+router.get("/csp-test", (req, res) => {
   try {
     const nonce = req.cspNonce;
-    
+
     const testHTML = `
 <!DOCTYPE html>
 <html>
@@ -256,14 +268,14 @@ router.get('/csp-test', (req, res) => {
     </script>
 </body>
 </html>`;
-    
-    res.setHeader('Content-Type', 'text/html');
+
+    res.setHeader("Content-Type", "text/html");
     res.send(testHTML);
   } catch (error) {
-    console.error('Error generating CSP test page:', error);
+    console.error("Error generating CSP test page:", error);
     res.status(500).json({
-      error: 'Failed to generate CSP test page',
-      message: error.message
+      error: "Failed to generate CSP test page",
+      message: error.message,
     });
   }
 });

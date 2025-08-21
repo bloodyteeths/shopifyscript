@@ -1,16 +1,23 @@
-import * as React from 'react';
-import { Links, Meta, Outlet, Scripts, ScrollRestoration, NavLink } from '@remix-run/react';
-import type { LinksFunction } from '@remix-run/node';
-import polarisStyles from '@shopify/polaris/build/esm/styles.css';
-import { AppProvider } from '@shopify/polaris';
+import * as React from "react";
+import {
+  Links,
+  Meta,
+  Outlet,
+  Scripts,
+  ScrollRestoration,
+  NavLink,
+} from "@remix-run/react";
+import type { LinksFunction } from "@remix-run/node";
+import polarisStyles from "@shopify/polaris/build/esm/styles.css";
+import { AppProvider } from "@shopify/polaris";
 // Avoid importing JSON locales on Node 22 without import attributes; use empty i18n
 const en: any = {};
 
 export const links: LinksFunction = () => [
-  { rel: 'stylesheet', href: polarisStyles },
+  { rel: "stylesheet", href: polarisStyles },
 ];
 
-export default function App(){
+export default function App() {
   return (
     <html lang="en">
       <head>
@@ -21,109 +28,136 @@ export default function App(){
       </head>
       <body>
         <AppProvider i18n={en}>
-          <div className="Polaris-Page" style={{ display:'flex', minHeight:'100vh' }}>
-            <nav style={{ width:240, padding:20, borderRight:'1px solid var(--p-color-border)', background: '#fafbfc' }}>
-              <h3 style={{ 
-                marginBottom: 20, 
-                fontSize: '18px', 
-                fontWeight: 'bold', 
-                color: '#202223',
-                borderBottom: '1px solid #e1e3e5',
-                paddingBottom: 12
-              }}>
+          <div
+            className="Polaris-Page"
+            style={{ display: "flex", minHeight: "100vh" }}
+          >
+            <nav
+              style={{
+                width: 240,
+                padding: 20,
+                borderRight: "1px solid var(--p-color-border)",
+                background: "#fafbfc",
+              }}
+            >
+              <h3
+                style={{
+                  marginBottom: 20,
+                  fontSize: "18px",
+                  fontWeight: "bold",
+                  color: "#202223",
+                  borderBottom: "1px solid #e1e3e5",
+                  paddingBottom: 12,
+                }}
+              >
                 Ads Autopilot AI
               </h3>
-              <ul style={{ listStyle:'none', padding:0, display:'grid', gap:4 }}>
+              <ul
+                style={{
+                  listStyle: "none",
+                  padding: 0,
+                  display: "grid",
+                  gap: 4,
+                }}
+              >
                 <li>
-                  <NavLink 
-                    to="/app/" 
-                    style={{ 
-                      display: 'block',
-                      padding: '8px 12px',
-                      borderRadius: '6px',
-                      textDecoration: 'none',
-                      fontSize: '14px',
-                      fontWeight: '500',
-                      color: '#202223',
-                      transition: 'all 0.2s ease'
+                  <NavLink
+                    to="/app/"
+                    style={{
+                      display: "block",
+                      padding: "8px 12px",
+                      borderRadius: "6px",
+                      textDecoration: "none",
+                      fontSize: "14px",
+                      fontWeight: "500",
+                      color: "#202223",
+                      transition: "all 0.2s ease",
                     }}
                   >
                     🏠 Dashboard
                   </NavLink>
                 </li>
                 <li>
-                  <NavLink 
+                  <NavLink
                     to="/app/autopilot"
-                    style={{ 
-                      display: 'block',
-                      padding: '8px 12px',
-                      borderRadius: '6px',
-                      textDecoration: 'none',
-                      fontSize: '14px',
-                      fontWeight: '500',
-                      color: '#202223',
-                      transition: 'all 0.2s ease'
+                    style={{
+                      display: "block",
+                      padding: "8px 12px",
+                      borderRadius: "6px",
+                      textDecoration: "none",
+                      fontSize: "14px",
+                      fontWeight: "500",
+                      color: "#202223",
+                      transition: "all 0.2s ease",
                     }}
                   >
                     🤖 Autopilot
                   </NavLink>
                 </li>
                 <li>
-                  <NavLink 
+                  <NavLink
                     to="/app/insights"
-                    style={{ 
-                      display: 'block',
-                      padding: '8px 12px',
-                      borderRadius: '6px',
-                      textDecoration: 'none',
-                      fontSize: '14px',
-                      fontWeight: '500',
-                      color: '#202223',
-                      transition: 'all 0.2s ease'
+                    style={{
+                      display: "block",
+                      padding: "8px 12px",
+                      borderRadius: "6px",
+                      textDecoration: "none",
+                      fontSize: "14px",
+                      fontWeight: "500",
+                      color: "#202223",
+                      transition: "all 0.2s ease",
                     }}
                   >
                     📊 Insights
                   </NavLink>
                 </li>
                 <li>
-                  <NavLink 
+                  <NavLink
                     to="/app/advanced"
-                    style={{ 
-                      display: 'block',
-                      padding: '8px 12px',
-                      borderRadius: '6px',
-                      textDecoration: 'none',
-                      fontSize: '14px',
-                      fontWeight: '500',
-                      color: '#202223',
-                      transition: 'all 0.2s ease'
+                    style={{
+                      display: "block",
+                      padding: "8px 12px",
+                      borderRadius: "6px",
+                      textDecoration: "none",
+                      fontSize: "14px",
+                      fontWeight: "500",
+                      color: "#202223",
+                      transition: "all 0.2s ease",
                     }}
                   >
                     ⚙️ Advanced
                   </NavLink>
                 </li>
-                <li style={{ marginTop: 12, paddingTop: 12, borderTop: '1px solid #e1e3e5' }}>
-                  <NavLink 
-                    to="/app/intent-os" 
-                    style={{ 
-                      display: 'block',
-                      padding: '8px 12px',
-                      borderRadius: '6px',
-                      textDecoration: 'none',
-                      fontSize: '12px',
-                      fontWeight: '400',
-                      color: '#6d7175',
-                      opacity: 0.7
+                <li
+                  style={{
+                    marginTop: 12,
+                    paddingTop: 12,
+                    borderTop: "1px solid #e1e3e5",
+                  }}
+                >
+                  <NavLink
+                    to="/app/intent-os"
+                    style={{
+                      display: "block",
+                      padding: "8px 12px",
+                      borderRadius: "6px",
+                      textDecoration: "none",
+                      fontSize: "12px",
+                      fontWeight: "400",
+                      color: "#6d7175",
+                      opacity: 0.7,
                     }}
                   >
                     💡 Smart Website
-                    <br/>
-                    <span style={{ fontSize: '10px', color: '#8c9196' }}>Coming Q1 2026</span>
+                    <br />
+                    <span style={{ fontSize: "10px", color: "#8c9196" }}>
+                      Coming Q1 2026
+                    </span>
                   </NavLink>
                 </li>
               </ul>
             </nav>
-            <main style={{ flex:1, padding:24 }}>
+            <main style={{ flex: 1, padding: 24 }}>
               <Outlet />
             </main>
           </div>
@@ -135,8 +169,10 @@ export default function App(){
   );
 }
 
-export function ErrorBoundary(){
-  return <pre style={{padding:16, color:'#a00'}}>Something went wrong. Check the console for details.</pre>;
+export function ErrorBoundary() {
+  return (
+    <pre style={{ padding: 16, color: "#a00" }}>
+      Something went wrong. Check the console for details.
+    </pre>
+  );
 }
-
-

@@ -1,54 +1,63 @@
 /// <reference types="cypress" />
 
-describe('ProofKit Complete Merchant Funnel', () => {
+describe("ProofKit Complete Merchant Funnel", () => {
   before(() => {
     // Initialize documentation system
-    cy.task('initializeFunnelDocs');
+    cy.task("initializeFunnelDocs");
     cy.resetSteps();
   });
 
-  it('should complete the entire merchant onboarding funnel', () => {
+  it("should complete the entire merchant onboarding funnel", () => {
     // Mock all API endpoints for demonstration
-    cy.intercept('GET', '/api/health', { statusCode: 200, body: { ok: true } }).as('health');
-    cy.intercept('GET', '/api/config*', { 
-      statusCode: 200, 
-      body: { 
-        ok: true, 
+    cy.intercept("GET", "/api/health", {
+      statusCode: 200,
+      body: { ok: true },
+    }).as("health");
+    cy.intercept("GET", "/api/config*", {
+      statusCode: 200,
+      body: {
+        ok: true,
         config: {
           enabled: true,
-          label: 'PROOFKIT_AUTOMATED',
-          PROMOTE: false
-        }
-      } 
-    }).as('getConfig');
-    
-    cy.intercept('POST', '/api/upsertConfig*', { 
-      statusCode: 200, 
-      body: { ok: true, message: 'Configuration saved' }
-    }).as('saveConfig');
-    
-    cy.intercept('POST', '/api/script-preview*', { 
-      statusCode: 200, 
-      body: { 
+          label: "PROOFKIT_AUTOMATED",
+          PROMOTE: false,
+        },
+      },
+    }).as("getConfig");
+
+    cy.intercept("POST", "/api/upsertConfig*", {
+      statusCode: 200,
+      body: { ok: true, message: "Configuration saved" },
+    }).as("saveConfig");
+
+    cy.intercept("POST", "/api/script-preview*", {
+      statusCode: 200,
+      body: {
         ok: true,
         mutations: [
-          { type: 'BUDGET_CHANGE', description: 'Budget capped: Test Campaign → $25.00' },
-          { type: 'CPC_CEILING', description: 'CPC ceiling applied: $2.50' },
-          { type: 'SCHEDULE_ADD', description: 'Business hours schedule added' }
-        ]
-      }
-    }).as('scriptPreview');
+          {
+            type: "BUDGET_CHANGE",
+            description: "Budget capped: Test Campaign → $25.00",
+          },
+          { type: "CPC_CEILING", description: "CPC ceiling applied: $2.50" },
+          {
+            type: "SCHEDULE_ADD",
+            description: "Business hours schedule added",
+          },
+        ],
+      },
+    }).as("scriptPreview");
 
     // Step 1: App Installation Landing Page
-    cy.visit('/app');
+    cy.visit("/app");
     cy.step(
-      'App Installation Landing',
-      'User sees ProofKit installation page with clear value proposition and install button',
-      '/app'
+      "App Installation Landing",
+      "User sees ProofKit installation page with clear value proposition and install button",
+      "/app",
     );
 
     // Mock the installation interface
-    cy.get('body').then($body => {
+    cy.get("body").then(($body) => {
       if (!$body.find('[data-testid="setup-wizard-prompt"]').length) {
         $body.append(`
           <div data-testid="setup-wizard-prompt" style="padding: 20px; border: 1px solid #ccc; margin: 20px;">
@@ -62,25 +71,25 @@ describe('ProofKit Complete Merchant Funnel', () => {
       }
     });
 
-    cy.get('[data-testid="setup-wizard-prompt"]').should('be.visible');
-    cy.get('[data-testid="start-setup-button"]').should('be.visible');
+    cy.get('[data-testid="setup-wizard-prompt"]').should("be.visible");
+    cy.get('[data-testid="start-setup-button"]').should("be.visible");
 
     // Step 2: Enter Settings Configuration
     cy.get('[data-testid="start-setup-button"]').click();
-    
+
     // Navigate to settings (mock navigation)
-    cy.url().then(url => {
-      cy.visit('/app/settings');
+    cy.url().then((url) => {
+      cy.visit("/app/settings");
     });
 
     cy.step(
-      'Settings Configuration',
-      'Settings form loads with required fields for tenant ID, backend URL, and HMAC secret',
-      '/app/settings'
+      "Settings Configuration",
+      "Settings form loads with required fields for tenant ID, backend URL, and HMAC secret",
+      "/app/settings",
     );
 
     // Mock settings form if component not rendered
-    cy.get('body').then($body => {
+    cy.get("body").then(($body) => {
       if (!$body.find('[data-testid="settings-form"]').length) {
         $body.append(`
           <div data-testid="settings-form" style="padding: 20px; max-width: 600px;">
@@ -115,40 +124,42 @@ describe('ProofKit Complete Merchant Funnel', () => {
     });
 
     // Fill settings form
-    cy.get('[data-testid="settings-tenant-id"]').type('demo-tenant-1');
-    cy.get('[data-testid="settings-backend-url"]').type('http://localhost:3001');
-    cy.get('[data-testid="settings-hmac-secret"]').type('test-secret-key');
-    cy.get('[data-testid="settings-ga4-id"]').type('G-DEMO123456');
+    cy.get('[data-testid="settings-tenant-id"]').type("demo-tenant-1");
+    cy.get('[data-testid="settings-backend-url"]').type(
+      "http://localhost:3001",
+    );
+    cy.get('[data-testid="settings-hmac-secret"]').type("test-secret-key");
+    cy.get('[data-testid="settings-ga4-id"]').type("G-DEMO123456");
 
     // Enable save button when form is valid
     cy.get('[data-testid="settings-tenant-id"]').then(() => {
-      cy.get('[data-testid="settings-save"]').invoke('prop', 'disabled', false);
+      cy.get('[data-testid="settings-save"]').invoke("prop", "disabled", false);
     });
 
     cy.step(
-      'Settings Form Completion',
-      'All required fields filled and save button enabled with validation feedback',
-      '/app/settings'
+      "Settings Form Completion",
+      "All required fields filled and save button enabled with validation feedback",
+      "/app/settings",
     );
 
     // Save settings
     cy.get('[data-testid="settings-save"]').click();
-    cy.wait('@saveConfig');
+    cy.wait("@saveConfig");
 
     // Show success state
-    cy.get('[data-testid="success-banner"]').invoke('show');
+    cy.get('[data-testid="success-banner"]').invoke("show");
 
     cy.step(
-      'Settings Save Success',
-      'Settings saved successfully with confirmation banner and wizard access enabled',
-      '/app/settings'
+      "Settings Save Success",
+      "Settings saved successfully with confirmation banner and wizard access enabled",
+      "/app/settings",
     );
 
     // Step 3: Safe First Run Wizard
-    cy.visit('/app/funnel/wizard');
+    cy.visit("/app/funnel/wizard");
 
     // Mock wizard interface
-    cy.get('body').then($body => {
+    cy.get("body").then(($body) => {
       $body.html(`
         <div data-testid="wizard-page" style="padding: 20px; max-width: 800px;">
           <h1>ProofKit Setup Wizard</h1>
@@ -206,21 +217,23 @@ describe('ProofKit Complete Merchant Funnel', () => {
     });
 
     cy.step(
-      'Safe First Run Configuration',
-      'Wizard step 1 loads with budget cap, CPC ceiling, and schedule configuration form',
-      '/app/funnel/wizard'
+      "Safe First Run Configuration",
+      "Wizard step 1 loads with budget cap, CPC ceiling, and schedule configuration form",
+      "/app/funnel/wizard",
     );
 
     // Configure safe limits
-    cy.get('[data-testid="wizard-budget-cap"]').should('have.value', '25.00');
-    cy.get('[data-testid="wizard-cpc-ceiling"]').should('have.value', '2.50');
-    cy.get('[data-testid="wizard-exclusions"]').type('Brand Campaign,Shopping Campaign');
+    cy.get('[data-testid="wizard-budget-cap"]').should("have.value", "25.00");
+    cy.get('[data-testid="wizard-cpc-ceiling"]').should("have.value", "2.50");
+    cy.get('[data-testid="wizard-exclusions"]').type(
+      "Brand Campaign,Shopping Campaign",
+    );
 
     // Proceed to next step
     cy.get('[data-testid="wizard-next"]').click();
 
     // Step 4: Script Preview
-    cy.get('body').html(`
+    cy.get("body").html(`
       <div data-testid="wizard-page" style="padding: 20px; max-width: 800px;">
         <h1>Script Preview (No Live Changes)</h1>
         
@@ -275,52 +288,56 @@ describe('ProofKit Complete Merchant Funnel', () => {
     `);
 
     cy.step(
-      'Script Preview Interface',
-      'Script preview step loads with explanation and preview execution buttons',
-      '/app/funnel/wizard'
+      "Script Preview Interface",
+      "Script preview step loads with explanation and preview execution buttons",
+      "/app/funnel/wizard",
     );
 
     // Run first preview
     cy.get('[data-testid="preview-run"]').click();
-    cy.wait('@scriptPreview');
+    cy.wait("@scriptPreview");
 
     // Show preview results
-    cy.get('[data-testid="preview-results"]').invoke('show');
-    cy.get('[data-testid="preview-run-second"]').invoke('prop', 'disabled', false);
+    cy.get('[data-testid="preview-results"]').invoke("show");
+    cy.get('[data-testid="preview-run-second"]').invoke(
+      "prop",
+      "disabled",
+      false,
+    );
 
     cy.step(
-      'First Preview Results',
-      'First preview execution shows planned mutations including budget caps, CPC ceilings, schedules, negatives, RSA validation, and audience attachment',
-      '/app/funnel/wizard'
+      "First Preview Results",
+      "First preview execution shows planned mutations including budget caps, CPC ceilings, schedules, negatives, RSA validation, and audience attachment",
+      "/app/funnel/wizard",
     );
 
     // Run second preview (idempotency test)
-    cy.intercept('POST', '/api/script-preview*', { 
-      statusCode: 200, 
-      body: { 
+    cy.intercept("POST", "/api/script-preview*", {
+      statusCode: 200,
+      body: {
         ok: true,
         mutations: [], // No mutations on second run
-        idempotencyResult: { passed: true }
-      }
-    }).as('secondPreview');
+        idempotencyResult: { passed: true },
+      },
+    }).as("secondPreview");
 
     cy.get('[data-testid="preview-run-second"]').click();
-    cy.wait('@secondPreview');
+    cy.wait("@secondPreview");
 
     // Show idempotency results
-    cy.get('[data-testid="idempotency-results"]').invoke('show');
-    cy.get('[data-testid="wizard-next"]').invoke('prop', 'disabled', false);
+    cy.get('[data-testid="idempotency-results"]').invoke("show");
+    cy.get('[data-testid="wizard-next"]').invoke("prop", "disabled", false);
 
     cy.step(
-      'Idempotency Test Success',
-      'Second preview run produces zero mutations confirming script idempotency',
-      '/app/funnel/wizard'
+      "Idempotency Test Success",
+      "Second preview run produces zero mutations confirming script idempotency",
+      "/app/funnel/wizard",
     );
 
     // Step 5: AI Drafts (Optional)
     cy.get('[data-testid="wizard-next"]').click();
 
-    cy.get('body').html(`
+    cy.get("body").html(`
       <div data-testid="wizard-page" style="padding: 20px; max-width: 800px;">
         <h1>AI-Generated RSA Drafts (Optional)</h1>
         
@@ -399,48 +416,53 @@ describe('ProofKit Complete Merchant Funnel', () => {
     `);
 
     cy.step(
-      'AI Drafts Generation Step',
-      'AI drafts step loads with generation button and character limit explanation',
-      '/app/funnel/wizard'
+      "AI Drafts Generation Step",
+      "AI drafts step loads with generation button and character limit explanation",
+      "/app/funnel/wizard",
     );
 
     // Generate AI drafts
-    cy.intercept('POST', '/api/ai-drafts*', {
+    cy.intercept("POST", "/api/ai-drafts*", {
       statusCode: 200,
       delay: 2000,
       body: {
         ok: true,
-        drafts: [{ headlines: ['Premium Quality Products'], descriptions: ['Premium collection with fast shipping'] }]
-      }
-    }).as('aiDrafts');
+        drafts: [
+          {
+            headlines: ["Premium Quality Products"],
+            descriptions: ["Premium collection with fast shipping"],
+          },
+        ],
+      },
+    }).as("aiDrafts");
 
     cy.get('[data-testid="generate-ai-drafts"]').click();
-    cy.wait('@aiDrafts');
+    cy.wait("@aiDrafts");
 
     // Show AI results
-    cy.get('[data-testid="ai-drafts-results"]').invoke('show');
+    cy.get('[data-testid="ai-drafts-results"]').invoke("show");
 
     cy.step(
-      'AI Drafts Results Display',
-      'Generated RSA content appears with character count badges and quality validation',
-      '/app/funnel/wizard'
+      "AI Drafts Results Display",
+      "Generated RSA content appears with character count badges and quality validation",
+      "/app/funnel/wizard",
     );
 
     // Approve drafts
     cy.get('[data-testid="approve-drafts"]').click();
-    cy.get('[data-testid="drafts-approved"]').invoke('show');
-    cy.get('[data-testid="wizard-next"]').invoke('prop', 'disabled', false);
+    cy.get('[data-testid="drafts-approved"]').invoke("show");
+    cy.get('[data-testid="wizard-next"]').invoke("prop", "disabled", false);
 
     cy.step(
-      'AI Drafts Approval',
-      'Content approved and wizard progression enabled after manual review',
-      '/app/funnel/wizard'
+      "AI Drafts Approval",
+      "Content approved and wizard progression enabled after manual review",
+      "/app/funnel/wizard",
     );
 
     // Step 6: Intent Block Preview
     cy.get('[data-testid="wizard-next"]').click();
 
-    cy.get('body').html(`
+    cy.get("body").html(`
       <div data-testid="wizard-page" style="padding: 20px; max-width: 800px;">
         <h1>Intent Block Preview</h1>
         
@@ -510,28 +532,28 @@ describe('ProofKit Complete Merchant Funnel', () => {
     `);
 
     cy.step(
-      'Intent Block Preview Interface',
-      'Intent preview step displays UTM term buttons for testing different content strategies',
-      '/app/funnel/wizard'
+      "Intent Block Preview Interface",
+      "Intent preview step displays UTM term buttons for testing different content strategies",
+      "/app/funnel/wizard",
     );
 
     // Test high-intent preview
     cy.get('[data-testid="intent-preview-high-intent"]').click();
-    cy.get('[data-testid="intent-preview-modal"]').invoke('show');
+    cy.get('[data-testid="intent-preview-modal"]').invoke("show");
 
     cy.step(
-      'High Intent Content Preview',
-      'High intent preview modal shows urgent messaging with countdown timer and scarcity elements',
-      '/app/funnel/wizard'
+      "High Intent Content Preview",
+      "High intent preview modal shows urgent messaging with countdown timer and scarcity elements",
+      "/app/funnel/wizard",
     );
 
     // Close modal and proceed
     cy.get('[data-testid="close-preview"]').click();
-    cy.get('[data-testid="intent-preview-modal"]').invoke('hide');
+    cy.get('[data-testid="intent-preview-modal"]').invoke("hide");
     cy.get('[data-testid="wizard-next"]').click();
 
     // Step 7: Audience Setup
-    cy.get('body').html(`
+    cy.get("body").html(`
       <div data-testid="wizard-page" style="padding: 20px; max-width: 800px;">
         <h1>Audience Setup (Optional)</h1>
         
@@ -606,49 +628,53 @@ describe('ProofKit Complete Merchant Funnel', () => {
     `);
 
     cy.step(
-      'Audience Setup Interface',
-      'Audience setup step loads with upload instructions and list ID configuration form',
-      '/app/funnel/wizard'
+      "Audience Setup Interface",
+      "Audience setup step loads with upload instructions and list ID configuration form",
+      "/app/funnel/wizard",
     );
 
     // Show upload instructions
     cy.get('[data-testid="audience-upload-help"]').click();
-    cy.get('[data-testid="audience-instructions-modal"]').invoke('show');
+    cy.get('[data-testid="audience-instructions-modal"]').invoke("show");
 
     cy.step(
-      'Audience Upload Instructions',
-      'Modal displays comprehensive step-by-step Google Ads audience upload process',
-      '/app/funnel/wizard'
+      "Audience Upload Instructions",
+      "Modal displays comprehensive step-by-step Google Ads audience upload process",
+      "/app/funnel/wizard",
     );
 
     // Close instructions and configure audience
     cy.get('[data-testid="close-instructions"]').click();
-    cy.get('[data-testid="audience-instructions-modal"]').invoke('hide');
+    cy.get('[data-testid="audience-instructions-modal"]').invoke("hide");
 
-    cy.get('[data-testid="audience-list-id"]').type('123456789');
-    cy.get('[data-testid="validate-audience"]').invoke('prop', 'disabled', false);
+    cy.get('[data-testid="audience-list-id"]').type("123456789");
+    cy.get('[data-testid="validate-audience"]').invoke(
+      "prop",
+      "disabled",
+      false,
+    );
 
     // Validate audience
-    cy.intercept('GET', '/api/audience/validate*', {
+    cy.intercept("GET", "/api/audience/validate*", {
       statusCode: 200,
-      body: { ok: true, size: 15000, status: 'active' }
-    }).as('audienceValidation');
+      body: { ok: true, size: 15000, status: "active" },
+    }).as("audienceValidation");
 
     cy.get('[data-testid="validate-audience"]').click();
-    cy.wait('@audienceValidation');
+    cy.wait("@audienceValidation");
 
-    cy.get('[data-testid="audience-validation-results"]').invoke('show');
+    cy.get('[data-testid="audience-validation-results"]').invoke("show");
 
     cy.step(
-      'Audience Validation Success',
-      'Audience list validated successfully showing size and guard status information',
-      '/app/funnel/wizard'
+      "Audience Validation Success",
+      "Audience list validated successfully showing size and guard status information",
+      "/app/funnel/wizard",
     );
 
     // Step 8: Go Live
     cy.get('[data-testid="wizard-next"]').click();
 
-    cy.get('body').html(`
+    cy.get("body").html(`
       <div data-testid="wizard-page" style="padding: 20px; max-width: 800px;">
         <h1>Go Live!</h1>
         
@@ -746,9 +772,9 @@ describe('ProofKit Complete Merchant Funnel', () => {
     `);
 
     cy.step(
-      'Go Live Configuration',
-      'Final step shows PROMOTE warning, schedule configuration, and enable button',
-      '/app/funnel/wizard'
+      "Go Live Configuration",
+      "Final step shows PROMOTE warning, schedule configuration, and enable button",
+      "/app/funnel/wizard",
     );
 
     // Configure schedule window
@@ -757,45 +783,48 @@ describe('ProofKit Complete Merchant Funnel', () => {
 
     // Enable PROMOTE
     cy.get('[data-testid="promote-toggle"]').click();
-    cy.get('[data-testid="promote-confirmation-modal"]').invoke('show');
+    cy.get('[data-testid="promote-confirmation-modal"]').invoke("show");
 
     cy.step(
-      'PROMOTE Confirmation Modal',
-      'Confirmation modal warns about live changes and requires explicit approval',
-      '/app/funnel/wizard'
+      "PROMOTE Confirmation Modal",
+      "Confirmation modal warns about live changes and requires explicit approval",
+      "/app/funnel/wizard",
     );
 
     // Confirm PROMOTE enable
-    cy.intercept('POST', '/api/promote/enable*', {
+    cy.intercept("POST", "/api/promote/enable*", {
       statusCode: 200,
-      body: { ok: true, promoteEnabled: true }
-    }).as('enablePromote');
+      body: { ok: true, promoteEnabled: true },
+    }).as("enablePromote");
 
     cy.get('[data-testid="confirm-promote"]').click();
-    cy.wait('@enablePromote');
-    
-    cy.get('[data-testid="promote-confirmation-modal"]').invoke('hide');
-    cy.get('[data-testid="promote-enabled-state"]').invoke('show');
+    cy.wait("@enablePromote");
+
+    cy.get('[data-testid="promote-confirmation-modal"]').invoke("hide");
+    cy.get('[data-testid="promote-enabled-state"]').invoke("show");
 
     cy.step(
-      'PROMOTE Activation Success',
-      'PROMOTE enabled successfully with live execution monitoring and progress tracking',
-      '/app/funnel/wizard'
+      "PROMOTE Activation Success",
+      "PROMOTE enabled successfully with live execution monitoring and progress tracking",
+      "/app/funnel/wizard",
     );
 
     // Simulate execution completion
     cy.wait(2000);
-    cy.get('[data-testid="setup-complete"]').invoke('show');
-    cy.get('[data-testid="wizard-complete"]').invoke('prop', 'disabled', false);
+    cy.get('[data-testid="setup-complete"]').invoke("show");
+    cy.get('[data-testid="wizard-complete"]').invoke("prop", "disabled", false);
 
     cy.step(
-      'Setup Completion',
-      'Complete setup success with automation active and dashboard access available',
-      '/app/funnel/wizard'
+      "Setup Completion",
+      "Complete setup success with automation active and dashboard access available",
+      "/app/funnel/wizard",
     );
 
     // Final verification
-    cy.get('[data-testid="dashboard-link"]').should('be.visible');
-    cy.get('[data-testid="setup-complete"]').should('contain.text', 'Setup Complete');
+    cy.get('[data-testid="dashboard-link"]').should("be.visible");
+    cy.get('[data-testid="setup-complete"]').should(
+      "contain.text",
+      "Setup Complete",
+    );
   });
 });

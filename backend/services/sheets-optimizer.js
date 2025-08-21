@@ -1,6 +1,6 @@
 /**
  * Google Sheets Connection Optimizer - Multi-Tenant Database Optimization
- * 
+ *
  * Features:
  * - Advanced connection pooling for 100+ tenants
  * - Smart batching and request queuing
@@ -9,10 +9,10 @@
  * - Performance monitoring and optimization
  */
 
-import { GoogleSpreadsheet } from 'google-spreadsheet';
-import { JWT } from 'google-auth-library';
-import tenantRegistry from './tenant-registry.js';
-import logger from './logger.js';
+import { GoogleSpreadsheet } from "google-spreadsheet";
+import { JWT } from "google-auth-library";
+import tenantRegistry from "./tenant-registry.js";
+import logger from "./logger.js";
 
 class SheetsOptimizer {
   constructor() {
@@ -20,20 +20,28 @@ class SheetsOptimizer {
     this.requestQueue = new Map(); // tenantId -> request queue
     this.connectionMetrics = new Map(); // tenantId -> metrics
     this.batchProcessor = new Map(); // tenantId -> batch processor
-    
+
     // Configuration
     this.config = {
-      maxConnectionsPerTenant: Number(process.env.SHEETS_MAX_CONNECTIONS_PER_TENANT || 5),
-      minConnectionsPerTenant: Number(process.env.SHEETS_MIN_CONNECTIONS_PER_TENANT || 1),
-      connectionIdleTimeout: Number(process.env.SHEETS_CONNECTION_IDLE_TIMEOUT || 300000), // 5 minutes
+      maxConnectionsPerTenant: Number(
+        process.env.SHEETS_MAX_CONNECTIONS_PER_TENANT || 5,
+      ),
+      minConnectionsPerTenant: Number(
+        process.env.SHEETS_MIN_CONNECTIONS_PER_TENANT || 1,
+      ),
+      connectionIdleTimeout: Number(
+        process.env.SHEETS_CONNECTION_IDLE_TIMEOUT || 300000,
+      ), // 5 minutes
       requestTimeout: Number(process.env.SHEETS_REQUEST_TIMEOUT || 30000), // 30 seconds
       batchSize: Number(process.env.SHEETS_BATCH_SIZE || 10),
       batchTimeout: Number(process.env.SHEETS_BATCH_TIMEOUT || 1000), // 1 second
       maxQueueSize: Number(process.env.SHEETS_MAX_QUEUE_SIZE || 100),
-      healthCheckInterval: Number(process.env.SHEETS_HEALTH_CHECK_INTERVAL || 60000), // 1 minute
+      healthCheckInterval: Number(
+        process.env.SHEETS_HEALTH_CHECK_INTERVAL || 60000,
+      ), // 1 minute
       scalingThreshold: Number(process.env.SHEETS_SCALING_THRESHOLD || 0.8), // 80% utilization
       retryAttempts: Number(process.env.SHEETS_RETRY_ATTEMPTS || 3),
-      retryDelay: Number(process.env.SHEETS_RETRY_DELAY || 1000)
+      retryDelay: Number(process.env.SHEETS_RETRY_DELAY || 1000),
     };
 
     this.startHealthChecker();
@@ -89,8 +97,8 @@ class SheetsOptimizer {
         avgResponseTime: 0,
         totalResponseTime: 0,
         queueSize: 0,
-        maxQueueSize: 0
-      }
+        maxQueueSize: 0,
+      },
     };
 
     // Create initial connections
@@ -102,10 +110,10 @@ class SheetsOptimizer {
     this.requestQueue.set(tenantId, []);
     this.connectionMetrics.set(tenantId, pool.metrics);
 
-    logger.info('Connection pool created', {
+    logger.info("Connection pool created", {
       tenantId,
       initialConnections: pool.connections.length,
-      operation: 'pool_creation'
+      operation: "pool_creation",
     });
 
     return pool;
@@ -117,17 +125,17 @@ class SheetsOptimizer {
   async createConnection(pool) {
     try {
       const { tenantId, config } = pool;
-      
+
       // Create JWT auth
       const serviceAccountAuth = new JWT({
         email: config.clientEmail,
         key: config.privateKey,
-        scopes: ['https://www.googleapis.com/auth/spreadsheets']
+        scopes: ["https://www.googleapis.com/auth/spreadsheets"],
       });
 
       // Create document connection
       const doc = new GoogleSpreadsheet(config.sheetId, serviceAccountAuth);
-      
+
       const connection = {
         id: `${tenantId}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
         doc,
@@ -137,7 +145,7 @@ class SheetsOptimizer {
         requestCount: 0,
         inUse: false,
         healthy: true,
-        tenantId
+        tenantId,
       };
 
       // Test connection
@@ -147,19 +155,19 @@ class SheetsOptimizer {
       pool.available.push(connection);
       pool.metrics.totalConnections++;
 
-      logger.debug('Connection created', {
+      logger.debug("Connection created", {
         tenantId,
         connectionId: connection.id,
         totalConnections: pool.connections.length,
-        operation: 'connection_creation'
+        operation: "connection_creation",
       });
 
       return connection;
     } catch (error) {
-      logger.error('Failed to create connection', {
+      logger.error("Failed to create connection", {
         tenantId: pool.tenantId,
         error: error.message,
-        operation: 'connection_creation_error'
+        operation: "connection_creation_error",
       });
       throw error;
     }
@@ -175,11 +183,11 @@ class SheetsOptimizer {
       return true;
     } catch (error) {
       connection.healthy = false;
-      logger.warn('Connection health check failed', {
+      logger.warn("Connection health check failed", {
         connectionId: connection.id,
         tenantId: connection.tenantId,
         error: error.message,
-        operation: 'health_check_failed'
+        operation: "health_check_failed",
       });
       return false;
     }
@@ -198,7 +206,7 @@ class SheetsOptimizer {
       connection.inUse = true;
       connection.lastUsed = Date.now();
       pool.metrics.activeConnections++;
-      
+
       return connection;
     }
 
@@ -210,13 +218,13 @@ class SheetsOptimizer {
         pool.busy.push(connection);
         connection.inUse = true;
         pool.metrics.activeConnections++;
-        
+
         return connection;
       } catch (error) {
-        logger.warn('Failed to create new connection', {
+        logger.warn("Failed to create new connection", {
           tenantId,
           error: error.message,
-          operation: 'connection_scaling_error'
+          operation: "connection_scaling_error",
         });
       }
     }
@@ -281,36 +289,36 @@ class SheetsOptimizer {
     try {
       // Get connection from pool
       connection = await this.getConnection(tenantId);
-      
+
       // Execute operation with retry logic
       const result = await this.executeWithRetry(connection, operation, params);
-      
+
       // Update metrics
       const responseTime = Date.now() - startTime;
-      this.updateMetrics(tenantId, 'success', responseTime);
-      
-      logger.debug('Sheets operation completed', {
+      this.updateMetrics(tenantId, "success", responseTime);
+
+      logger.debug("Sheets operation completed", {
         tenantId,
-        operation: operation.name || 'unknown',
+        operation: operation.name || "unknown",
         responseTime,
         connectionId: connection.id,
-        operation_type: 'sheets_operation'
+        operation_type: "sheets_operation",
       });
 
       return result;
     } catch (error) {
       const responseTime = Date.now() - startTime;
-      this.updateMetrics(tenantId, 'error', responseTime);
-      
-      logger.error('Sheets operation failed', {
+      this.updateMetrics(tenantId, "error", responseTime);
+
+      logger.error("Sheets operation failed", {
         tenantId,
-        operation: operation.name || 'unknown',
+        operation: operation.name || "unknown",
         error: error.message,
         responseTime,
         connectionId: connection?.id,
-        operation_type: 'sheets_operation_error'
+        operation_type: "sheets_operation_error",
       });
-      
+
       throw error;
     } finally {
       if (connection) {
@@ -327,15 +335,20 @@ class SheetsOptimizer {
       return await operation(connection.doc, params);
     } catch (error) {
       if (attempt < this.config.retryAttempts && this.isRetryableError(error)) {
-        logger.warn('Retrying sheets operation', {
+        logger.warn("Retrying sheets operation", {
           tenantId: connection.tenantId,
           attempt,
           error: error.message,
-          operation_type: 'sheets_retry'
+          operation_type: "sheets_retry",
         });
-        
+
         await this.delay(this.config.retryDelay * attempt);
-        return this.executeWithRetry(connection, operation, params, attempt + 1);
+        return this.executeWithRetry(
+          connection,
+          operation,
+          params,
+          attempt + 1,
+        );
       }
       throw error;
     }
@@ -346,14 +359,14 @@ class SheetsOptimizer {
    */
   isRetryableError(error) {
     const retryableErrors = [
-      'RATE_LIMIT_EXCEEDED',
-      'QUOTA_EXCEEDED',
-      'INTERNAL_ERROR',
-      'UNAVAILABLE'
+      "RATE_LIMIT_EXCEEDED",
+      "QUOTA_EXCEEDED",
+      "INTERNAL_ERROR",
+      "UNAVAILABLE",
     ];
-    
-    return retryableErrors.some(type => 
-      error.message.includes(type) || error.code === type
+
+    return retryableErrors.some(
+      (type) => error.message.includes(type) || error.code === type,
     );
   }
 
@@ -370,23 +383,27 @@ class SheetsOptimizer {
 
     for (const batch of batches) {
       const batchResults = await Promise.allSettled(
-        batch.map(op => this.executeOperation(tenantId, op.operation, op.params))
+        batch.map((op) =>
+          this.executeOperation(tenantId, op.operation, op.params),
+        ),
       );
-      
-      results.push(...batchResults.map((result, index) => ({
-        operation: batch[index],
-        result: result.status === 'fulfilled' ? result.value : null,
-        error: result.status === 'rejected' ? result.reason : null
-      })));
+
+      results.push(
+        ...batchResults.map((result, index) => ({
+          operation: batch[index],
+          result: result.status === "fulfilled" ? result.value : null,
+          error: result.status === "rejected" ? result.reason : null,
+        })),
+      );
     }
 
-    logger.info('Batch operations completed', {
+    logger.info("Batch operations completed", {
       tenantId,
       totalOperations: operations.length,
       batches: batches.length,
-      successful: results.filter(r => !r.error).length,
-      failed: results.filter(r => r.error).length,
-      operation_type: 'batch_operations'
+      successful: results.filter((r) => !r.error).length,
+      failed: results.filter((r) => r.error).length,
+      operation_type: "batch_operations",
     });
 
     return results;
@@ -410,7 +427,7 @@ class SheetsOptimizer {
     const metrics = this.connectionMetrics.get(tenantId);
     if (!metrics) return;
 
-    if (status === 'success') {
+    if (status === "success") {
       metrics.completedRequests++;
     } else {
       metrics.failedRequests++;
@@ -438,7 +455,7 @@ class SheetsOptimizer {
   async performHealthChecks() {
     for (const [tenantId, pool] of this.connectionPool) {
       const unhealthyConnections = [];
-      
+
       for (const connection of pool.connections) {
         if (!connection.inUse) {
           const healthy = await this.testConnection(connection);
@@ -454,11 +471,11 @@ class SheetsOptimizer {
       }
 
       if (unhealthyConnections.length > 0) {
-        logger.info('Removed unhealthy connections', {
+        logger.info("Removed unhealthy connections", {
           tenantId,
           removed: unhealthyConnections.length,
           remaining: pool.connections.length,
-          operation_type: 'health_check_cleanup'
+          operation_type: "health_check_cleanup",
         });
       }
     }
@@ -469,10 +486,10 @@ class SheetsOptimizer {
    */
   async removeConnection(pool, connection) {
     // Remove from all arrays
-    pool.connections = pool.connections.filter(c => c.id !== connection.id);
-    pool.available = pool.available.filter(c => c.id !== connection.id);
-    pool.busy = pool.busy.filter(c => c.id !== connection.id);
-    
+    pool.connections = pool.connections.filter((c) => c.id !== connection.id);
+    pool.available = pool.available.filter((c) => c.id !== connection.id);
+    pool.busy = pool.busy.filter((c) => c.id !== connection.id);
+
     pool.metrics.totalConnections--;
     if (connection.inUse) {
       pool.metrics.activeConnections--;
@@ -484,11 +501,12 @@ class SheetsOptimizer {
    */
   async cleanupIdleConnections() {
     const now = Date.now();
-    
+
     for (const [tenantId, pool] of this.connectionPool) {
-      const idleConnections = pool.available.filter(connection => 
-        now - connection.lastUsed > this.config.connectionIdleTimeout &&
-        pool.connections.length > this.config.minConnectionsPerTenant
+      const idleConnections = pool.available.filter(
+        (connection) =>
+          now - connection.lastUsed > this.config.connectionIdleTimeout &&
+          pool.connections.length > this.config.minConnectionsPerTenant,
       );
 
       for (const connection of idleConnections) {
@@ -496,11 +514,11 @@ class SheetsOptimizer {
       }
 
       if (idleConnections.length > 0) {
-        logger.debug('Cleaned up idle connections', {
+        logger.debug("Cleaned up idle connections", {
           tenantId,
           cleaned: idleConnections.length,
           remaining: pool.connections.length,
-          operation_type: 'idle_cleanup'
+          operation_type: "idle_cleanup",
         });
       }
     }
@@ -512,23 +530,25 @@ class SheetsOptimizer {
   async scaleConnections() {
     for (const [tenantId, pool] of this.connectionPool) {
       const utilization = pool.busy.length / pool.connections.length;
-      
+
       // Scale up if utilization is high
-      if (utilization > this.config.scalingThreshold && 
-          pool.connections.length < this.config.maxConnectionsPerTenant) {
+      if (
+        utilization > this.config.scalingThreshold &&
+        pool.connections.length < this.config.maxConnectionsPerTenant
+      ) {
         try {
           await this.createConnection(pool);
-          logger.info('Scaled up connections', {
+          logger.info("Scaled up connections", {
             tenantId,
-            utilization: (utilization * 100).toFixed(1) + '%',
+            utilization: (utilization * 100).toFixed(1) + "%",
             totalConnections: pool.connections.length,
-            operation_type: 'scale_up'
+            operation_type: "scale_up",
           });
         } catch (error) {
-          logger.warn('Failed to scale up connections', {
+          logger.warn("Failed to scale up connections", {
             tenantId,
             error: error.message,
-            operation_type: 'scale_up_error'
+            operation_type: "scale_up_error",
           });
         }
       }
@@ -554,34 +574,41 @@ class SheetsOptimizer {
       activeConnections: 0,
       totalRequests: 0,
       avgResponseTime: 0,
-      tenantMetrics: {}
+      tenantMetrics: {},
     };
 
     for (const [tenantId, pool] of this.connectionPool) {
       const metrics = pool.metrics;
       globalMetrics.totalConnections += pool.connections.length;
       globalMetrics.activeConnections += pool.busy.length;
-      globalMetrics.totalRequests += metrics.completedRequests + metrics.failedRequests;
-      
+      globalMetrics.totalRequests +=
+        metrics.completedRequests + metrics.failedRequests;
+
       globalMetrics.tenantMetrics[tenantId] = {
         connections: pool.connections.length,
         activeConnections: pool.busy.length,
         completedRequests: metrics.completedRequests,
         failedRequests: metrics.failedRequests,
         avgResponseTime: metrics.avgResponseTime,
-        utilization: pool.connections.length > 0 ? (pool.busy.length / pool.connections.length * 100).toFixed(1) + '%' : '0%'
+        utilization:
+          pool.connections.length > 0
+            ? ((pool.busy.length / pool.connections.length) * 100).toFixed(1) +
+              "%"
+            : "0%",
       };
     }
 
     if (globalMetrics.totalRequests > 0) {
-      const totalResponseTime = Array.from(this.connectionMetrics.values())
-        .reduce((sum, m) => sum + m.totalResponseTime, 0);
-      globalMetrics.avgResponseTime = totalResponseTime / globalMetrics.totalRequests;
+      const totalResponseTime = Array.from(
+        this.connectionMetrics.values(),
+      ).reduce((sum, m) => sum + m.totalResponseTime, 0);
+      globalMetrics.avgResponseTime =
+        totalResponseTime / globalMetrics.totalRequests;
     }
 
-    logger.info('Sheets optimizer metrics', {
+    logger.info("Sheets optimizer metrics", {
       metrics: globalMetrics,
-      operation_type: 'metrics_collection'
+      operation_type: "metrics_collection",
     });
   }
 
@@ -589,9 +616,9 @@ class SheetsOptimizer {
    * Initialize auto-scaling
    */
   initializeAutoScaling() {
-    logger.info('Sheets optimizer initialized', {
+    logger.info("Sheets optimizer initialized", {
       config: this.config,
-      operation_type: 'optimizer_initialization'
+      operation_type: "optimizer_initialization",
     });
   }
 
@@ -599,7 +626,7 @@ class SheetsOptimizer {
    * Utility delay function
    */
   delay(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
+    return new Promise((resolve) => setTimeout(resolve, ms));
   }
 
   /**
@@ -611,7 +638,7 @@ class SheetsOptimizer {
       totalConnections: 0,
       activeConnections: 0,
       config: this.config,
-      tenants: {}
+      tenants: {},
     };
 
     for (const [tenantId, pool] of this.connectionPool) {
@@ -621,7 +648,7 @@ class SheetsOptimizer {
         connections: pool.connections.length,
         active: pool.busy.length,
         available: pool.available.length,
-        metrics: pool.metrics
+        metrics: pool.metrics,
       };
     }
 
@@ -644,9 +671,9 @@ class SheetsOptimizer {
     this.requestQueue.delete(tenantId);
     this.connectionMetrics.delete(tenantId);
 
-    logger.info('Closed tenant connections', {
+    logger.info("Closed tenant connections", {
       tenantId,
-      operation_type: 'tenant_cleanup'
+      operation_type: "tenant_cleanup",
     });
   }
 
@@ -654,8 +681,8 @@ class SheetsOptimizer {
    * Shutdown optimizer
    */
   async shutdown() {
-    logger.info('Shutting down sheets optimizer');
-    
+    logger.info("Shutting down sheets optimizer");
+
     for (const tenantId of this.connectionPool.keys()) {
       await this.closeTenantConnections(tenantId);
     }

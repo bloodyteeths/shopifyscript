@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from "react";
 import {
   Page,
   Card,
@@ -27,8 +27,8 @@ import {
   Link,
   CalloutCard,
   ProgressBar,
-} from '@shopify/polaris';
-import type { AppConfig } from '../services/api.server';
+} from "@shopify/polaris";
+import type { AppConfig } from "../services/api.server";
 
 interface SettingsProps {
   initialConfig?: AppConfig;
@@ -73,7 +73,15 @@ const ConnectionCard: React.FC<{
   onDisconnect: () => void;
   details?: React.ReactNode;
   loading?: boolean;
-}> = ({ title, description, connected, onConnect, onDisconnect, details, loading = false }) => {
+}> = ({
+  title,
+  description,
+  connected,
+  onConnect,
+  onDisconnect,
+  details,
+  loading = false,
+}) => {
   return (
     <Card>
       <Card.Section>
@@ -81,20 +89,16 @@ const ConnectionCard: React.FC<{
           <Stack vertical spacing="tight">
             <Stack spacing="tight">
               <Text variant="headingMd">{title}</Text>
-              <Badge status={connected ? 'success' : 'subdued'}>
-                {connected ? 'Connected' : 'Not Connected'}
+              <Badge status={connected ? "success" : "subdued"}>
+                {connected ? "Connected" : "Not Connected"}
               </Badge>
             </Stack>
-            
+
             <Text variant="bodyMd" color="subdued">
               {description}
             </Text>
-            
-            {details && (
-              <div style={{ marginTop: '8px' }}>
-                {details}
-              </div>
-            )}
+
+            {details && <div style={{ marginTop: "8px" }}>{details}</div>}
           </Stack>
 
           <Button
@@ -103,7 +107,7 @@ const ConnectionCard: React.FC<{
             onClick={connected ? onDisconnect : onConnect}
             loading={loading}
           >
-            {connected ? 'Disconnect' : 'Connect'}
+            {connected ? "Disconnect" : "Connect"}
           </Button>
         </Stack>
       </Card.Section>
@@ -115,9 +119,13 @@ const TrackingSettings: React.FC<{
   config: AppConfig;
   onUpdate: (updates: Partial<AppConfig>) => void;
 }> = ({ config, onUpdate }) => {
-  const [pixelId, setPixelId] = useState(config.tracking.pixelId || '');
-  const [conversionTracking, setConversionTracking] = useState(config.tracking.conversionTracking);
-  const [enhancedConversions, setEnhancedConversions] = useState(config.tracking.enhancedConversions);
+  const [pixelId, setPixelId] = useState(config.tracking.pixelId || "");
+  const [conversionTracking, setConversionTracking] = useState(
+    config.tracking.conversionTracking,
+  );
+  const [enhancedConversions, setEnhancedConversions] = useState(
+    config.tracking.enhancedConversions,
+  );
   const [consentMode, setConsentMode] = useState(config.tracking.consentMode);
 
   const handleSave = () => {
@@ -132,9 +140,9 @@ const TrackingSettings: React.FC<{
   };
 
   const consentModeOptions = [
-    { label: 'Basic (Required cookies only)', value: 'basic' },
-    { label: 'Advanced (Marketing cookies with consent)', value: 'advanced' },
-    { label: 'Disabled (No consent management)', value: 'disabled' },
+    { label: "Basic (Required cookies only)", value: "basic" },
+    { label: "Advanced (Marketing cookies with consent)", value: "advanced" },
+    { label: "Disabled (No consent management)", value: "disabled" },
   ];
 
   return (
@@ -185,10 +193,18 @@ const AutomationSettings: React.FC<{
   config: AppConfig;
   onUpdate: (updates: Partial<AppConfig>) => void;
 }> = ({ config, onUpdate }) => {
-  const [autopilotEnabled, setAutopilotEnabled] = useState(config.automation.autopilotEnabled);
-  const [bidOptimization, setBidOptimization] = useState(config.automation.bidOptimization);
-  const [budgetOptimization, setBudgetOptimization] = useState(config.automation.budgetOptimization);
-  const [keywordExpansion, setKeywordExpansion] = useState(config.automation.keywordExpansion);
+  const [autopilotEnabled, setAutopilotEnabled] = useState(
+    config.automation.autopilotEnabled,
+  );
+  const [bidOptimization, setBidOptimization] = useState(
+    config.automation.bidOptimization,
+  );
+  const [budgetOptimization, setBudgetOptimization] = useState(
+    config.automation.budgetOptimization,
+  );
+  const [keywordExpansion, setKeywordExpansion] = useState(
+    config.automation.keywordExpansion,
+  );
 
   const handleSave = () => {
     onUpdate({
@@ -207,23 +223,24 @@ const AutomationSettings: React.FC<{
         <FormLayout>
           <SettingToggle
             action={{
-              content: autopilotEnabled ? 'Disable' : 'Enable',
+              content: autopilotEnabled ? "Disable" : "Enable",
               onAction: () => setAutopilotEnabled(!autopilotEnabled),
             }}
             enabled={autopilotEnabled}
           >
             <Text variant="headingMd">Autopilot Mode</Text>
             <Text variant="bodyMd" color="subdued">
-              Let ProofKit automatically optimize your campaigns based on performance data.
+              Let ProofKit automatically optimize your campaigns based on
+              performance data.
             </Text>
           </SettingToggle>
 
           {autopilotEnabled && (
             <>
               <Divider />
-              
+
               <Text variant="headingMd">Automation Features</Text>
-              
+
               <Checkbox
                 label="Bid optimization"
                 checked={bidOptimization}
@@ -261,8 +278,10 @@ const NotificationSettings: React.FC<{
   onUpdate: (updates: Partial<AppConfig>) => void;
 }> = ({ config, onUpdate }) => {
   const [email, setEmail] = useState(config.notifications.email);
-  const [webhook, setWebhook] = useState(config.notifications.webhook || '');
-  const [slackWebhook, setSlackWebhook] = useState(config.notifications.slackWebhook || '');
+  const [webhook, setWebhook] = useState(config.notifications.webhook || "");
+  const [slackWebhook, setSlackWebhook] = useState(
+    config.notifications.slackWebhook || "",
+  );
 
   const handleSave = () => {
     onUpdate({
@@ -274,14 +293,14 @@ const NotificationSettings: React.FC<{
     });
   };
 
-  const testWebhook = async (url: string, type: 'webhook' | 'slack') => {
+  const testWebhook = async (url: string, type: "webhook" | "slack") => {
     try {
-      const response = await fetch('/api/notifications/test', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const response = await fetch("/api/notifications/test", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ url, type }),
       });
-      
+
       if (response.ok) {
         // Show success toast
       } else {
@@ -311,7 +330,7 @@ const NotificationSettings: React.FC<{
             helpText="Send notifications to your custom webhook endpoint"
             connectedRight={
               webhook ? (
-                <Button onClick={() => testWebhook(webhook, 'webhook')}>
+                <Button onClick={() => testWebhook(webhook, "webhook")}>
                   Test
                 </Button>
               ) : undefined
@@ -326,7 +345,7 @@ const NotificationSettings: React.FC<{
             helpText="Send notifications to your Slack channel"
             connectedRight={
               slackWebhook ? (
-                <Button onClick={() => testWebhook(slackWebhook, 'slack')}>
+                <Button onClick={() => testWebhook(slackWebhook, "slack")}>
                   Test
                 </Button>
               ) : undefined
@@ -347,24 +366,24 @@ const AccountInfo: React.FC<{
 }> = ({ config }) => {
   const accountDetails = [
     {
-      term: 'Shop Domain',
+      term: "Shop Domain",
       description: config.shopify.shop,
     },
     {
-      term: 'App Installed',
+      term: "App Installed",
       description: new Date(config.shopify.installedAt).toLocaleDateString(),
     },
     {
-      term: 'Google Ads Account',
-      description: config.googleAds.connected ? 
-        (config.googleAds.accountId || 'Connected') : 
-        'Not connected',
+      term: "Google Ads Account",
+      description: config.googleAds.connected
+        ? config.googleAds.accountId || "Connected"
+        : "Not connected",
     },
     {
-      term: 'Last Sync',
-      description: config.googleAds.lastSync ? 
-        new Date(config.googleAds.lastSync).toLocaleString() : 
-        'Never',
+      term: "Last Sync",
+      description: config.googleAds.lastSync
+        ? new Date(config.googleAds.lastSync).toLocaleString()
+        : "Never",
     },
   ];
 
@@ -380,25 +399,27 @@ const AccountInfo: React.FC<{
 const DataExport: React.FC = () => {
   const [exportLoading, setExportLoading] = useState<string | null>(null);
 
-  const handleExport = async (type: 'campaigns' | 'audiences' | 'insights' | 'all') => {
+  const handleExport = async (
+    type: "campaigns" | "audiences" | "insights" | "all",
+  ) => {
     setExportLoading(type);
     try {
-      const response = await fetch(`/api/export/${type}`, { method: 'POST' });
-      
+      const response = await fetch(`/api/export/${type}`, { method: "POST" });
+
       if (response.ok) {
         const blob = await response.blob();
         const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.style.display = 'none';
+        const a = document.createElement("a");
+        a.style.display = "none";
         a.href = url;
-        a.download = `proofkit-${type}-${new Date().toISOString().split('T')[0]}.csv`;
+        a.download = `proofkit-${type}-${new Date().toISOString().split("T")[0]}.csv`;
         document.body.appendChild(a);
         a.click();
         window.URL.revokeObjectURL(url);
         document.body.removeChild(a);
       }
     } catch (error) {
-      console.error('Export failed:', error);
+      console.error("Export failed:", error);
     } finally {
       setExportLoading(null);
     }
@@ -406,24 +427,24 @@ const DataExport: React.FC = () => {
 
   const exportOptions = [
     {
-      title: 'Campaign Data',
-      description: 'Export all campaign performance data',
-      type: 'campaigns' as const,
+      title: "Campaign Data",
+      description: "Export all campaign performance data",
+      type: "campaigns" as const,
     },
     {
-      title: 'Audience Data',
-      description: 'Export audience definitions and performance',
-      type: 'audiences' as const,
+      title: "Audience Data",
+      description: "Export audience definitions and performance",
+      type: "audiences" as const,
     },
     {
-      title: 'Insights & Analytics',
-      description: 'Export detailed analytics and insights',
-      type: 'insights' as const,
+      title: "Insights & Analytics",
+      description: "Export detailed analytics and insights",
+      type: "insights" as const,
     },
     {
-      title: 'Complete Data Export',
-      description: 'Export all data in a comprehensive package',
-      type: 'all' as const,
+      title: "Complete Data Export",
+      description: "Export all data in a comprehensive package",
+      type: "all" as const,
     },
   ];
 
@@ -434,7 +455,7 @@ const DataExport: React.FC = () => {
           <Text variant="bodyMd" color="subdued">
             Export your data for analysis, backup, or migration purposes.
           </Text>
-          
+
           <Stack vertical spacing="tight">
             {exportOptions.map((option) => (
               <Card key={option.type} subdued>
@@ -448,7 +469,7 @@ const DataExport: React.FC = () => {
                         {option.description}
                       </Text>
                     </Stack>
-                    
+
                     <Button
                       onClick={() => handleExport(option.type)}
                       loading={exportLoading === option.type}
@@ -479,32 +500,40 @@ const DangerZone: React.FC<{
         <Card.Section>
           <Stack vertical>
             <Banner status="warning" title="Destructive Actions">
-              <p>These actions cannot be undone. Please proceed with caution.</p>
+              <p>
+                These actions cannot be undone. Please proceed with caution.
+              </p>
             </Banner>
-            
+
             <Stack distribution="equalSpacing">
               <Stack vertical spacing="extraTight">
-                <Text variant="bodyMd" fontWeight="semibold">Reset All Data</Text>
+                <Text variant="bodyMd" fontWeight="semibold">
+                  Reset All Data
+                </Text>
                 <Text variant="bodySm" color="subdued">
-                  Clear all campaigns, audiences, and analytics data. App settings will be preserved.
+                  Clear all campaigns, audiences, and analytics data. App
+                  settings will be preserved.
                 </Text>
               </Stack>
-              
+
               <Button destructive onClick={() => setShowResetModal(true)}>
                 Reset Data
               </Button>
             </Stack>
-            
+
             <Divider />
-            
+
             <Stack distribution="equalSpacing">
               <Stack vertical spacing="extraTight">
-                <Text variant="bodyMd" fontWeight="semibold">Delete Account</Text>
+                <Text variant="bodyMd" fontWeight="semibold">
+                  Delete Account
+                </Text>
                 <Text variant="bodySm" color="subdued">
-                  Permanently delete your ProofKit account and all associated data.
+                  Permanently delete your ProofKit account and all associated
+                  data.
                 </Text>
               </Stack>
-              
+
               <Button destructive onClick={() => setShowDeleteModal(true)}>
                 Delete Account
               </Button>
@@ -518,7 +547,7 @@ const DangerZone: React.FC<{
         onClose={() => setShowResetModal(false)}
         title="Reset All Data"
         primaryAction={{
-          content: 'Reset Data',
+          content: "Reset Data",
           destructive: true,
           onAction: () => {
             onResetData();
@@ -527,7 +556,7 @@ const DangerZone: React.FC<{
         }}
         secondaryActions={[
           {
-            content: 'Cancel',
+            content: "Cancel",
             onAction: () => setShowResetModal(false),
           },
         ]}
@@ -535,8 +564,9 @@ const DangerZone: React.FC<{
         <Modal.Section>
           <TextContainer>
             <p>
-              This will permanently delete all your campaigns, audiences, and analytics data. 
-              Your app settings and integrations will be preserved.
+              This will permanently delete all your campaigns, audiences, and
+              analytics data. Your app settings and integrations will be
+              preserved.
             </p>
             <p>
               <strong>This action cannot be undone.</strong>
@@ -550,7 +580,7 @@ const DangerZone: React.FC<{
         onClose={() => setShowDeleteModal(false)}
         title="Delete Account"
         primaryAction={{
-          content: 'Delete Account',
+          content: "Delete Account",
           destructive: true,
           onAction: () => {
             onDeleteAccount();
@@ -559,7 +589,7 @@ const DangerZone: React.FC<{
         }}
         secondaryActions={[
           {
-            content: 'Cancel',
+            content: "Cancel",
             onAction: () => setShowDeleteModal(false),
           },
         ]}
@@ -567,12 +597,13 @@ const DangerZone: React.FC<{
         <Modal.Section>
           <TextContainer>
             <p>
-              This will permanently delete your ProofKit account and all associated data, 
-              including campaigns, audiences, analytics, and settings.
+              This will permanently delete your ProofKit account and all
+              associated data, including campaigns, audiences, analytics, and
+              settings.
             </p>
             <p>
-              You will be immediately logged out and will need to reinstall the app 
-              to use ProofKit again.
+              You will be immediately logged out and will need to reinstall the
+              app to use ProofKit again.
             </p>
             <p>
               <strong>This action cannot be undone.</strong>
@@ -591,13 +622,13 @@ export const Settings: React.FC<SettingsProps> = ({ initialConfig }) => {
   const [error, setError] = useState<string | null>(null);
   const [selectedTab, setSelectedTab] = useState(0);
   const [toastActive, setToastActive] = useState(false);
-  const [toastMessage, setToastMessage] = useState('');
+  const [toastMessage, setToastMessage] = useState("");
 
   // Connection states
   const [connectionStates, setConnectionStates] = useState<ConnectionStatus>({
     shopify: {
       connected: true,
-      shop: config?.shopify.shop || '',
+      shop: config?.shopify.shop || "",
       installedAt: config?.shopify.installedAt,
     },
     googleAds: {
@@ -615,13 +646,13 @@ export const Settings: React.FC<SettingsProps> = ({ initialConfig }) => {
     try {
       setLoading(true);
       setError(null);
-      
-      const response = await fetch('/api/config');
+
+      const response = await fetch("/api/config");
       const data = await response.json();
-      
+
       if (data.success) {
         setConfig(data.data);
-        setConnectionStates(prev => ({
+        setConnectionStates((prev) => ({
           ...prev,
           shopify: {
             connected: true,
@@ -635,10 +666,10 @@ export const Settings: React.FC<SettingsProps> = ({ initialConfig }) => {
           },
         }));
       } else {
-        setError(data.error || 'Failed to load configuration');
+        setError(data.error || "Failed to load configuration");
       }
     } catch (err) {
-      setError('Network error while loading configuration');
+      setError("Network error while loading configuration");
     } finally {
       setLoading(false);
     }
@@ -654,27 +685,27 @@ export const Settings: React.FC<SettingsProps> = ({ initialConfig }) => {
   // Update configuration
   const updateConfig = async (updates: Partial<AppConfig>) => {
     if (!config) return;
-    
+
     try {
       setSaving(true);
-      
-      const response = await fetch('/api/config', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+
+      const response = await fetch("/api/config", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(updates),
       });
-      
+
       const result = await response.json();
-      
+
       if (result.success) {
-        setConfig(prev => ({ ...prev!, ...updates }));
-        setToastMessage('Settings saved successfully');
+        setConfig((prev) => ({ ...prev!, ...updates }));
+        setToastMessage("Settings saved successfully");
         setToastActive(true);
       } else {
-        setError(result.error || 'Failed to save settings');
+        setError(result.error || "Failed to save settings");
       }
     } catch (err) {
-      setError('Network error while saving settings');
+      setError("Network error while saving settings");
     } finally {
       setSaving(false);
     }
@@ -683,50 +714,52 @@ export const Settings: React.FC<SettingsProps> = ({ initialConfig }) => {
   // Connection handlers
   const handleGoogleAdsConnect = async () => {
     try {
-      const response = await fetch('/api/integrations/google-ads/auth-url', {
-        method: 'POST',
+      const response = await fetch("/api/integrations/google-ads/auth-url", {
+        method: "POST",
       });
-      
+
       const data = await response.json();
-      
+
       if (data.success) {
         window.location.href = data.authUrl;
       }
     } catch (error) {
-      setError('Failed to initiate Google Ads connection');
+      setError("Failed to initiate Google Ads connection");
     }
   };
 
   const handleGoogleSheetsConnect = async () => {
     try {
-      const response = await fetch('/api/integrations/google-sheets/auth-url', {
-        method: 'POST',
+      const response = await fetch("/api/integrations/google-sheets/auth-url", {
+        method: "POST",
       });
-      
+
       const data = await response.json();
-      
+
       if (data.success) {
         window.location.href = data.authUrl;
       }
     } catch (error) {
-      setError('Failed to initiate Google Sheets connection');
+      setError("Failed to initiate Google Sheets connection");
     }
   };
 
-  const handleDisconnect = async (service: 'google-ads' | 'google-sheets') => {
+  const handleDisconnect = async (service: "google-ads" | "google-sheets") => {
     try {
       const response = await fetch(`/api/integrations/${service}/disconnect`, {
-        method: 'POST',
+        method: "POST",
       });
-      
+
       if (response.ok) {
-        setConnectionStates(prev => ({
+        setConnectionStates((prev) => ({
           ...prev,
-          [service === 'google-ads' ? 'googleAds' : 'googleSheets']: {
+          [service === "google-ads" ? "googleAds" : "googleSheets"]: {
             connected: false,
           },
         }));
-        setToastMessage(`${service === 'google-ads' ? 'Google Ads' : 'Google Sheets'} disconnected`);
+        setToastMessage(
+          `${service === "google-ads" ? "Google Ads" : "Google Sheets"} disconnected`,
+        );
         setToastActive(true);
       }
     } catch (error) {
@@ -737,36 +770,60 @@ export const Settings: React.FC<SettingsProps> = ({ initialConfig }) => {
   // Destructive actions
   const handleResetData = async () => {
     try {
-      const response = await fetch('/api/reset-data', { method: 'POST' });
-      
+      const response = await fetch("/api/reset-data", { method: "POST" });
+
       if (response.ok) {
-        setToastMessage('All data has been reset');
+        setToastMessage("All data has been reset");
         setToastActive(true);
       }
     } catch (error) {
-      setError('Failed to reset data');
+      setError("Failed to reset data");
     }
   };
 
   const handleDeleteAccount = async () => {
     try {
-      const response = await fetch('/api/delete-account', { method: 'POST' });
-      
+      const response = await fetch("/api/delete-account", { method: "POST" });
+
       if (response.ok) {
-        window.location.href = '/';
+        window.location.href = "/";
       }
     } catch (error) {
-      setError('Failed to delete account');
+      setError("Failed to delete account");
     }
   };
 
   const tabs = [
-    { id: 'general', content: 'General', accessibilityLabel: 'General settings' },
-    { id: 'integrations', content: 'Integrations', accessibilityLabel: 'Integration settings' },
-    { id: 'tracking', content: 'Tracking', accessibilityLabel: 'Tracking settings' },
-    { id: 'automation', content: 'Automation', accessibilityLabel: 'Automation settings' },
-    { id: 'notifications', content: 'Notifications', accessibilityLabel: 'Notification settings' },
-    { id: 'data', content: 'Data & Privacy', accessibilityLabel: 'Data and privacy settings' },
+    {
+      id: "general",
+      content: "General",
+      accessibilityLabel: "General settings",
+    },
+    {
+      id: "integrations",
+      content: "Integrations",
+      accessibilityLabel: "Integration settings",
+    },
+    {
+      id: "tracking",
+      content: "Tracking",
+      accessibilityLabel: "Tracking settings",
+    },
+    {
+      id: "automation",
+      content: "Automation",
+      accessibilityLabel: "Automation settings",
+    },
+    {
+      id: "notifications",
+      content: "Notifications",
+      accessibilityLabel: "Notification settings",
+    },
+    {
+      id: "data",
+      content: "Data & Privacy",
+      accessibilityLabel: "Data and privacy settings",
+    },
   ];
 
   if (loading) {
@@ -792,7 +849,7 @@ export const Settings: React.FC<SettingsProps> = ({ initialConfig }) => {
     return (
       <Page title="Settings">
         <Banner status="critical" title="Error loading settings">
-          <p>{error || 'Failed to load configuration'}</p>
+          <p>{error || "Failed to load configuration"}</p>
           <Button onClick={loadConfig}>Retry</Button>
         </Banner>
       </Page>
@@ -800,10 +857,7 @@ export const Settings: React.FC<SettingsProps> = ({ initialConfig }) => {
   }
 
   const toastMarkup = toastActive ? (
-    <Toast
-      content={toastMessage}
-      onDismiss={() => setToastActive(false)}
-    />
+    <Toast content={toastMessage} onDismiss={() => setToastActive(false)} />
   ) : null;
 
   return (
@@ -813,7 +867,7 @@ export const Settings: React.FC<SettingsProps> = ({ initialConfig }) => {
         subtitle="Manage your ProofKit configuration and integrations"
         secondaryActions={[
           {
-            content: 'Refresh',
+            content: "Refresh",
             onAction: loadConfig,
           },
         ]}
@@ -826,7 +880,7 @@ export const Settings: React.FC<SettingsProps> = ({ initialConfig }) => {
                   <Layout.Section oneHalf>
                     <AccountInfo config={config} />
                   </Layout.Section>
-                  
+
                   <Layout.Section oneHalf>
                     <Card title="App Status">
                       <Card.Section>
@@ -835,25 +889,49 @@ export const Settings: React.FC<SettingsProps> = ({ initialConfig }) => {
                             <Text variant="bodyMd">Shopify Integration</Text>
                             <Badge status="success">Active</Badge>
                           </Stack>
-                          
+
                           <Stack distribution="equalSpacing">
                             <Text variant="bodyMd">Google Ads</Text>
-                            <Badge status={config.googleAds.connected ? 'success' : 'subdued'}>
-                              {config.googleAds.connected ? 'Connected' : 'Not Connected'}
+                            <Badge
+                              status={
+                                config.googleAds.connected
+                                  ? "success"
+                                  : "subdued"
+                              }
+                            >
+                              {config.googleAds.connected
+                                ? "Connected"
+                                : "Not Connected"}
                             </Badge>
                           </Stack>
-                          
+
                           <Stack distribution="equalSpacing">
                             <Text variant="bodyMd">Tracking Active</Text>
-                            <Badge status={config.tracking.conversionTracking ? 'success' : 'subdued'}>
-                              {config.tracking.conversionTracking ? 'Yes' : 'No'}
+                            <Badge
+                              status={
+                                config.tracking.conversionTracking
+                                  ? "success"
+                                  : "subdued"
+                              }
+                            >
+                              {config.tracking.conversionTracking
+                                ? "Yes"
+                                : "No"}
                             </Badge>
                           </Stack>
-                          
+
                           <Stack distribution="equalSpacing">
                             <Text variant="bodyMd">Autopilot</Text>
-                            <Badge status={config.automation.autopilotEnabled ? 'success' : 'subdued'}>
-                              {config.automation.autopilotEnabled ? 'Enabled' : 'Disabled'}
+                            <Badge
+                              status={
+                                config.automation.autopilotEnabled
+                                  ? "success"
+                                  : "subdued"
+                              }
+                            >
+                              {config.automation.autopilotEnabled
+                                ? "Enabled"
+                                : "Disabled"}
                             </Badge>
                           </Stack>
                         </Stack>
@@ -872,37 +950,42 @@ export const Settings: React.FC<SettingsProps> = ({ initialConfig }) => {
                         description="Connect your Google Ads account to sync campaigns and performance data"
                         connected={connectionStates.googleAds.connected}
                         onConnect={handleGoogleAdsConnect}
-                        onDisconnect={() => handleDisconnect('google-ads')}
+                        onDisconnect={() => handleDisconnect("google-ads")}
                         details={
                           connectionStates.googleAds.connected && (
                             <Stack vertical spacing="extraTight">
                               {connectionStates.googleAds.accountId && (
                                 <Text variant="bodySm">
-                                  Account ID: {connectionStates.googleAds.accountId}
+                                  Account ID:{" "}
+                                  {connectionStates.googleAds.accountId}
                                 </Text>
                               )}
                               {connectionStates.googleAds.lastSync && (
                                 <Text variant="bodySm" color="subdued">
-                                  Last sync: {new Date(connectionStates.googleAds.lastSync).toLocaleString()}
+                                  Last sync:{" "}
+                                  {new Date(
+                                    connectionStates.googleAds.lastSync,
+                                  ).toLocaleString()}
                                 </Text>
                               )}
                             </Stack>
                           )
                         }
                       />
-                      
+
                       <ConnectionCard
                         title="Google Sheets"
                         description="Export data to Google Sheets for advanced analysis and reporting"
                         connected={connectionStates.googleSheets.connected}
                         onConnect={handleGoogleSheetsConnect}
-                        onDisconnect={() => handleDisconnect('google-sheets')}
+                        onDisconnect={() => handleDisconnect("google-sheets")}
                         details={
                           connectionStates.googleSheets.connected && (
                             <Stack vertical spacing="extraTight">
                               {connectionStates.googleSheets.sheetName && (
                                 <Text variant="bodySm">
-                                  Sheet: {connectionStates.googleSheets.sheetName}
+                                  Sheet:{" "}
+                                  {connectionStates.googleSheets.sheetName}
                                 </Text>
                               )}
                             </Stack>
@@ -925,7 +1008,10 @@ export const Settings: React.FC<SettingsProps> = ({ initialConfig }) => {
               {selectedTab === 3 && (
                 <Layout>
                   <Layout.Section>
-                    <AutomationSettings config={config} onUpdate={updateConfig} />
+                    <AutomationSettings
+                      config={config}
+                      onUpdate={updateConfig}
+                    />
                   </Layout.Section>
                 </Layout>
               )}
@@ -933,7 +1019,10 @@ export const Settings: React.FC<SettingsProps> = ({ initialConfig }) => {
               {selectedTab === 4 && (
                 <Layout>
                   <Layout.Section>
-                    <NotificationSettings config={config} onUpdate={updateConfig} />
+                    <NotificationSettings
+                      config={config}
+                      onUpdate={updateConfig}
+                    />
                   </Layout.Section>
                 </Layout>
               )}
@@ -943,7 +1032,7 @@ export const Settings: React.FC<SettingsProps> = ({ initialConfig }) => {
                   <Layout.Section oneHalf>
                     <DataExport />
                   </Layout.Section>
-                  
+
                   <Layout.Section oneHalf>
                     <DangerZone
                       onResetData={handleResetData}

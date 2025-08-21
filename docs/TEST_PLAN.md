@@ -21,6 +21,7 @@ npm run cypress:ci && npm run build:docs
 ## Test Coverage
 
 ### 8-Step Merchant Funnel
+
 1. **Install & OAuth**: Shopify app installation and authentication
 2. **Settings**: Configuration persistence and validation
 3. **Safe First Run**: Budget caps and safety limits
@@ -31,6 +32,7 @@ npm run cypress:ci && npm run build:docs
 8. **Go Live**: PROMOTE gate enable and live execution
 
 ### Test Types
+
 - **Functional**: Core feature workflows
 - **Accessibility**: Keyboard navigation and screen reader support
 - **Error Handling**: API failures and validation errors
@@ -52,12 +54,14 @@ DEBUG=cypress:* npm run cypress:headed
 ## CI/CD Integration
 
 ### GitHub Actions
+
 - Runs on push/PR to main branches
 - Tests Chrome and Firefox browsers
 - Generates artifacts: screenshots, documentation, accessibility reports
 - Uploads to GitHub Actions artifacts
 
 ### Required Environment
+
 ```bash
 TENANT_ID=demo-tenant-1
 BACKEND_URL=http://localhost:3001
@@ -71,4 +75,3 @@ HMAC_SECRET=test-secret-key-for-demo
 **OAuth issues**: Verify Shopify API credentials
 
 For complete documentation see auto-generated `FUNNEL_E2E_GUIDE.md`.
-

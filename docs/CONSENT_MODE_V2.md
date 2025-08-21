@@ -33,19 +33,19 @@ ProofKit's Shopify Web Pixel Extension now includes comprehensive Consent Mode v
 
 ### Consent Types Handled
 
-| Consent Type | Purpose | Default | When Required |
-|--------------|---------|---------|---------------|
-| `ad_storage` | Ads data storage | Denied | Google Ads conversions |
-| `analytics_storage` | Analytics data | Denied | GA4 enhanced ecommerce |
-| `ad_user_data` | User data sharing | Denied | Conversion attribution |
-| `ad_personalization` | Ad personalization | Denied | Enhanced targeting |
-| `functionality_storage` | Core functionality | Granted | Always allowed |
-| `security_storage` | Security purposes | Granted | Always allowed |
+| Consent Type            | Purpose            | Default | When Required          |
+| ----------------------- | ------------------ | ------- | ---------------------- |
+| `ad_storage`            | Ads data storage   | Denied  | Google Ads conversions |
+| `analytics_storage`     | Analytics data     | Denied  | GA4 enhanced ecommerce |
+| `ad_user_data`          | User data sharing  | Denied  | Conversion attribution |
+| `ad_personalization`    | Ad personalization | Denied  | Enhanced targeting     |
+| `functionality_storage` | Core functionality | Granted | Always allowed         |
+| `security_storage`      | Security purposes  | Granted | Always allowed         |
 
 ### Integration Points
 
 1. **Shopify Customer Privacy API**: Primary consent source
-2. **Google Consent Mode v2**: Direct gtag integration  
+2. **Google Consent Mode v2**: Direct gtag integration
 3. **CMP Providers**: OneTrust, Cookiebot, TrustArc, Didomi, etc.
 4. **Custom CMPs**: Manual integration support via events
 
@@ -61,6 +61,7 @@ Purchase  → Verify Marketing → Include Full Data → Conversion Tracking
 ## Setup Documentation
 
 📖 **Complete guides available at:**
+
 - `/shopify-app/extensions/pk-web-pixel/MERCHANT_SETUP_GUIDE.md`
 - `/shopify-app/extensions/pk-web-pixel/CONSENT_MODE_V2_GUIDE.md`
 
@@ -69,7 +70,7 @@ Purchase  → Verify Marketing → Include Full Data → Conversion Tracking
 ### Required Tests
 
 - **EEA/UK Users**: Consent denied by default, explicit opt-in required
-- **Consent Granted**: Full tracking active for GA4 and Google Ads  
+- **Consent Granted**: Full tracking active for GA4 and Google Ads
 - **Consent Denied**: Events blocked or anonymized, conversion modeling active
 - **Consent Changes**: Real-time updates reflected immediately
 
@@ -94,14 +95,16 @@ Enable debug logging by setting `proofkit.debug_mode = "true"` in your metafield
 ## Migration Path
 
 ### From Basic Implementation
+
 1. Update to latest ProofKit Web Pixel Extension
 2. Configure metafields for GA4/Google Ads (optional)
 3. Test consent scenarios
 4. Update privacy policy if needed
 
 ### From Manual gtag Implementation
+
 1. Remove manual gtag consent code
-2. Enable ProofKit Web Pixel Extension  
+2. Enable ProofKit Web Pixel Extension
 3. ProofKit handles all consent automatically
 4. Verify tracking continues working
 
@@ -113,13 +116,15 @@ For unsupported CMPs, trigger manual consent updates:
 
 ```javascript
 // Trigger consent change when user updates preferences
-window.dispatchEvent(new CustomEvent('consent_changed', {
-  detail: {
-    analytics: true,    // User consented to analytics
-    marketing: true,    // User consented to marketing  
-    source: 'custom'
-  }
-}));
+window.dispatchEvent(
+  new CustomEvent("consent_changed", {
+    detail: {
+      analytics: true, // User consented to analytics
+      marketing: true, // User consented to marketing
+      source: "custom",
+    },
+  }),
+);
 ```
 
 ### Server-Side Consent
@@ -131,7 +136,7 @@ ProofKit includes consent metadata with all events for server-side respect:
   "event": "purchase_completed",
   "consent_metadata": {
     "granted": true,
-    "source": "cookiebot", 
+    "source": "cookiebot",
     "timestamp": 1703123456789
   }
 }
@@ -142,5 +147,3 @@ ProofKit includes consent metadata with all events for server-side respect:
 - **Technical Issues**: Check the detailed implementation guides
 - **Privacy Questions**: Consult the Consent Mode v2 guide
 - **General Support**: support@proofkit.com
-
-

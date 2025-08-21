@@ -5,8 +5,8 @@ global:
   scrape_interval: 15s
   evaluation_interval: 15s
   external_labels:
-    cluster: 'proofkit-saas'
-    environment: 'production'
+    cluster: "proofkit-saas"
+    environment: "production"
 
 # Alertmanager configuration
 alerting:
@@ -23,64 +23,64 @@ rule_files:
 # Scrape configurations
 scrape_configs:
   # Prometheus itself
-  - job_name: 'prometheus'
+  - job_name: "prometheus"
     static_configs:
-      - targets: ['localhost:9090']
+      - targets: ["localhost:9090"]
     scrape_interval: 30s
-    metrics_path: '/metrics'
+    metrics_path: "/metrics"
 
   # ProofKit application metrics
-  - job_name: 'proofkit-app'
+  - job_name: "proofkit-app"
     static_configs:
-      - targets: ['proofkit-app:3000']
+      - targets: ["proofkit-app:3000"]
     scrape_interval: 15s
-    metrics_path: '/metrics'
+    metrics_path: "/metrics"
     scrape_timeout: 10s
     honor_labels: true
     params:
-      format: ['prometheus']
+      format: ["prometheus"]
 
   # Node Exporter for system metrics
-  - job_name: 'node-exporter'
+  - job_name: "node-exporter"
     static_configs:
-      - targets: ['node-exporter:9100']
+      - targets: ["node-exporter:9100"]
     scrape_interval: 30s
     scrape_timeout: 10s
 
   # cAdvisor for container metrics
-  - job_name: 'cadvisor'
+  - job_name: "cadvisor"
     static_configs:
-      - targets: ['cadvisor:8080']
+      - targets: ["cadvisor:8080"]
     scrape_interval: 30s
     scrape_timeout: 10s
-    metrics_path: '/metrics'
+    metrics_path: "/metrics"
 
   # Redis metrics (if redis-exporter is added)
-  - job_name: 'redis'
+  - job_name: "redis"
     static_configs:
-      - targets: ['redis:6379']
+      - targets: ["redis:6379"]
     scrape_interval: 30s
-    metrics_path: '/metrics'
+    metrics_path: "/metrics"
     params:
-      format: ['prometheus']
+      format: ["prometheus"]
 
   # Nginx metrics
-  - job_name: 'nginx'
+  - job_name: "nginx"
     static_configs:
-      - targets: ['nginx:80']
+      - targets: ["nginx:80"]
     scrape_interval: 30s
-    metrics_path: '/nginx_status'
+    metrics_path: "/nginx_status"
     scrape_timeout: 10s
 
   # Custom application health checks
-  - job_name: 'proofkit-health'
+  - job_name: "proofkit-health"
     static_configs:
-      - targets: ['proofkit-app:3000']
+      - targets: ["proofkit-app:3000"]
     scrape_interval: 60s
-    metrics_path: '/health'
+    metrics_path: "/health"
     scrape_timeout: 15s
     params:
-      format: ['json']
+      format: ["json"]
 
 # Recording rules for aggregated metrics
 # These can be uncommented and customized based on specific needs
@@ -94,7 +94,7 @@ scrape_configs:
 #           * on(instance) group_left(nodename)
 #             node_uname_info{nodename!=""}
 #           )
-#       
+#
 #       - record: instance:node_load1_per_cpu:ratio
 #         expr: |
 #           (
@@ -104,7 +104,7 @@ scrape_configs:
 #           * on(instance) group_left(nodename)
 #             node_uname_info{nodename!=""}
 #           )
-#       
+#
 #       - record: instance:node_memory_utilisation:ratio
 #         expr: |
 #           (
@@ -118,15 +118,15 @@ scrape_configs:
 #           * on(instance) group_left(nodename)
 #             node_uname_info{nodename!=""}
 #           )
-#       
+#
 #       - record: proofkit:http_requests:rate5m
 #         expr: |
 #           rate(http_requests_total[5m])
-#       
+#
 #       - record: proofkit:http_request_duration:p95
 #         expr: |
 #           histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m]))
-#       
+#
 #       - record: proofkit:error_rate:rate5m
 #         expr: |
 #           rate(http_requests_total{status=~"5.."}[5m])
