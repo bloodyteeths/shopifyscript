@@ -3,79 +3,60 @@
  * Extracts tenant ID from Shopify session, shop domain, or request context
  */
 
-import { validateShopName } from './shop-config';
+import { authenticate, extractShopFromRequest } from '../shopify.server';
+import { getTenantConfig, initializeTenant, getTenantSheetId as getDbTenantSheetId, isSetupCompleted } from './database.server';
 
 /**
- * Extract tenant ID from request
- * Production-ready multi-tenant detection with user-input priority
+ * Extract tenant ID from request using Shopify authentication
+ * Now uses proper Shopify session instead of manual shop input
  */
 export async function getTenantFromRequest(request: Request): Promise<string> {
   try {
-    const url = new URL(request.url);
+    // Method 1: Try to get shop from authenticated Shopify session (highest priority)
+    try {
+      const { session } = await authenticate.admin(request);
+      if (session?.shop) {
+        const tenantId = session.shop.replace('.myshopify.com', '');
+        console.log(`🏪 Detected tenant from Shopify session: ${tenantId}`);
+        
+        // Initialize tenant in database if not exists
+        initializeTenant(tenantId, session.shop);
+        
+        return tenantId;
+      }
+    } catch (authError) {
+      // Authentication failed, try other methods
+      console.log('🔐 Shopify authentication failed, trying alternative methods');
+    }
     
-    // Method 1: Extract from URL parameters (highest priority - user input)
-    const shopParam = url.searchParams.get('shop') || url.searchParams.get('shopName') || url.searchParams.get('tenant');
-    if (shopParam) {
-      // Convert "mystore.myshopify.com" -> "mystore" if needed
-      const tenantId = shopParam.replace('.myshopify.com', '');
-      if (validateShopName(tenantId)) {
-        console.log(`🏪 Detected tenant from URL param: ${tenantId}`);
-        return tenantId;
-      }
+    // Method 2: Extract from Shopify URL parameters (host, shop, etc.)
+    const shopFromRequest = extractShopFromRequest(request);
+    if (shopFromRequest) {
+      console.log(`🔗 Detected tenant from Shopify request params: ${shopFromRequest}`);
+      return shopFromRequest;
     }
 
-    // Method 2: Check cookies for persisted shop name
-    const cookieHeader = request.headers.get('cookie') || '';
-    if (cookieHeader) {
-      try {
-        const parts = cookieHeader.split(';');
-        for (const part of parts) {
-          const [rawKey, ...rest] = part.trim().split('=');
-          const key = (rawKey || '').trim();
-          if (key === 'proofkit_shop_name') {
-            const value = decodeURIComponent(rest.join('='));
-            if (value && validateShopName(value)) {
-              console.log(`🍪 Detected tenant from cookie: ${value}`);
-              return value;
-            }
-          }
-        }
-      } catch (e) {
-        // ignore cookie parse errors
-      }
-    }
-
-    // Method 3: Extract from Shopify session headers
-    const shopifyShop = request.headers.get('x-shopify-shop-domain');
-    if (shopifyShop) {
-      const tenantId = shopifyShop.replace('.myshopify.com', '');
-      if (validateShopName(tenantId)) {
-        console.log(`🛍️ Detected tenant from Shopify header: ${tenantId}`);
-        return tenantId;
-      }
-    }
-
-    // Method 4: Extract from subdomain (if using subdomain routing)
-    const host = request.headers.get('host') || '';
-    if (host.includes('.proofkit.com')) {
-      const subdomain = host.split('.')[0];
-      if (subdomain && subdomain !== 'www' && subdomain !== 'app' && validateShopName(subdomain)) {
-        console.log(`🌐 Detected tenant from subdomain: ${subdomain}`);
-        return subdomain;
-      }
-    }
-
-    // Method 5: Check for explicit tenant in headers (for testing/APIs)
+    // Method 3: Check explicit tenant in headers (for testing/APIs)
     const explicitTenant = request.headers.get('x-proofkit-tenant');
-    if (explicitTenant && validateShopName(explicitTenant)) {
+    if (explicitTenant) {
       console.log(`🔧 Detected tenant from header: ${explicitTenant}`);
       return explicitTenant;
     }
     
-    // Development fallback ONLY - do not override user input
+    // Method 4: Extract from subdomain (if using subdomain routing)
+    const host = request.headers.get('host') || '';
+    if (host.includes('.proofkit.com')) {
+      const subdomain = host.split('.')[0];
+      if (subdomain && subdomain !== 'www' && subdomain !== 'app') {
+        console.log(`🌐 Detected tenant from subdomain: ${subdomain}`);
+        return subdomain;
+      }
+    }
+    
+    // Development fallback ONLY
     if (process.env.NODE_ENV === 'development') {
       const devTenant = process.env.DEFAULT_DEV_TENANT || process.env.TENANT_ID;
-      if (devTenant && validateShopName(devTenant)) {
+      if (devTenant) {
         console.log(`⚠️ Using development fallback tenant: ${devTenant}`);
         return devTenant;
       }
@@ -84,8 +65,8 @@ export async function getTenantFromRequest(request: Request): Promise<string> {
       return 'proofkit';
     }
     
-    // Production: no valid tenant found - should trigger setup
-    throw new Error('No valid tenant found - setup required');
+    // Production: no valid tenant found - this should not happen with proper Shopify authentication
+    throw new Error('No valid shop found - Shopify authentication required');
     
   } catch (error) {
     console.error('Tenant detection failed:', error.message);
@@ -123,19 +104,10 @@ export function shopDomainToTenantId(shopDomain: string): string {
 /**
  * Generate Google Sheet ID for tenant
  * Each tenant gets their own Google Sheet for data isolation
+ * Now uses database storage with environment fallback
  */
 export function getTenantSheetId(tenantId: string): string {
-  // In production, this would be stored in a database mapping tenants to Sheet IDs
-  // For now, use environment variable mapping
-  
-  const sheetMappings = {
-    'proofkit': process.env.DEV_SHEET_ID || process.env.DEFAULT_SHEET_ID,
-    'dev-tenant': process.env.DEV_SHEET_ID,
-    'demo-store': process.env.DEMO_SHEET_ID,
-    // Add more tenant -> sheet mappings as needed
-  };
-  
-  return sheetMappings[tenantId] || process.env.DEFAULT_SHEET_ID || '';
+  return getDbTenantSheetId(tenantId);
 }
 
 /**
@@ -159,6 +131,20 @@ export async function validateTenantAccess(request: Request, tenantId: string): 
     console.error('Tenant access validation failed:', error.message);
     return false;
   }
+}
+
+/**
+ * Check if tenant has completed initial setup
+ */
+export function checkTenantSetup(tenantId: string): boolean {
+  return isSetupCompleted(tenantId);
+}
+
+/**
+ * Get tenant configuration from database
+ */
+export function getTenantConfiguration(tenantId: string) {
+  return getTenantConfig(tenantId);
 }
 
 /**

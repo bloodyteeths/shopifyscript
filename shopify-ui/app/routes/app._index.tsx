@@ -1,39 +1,57 @@
-import { json } from '@remix-run/node';
+import type { LoaderFunctionArgs } from '@remix-run/node';
+import { json, redirect } from '@remix-run/node';
 import { useLoaderData, Link } from '@remix-run/react';
 import * as React from 'react';
-import ShopSetupBanner from '../components/ShopSetupBanner';
-import { isShopSetupNeeded, dismissShopSetupForSession } from '../utils/shop-config';
+import { authenticate } from '../shopify.server';
+import { checkTenantSetup } from '../utils/tenant.server';
 
-export const loader = async () => {
+export const loader = async ({ request }: LoaderFunctionArgs) => {
+  // Authenticate with Shopify to ensure we have a valid session
+  const { session } = await authenticate.admin(request);
+  
+  const shopName = session?.shop?.replace('.myshopify.com', '');
+  
+  if (!shopName) {
+    throw new Error('Unable to determine shop name from Shopify session');
+  }
+  
+  // Check if tenant needs initial setup
+  if (!checkTenantSetup(shopName)) {
+    return redirect('/app/setup');
+  }
+  
   return json({
     message: 'AI-powered Google Ads optimization on autopilot',
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
+    shopName: shopName
   });
 };
 
 export default function AppIndex() {
-  const { message, timestamp } = useLoaderData<typeof loader>();
-  const [showSetupBanner, setShowSetupBanner] = React.useState(false);
-
-  // Check if setup is needed on client side
-  React.useEffect(() => {
-    setShowSetupBanner(isShopSetupNeeded());
-  }, []);
-
-  const handleSetupComplete = (shopName: string) => {
-    setShowSetupBanner(false);
-    dismissShopSetupForSession(); // Prevent re-showing this session
-  };
+  const { message, timestamp, shopName } = useLoaderData<typeof loader>();
 
   return (
     <div style={{ padding: '2rem' }}>
-      {/* Shop Setup Banner - only shows if needed */}
-      {showSetupBanner && (
-        <ShopSetupBanner 
-          onSetupComplete={handleSetupComplete}
-          showOnlyIfNeeded={true}
-        />
-      )}
+      <div style={{
+        background: '#e7f3ff',
+        border: '1px solid #b3d7ff',
+        borderRadius: '8px',
+        padding: '16px',
+        marginBottom: '24px',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '12px'
+      }}>
+        <span style={{ fontSize: '24px' }}>🏪</span>
+        <div>
+          <h3 style={{ margin: '0', fontSize: '16px', color: '#0066cc' }}>
+            Connected to {shopName}.myshopify.com
+          </h3>
+          <p style={{ margin: '4px 0 0 0', fontSize: '14px', color: '#666' }}>
+            Your shop is automatically detected and configured
+          </p>
+        </div>
+      </div>
 
       <h1>🚀 Ads Autopilot AI Dashboard</h1>
       <p>{message}</p>

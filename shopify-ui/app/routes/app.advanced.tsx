@@ -1,44 +1,62 @@
 import * as React from 'react'
-import { json, type LoaderFunctionArgs, type ActionFunctionArgs } from '@remix-run/node'
+import { json, redirect, type LoaderFunctionArgs, type ActionFunctionArgs } from '@remix-run/node'
 import { useLoaderData, Form, useNavigation, useActionData, useRevalidator } from '@remix-run/react'
-import { getServerShopName, isShopSetupNeeded, validateShopName, dismissShopSetupForSession } from '../utils/shop-config'
-import ShopConfig from '../components/ShopConfig'
-import ShopSetupBanner from '../components/ShopSetupBanner'
+import { authenticate } from '../shopify.server'
+import { checkTenantSetup } from '../utils/tenant.server'
 
 // This function is no longer needed - replaced by shop name utilities
 
 export async function loader({request}: LoaderFunctionArgs){
+  // Authenticate with Shopify and get shop name from session
+  const { session } = await authenticate.admin(request);
+  const shopName = session?.shop?.replace('.myshopify.com', '') || '';
+  
+  if (!shopName) {
+    throw new Error('Unable to determine shop name from Shopify session');
+  }
+  
+  // Check if tenant needs initial setup
+  if (!checkTenantSetup(shopName)) {
+    return redirect('/app/setup');
+  }
+  
+  console.log(`🔍 Detected shop from Shopify session: ${shopName}`);
+
   try {
-    // Use the improved server shop name detection that prioritizes URL params
-    const shopName = getServerShopName(request.headers, request.url)
-    
-    console.log(`🔍 Detected shop: ${shopName}`);
-    
     const { backendFetch } = await import('../server/hmac.server')
-    const cfg = await backendFetch('/config','GET', undefined, shopName)
-    const insights = await backendFetch('/insights?w=7d','GET', undefined, shopName)
-    const campaigns = await backendFetch('/campaigns','GET', undefined, shopName) 
-    const summary = await backendFetch('/summary','GET', undefined, shopName)
+    
+    console.log(`📡 Fetching data for shop: ${shopName}`);
+    
+    // Fetch data with better error handling for each endpoint
+    const [cfg, insights, campaigns, summary] = await Promise.allSettled([
+      backendFetch('/config','GET', undefined, shopName),
+      backendFetch('/insights?w=7d','GET', undefined, shopName),
+      backendFetch('/campaigns','GET', undefined, shopName),
+      backendFetch('/summary','GET', undefined, shopName)
+    ]);
+    
+    const configData = cfg.status === 'fulfilled' ? cfg.value.json?.config || {} : {};
+    const insightsData = insights.status === 'fulfilled' ? insights.value.json || {} : {};
+    const campaignsData = campaigns.status === 'fulfilled' ? campaigns.value.json || {} : {};
+    const summaryData = summary.status === 'fulfilled' ? summary.value.json || {} : {};
+    
+    console.log(`✅ Data fetched successfully for ${shopName}:`, {
+      configKeys: Object.keys(configData).length,
+      hasInsights: !!insightsData.kpi,
+      campaignCount: campaignsData.campaigns?.length || 0
+    });
     
     return json({ 
-      cfg: cfg.json?.config||{}, 
-      insights: insights.json||{},
-      campaigns: campaigns.json||{},
-      summary: summary.json||{},
-      suggestions: generateSuggestions(insights.json, campaigns.json, summary.json),
-      shopName: shopName
+      cfg: configData, 
+      insights: insightsData,
+      campaigns: campaignsData,
+      summary: summaryData,
+      suggestions: generateSuggestions(insightsData, campaignsData, summaryData),
+      shopName: shopName,
+      error: cfg.status === 'rejected' ? 'Failed to load configuration - check backend connection' : null
     })
   } catch (error) {
-    console.error('Loader error:', error.message);
-    
-    // Try to get a fallback shop name for error case
-    let fallbackShopName = 'proofkit';
-    try {
-      fallbackShopName = getServerShopName(request.headers, request.url);
-    } catch (e) {
-      // If we can't get shop name at all, use development fallback
-      fallbackShopName = process.env.TENANT_ID || 'proofkit';
-    }
+    console.error('Loader critical error:', error.message);
     
     return json({ 
       cfg: {}, 
@@ -46,9 +64,9 @@ export async function loader({request}: LoaderFunctionArgs){
       campaigns: {},
       summary: {},
       suggestions: generateSuggestions({}, {}, {}),
-      shopName: fallbackShopName,
-      error: 'Failed to load data - using fallback configuration'
-    })
+      shopName: shopName,
+      error: `Failed to load data: ${error.message}`
+    }, { status: 500 })
   }
 }
 
@@ -198,14 +216,28 @@ function generateSuggestions(insights: any, campaigns: any, summary: any) {
 }
 
 export async function action({request}: ActionFunctionArgs){
+  let shopName: string;
+  
   try {
-    // Use improved shop name detection
-    let shopName = getServerShopName(request.headers, request.url)
+    // Use Shopify authentication to get shop name
+    try {
+      const { session } = await authenticate.admin(request);
+      shopName = session?.shop?.replace('.myshopify.com', '') || '';
+      if (!shopName) {
+        throw new Error('No shop name found in Shopify session');
+      }
+    } catch (shopNameError) {
+      console.warn('Shop name detection failed in action:', shopNameError.message);
+      shopName = process.env.TENANT_ID || 'proofkit';
+    }
     
     const fd = await request.formData()
     const formShop = String(fd.get('shop')||'').trim()
-    if (formShop && validateShopName(formShop)) {
+    if (formShop && formShop.length > 0) {
       shopName = formShop
+      console.log(`🔧 Using form shop name: ${shopName}`);
+    } else {
+      console.log(`🔧 Using detected shop name: ${shopName}`);
     }
     
     console.log(`🔧 Processing action for shop: ${shopName}`);
@@ -217,9 +249,28 @@ export async function action({request}: ActionFunctionArgs){
       AP_PLAYBOOK_PROMPT: String(fd.get('playbook')||'')
     }
     
-    // Always save settings first
+    console.log(`💾 Saving settings for ${shopName}:`, {
+      schedule: settings.AP_SCHEDULE,
+      target_cpa: settings.AP_TARGET_CPA,
+      target_roas: settings.AP_TARGET_ROAS,
+      keywords_count: settings.AP_DESIRED_KEYWORDS_PIPE.split('|').length,
+      playbook_length: settings.AP_PLAYBOOK_PROMPT.length
+    });
+    
+    // Always save settings first with enhanced error handling
     const { backendFetch } = await import('../server/hmac.server')
-    await backendFetch('/upsertConfig','POST',{ nonce: Date.now(), settings }, shopName)
+    const saveResult = await backendFetch('/upsertConfig','POST',{ nonce: Date.now(), settings }, shopName)
+    
+    if (!saveResult.json?.ok) {
+      console.error(`❌ Failed to save settings for ${shopName}:`, saveResult.json);
+      return json({ 
+        ok: false, 
+        error: `Failed to save settings: ${saveResult.json?.error || 'Unknown error'}`,
+        shopName: shopName
+      }, { status: 500 })
+    }
+    
+    console.log(`✅ Settings saved successfully for ${shopName}:`, saveResult.json);
   
     // Handle bid limits if provided
     if (fd.get('save_caps')==='1'){
@@ -269,17 +320,17 @@ export async function action({request}: ActionFunctionArgs){
   // Default return for other actions (SEO, etc.)
   return json({ ok:true, message: 'Settings saved successfully!', shopName: shopName })
   } catch (error) {
-    console.error('Action error:', error.message);
+    console.error('Action critical error:', error.message, error.stack);
     
-    // Try to get shop name for error response
-    let errorShopName = 'proofkit';
-    try {
-      errorShopName = getServerShopName(request.headers, request.url);
-    } catch (e) {
-      errorShopName = process.env.TENANT_ID || 'proofkit';
-    }
+    // Ensure we have a shop name for error response
+    const errorShopName = shopName || process.env.TENANT_ID || 'proofkit';
     
-    return json({ ok: false, error: error.message, shopName: errorShopName }, { status: 500 })
+    return json({ 
+      ok: false, 
+      error: `Action failed: ${error.message}`,
+      shopName: errorShopName,
+      debug: process.env.NODE_ENV === 'development' ? error.stack : undefined
+    }, { status: 500 })
   }
 }
 
@@ -301,7 +352,8 @@ export default function Advanced(){
 
   // Check if setup is needed on client side (only once)
   React.useEffect(() => {
-    setShowSetupBanner(isShopSetupNeeded());
+    // For now, assume setup is not needed since we get shop from Shopify session
+    setShowSetupBanner(false);
   }, []);
 
   // Ensure URL always carries ?shop=<name> for server loaders (cookies may be blocked in iframe)
@@ -314,21 +366,16 @@ export default function Advanced(){
     try {
       const url = new URL(window.location.href)
       const hasShopParam = !!url.searchParams.get('shop')
-      if (!hasShopParam) {
-        const stored = (typeof window !== 'undefined') ? localStorage.getItem('proofkit_shop_name') : null
-        const defaultTenant = process.env.TENANT_ID || 'proofkit';
-        if (stored && validateShopName(stored) && stored !== defaultTenant) {
-          url.searchParams.set('shop', stored)
-          window.history.replaceState({}, '', url.toString())
-          try { revalidator.revalidate(); } catch {}
-        }
+      if (!hasShopParam && data?.shopName) {
+        url.searchParams.set('shop', data.shopName)
+        window.history.replaceState({}, '', url.toString())
+        try { revalidator.revalidate(); } catch {}
       }
     } catch {}
   }, [revalidator, showSetupBanner])
 
   const handleSetupComplete = (shopName: string) => {
     setShowSetupBanner(false);
-    dismissShopSetupForSession(); // Prevent re-showing this session
     setToast(`Shop configured: ${shopName}.myshopify.com`);
     try { revalidator.revalidate(); } catch {}
     try {
@@ -347,7 +394,15 @@ export default function Advanced(){
 
   // Show success message after form submission with specific button feedback
   React.useEffect(() => {
-    if (actionData?.tickResult && actionData?.ok) {
+    if (actionData?.error) {
+      // Handle errors from the action
+      console.error('Action returned error:', actionData.error);
+      setButtonFeedback(prev => ({
+        ...prev,
+        runOptimization: `❌ Error: ${actionData.error}`
+      }))
+      setTimeout(() => setButtonFeedback(prev => ({ ...prev, runOptimization: '' })), 8000)
+    } else if (actionData?.tickResult && actionData?.ok) {
       // Run Optimization button response
       const planCount = actionData.planned?.length || 0
       const appliedCount = actionData.applied?.length || 0
@@ -372,18 +427,24 @@ export default function Advanced(){
       setTimeout(() => setButtonFeedback(prev => ({ ...prev, runOptimization: '' })), 5000)
     } else if (actionData?.ok && nav.formData?.get('save_caps')) {
       // Bid Limits save button response
+      const message = actionData.sheetsSuccess 
+        ? '✅ Bid limits saved to Google Sheets!' 
+        : '✅ Bid limits saved!';
       setButtonFeedback(prev => ({
         ...prev,
-        saveCaps: '✅ Bid limits saved!'
+        saveCaps: message
       }))
       setTimeout(() => setButtonFeedback(prev => ({ ...prev, saveCaps: '' })), 3000)
     } else if (actionData?.ok) {
-      // Combined save & run button response (when no optimization data)
+      // Settings save response with sheets status
+      const message = actionData.sheetsSuccess 
+        ? '✅ Settings saved to Google Sheets & optimization completed!' 
+        : '✅ Settings saved & optimization completed!';
       setButtonFeedback(prev => ({
         ...prev,
-        runOptimization: '✅ Settings saved & optimization completed!'
+        runOptimization: message
       }))
-      setTimeout(() => setButtonFeedback(prev => ({ ...prev, runOptimization: '' })), 3000)
+      setTimeout(() => setButtonFeedback(prev => ({ ...prev, runOptimization: '' })), 5000)
     } else if (actionData?.applied !== undefined) {
       setButtonFeedback(prev => ({
         ...prev,
@@ -405,6 +466,18 @@ export default function Advanced(){
         tagsApply: `✅ Updated ${actionData.updated} products!`
       }))
       setTimeout(() => setButtonFeedback(prev => ({ ...prev, tagsApply: '' })), 3000)
+    }
+
+    // Log action data for debugging
+    if (actionData) {
+      console.log('Advanced page action data:', {
+        ok: actionData.ok,
+        error: actionData.error,
+        shopName: actionData.shopName,
+        sheetsSuccess: actionData.sheetsSuccess,
+        saved: actionData.saved,
+        message: actionData.message
+      });
     }
   }, [actionData, nav.formData])
 
@@ -450,29 +523,33 @@ export default function Advanced(){
         Fine-tune your ProofKit automation and optimize your store's performance.
       </p>
 
-      {/* Shop Setup Banner - fallback if setup is needed */}
-      {showSetupBanner && (
-        <ShopSetupBanner 
-          onSetupComplete={handleSetupComplete}
-          showOnlyIfNeeded={true}
-        />
+      {/* Show any error messages from loader */}
+      {data?.error && (
+        <div style={{
+          backgroundColor: '#fff3cd',
+          border: '1px solid #ffeaa7',
+          borderRadius: '8px',
+          padding: '16px',
+          marginBottom: '20px',
+          color: '#856404'
+        }}>
+          <h4 style={{margin: '0 0 8px 0', fontSize: '16px', fontWeight: 'bold'}}>
+            ⚠️ Configuration Issue
+          </h4>
+          <p style={{margin: 0, fontSize: '14px'}}>
+            {data.error}
+          </p>
+          {data.needsSetup && (
+            <p style={{margin: '8px 0 0 0', fontSize: '12px', fontStyle: 'italic'}}>
+              Try setting up your shop configuration below to resolve this issue.
+            </p>
+          )}
+        </div>
       )}
 
-      {/* Shop Configuration - only show if setup is complete */}
-      {!showSetupBanner && (
-        <ShopConfig 
-          showInline={false}
-          onShopNameChange={(name)=>{
-            setToast(`Shop configured: ${name}.myshopify.com`)
-            try { revalidator.revalidate(); } catch {}
-            try {
-              const url = new URL(window.location.href)
-              url.searchParams.set('shop', name)
-              window.history.replaceState({}, '', url.toString())
-            } catch {}
-          }}
-        />
-      )}
+      {/* Shop setup is now handled automatically via Shopify authentication */}
+
+      {/* Shop Configuration removed - shop name is now automatically detected */}
 
 
       {/* Personalized Suggestions */}

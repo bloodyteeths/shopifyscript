@@ -1,23 +1,36 @@
 import * as React from 'react';
 import { useLoaderData, useFetcher } from '@remix-run/react';
-import { json, type ActionFunctionArgs } from '@remix-run/node';
-import { backendFetch, backendFetchText } from '../server/hmac.server';
-import { getServerShopName, getShopNameOrNull, isShopSetupNeeded, dismissShopSetupForSession } from '../utils/shop-config';
-import ShopConfig from '../components/ShopConfig';
-import ShopSetupBanner from '../components/ShopSetupBanner';
+import { json, redirect, type ActionFunctionArgs, type LoaderFunctionArgs } from '@remix-run/node';
+import { authenticate } from '../shopify.server';
+import { checkTenantSetup } from '../utils/tenant.server';
 
-export async function loader({request}){
-  // Pure client-side approach - server does NO backend calls
-  // Client will read shop name from localStorage and make all API calls
-  
-  console.log(`🏪 Autopilot loader: Client will handle all data loading`);
-  
-  // Return minimal config for client
-  const config = {
-    backendUrl: process.env.BACKEND_PUBLIC_URL || 'http://localhost:3005/api'
-  };
-  
-  return { config };
+export async function loader({ request }: LoaderFunctionArgs) {
+  try {
+    const { session } = await authenticate.admin(request);
+    const shopName = session?.shop?.replace('.myshopify.com', '') || '';
+    
+    if (!shopName) {
+      throw new Error('Unable to determine shop name from Shopify session');
+    }
+    
+    // Check if tenant needs initial setup
+    if (!checkTenantSetup(shopName)) {
+      return redirect('/app/setup');
+    }
+    
+    console.log(`🏪 Autopilot loader: Client will handle all data loading`);
+    
+    // Return minimal config for client
+    const config = {
+      backendUrl: process.env.BACKEND_PUBLIC_URL || 'http://localhost:3005/api',
+      shopName
+    };
+    
+    return json({ config });
+  } catch (error) {
+    console.error('Autopilot loader error:', error);
+    throw error;
+  }
 }
 
 export async function action({ request }: ActionFunctionArgs) {
@@ -175,8 +188,7 @@ Shop: ${shopInfo.shopName}`;
         />
       )}
       
-      {/* Shop Configuration - only show if setup is complete */}
-      {!showSetupBanner && <ShopConfig showInline={false} />}
+      {/* Shop Configuration removed - shop name is now automatically detected */}
       
       {/* Connect Sheets section removed - using automated multi-tenant Google Sheets */}
       {toast && <p>{toast}</p>}
