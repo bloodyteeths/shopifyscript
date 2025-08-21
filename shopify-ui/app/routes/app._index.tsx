@@ -1,7 +1,7 @@
+import React from 'react';
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { useLoaderData, Link } from "@remix-run/react";
-import * as React from "react";
 import { authenticate } from "../shopify.server";
 import { checkTenantSetup } from "../utils/tenant.server";
 

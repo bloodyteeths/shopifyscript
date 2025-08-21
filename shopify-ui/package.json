@@ -29,17 +29,13 @@
     "recharts": "^2.15.4"
   },
   "devDependencies": {
-    "@babel/preset-env": "^7.28.3",
-    "@babel/preset-react": "^7.27.1",
     "@jest/globals": "^29.7.0",
     "@remix-run/dev": "^2.9.2",
     "@testing-library/jest-dom": "^6.1.0",
     "@testing-library/react": "^14.0.0",
     "@testing-library/user-event": "^14.0.0",
-    "babel-jest": "^30.0.5",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
-    "ts-jest": "^29.4.1",
     "typescript": "^5.4.0"
   }
 }
