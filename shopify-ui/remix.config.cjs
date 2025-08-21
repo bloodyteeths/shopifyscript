@@ -4,6 +4,13 @@ module.exports = {
   serverModuleFormat: 'esm',
   serverBuildPath: 'build/index.js',
   assetsBuildDirectory: 'public/build',
+  serverDependenciesToBundle: [
+    /^(?!.*node_modules).*$/,
+    'react',
+    'react-dom',
+    'react/jsx-runtime',
+    'react/jsx-dev-runtime'
+  ],
 };
 
 
