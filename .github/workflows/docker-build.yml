@@ -3,10 +3,8 @@
 name: Docker Build & Security
 
 on:
-  push:
-    branches: [main, develop, staging]
-  pull_request:
-    branches: [main, develop]
+  # Disabled Docker workflow for serverless deployment
+  workflow_dispatch:
   workflow_call:
     inputs:
       push_image:
@@ -280,19 +278,19 @@ jobs:
               --tag ${{ env.REGISTRY }}/${{ github.repository }}/${{ env.IMAGE_NAME }}:${{ github.event.release.tag_name }}
           fi
 
-  # Container registry cleanup
-  cleanup:
-    name: Registry Cleanup
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
-    steps:
-      - name: Delete old container images
-        uses: actions/delete-package-versions@v4
-        with:
-          package-name: ${{ env.IMAGE_NAME }}
-          package-type: "container"
-          min-versions-to-keep: 10
-          delete-only-untagged-versions: true
+  # Container registry cleanup - disabled as no packages are created
+  # cleanup:
+  #   name: Registry Cleanup
+  #   runs-on: ubuntu-latest
+  #   if: github.ref == 'refs/heads/main'
+  #   steps:
+  #     - name: Delete old container images
+  #       uses: actions/delete-package-versions@v4
+  #       with:
+  #         package-name: ${{ env.IMAGE_NAME }}
+  #         package-type: "container"
+  #         min-versions-to-keep: 10
+  #         delete-only-untagged-versions: true
 
   # Build report generation
   build-report:
