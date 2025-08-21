@@ -20,7 +20,7 @@ export async function getTenantFromRequest(request: Request): Promise<string> {
         console.log(`🏪 Detected tenant from Shopify session: ${tenantId}`);
         
         // Initialize tenant in database if not exists
-        initializeTenant(tenantId, session.shop);
+        await initializeTenant(tenantId, session.shop);
         
         return tenantId;
       }
@@ -106,8 +106,8 @@ export function shopDomainToTenantId(shopDomain: string): string {
  * Each tenant gets their own Google Sheet for data isolation
  * Now uses database storage with environment fallback
  */
-export function getTenantSheetId(tenantId: string): string {
-  return getDbTenantSheetId(tenantId);
+export async function getTenantSheetId(tenantId: string): Promise<string> {
+  return await getDbTenantSheetId(tenantId);
 }
 
 /**
@@ -136,15 +136,15 @@ export async function validateTenantAccess(request: Request, tenantId: string): 
 /**
  * Check if tenant has completed initial setup
  */
-export function checkTenantSetup(tenantId: string): boolean {
-  return isSetupCompleted(tenantId);
+export async function checkTenantSetup(tenantId: string): Promise<boolean> {
+  return await isSetupCompleted(tenantId);
 }
 
 /**
  * Get tenant configuration from database
  */
-export function getTenantConfiguration(tenantId: string) {
-  return getTenantConfig(tenantId);
+export async function getTenantConfiguration(tenantId: string) {
+  return await getTenantConfig(tenantId);
 }
 
 /**

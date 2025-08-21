@@ -14,7 +14,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     }
     
     // Check if tenant needs initial setup
-    if (!checkTenantSetup(shopName)) {
+    if (!(await checkTenantSetup(shopName))) {
       return redirect('/app/setup');
     }
     

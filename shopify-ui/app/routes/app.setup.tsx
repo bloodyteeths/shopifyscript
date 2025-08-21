@@ -15,7 +15,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     }
 
     // If already setup, redirect to main app
-    if (checkTenantSetup(shopName)) {
+    if (await checkTenantSetup(shopName)) {
       return redirect('/app');
     }
 
@@ -39,7 +39,7 @@ export async function action({ request }: ActionFunctionArgs) {
     }
 
     // Simply mark setup as completed - no configuration needed
-    markSetupCompleted(shopName);
+    await markSetupCompleted(shopName);
 
     console.log(`✅ Setup completed for tenant: ${shopName}`);
 
