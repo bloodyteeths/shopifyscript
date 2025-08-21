@@ -4,13 +4,9 @@
  * Simple JSON storage for development
  */
 
-// Try to import Vercel KV if available
+// For now, use simple file-based storage that works in all environments
+// TODO: Add Vercel KV support later when needed
 let kv: any = null;
-try {
-  kv = require('@vercel/kv');
-} catch (error) {
-  // KV not available, will use alternative storage
-}
 
 // Simple file-based storage for development
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'fs';

@@ -2,7 +2,6 @@
   "name": "proofkit-shopify-ui",
   "private": true,
   "version": "0.1.0",
-  "type": "module",
   "scripts": {
     "dev": "remix dev -p ${PORT:-3000}",
     "build": "remix build",
@@ -18,9 +17,8 @@
     "@remix-run/react": "^2.9.2",
     "@remix-run/serve": "^2.9.2",
     "@shopify/polaris": "^12.7.0",
-    "@shopify/shopify-app-remix": "^2.7.0",
+    "@shopify/shopify-app-remix": "^2.6.0",
     "@shopify/shopify-app-session-storage-memory": "^2.0.4",
-    "@vercel/kv": "^3.0.0",
     "compression": "^1.7.4",
     "express": "^4.19.2",
     "http-proxy-middleware": "^2.0.6",
