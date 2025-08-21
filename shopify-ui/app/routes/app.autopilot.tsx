@@ -13,10 +13,8 @@ export async function loader({ request }: LoaderFunctionArgs) {
       throw new Error('Unable to determine shop name from Shopify session');
     }
     
-    // Check if tenant needs initial setup
-    if (!(await checkTenantSetup(shopName))) {
-      return redirect('/app/setup');
-    }
+    // Skip setup check for now to avoid redirect loops in serverless
+    // TODO: Re-enable setup flow once serverless storage is working properly
     
     console.log(`🏪 Autopilot loader: Client will handle all data loading`);
     

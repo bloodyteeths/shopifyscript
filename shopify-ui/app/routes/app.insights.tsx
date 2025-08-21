@@ -21,10 +21,8 @@ export async function loader(args: LoaderFunctionArgs){
       throw new Error('No valid shop name found - setup required')
     }
     
-    // Check if tenant needs initial setup
-    if (!(await checkTenantSetup(shopName))) {
-      return redirect('/app/setup');
-    }
+    // Skip setup check for now to avoid redirect loops in serverless
+    // TODO: Re-enable setup flow once serverless storage is working properly
     
     const url = new URL(args.request.url)
     const w = url.searchParams.get('w') === '24h' ? '24h' : '7d'

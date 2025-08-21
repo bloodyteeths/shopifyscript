@@ -19,35 +19,52 @@ interface StorageData {
   tenant_settings: Record<string, Record<string, string>>;
 }
 
-// Get storage data from JSON file or create empty structure
+// In-memory storage for serverless - doesn't persist between function calls
+let memoryStorage: StorageData = {
+  tenant_config: {},
+  tenant_settings: {}
+};
+
+// Get storage data - try file system in development, memory in production
 function getStorageData(): StorageData {
+  // In serverless, always use memory
+  if (process.env.VERCEL || process.env.NODE_ENV === 'production') {
+    return memoryStorage;
+  }
+  
+  // In development, try file system
   if (existsSync(STORAGE_PATH)) {
     try {
       const data = readFileSync(STORAGE_PATH, 'utf8');
       return JSON.parse(data);
     } catch (error) {
-      console.warn('Failed to read storage file, creating new one:', error);
+      console.warn('Failed to read storage file, using memory:', error);
+      return memoryStorage;
     }
   }
   
-  return {
-    tenant_config: {},
-    tenant_settings: {}
-  };
+  return memoryStorage;
 }
 
-// Save storage data to JSON file
+// Save storage data - try file system in development, memory in production
 function saveStorageData(data: StorageData): void {
+  // Always update memory
+  memoryStorage = { ...data };
+  
+  // In serverless, don't try to write files
+  if (process.env.VERCEL || process.env.NODE_ENV === 'production') {
+    return;
+  }
+  
+  // In development, try file system
   try {
-    // Ensure directory exists
     const dir = dirname(STORAGE_PATH);
     if (!existsSync(dir)) {
       mkdirSync(dir, { recursive: true });
     }
-    
     writeFileSync(STORAGE_PATH, JSON.stringify(data, null, 2));
   } catch (error) {
-    console.error('Failed to save storage data:', error);
+    console.warn('Failed to save storage data to file, using memory only:', error);
   }
 }
 
