@@ -2,7 +2,7 @@
   "version": 2,
   "builds": [
     {
-      "src": "build/index.js",
+      "src": "server/express.js",
       "use": "@vercel/node",
       "config": {
         "maxLambdaSize": "50mb",
@@ -25,7 +25,7 @@
     },
     {
       "src": "/(.*)",
-      "dest": "/build/index.js"
+      "dest": "/server/express.js"
     }
   ],
   "env": {
