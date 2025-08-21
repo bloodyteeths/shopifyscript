@@ -20,8 +20,6 @@
     "@shopify/polaris": "^12.7.0",
     "@shopify/shopify-app-remix": "^2.7.0",
     "@shopify/shopify-app-session-storage-memory": "^2.0.4",
-    "@types/better-sqlite3": "^7.6.13",
-    "better-sqlite3": "^12.2.0",
     "compression": "^1.7.4",
     "express": "^4.19.2",
     "http-proxy-middleware": "^2.0.6",

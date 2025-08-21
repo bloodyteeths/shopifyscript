@@ -1,53 +1,157 @@
 /**
- * Simple SQLite database for tenant configuration storage
- * Stores basic tenant settings to avoid repeated user input
+ * Tenant configuration storage with serverless-compatible fallback
+ * Uses SQLite in development, memory storage in serverless environments
  */
 
-import Database from 'better-sqlite3';
+// Dynamic import for better-sqlite3 to handle serverless environments
+let Database: any = null;
+try {
+  // Only import SQLite in Node.js environments that support it
+  if (typeof process !== 'undefined' && process.env.NODE_ENV !== 'production') {
+    Database = require('better-sqlite3');
+  }
+} catch (error) {
+  console.log('SQLite not available, using memory fallback');
+}
+
 import { join } from 'path';
 
 const DB_PATH = process.env.DATABASE_PATH || join(process.cwd(), 'data', 'tenants.db');
 
-let db: Database.Database | null = null;
+let db: any = null;
+
+// In-memory fallback for serverless environments
+let memoryStore: {
+  tenant_config: Record<string, any>;
+  tenant_settings: Record<string, any>;
+} = {
+  tenant_config: {},
+  tenant_settings: {}
+};
 
 function getDb() {
+  // If SQLite is not available (serverless), return memory store adapter
+  if (!Database) {
+    return createMemoryAdapter();
+  }
+  
   if (!db) {
-    // Ensure directory exists
-    const fs = require('fs');
-    const path = require('path');
-    const dir = path.dirname(DB_PATH);
-    if (!fs.existsSync(dir)) {
-      fs.mkdirSync(dir, { recursive: true });
+    try {
+      // Ensure directory exists
+      const fs = require('fs');
+      const path = require('path');
+      const dir = path.dirname(DB_PATH);
+      if (!fs.existsSync(dir)) {
+        fs.mkdirSync(dir, { recursive: true });
+      }
+      
+      db = new Database(DB_PATH);
+      
+      // Create tables if they don't exist
+      db.exec(`
+        CREATE TABLE IF NOT EXISTS tenant_config (
+          tenant_id TEXT PRIMARY KEY,
+          shop_domain TEXT NOT NULL,
+          google_sheet_id TEXT,
+          setup_completed_at TEXT,
+          created_at TEXT NOT NULL DEFAULT (datetime('now')),
+          updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+        );
+
+        CREATE TABLE IF NOT EXISTS tenant_settings (
+          tenant_id TEXT NOT NULL,
+          setting_key TEXT NOT NULL,
+          setting_value TEXT,
+          created_at TEXT NOT NULL DEFAULT (datetime('now')),
+          updated_at TEXT NOT NULL DEFAULT (datetime('now')),
+          PRIMARY KEY (tenant_id, setting_key),
+          FOREIGN KEY (tenant_id) REFERENCES tenant_config(tenant_id) ON DELETE CASCADE
+        );
+
+        CREATE INDEX IF NOT EXISTS idx_tenant_settings_tenant ON tenant_settings(tenant_id);
+      `);
+    } catch (error) {
+      console.error('Failed to initialize SQLite, falling back to memory store:', error);
+      return createMemoryAdapter();
     }
-    
-    db = new Database(DB_PATH);
-    
-    // Create tables if they don't exist
-    db.exec(`
-      CREATE TABLE IF NOT EXISTS tenant_config (
-        tenant_id TEXT PRIMARY KEY,
-        shop_domain TEXT NOT NULL,
-        google_sheet_id TEXT,
-        setup_completed_at TEXT,
-        created_at TEXT NOT NULL DEFAULT (datetime('now')),
-        updated_at TEXT NOT NULL DEFAULT (datetime('now'))
-      );
-
-      CREATE TABLE IF NOT EXISTS tenant_settings (
-        tenant_id TEXT NOT NULL,
-        setting_key TEXT NOT NULL,
-        setting_value TEXT,
-        created_at TEXT NOT NULL DEFAULT (datetime('now')),
-        updated_at TEXT NOT NULL DEFAULT (datetime('now')),
-        PRIMARY KEY (tenant_id, setting_key),
-        FOREIGN KEY (tenant_id) REFERENCES tenant_config(tenant_id) ON DELETE CASCADE
-      );
-
-      CREATE INDEX IF NOT EXISTS idx_tenant_settings_tenant ON tenant_settings(tenant_id);
-    `);
   }
   
   return db;
+}
+
+// Memory store adapter that mimics SQLite interface
+function createMemoryAdapter() {
+  return {
+    prepare: (sql: string) => {
+      return {
+        get: (params: any[]) => {
+          const tenantId = params[0];
+          if (sql.includes('tenant_config')) {
+            return memoryStore.tenant_config[tenantId] || null;
+          } else if (sql.includes('tenant_settings')) {
+            const key = params[1];
+            const settingKey = `${tenantId}:${key}`;
+            const setting = memoryStore.tenant_settings[settingKey];
+            return setting ? { setting_value: setting.setting_value } : null;
+          }
+          return null;
+        },
+        all: (params: any[]) => {
+          const tenantId = params[0];
+          if (sql.includes('tenant_settings')) {
+            const settings = [];
+            for (const [key, value] of Object.entries(memoryStore.tenant_settings)) {
+              if (key.startsWith(`${tenantId}:`)) {
+                const settingKey = key.split(':')[1];
+                settings.push({ setting_key: settingKey, setting_value: value.setting_value });
+              }
+            }
+            return settings;
+          }
+          return [];
+        },
+        run: (params: any[]) => {
+          const tenantId = params[0];
+          const now = new Date().toISOString();
+          
+          if (sql.includes('INSERT INTO tenant_config')) {
+            memoryStore.tenant_config[tenantId] = {
+              tenant_id: tenantId,
+              shop_domain: params[1],
+              google_sheet_id: params[2],
+              setup_completed_at: params[3],
+              created_at: now,
+              updated_at: now
+            };
+          } else if (sql.includes('UPDATE tenant_config')) {
+            if (memoryStore.tenant_config[tenantId]) {
+              memoryStore.tenant_config[tenantId].updated_at = now;
+              if (sql.includes('setup_completed_at')) {
+                memoryStore.tenant_config[tenantId].setup_completed_at = now;
+              }
+              if (sql.includes('google_sheet_id')) {
+                memoryStore.tenant_config[tenantId].google_sheet_id = params[0];
+              }
+            }
+          } else if (sql.includes('INSERT INTO tenant_settings')) {
+            const key = params[1];
+            const value = params[2];
+            const settingKey = `${tenantId}:${key}`;
+            memoryStore.tenant_settings[settingKey] = {
+              tenant_id: tenantId,
+              setting_key: key,
+              setting_value: value,
+              created_at: now,
+              updated_at: now
+            };
+          }
+        }
+      };
+    },
+    transaction: (callback: Function) => {
+      return callback;
+    }
+  };
 }
 
 export interface TenantConfig {
