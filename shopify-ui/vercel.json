@@ -30,12 +30,5 @@
   ],
   "env": {
     "NODE_ENV": "production"
-  },
-  "functions": {
-    "api/index.js": {
-      "maxDuration": 30
-    }
-  },
-  "regions": ["iad1"],
-  "framework": null
+  }
 }
