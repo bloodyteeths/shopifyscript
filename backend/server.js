@@ -2640,6 +2640,22 @@ app.get('/api/profit/status', async (req, res) => {
   }
 });
 
+// ====== ROOT ROUTES ======
+// Add root route for basic health check
+app.get('/', (req, res) => {
+  json(res, 200, { 
+    ok: true, 
+    service: 'proofkit-backend', 
+    version: '1.0.0',
+    status: 'running',
+    timestamp: new Date().toISOString()
+  });
+});
+
+// Add favicon handlers to prevent 404s
+app.get('/favicon.ico', (req, res) => res.status(204).end());
+app.get('/favicon.png', (req, res) => res.status(204).end());
+
 // ====== MIDDLEWARES MUST BE LAST ======
 app.use('/api', async (err, req, res, next) => {
   if (!err) return next();
