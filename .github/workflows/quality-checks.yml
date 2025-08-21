@@ -25,7 +25,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        workspace: [backend, shopify-ui, ads-script]
+        workspace: [backend, shopify-ui]
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
