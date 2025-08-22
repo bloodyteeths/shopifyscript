@@ -7,17 +7,21 @@ import {
   type ActionFunctionArgs,
   type LoaderFunctionArgs,
 } from "@remix-run/node";
-import { authenticate } from "../shopify.server";
+import { authenticate, extractShopFromRequest } from "../shopify.server";
 import { checkTenantSetup } from "../utils/tenant.server";
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  const auth = await authenticate.admin(request);
-  if (auth instanceof Response) {
-    return auth;
+  // Prefer deriving shop from host/shop to avoid auth loops on serverless
+  let shopName = extractShopFromRequest(request) || "";
+  if (!shopName) {
+    const auth = await authenticate.admin(request);
+    if (auth instanceof Response) {
+      return auth;
+    }
+    const { session } = auth as any;
+    shopName = session?.shop?.replace(".myshopify.com", "") || "";
   }
   try {
-    const { session } = auth as any;
-    const shopName = session?.shop?.replace(".myshopify.com", "") || "";
 
     if (!shopName) {
       throw new Error("Unable to determine shop name from Shopify session");

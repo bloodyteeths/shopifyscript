@@ -13,19 +13,22 @@ import {
   useActionData,
   useRevalidator,
 } from "@remix-run/react";
-import { authenticate } from "../shopify.server";
+import { authenticate, extractShopFromRequest } from "../shopify.server";
 import { checkTenantSetup } from "../utils/tenant.server";
 
 // This function is no longer needed - replaced by shop name utilities
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  // Authenticate with Shopify and get shop name from session
-  const auth = await authenticate.admin(request);
-  if (auth instanceof Response) {
-    return auth;
+  // Derive shop first to avoid auth loops on GET
+  let shopName = extractShopFromRequest(request) || "";
+  if (!shopName) {
+    const auth = await authenticate.admin(request);
+    if (auth instanceof Response) {
+      return auth;
+    }
+    const { session } = auth as any;
+    shopName = session?.shop?.replace(".myshopify.com", "") || "";
   }
-  const { session } = auth as any;
-  const shopName = session?.shop?.replace(".myshopify.com", "") || "";
 
   if (!shopName) {
     throw new Error("Unable to determine shop name from Shopify session");

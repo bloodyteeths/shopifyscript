@@ -48,13 +48,16 @@ function SimpleChart({ data }: { data: any[] }) {
 export async function loader(args: LoaderFunctionArgs) {
   try {
     // Get shop name from Shopify authentication
-    const { authenticate } = await import("../shopify.server");
-    const auth = await authenticate.admin(args.request);
-    if (auth instanceof Response) {
-      return auth;
+    const { authenticate, extractShopFromRequest } = await import("../shopify.server");
+    let shopName = extractShopFromRequest(args.request) || "";
+    if (!shopName) {
+      const auth = await authenticate.admin(args.request);
+      if (auth instanceof Response) {
+        return auth;
+      }
+      const { session } = auth as any;
+      shopName = session?.shop?.replace(".myshopify.com", "") || "";
     }
-    const { session } = auth as any;
-    const shopName = session?.shop?.replace(".myshopify.com", "") || "";
 
     if (!shopName) {
       console.error("Loader error: No valid shop name found - setup required");
