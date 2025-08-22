@@ -20,7 +20,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
     // Return minimal config for client
     const config = {
-      backendUrl: process.env.BACKEND_PUBLIC_URL || "http://localhost:3005/api",
+      backendUrl: process.env.BACKEND_PUBLIC_URL || "https://shopifyscript-backend.vercel.app/api",
       shopName,
     };
 
@@ -42,7 +42,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     }
 
     const config = {
-      backendUrl: process.env.BACKEND_PUBLIC_URL || "http://localhost:3005/api",
+      backendUrl: process.env.BACKEND_PUBLIC_URL || "https://shopifyscript-backend.vercel.app/api",
       shopName,
     };
 

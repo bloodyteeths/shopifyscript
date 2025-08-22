@@ -7,16 +7,10 @@ import {
 import { MemorySessionStorage } from "@shopify/shopify-app-session-storage-memory";
 import { BackendSessionStorage } from "./utils/backend-session-storage";
 
-// Use BackendSessionStorage to persist sessions to backend database
-// This solves authentication persistence issues in serverless environments
-let resolvedSessionStorage;
-try {
-  resolvedSessionStorage = new BackendSessionStorage();
-  console.log("🔒 Using BackendSessionStorage for persistent Shopify sessions");
-} catch (error) {
-  console.warn("⚠️ BackendSessionStorage failed, falling back to MemorySessionStorage:", error);
-  resolvedSessionStorage = new MemorySessionStorage();
-}
+// Temporarily use MemorySessionStorage until backend connection is stable
+// TODO: Re-enable BackendSessionStorage once backend URL is properly configured
+console.log("🔒 Using MemorySessionStorage (temporary) for Shopify sessions");
+const resolvedSessionStorage = new MemorySessionStorage();
 
 const shopify = shopifyApp({
   apiKey: process.env.SHOPIFY_API_KEY,
