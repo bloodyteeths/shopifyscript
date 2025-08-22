@@ -260,5 +260,9 @@ function opKey(method: string, pathname: string): string {
   if (pathname.includes("/shopify/seo/apply")) return "seo_apply";
   if (pathname.includes("/shopify/tags/batch")) return "tags_batch";
   if (pathname.includes("/seed-demo")) return "seed_demo";
+  if (pathname.includes("/sessions/store")) return "session_store";
+  if (pathname.includes("/sessions/retrieve")) return "session_retrieve";
+  if (pathname.includes("/sessions/delete")) return "session_delete";
+  if (pathname.includes("/sessions/list")) return "session_list";
   return "unknown";
 }

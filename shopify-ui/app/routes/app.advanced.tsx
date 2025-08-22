@@ -15,31 +15,17 @@ import {
 } from "@remix-run/react";
 import { authenticate, extractShopFromRequest } from "../shopify.server";
 import { checkTenantSetup } from "../utils/tenant.server";
+import { getAuthenticatedShop } from "../utils/auth-helpers.server";
 
 // This function is no longer needed - replaced by shop name utilities
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  // Derive shop first to avoid auth loops on GET
-  let shopName = extractShopFromRequest(request) || "";
-  if (!shopName) {
-    const auth = await authenticate.admin(request);
-    if (auth instanceof Response) {
-      return auth;
-    }
-    const { session } = auth as any;
-    shopName = session?.shop?.replace(".myshopify.com", "") || "";
-  }
-
-  if (!shopName) {
-    throw new Error("Unable to determine shop name from Shopify session");
-  }
-
-  // Skip setup check for now to avoid redirect loops in serverless
-  // TODO: Re-enable setup flow once serverless storage is working properly
-
-  console.log(`🔍 Detected shop from Shopify session: ${shopName}`);
-
   try {
+    // Use enhanced authentication that checks backend database first
+    const { shopName, fromCache } = await getAuthenticatedShop(request);
+    
+    console.log(`⚙️ Advanced settings loaded for shop: ${shopName} ${fromCache ? '(from cache)' : '(fresh auth)'}`);
+  
     const { backendFetch } = await import("../server/hmac.server");
 
     console.log(`📡 Fetching data for shop: ${shopName}`);
@@ -83,21 +69,32 @@ export async function loader({ request }: LoaderFunctionArgs) {
           ? "Failed to load configuration - check backend connection"
           : null,
     });
-  } catch (error) {
-    console.error("Loader critical error:", error.message);
+  } catch (authError) {
+    // If authentication fails, let Shopify handle the redirect
+    console.log(`🔐 Advanced settings authentication required, delegating to Shopify auth flow`);
+    
+    const auth = await authenticate.admin(request);
+    if (auth instanceof Response) {
+      return auth;
+    }
+    
+    const { session } = auth as any;
+    const shopName = session?.shop?.replace(".myshopify.com", "") || "";
+    
+    if (!shopName) {
+      throw new Error("Unable to determine shop name from Shopify session");
+    }
 
-    return json(
-      {
-        cfg: {},
-        insights: {},
-        campaigns: {},
-        summary: {},
-        suggestions: generateSuggestions({}, {}, {}),
-        shopName: shopName,
-        error: `Failed to load data: ${error.message}`,
-      },
-      { status: 500 },
-    );
+    // Return minimal data for fallback auth
+    return json({
+      cfg: {},
+      insights: {},
+      campaigns: {},
+      summary: {},
+      suggestions: generateSuggestions({}, {}, {}),
+      shopName: shopName,
+      error: "Please wait while we load your data...",
+    });
   }
 }
 

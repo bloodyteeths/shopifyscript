@@ -5,42 +5,17 @@ import {
   shopifyApp,
 } from "@shopify/shopify-app-remix/server";
 import { MemorySessionStorage } from "@shopify/shopify-app-session-storage-memory";
+import { BackendSessionStorage } from "./utils/backend-session-storage";
 
-// Prefer durable Redis session storage in production to prevent OAuth loops on
-// serverless (Vercel) where memory is not shared across invocations.
-// Falls back to in-memory if REDIS_URL is not provided or adapter load fails.
-let resolvedSessionStorage: any = undefined;
+// Use BackendSessionStorage to persist sessions to backend database
+// This solves authentication persistence issues in serverless environments
+let resolvedSessionStorage;
 try {
-  const rawRedisUrl = (process.env.REDIS_URL || "").trim();
-  const looksConfigured =
-    rawRedisUrl.length > 0 && rawRedisUrl !== "${REDIS_URL}";
-  if (looksConfigured) {
-    // Basic URL validation and scheme check
-    let valid = false;
-    try {
-      const u = new URL(rawRedisUrl);
-      valid = u.protocol === "redis:" || u.protocol === "rediss:";
-    } catch {
-      valid = false;
-    }
-    if (valid) {
-      // Dynamically require to avoid hard type dependency during local dev
-      // and keep build resilient if adapter isn't installed locally.
-      // eslint-disable-next-line @typescript-eslint/no-var-requires
-      const { RedisSessionStorage } = require("@shopify/shopify-app-session-storage-redis");
-      resolvedSessionStorage = new RedisSessionStorage(rawRedisUrl);
-      console.log("🔒 Shopify session storage: RedisSessionStorage enabled");
-    } else {
-      console.warn(
-        "⚠️ Invalid REDIS_URL provided; falling back to MemorySessionStorage"
-      );
-    }
-  }
+  resolvedSessionStorage = new BackendSessionStorage();
+  console.log("🔒 Using BackendSessionStorage for persistent Shopify sessions");
 } catch (error) {
-  console.warn(
-    "⚠️ Redis session storage unavailable, falling back to MemorySessionStorage",
-    (error as Error)?.message || error
-  );
+  console.warn("⚠️ BackendSessionStorage failed, falling back to MemorySessionStorage:", error);
+  resolvedSessionStorage = new MemorySessionStorage();
 }
 
 const shopify = shopifyApp({
@@ -50,7 +25,7 @@ const shopify = shopifyApp({
   scopes: process.env.SCOPES?.split(",") || ["read_products", "write_products"],
   appUrl: process.env.SHOPIFY_APP_URL || "",
   authPathPrefix: "/auth",
-  sessionStorage: resolvedSessionStorage || new MemorySessionStorage(),
+  sessionStorage: resolvedSessionStorage,
   distribution: AppDistribution.AppStore,
   future: {
     unstable_newEmbeddedAuthStrategy: true,

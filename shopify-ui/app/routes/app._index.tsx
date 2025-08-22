@@ -5,25 +5,37 @@ import { json, redirect } from "@remix-run/node";
 import { useLoaderData, Link } from "@remix-run/react";
 import { authenticate } from "../shopify.server";
 import { checkTenantSetup } from "../utils/tenant.server";
+import { getAuthenticatedShop } from "../utils/auth-helpers.server";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  // Authenticate with Shopify to ensure we have a valid session
-  const { session } = await authenticate.admin(request);
+  try {
+    // Use enhanced authentication that checks backend database first
+    const { shopName, fromCache } = await getAuthenticatedShop(request);
+    
+    console.log(`🏪 Dashboard loaded for shop: ${shopName} ${fromCache ? '(from cache)' : '(fresh auth)'}`);
 
-  const shopName = session?.shop?.replace(".myshopify.com", "");
+    return json({
+      message: "AI-powered Google Ads optimization on autopilot",
+      timestamp: new Date().toISOString(),
+      shopName: shopName,
+    });
+  } catch (error) {
+    // If authentication fails, let Shopify handle the redirect
+    console.log(`🔐 Dashboard authentication required, delegating to Shopify auth flow`);
+    
+    const { session } = await authenticate.admin(request);
+    const shopName = session?.shop?.replace(".myshopify.com", "");
 
-  if (!shopName) {
-    throw new Error("Unable to determine shop name from Shopify session");
+    if (!shopName) {
+      throw new Error("Unable to determine shop name from Shopify session");
+    }
+
+    return json({
+      message: "AI-powered Google Ads optimization on autopilot",
+      timestamp: new Date().toISOString(),
+      shopName: shopName,
+    });
   }
-
-  // Skip setup check for now to avoid redirect loops in serverless
-  // TODO: Re-enable setup flow once serverless storage is working properly
-
-  return json({
-    message: "AI-powered Google Ads optimization on autopilot",
-    timestamp: new Date().toISOString(),
-    shopName: shopName,
-  });
 };
 
 export default function AppIndex() {

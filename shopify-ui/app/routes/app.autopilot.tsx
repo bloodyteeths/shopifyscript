@@ -9,28 +9,14 @@ import {
 } from "@remix-run/node";
 import { authenticate, extractShopFromRequest } from "../shopify.server";
 import { checkTenantSetup } from "../utils/tenant.server";
+import { getAuthenticatedShop } from "../utils/auth-helpers.server";
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  // Prefer deriving shop from host/shop to avoid auth loops on serverless
-  let shopName = extractShopFromRequest(request) || "";
-  if (!shopName) {
-    const auth = await authenticate.admin(request);
-    if (auth instanceof Response) {
-      return auth;
-    }
-    const { session } = auth as any;
-    shopName = session?.shop?.replace(".myshopify.com", "") || "";
-  }
   try {
-
-    if (!shopName) {
-      throw new Error("Unable to determine shop name from Shopify session");
-    }
-
-    // Skip setup check for now to avoid redirect loops in serverless
-    // TODO: Re-enable setup flow once serverless storage is working properly
-
-    console.log(`🏪 Autopilot loader: Client will handle all data loading`);
+    // Use enhanced authentication that checks backend database first
+    const { shopName, fromCache } = await getAuthenticatedShop(request);
+    
+    console.log(`🤖 Autopilot loaded for shop: ${shopName} ${fromCache ? '(from cache)' : '(fresh auth)'}`);
 
     // Return minimal config for client
     const config = {
@@ -40,8 +26,27 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
     return json({ config });
   } catch (error) {
-    console.error("Autopilot loader error:", error);
-    throw error;
+    // If authentication fails, let Shopify handle the redirect
+    console.log(`🔐 Autopilot authentication required, delegating to Shopify auth flow`);
+    
+    const auth = await authenticate.admin(request);
+    if (auth instanceof Response) {
+      return auth;
+    }
+    
+    const { session } = auth as any;
+    const shopName = session?.shop?.replace(".myshopify.com", "") || "";
+    
+    if (!shopName) {
+      throw new Error("Unable to determine shop name from Shopify session");
+    }
+
+    const config = {
+      backendUrl: process.env.BACKEND_PUBLIC_URL || "http://localhost:3005/api",
+      shopName,
+    };
+
+    return json({ config });
   }
 }
 

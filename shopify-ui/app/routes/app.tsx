@@ -7,33 +7,44 @@ import { AppProvider } from "@shopify/shopify-app-remix/react";
 import polarisStyles from "@shopify/polaris/build/esm/styles.css";
 
 import { authenticate, extractShopFromRequest } from "../shopify.server";
+import { getAuthenticatedShop } from "../utils/auth-helpers.server";
 
 export const links = () => [{ rel: "stylesheet", href: polarisStyles }];
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  // Derive shop from host/shop to avoid redundant OAuth on GET
-  let shopName = extractShopFromRequest(request);
-  if (!shopName) {
-    // Authenticate with Shopify only if necessary
+  try {
+    // Use enhanced authentication that checks backend database first
+    const { shopName, fromCache } = await getAuthenticatedShop(request);
+    
+    console.log(`🏪 Shopify app authenticated for shop: ${shopName} ${fromCache ? '(from cache)' : '(fresh auth)'}`);
+
+    return json({
+      apiKey: process.env.SHOPIFY_API_KEY || "",
+      shopName,
+    });
+  } catch (error) {
+    // If authentication fails, let Shopify handle the redirect
+    console.log(`🔐 Authentication required, delegating to Shopify auth flow`);
+    
     const auth = await authenticate.admin(request);
     if (auth instanceof Response) {
       return auth;
     }
+    
     const { session } = auth as any;
-    shopName = session?.shop?.replace(".myshopify.com", "");
+    const shopName = session?.shop?.replace(".myshopify.com", "");
+    
+    if (!shopName) {
+      throw new Error("Unable to determine shop name from Shopify session");
+    }
+
+    console.log(`🏪 Shopify app authenticated for shop: ${shopName} (fallback auth)`);
+
+    return json({
+      apiKey: process.env.SHOPIFY_API_KEY || "",
+      shopName,
+    });
   }
-
-  // If we still don't have a shop name, something is wrong
-  if (!shopName) {
-    throw new Error("Unable to determine shop name from Shopify session");
-  }
-
-  console.log(`🏪 Shopify app authenticated for shop: ${shopName}`);
-
-  return json({
-    apiKey: process.env.SHOPIFY_API_KEY || "",
-    shopName,
-  });
 };
 
 export default function App() {
