@@ -24,6 +24,7 @@ import { healthService, createHealthRoutes } from "./services/health.js";
 import logger from "./services/logger.js";
 import { createEnvironment } from "../deployment/environment.js";
 import { JobScheduler } from "./jobs/scheduler.js";
+import { pingRedis, getJson, setJson } from "./services/redis.js";
 // Profit & Inventory Services
 import profitPacer from "./services/profit-pacer.js";
 // Note: materialize/listSegments are stubs, not imported to avoid TS runtime issues
@@ -36,10 +37,11 @@ import securityRoutes from "./routes/security.js";
 // Config Routes
 import configRoutes from "./routes/config.js";
 
-// Load env from root and backend/.env to ensure SHEET_ID and keys are available
+// Load env from root and backend/.env (resolve relative to this file)
 dotenv.config();
 try {
-  dotenv.config({ path: path.resolve(process.cwd(), "backend", ".env") });
+  const hereEnv = path.resolve(path.dirname(new URL(import.meta.url).pathname), ".env");
+  dotenv.config({ path: hereEnv });
 } catch {}
 
 // Env alias normalization (Vercel-friendly)
@@ -960,6 +962,28 @@ app.get("/metrics", healthRoutes.metrics);
 // Legacy health endpoints
 app.get("/api/health", healthRoutes.health);
 app.get("/api/healthz", healthRoutes.ready);
+
+// ---- Redis health and simple get/set test endpoints ----
+app.get("/api/redis/health", async (req, res) => {
+  try {
+    const pong = await pingRedis();
+    return json(res, 200, { ok: true, pong });
+  } catch (error) {
+    return json(res, 500, { ok: false, error: error.message });
+  }
+});
+app.post("/api/redis/test", async (req, res) => {
+  try {
+    const key = req.body?.key || "proofkit:test";
+    const value = req.body?.value ?? { now: Date.now() };
+    const ttl = Number(req.body?.ttl || 60);
+    await setJson(key, value, ttl);
+    const roundtrip = await getJson(key);
+    return json(res, 200, { ok: true, key, roundtrip });
+  } catch (error) {
+    return json(res, 500, { ok: false, error: error.message });
+  }
+});
 
 // ==== SECURITY ROUTES ====
 app.use("/api/security", securityRoutes);

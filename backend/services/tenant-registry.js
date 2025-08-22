@@ -222,7 +222,10 @@ class TenantRegistry {
     try {
       const serviceAccountAuth = new JWT({
         email: GOOGLE_SERVICE_EMAIL,
-        key: GOOGLE_PRIVATE_KEY.replace(/\\n/g, "\n"),
+        key: (GOOGLE_PRIVATE_KEY || "")
+          .replace(/\\n/g, "\n")
+          .replace(/\r/g, "\n")
+          .replace(/^"|"$/g, ""),
         scopes: ["https://www.googleapis.com/auth/spreadsheets"],
       });
 

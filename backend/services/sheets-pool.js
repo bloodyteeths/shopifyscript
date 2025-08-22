@@ -163,9 +163,14 @@ class SheetsConnectionPool {
         throw new Error("Google Sheets authentication not configured");
       }
 
+      const normalizedKey = (GOOGLE_PRIVATE_KEY || "")
+        .replace(/\\n/g, "\n")
+        .replace(/\r/g, "\n")
+        .replace(/^"|"$/g, "");
+
       const serviceAccountAuth = new JWT({
         email: GOOGLE_SERVICE_EMAIL,
-        key: GOOGLE_PRIVATE_KEY.replace(/\\n/g, "\n"),
+        key: normalizedKey,
         scopes: ["https://www.googleapis.com/auth/spreadsheets"],
       });
 
