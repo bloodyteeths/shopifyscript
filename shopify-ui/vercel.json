@@ -5,5 +5,11 @@
     "SHOPIFY_APP_URL": "https://shopifyscript-shopify-ui.vercel.app",
     "SCOPES": "read_products,write_products",
     "BACKEND_PUBLIC_URL": "https://shopifyscript-backend.vercel.app/api"
-  }
+  },
+  "routes": [
+    {
+      "src": "/build/(.*)",
+      "dest": "/public/build/$1"
+    }
+  ]
 }
