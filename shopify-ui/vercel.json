@@ -29,6 +29,8 @@
     }
   ],
   "env": {
-    "NODE_ENV": "production"
+    "NODE_ENV": "production",
+    "SHOPIFY_APP_URL": "https://shopifyscript-shopify-ui.vercel.app",
+    "SCOPES": "read_products,write_products"
   }
 }
