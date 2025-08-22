@@ -155,7 +155,7 @@ Mode: ${mode}
 Budget: $${budget}/day
 CPC: $${cpc}
 URL: ${url}
-Shop: ${shopInfo.shopName}`;
+Shop: ${shopName || "unknown"}`;
     alert(
       `Autopilot would be enabled with:\n\n${config}\n\nIn production, this would start the automation.`,
     );

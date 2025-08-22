@@ -48,7 +48,7 @@ export default function App() {
         }}
       >
         {/* Store shop name in a global context for child components */}
-        <div data-shop-name={shopName} style={{ display: "none" }} />
+        <div id="__shop" data-shop-name={shopName} style={{ display: "none" }} />
         <Outlet />
       </div>
     </AppProvider>

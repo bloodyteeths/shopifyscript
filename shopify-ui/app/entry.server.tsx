@@ -14,6 +14,11 @@ export default function handleRequest(
       <RemixServer context={context} url={request.url} />,
     );
     headers.set("Content-Type", "text/html");
+    // Prevent stale HTML -> stale manifest causing 404s on route chunks
+    headers.set(
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate, proxy-revalidate"
+    );
     return new Response("<!DOCTYPE html>" + markup, { status, headers });
   } catch (err: any) {
     try {
@@ -30,6 +35,10 @@ export default function handleRequest(
     const body =
       "<!DOCTYPE html><html><body><h1>Server Error</h1></body></html>";
     headers.set("Content-Type", "text/html");
+    headers.set(
+      "Cache-Control",
+      "no-store, no-cache, must-revalidate, proxy-revalidate"
+    );
     return new Response(body, { status: 500, headers });
   }
 }
