@@ -6,6 +6,26 @@ import {
 } from "@shopify/shopify-app-remix/server";
 import { MemorySessionStorage } from "@shopify/shopify-app-session-storage-memory";
 
+// Prefer durable Redis session storage in production to prevent OAuth loops on
+// serverless (Vercel) where memory is not shared across invocations.
+// Falls back to in-memory if REDIS_URL is not provided or adapter load fails.
+let resolvedSessionStorage: any = undefined;
+try {
+  if (process.env.REDIS_URL) {
+    // Dynamically require to avoid hard type dependency during local dev
+    // and keep build resilient if adapter isn't installed locally.
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const { RedisSessionStorage } = require("@shopify/shopify-app-session-storage-redis");
+    resolvedSessionStorage = new RedisSessionStorage(process.env.REDIS_URL);
+    console.log("🔒 Shopify session storage: RedisSessionStorage enabled");
+  }
+} catch (error) {
+  console.warn(
+    "⚠️ Redis session storage unavailable, falling back to MemorySessionStorage",
+    (error as Error)?.message || error
+  );
+}
+
 const shopify = shopifyApp({
   apiKey: process.env.SHOPIFY_API_KEY,
   apiSecretKey: process.env.SHOPIFY_API_SECRET || "",
@@ -13,7 +33,7 @@ const shopify = shopifyApp({
   scopes: process.env.SCOPES?.split(",") || ["read_products", "write_products"],
   appUrl: process.env.SHOPIFY_APP_URL || "",
   authPathPrefix: "/auth",
-  sessionStorage: new MemorySessionStorage(),
+  sessionStorage: resolvedSessionStorage || new MemorySessionStorage(),
   distribution: AppDistribution.AppStore,
   future: {
     unstable_newEmbeddedAuthStrategy: true,
