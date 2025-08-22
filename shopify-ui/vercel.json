@@ -37,10 +37,6 @@
     "NODE_ENV": "production",
     "SHOPIFY_APP_URL": "https://shopifyscript-shopify-ui.vercel.app",
     "SCOPES": "read_products,write_products",
-    "BACKEND_PUBLIC_URL": "https://shopifyscript-backend.vercel.app/api",
-    "KV_URL": "@redis-ads-autopilot-ai-kv-url",
-    "KV_REST_API_URL": "@redis-ads-autopilot-ai-kv-rest-api-url",
-    "KV_REST_API_TOKEN": "@redis-ads-autopilot-ai-kv-rest-api-token",
-    "KV_REST_API_READ_ONLY_TOKEN": "@redis-ads-autopilot-ai-kv-rest-api-read-only-token"
+    "BACKEND_PUBLIC_URL": "https://shopifyscript-backend.vercel.app/api"
   }
 }
