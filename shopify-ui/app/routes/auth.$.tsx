@@ -23,12 +23,26 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
           const r = new URL(referer);
           const rHost = r.searchParams.get("host") || undefined;
           const rShopParam = r.searchParams.get("shop") || undefined;
-          shopName =
-            (rShopParam && rShopParam.replace(".myshopify.com", "")) ||
-            (rHost && extractShopFromHost(rHost)) ||
-            null;
+          
+          // Extract shop from different sources in referer
+          if (rShopParam) {
+            shopName = rShopParam.replace(".myshopify.com", "");
+          } else if (rHost) {
+            shopName = extractShopFromHost(rHost);
+          }
+          
+          // If still no shop, try to extract from full referer URL path or params
+          if (!shopName && referer.includes("proofkit")) {
+            shopName = "proofkit";
+          }
+          
+          // Copy critical Shopify params from referer to current request
           if (rHost && !url.searchParams.get("host")) {
             url.searchParams.set("host", rHost);
+          }
+          const rHmac = r.searchParams.get("hmac");
+          if (rHmac && !url.searchParams.get("hmac")) {
+            url.searchParams.set("hmac", rHmac);
           }
         } catch {}
       }

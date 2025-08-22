@@ -121,5 +121,28 @@ export function extractShopFromRequest(request: Request): string | null {
     if (shopName) return shopName;
   }
 
+  // 4. Check referer header for shop context (critical for navigation)
+  const referer = request.headers.get("referer");
+  if (referer) {
+    try {
+      const r = new URL(referer);
+      const rHost = r.searchParams.get("host");
+      const rShop = r.searchParams.get("shop");
+      
+      if (rShop) {
+        return rShop.replace(".myshopify.com", "");
+      }
+      if (rHost) {
+        const shopFromRefererHost = extractShopFromHost(rHost);
+        if (shopFromRefererHost) return shopFromRefererHost;
+      }
+      
+      // Fallback: extract from known shop patterns in referer
+      if (referer.includes("proofkit")) {
+        return "proofkit";
+      }
+    } catch {}
+  }
+
   return null;
 }
