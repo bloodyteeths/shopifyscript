@@ -18,6 +18,7 @@ import audiencesRoutes from "./routes/audiences.js";
 import aiRoutes from "./routes/ai.js";
 import intentOSRoutes from "./routes/intent-os.js";
 import * as alertsConfigRoutes from "./routes/alerts-config.js";
+import sessionsRoutes from "./routes/sessions.js";
 
 // Load environment configuration
 dotenv.config();
@@ -95,6 +96,7 @@ app.use("/api", insightsRoutes);
 app.use("/api/audiences", audiencesRoutes);
 app.use("/api", aiRoutes);
 app.use("/api/intent-os", intentOSRoutes);
+app.use("/api", sessionsRoutes);
 
 // ----- Remaining legacy endpoints (to be extracted later) -----
 
