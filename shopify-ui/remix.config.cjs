@@ -4,5 +4,6 @@ module.exports = {
   serverModuleFormat: "cjs",
   serverBuildPath: "build/index.js",
   assetsBuildDirectory: "public/build",
+  publicPath: "/build/",
   serverDependenciesToBundle: "all",
 };
