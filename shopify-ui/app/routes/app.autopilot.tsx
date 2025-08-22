@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useLoaderData, useFetcher } from "@remix-run/react";
+import { useLoaderData, useActionData, useNavigation, Form } from "@remix-run/react";
 import {
   json,
   redirect,
@@ -41,39 +41,46 @@ export async function loader({ request }: LoaderFunctionArgs) {
 }
 
 export async function action({ request }: ActionFunctionArgs) {
-  const formData = await request.formData();
-  const actionType = formData.get("actionType");
+  try {
+    // Get authenticated shop name from Shopify session
+    const { session } = await authenticate.admin(request);
+    const currentShopName = session?.shop?.replace(".myshopify.com", "");
 
-  if (actionType === "generateScript") {
-    // Use shop name utilities instead of complex tenant detection
-    const currentShopName = getServerShopName(request.headers, request.url);
+    if (!currentShopName) {
+      console.error("❌ No shop name found in Shopify session");
+      return json({ success: false, error: "Authentication required" });
+    }
 
-    console.log(`🔄 Action generating script for shop: ${currentShopName}`);
+    const formData = await request.formData();
+    const actionType = formData.get("actionType");
 
-    const mode = formData.get("mode") || "protect";
-    const budget = formData.get("budget") || "3.00";
-    const cpc = formData.get("cpc") || "0.20";
-    const url = formData.get("url") || "";
+    if (actionType === "generateScript") {
+      console.log(`🔄 Server action generating script for shop: ${currentShopName}`);
 
-    try {
-      // Fetch the real script using text endpoint with correct shop name
-      const realScript = await backendFetchText(
-        "/ads-script/raw",
-        "GET",
-        undefined,
-        currentShopName,
-      );
+      const mode = formData.get("mode") || "protect";
+      const budget = formData.get("budget") || "3.00";
+      const cpc = formData.get("cpc") || "0.20";
+      const url = formData.get("url") || "";
 
-      console.log(
-        `📊 Script fetch result for ${currentShopName}: length=${realScript?.length || 0}, isHTML=${realScript?.includes("<html") || false}`,
-      );
+      try {
+        // Fetch the real script using authenticated backend call
+        const realScript = await backendFetchText(
+          "/ads-script/raw",
+          "GET",
+          undefined,
+          currentShopName,
+        );
 
-      if (
-        realScript &&
-        realScript.length > 1000 &&
-        !realScript.includes("<html")
-      ) {
-        const personalizedScript = `/** ProofKit Google Ads Script - Personalized for ${mode} mode
+        console.log(
+          `📊 Script fetch result for ${currentShopName}: length=${realScript?.length || 0}, isHTML=${realScript?.includes("<html") || false}`,
+        );
+
+        if (
+          realScript &&
+          realScript.length > 1000 &&
+          !realScript.includes("<html")
+        ) {
+          const personalizedScript = `/** ProofKit Google Ads Script - Personalized for ${mode} mode
  * Shop: ${currentShopName}
  * Generated: ${new Date().toISOString()}
  * Budget Cap: $${budget}/day
@@ -90,35 +97,53 @@ ${realScript}
 // - CPC: $${cpc}
 // - URL: ${url || "default"}`;
 
-        return json({
-          success: true,
-          script: personalizedScript,
-          size: Math.round(personalizedScript.length / 1024),
-          shopName: currentShopName,
-        });
-      } else {
-        console.log(
-          `❌ Script validation failed for ${currentShopName}: length=${realScript?.length || 0}, hasHTML=${realScript?.includes("<html") || false}`,
+          return json({
+            success: true,
+            script: personalizedScript,
+            size: Math.round(personalizedScript.length / 1024),
+            shopName: currentShopName,
+          });
+        } else {
+          console.log(
+            `❌ Script validation failed for ${currentShopName}: length=${realScript?.length || 0}, hasHTML=${realScript?.includes("<html") || false}`,
+          );
+          return json({
+            success: false,
+            error: "Failed to fetch complete script from backend",
+            debug: {
+              length: realScript?.length || 0,
+              isHTML: realScript?.includes("<html") || false,
+              preview: realScript?.substring(0, 200) || "No content"
+            }
+          });
+        }
+      } catch (error) {
+        console.error(
+          `❌ Action script fetch failed for ${currentShopName}:`,
+          error.message,
         );
-        return json({
-          success: false,
-          error: "Failed to fetch complete script",
+        return json({ 
+          success: false, 
+          error: error.message || "Backend fetch failed",
+          stack: error.stack
         });
       }
-    } catch (error) {
-      console.log(
-        `❌ Action script fetch failed for ${currentShopName}:`,
-        error.message,
-      );
-      return json({ success: false, error: error.message });
     }
-  }
 
-  return json({ success: false, error: "Unknown action" });
+    return json({ success: false, error: "Unknown action type" });
+  } catch (authError) {
+    console.error("❌ Autopilot action authentication failed:", authError);
+    return json({ 
+      success: false, 
+      error: "Authentication failed - please reload the page" 
+    });
+  }
 }
 
 export default function Autopilot() {
   const { config } = useLoaderData<typeof loader>();
+  const actionData = useActionData<typeof action>();
+  const navigation = useNavigation();
   const [mode, setMode] = React.useState("protect");
   const [budget, setBudget] = React.useState("3.00");
   const [cpc, setCpc] = React.useState("0.20");
@@ -129,6 +154,9 @@ export default function Autopilot() {
   const [scriptCode, setScriptCode] = React.useState("");
   const [showScript, setShowScript] = React.useState(false);
   const [shopName, setShopName] = React.useState<string | null>(null);
+  
+  const isGeneratingScript = navigation.state === "submitting" && 
+    navigation.formData?.get("actionType") === "generateScript";
 
   // Load shop name from localStorage on client side
   React.useEffect(() => {
@@ -144,12 +172,21 @@ export default function Autopilot() {
     setToast(`Shop configured: ${newShopName}.myshopify.com`);
   };
 
-  // Auto-update script when settings change
+  // Handle action data from server
   React.useEffect(() => {
-    if (showScript) {
-      generateDynamicScript();
+    if (actionData) {
+      if (actionData.success) {
+        setScriptCode(actionData.script);
+        setShowScript(true);
+        setToast(
+          `Complete ${actionData.size}KB script generated for ${actionData.shopName}`,
+        );
+      } else {
+        setToast("Error: " + actionData.error);
+        console.error("Script generation error:", actionData);
+      }
     }
-  }, [mode, budget, cpc, url, showScript]);
+  }, [actionData]);
 
   function run() {
     // Demo functionality - shows configuration
@@ -165,45 +202,7 @@ Shop: ${shopName || "unknown"}`;
     setToast("Demo: Configuration shown (would enable in production)");
   }
 
-  // Removed sheet connection functions - using automated multi-tenant setup
-  function generateDynamicScript() {
-    // Use server action instead of client-side crypto
-    const formData = new FormData();
-    formData.append("actionType", "generateScript");
-    formData.append("mode", mode);
-    formData.append("budget", budget);
-    formData.append("cpc", cpc);
-    formData.append("url", url);
-
-    fetch("/api/generate-script", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        mode,
-        budget,
-        cpc,
-        url,
-        shopName: shopName, // Pass the shop name from localStorage
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.success) {
-          setScriptCode(data.script);
-          setShowScript(true);
-          setToast(
-            `Complete ${data.size}KB script generated for ${data.shopName}`,
-          );
-        } else {
-          setToast("Error: " + data.error);
-        }
-      })
-      .catch((error) => {
-        setToast("Error generating script: " + error.message);
-      });
-  }
+  // Script generation now handled by server action - no client-side function needed
 
   return (
     <div>
@@ -329,20 +328,28 @@ Shop: ${shopName || "unknown"}`;
       </div>
 
       <div style={{ marginTop: 8 }}>
-        <button
-          onClick={generateDynamicScript}
-          style={{
-            background: "#007bff",
-            color: "white",
-            padding: "12px 24px",
-            border: "none",
-            borderRadius: "4px",
-            cursor: "pointer",
-            fontSize: "16px",
-          }}
-        >
-          🔄 Generate Current Script
-        </button>
+        <Form method="post">
+          <input type="hidden" name="actionType" value="generateScript" />
+          <input type="hidden" name="mode" value={mode} />
+          <input type="hidden" name="budget" value={budget} />
+          <input type="hidden" name="cpc" value={cpc} />
+          <input type="hidden" name="url" value={url} />
+          <button
+            type="submit"
+            disabled={isGeneratingScript}
+            style={{
+              background: isGeneratingScript ? "#6c757d" : "#007bff",
+              color: "white",
+              padding: "12px 24px",
+              border: "none",
+              borderRadius: "4px",
+              cursor: isGeneratingScript ? "not-allowed" : "pointer",
+              fontSize: "16px",
+            }}
+          >
+            {isGeneratingScript ? "🔄 Generating..." : "🔄 Generate Current Script"}
+          </button>
+        </Form>
       </div>
       {showScript && (
         <section
