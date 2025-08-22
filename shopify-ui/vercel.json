@@ -6,10 +6,14 @@
     "SCOPES": "read_products,write_products",
     "BACKEND_PUBLIC_URL": "https://shopifyscript-backend.vercel.app/api"
   },
+  "buildCommand": "npm run build && cp -r public/build/* public/",
   "routes": [
     {
+      "handle": "filesystem"
+    },
+    {
       "src": "/build/(.*)",
-      "dest": "/public/build/$1"
+      "dest": "/public/$1"
     }
   ]
 }
