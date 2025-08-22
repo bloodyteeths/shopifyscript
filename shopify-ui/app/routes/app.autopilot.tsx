@@ -11,8 +11,12 @@ import { authenticate } from "../shopify.server";
 import { checkTenantSetup } from "../utils/tenant.server";
 
 export async function loader({ request }: LoaderFunctionArgs) {
+  const auth = await authenticate.admin(request);
+  if (auth instanceof Response) {
+    return auth;
+  }
   try {
-    const { session } = await authenticate.admin(request);
+    const { session } = auth as any;
     const shopName = session?.shop?.replace(".myshopify.com", "") || "";
 
     if (!shopName) {

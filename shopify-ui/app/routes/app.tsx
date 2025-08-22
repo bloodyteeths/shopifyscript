@@ -12,7 +12,11 @@ export const links = () => [{ rel: "stylesheet", href: polarisStyles }];
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   // Authenticate with Shopify
-  const { session } = await authenticate.admin(request);
+  const auth = await authenticate.admin(request);
+  if (auth instanceof Response) {
+    return auth;
+  }
+  const { session } = auth as any;
 
   // Extract shop name from session or request parameters
   let shopName = session?.shop?.replace(".myshopify.com", "");

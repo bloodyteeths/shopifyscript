@@ -20,7 +20,11 @@ import { checkTenantSetup } from "../utils/tenant.server";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   // Authenticate with Shopify and get shop name from session
-  const { session } = await authenticate.admin(request);
+  const auth = await authenticate.admin(request);
+  if (auth instanceof Response) {
+    return auth;
+  }
+  const { session } = auth as any;
   const shopName = session?.shop?.replace(".myshopify.com", "") || "";
 
   if (!shopName) {

@@ -49,7 +49,11 @@ export async function loader(args: LoaderFunctionArgs) {
   try {
     // Get shop name from Shopify authentication
     const { authenticate } = await import("../shopify.server");
-    const { session } = await authenticate.admin(args.request);
+    const auth = await authenticate.admin(args.request);
+    if (auth instanceof Response) {
+      return auth;
+    }
+    const { session } = auth as any;
     const shopName = session?.shop?.replace(".myshopify.com", "") || "";
 
     if (!shopName) {
