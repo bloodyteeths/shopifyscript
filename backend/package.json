@@ -10,7 +10,9 @@
     "test:unit": "jest tests/unit",
     "test:integration": "jest tests/integration",
     "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage"
+    "test:coverage": "jest --coverage",
+    "lint": "echo 'No linting configured'",
+    "format": "echo 'No formatting configured'"
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
