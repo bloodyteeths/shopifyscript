@@ -19,14 +19,16 @@ try {
     resolvedSessionStorage = new RedisSessionStorage(redisUrl);
     console.log("🔒 Using RedisSessionStorage for persistent Shopify sessions");
   } else {
+    console.error("❌ CRITICAL: Redis not configured! Sessions will not persist in serverless environment.");
+    console.error("Please set KV_URL or REDIS_URL environment variable.");
     resolvedSessionStorage = new MemorySessionStorage();
     console.log(
       "⚠️ Redis not configured, using MemorySessionStorage (sessions won't persist)",
     );
   }
 } catch (error) {
-  console.warn(
-    "⚠️ Redis session storage failed, falling back to MemorySessionStorage:",
+  console.error(
+    "❌ Redis session storage failed, falling back to MemorySessionStorage:",
     error,
   );
   resolvedSessionStorage = new MemorySessionStorage();
@@ -42,7 +44,6 @@ const shopify = shopifyApp({
   sessionStorage: resolvedSessionStorage,
   distribution: AppDistribution.AppStore,
   future: {
-    unstable_newEmbeddedAuthStrategy: true,
     removeRest: true,
   },
   ...(process.env.SHOP_CUSTOM_DOMAIN
