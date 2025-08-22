@@ -5,11 +5,27 @@ import {
   shopifyApp,
 } from "@shopify/shopify-app-remix/server";
 import { MemorySessionStorage } from "@shopify/shopify-app-session-storage-memory";
+import { RedisSessionStorage } from "@shopify/shopify-app-session-storage-redis";
 
-// Use MemorySessionStorage with proper session handling for serverless
-// Following Shopify best practices for Vercel deployment
-console.log("🔒 Using MemorySessionStorage with enhanced session handling");
-const resolvedSessionStorage = new MemorySessionStorage();
+// Use Redis session storage for persistence in serverless environment
+// Falls back to MemorySessionStorage if Redis is not configured
+let resolvedSessionStorage;
+
+try {
+  // Check if Redis URL is configured (will be set via Vercel KV)
+  const redisUrl = process.env.KV_URL || process.env.REDIS_URL;
+  
+  if (redisUrl && redisUrl !== "${REDIS_URL}") {
+    resolvedSessionStorage = new RedisSessionStorage(redisUrl);
+    console.log("🔒 Using RedisSessionStorage for persistent Shopify sessions");
+  } else {
+    resolvedSessionStorage = new MemorySessionStorage();
+    console.log("⚠️ Redis not configured, using MemorySessionStorage (sessions won't persist)");
+  }
+} catch (error) {
+  console.warn("⚠️ Redis session storage failed, falling back to MemorySessionStorage:", error);
+  resolvedSessionStorage = new MemorySessionStorage();
+}
 
 const shopify = shopifyApp({
   apiKey: process.env.SHOPIFY_API_KEY,
