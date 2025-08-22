@@ -11,19 +11,16 @@ import { authenticate, extractShopFromRequest } from "../shopify.server";
 export const links = () => [{ rel: "stylesheet", href: polarisStyles }];
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  // Authenticate with Shopify
-  const auth = await authenticate.admin(request);
-  if (auth instanceof Response) {
-    return auth;
-  }
-  const { session } = auth as any;
-
-  // Extract shop name from session or request parameters
-  let shopName = session?.shop?.replace(".myshopify.com", "");
-
-  // Fallback: try to extract from request if session doesn't have shop
+  // Derive shop from host/shop to avoid redundant OAuth on GET
+  let shopName = extractShopFromRequest(request);
   if (!shopName) {
-    shopName = extractShopFromRequest(request);
+    // Authenticate with Shopify only if necessary
+    const auth = await authenticate.admin(request);
+    if (auth instanceof Response) {
+      return auth;
+    }
+    const { session } = auth as any;
+    shopName = session?.shop?.replace(".myshopify.com", "");
   }
 
   // If we still don't have a shop name, something is wrong
