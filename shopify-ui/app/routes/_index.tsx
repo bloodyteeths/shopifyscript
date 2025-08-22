@@ -11,7 +11,8 @@ export async function loader({ request }: LoaderFunctionArgs) {
   
   if (isEmbedded && hasHmac && hasHost) {
     // This is definitely a Shopify embedded request
-    return redirect("/app/");
+    // Preserve critical Shopify params (host/hmac/embedded/etc.) to avoid losing context
+    return redirect(`/app/${url.search}`);
   }
   
   // For all other requests, don't redirect - show a landing page
