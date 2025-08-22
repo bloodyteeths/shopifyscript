@@ -4,8 +4,12 @@ import { getServerShopName } from "../utils/shop-config";
 
 export async function action({ request }: ActionFunctionArgs) {
   try {
+    console.log(`🎯 Script generation API called - Method: ${request.method}, URL: ${request.url}`);
+    
     const body = await request.json();
     const { mode, budget, cpc, url, shopName } = body;
+    
+    console.log(`📝 Request body parsed:`, { mode, budget, cpc, url, shopName });
 
     // Use shop name from request body or determine from server context
     const currentShopName =
@@ -80,9 +84,31 @@ ${realScript}
         shopName: currentShopName,
       });
     } else {
-      return json({ success: false, error: "Failed to fetch complete script" });
+      console.log(`❌ Script validation failed - length: ${realScript?.length || 0}, isHTML: ${realScript?.includes("<html") || false}`);
+      return json({ 
+        success: false, 
+        error: "Failed to fetch complete script - backend may be returning fallback content",
+        debug: {
+          length: realScript?.length || 0,
+          isHTML: realScript?.includes("<html") || false,
+          preview: realScript?.substring(0, 200) || "No content"
+        }
+      });
     }
   } catch (error) {
-    return json({ success: false, error: error.message });
+    console.error(`❌ Script generation error:`, error);
+    return json({ 
+      success: false, 
+      error: error.message || "Unknown error during script generation",
+      stack: error.stack
+    });
   }
+}
+
+// Add loader to handle GET requests gracefully
+export async function loader() {
+  return json({
+    success: false,
+    error: "This endpoint requires POST method for script generation"
+  });
 }
