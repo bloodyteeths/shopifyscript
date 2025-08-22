@@ -187,6 +187,15 @@ export default function Autopilot() {
     if (actionData) {
       if (actionData.success) {
         console.log(`✅ Script received: ${actionData.script?.length || 0} chars`);
+        // Store script in localStorage to persist across page reloads
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('proofkit_generated_script', actionData.script);
+          localStorage.setItem('proofkit_script_meta', JSON.stringify({
+            size: actionData.size,
+            shopName: actionData.shopName,
+            timestamp: Date.now()
+          }));
+        }
         setScriptCode(actionData.script);
         setShowScript(true);
         setToast(
@@ -198,6 +207,34 @@ export default function Autopilot() {
       }
     }
   }, [actionData]);
+
+  // Load stored script on page load
+  React.useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const storedScript = localStorage.getItem('proofkit_generated_script');
+      const storedMeta = localStorage.getItem('proofkit_script_meta');
+      
+      if (storedScript && storedMeta) {
+        try {
+          const meta = JSON.parse(storedMeta);
+          // Only load if generated within last hour
+          const hourAgo = Date.now() - (60 * 60 * 1000);
+          if (meta.timestamp > hourAgo) {
+            console.log(`📜 Loading stored script: ${storedScript.length} chars`);
+            setScriptCode(storedScript);
+            setShowScript(true);
+            setToast(`Loaded ${meta.size}KB script for ${meta.shopName}`);
+          } else {
+            // Clean up old scripts
+            localStorage.removeItem('proofkit_generated_script');
+            localStorage.removeItem('proofkit_script_meta');
+          }
+        } catch (e) {
+          console.warn('Failed to parse stored script meta:', e);
+        }
+      }
+    }
+  }, []);
 
   function run() {
     // Demo functionality - shows configuration
@@ -377,28 +414,51 @@ Shop: ${shopName || "unknown"}`;
             <h3>
               Google Ads Script ({Math.round(scriptCode.length / 1024)}KB)
             </h3>
-            <button
-              onClick={() => {
-                navigator.clipboard
-                  .writeText(scriptCode)
-                  .then(() => {
-                    setToast("Script copied to clipboard!");
-                  })
-                  .catch(() => {
-                    setToast("Copy failed - select text manually");
-                  });
-              }}
-              style={{
-                background: "#28a745",
-                color: "white",
-                padding: "8px 16px",
-                border: "none",
-                borderRadius: "4px",
-                cursor: "pointer",
-              }}
-            >
-              📋 Copy Script
-            </button>
+            <div style={{ display: "flex", gap: "8px" }}>
+              <button
+                onClick={() => {
+                  navigator.clipboard
+                    .writeText(scriptCode)
+                    .then(() => {
+                      setToast("Script copied to clipboard!");
+                    })
+                    .catch(() => {
+                      setToast("Copy failed - select text manually");
+                    });
+                }}
+                style={{
+                  background: "#28a745",
+                  color: "white",
+                  padding: "8px 16px",
+                  border: "none",
+                  borderRadius: "4px",
+                  cursor: "pointer",
+                }}
+              >
+                📋 Copy Script
+              </button>
+              <button
+                onClick={() => {
+                  setShowScript(false);
+                  setScriptCode("");
+                  if (typeof window !== 'undefined') {
+                    localStorage.removeItem('proofkit_generated_script');
+                    localStorage.removeItem('proofkit_script_meta');
+                  }
+                  setToast("Script cleared");
+                }}
+                style={{
+                  background: "#6c757d",
+                  color: "white",
+                  padding: "8px 16px",
+                  border: "none",
+                  borderRadius: "4px",
+                  cursor: "pointer",
+                }}
+              >
+                🗑️ Clear
+              </button>
+            </div>
           </div>
           <textarea
             readOnly
