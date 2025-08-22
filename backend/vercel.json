@@ -26,6 +26,6 @@
   ],
   "env": {
     "NODE_ENV": "production",
-    "REDIS_URL": "redis://default:RiA3NnmeqtratW54IouqmexCvXoKzVE8@redis-17817.c262.us-east-1-3.ec2.redns.redis-cloud.com:17817"
+    "REDIS_URL": "@redis_url"
   }
 }
