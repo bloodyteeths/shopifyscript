@@ -29,15 +29,15 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
   console.log(`🤖 Autopilot loaded for shop: ${shopName}`);
 
-  // Return minimal config for client
+  // Return config with authenticated shop name for client
   const config = {
     backendUrl:
       process.env.BACKEND_PUBLIC_URL ||
       "https://shopifyscript-backend.vercel.app/api",
-    shopName,
+    shopName, // Authenticated shop name from Shopify session
   };
 
-  return json({ config });
+  return json({ config, shopName });
 }
 
 export async function action({ request }: ActionFunctionArgs) {
@@ -150,7 +150,7 @@ ${realScript}
 }
 
 export default function Autopilot() {
-  const { config } = useLoaderData<typeof loader>();
+  const { config, shopName: serverShopName } = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const navigation = useNavigation();
   const [mode, setMode] = React.useState("protect");
@@ -164,15 +164,26 @@ export default function Autopilot() {
   const [showScript, setShowScript] = React.useState(false);
   const [shopName, setShopName] = React.useState<string | null>(null);
   
+  // Debug state changes
+  React.useEffect(() => {
+    console.log('🎭 State update:', { 
+      showScript, 
+      scriptCodeLength: scriptCode.length,
+      shopName,
+      toast 
+    });
+  }, [showScript, scriptCode, shopName, toast]);
+  
   const isGeneratingScript = navigation.state === "submitting" && 
     navigation.formData?.get("actionType") === "generateScript";
 
-  // Load shop name from localStorage on client side
+  // Use authenticated shop name from server, fallback to localStorage
   React.useEffect(() => {
-    const userShopName = getShopNameOrNull();
-    setShopName(userShopName);
+    const finalShopName = serverShopName || getShopNameOrNull();
+    console.log('🏪 Setting shop name:', { serverShopName, finalShopName });
+    setShopName(finalShopName);
     setShowSetupBanner(isShopSetupNeeded()); // Use proper setup check
-  }, []);
+  }, [serverShopName]);
 
   const handleSetupComplete = (newShopName: string) => {
     setShopName(newShopName);
@@ -210,13 +221,21 @@ export default function Autopilot() {
 
   // Load stored script on page load
   React.useEffect(() => {
+    console.log('🔍 Checking for stored script on page load...');
     if (typeof window !== 'undefined') {
       const storedScript = localStorage.getItem('proofkit_generated_script');
       const storedMeta = localStorage.getItem('proofkit_script_meta');
       
+      console.log('📦 localStorage check:', { 
+        hasScript: !!storedScript, 
+        hasMeta: !!storedMeta,
+        scriptLength: storedScript?.length || 0
+      });
+      
       if (storedScript && storedMeta) {
         try {
           const meta = JSON.parse(storedMeta);
+          console.log('📋 Stored script meta:', meta);
           // Only load if generated within last hour
           const hourAgo = Date.now() - (60 * 60 * 1000);
           if (meta.timestamp > hourAgo) {
@@ -225,6 +244,7 @@ export default function Autopilot() {
             setShowScript(true);
             setToast(`Loaded ${meta.size}KB script for ${meta.shopName}`);
           } else {
+            console.log('⏰ Stored script expired, cleaning up');
             // Clean up old scripts
             localStorage.removeItem('proofkit_generated_script');
             localStorage.removeItem('proofkit_script_meta');
@@ -232,6 +252,8 @@ export default function Autopilot() {
         } catch (e) {
           console.warn('Failed to parse stored script meta:', e);
         }
+      } else {
+        console.log('📭 No stored script found');
       }
     }
   }, []);
@@ -399,6 +421,7 @@ Shop: ${shopName || "unknown"}`;
           </button>
         </Form>
       </div>
+      {console.log('🖥️ Render check:', { showScript, scriptCodeLength: scriptCode.length })}
       {showScript && (
         <section
           style={{ border: "1px solid #eee", padding: 12, marginTop: 12 }}
