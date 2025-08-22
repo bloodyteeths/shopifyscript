@@ -46,6 +46,13 @@ const shopify = shopifyApp({
   future: {
     unstable_newEmbeddedAuthStrategy: true,
     removeRest: true,
+    v3_authenticatePublic: true,
+    v3_webhookAdminContext: true,
+  },
+  hooks: {
+    afterAuth: async ({ session }) => {
+      console.log(`✅ Authentication successful for shop: ${session.shop}`);
+    },
   },
   ...(process.env.SHOP_CUSTOM_DOMAIN
     ? { customShopDomains: [process.env.SHOP_CUSTOM_DOMAIN] }
@@ -138,9 +145,10 @@ export function extractShopFromRequest(request: Request): string | null {
         if (shopFromRefererHost) return shopFromRefererHost;
       }
       
-      // Fallback: extract from known shop patterns in referer
-      if (referer.includes("proofkit")) {
-        return "proofkit";
+      // Fallback: extract shop from referer domain patterns
+      const domainMatch = referer.match(/\/\/([^.]+)\.myshopify\.com/);
+      if (domainMatch && domainMatch[1]) {
+        return domainMatch[1];
       }
     } catch {}
   }

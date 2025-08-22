@@ -31,9 +31,12 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
             shopName = extractShopFromHost(rHost);
           }
           
-          // If still no shop, try to extract from full referer URL path or params
-          if (!shopName && referer.includes("proofkit")) {
-            shopName = "proofkit";
+          // If still no shop, try to extract from referer domain
+          if (!shopName) {
+            const domainMatch = referer.match(/\/\/([^.]+)\.myshopify\.com/);
+            if (domainMatch && domainMatch[1]) {
+              shopName = domainMatch[1];
+            }
           }
           
           // Copy critical Shopify params from referer to current request
@@ -58,25 +61,10 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
       }
     }
 
-    // Remove stale id_token parameter that might cause issues (per Shopify docs)
-    if (url.searchParams.has('id_token')) {
-      const cleanUrl = new URL(request.url);
-      cleanUrl.searchParams.delete('id_token');
-      // Create new request without the stale id_token
-      const newRequest = new Request(cleanUrl.toString(), {
-        method: request.method,
-        headers: request.headers,
-        body: request.body,
-      });
-      const auth = await authenticate.admin(newRequest);
-      if (auth instanceof Response) {
-        return auth;
-      }
-    } else {
-      const auth = await authenticate.admin(request);
-      if (auth instanceof Response) {
-        return auth;
-      }
+    // Authenticate using Shopify's 2025 embedded auth strategy
+    const auth = await authenticate.admin(request);
+    if (auth instanceof Response) {
+      return auth;
     }
     return null;
   } catch (error) {
