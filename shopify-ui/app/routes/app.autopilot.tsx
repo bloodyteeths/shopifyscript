@@ -74,12 +74,14 @@ export async function action({ request }: ActionFunctionArgs) {
         console.log(
           `📊 Script fetch result for ${currentShopName}: length=${realScript?.length || 0}, isHTML=${realScript?.includes("<html") || false}`,
         );
+        console.log(`📝 Script preview (first 200 chars):`, realScript?.substring(0, 200));
 
         if (
           realScript &&
           realScript.length > 1000 &&
           !realScript.includes("<html")
         ) {
+          console.log(`✅ Script validation passed for ${currentShopName}`);
           const personalizedScript = `/** ProofKit Google Ads Script - Personalized for ${mode} mode
  * Shop: ${currentShopName}
  * Generated: ${new Date().toISOString()}
@@ -97,12 +99,19 @@ ${realScript}
 // - CPC: $${cpc}
 // - URL: ${url || "default"}`;
 
-          return json({
+          const response = {
             success: true,
             script: personalizedScript,
             size: Math.round(personalizedScript.length / 1024),
             shopName: currentShopName,
+          };
+          console.log(`🎯 Returning success response:`, { 
+            success: response.success, 
+            scriptLength: response.script.length, 
+            size: response.size, 
+            shopName: response.shopName 
           });
+          return json(response);
         } else {
           console.log(
             `❌ Script validation failed for ${currentShopName}: length=${realScript?.length || 0}, hasHTML=${realScript?.includes("<html") || false}`,
@@ -174,16 +183,18 @@ export default function Autopilot() {
 
   // Handle action data from server
   React.useEffect(() => {
+    console.log("🎯 Action data received:", actionData);
     if (actionData) {
       if (actionData.success) {
+        console.log(`✅ Script received: ${actionData.script?.length || 0} chars`);
         setScriptCode(actionData.script);
         setShowScript(true);
         setToast(
           `Complete ${actionData.size}KB script generated for ${actionData.shopName}`,
         );
       } else {
+        console.error("❌ Script generation failed:", actionData);
         setToast("Error: " + actionData.error);
-        console.error("Script generation error:", actionData);
       }
     }
   }, [actionData]);
