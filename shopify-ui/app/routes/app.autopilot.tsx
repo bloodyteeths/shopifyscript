@@ -1,4 +1,3 @@
-
 import * as React from "react";
 import { useLoaderData, useFetcher } from "@remix-run/react";
 import {
@@ -13,9 +12,9 @@ import { checkTenantSetup } from "../utils/tenant.server";
 export async function loader({ request }: LoaderFunctionArgs) {
   // Standard Shopify authentication following best practices
   const { session } = await authenticate.admin(request);
-  
+
   const shopName = session?.shop?.replace(".myshopify.com", "");
-  
+
   if (!shopName) {
     throw new Error("Unable to determine shop name from Shopify session");
   }
@@ -24,7 +23,9 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
   // Return minimal config for client
   const config = {
-    backendUrl: process.env.BACKEND_PUBLIC_URL || "https://shopifyscript-backend.vercel.app/api",
+    backendUrl:
+      process.env.BACKEND_PUBLIC_URL ||
+      "https://shopifyscript-backend.vercel.app/api",
     shopName,
   };
 

@@ -1,6 +1,10 @@
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { redirect } from "@remix-run/node";
-import { authenticate, extractShopFromRequest, extractShopFromHost } from "../shopify.server";
+import {
+  authenticate,
+  extractShopFromRequest,
+  extractShopFromHost,
+} from "../shopify.server";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   // Extract shop/host for robust OAuth

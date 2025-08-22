@@ -1,7 +1,7 @@
-import React from 'react';
-import type { EntryContext } from '@remix-run/node';
-import { RemixServer } from '@remix-run/react';
-import { renderToString } from 'react-dom/server';
+import React from "react";
+import type { EntryContext } from "@remix-run/node";
+import { RemixServer } from "@remix-run/react";
+import { renderToString } from "react-dom/server";
 
 export default function handleRequest(
   request: Request,
@@ -17,7 +17,7 @@ export default function handleRequest(
     // Prevent stale HTML -> stale manifest causing 404s on route chunks
     headers.set(
       "Cache-Control",
-      "no-store, no-cache, must-revalidate, proxy-revalidate"
+      "no-store, no-cache, must-revalidate, proxy-revalidate",
     );
     return new Response("<!DOCTYPE html>" + markup, { status, headers });
   } catch (err: any) {
@@ -37,7 +37,7 @@ export default function handleRequest(
     headers.set("Content-Type", "text/html");
     headers.set(
       "Cache-Control",
-      "no-store, no-cache, must-revalidate, proxy-revalidate"
+      "no-store, no-cache, must-revalidate, proxy-revalidate",
     );
     return new Response(body, { status: 500, headers });
   }

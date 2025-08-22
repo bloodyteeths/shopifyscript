@@ -40,7 +40,10 @@ import configRoutes from "./routes/config.js";
 // Load env from root and backend/.env (resolve relative to this file)
 dotenv.config();
 try {
-  const hereEnv = path.resolve(path.dirname(new URL(import.meta.url).pathname), ".env");
+  const hereEnv = path.resolve(
+    path.dirname(new URL(import.meta.url).pathname),
+    ".env",
+  );
   dotenv.config({ path: hereEnv });
 } catch {}
 

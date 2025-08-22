@@ -66,15 +66,15 @@ jobs:
           if [ -z "${{ secrets.STAGING_GOOGLE_SHEETS_PRIVATE_KEY }}" ]; then
             echo "Missing required secret: STAGING_GOOGLE_SHEETS_PRIVATE_KEY"
           fi
-          
+
           if [ -z "${{ secrets.STAGING_GEMINI_API_KEY }}" ]; then
             echo "Missing required secret: STAGING_GEMINI_API_KEY" 
           fi
-          
+
           if [ -z "${{ secrets.STAGING_HMAC_SECRET }}" ]; then
             echo "Missing required secret: STAGING_HMAC_SECRET"
           fi
-          
+
           echo "Secret validation completed"
 
   # Staging deployment with blue-green strategy

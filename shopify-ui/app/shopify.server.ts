@@ -14,16 +14,21 @@ let resolvedSessionStorage;
 try {
   // Check if Redis URL is configured (will be set via Vercel KV)
   const redisUrl = process.env.KV_URL || process.env.REDIS_URL;
-  
+
   if (redisUrl && redisUrl !== "${REDIS_URL}") {
     resolvedSessionStorage = new RedisSessionStorage(redisUrl);
     console.log("🔒 Using RedisSessionStorage for persistent Shopify sessions");
   } else {
     resolvedSessionStorage = new MemorySessionStorage();
-    console.log("⚠️ Redis not configured, using MemorySessionStorage (sessions won't persist)");
+    console.log(
+      "⚠️ Redis not configured, using MemorySessionStorage (sessions won't persist)",
+    );
   }
 } catch (error) {
-  console.warn("⚠️ Redis session storage failed, falling back to MemorySessionStorage:", error);
+  console.warn(
+    "⚠️ Redis session storage failed, falling back to MemorySessionStorage:",
+    error,
+  );
   resolvedSessionStorage = new MemorySessionStorage();
 }
 

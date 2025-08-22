@@ -48,7 +48,9 @@ function SimpleChart({ data }: { data: any[] }) {
 export async function loader(args: LoaderFunctionArgs) {
   try {
     // Get shop name from Shopify authentication
-    const { authenticate, extractShopFromRequest } = await import("../shopify.server");
+    const { authenticate, extractShopFromRequest } = await import(
+      "../shopify.server"
+    );
     let shopName = extractShopFromRequest(args.request) || "";
     if (!shopName) {
       const auth = await authenticate.admin(args.request);

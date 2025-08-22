@@ -1,4 +1,3 @@
-
 import * as React from "react";
 import {
   json,
@@ -21,9 +20,9 @@ import { checkTenantSetup } from "../utils/tenant.server";
 export async function loader({ request }: LoaderFunctionArgs) {
   // Standard Shopify authentication following best practices
   const { session } = await authenticate.admin(request);
-  
+
   const shopName = session?.shop?.replace(".myshopify.com", "");
-  
+
   if (!shopName) {
     throw new Error("Unable to determine shop name from Shopify session");
   }

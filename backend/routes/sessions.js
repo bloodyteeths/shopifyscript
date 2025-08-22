@@ -16,11 +16,15 @@ router.post("/sessions/store", async (req, res) => {
     const { sessionId, sessionData } = req.body;
 
     if (!tenant || !sig) {
-      return res.status(400).json({ ok: false, error: "Missing tenant or signature" });
+      return res
+        .status(400)
+        .json({ ok: false, error: "Missing tenant or signature" });
     }
 
     if (!sessionId || !sessionData) {
-      return res.status(400).json({ ok: false, error: "Missing sessionId or sessionData" });
+      return res
+        .status(400)
+        .json({ ok: false, error: "Missing sessionId or sessionData" });
     }
 
     // Verify HMAC signature
@@ -34,11 +38,13 @@ router.post("/sessions/store", async (req, res) => {
     sessionStore.set(key, {
       ...sessionData,
       storedAt: new Date().toISOString(),
-      tenant
+      tenant,
     });
 
-    console.log(`✅ Stored session for tenant: ${tenant}, sessionId: ${sessionId}`);
-    
+    console.log(
+      `✅ Stored session for tenant: ${tenant}, sessionId: ${sessionId}`,
+    );
+
     res.json({ ok: true, message: "Session stored successfully" });
   } catch (error) {
     console.error("Session store error:", error);
@@ -55,7 +61,9 @@ router.get("/sessions/retrieve", async (req, res) => {
     const { tenant, sig, sessionId } = req.query;
 
     if (!tenant || !sig) {
-      return res.status(400).json({ ok: false, error: "Missing tenant or signature" });
+      return res
+        .status(400)
+        .json({ ok: false, error: "Missing tenant or signature" });
     }
 
     if (!sessionId) {
@@ -76,8 +84,10 @@ router.get("/sessions/retrieve", async (req, res) => {
       return res.status(404).json({ ok: false, error: "Session not found" });
     }
 
-    console.log(`✅ Retrieved session for tenant: ${tenant}, sessionId: ${sessionId}`);
-    
+    console.log(
+      `✅ Retrieved session for tenant: ${tenant}, sessionId: ${sessionId}`,
+    );
+
     res.json({ ok: true, sessionData });
   } catch (error) {
     console.error("Session retrieve error:", error);
@@ -94,7 +104,9 @@ router.delete("/sessions/delete", async (req, res) => {
     const { tenant, sig, sessionId } = req.query;
 
     if (!tenant || !sig) {
-      return res.status(400).json({ ok: false, error: "Missing tenant or signature" });
+      return res
+        .status(400)
+        .json({ ok: false, error: "Missing tenant or signature" });
     }
 
     if (!sessionId) {
@@ -111,8 +123,10 @@ router.delete("/sessions/delete", async (req, res) => {
     const key = `${tenant}:${sessionId}`;
     const existed = sessionStore.delete(key);
 
-    console.log(`✅ Deleted session for tenant: ${tenant}, sessionId: ${sessionId}, existed: ${existed}`);
-    
+    console.log(
+      `✅ Deleted session for tenant: ${tenant}, sessionId: ${sessionId}, existed: ${existed}`,
+    );
+
     res.json({ ok: true, deleted: existed });
   } catch (error) {
     console.error("Session delete error:", error);
@@ -129,7 +143,9 @@ router.get("/sessions/list", async (req, res) => {
     const { tenant, sig } = req.query;
 
     if (!tenant || !sig) {
-      return res.status(400).json({ ok: false, error: "Missing tenant or signature" });
+      return res
+        .status(400)
+        .json({ ok: false, error: "Missing tenant or signature" });
     }
 
     // Verify HMAC signature
@@ -146,13 +162,15 @@ router.get("/sessions/list", async (req, res) => {
           sessionId: key.substring(tenant.length + 1),
           storedAt: value.storedAt,
           shop: value.shop,
-          isOnline: value.isOnline
+          isOnline: value.isOnline,
         });
       }
     }
 
-    console.log(`✅ Listed ${tenantSessions.length} sessions for tenant: ${tenant}`);
-    
+    console.log(
+      `✅ Listed ${tenantSessions.length} sessions for tenant: ${tenant}`,
+    );
+
     res.json({ ok: true, sessions: tenantSessions });
   } catch (error) {
     console.error("Session list error:", error);

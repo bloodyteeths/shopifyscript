@@ -1,4 +1,3 @@
-
 import React from "react";
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
@@ -7,9 +6,9 @@ import { authenticate } from "../shopify.server";
 import { checkTenantSetup } from "../utils/tenant.server";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  // Standard Shopify authentication following best practices  
+  // Standard Shopify authentication following best practices
   const { session } = await authenticate.admin(request);
-  
+
   const shopName = session?.shop?.replace(".myshopify.com", "");
 
   if (!shopName) {

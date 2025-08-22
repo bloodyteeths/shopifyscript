@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import type { HeadersFunction, LoaderFunctionArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
@@ -13,9 +13,9 @@ export const links = () => [{ rel: "stylesheet", href: polarisStyles }];
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   // Standard Shopify authentication following best practices
   const { session } = await authenticate.admin(request);
-  
+
   const shopName = session?.shop?.replace(".myshopify.com", "");
-  
+
   if (!shopName) {
     throw new Error("Unable to determine shop name from Shopify session");
   }
@@ -41,7 +41,11 @@ export default function App() {
         }}
       >
         {/* Store shop name in a global context for child components */}
-        <div id="__shop" data-shop-name={shopName} style={{ display: "none" }} />
+        <div
+          id="__shop"
+          data-shop-name={shopName}
+          style={{ display: "none" }}
+        />
         <Outlet />
       </div>
     </AppProvider>
