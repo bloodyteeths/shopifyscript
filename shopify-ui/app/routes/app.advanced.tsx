@@ -13,19 +13,24 @@ import {
   useActionData,
   useRevalidator,
 } from "@remix-run/react";
-import { authenticate, extractShopFromRequest } from "../shopify.server";
+import { authenticate } from "../shopify.server";
 import { checkTenantSetup } from "../utils/tenant.server";
-import { getAuthenticatedShop } from "../utils/auth-helpers.server";
 
 // This function is no longer needed - replaced by shop name utilities
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  try {
-    // Use enhanced authentication that checks backend database first
-    const { shopName, fromCache } = await getAuthenticatedShop(request);
-    
-    console.log(`⚙️ Advanced settings loaded for shop: ${shopName} ${fromCache ? '(from cache)' : '(fresh auth)'}`);
+  // Standard Shopify authentication following best practices
+  const { session } = await authenticate.admin(request);
   
+  const shopName = session?.shop?.replace(".myshopify.com", "");
+  
+  if (!shopName) {
+    throw new Error("Unable to determine shop name from Shopify session");
+  }
+
+  console.log(`⚙️ Advanced settings loaded for shop: ${shopName}`);
+
+  try {
     const { backendFetch } = await import("../server/hmac.server");
 
     console.log(`📡 Fetching data for shop: ${shopName}`);
@@ -69,32 +74,21 @@ export async function loader({ request }: LoaderFunctionArgs) {
           ? "Failed to load configuration - check backend connection"
           : null,
     });
-  } catch (authError) {
-    // If authentication fails, let Shopify handle the redirect
-    console.log(`🔐 Advanced settings authentication required, delegating to Shopify auth flow`);
-    
-    const auth = await authenticate.admin(request);
-    if (auth instanceof Response) {
-      return auth;
-    }
-    
-    const { session } = auth as any;
-    const shopName = session?.shop?.replace(".myshopify.com", "") || "";
-    
-    if (!shopName) {
-      throw new Error("Unable to determine shop name from Shopify session");
-    }
+  } catch (error) {
+    console.error("Advanced settings data fetch error:", error.message);
 
-    // Return minimal data for fallback auth
-    return json({
-      cfg: {},
-      insights: {},
-      campaigns: {},
-      summary: {},
-      suggestions: generateSuggestions({}, {}, {}),
-      shopName: shopName,
-      error: "Please wait while we load your data...",
-    });
+    return json(
+      {
+        cfg: {},
+        insights: {},
+        campaigns: {},
+        summary: {},
+        suggestions: generateSuggestions({}, {}, {}),
+        shopName: shopName,
+        error: `Failed to load data: ${error.message}`,
+      },
+      { status: 500 },
+    );
   }
 }
 

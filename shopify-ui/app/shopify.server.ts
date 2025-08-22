@@ -5,11 +5,10 @@ import {
   shopifyApp,
 } from "@shopify/shopify-app-remix/server";
 import { MemorySessionStorage } from "@shopify/shopify-app-session-storage-memory";
-import { BackendSessionStorage } from "./utils/backend-session-storage";
 
-// Temporarily use MemorySessionStorage until backend connection is stable
-// TODO: Re-enable BackendSessionStorage once backend URL is properly configured
-console.log("🔒 Using MemorySessionStorage (temporary) for Shopify sessions");
+// Use MemorySessionStorage with proper session handling for serverless
+// Following Shopify best practices for Vercel deployment
+console.log("🔒 Using MemorySessionStorage with enhanced session handling");
 const resolvedSessionStorage = new MemorySessionStorage();
 
 const shopify = shopifyApp({

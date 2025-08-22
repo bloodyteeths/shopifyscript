@@ -6,45 +6,26 @@ import { boundary } from "@shopify/shopify-app-remix/server";
 import { AppProvider } from "@shopify/shopify-app-remix/react";
 import polarisStyles from "@shopify/polaris/build/esm/styles.css";
 
-import { authenticate, extractShopFromRequest } from "../shopify.server";
-import { getAuthenticatedShop } from "../utils/auth-helpers.server";
+import { authenticate } from "../shopify.server";
 
 export const links = () => [{ rel: "stylesheet", href: polarisStyles }];
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  try {
-    // Use enhanced authentication that checks backend database first
-    const { shopName, fromCache } = await getAuthenticatedShop(request);
-    
-    console.log(`🏪 Shopify app authenticated for shop: ${shopName} ${fromCache ? '(from cache)' : '(fresh auth)'}`);
-
-    return json({
-      apiKey: process.env.SHOPIFY_API_KEY || "",
-      shopName,
-    });
-  } catch (error) {
-    // If authentication fails, let Shopify handle the redirect
-    console.log(`🔐 Authentication required, delegating to Shopify auth flow`);
-    
-    const auth = await authenticate.admin(request);
-    if (auth instanceof Response) {
-      return auth;
-    }
-    
-    const { session } = auth as any;
-    const shopName = session?.shop?.replace(".myshopify.com", "");
-    
-    if (!shopName) {
-      throw new Error("Unable to determine shop name from Shopify session");
-    }
-
-    console.log(`🏪 Shopify app authenticated for shop: ${shopName} (fallback auth)`);
-
-    return json({
-      apiKey: process.env.SHOPIFY_API_KEY || "",
-      shopName,
-    });
+  // Standard Shopify authentication following best practices
+  const { session } = await authenticate.admin(request);
+  
+  const shopName = session?.shop?.replace(".myshopify.com", "");
+  
+  if (!shopName) {
+    throw new Error("Unable to determine shop name from Shopify session");
   }
+
+  console.log(`🏪 Shopify app authenticated for shop: ${shopName}`);
+
+  return json({
+    apiKey: process.env.SHOPIFY_API_KEY || "",
+    shopName,
+  });
 };
 
 export default function App() {
