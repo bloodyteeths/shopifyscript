@@ -1,11 +1,5 @@
 {
   "version": 2,
-  "rewrites": [
-    {
-      "source": "/build/(.*)",
-      "destination": "/public/build/$1"
-    }
-  ],
   "env": {
     "NODE_ENV": "production",
     "SHOPIFY_APP_URL": "https://shopifyscript-shopify-ui.vercel.app",
