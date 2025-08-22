@@ -8,6 +8,14 @@ import {
 } from "@remix-run/node";
 import { authenticate } from "../shopify.server";
 import { checkTenantSetup } from "../utils/tenant.server";
+import { getServerShopName } from "../utils/shop-config";
+import { backendFetchText } from "../server/hmac.server";
+import {
+  getShopNameOrNull,
+  isShopSetupNeeded,
+  dismissShopSetupForSession,
+} from "../utils/shop-config";
+import { ShopSetupBanner } from "../components/ShopSetupBanner";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   // Standard Shopify authentication following best practices

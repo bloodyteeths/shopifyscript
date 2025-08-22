@@ -4,6 +4,7 @@ import { json, redirect } from "@remix-run/node";
 import { useLoaderData, Link } from "@remix-run/react";
 import { authenticate } from "../shopify.server";
 import { checkTenantSetup } from "../utils/tenant.server";
+import { useShopContext, buildAppUrl } from "../utils/navigation";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   // Standard Shopify authentication following best practices
@@ -26,6 +27,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
 export default function AppIndex() {
   const { message, timestamp, shopName } = useLoaderData<typeof loader>();
+  const shopContext = useShopContext();
 
   return (
     <div style={{ padding: "2rem" }}>
@@ -74,7 +76,7 @@ export default function AppIndex() {
           <h3>🤖 Autopilot</h3>
           <p>Automated campaign management and optimization</p>
           <Link
-            to="/app/autopilot"
+            to={buildAppUrl("/app/autopilot", shopContext)}
             style={{
               background: "#007bff",
               color: "white",

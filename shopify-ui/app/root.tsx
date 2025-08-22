@@ -6,10 +6,12 @@ import {
   Scripts,
   ScrollRestoration,
   NavLink,
+  useLocation,
 } from "@remix-run/react";
 import type { LinksFunction } from "@remix-run/node";
 import polarisStyles from "@shopify/polaris/build/esm/styles.css";
 import { AppProvider } from "@shopify/polaris";
+import { useShopContext, buildAppUrl } from "./utils/navigation";
 // Avoid importing JSON locales on Node 22 without import attributes; use empty i18n
 const en: any = {};
 
@@ -18,6 +20,8 @@ export const links: LinksFunction = () => [
 ];
 
 export default function App() {
+  const shopContext = useShopContext();
+  
   return (
     <html lang="en">
       <head>
@@ -62,7 +66,7 @@ export default function App() {
               >
                 <li>
                   <NavLink
-                    to="/app/"
+                    to={buildAppUrl("/app/", shopContext)}
                     style={{
                       display: "block",
                       padding: "8px 12px",
@@ -79,7 +83,7 @@ export default function App() {
                 </li>
                 <li>
                   <NavLink
-                    to="/app/autopilot"
+                    to={buildAppUrl("/app/autopilot", shopContext)}
                     style={{
                       display: "block",
                       padding: "8px 12px",
@@ -96,7 +100,7 @@ export default function App() {
                 </li>
                 <li>
                   <NavLink
-                    to="/app/insights"
+                    to={buildAppUrl("/app/insights", shopContext)}
                     style={{
                       display: "block",
                       padding: "8px 12px",
@@ -113,7 +117,7 @@ export default function App() {
                 </li>
                 <li>
                   <NavLink
-                    to="/app/advanced"
+                    to={buildAppUrl("/app/advanced", shopContext)}
                     style={{
                       display: "block",
                       padding: "8px 12px",

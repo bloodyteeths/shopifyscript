@@ -1,5 +1,6 @@
 import { json, type LoaderFunctionArgs } from "@remix-run/node";
 import { useLoaderData, Link } from "@remix-run/react";
+import { useShopContext, buildAppUrl } from "../utils/navigation";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   return json({
@@ -10,6 +11,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
 export default function IntentOSComingSoon() {
   const { tenantId, launchDate } = useLoaderData<typeof loader>();
+  const shopContext = useShopContext();
 
   return (
     <div
@@ -161,7 +163,7 @@ export default function IntentOSComingSoon() {
           }}
         >
           <Link
-            to="/app/autopilot"
+            to={buildAppUrl("/app/autopilot", shopContext)}
             style={{
               padding: "1rem",
               background: "#fff",
