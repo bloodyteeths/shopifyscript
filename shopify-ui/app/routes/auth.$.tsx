@@ -58,9 +58,25 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
       }
     }
 
-    const auth = await authenticate.admin(request);
-    if (auth instanceof Response) {
-      return auth;
+    // Remove stale id_token parameter that might cause issues (per Shopify docs)
+    if (url.searchParams.has('id_token')) {
+      const cleanUrl = new URL(request.url);
+      cleanUrl.searchParams.delete('id_token');
+      // Create new request without the stale id_token
+      const newRequest = new Request(cleanUrl.toString(), {
+        method: request.method,
+        headers: request.headers,
+        body: request.body,
+      });
+      const auth = await authenticate.admin(newRequest);
+      if (auth instanceof Response) {
+        return auth;
+      }
+    } else {
+      const auth = await authenticate.admin(request);
+      if (auth instanceof Response) {
+        return auth;
+      }
     }
     return null;
   } catch (error) {
