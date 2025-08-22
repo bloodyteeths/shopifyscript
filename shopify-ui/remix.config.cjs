@@ -3,7 +3,7 @@ module.exports = {
   ignoredRouteFiles: ["**/.*"],
   serverModuleFormat: "cjs",
   serverBuildPath: "build/index.js",
-  assetsBuildDirectory: "public/build",
-  publicPath: "/build/",
+  assetsBuildDirectory: "public/assets",
+  publicPath: "/assets/",
   serverDependenciesToBundle: "all",
 };
