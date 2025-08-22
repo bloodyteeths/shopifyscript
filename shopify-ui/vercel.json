@@ -1,5 +1,7 @@
 {
   "version": 2,
+  "installCommand": "npm i --no-audit --no-fund",
+  "buildCommand": "npm run build",
   "builds": [
     {
       "src": "api/index.js",
