@@ -41,8 +41,8 @@ let remixHandler;
 async function getRemixHandler() {
   if (!remixHandler) {
     try {
-      // Use require for CommonJS build
-      const build = require('../build/index.js');
+      // Use import for ESM build
+      const build = await import('../build/index.js');
       remixHandler = createRequestHandler({
         build,
         mode: process.env.NODE_ENV || 'production'

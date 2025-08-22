@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { json } from "@remix-run/node";
 
 export const loader = () => json({ ok: true });

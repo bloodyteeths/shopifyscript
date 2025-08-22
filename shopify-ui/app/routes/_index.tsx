@@ -1,4 +1,3 @@
-import React from 'react';
 import { redirect, type LoaderFunctionArgs } from "@remix-run/node";
 import { authenticate } from "../shopify.server";
 
