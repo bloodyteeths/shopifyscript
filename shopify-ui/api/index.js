@@ -2,6 +2,7 @@ import { createRequestHandler } from '@remix-run/express';
 import compression from 'compression';
 import express from 'express';
 import { createProxyMiddleware } from 'http-proxy-middleware';
+import path from 'path';
 
 const app = express();
 
@@ -17,6 +18,20 @@ app.get('/favicon.ico', (_req, res) => res.status(204).end());
 
 // Silence Chrome DevTools noise
 app.get('/.well-known/*', (_req, res) => res.sendStatus(404));
+
+// Serve Remix client assets from public/build (fallback in case platform routing misses)
+try {
+  const staticBuildDir = path.join(process.cwd(), 'shopify-ui/public/build');
+  app.use(
+    '/build',
+    express.static(staticBuildDir, {
+      immutable: true,
+      maxAge: '1y'
+    })
+  );
+} catch (e) {
+  // Non-fatal; Vercel routing should handle /build/* via vercel.json
+}
 
 // Proxy API to backend
 const rawBackendBase = process.env.BACKEND_PUBLIC_URL || 'https://shopifyscript-backend.vercel.app';
