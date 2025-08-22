@@ -37,7 +37,6 @@
   "env": {
     "NODE_ENV": "production",
     "SHOPIFY_APP_URL": "https://shopifyscript-shopify-ui.vercel.app",
-    "SCOPES": "read_products,write_products",
-    "REDIS_URL": "${REDIS_URL}"
+    "SCOPES": "read_products,write_products"
   }
 }

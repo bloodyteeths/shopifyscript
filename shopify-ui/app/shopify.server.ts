@@ -11,13 +11,30 @@ import { MemorySessionStorage } from "@shopify/shopify-app-session-storage-memor
 // Falls back to in-memory if REDIS_URL is not provided or adapter load fails.
 let resolvedSessionStorage: any = undefined;
 try {
-  if (process.env.REDIS_URL) {
-    // Dynamically require to avoid hard type dependency during local dev
-    // and keep build resilient if adapter isn't installed locally.
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const { RedisSessionStorage } = require("@shopify/shopify-app-session-storage-redis");
-    resolvedSessionStorage = new RedisSessionStorage(process.env.REDIS_URL);
-    console.log("🔒 Shopify session storage: RedisSessionStorage enabled");
+  const rawRedisUrl = (process.env.REDIS_URL || "").trim();
+  const looksConfigured =
+    rawRedisUrl.length > 0 && rawRedisUrl !== "${REDIS_URL}";
+  if (looksConfigured) {
+    // Basic URL validation and scheme check
+    let valid = false;
+    try {
+      const u = new URL(rawRedisUrl);
+      valid = u.protocol === "redis:" || u.protocol === "rediss:";
+    } catch {
+      valid = false;
+    }
+    if (valid) {
+      // Dynamically require to avoid hard type dependency during local dev
+      // and keep build resilient if adapter isn't installed locally.
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      const { RedisSessionStorage } = require("@shopify/shopify-app-session-storage-redis");
+      resolvedSessionStorage = new RedisSessionStorage(rawRedisUrl);
+      console.log("🔒 Shopify session storage: RedisSessionStorage enabled");
+    } else {
+      console.warn(
+        "⚠️ Invalid REDIS_URL provided; falling back to MemorySessionStorage"
+      );
+    }
   }
 } catch (error) {
   console.warn(
