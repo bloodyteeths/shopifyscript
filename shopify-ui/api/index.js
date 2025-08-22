@@ -21,14 +21,13 @@ app.get('/.well-known/*', (_req, res) => res.sendStatus(404));
 
 // Serve Remix client assets from public/build (fallback in case platform routing misses)
 try {
-  const staticBuildDir = path.join(process.cwd(), 'shopify-ui/public/build');
-  app.use(
-    '/build',
-    express.static(staticBuildDir, {
+  const staticBuildDir = path.join(process.cwd(), 'public', 'build');
+  const staticOptions = {
       immutable: true,
       maxAge: '1y'
-    })
-  );
+  };
+  app.use('/build', express.static(staticBuildDir, staticOptions));
+  app.use('/app/build', express.static(staticBuildDir, staticOptions));
 } catch (e) {
   // Non-fatal; Vercel routing should handle /build/* via vercel.json
 }
