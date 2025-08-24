@@ -7,6 +7,7 @@ import { AppProvider } from "@shopify/shopify-app-remix/react";
 import polarisStyles from "@shopify/polaris/build/esm/styles.css";
 
 import { authenticate } from "../shopify.server";
+import { ErrorBoundary as ReactErrorBoundary } from "../components/ErrorBoundary";
 
 export const links = () => [{ rel: "stylesheet", href: polarisStyles }];
 
@@ -51,21 +52,23 @@ export default function App() {
 
   return (
     <AppProvider isEmbeddedApp apiKey={apiKey}>
-      <div
-        style={{
-          minHeight: "100vh",
-          backgroundColor: "#f6f6f7",
-          padding: "0",
-        }}
-      >
-        {/* Store shop name in a global context for child components */}
+      <ReactErrorBoundary>
         <div
-          id="__shop"
-          data-shop-name={shopName}
-          style={{ display: "none" }}
-        />
-        <Outlet />
-      </div>
+          style={{
+            minHeight: "100vh",
+            backgroundColor: "#f6f6f7",
+            padding: "0",
+          }}
+        >
+          {/* Store shop name in a global context for child components */}
+          <div
+            id="__shop"
+            data-shop-name={shopName}
+            style={{ display: "none" }}
+          />
+          <Outlet />
+        </div>
+      </ReactErrorBoundary>
     </AppProvider>
   );
 }

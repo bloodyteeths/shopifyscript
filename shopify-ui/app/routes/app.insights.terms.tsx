@@ -9,22 +9,45 @@ import {
 } from "@remix-run/react";
 
 export async function loader(args: LoaderFunctionArgs) {
-  const url = new URL(args.request.url);
-  const w = url.searchParams.get("w") || "7d";
-  const q = url.searchParams.get("q") || "";
-  const campaign = url.searchParams.get("campaign") || "";
-  const min_clicks = url.searchParams.get("min_clicks") || "0";
-  const min_cost = url.searchParams.get("min_cost") || "0";
-  const sort = url.searchParams.get("sort") || "cost";
-  const dir = url.searchParams.get("dir") || "desc";
-  const page = url.searchParams.get("page") || "1";
-  const page_size = url.searchParams.get("page_size") || "50";
-  const { backendFetch } = await import("../server/hmac.server");
-  const data = await backendFetch(
-    `/insights/terms?w=${w}&q=${encodeURIComponent(q)}&campaign=${encodeURIComponent(campaign)}&min_clicks=${min_clicks}&min_cost=${min_cost}&sort=${sort}&dir=${dir}&page=${page}&page_size=${page_size}&include_total=true`,
-    "GET",
-  );
-  return json(data.json || { ok: false, rows: [] });
+  try {
+    const url = new URL(args.request.url);
+    const w = url.searchParams.get("w") || "7d";
+    const q = url.searchParams.get("q") || "";
+    const campaign = url.searchParams.get("campaign") || "";
+    const min_clicks = url.searchParams.get("min_clicks") || "0";
+    const min_cost = url.searchParams.get("min_cost") || "0";
+    const sort = url.searchParams.get("sort") || "cost";
+    const dir = url.searchParams.get("dir") || "desc";
+    const page = url.searchParams.get("page") || "1";
+    const page_size = url.searchParams.get("page_size") || "50";
+    
+    const { backendFetch } = await import("../server/hmac.server");
+    const data = await backendFetch(
+      `/insights/terms?w=${w}&q=${encodeURIComponent(q)}&campaign=${encodeURIComponent(campaign)}&min_clicks=${min_clicks}&min_cost=${min_cost}&sort=${sort}&dir=${dir}&page=${page}&page_size=${page_size}&include_total=true`,
+      "GET",
+    );
+    
+    // Handle backend errors gracefully
+    if (data.status >= 500) {
+      console.error("Backend error in insights terms:", data.status, data.json);
+      return json({ 
+        ok: false, 
+        rows: [], 
+        error: "Backend temporarily unavailable. Please try again later.",
+        quota_exceeded: data.json?.error?.includes("quota") || false
+      });
+    }
+    
+    return json(data.json || { ok: false, rows: [] });
+  } catch (error) {
+    console.error("Insights terms loader error:", error);
+    return json({ 
+      ok: false, 
+      rows: [], 
+      error: "Failed to load search terms data",
+      fallback: true
+    });
+  }
 }
 
 export default function TermsExplorer() {

@@ -16,6 +16,7 @@ import {
   dismissShopSetupForSession,
 } from "../utils/shop-config";
 import { ShopSetupBanner } from "../components/ShopSetupBanner";
+import { ClientOnly } from "../components/ClientOnly";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   // Standard Shopify authentication following best practices
@@ -191,35 +192,50 @@ export default function Autopilot() {
     setToast(`Shop configured: ${newShopName}.myshopify.com`);
   };
 
-  // Handle action data from server - simplified to avoid hydration issues
+  // Handle action data from server with localStorage persistence
   React.useEffect(() => {
     if (actionData?.success) {
       setScriptCode(actionData.script);
       setShowScript(true);
       setToast(`Script generated: ${actionData.size}KB`);
+      
+      // Store in localStorage for persistence (client-side only)
+      try {
+        localStorage.setItem('proofkit_generated_script', actionData.script);
+        localStorage.setItem('proofkit_script_meta', JSON.stringify({
+          size: actionData.size,
+          shopName: actionData.shopName,
+          timestamp: Date.now()
+        }));
+      } catch (e) {
+        console.warn('Failed to store script:', e);
+      }
     } else if (actionData?.error) {
       setToast("Error: " + actionData.error);
     }
   }, [actionData]);
 
-  // Disable localStorage features temporarily to fix hydration
-  // React.useEffect(() => {
-  //   try {
-  //     const storedScript = localStorage.getItem('proofkit_generated_script');
-  //     const storedMeta = localStorage.getItem('proofkit_script_meta');
-  //     if (storedScript && storedMeta) {
-  //       const meta = JSON.parse(storedMeta);
-  //       const hourAgo = Date.now() - (60 * 60 * 1000);
-  //       if (meta.timestamp > hourAgo) {
-  //         setScriptCode(storedScript);
-  //         setShowScript(true);
-  //         setToast(`Loaded ${meta.size}KB script`);
-  //       }
-  //     }
-  //   } catch (e) {
-  //     console.warn('localStorage error:', e);
-  //   }
-  // }, []);
+  // Load stored script on page load (client-side only)
+  React.useEffect(() => {
+    try {
+      const storedScript = localStorage.getItem('proofkit_generated_script');
+      const storedMeta = localStorage.getItem('proofkit_script_meta');
+      if (storedScript && storedMeta) {
+        const meta = JSON.parse(storedMeta);
+        const hourAgo = Date.now() - (60 * 60 * 1000);
+        if (meta.timestamp > hourAgo) {
+          setScriptCode(storedScript);
+          setShowScript(true);
+          setToast(`Loaded ${meta.size}KB script`);
+        } else {
+          localStorage.removeItem('proofkit_generated_script');
+          localStorage.removeItem('proofkit_script_meta');
+        }
+      }
+    } catch (e) {
+      console.warn('localStorage error:', e);
+    }
+  }, []);
 
   function run() {
     // Demo functionality - shows configuration
