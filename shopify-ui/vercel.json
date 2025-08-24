@@ -5,10 +5,5 @@
     "SHOPIFY_APP_URL": "https://shopifyscript-shopify-ui.vercel.app",
     "SCOPES": "read_products,write_products",
     "BACKEND_PUBLIC_URL": "https://shopifyscript-backend.vercel.app/api"
-  },
-  "functions": {
-    "app/**/*.tsx": {
-      "maxDuration": 10
-    }
   }
 }
