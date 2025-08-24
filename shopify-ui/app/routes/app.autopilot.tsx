@@ -164,15 +164,15 @@ export default function Autopilot() {
   const [showScript, setShowScript] = React.useState(false);
   const [shopName, setShopName] = React.useState<string | null>(null);
   
-  // Debug state changes
-  React.useEffect(() => {
-    console.log('🎭 State update:', { 
-      showScript, 
-      scriptCodeLength: scriptCode.length,
-      shopName,
-      toast 
-    });
-  }, [showScript, scriptCode, shopName, toast]);
+  // Disable debug state changes that cause hydration issues
+  // React.useEffect(() => {
+  //   console.log('🎭 State update:', { 
+  //     showScript, 
+  //     scriptCodeLength: scriptCode.length,
+  //     shopName,
+  //     toast 
+  //   });
+  // }, [showScript, scriptCode, shopName, toast]);
   
   const isGeneratingScript = navigation.state === "submitting" && 
     navigation.formData?.get("actionType") === "generateScript";
@@ -180,7 +180,6 @@ export default function Autopilot() {
   // Use authenticated shop name from server, fallback to localStorage
   React.useEffect(() => {
     const finalShopName = serverShopName || getShopNameOrNull();
-    console.log('🏪 Setting shop name:', { serverShopName, finalShopName });
     setShopName(finalShopName);
     setShowSetupBanner(isShopSetupNeeded()); // Use proper setup check
   }, [serverShopName]);
@@ -192,75 +191,35 @@ export default function Autopilot() {
     setToast(`Shop configured: ${newShopName}.myshopify.com`);
   };
 
-  // Handle action data from server
+  // Handle action data from server - simplified to avoid hydration issues
   React.useEffect(() => {
-    console.log("🎯 Action data received:", actionData);
-    if (actionData) {
-      if (actionData.success) {
-        console.log(`✅ Script received: ${actionData.script?.length || 0} chars`);
-        // Store script in localStorage to persist across page reloads
-        try {
-          localStorage.setItem('proofkit_generated_script', actionData.script);
-          localStorage.setItem('proofkit_script_meta', JSON.stringify({
-            size: actionData.size,
-            shopName: actionData.shopName,
-            timestamp: Date.now()
-          }));
-        } catch (e) {
-          console.warn('Failed to store script in localStorage:', e);
-        }
-        setScriptCode(actionData.script);
-        setShowScript(true);
-        setToast(
-          `Complete ${actionData.size}KB script generated for ${actionData.shopName}`,
-        );
-      } else {
-        console.error("❌ Script generation failed:", actionData);
-        setToast("Error: " + actionData.error);
-      }
+    if (actionData?.success) {
+      setScriptCode(actionData.script);
+      setShowScript(true);
+      setToast(`Script generated: ${actionData.size}KB`);
+    } else if (actionData?.error) {
+      setToast("Error: " + actionData.error);
     }
   }, [actionData]);
 
-  // Load stored script on page load (client-side only)
-  React.useEffect(() => {
-    console.log('🔍 Checking for stored script on page load...');
-    try {
-      const storedScript = localStorage.getItem('proofkit_generated_script');
-      const storedMeta = localStorage.getItem('proofkit_script_meta');
-      
-      console.log('📦 localStorage check:', { 
-        hasScript: !!storedScript, 
-        hasMeta: !!storedMeta,
-        scriptLength: storedScript?.length || 0
-      });
-      
-      if (storedScript && storedMeta) {
-        try {
-          const meta = JSON.parse(storedMeta);
-          console.log('📋 Stored script meta:', meta);
-          // Only load if generated within last hour
-          const hourAgo = Date.now() - (60 * 60 * 1000);
-          if (meta.timestamp > hourAgo) {
-            console.log(`📜 Loading stored script: ${storedScript.length} chars`);
-            setScriptCode(storedScript);
-            setShowScript(true);
-            setToast(`Loaded ${meta.size}KB script for ${meta.shopName}`);
-          } else {
-            console.log('⏰ Stored script expired, cleaning up');
-            // Clean up old scripts
-            localStorage.removeItem('proofkit_generated_script');
-            localStorage.removeItem('proofkit_script_meta');
-          }
-        } catch (e) {
-          console.warn('Failed to parse stored script meta:', e);
-        }
-      } else {
-        console.log('📭 No stored script found');
-      }
-    } catch (e) {
-      console.warn('localStorage not available:', e);
-    }
-  }, []);
+  // Disable localStorage features temporarily to fix hydration
+  // React.useEffect(() => {
+  //   try {
+  //     const storedScript = localStorage.getItem('proofkit_generated_script');
+  //     const storedMeta = localStorage.getItem('proofkit_script_meta');
+  //     if (storedScript && storedMeta) {
+  //       const meta = JSON.parse(storedMeta);
+  //       const hourAgo = Date.now() - (60 * 60 * 1000);
+  //       if (meta.timestamp > hourAgo) {
+  //         setScriptCode(storedScript);
+  //         setShowScript(true);
+  //         setToast(`Loaded ${meta.size}KB script`);
+  //       }
+  //     }
+  //   } catch (e) {
+  //     console.warn('localStorage error:', e);
+  //   }
+  // }, []);
 
   function run() {
     // Demo functionality - shows configuration
