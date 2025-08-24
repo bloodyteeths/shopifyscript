@@ -421,6 +421,33 @@ Shop: ${shopName || "unknown"}`;
           </button>
         </Form>
       </div>
+      {/* Temporarily show script directly from action data for testing */}
+      {actionData?.success && (
+        <div style={{ 
+          background: "#d4edda", 
+          border: "1px solid #c3e6cb", 
+          padding: "12px", 
+          marginTop: "12px",
+          borderRadius: "4px"
+        }}>
+          <h3>✅ Script Generated Successfully!</h3>
+          <p>Size: {actionData.size}KB for shop: {actionData.shopName}</p>
+          <details>
+            <summary>View Script (Click to expand)</summary>
+            <textarea
+              readOnly
+              value={actionData.script}
+              style={{
+                width: "100%",
+                height: 300,
+                fontFamily: "monospace",
+                fontSize: "12px",
+                marginTop: "8px"
+              }}
+            />
+          </details>
+        </div>
+      )}
       {console.log('🖥️ Render check:', { showScript, scriptCodeLength: scriptCode.length })}
       {showScript && (
         <section
