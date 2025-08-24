@@ -199,13 +199,15 @@ export default function Autopilot() {
       if (actionData.success) {
         console.log(`✅ Script received: ${actionData.script?.length || 0} chars`);
         // Store script in localStorage to persist across page reloads
-        if (typeof window !== 'undefined') {
+        try {
           localStorage.setItem('proofkit_generated_script', actionData.script);
           localStorage.setItem('proofkit_script_meta', JSON.stringify({
             size: actionData.size,
             shopName: actionData.shopName,
             timestamp: Date.now()
           }));
+        } catch (e) {
+          console.warn('Failed to store script in localStorage:', e);
         }
         setScriptCode(actionData.script);
         setShowScript(true);
@@ -219,10 +221,10 @@ export default function Autopilot() {
     }
   }, [actionData]);
 
-  // Load stored script on page load
+  // Load stored script on page load (client-side only)
   React.useEffect(() => {
     console.log('🔍 Checking for stored script on page load...');
-    if (typeof window !== 'undefined') {
+    try {
       const storedScript = localStorage.getItem('proofkit_generated_script');
       const storedMeta = localStorage.getItem('proofkit_script_meta');
       
@@ -255,6 +257,8 @@ export default function Autopilot() {
       } else {
         console.log('📭 No stored script found');
       }
+    } catch (e) {
+      console.warn('localStorage not available:', e);
     }
   }, []);
 
@@ -448,7 +452,6 @@ Shop: ${shopName || "unknown"}`;
           </details>
         </div>
       )}
-      {console.log('🖥️ Render check:', { showScript, scriptCodeLength: scriptCode.length })}
       {showScript && (
         <section
           style={{ border: "1px solid #eee", padding: 12, marginTop: 12 }}
@@ -491,9 +494,11 @@ Shop: ${shopName || "unknown"}`;
                 onClick={() => {
                   setShowScript(false);
                   setScriptCode("");
-                  if (typeof window !== 'undefined') {
+                  try {
                     localStorage.removeItem('proofkit_generated_script');
                     localStorage.removeItem('proofkit_script_meta');
+                  } catch (e) {
+                    console.warn('Failed to clear localStorage:', e);
                   }
                   setToast("Script cleared");
                 }}
