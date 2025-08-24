@@ -158,7 +158,7 @@ export default function Autopilot() {
   const [budget, setBudget] = React.useState("3.00");
   const [cpc, setCpc] = React.useState("0.20");
   const [url, setUrl] = React.useState("");
-  const [showSetupBanner, setShowSetupBanner] = React.useState(false);
+  // Shop setup banner removed - using Shopify authenticated shop name
 
   const [toast, setToast] = React.useState("");
   const [scriptCode, setScriptCode] = React.useState("");
@@ -178,19 +178,10 @@ export default function Autopilot() {
   const isGeneratingScript = navigation.state === "submitting" && 
     navigation.formData?.get("actionType") === "generateScript";
 
-  // Use authenticated shop name from server, fallback to localStorage
+  // Use authenticated shop name from Shopify session
   React.useEffect(() => {
-    const finalShopName = serverShopName || getShopNameOrNull();
-    setShopName(finalShopName);
-    setShowSetupBanner(isShopSetupNeeded()); // Use proper setup check
+    setShopName(serverShopName); // Always use authenticated shop name
   }, [serverShopName]);
-
-  const handleSetupComplete = (newShopName: string) => {
-    setShopName(newShopName);
-    setShowSetupBanner(false);
-    dismissShopSetupForSession(); // Prevent re-showing this session
-    setToast(`Shop configured: ${newShopName}.myshopify.com`);
-  };
 
   // Handle action data from server with localStorage persistence
   React.useEffect(() => {
@@ -257,13 +248,7 @@ Shop: ${shopName || "unknown"}`;
     <div>
       <h1>🤖 Autopilot</h1>
 
-      {/* Shop Setup Banner - fallback if setup is needed */}
-      {showSetupBanner && (
-        <ShopSetupBanner
-          onSetupComplete={handleSetupComplete}
-          showOnlyIfNeeded={true}
-        />
-      )}
+      {/* Shop automatically detected from Shopify authentication */}
 
       {/* Shop Configuration removed - shop name is now automatically detected */}
 
@@ -363,7 +348,7 @@ Shop: ${shopName || "unknown"}`;
           </span>
           <span>
             Automation running for:{" "}
-            <strong>{shopName || "Please configure shop"}</strong>
+            <strong>{shopName || serverShopName || "Loading..."}</strong>
           </span>
         </div>
         <div style={{ fontSize: "14px", color: "#666" }}>

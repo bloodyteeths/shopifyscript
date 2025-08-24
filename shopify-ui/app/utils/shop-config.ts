@@ -192,13 +192,11 @@ export function getServerShopName(
     return envShopName;
   }
 
-  // 5. Last resort: return 'proofkit' but only in development
-  if (process.env.NODE_ENV === "development") {
-    return "proofkit";
-  }
-
-  // 6. In production, we need a valid shop name - this should trigger setup
-  throw new Error("No valid shop name found - setup required");
+  // 5. Fallback to environment default or 'proofkit' 
+  // Note: This should rarely be needed since Shopify auth provides shop context
+  const fallback = process.env.DEFAULT_DEV_TENANT || process.env.TENANT_ID || "proofkit";
+  console.warn(`⚠️ Using fallback shop name: ${fallback} (no shop context found)`);
+  return fallback;
 }
 
 /**
