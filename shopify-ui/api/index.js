@@ -34,7 +34,7 @@ try {
 
 // Proxy API to backend
 const rawBackendBase =
-  process.env.BACKEND_PUBLIC_URL || "https://shopifyscript-backend.vercel.app";
+  process.env.BACKEND_PUBLIC_URL || "https://ads-autopilot-backend.vercel.app";
 const backendBase = rawBackendBase.replace(/\/$/, "").replace(/\/api$/, "");
 app.use(
   "/api",

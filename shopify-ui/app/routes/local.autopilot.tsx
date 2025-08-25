@@ -12,7 +12,7 @@ export async function loader() {
     tenantId: process.env.TENANT_ID || "proofkit",
     backendUrl:
       process.env.BACKEND_PUBLIC_URL ||
-      "https://shopifyscript-backend.vercel.app/api",
+      "https://ads-autopilot-backend.vercel.app/api",
   };
 
   return { diag: diag.json || {}, status: status.json || {}, tenantInfo };

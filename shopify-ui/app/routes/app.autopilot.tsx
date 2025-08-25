@@ -34,7 +34,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const config = {
     backendUrl:
       process.env.BACKEND_PUBLIC_URL ||
-      "https://shopifyscript-backend.vercel.app/api",
+      "https://ads-autopilot-backend.vercel.app/api",
     shopName, // Authenticated shop name from Shopify session
   };
 

@@ -101,7 +101,7 @@ app.use(
         origin &&
         (origin.includes(".myshopify.com") ||
           origin.includes("admin.shopify.com") ||
-          origin.includes("shopifyscript-shopify-ui.vercel.app") ||
+          origin.includes("ads-autopilot-ui.vercel.app") ||
           allowed.includes(origin))
       ) {
         return cb(null, true);
@@ -3632,7 +3632,7 @@ app.get("/api/ads-script/raw", async (req, res) => {
     // Normalize backend base away from Vercel preview protection and ensure /api suffix
     const rawBase = (
       process.env.BACKEND_PUBLIC_URL ||
-      "https://shopifyscript-backend-git-main-atillas-projects-3562cb36.vercel.app/api"
+      "https://ads-autopilot-backend-git-main-atillas-projects-3562cb36.vercel.app/api"
     ).replace(/\/$/, "");
     const normalizedHost = rawBase.replace(
       /-git-[a-zA-Z0-9]+-atillas-projects-3562cb36\.vercel\.app/,

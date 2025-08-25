@@ -65,7 +65,7 @@ export async function backendFetch(
 ) {
   const cfgBase = (
     process.env.BACKEND_PUBLIC_URL ||
-    "https://shopifyscript-backend.vercel.app/api"
+    "https://ads-autopilot-backend.vercel.app/api"
   ).replace(/\/$/, "");
   const baseHost = normalizeBackendBase(cfgBase);
   const base = /\/api$/.test(baseHost) ? baseHost : `${baseHost}/api`;
@@ -151,7 +151,7 @@ export async function backendFetchRaw(
 ) {
   const cfgBase = (
     process.env.BACKEND_PUBLIC_URL ||
-    "https://shopifyscript-backend.vercel.app/api"
+    "https://ads-autopilot-backend.vercel.app/api"
   ).replace(/\/$/, "");
   const baseHost = normalizeBackendBase(cfgBase);
   const base = /\/api$/.test(baseHost) ? baseHost : `${baseHost}/api`;
@@ -181,7 +181,7 @@ export async function backendFetchText(
 ) {
   const cfgBase = (
     process.env.BACKEND_PUBLIC_URL ||
-    "https://shopifyscript-backend.vercel.app/api"
+    "https://ads-autopilot-backend.vercel.app/api"
   ).replace(/\/$/, "");
   const baseHost = normalizeBackendBase(cfgBase);
   const base = /\/api$/.test(baseHost) ? baseHost : `${baseHost}/api`;
