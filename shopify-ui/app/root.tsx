@@ -161,8 +161,56 @@ export default function App() {
                 </li>
               </ul>
             </nav>
-            <main style={{ flex: 1, padding: 24 }}>
-              <Outlet />
+            <main style={{ flex: 1, padding: 24, display: "flex", flexDirection: "column" }}>
+              <div style={{ flex: 1 }}>
+                <Outlet />
+              </div>
+              <footer style={{ 
+                marginTop: "auto",
+                paddingTop: "24px",
+                borderTop: "1px solid #e1e3e5",
+                textAlign: "center",
+                fontSize: "12px",
+                color: "#6d7175"
+              }}>
+                <div style={{ marginBottom: "12px" }}>
+                  <a 
+                    href="/privacy" 
+                    target="_blank"
+                    style={{ 
+                      color: "#006fbb", 
+                      textDecoration: "none",
+                      marginRight: "16px"
+                    }}
+                  >
+                    Privacy Policy
+                  </a>
+                  <a 
+                    href="/terms" 
+                    target="_blank"
+                    style={{ 
+                      color: "#006fbb", 
+                      textDecoration: "none",
+                      marginRight: "16px"
+                    }}
+                  >
+                    Terms of Service
+                  </a>
+                  <a 
+                    href="/support" 
+                    target="_blank"
+                    style={{ 
+                      color: "#006fbb", 
+                      textDecoration: "none"
+                    }}
+                  >
+                    Support
+                  </a>
+                </div>
+                <div style={{ color: "#8c9196", fontSize: "11px" }}>
+                  Ads Autopilot AI © {new Date().getFullYear()} • Contact: atanrikulu@e-listele.com
+                </div>
+              </footer>
             </main>
           </div>
         </AppProvider>
