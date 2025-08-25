@@ -156,10 +156,10 @@ export default function Privacy() {
       <p>We may update this Privacy Policy from time to time. We will notify you of any material changes by email and through the Ads Autopilot AI app. Your continued use of Ads Autopilot AI after such modifications constitutes your acceptance of the updated Privacy Policy.</p>
 
       <h2>📞 Contact Information</h2>
-      <p><strong>Privacy Questions:</strong> privacy@adsautopilotai.com<br />
-      <strong>Data Subject Requests:</strong> dpo@adsautopilotai.com<br />
-      <strong>Security Incidents:</strong> security@adsautopilotai.com<br />
-      <strong>General Support:</strong> support@adsautopilotai.com</p>
+      <p><strong>Privacy Questions:</strong> atanrikulu@e-listele.com<br />
+      <strong>Data Subject Requests:</strong> atanrikulu@e-listele.com<br />
+      <strong>Security Incidents:</strong> atanrikulu@e-listele.com<br />
+      <strong>General Support:</strong> atanrikulu@e-listele.com</p>
 
       <h3>Data Subject Request Timeline:</h3>
       <ul>
@@ -177,9 +177,9 @@ export default function Privacy() {
 
       <p style={{ textAlign: "center", marginTop: "2rem" }}>
         <strong>Contact Information:</strong><br />
-        <strong>Email:</strong> privacy@adsautopilotai.com<br />
-        <strong>Support:</strong> support@adsautopilotai.com<br />
-        <strong>Website:</strong> <a href="https://adsautopilotai.com/privacy">https://adsautopilotai.com/privacy</a>
+        <strong>Email:</strong> atanrikulu@e-listele.com<br />
+        <strong>Support:</strong> atanrikulu@e-listele.com<br />
+        <strong>Website:</strong> <a href="https://proofkit-saas.vercel.app/privacy">https://proofkit-saas.vercel.app/privacy</a>
       </p>
     </div>
   );

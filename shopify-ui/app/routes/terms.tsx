@@ -244,10 +244,10 @@ export default function Terms() {
       </ul>
 
       <h2>📞 Contact Information</h2>
-      <p><strong>General Support:</strong> support@adsautopilotai.com<br />
-      <strong>Legal Questions:</strong> legal@adsautopilotai.com<br />
-      <strong>Billing Issues:</strong> billing@adsautopilotai.com<br />
-      <strong>Privacy Concerns:</strong> privacy@adsautopilotai.com</p>
+      <p><strong>General Support:</strong> atanrikulu@e-listele.com<br />
+      <strong>Legal Questions:</strong> atanrikulu@e-listele.com<br />
+      <strong>Billing Issues:</strong> atanrikulu@e-listele.com<br />
+      <strong>Privacy Concerns:</strong> atanrikulu@e-listele.com</p>
 
       <h3>Business Information</h3>
       <p><strong>Company:</strong> Ads Autopilot AI LLC<br />
@@ -266,9 +266,9 @@ export default function Terms() {
 
       <p style={{ textAlign: "center", marginTop: "2rem" }}>
         <strong>Contact Information:</strong><br />
-        <strong>Email:</strong> legal@adsautopilotai.com<br />
-        <strong>Support:</strong> support@adsautopilotai.com<br />
-        <strong>Website:</strong> <a href="https://adsautopilotai.com/terms">https://adsautopilotai.com/terms</a>
+        <strong>Email:</strong> atanrikulu@e-listele.com<br />
+        <strong>Support:</strong> atanrikulu@e-listele.com<br />
+        <strong>Website:</strong> <a href="https://proofkit-saas.vercel.app/terms">https://proofkit-saas.vercel.app/terms</a>
       </p>
     </div>
   );

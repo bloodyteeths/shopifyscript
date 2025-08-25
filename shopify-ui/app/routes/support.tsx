@@ -19,7 +19,7 @@ export default function Support() {
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2rem", margin: "2rem 0" }}>
         <div style={{ padding: "1.5rem", border: "1px solid #e5e7eb", borderRadius: "8px" }}>
           <h3>🎯 General Support</h3>
-          <p><strong>Email:</strong> support@adsautopilotai.com<br />
+          <p><strong>Email:</strong> atanrikulu@e-listele.com<br />
           <strong>Response Time:</strong> 24 hours<br />
           <strong>Hours:</strong> Monday-Friday, 9 AM - 6 PM EST</p>
           <p>For general questions about using Ads Autopilot AI, account issues, billing questions, and technical support.</p>
@@ -27,7 +27,7 @@ export default function Support() {
 
         <div style={{ padding: "1.5rem", border: "1px solid #e5e7eb", borderRadius: "8px" }}>
           <h3>🔒 Privacy & Security</h3>
-          <p><strong>Email:</strong> privacy@adsautopilotai.com<br />
+          <p><strong>Email:</strong> atanrikulu@e-listele.com<br />
           <strong>Response Time:</strong> 48 hours<br />
           <strong>Hours:</strong> Monday-Friday, 9 AM - 6 PM EST</p>
           <p>For privacy policy questions, data subject requests, and security concerns.</p>
@@ -35,7 +35,7 @@ export default function Support() {
 
         <div style={{ padding: "1.5rem", border: "1px solid #e5e7eb", borderRadius: "8px" }}>
           <h3>⚖️ Legal & Compliance</h3>
-          <p><strong>Email:</strong> legal@adsautopilotai.com<br />
+          <p><strong>Email:</strong> atanrikulu@e-listele.com<br />
           <strong>Response Time:</strong> 72 hours<br />
           <strong>Hours:</strong> Monday-Friday, 9 AM - 6 PM EST</p>
           <p>For terms of service questions, legal compliance issues, and contract matters.</p>
@@ -43,7 +43,7 @@ export default function Support() {
 
         <div style={{ padding: "1.5rem", border: "1px solid #e5e7eb", borderRadius: "8px" }}>
           <h3>💳 Billing & Accounts</h3>
-          <p><strong>Email:</strong> billing@adsautopilotai.com<br />
+          <p><strong>Email:</strong> atanrikulu@e-listele.com<br />
           <strong>Response Time:</strong> 24 hours<br />
           <strong>Hours:</strong> Monday-Friday, 9 AM - 6 PM EST</p>
           <p>For subscription issues, billing questions, refund requests, and plan changes.</p>
@@ -229,14 +229,14 @@ export default function Support() {
       <div style={{ textAlign: "center", backgroundColor: "#f3f4f6", padding: "2rem", borderRadius: "8px" }}>
         <h3>Need Help Right Now?</h3>
         <p style={{ marginBottom: "1rem" }}>Contact our support team for immediate assistance</p>
-        <p><strong>Email:</strong> <a href="mailto:support@adsautopilotai.com">support@adsautopilotai.com</a><br />
+        <p><strong>Email:</strong> <a href="mailto:atanrikulu@e-listele.com">atanrikulu@e-listele.com</a><br />
         <strong>Response Time:</strong> 24 hours<br />
         <strong>Available:</strong> Monday-Friday, 9 AM - 6 PM EST</p>
         
         <div style={{ marginTop: "2rem" }}>
           <h4>Emergency Support</h4>
           <p>For critical issues affecting your campaigns:</p>
-          <p><strong>Priority Email:</strong> <a href="mailto:urgent@adsautopilotai.com">urgent@adsautopilotai.com</a></p>
+          <p><strong>Priority Email:</strong> <a href="mailto:atanrikulu@e-listele.com">atanrikulu@e-listele.com</a></p>
         </div>
       </div>
 
