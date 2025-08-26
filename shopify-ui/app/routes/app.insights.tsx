@@ -10,8 +10,21 @@ import {
 } from "@remix-run/react";
 import { checkTenantSetup } from "../utils/tenant.server";
 
-// Simplified chart component to avoid lazy loading issues
+// Real chart component using dynamic import to avoid SSR issues
 function SimpleChart({ data }: { data: any[] }) {
+  const [ChartComponent, setChartComponent] = React.useState<any>(null);
+  
+  React.useEffect(() => {
+    let alive = true;
+    // Dynamically import the chart component to avoid SSR issues
+    import("../components/SimpleLines.client").then((mod) => {
+      if (alive) setChartComponent(() => mod.default);
+    });
+    return () => {
+      alive = false;
+    };
+  }, []);
+
   if (!data?.length)
     return (
       <div
@@ -28,21 +41,26 @@ function SimpleChart({ data }: { data: any[] }) {
         No data
       </div>
     );
-  return (
-    <div
-      style={{
-        height: 180,
-        border: "1px solid #eee",
-        borderRadius: 8,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        color: "#666",
-      }}
-    >
-      Chart: {data.length} points
-    </div>
-  );
+    
+  if (!ChartComponent) {
+    return (
+      <div
+        style={{
+          height: 180,
+          border: "1px solid #eee",
+          borderRadius: 8,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          color: "#666",
+        }}
+      >
+        Loading chart...
+      </div>
+    );
+  }
+
+  return <ChartComponent data={data} />;
 }
 
 export async function loader(args: LoaderFunctionArgs) {
