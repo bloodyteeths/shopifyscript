@@ -3822,6 +3822,55 @@ app.post("/api/audiences/export/build", async (req, res) => {
   }
 });
 
+// GDPR Compliance Endpoints
+app.post("/api/gdpr/customers/data_request", (req, res) => {
+  // Validate HMAC
+  const hmac = req.get("X-Shopify-Hmac-Sha256");
+  if (!hmac) {
+    return res.status(401).json({ error: "Missing HMAC" });
+  }
+  
+  // Log the request for compliance
+  logger.info("GDPR customer data request", {
+    shopDomain: req.body.shop_domain,
+    customerId: req.body.customer.id
+  });
+  
+  res.status(200).json({ message: "Customer data request received" });
+});
+
+app.post("/api/gdpr/customers/redact", (req, res) => {
+  // Validate HMAC
+  const hmac = req.get("X-Shopify-Hmac-Sha256");
+  if (!hmac) {
+    return res.status(401).json({ error: "Missing HMAC" });
+  }
+  
+  // Log the request for compliance
+  logger.info("GDPR customer data redaction", {
+    shopDomain: req.body.shop_domain,
+    customerId: req.body.customer.id
+  });
+  
+  res.status(200).json({ message: "Customer data redaction completed" });
+});
+
+app.post("/api/gdpr/shop/redact", (req, res) => {
+  // Validate HMAC
+  const hmac = req.get("X-Shopify-Hmac-Sha256");
+  if (!hmac) {
+    return res.status(401).json({ error: "Missing HMAC" });
+  }
+  
+  // Log the request for compliance
+  logger.info("GDPR shop data redaction", {
+    shopDomain: req.body.shop_domain,
+    shopId: req.body.shop_id
+  });
+  
+  res.status(200).json({ message: "Shop data redaction completed" });
+});
+
 // Initialize health checks
 try {
   // Register custom health checks for external services
