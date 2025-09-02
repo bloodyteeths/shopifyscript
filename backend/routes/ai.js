@@ -1,6 +1,7 @@
 import express from "express";
 import { json, logAccess } from "../utils/response.js";
 import { verify } from "../utils/hmac.js";
+import { requireFeature } from "../middleware/subscription-check.js";
 
 const router = express.Router();
 
@@ -230,8 +231,8 @@ router.post("/accept", async (req, res) => {
   }
 });
 
-// POST /api/jobs/ai_writer - Trigger AI writer job
-router.post("/jobs/ai_writer", async (req, res) => {
+// POST /api/jobs/ai_writer - Trigger AI writer job (Professional+ feature)
+router.post("/jobs/ai_writer", requireFeature("advanced_ai_optimization"), async (req, res) => {
   const { tenant, sig } = req.query;
   const { nonce = Date.now(), dryRun = true, limit = 5 } = req.body || {};
   const payload = `POST:${tenant}:ai_writer:${nonce}`;
@@ -309,8 +310,8 @@ router.post("/jobs/weekly_summary", async (req, res) => {
   }
 });
 
-// POST /api/jobs/autopilot_tick - Execute autopilot optimization
-router.post("/jobs/autopilot_tick", async (req, res) => {
+// POST /api/jobs/autopilot_tick - Execute autopilot optimization (requires subscription)
+router.post("/jobs/autopilot_tick", requireFeature("ai_campaign_optimization"), async (req, res) => {
   const { tenant, sig } = req.query;
   const { nonce = Date.now() } = req.body || {};
   const dry = String(req.query.dry || "0") === "1";
