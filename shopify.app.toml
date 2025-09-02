@@ -1,0 +1,64 @@
+# ProofKit Shopify App Configuration
+# This file configures managed pricing and webhooks for the app
+
+name = "ProofKit Autopilot"
+handle = "proofkit-autopilot"
+application_url = "https://ads-autopilot-ui.vercel.app"
+embedded = true
+
+# Scopes required for the app
+scopes = "read_products,write_products,read_analytics,write_pixels"
+
+[access_scopes]
+# Scopes for accessing store data and analytics
+use_legacy_install_flow = false
+
+[auth]
+redirect_urls = [
+  "https://ads-autopilot-ui.vercel.app/auth/callback",
+  "https://ads-autopilot-ui.vercel.app/auth/shopify/callback"
+]
+
+[webhooks]
+api_version = "2024-10"
+
+  # App uninstalled webhook
+  [[webhooks.subscriptions]]
+  topics = ["app/uninstalled"]
+  uri = "/webhooks/app/uninstalled"
+
+  # App subscription updates (for managed pricing)
+  [[webhooks.subscriptions]]
+  topics = ["app_subscriptions/update"]
+  uri = "/webhooks/app/subscription_update"
+
+  # Mandatory compliance webhooks for public apps
+  [[webhooks.subscriptions]]
+  compliance_topics = ["customers/data_request"]
+  uri = "/webhooks/customers/data_request"
+
+  [[webhooks.subscriptions]]
+  compliance_topics = ["customers/redact"]
+  uri = "/webhooks/customers/redact"
+
+  [[webhooks.subscriptions]]
+  compliance_topics = ["shop/redact"]
+  uri = "/webhooks/shop/redact"
+
+[app_proxy]
+# Optional: Configure app proxy if needed
+# url = "https://ads-autopilot-backend.vercel.app"
+# subpath = "proxy"
+# prefix = "apps"
+
+[pos]
+# POS app configuration (not needed for this app)
+embedded = false
+
+[build]
+# Build configuration
+automatically_update_urls_on_dev = true
+dev_store_url = "https://proofkit.myshopify.com"
+
+# Note: Managed pricing plans are configured in the Partner Dashboard
+# This app uses Shopify's managed pricing system instead of the Billing API

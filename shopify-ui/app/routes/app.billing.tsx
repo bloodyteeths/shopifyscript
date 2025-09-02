@@ -102,37 +102,22 @@ const PRICING_TIERS = {
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   try {
-    const { billing, session } = await authenticate.admin(request);
+    const { session } = await authenticate.admin(request);
     const shopName = session?.shop?.replace(".myshopify.com", "");
 
     if (!shopName) {
       throw new Error("Unable to determine shop name from Shopify session");
     }
 
-    // Check current subscription status using new billing helper
-    let hasActivePayment = false;
-    let currentSubscription = null;
-    
-    try {
-      // Use the new billing.check() method for managed pricing apps
-      const billingResult = await billing.check();
-      hasActivePayment = billingResult.hasActivePayment;
-      
-      // If no active payment, we need to redirect to managed pricing page
-      if (!hasActivePayment) {
-        console.log(`No active subscription for shop: ${shopName}`);
-      }
-      
-    } catch (error) {
-      console.error("Error checking billing status:", error);
-    }
+    // For managed pricing apps, we'll show the billing page without checking subscription status
+    // The actual subscription enforcement will happen in the backend middleware
+    console.log(`Billing page loaded for shop: ${shopName}`);
 
     return json({
       shopName,
-      hasActivePayment,
-      currentSubscription,
       pricingTiers: PRICING_TIERS,
-      appHandle: process.env.SHOPIFY_APP_HANDLE || "proofkit-autopilot"
+      appHandle: process.env.SHOPIFY_APP_HANDLE || "proofkit-autopilot",
+      managedPricingUrl: `shopify://admin/charges/${process.env.SHOPIFY_APP_HANDLE || "proofkit-autopilot"}/pricing_plans`
     });
   } catch (error) {
     console.error("Billing page loader error:", error);
@@ -172,11 +157,10 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
 export default function Billing() {
   const { 
-    shopName, 
-    hasActivePayment,
-    currentSubscription, 
+    shopName,
     pricingTiers,
-    appHandle
+    appHandle,
+    managedPricingUrl
   } = useLoaderData<typeof loader>();
   
   const actionData = useActionData<typeof action>();
@@ -190,9 +174,9 @@ export default function Billing() {
     }
   }, [actionData]);
 
-  // Automatically redirect to managed pricing if no active payment
+  // Redirect to Shopify's managed pricing page
   const redirectToManagedPricing = () => {
-    const managedPricingUrl = `shopify://admin/charges/${appHandle}/pricing_plans`;
+    console.log('Redirecting to managed pricing:', managedPricingUrl);
     window.top?.location.assign(managedPricingUrl);
   };
 
@@ -211,59 +195,36 @@ export default function Billing() {
     </ul>
   );
 
-  const renderSubscriptionStatus = () => {
-    if (hasActivePayment) {
-      return (
-        <div style={{ 
-          background: "#e8f5e8", 
-          border: "1px solid #4caf50", 
-          padding: "16px", 
-          borderRadius: "8px", 
-          marginBottom: "24px" 
-        }}>
-          <h3 style={{ margin: "0 0 8px 0" }}>Active Subscription</h3>
-          <p style={{ margin: 0 }}>You have an active ProofKit subscription. Manage your plan through Shopify's billing dashboard.</p>
-          <button
-            onClick={redirectToManagedPricing}
-            style={{
-              marginTop: "12px",
-              padding: "8px 16px",
-              backgroundColor: "#007bff",
-              color: "white",
-              border: "none",
-              borderRadius: "4px",
-              cursor: "pointer"
-            }}
-          >
-            Manage Subscription
-          </button>
-        </div>
-      );
-    }
-
+  const renderManagedPricingInfo = () => {
     return (
       <div style={{ 
-        background: "#fff2cc", 
-        border: "1px solid #ffc107", 
-        padding: "16px", 
+        background: "#e3f2fd", 
+        border: "1px solid #2196f3", 
+        padding: "24px", 
         borderRadius: "8px", 
-        marginBottom: "24px" 
+        marginBottom: "32px",
+        textAlign: "center"
       }}>
-        <h3 style={{ margin: "0 0 8px 0" }}>No Active Subscription</h3>
-        <p style={{ margin: "0 0 12px 0" }}>Choose a plan to start using ProofKit's premium features.</p>
+        <h3 style={{ margin: "0 0 16px 0" }}>Subscription Management</h3>
+        <p style={{ margin: "0 0 20px 0", fontSize: "16px" }}>
+          ProofKit uses Shopify's secure managed pricing system.
+          <br />
+          View and manage your subscription through Shopify's billing dashboard.
+        </p>
         <button
           onClick={redirectToManagedPricing}
           style={{
-            padding: "12px 24px",
-            backgroundColor: "#007bff",
+            padding: "16px 32px",
+            backgroundColor: "#28a745",
             color: "white",
             border: "none",
-            borderRadius: "4px",
+            borderRadius: "8px",
             cursor: "pointer",
-            fontSize: "16px"
+            fontSize: "18px",
+            fontWeight: "bold"
           }}
         >
-          Choose Plan
+          View Plans & Manage Subscription
         </button>
       </div>
     );
@@ -276,7 +237,7 @@ export default function Billing() {
         Manage your ProofKit subscription for {shopName}
       </p>
 
-      {renderSubscriptionStatus()}
+      {renderManagedPricingInfo()}
       
       {actionData?.error && (
         <div style={{ 
