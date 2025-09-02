@@ -8,39 +8,75 @@ import { useShopContext, buildAppUrl } from "../utils/navigation";
 import { checkSubscriptionStatus, shouldRedirectToPlans, getPlanSelectionUrl } from "../utils/subscription.server";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  // Standard Shopify authentication following best practices
-  const { session, admin } = await authenticate.admin(request);
+  try {
+    // Standard Shopify authentication following best practices
+    const { session, admin } = await authenticate.admin(request);
 
-  const shopName = session?.shop?.replace(".myshopify.com", "");
+    const shopName = session?.shop?.replace(".myshopify.com", "");
 
-  if (!shopName) {
-    throw new Error("Unable to determine shop name from Shopify session");
+    if (!shopName) {
+      throw new Error("Unable to determine shop name from Shopify session");
+    }
+
+    console.log(`🏪 Dashboard loaded for shop: ${shopName}`);
+
+    // Check subscription status for feature access control (with error handling)
+    let subscriptionInfo = {
+      hasActivePayment: false,
+      isInTrial: false,
+      trialDaysRemaining: null,
+      subscriptionTier: null,
+      subscriptionStatus: 'checking',
+      subscriptionId: null,
+      currentPeriodEnd: null,
+      needsSubscription: true
+    };
+
+    try {
+      subscriptionInfo = await checkSubscriptionStatus(admin);
+      
+      console.log(`📊 Subscription check for ${shopName}:`, {
+        hasActivePayment: subscriptionInfo.hasActivePayment,
+        isInTrial: subscriptionInfo.isInTrial,
+        tier: subscriptionInfo.subscriptionTier,
+        needsSubscription: subscriptionInfo.needsSubscription
+      });
+
+      // Only redirect to billing if explicitly needed and not during initial auth
+      const url = new URL(request.url);
+      const isInitialLoad = url.searchParams.has('embedded') || url.searchParams.has('shop');
+      
+      if (subscriptionInfo.needsSubscription && !isInitialLoad) {
+        console.log(`🔄 Redirecting ${shopName} to plan selection - no active subscription or trial`);
+        return redirect("/app/billing");
+      }
+
+    } catch (subscriptionError) {
+      console.error('⚠️ Subscription check failed, allowing app access:', subscriptionError);
+      // Allow app access if subscription check fails to prevent installation crashes
+    }
+
+    return json({
+      message: "AI-powered Google Ads optimization on autopilot",
+      timestamp: new Date().toISOString(),
+      shopName: shopName,
+      subscriptionInfo
+    });
+    
+  } catch (authError) {
+    console.error("🚨 App index authentication error:", authError);
+    console.error("Request URL:", request.url);
+    
+    // Redirect to auth with shop context if possible
+    const url = new URL(request.url);
+    const shop = url.searchParams.get('shop') || url.searchParams.get('host');
+    const authUrl = shop ? `/auth/login?shop=${shop}` : '/auth/login';
+    
+    throw new Response(null, {
+      status: 302,
+      headers: { Location: authUrl }
+    });
   }
-
-  console.log(`🏪 Dashboard loaded for shop: ${shopName}`);
-
-  // Check subscription status for feature access control
-  const subscriptionInfo = await checkSubscriptionStatus(admin);
-  
-  console.log(`📊 Subscription check for ${shopName}:`, {
-    hasActivePayment: subscriptionInfo.hasActivePayment,
-    isInTrial: subscriptionInfo.isInTrial,
-    tier: subscriptionInfo.subscriptionTier,
-    needsSubscription: subscriptionInfo.needsSubscription
-  });
-
-  // If user needs subscription and hasn't chosen a plan, redirect to billing
-  if (subscriptionInfo.needsSubscription) {
-    console.log(`🔄 Redirecting ${shopName} to plan selection - no active subscription or trial`);
-    return redirect("/app/billing");
-  }
-
-  return json({
-    message: "AI-powered Google Ads optimization on autopilot",
-    timestamp: new Date().toISOString(),
-    shopName: shopName,
-    subscriptionInfo
-  });
 };
 
 export default function AppIndex() {

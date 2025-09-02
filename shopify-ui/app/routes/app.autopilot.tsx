@@ -20,44 +20,84 @@ import { ClientOnly } from "../components/ClientOnly";
 import { checkSubscriptionStatus, hasFeatureAccess } from "../utils/subscription.server";
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  // Standard Shopify authentication following best practices
-  const { session, admin } = await authenticate.admin(request);
+  try {
+    // Standard Shopify authentication following best practices
+    const { session, admin } = await authenticate.admin(request);
 
-  const shopName = session?.shop?.replace(".myshopify.com", "");
+    const shopName = session?.shop?.replace(".myshopify.com", "");
 
-  if (!shopName) {
-    throw new Error("Unable to determine shop name from Shopify session");
+    if (!shopName) {
+      throw new Error("Unable to determine shop name from Shopify session");
+    }
+
+    console.log(`🤖 Autopilot loaded for shop: ${shopName}`);
+
+    // Check subscription status for feature access control (with error handling)
+    let subscriptionInfo = {
+      hasActivePayment: false,
+      isInTrial: false,
+      trialDaysRemaining: null,
+      subscriptionTier: null,
+      subscriptionStatus: 'checking',
+      subscriptionId: null,
+      currentPeriodEnd: null,
+      needsSubscription: true
+    };
+    
+    let availableFeatures = {
+      scriptGeneration: true, // Allow basic script generation
+      advancedSettings: false,
+      realTimeAnalytics: false,
+      customRules: false
+    };
+
+    try {
+      subscriptionInfo = await checkSubscriptionStatus(admin);
+      
+      // Determine available features based on subscription
+      availableFeatures = {
+        scriptGeneration: hasFeatureAccess(subscriptionInfo, 'ai_campaign_optimization'),
+        advancedSettings: hasFeatureAccess(subscriptionInfo, 'advanced_ai_optimization'),
+        realTimeAnalytics: hasFeatureAccess(subscriptionInfo, 'real_time_performance_analytics'),
+        customRules: hasFeatureAccess(subscriptionInfo, 'custom_ai_optimization_rules')
+      };
+
+      console.log(`🔐 Feature access for ${shopName}:`, availableFeatures);
+      
+    } catch (subscriptionError) {
+      console.error('⚠️ Subscription check failed on autopilot, using basic access:', subscriptionError);
+      // Allow basic access if subscription check fails
+    }
+
+    // Return config with authenticated shop name for client
+    const config = {
+      backendUrl:
+        process.env.BACKEND_PUBLIC_URL ||
+        "https://ads-autopilot-backend.vercel.app/api",
+      shopName, // Authenticated shop name from Shopify session
+    };
+
+    return json({ 
+      config, 
+      shopName, 
+      subscriptionInfo,
+      availableFeatures
+    });
+    
+  } catch (authError) {
+    console.error("🚨 Autopilot authentication error:", authError);
+    console.error("Request URL:", request.url);
+    
+    // Redirect to auth with shop context if possible
+    const url = new URL(request.url);
+    const shop = url.searchParams.get('shop') || url.searchParams.get('host');
+    const authUrl = shop ? `/auth/login?shop=${shop}` : '/auth/login';
+    
+    throw new Response(null, {
+      status: 302,
+      headers: { Location: authUrl }
+    });
   }
-
-  console.log(`🤖 Autopilot loaded for shop: ${shopName}`);
-
-  // Check subscription status for feature access control
-  const subscriptionInfo = await checkSubscriptionStatus(admin);
-  
-  // Determine available features based on subscription
-  const availableFeatures = {
-    scriptGeneration: hasFeatureAccess(subscriptionInfo, 'ai_campaign_optimization'),
-    advancedSettings: hasFeatureAccess(subscriptionInfo, 'advanced_ai_optimization'),
-    realTimeAnalytics: hasFeatureAccess(subscriptionInfo, 'real_time_performance_analytics'),
-    customRules: hasFeatureAccess(subscriptionInfo, 'custom_ai_optimization_rules')
-  };
-
-  console.log(`🔐 Feature access for ${shopName}:`, availableFeatures);
-
-  // Return config with authenticated shop name for client
-  const config = {
-    backendUrl:
-      process.env.BACKEND_PUBLIC_URL ||
-      "https://ads-autopilot-backend.vercel.app/api",
-    shopName, // Authenticated shop name from Shopify session
-  };
-
-  return json({ 
-    config, 
-    shopName, 
-    subscriptionInfo,
-    availableFeatures
-  });
 }
 
 export async function action({ request }: ActionFunctionArgs) {
