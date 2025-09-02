@@ -11,37 +11,31 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 export const PRICING_TIERS = {
   STARTER: {
     id: "starter",
-    name: "Starter",
+    name: "Starter Plan",
     price: 29,
+    yearlyPrice: 195,
+    yearlyDiscount: 153,
     features: [
       "ai_campaign_optimization",
       "basic_performance_analytics", 
       "campaign_monitoring",
       "email_support",
       "basic_roas_tracking",
-      "monthly_insights_reports",
-      "budget_caps",
-      "brand_protection"
+      "monthly_insights_reports"
     ],
     limits: {
       campaigns: 5,
-      adGroups: 25,
-      keywords: 500,
-      monthlySpend: 5000,
-      dataRetentionDays: 7
+      dataRetentionDays: 7,
+      supportType: "email"
     },
   },
   PROFESSIONAL: {
     id: "professional",
-    name: "Professional", 
+    name: "Professional Plan", 
     price: 79,
+    yearlyPrice: 695,
+    yearlyDiscount: 253,
     features: [
-      "ai_campaign_optimization",
-      "basic_performance_analytics",
-      "campaign_monitoring", 
-      "email_support",
-      "basic_roas_tracking",
-      "monthly_insights_reports",
       "advanced_ai_optimization",
       "real_time_performance_analytics",
       "priority_email_support",
@@ -51,44 +45,28 @@ export const PRICING_TIERS = {
     ],
     limits: {
       campaigns: 25,
-      adGroups: 100,
-      keywords: 2000,
-      monthlySpend: 25000,
-      dataRetentionDays: 30
+      dataRetentionDays: 30,
+      supportType: "priority_email"
     },
   },
   ENTERPRISE: {
     id: "enterprise",
-    name: "Enterprise",
+    name: "Enterprise Plan",
     price: 199,
+    yearlyPrice: 1850,
+    yearlyDiscount: 538,
     features: [
-      "ai_campaign_optimization",
-      "basic_performance_analytics",
-      "campaign_monitoring",
-      "email_support", 
-      "basic_roas_tracking",
-      "monthly_insights_reports",
-      "advanced_ai_optimization",
-      "real_time_performance_analytics",
-      "priority_email_support",
-      "advanced_roas_analytics",
-      "automated_bid_management", 
-      "weekly_insights_reports",
-      "custom_ai_optimization_rules",
-      "advanced_performance_analytics",
-      "priority_support_sla",
-      "custom_roas_tracking",
-      "advanced_automation_features",
-      "custom_reporting"
+      "full_ai_automation_suite",
+      "custom_performance_dashboards",
+      "priority_phone_email_support",
+      "custom_roas_modeling",
+      "advanced_bid_strategies",
+      "daily_insights_custom_reports"
     ],
     limits: {
       campaigns: -1, // unlimited
-      adGroups: -1,
-      keywords: -1, 
-      monthlySpend: -1,
-      stores: -1,
-      teamMembers: -1,
-      dataRetentionDays: 90
+      dataRetentionDays: 90,
+      supportType: "priority_phone_email"
     },
   },
 };

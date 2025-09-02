@@ -5,12 +5,14 @@ import { useLoaderData, useActionData, Form, useNavigation } from "@remix-run/re
 import { boundary } from "@shopify/shopify-app-remix/server";
 import { authenticate } from "../shopify.server";
 
-// Pricing tiers matching Partner Dashboard configuration
+// Pricing tiers exactly matching Shopify Partner Dashboard descriptions
 const PRICING_TIERS = {
   STARTER: {
     id: "starter",
-    name: "Starter",
+    name: "Starter Plan",
     price: 29,
+    yearlyPrice: 195,
+    yearlyDiscount: 153,
     features: [
       "AI campaign optimization",
       "Basic performance analytics", 
@@ -23,18 +25,18 @@ const PRICING_TIERS = {
     ],
     limits: {
       campaigns: 5,
-      adGroups: 25,
-      keywords: 500,
-      monthlySpend: 5000,
+      dataRetentionDays: 7,
+      supportType: "email"
     },
   },
   PROFESSIONAL: {
     id: "professional", 
-    name: "Professional",
+    name: "Professional Plan",
     price: 79,
+    yearlyPrice: 695,
+    yearlyDiscount: 253,
     badge: "POPULAR",
     features: [
-      "Everything in Starter, plus:",
       "Advanced AI optimization",
       "Real-time performance analytics",
       "Up to 25 campaigns",
@@ -46,33 +48,30 @@ const PRICING_TIERS = {
     ],
     limits: {
       campaigns: 25,
-      adGroups: 100,
-      keywords: 2000,
-      monthlySpend: 25000,
+      dataRetentionDays: 30,
+      supportType: "priority_email"
     },
   },
   ENTERPRISE: {
     id: "enterprise",
-    name: "Enterprise",
+    name: "Enterprise Plan",
     price: 199,
+    yearlyPrice: 1850,
+    yearlyDiscount: 538,
     features: [
-      "Everything in Professional, plus:",
-      "Custom AI optimization rules",
-      "Advanced performance analytics",
+      "Full AI automation suite",
+      "Custom performance dashboards",
       "Unlimited campaigns",
-      "Priority support with SLA",
+      "Priority phone + email support",
       "90-day data retention",
-      "Custom ROAS tracking",
-      "Advanced automation features",
-      "Custom reporting"
+      "Custom ROAS modeling",
+      "Advanced bid strategies",
+      "Daily insights + custom reports"
     ],
     limits: {
-      campaigns: "Unlimited",
-      adGroups: "Unlimited", 
-      keywords: "Unlimited",
-      monthlySpend: "Unlimited",
-      stores: "Unlimited",
-      teamMembers: "Unlimited",
+      campaigns: -1, // unlimited
+      dataRetentionDays: 90,
+      supportType: "priority_phone_email"
     },
   },
 };

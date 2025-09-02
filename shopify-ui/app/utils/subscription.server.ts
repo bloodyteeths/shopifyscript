@@ -139,7 +139,7 @@ export function hasFeatureAccess(subscriptionInfo: SubscriptionInfo, feature: st
 }
 
 /**
- * Check if a feature is available for a specific tier
+ * Check if a feature is available for a specific tier (matching Shopify plan descriptions)
  */
 function checkTierFeatureAccess(tier: string, feature: string): boolean {
   const tierFeatures = {
@@ -149,20 +149,16 @@ function checkTierFeatureAccess(tier: string, feature: string): boolean {
       'campaign_monitoring',
       'email_support',
       'basic_roas_tracking',
-      'monthly_insights_reports',
-      'budget_caps',
-      'brand_protection'
+      'monthly_insights_reports'
     ],
     professional: [
-      // All starter features plus:
+      // All starter features plus professional features:
       'ai_campaign_optimization',
       'basic_performance_analytics',
       'campaign_monitoring', 
       'email_support',
       'basic_roas_tracking',
       'monthly_insights_reports',
-      'budget_caps',
-      'brand_protection',
       'advanced_ai_optimization',
       'real_time_performance_analytics',
       'priority_email_support',
@@ -171,27 +167,25 @@ function checkTierFeatureAccess(tier: string, feature: string): boolean {
       'weekly_insights_reports'
     ],
     enterprise: [
-      // All professional features plus:
+      // All professional features plus enterprise features:
       'ai_campaign_optimization',
       'basic_performance_analytics',
       'campaign_monitoring',
       'email_support', 
       'basic_roas_tracking',
       'monthly_insights_reports',
-      'budget_caps',
-      'brand_protection',
       'advanced_ai_optimization',
       'real_time_performance_analytics',
       'priority_email_support',
       'advanced_roas_analytics',
       'automated_bid_management', 
       'weekly_insights_reports',
-      'custom_ai_optimization_rules',
-      'advanced_performance_analytics',
-      'priority_support_sla',
-      'custom_roas_tracking',
-      'advanced_automation_features',
-      'custom_reporting'
+      'full_ai_automation_suite',
+      'custom_performance_dashboards',
+      'priority_phone_email_support',
+      'custom_roas_modeling',
+      'advanced_bid_strategies',
+      'daily_insights_custom_reports'
     ]
   };
 
