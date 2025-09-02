@@ -246,7 +246,7 @@ Shop: ${shopName || "unknown"}`;
 
   return (
     <div>
-      <h1>🤖 Autopilot</h1>
+      <h1>Autopilot</h1>
 
       {/* Shop automatically detected from Shopify authentication */}
 
@@ -325,7 +325,7 @@ Shop: ${shopName || "unknown"}`;
         }}
       >
         <h4 style={{ margin: "0 0 8px 0", color: "#0c5460" }}>
-          🤖 Autopilot Status
+          Autopilot Status
         </h4>
         <div
           style={{
@@ -344,7 +344,7 @@ Shop: ${shopName || "unknown"}`;
               fontSize: "12px",
             }}
           >
-            ✅ ALWAYS ON
+            ACTIVE
           </span>
           <span>
             Automation running for:{" "}
@@ -352,12 +352,12 @@ Shop: ${shopName || "unknown"}`;
           </span>
         </div>
         <div style={{ fontSize: "14px", color: "#666" }}>
-          • Budget optimization: Active
+          Budget optimization: Active
           <br />
-          • AI analysis: Running every 15min
+          AI analysis: Running every 15min
           <br />
-          • Performance monitoring: Continuous
-          <br />• Script updates: Available below
+          Performance monitoring: Continuous
+          <br />Script updates: Available below
         </div>
       </div>
 
@@ -381,7 +381,7 @@ Shop: ${shopName || "unknown"}`;
               fontSize: "16px",
             }}
           >
-            {isGeneratingScript ? "🔄 Generating..." : "🔄 Generate Current Script"}
+            {isGeneratingScript ? "Generating..." : "Generate Current Script"}
           </button>
         </Form>
       </div>
@@ -394,7 +394,7 @@ Shop: ${shopName || "unknown"}`;
           marginTop: "12px",
           borderRadius: "4px"
         }}>
-          <h3>✅ Script Generated Successfully!</h3>
+          <h3>Script Generated Successfully!</h3>
           <p>Size: {actionData.size}KB for shop: {actionData.shopName}</p>
           <details>
             <summary>View Script (Click to expand)</summary>
@@ -448,7 +448,7 @@ Shop: ${shopName || "unknown"}`;
                   cursor: "pointer",
                 }}
               >
-                📋 Copy Script
+                Copy Script
               </button>
               <button
                 onClick={() => {
@@ -471,7 +471,7 @@ Shop: ${shopName || "unknown"}`;
                   cursor: "pointer",
                 }}
               >
-                🗑️ Clear
+                Clear
               </button>
             </div>
           </div>

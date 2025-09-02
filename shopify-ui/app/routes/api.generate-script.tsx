@@ -112,3 +112,6 @@ export async function loader() {
     error: "This endpoint requires POST method for script generation"
   });
 }
+
+
+

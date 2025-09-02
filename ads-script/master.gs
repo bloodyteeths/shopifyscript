@@ -198,21 +198,33 @@ function ensureSeed_(cfg){
   var name=(cfg.desired && cfg.desired.campaign_name)||"ProofKit - Search";
   var daily=cfg.daily_budget_cap_default||3.00, ceil=cfg.cpc_ceiling_default||0.20;
   var adg=(cfg.desired && cfg.desired.ad_group)||"Default";
-  var kw=(cfg.desired && cfg.desired.keyword)||'"digital certificates"';
+  
+  // Use business-specific keyword if available, otherwise generic
+  var kw = (cfg.SUGGESTED_KEYWORDS && cfg.SUGGESTED_KEYWORDS[0]) || '"professional service"';
+  
   log_("• Seeding zero-state: creating campaign '"+name+"'");
   var op=AdsApp.newCampaignBuilder().withName(name).withBudget(daily).withBiddingStrategy('TARGET_SPEND').build();
   if(!op.isSuccessful()){ log_("! Seed campaign failed: "+op.getErrors().join('; ')); return; }
   var c=op.getResult(); try{ c.bidding().setCpcBidCeiling(ceil);}catch(e){}
-  try{ (cfg.business_days_csv||"MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY").split(',').map(function(s){return s.trim();}).forEach(function(day){ c.addAdSchedule(day,9,0,18,0,1.0); }); }catch(e){}
+  try{ (cfg.business_days_csv||"MONDAY,TUESDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY").split(',').map(function(s){return s.trim();}).forEach(function(day){ c.addAdSchedule(day,9,0,18,0,1.0); }); }catch(e){}
   var agop=c.newAdGroupBuilder().withName(adg).build(); if(!agop.isSuccessful()){ log_("! Seed ad group failed: "+agop.getErrors().join('; ')); return; }
   var ag=agop.getResult(); try{ ag.newKeywordBuilder().withText(kw).build(); }catch(e){}
-  var H=["Digital Certificates","Compliance Reports","Export Clean PDFs","Generate Certs Fast","Audit-Ready Reports","Start Free Today"];
-  var D=["Create inspector-ready PDFs fast.","Replace spreadsheets with an auditable system.","Templates enforce SOPs. Audit trail included.","Setup in under 10 minutes."];
-  var b=ag.newAd().responsiveSearchAdBuilder().withFinalUrl(cfg.default_final_url||"https://www.proofkit.net");
+  
+  // Use business-specific content if available, otherwise professional defaults
+  var H = (cfg.RSA_DEFAULT && cfg.RSA_DEFAULT.H && cfg.RSA_DEFAULT.H.length > 0) ? 
+    cfg.RSA_DEFAULT.H : 
+    ["Quality Service Guaranteed","Trusted by Customers","Professional Results","Get Started Today","Expert Solutions","Contact Us Now"];
+  var D = (cfg.RSA_DEFAULT && cfg.RSA_DEFAULT.D && cfg.RSA_DEFAULT.D.length > 0) ? 
+    cfg.RSA_DEFAULT.D : 
+    ["Professional service with guaranteed satisfaction.","Trusted by customers for quality and reliability.","Expert solutions tailored to your specific needs.","Contact us today to discuss your requirements."];
+  
+  log_("• Using " + (cfg._business_type || "professional") + " content for seeding");
+  
+  var b=ag.newAd().responsiveSearchAdBuilder().withFinalUrl(cfg.default_final_url||"https://www.example.com");
   H.slice(0,15).forEach(function(h){ b.addHeadline(h.length>30?h.slice(0,30):h); });
   D.slice(0,4).forEach(function(d){ b.addDescription(d.length>90?d.slice(0,90):d); });
   try{ b.build(); }catch(e){ log_("! Seed RSA failed: "+e); }
-  log_("• Seeded: "+name+" › "+adg);
+  log_("• Seeded: "+name+" › "+adg+" with business-appropriate content");
 }
 function addSchedule_(c, daysCsv, start, end){
   var sp=(start||'09:00').split(':'), ep=(end||'18:00').split(':');
@@ -267,14 +279,27 @@ function applyWasteNegs_(cfg, map){
   }
 }
 function collectPerf_(){
-  var rows=[], q1="SELECT campaign.id, campaign.name, metrics.clicks, metrics.cost_micros, metrics.conversions, metrics.impressions, metrics.ctr FROM campaign WHERE segments.date DURING LAST_7_DAYS AND campaign.advertising_channel_type = SEARCH";
+  // Get lookback period from config, default to 30 days for better historical data
+  var cfg = getConfig_();
+  var lookbackDays = (cfg && cfg.campaign_lookback_days) ? cfg.campaign_lookback_days : 30;
+  var lookbackPeriod = "LAST_" + lookbackDays + "_DAYS";
+  
+  log_("• Collecting performance data for period: " + lookbackPeriod);
+  
+  var rows=[], q1="SELECT campaign.id, campaign.name, metrics.clicks, metrics.cost_micros, metrics.conversions, metrics.impressions, metrics.ctr FROM campaign WHERE segments.date DURING " + lookbackPeriod + " AND campaign.advertising_channel_type = SEARCH";
   var it1=AdsApp.search(q1); while(it1.hasNext()){ var r=it1.next(); rows.push([new Date(),'campaign',r.campaign.name,'',r.campaign.id,r.campaign.name,(r.metrics.clicks||0),((r.metrics.costMicros||0)/1e6),(r.metrics.conversions||0),(r.metrics.impressions||0),(r.metrics.ctr||0)]); }
-  var q2="SELECT campaign.name, ad_group.id, ad_group.name, metrics.clicks, metrics.cost_micros, metrics.conversions, metrics.impressions, metrics.ctr FROM ad_group WHERE segments.date DURING LAST_7_DAYS AND campaign.advertising_channel_type = SEARCH";
+  var q2="SELECT campaign.name, ad_group.id, ad_group.name, metrics.clicks, metrics.cost_micros, metrics.conversions, metrics.impressions, metrics.ctr FROM ad_group WHERE segments.date DURING " + lookbackPeriod + " AND campaign.advertising_channel_type = SEARCH";
   var it2=AdsApp.search(q2); while(it2.hasNext()){ var r2=it2.next(); rows.push([new Date(),'ad_group',r2.campaign.name,r2.adGroup.name,r2.adGroup.id,r2.adGroup.name,(r2.metrics.clicks||0),((r2.metrics.costMicros||0)/1e6),(r2.metrics.conversions||0),(r2.metrics.impressions||0),(r2.metrics.ctr||0)]); }
+  
+  log_("• Performance data collected: " + rows.length + " records over " + lookbackDays + " days");
   return rows;
 }
 function autoNegateAndCollectST_(cfg, lookback, minClicks, minCost){
-  var q="SELECT campaign.name, ad_group.id, ad_group.name, search_term_view.search_term, metrics.clicks, metrics.cost_micros, metrics.conversions FROM search_term_view WHERE segments.date DURING "+(lookback||'LAST_7_DAYS')+" AND campaign.advertising_channel_type = SEARCH AND metrics.clicks >= "+(minClicks||2);
+  // Use configurable lookback period, defaulting to 14 days for search terms (shorter for relevance)
+  var searchTermLookback = (cfg && cfg.search_terms_lookback_days) ? ("LAST_" + cfg.search_terms_lookback_days + "_DAYS") : (lookback || 'LAST_14_DAYS');
+  log_("• Collecting search terms for period: " + searchTermLookback);
+  
+  var q="SELECT campaign.name, ad_group.id, ad_group.name, search_term_view.search_term, metrics.clicks, metrics.cost_micros, metrics.conversions FROM search_term_view WHERE segments.date DURING "+searchTermLookback+" AND campaign.advertising_channel_type = SEARCH AND metrics.clicks >= "+(minClicks||2);
   var it=AdsApp.search(q), outRows=[], bucket={};
   while(it.hasNext()){ var r=it.next(); var cost=(r.metrics.costMicros||0)/1e6, conv=r.metrics.conversions||0; if(conv===0 && cost>=(minCost||2.82)){ var t=(r.searchTermView.searchTerm||"").toLowerCase(); var id=String(r.adGroup.id); (bucket[id]=bucket[id]||[]).push(t); } outRows.push([new Date(), r.campaign.name, r.adGroup.name, (r.searchTermView.searchTerm||""), (r.metrics.clicks||0), cost, conv]); }
   for (var id in bucket){ var agit=AdsApp.adGroups().withIds([Number(id)]).get(); if(!agit.hasNext()) continue; var ag=agit.next(); var campName=ag.getCampaign().getName(); var agName=ag.getName(); if (isExcludedAdGroup_(cfg, campName, agName)) continue; var uniq={}, list=bucket[id]||[], added=0; list.forEach(function(t){ if(uniq[t] || isReservedKeyword_(t)) return; uniq[t]=true; try{ if(NEG_GUARD_ACTIVE && cfg.PROMOTE) { ag.createNegativeKeyword('['+t+']'); added++; } else { log_("• Auto-negative planned: " + t + " in " + agName + (PREVIEW_MODE ? ' [PREVIEW]' : ' [PROMOTE=FALSE]')); } }catch(e){} }); if(added) log_("• Auto-negated "+added+" in AG: "+agName); }
@@ -293,8 +318,8 @@ function buildSafeRSAs_(cfg){
     var finalUrl=inferFinalUrl_(ag)||cfg.default_final_url;
     var camp=ag.getCampaign().getName(), name=ag.getName();
     var ov=(cfg.RSA_MAP[camp] && cfg.RSA_MAP[camp][name]) || null;
-    var Hsrc=ov&&ov.H&&ov.H.length?ov.H:(cfg.RSA_DEFAULT.H.length?cfg.RSA_DEFAULT.H:["Digital Certificates","Compliance Reports","Generate Certs Fast","Export Clean PDFs","Audit-Ready Reports","Start Free Today"]);
-    var Dsrc=ov&&ov.D&&ov.D.length?ov.D:(cfg.RSA_DEFAULT.D.length?cfg.RSA_DEFAULT.D:["Create inspector-ready PDFs fast.","Replace spreadsheets with an auditable system.","Templates enforce SOPs. Audit trail included.","Setup in under 10 minutes."]);
+    var Hsrc=ov&&ov.H&&ov.H.length?ov.H:(cfg.RSA_DEFAULT.H&&cfg.RSA_DEFAULT.H.length?cfg.RSA_DEFAULT.H:["Quality Service Guaranteed","Trusted by Customers","Professional Results","Get Started Today","Expert Solutions","Contact Us Now"]);
+    var Dsrc=ov&&ov.D&&ov.D.length?ov.D:(cfg.RSA_DEFAULT.D&&cfg.RSA_DEFAULT.D.length?cfg.RSA_DEFAULT.D:["Professional service with guaranteed satisfaction.","Trusted by customers for quality and reliability.","Expert solutions tailored to your specific needs.","Contact us today to discuss your requirements."]);
     var H=lint_(Hsrc,30,15,3), D=lint_(Dsrc,90,4,10);
     var b=ag.newAd().responsiveSearchAdBuilder().withFinalUrl(finalUrl); H.forEach(function(h){ b.addHeadline(h); }); D.forEach(function(d){ b.addDescription(d); });
     try{ 

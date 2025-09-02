@@ -20,6 +20,24 @@ import logger from "../services/logger.js";
 export function promoteGateMiddleware() {
   return async (req, res, next) => {
     try {
+      // Check global environment kill switch first
+      const globalGateDisabled = process.env.GLOBAL_PROMOTE_GATE === "false";
+      
+      if (globalGateDisabled) {
+        logger.warn("PROMOTE Gate: Global environment gate disabled all mutations", {
+          method: req.method,
+          path: req.path,
+          GLOBAL_PROMOTE_GATE: process.env.GLOBAL_PROMOTE_GATE
+        });
+        return res.json({
+          ok: true,
+          promote_blocked: true,
+          code: "GLOBAL_PROMOTE_GATE_DISABLED",
+          message: "All script mutations blocked by global environment gate",
+          mutations_allowed: false
+        });
+      }
+
       // Extract tenant from request
       const tenant = req.query.tenant || req.body.tenant;
 

@@ -1,0 +1,42 @@
+name = "ads-autopilot-pixel"
+type = "web_pixel"
+
+[capabilities]
+network_access = true
+customer_privacy = true
+
+[capabilities.api_access]
+customer_events = true
+checkout_events = true
+
+[settings]
+  [[settings.fields]]
+  key = "pixel_id"
+  type = "single_line_text_field"
+  name = "Pixel ID"
+  description = "Unique identifier for tracking"
+
+  [[settings.fields]]
+  key = "enable_tracking"
+  type = "boolean"
+  name = "Enable Conversion Tracking"
+  description = "Enable conversion tracking for Google Ads optimization"
+  default = true
+
+  [[settings.fields]]
+  key = "track_purchases"
+  type = "boolean" 
+  name = "Track Purchase Events"
+  description = "Track purchase conversions for campaign optimization"
+  default = true
+
+  [[settings.fields]]
+  key = "track_page_views"
+  type = "boolean"
+  name = "Track Page Views"
+  description = "Track page view events for audience building"
+  default = false
+
+[build]
+command = ""
+path = "build"
