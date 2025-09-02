@@ -42,13 +42,14 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
         needsSubscription: subscriptionInfo.needsSubscription
       });
 
-      // Only redirect to billing if explicitly needed and not during initial auth
+      // Redirect to billing if user needs subscription (but allow some grace time for initial setup)
       const url = new URL(request.url);
-      const isInitialLoad = url.searchParams.has('embedded') || url.searchParams.has('shop');
+      const isEmbeddedLoad = url.searchParams.has('embedded');
+      const skipBillingParam = url.searchParams.has('skip_billing');
       
-      if (subscriptionInfo.needsSubscription && !isInitialLoad) {
+      if (subscriptionInfo.needsSubscription && !isEmbeddedLoad && !skipBillingParam) {
         console.log(`🔄 Redirecting ${shopName} to plan selection - no active subscription or trial`);
-        return redirect("/app/billing");
+        return redirect("/app/billing?from=dashboard");
       }
 
     } catch (subscriptionError) {
@@ -86,6 +87,42 @@ export default function AppIndex() {
   const renderSubscriptionBanner = () => {
     if (!subscriptionInfo) return null;
 
+    // Show subscription required prompt
+    if (subscriptionInfo.needsSubscription) {
+      return (
+        <div style={{
+          background: "#f8d7da",
+          border: "1px solid #dc3545",
+          borderRadius: "8px",
+          padding: "20px",
+          marginBottom: "24px",
+          textAlign: "center"
+        }}>
+          <h3 style={{ margin: "0 0 12px 0", fontSize: "18px", color: "#721c24" }}>
+            Choose Your Plan to Get Started
+          </h3>
+          <p style={{ margin: "0 0 16px 0", fontSize: "14px", color: "#721c24" }}>
+            Start your 14-day free trial to access ProofKit's powerful automation features.
+          </p>
+          <Link 
+            to="/app/billing"
+            style={{
+              display: "inline-block",
+              padding: "12px 24px",
+              backgroundColor: "#dc3545",
+              color: "white",
+              textDecoration: "none",
+              borderRadius: "6px",
+              fontSize: "16px",
+              fontWeight: "bold"
+            }}
+          >
+            Start Free Trial
+          </Link>
+        </div>
+      );
+    }
+
     if (subscriptionInfo.isInTrial) {
       return (
         <div style={{
@@ -96,7 +133,7 @@ export default function AppIndex() {
           marginBottom: "24px",
         }}>
           <h3 style={{ margin: "0 0 8px 0", fontSize: "16px", color: "#856404" }}>
-            🎉 Free Trial Active - {subscriptionInfo.subscriptionTier?.toUpperCase()} Plan
+            Free Trial Active - {subscriptionInfo.subscriptionTier?.toUpperCase()} Plan
           </h3>
           <p style={{ margin: "0", fontSize: "14px", color: "#856404" }}>
             {subscriptionInfo.trialDaysRemaining} days remaining in your trial
@@ -115,7 +152,7 @@ export default function AppIndex() {
           marginBottom: "24px",
         }}>
           <h3 style={{ margin: "0 0 8px 0", fontSize: "16px", color: "#155724" }}>
-            ✅ {subscriptionInfo.subscriptionTier?.toUpperCase()} Plan Active
+            {subscriptionInfo.subscriptionTier?.toUpperCase()} Plan Active
           </h3>
           <p style={{ margin: "0", fontSize: "14px", color: "#155724" }}>
             Full access to all features
