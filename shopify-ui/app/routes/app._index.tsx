@@ -42,32 +42,23 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
         needsSubscription: subscriptionInfo.needsSubscription
       });
 
-      // STANDARD SHOPIFY PATTERN: Automatic redirect to plan selection if no subscription
-      if (subscriptionInfo.needsSubscription) {
-        const appHandle = process.env.SHOPIFY_APP_HANDLE || "ads-autopilot-ai";
-        const planSelectionUrl = `https://admin.shopify.com/store/${shopName}/charges/${appHandle}/pricing_plans`;
-        
-        console.log(`🔄 Auto-redirecting ${shopName} to Shopify plan selection:`, planSelectionUrl);
-        
-        // Standard Shopify redirect pattern for embedded apps
-        return redirect(planSelectionUrl, { 
-          status: 302,
-          headers: {
-            'X-Frame-Options': 'DENY' // Break out of embedded frame
-          }
-        });
-      }
+      // For embedded apps, we can't do server-side redirects to external URLs
+      // Instead, we'll pass the redirect info to the client component
 
     } catch (subscriptionError) {
       console.error('⚠️ Subscription check failed, allowing app access:', subscriptionError);
       // Allow app access if subscription check fails to prevent installation crashes
     }
 
+    const appHandle = process.env.SHOPIFY_APP_HANDLE || "ads-autopilot-ai";
+    const planSelectionUrl = `https://admin.shopify.com/store/${shopName}/charges/${appHandle}/pricing_plans`;
+
     return json({
       message: "AI-powered Google Ads optimization on autopilot",
       timestamp: new Date().toISOString(),
       shopName: shopName,
-      subscriptionInfo
+      subscriptionInfo,
+      planSelectionUrl
     });
     
   } catch (authError) {
@@ -87,8 +78,36 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 };
 
 export default function AppIndex() {
-  const { message, timestamp, shopName, subscriptionInfo } = useLoaderData<typeof loader>();
+  const { message, timestamp, shopName, subscriptionInfo, planSelectionUrl } = useLoaderData<typeof loader>();
   const shopContext = useShopContext();
+
+  // Automatic redirect to plan selection if no subscription
+  React.useEffect(() => {
+    if (subscriptionInfo?.needsSubscription && planSelectionUrl) {
+      console.log('🔄 Client-side redirect to plan selection:', planSelectionUrl);
+      
+      // Use postMessage to break out of embedded iframe
+      const redirectMessage = {
+        message: "Shopify.API.remoteRedirect", 
+        data: { location: planSelectionUrl }
+      };
+      
+      try {
+        // Try to redirect parent window
+        if (window.parent && window.parent !== window) {
+          window.parent.postMessage(JSON.stringify(redirectMessage), '*');
+          console.log('✅ PostMessage sent to parent window');
+        } else {
+          // Fallback: direct redirect
+          window.top.location.href = planSelectionUrl;
+        }
+      } catch (error) {
+        console.error('❌ Redirect failed:', error);
+        // Final fallback: show user the link
+        alert(`Please visit: ${planSelectionUrl}`);
+      }
+    }
+  }, [subscriptionInfo, planSelectionUrl]);
 
   const renderSubscriptionBanner = () => {
     if (!subscriptionInfo) return null;
