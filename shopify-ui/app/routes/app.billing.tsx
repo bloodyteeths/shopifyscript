@@ -157,8 +157,26 @@ export default function Billing() {
 
   // Redirect to Shopify's managed pricing page
   const redirectToManagedPricing = () => {
-    console.log('Redirecting to managed pricing:', managedPricingUrl);
-    window.top?.location.assign(managedPricingUrl);
+    console.log('Attempting redirect to managed pricing:', managedPricingUrl);
+    console.log('App handle:', appHandle);
+    console.log('Shop name:', shopName);
+    
+    // Try different URL formats for managed pricing redirect
+    const urls = [
+      managedPricingUrl,
+      `shopify://admin/charges/${appHandle}/pricing_plans`,
+      `https://admin.shopify.com/store/${shopName}/charges/${appHandle}/pricing_plans`,
+      `https://partners.shopify.com/organizations/current/apps/${appHandle}/pricing_plans`
+    ];
+    
+    console.log('Trying URL:', urls[0]);
+    
+    try {
+      window.top?.location.assign(urls[0]);
+    } catch (error) {
+      console.error('Redirect failed:', error);
+      alert('Redirect failed. Please go to your Shopify Partner Dashboard to manage billing.');
+    }
   };
 
   const formatPrice = (price: number | string) => {
@@ -341,6 +359,15 @@ export default function Billing() {
           <li>Cancel or modify anytime through your Partner Dashboard</li>
           <li>14-day free trial on all plans</li>
         </ul>
+
+        {/* Debug information */}
+        <div style={{ marginTop: "16px", padding: "16px", backgroundColor: "#f0f0f0", borderRadius: "4px", fontSize: "12px" }}>
+          <h4>Debug Info:</h4>
+          <p>App Handle: {appHandle}</p>
+          <p>Shop: {shopName}</p>
+          <p>Managed Pricing URL: {managedPricingUrl}</p>
+          <p>Has Active Payment: {hasActivePayment ? 'Yes' : 'No'}</p>
+        </div>
         
         {currentSubscription && (
           <div style={{ marginTop: "16px", padding: "16px", backgroundColor: "#f5f5f5", borderRadius: "4px" }}>
