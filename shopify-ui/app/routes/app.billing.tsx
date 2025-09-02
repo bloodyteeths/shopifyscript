@@ -161,6 +161,9 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
       console.error("Error fetching subscription status:", error);
     }
 
+    const appHandle = process.env.SHOPIFY_APP_HANDLE || "ads-autopilot-ai";
+    const managedPricingUrl = `https://admin.shopify.com/store/${shopName}/charges/${appHandle}/pricing_plans`;
+
     return json({
       shopName,
       hasActivePayment,
@@ -169,7 +172,8 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
       isInTrial,
       trialDaysRemaining,
       pricingTiers: PRICING_TIERS,
-      appHandle: process.env.SHOPIFY_APP_HANDLE || "proofkit-autopilot",
+      appHandle,
+      managedPricingUrl,
       shouldRedirectToPlans: !hasActivePayment && !isInTrial
     });
   } catch (error) {
@@ -237,23 +241,17 @@ export default function Billing() {
     console.log('Redirecting to managed pricing');
     console.log('App handle:', appHandle);
     console.log('Shop name:', shopName);
+    console.log('Managed pricing URL:', managedPricingUrl);
     
-    // Use the session shop domain from loader (more reliable)
-    const shopDomain = `${shopName}.myshopify.com`;
-    const pricingPath = `/admin/charges/${appHandle}/pricing_plans`;
-    const fullUrl = `https://${shopDomain}${pricingPath}`;
-    
-    console.log('Full pricing URL:', fullUrl);
-    
-    // Simple approach: open in new tab (most reliable)
+    // Use the correct URL format from loader
     try {
-      window.open(fullUrl, '_blank');
+      window.open(managedPricingUrl, '_blank');
       console.log('✅ Opened pricing page in new tab');
     } catch (error) {
       console.error('❌ Failed to open pricing page:', error);
       
       // Show instructions to user
-      alert(`Please visit your Shopify admin and go to:\nSettings → Billing → Apps → ProofKit\n\nOr visit: ${fullUrl}`);
+      alert(`Please visit your Shopify admin and go to:\nSettings → Apps → ProofKit\n\nOr visit: ${managedPricingUrl}`);
     }
   };
 

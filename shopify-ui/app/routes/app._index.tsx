@@ -42,14 +42,20 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
         needsSubscription: subscriptionInfo.needsSubscription
       });
 
-      // Redirect to billing if user needs subscription (but allow some grace time for initial setup)
-      const url = new URL(request.url);
-      const isEmbeddedLoad = url.searchParams.has('embedded');
-      const skipBillingParam = url.searchParams.has('skip_billing');
-      
-      if (subscriptionInfo.needsSubscription && !isEmbeddedLoad && !skipBillingParam) {
-        console.log(`🔄 Redirecting ${shopName} to plan selection - no active subscription or trial`);
-        return redirect("/app/billing?from=dashboard");
+      // STANDARD SHOPIFY PATTERN: Automatic redirect to plan selection if no subscription
+      if (subscriptionInfo.needsSubscription) {
+        const appHandle = process.env.SHOPIFY_APP_HANDLE || "ads-autopilot-ai";
+        const planSelectionUrl = `https://admin.shopify.com/store/${shopName}/charges/${appHandle}/pricing_plans`;
+        
+        console.log(`🔄 Auto-redirecting ${shopName} to Shopify plan selection:`, planSelectionUrl);
+        
+        // Standard Shopify redirect pattern for embedded apps
+        return redirect(planSelectionUrl, { 
+          status: 302,
+          headers: {
+            'X-Frame-Options': 'DENY' // Break out of embedded frame
+          }
+        });
       }
 
     } catch (subscriptionError) {
