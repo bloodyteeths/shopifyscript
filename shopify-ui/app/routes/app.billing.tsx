@@ -157,25 +157,26 @@ export default function Billing() {
 
   // Redirect to Shopify's managed pricing page
   const redirectToManagedPricing = () => {
-    console.log('Attempting redirect to managed pricing:', managedPricingUrl);
+    console.log('Redirecting to managed pricing');
     console.log('App handle:', appHandle);
     console.log('Shop name:', shopName);
     
-    // Try different URL formats for managed pricing redirect
-    const urls = [
-      managedPricingUrl,
-      `shopify://admin/charges/${appHandle}/pricing_plans`,
-      `https://admin.shopify.com/store/${shopName}/charges/${appHandle}/pricing_plans`,
-      `https://partners.shopify.com/organizations/current/apps/${appHandle}/pricing_plans`
-    ];
+    // Use the session shop domain from loader (more reliable)
+    const shopDomain = `${shopName}.myshopify.com`;
+    const pricingPath = `/admin/charges/${appHandle}/pricing_plans`;
+    const fullUrl = `https://${shopDomain}${pricingPath}`;
     
-    console.log('Trying URL:', urls[0]);
+    console.log('Full pricing URL:', fullUrl);
     
+    // Simple approach: open in new tab (most reliable)
     try {
-      window.top?.location.assign(urls[0]);
+      window.open(fullUrl, '_blank');
+      console.log('✅ Opened pricing page in new tab');
     } catch (error) {
-      console.error('Redirect failed:', error);
-      alert('Redirect failed. Please go to your Shopify Partner Dashboard to manage billing.');
+      console.error('❌ Failed to open pricing page:', error);
+      
+      // Show instructions to user
+      alert(`Please visit your Shopify admin and go to:\nSettings → Billing → Apps → ProofKit\n\nOr visit: ${fullUrl}`);
     }
   };
 
