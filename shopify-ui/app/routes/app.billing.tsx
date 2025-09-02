@@ -92,6 +92,8 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
     return json({
       shopName,
+      hasActivePayment: false, // Will be determined by backend middleware
+      currentSubscription: null,
       pricingTiers: PRICING_TIERS,
       appHandle: process.env.SHOPIFY_APP_HANDLE || "proofkit-autopilot",
       managedPricingUrl: `shopify://admin/charges/${process.env.SHOPIFY_APP_HANDLE || "proofkit-autopilot"}/pricing_plans`
@@ -135,6 +137,8 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 export default function Billing() {
   const { 
     shopName,
+    hasActivePayment,
+    currentSubscription,
     pricingTiers,
     appHandle,
     managedPricingUrl
