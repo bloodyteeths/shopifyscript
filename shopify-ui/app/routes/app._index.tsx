@@ -112,42 +112,7 @@ export default function AppIndex() {
   const renderSubscriptionBanner = () => {
     if (!subscriptionInfo) return null;
 
-    // Show subscription required prompt
-    if (subscriptionInfo.needsSubscription) {
-      return (
-        <div style={{
-          background: "#f8d7da",
-          border: "1px solid #dc3545",
-          borderRadius: "8px",
-          padding: "20px",
-          marginBottom: "24px",
-          textAlign: "center"
-        }}>
-          <h3 style={{ margin: "0 0 12px 0", fontSize: "18px", color: "#721c24" }}>
-            Choose Your Plan to Get Started
-          </h3>
-          <p style={{ margin: "0 0 16px 0", fontSize: "14px", color: "#721c24" }}>
-            Start your 14-day free trial to access ProofKit's powerful automation features.
-          </p>
-          <Link 
-            to="/app/billing"
-            style={{
-              display: "inline-block",
-              padding: "12px 24px",
-              backgroundColor: "#dc3545",
-              color: "white",
-              textDecoration: "none",
-              borderRadius: "6px",
-              fontSize: "16px",
-              fontWeight: "bold"
-            }}
-          >
-            Start Free Trial
-          </Link>
-        </div>
-      );
-    }
-
+    // Only show banner for trial and active subscriptions (not for needsSubscription since they get redirected)
     if (subscriptionInfo.isInTrial) {
       return (
         <div style={{
@@ -186,6 +151,7 @@ export default function AppIndex() {
       );
     }
 
+    // Don't show red banner for needsSubscription since they get auto-redirected
     return null;
   };
 

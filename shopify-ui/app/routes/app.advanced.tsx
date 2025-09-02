@@ -14,6 +14,7 @@ import {
 } from "@remix-run/react";
 import { authenticate } from "../shopify.server";
 import { checkTenantSetup } from "../utils/tenant.server";
+import { checkSubscriptionStatus, hasFeatureAccess } from "../utils/subscription.server";
 
 // This function is no longer needed - replaced by shop name utilities
 
@@ -24,7 +25,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     console.log(`🏪 Advanced page loading for: ${new URL(request.url).searchParams.get('shop') || 'unknown'}`);
     
     // Standard Shopify authentication following best practices
-    const { session } = await authenticate.admin(request);
+    const { session, admin } = await authenticate.admin(request);
 
     shopName = session?.shop?.replace(".myshopify.com", "");
 
@@ -34,6 +35,25 @@ export async function loader({ request }: LoaderFunctionArgs) {
     }
 
     console.log(`🏪 Advanced page authenticated for shop: ${shopName}`);
+
+    // Check subscription status for advanced features
+    const subscriptionInfo = await checkSubscriptionStatus(admin);
+    
+    // Check if user has access to advanced features
+    const hasAdvancedAccess = hasFeatureAccess(subscriptionInfo, 'advanced_ai_optimization');
+    const hasCustomRules = hasFeatureAccess(subscriptionInfo, 'custom_ai_optimization_rules');
+    
+    console.log(`🔐 Advanced feature access for ${shopName}:`, {
+      hasAdvancedAccess,
+      hasCustomRules,
+      tier: subscriptionInfo.subscriptionTier
+    });
+
+    // If no access to advanced features, redirect to billing
+    if (!hasAdvancedAccess && subscriptionInfo.needsSubscription) {
+      console.log(`🔄 Redirecting ${shopName} from advanced page - requires Professional+ plan`);
+      return redirect("/app/billing?upgrade=professional&feature=advanced_settings");
+    }
   } catch (error) {
     console.error("🚨 Advanced page authentication error:", error);
     console.error("Request URL:", request.url);
