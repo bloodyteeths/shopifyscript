@@ -5,47 +5,40 @@
 
 import { SHOPIFY_PRICING_TIERS } from "../services/shopify-billing.js";
 
-// Feature to tier mapping
+// Feature to tier mapping (3-tier system)
 const FEATURE_TIER_MAP = {
   // Starter features (available to all paid plans)
-  "basic_optimizer": "starter",
-  "budget_caps": "starter", 
+  "ai_campaign_optimization": "starter",
+  "basic_performance_analytics": "starter", 
+  "campaign_monitoring": "starter",
+  "email_support": "starter",
+  "basic_roas_tracking": "starter",
+  "monthly_insights_reports": "starter",
+  "budget_caps": "starter",
   "brand_protection": "starter",
-  "exclusions": "starter",
-  "weekly_summary": "starter",
   
-  // Pro features  
-  "ai_copywriter": "pro",
-  "rsa_test_queue": "pro",
-  "keyword_promotions": "pro",
-  "phrase_waste_blocker": "pro",
-  "budget_pacer": "pro",
-  "landing_page_drafts": "pro",
-  
-  // Growth features
-  "asset_library": "growth",
-  "geo_daypart_hints": "growth", 
-  "promo_page_generator": "growth",
-  "brand_nonbrand_mapping": "growth",
-  "multi_store_support": "growth",
-  "team_roles": "growth",
-  "advanced_alerts": "growth",
+  // Professional features  
+  "advanced_ai_optimization": "professional",
+  "real_time_performance_analytics": "professional",
+  "priority_email_support": "professional",
+  "advanced_roas_analytics": "professional",
+  "automated_bid_management": "professional",
+  "weekly_insights_reports": "professional",
   
   // Enterprise features
-  "custom_rules": "enterprise",
-  "server_side_tagging": "enterprise",
-  "private_model_prompts": "enterprise",
-  "sso": "enterprise",
-  "audit_logs_export": "enterprise",
-  "sla_support": "enterprise"
+  "custom_ai_optimization_rules": "enterprise",
+  "advanced_performance_analytics": "enterprise",
+  "priority_support_sla": "enterprise",
+  "custom_roas_tracking": "enterprise",
+  "advanced_automation_features": "enterprise",
+  "custom_reporting": "enterprise"
 };
 
 // Tier hierarchy for access control
 const TIER_HIERARCHY = {
   "starter": 1,
-  "pro": 2, 
-  "growth": 3,
-  "enterprise": 4
+  "professional": 2,
+  "enterprise": 3
 };
 
 /**

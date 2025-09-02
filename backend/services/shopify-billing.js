@@ -8,22 +8,17 @@ import { PRICING_TIERS } from "./billing.js";
 export const SHOPIFY_PRICING_TIERS = {
   STARTER: {
     ...PRICING_TIERS.STARTER,
-    shopifyPlanId: "proofkit_starter",
+    shopifyPlanId: "starter",
     test: process.env.SHOPIFY_BILLING_TEST === "true",
   },
-  PRO: {
-    ...PRICING_TIERS.PRO,
-    shopifyPlanId: "proofkit_pro",
-    test: process.env.SHOPIFY_BILLING_TEST === "true",
-  },
-  GROWTH: {
-    ...PRICING_TIERS.GROWTH,
-    shopifyPlanId: "proofkit_growth",
+  PROFESSIONAL: {
+    ...PRICING_TIERS.PROFESSIONAL,
+    shopifyPlanId: "professional",
     test: process.env.SHOPIFY_BILLING_TEST === "true",
   },
   ENTERPRISE: {
     ...PRICING_TIERS.ENTERPRISE,
-    shopifyPlanId: "proofkit_enterprise",
+    shopifyPlanId: "enterprise", 
     test: process.env.SHOPIFY_BILLING_TEST === "true",
   },
 };

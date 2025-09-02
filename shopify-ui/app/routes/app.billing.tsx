@@ -5,22 +5,21 @@ import { useLoaderData, useActionData, Form, useNavigation } from "@remix-run/re
 import { boundary } from "@shopify/shopify-app-remix/server";
 import { authenticate } from "../shopify.server";
 
-// Pricing tiers from backend billing service
+// Pricing tiers matching Partner Dashboard configuration
 const PRICING_TIERS = {
   STARTER: {
     id: "starter",
     name: "Starter",
     price: 29,
     features: [
-      "Instant safe starter campaigns",
-      "Daily optimizer with budget caps",
-      "Auto-block money-wasting queries",
-      "Brand protection",
-      "Pixel health check (GA4 + Google Ads)",
-      "Weekly email summary",
-      "Slack/email alerts",
-      "Full audit trail in Google Sheet",
-      "Campaign/ad group exclusions"
+      "AI campaign optimization",
+      "Basic performance analytics", 
+      "Up to 5 campaigns",
+      "Email support",
+      "7-day data retention",
+      "Basic ROAS tracking",
+      "Campaign monitoring",
+      "Monthly insights reports"
     ],
     limits: {
       campaigns: 5,
@@ -29,65 +28,43 @@ const PRICING_TIERS = {
       monthlySpend: 5000,
     },
   },
-  PRO: {
-    id: "pro", 
-    name: "Pro",
-    price: 99,
+  PROFESSIONAL: {
+    id: "professional", 
+    name: "Professional",
+    price: 79,
     badge: "POPULAR",
     features: [
       "Everything in Starter, plus:",
-      "AI ad copywriter (RSA) with 30/90 limits",
-      "RSA Test Queue with significance testing",
-      "Keyword Promotions (search terms to keywords)",
-      "Phrase-level waste blocker (n-grams)",
-      "Budget pacer with guardrails",
-      "Sitelinks/Callouts/Snippets drafts",
-      "AI landing page section drafts",
-      "Plain-English change explanations"
+      "Advanced AI optimization",
+      "Real-time performance analytics",
+      "Up to 25 campaigns",
+      "Priority email support", 
+      "30-day data retention",
+      "Advanced ROAS analytics",
+      "Automated bid management",
+      "Weekly insights reports"
     ],
     limits: {
-      campaigns: 20,
+      campaigns: 25,
       adGroups: 100,
       keywords: 2000,
       monthlySpend: 25000,
     },
   },
-  GROWTH: {
-    id: "growth",
-    name: "Growth", 
-    price: 249,
-    features: [
-      "Everything in Pro, plus:",
-      "Asset Library (pooled headlines/descriptions)",
-      "Geo & daypart optimization hints",
-      "Promo page generator (AI landing pages)",
-      "Brand/Non-brand mapping",
-      "Pacer rules editor",
-      "Multi-store support",
-      "Team roles and advanced alerts",
-      "Looker Studio template"
-    ],
-    limits: {
-      campaigns: 50,
-      adGroups: 250,
-      keywords: 5000,
-      monthlySpend: 100000,
-      stores: 3,
-      teamMembers: 5,
-    },
-  },
   ENTERPRISE: {
     id: "enterprise",
     name: "Enterprise",
-    price: 699,
+    price: 199,
     features: [
-      "Everything in Growth, plus:",
-      "Custom rules & guardrails",
-      "Server-side tagging consultation",
-      "Private model prompts",
-      "Onboarding/implementation help",
-      "SSO and audit logs export",
-      "SLA support"
+      "Everything in Professional, plus:",
+      "Custom AI optimization rules",
+      "Advanced performance analytics",
+      "Unlimited campaigns",
+      "Priority support with SLA",
+      "90-day data retention",
+      "Custom ROAS tracking",
+      "Advanced automation features",
+      "Custom reporting"
     ],
     limits: {
       campaigns: "Unlimited",
