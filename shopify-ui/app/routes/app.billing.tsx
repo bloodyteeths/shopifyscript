@@ -79,24 +79,98 @@ const PRICING_TIERS = {
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   try {
-    const { session } = await authenticate.admin(request);
+    const { session, admin } = await authenticate.admin(request);
     const shopName = session?.shop?.replace(".myshopify.com", "");
 
     if (!shopName) {
       throw new Error("Unable to determine shop name from Shopify session");
     }
 
-    // For managed pricing apps, we'll show the billing page without checking subscription status
-    // The actual subscription enforcement will happen in the backend middleware
-    console.log(`Billing page loaded for shop: ${shopName}`);
+    console.log(`Checking subscription status for shop: ${shopName}`);
+
+    // Query current app installation and active subscriptions using 2024-10 API
+    let hasActivePayment = false;
+    let currentSubscription = null;
+    let subscriptionTier = null;
+    let trialDaysRemaining = null;
+    let isInTrial = false;
+
+    try {
+      const subscriptionQuery = `
+        query GetCurrentAppSubscription {
+          currentAppInstallation {
+            activeSubscriptions {
+              id
+              name
+              status
+              createdAt
+              currentPeriodEnd
+              trialDays
+              test
+              lineItems {
+                id
+                plan {
+                  pricingDetails {
+                    ... on AppRecurringPricing {
+                      price {
+                        amount
+                        currencyCode
+                      }
+                      interval
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      `;
+
+      const response = await admin.graphql(subscriptionQuery);
+      const result = await response.json();
+
+      console.log('Subscription query result:', JSON.stringify(result, null, 2));
+
+      if (result.data?.currentAppInstallation?.activeSubscriptions?.length > 0) {
+        currentSubscription = result.data.currentAppInstallation.activeSubscriptions[0];
+        hasActivePayment = currentSubscription.status === 'ACTIVE';
+        
+        // Determine tier based on price amount
+        const priceAmount = parseFloat(currentSubscription.lineItems[0]?.plan?.pricingDetails?.price?.amount || 0);
+        
+        if (priceAmount === 29) subscriptionTier = 'starter';
+        else if (priceAmount === 79) subscriptionTier = 'professional';  
+        else if (priceAmount === 199) subscriptionTier = 'enterprise';
+        
+        // Calculate trial status
+        if (currentSubscription.trialDays > 0) {
+          const createdAt = new Date(currentSubscription.createdAt);
+          const trialEndDate = new Date(createdAt.getTime() + (currentSubscription.trialDays * 24 * 60 * 60 * 1000));
+          const now = new Date();
+          
+          isInTrial = now < trialEndDate;
+          trialDaysRemaining = isInTrial ? Math.ceil((trialEndDate.getTime() - now.getTime()) / (24 * 60 * 60 * 1000)) : 0;
+        }
+        
+        console.log(`✅ Subscription found: tier=${subscriptionTier}, status=${currentSubscription.status}, trial=${isInTrial}, daysLeft=${trialDaysRemaining}`);
+      } else {
+        console.log(`❌ No active subscription found for shop: ${shopName}`);
+      }
+
+    } catch (error) {
+      console.error("Error fetching subscription status:", error);
+    }
 
     return json({
       shopName,
-      hasActivePayment: false, // Will be determined by backend middleware
-      currentSubscription: null,
+      hasActivePayment,
+      currentSubscription,
+      subscriptionTier,
+      isInTrial,
+      trialDaysRemaining,
       pricingTiers: PRICING_TIERS,
       appHandle: process.env.SHOPIFY_APP_HANDLE || "proofkit-autopilot",
-      managedPricingUrl: `shopify://admin/charges/${process.env.SHOPIFY_APP_HANDLE || "proofkit-autopilot"}/pricing_plans`
+      shouldRedirectToPlans: !hasActivePayment && !isInTrial
     });
   } catch (error) {
     console.error("Billing page loader error:", error);
@@ -139,9 +213,12 @@ export default function Billing() {
     shopName,
     hasActivePayment,
     currentSubscription,
+    subscriptionTier,
+    isInTrial,
+    trialDaysRemaining,
     pricingTiers,
     appHandle,
-    managedPricingUrl
+    shouldRedirectToPlans
   } = useLoaderData<typeof loader>();
   
   const actionData = useActionData<typeof action>();
@@ -195,36 +272,147 @@ export default function Billing() {
     </ul>
   );
 
-  const renderManagedPricingInfo = () => {
+  const renderSubscriptionStatus = () => {
+    // No subscription at all
+    if (!hasActivePayment && !isInTrial) {
+      return (
+        <div style={{ 
+          background: "#fff2cc", 
+          border: "1px solid #ffc107", 
+          padding: "24px", 
+          borderRadius: "8px", 
+          marginBottom: "32px",
+          textAlign: "center"
+        }}>
+          <h3 style={{ margin: "0 0 16px 0" }}>Choose Your Plan</h3>
+          <p style={{ margin: "0 0 20px 0", fontSize: "16px" }}>
+            Start your 14-day free trial to access ProofKit's powerful features.
+          </p>
+          <button
+            onClick={redirectToManagedPricing}
+            style={{
+              padding: "16px 32px",
+              backgroundColor: "#007bff",
+              color: "white",
+              border: "none",
+              borderRadius: "8px",
+              cursor: "pointer",
+              fontSize: "18px",
+              fontWeight: "bold"
+            }}
+          >
+            Start Free Trial
+          </button>
+        </div>
+      );
+    }
+
+    // In trial period
+    if (isInTrial) {
+      const tier = subscriptionTier ? pricingTiers[subscriptionTier.toUpperCase()] : null;
+      return (
+        <div style={{ 
+          background: "#e8f5e8", 
+          border: "1px solid #4caf50", 
+          padding: "24px", 
+          borderRadius: "8px", 
+          marginBottom: "32px"
+        }}>
+          <h3 style={{ margin: "0 0 16px 0" }}>🎉 Free Trial Active</h3>
+          <div style={{ marginBottom: "16px" }}>
+            <p style={{ margin: "0 0 8px 0", fontSize: "16px" }}>
+              <strong>Current Plan:</strong> {tier?.name || 'Unknown'} (${tier?.price}/month)
+            </p>
+            <p style={{ margin: "0 0 8px 0", fontSize: "16px" }}>
+              <strong>Trial Days Remaining:</strong> {trialDaysRemaining} days
+            </p>
+            <p style={{ margin: "0", fontSize: "14px", color: "#666" }}>
+              Trial ends: {new Date(new Date(currentSubscription.createdAt).getTime() + (currentSubscription.trialDays * 24 * 60 * 60 * 1000)).toLocaleDateString()}
+            </p>
+          </div>
+          <button
+            onClick={redirectToManagedPricing}
+            style={{
+              padding: "12px 24px",
+              backgroundColor: "#28a745",
+              color: "white",
+              border: "none",
+              borderRadius: "4px",
+              cursor: "pointer",
+              fontSize: "16px"
+            }}
+          >
+            Manage Subscription
+          </button>
+        </div>
+      );
+    }
+
+    // Active paid subscription
+    if (hasActivePayment) {
+      const tier = subscriptionTier ? pricingTiers[subscriptionTier.toUpperCase()] : null;
+      return (
+        <div style={{ 
+          background: "#e8f5e8", 
+          border: "1px solid #4caf50", 
+          padding: "24px", 
+          borderRadius: "8px", 
+          marginBottom: "32px"
+        }}>
+          <h3 style={{ margin: "0 0 16px 0" }}>✅ Active Subscription</h3>
+          <div style={{ marginBottom: "16px" }}>
+            <p style={{ margin: "0 0 8px 0", fontSize: "16px" }}>
+              <strong>Current Plan:</strong> {tier?.name || 'Unknown'} (${tier?.price}/month)
+            </p>
+            <p style={{ margin: "0 0 8px 0", fontSize: "16px" }}>
+              <strong>Status:</strong> {currentSubscription.status}
+            </p>
+            <p style={{ margin: "0", fontSize: "14px", color: "#666" }}>
+              Next billing: {new Date(currentSubscription.currentPeriodEnd).toLocaleDateString()}
+            </p>
+          </div>
+          <button
+            onClick={redirectToManagedPricing}
+            style={{
+              padding: "12px 24px",
+              backgroundColor: "#007bff",
+              color: "white",
+              border: "none",
+              borderRadius: "4px",
+              cursor: "pointer",
+              fontSize: "16px"
+            }}
+          >
+            Change Plan
+          </button>
+        </div>
+      );
+    }
+
+    // Fallback
     return (
       <div style={{ 
-        background: "#e3f2fd", 
-        border: "1px solid #2196f3", 
+        background: "#f8f9fa", 
+        border: "1px solid #dee2e6", 
         padding: "24px", 
         borderRadius: "8px", 
         marginBottom: "32px",
         textAlign: "center"
       }}>
-        <h3 style={{ margin: "0 0 16px 0" }}>Subscription Management</h3>
-        <p style={{ margin: "0 0 20px 0", fontSize: "16px" }}>
-          ProofKit uses Shopify's secure managed pricing system.
-          <br />
-          View and manage your subscription through Shopify's billing dashboard.
-        </p>
+        <h3 style={{ margin: "0 0 16px 0" }}>Subscription Status Unknown</h3>
         <button
           onClick={redirectToManagedPricing}
           style={{
             padding: "16px 32px",
-            backgroundColor: "#28a745",
+            backgroundColor: "#6c757d",
             color: "white",
             border: "none",
             borderRadius: "8px",
             cursor: "pointer",
-            fontSize: "18px",
-            fontWeight: "bold"
+            fontSize: "16px"
           }}
         >
-          View Plans & Manage Subscription
+          Check Subscription Status
         </button>
       </div>
     );
@@ -237,7 +425,7 @@ export default function Billing() {
         Manage your ProofKit subscription for {shopName}
       </p>
 
-      {renderManagedPricingInfo()}
+      {renderSubscriptionStatus()}
       
       {actionData?.error && (
         <div style={{ 
@@ -366,8 +554,14 @@ export default function Billing() {
           <h4>Debug Info:</h4>
           <p>App Handle: {appHandle}</p>
           <p>Shop: {shopName}</p>
-          <p>Managed Pricing URL: {managedPricingUrl}</p>
           <p>Has Active Payment: {hasActivePayment ? 'Yes' : 'No'}</p>
+          <p>Subscription Tier: {subscriptionTier || 'None'}</p>
+          <p>In Trial: {isInTrial ? 'Yes' : 'No'}</p>
+          <p>Trial Days Remaining: {trialDaysRemaining || 'N/A'}</p>
+          <p>Should Redirect to Plans: {shouldRedirectToPlans ? 'Yes' : 'No'}</p>
+          {currentSubscription && (
+            <p>Subscription ID: {currentSubscription.id}</p>
+          )}
         </div>
         
         {currentSubscription && (

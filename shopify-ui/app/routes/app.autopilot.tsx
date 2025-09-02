@@ -17,10 +17,11 @@ import {
 } from "../utils/shop-config";
 import { ShopSetupBanner } from "../components/ShopSetupBanner";
 import { ClientOnly } from "../components/ClientOnly";
+import { checkSubscriptionStatus, hasFeatureAccess } from "../utils/subscription.server";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   // Standard Shopify authentication following best practices
-  const { session } = await authenticate.admin(request);
+  const { session, admin } = await authenticate.admin(request);
 
   const shopName = session?.shop?.replace(".myshopify.com", "");
 
@@ -30,6 +31,19 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
   console.log(`🤖 Autopilot loaded for shop: ${shopName}`);
 
+  // Check subscription status for feature access control
+  const subscriptionInfo = await checkSubscriptionStatus(admin);
+  
+  // Determine available features based on subscription
+  const availableFeatures = {
+    scriptGeneration: hasFeatureAccess(subscriptionInfo, 'ai_campaign_optimization'),
+    advancedSettings: hasFeatureAccess(subscriptionInfo, 'advanced_ai_optimization'),
+    realTimeAnalytics: hasFeatureAccess(subscriptionInfo, 'real_time_performance_analytics'),
+    customRules: hasFeatureAccess(subscriptionInfo, 'custom_ai_optimization_rules')
+  };
+
+  console.log(`🔐 Feature access for ${shopName}:`, availableFeatures);
+
   // Return config with authenticated shop name for client
   const config = {
     backendUrl:
@@ -38,7 +52,12 @@ export async function loader({ request }: LoaderFunctionArgs) {
     shopName, // Authenticated shop name from Shopify session
   };
 
-  return json({ config, shopName });
+  return json({ 
+    config, 
+    shopName, 
+    subscriptionInfo,
+    availableFeatures
+  });
 }
 
 export async function action({ request }: ActionFunctionArgs) {

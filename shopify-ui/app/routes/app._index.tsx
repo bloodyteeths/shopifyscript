@@ -5,10 +5,11 @@ import { useLoaderData, Link } from "@remix-run/react";
 import { authenticate } from "../shopify.server";
 import { checkTenantSetup } from "../utils/tenant.server";
 import { useShopContext, buildAppUrl } from "../utils/navigation";
+import { checkSubscriptionStatus, shouldRedirectToPlans, getPlanSelectionUrl } from "../utils/subscription.server";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   // Standard Shopify authentication following best practices
-  const { session } = await authenticate.admin(request);
+  const { session, admin } = await authenticate.admin(request);
 
   const shopName = session?.shop?.replace(".myshopify.com", "");
 
@@ -18,19 +19,82 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
   console.log(`🏪 Dashboard loaded for shop: ${shopName}`);
 
+  // Check subscription status for feature access control
+  const subscriptionInfo = await checkSubscriptionStatus(admin);
+  
+  console.log(`📊 Subscription check for ${shopName}:`, {
+    hasActivePayment: subscriptionInfo.hasActivePayment,
+    isInTrial: subscriptionInfo.isInTrial,
+    tier: subscriptionInfo.subscriptionTier,
+    needsSubscription: subscriptionInfo.needsSubscription
+  });
+
+  // If user needs subscription and hasn't chosen a plan, redirect to billing
+  if (subscriptionInfo.needsSubscription) {
+    console.log(`🔄 Redirecting ${shopName} to plan selection - no active subscription or trial`);
+    return redirect("/app/billing");
+  }
+
   return json({
     message: "AI-powered Google Ads optimization on autopilot",
     timestamp: new Date().toISOString(),
     shopName: shopName,
+    subscriptionInfo
   });
 };
 
 export default function AppIndex() {
-  const { message, timestamp, shopName } = useLoaderData<typeof loader>();
+  const { message, timestamp, shopName, subscriptionInfo } = useLoaderData<typeof loader>();
   const shopContext = useShopContext();
+
+  const renderSubscriptionBanner = () => {
+    if (!subscriptionInfo) return null;
+
+    if (subscriptionInfo.isInTrial) {
+      return (
+        <div style={{
+          background: "#fff3cd",
+          border: "1px solid #ffc107",
+          borderRadius: "8px",
+          padding: "16px",
+          marginBottom: "24px",
+        }}>
+          <h3 style={{ margin: "0 0 8px 0", fontSize: "16px", color: "#856404" }}>
+            🎉 Free Trial Active - {subscriptionInfo.subscriptionTier?.toUpperCase()} Plan
+          </h3>
+          <p style={{ margin: "0", fontSize: "14px", color: "#856404" }}>
+            {subscriptionInfo.trialDaysRemaining} days remaining in your trial
+          </p>
+        </div>
+      );
+    }
+
+    if (subscriptionInfo.hasActivePayment) {
+      return (
+        <div style={{
+          background: "#d1eddd",
+          border: "1px solid #28a745",
+          borderRadius: "8px", 
+          padding: "16px",
+          marginBottom: "24px",
+        }}>
+          <h3 style={{ margin: "0 0 8px 0", fontSize: "16px", color: "#155724" }}>
+            ✅ {subscriptionInfo.subscriptionTier?.toUpperCase()} Plan Active
+          </h3>
+          <p style={{ margin: "0", fontSize: "14px", color: "#155724" }}>
+            Full access to all features
+          </p>
+        </div>
+      );
+    }
+
+    return null;
+  };
 
   return (
     <div style={{ padding: "2rem" }}>
+      {renderSubscriptionBanner()}
+      
       <div
         style={{
           background: "#e7f3ff",
