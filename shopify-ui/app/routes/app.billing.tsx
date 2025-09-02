@@ -3,23 +3,6 @@ import type { HeadersFunction, LoaderFunctionArgs, ActionFunctionArgs } from "@r
 import { json } from "@remix-run/node";
 import { useLoaderData, useActionData, Form, useNavigation } from "@remix-run/react";
 import { boundary } from "@shopify/shopify-app-remix/server";
-import { AppProvider } from "@shopify/shopify-app-remix/react";
-import {
-  Card,
-  Layout,
-  Page,
-  Text,
-  Button,
-  Badge,
-  Stack,
-  Banner,
-  List,
-  Divider,
-  ButtonGroup,
-  Icon,
-} from "@shopify/polaris";
-import { CreditCardMajor, CheckMajor, XSmallMinor } from "@shopify/polaris-icons";
-
 import { authenticate } from "../shopify.server";
 
 // Pricing tiers from backend billing service
@@ -318,25 +301,28 @@ export default function Billing() {
   };
 
   const renderFeatureList = (features: string[]) => (
-    <List>
+    <ul style={{ margin: 0, paddingLeft: '20px' }}>
       {features.map((feature, index) => (
-        <List.Item key={index}>
-          <Stack spacing="tight" alignment="leading">
-            <Icon source={CheckMajor} color="success" />
-            <Text variant="bodyMd">{feature}</Text>
-          </Stack>
-        </List.Item>
+        <li key={index} style={{ marginBottom: '8px', fontSize: '14px' }}>
+          ✓ {feature}
+        </li>
       ))}
-    </List>
+    </ul>
   );
 
   const renderCurrentPlan = () => {
     if (!currentTier || subscriptionStatus === "none") {
       return (
-        <Banner status="warning">
-          <Text variant="headingMd">No Active Subscription</Text>
-          <Text>Choose a plan below to start using ProofKit's premium features.</Text>
-        </Banner>
+        <div style={{ 
+          background: "#fff2cc", 
+          border: "1px solid #ffc107", 
+          padding: "16px", 
+          borderRadius: "8px", 
+          marginBottom: "24px" 
+        }}>
+          <h3 style={{ margin: "0 0 8px 0" }}>No Active Subscription</h3>
+          <p style={{ margin: 0 }}>Choose a plan below to start using ProofKit's premium features.</p>
+        </div>
       );
     }
 
@@ -344,154 +330,177 @@ export default function Billing() {
     const isTrialing = trialEndsAt && new Date() < new Date(trialEndsAt);
     
     return (
-      <Banner status={isTrialing ? "info" : "success"}>
-        <Stack spacing="tight">
-          <Stack spacing="none" alignment="leading">
-            <Text variant="headingMd">Current Plan: {tier?.name}</Text>
-            <Text>${tier?.price}/month</Text>
-          </Stack>
-          {isTrialing && (
-            <Text>
-              Trial ends: {new Date(trialEndsAt).toLocaleDateString()}
-            </Text>
-          )}
-          <Text>Status: {subscriptionStatus}</Text>
-        </Stack>
-      </Banner>
+      <div style={{ 
+        background: isTrialing ? "#e3f2fd" : "#e8f5e8", 
+        border: `1px solid ${isTrialing ? "#2196f3" : "#4caf50"}`, 
+        padding: "16px", 
+        borderRadius: "8px", 
+        marginBottom: "24px" 
+      }}>
+        <h3 style={{ margin: "0 0 8px 0" }}>Current Plan: {tier?.name}</h3>
+        <p style={{ margin: "0 0 8px 0" }}>${tier?.price}/month</p>
+        {isTrialing && (
+          <p style={{ margin: "0 0 8px 0" }}>
+            Trial ends: {new Date(trialEndsAt).toLocaleDateString()}
+          </p>
+        )}
+        <p style={{ margin: 0 }}>Status: {subscriptionStatus}</p>
+      </div>
     );
   };
 
   return (
-    <Page
-      title="Billing & Subscription"
-      subtitle={`Manage your ProofKit subscription for ${shopName}`}
-    >
-      <Layout>
-        <Layout.Section>
-          {renderCurrentPlan()}
-          
-          {actionData?.error && (
-            <Banner status="critical">
-              <Text>{actionData.error}</Text>
-            </Banner>
-          )}
-        </Layout.Section>
+    <div style={{ padding: "24px", maxWidth: "1200px", margin: "0 auto" }}>
+      <h1>Billing & Subscription</h1>
+      <p style={{ color: "#666", marginBottom: "32px" }}>
+        Manage your ProofKit subscription for {shopName}
+      </p>
 
-        <Layout.Section>
-          <Card>
-            <Stack spacing="loose">
-              <Text variant="headingLg">Choose Your Plan</Text>
-              <Text variant="bodyMd" color="subdued">
-                All plans include a 14-day free trial. Cancel anytime.
-              </Text>
-              
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "20px" }}>
-                {Object.values(pricingTiers).map((tier) => (
-                  <Card key={tier.id} sectioned>
-                    <Stack spacing="loose">
-                      <Stack spacing="tight">
-                        <Stack alignment="center" distribution="equalSpacing">
-                          <Text variant="headingMd">{tier.name}</Text>
-                          {tier.badge && (
-                            <Badge status="success">{tier.badge}</Badge>
-                          )}
-                        </Stack>
-                        
-                        <Stack alignment="baseline" spacing="tight">
-                          <Text variant="headingLg">${tier.price}</Text>
-                          <Text variant="bodyMd" color="subdued">/month</Text>
-                        </Stack>
-                      </Stack>
+      {renderCurrentPlan()}
+      
+      {actionData?.error && (
+        <div style={{ 
+          background: "#ffebee", 
+          border: "1px solid #f44336", 
+          padding: "16px", 
+          borderRadius: "8px", 
+          marginBottom: "24px" 
+        }}>
+          <p style={{ margin: 0, color: "#d32f2f" }}>{actionData.error}</p>
+        </div>
+      )}
 
-                      <Divider />
-
-                      <Stack spacing="tight">
-                        <Text variant="headingSm">Features:</Text>
-                        {renderFeatureList(tier.features.slice(0, 5))}
-                        {tier.features.length > 5 && (
-                          <Text variant="bodyMd" color="subdued">
-                            + {tier.features.length - 5} more features
-                          </Text>
-                        )}
-                      </Stack>
-
-                      <Divider />
-
-                      <Stack spacing="tight">
-                        <Text variant="headingSm">Limits:</Text>
-                        <List>
-                          <List.Item>Campaigns: {tier.limits.campaigns}</List.Item>
-                          <List.Item>Ad Groups: {tier.limits.adGroups}</List.Item>
-                          <List.Item>Keywords: {tier.limits.keywords}</List.Item>
-                          <List.Item>Monthly Spend: {formatPrice(tier.limits.monthlySpend)}</List.Item>
-                        </List>
-                      </Stack>
-
-                      <div style={{ marginTop: "auto" }}>
-                        {currentTier === tier.id ? (
-                          <Button disabled fullWidth>
-                            Current Plan
-                          </Button>
-                        ) : (
-                          <Form method="post">
-                            <input type="hidden" name="actionType" value="subscribe" />
-                            <input type="hidden" name="tierId" value={tier.id} />
-                            <Button
-                              submit
-                              primary={tier.id === "pro"}
-                              loading={isSubmitting}
-                              disabled={isSubmitting}
-                              fullWidth
-                            >
-                              {currentTier ? "Switch to" : "Start"} {tier.name}
-                            </Button>
-                          </Form>
-                        )}
-                      </div>
-                    </Stack>
-                  </Card>
-                ))}
+      <div style={{ marginBottom: "32px" }}>
+        <h2>Choose Your Plan</h2>
+        <p style={{ color: "#666", marginBottom: "24px" }}>
+          All plans include a 14-day free trial. Cancel anytime.
+        </p>
+        
+        <div style={{ 
+          display: "grid", 
+          gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", 
+          gap: "20px" 
+        }}>
+          {Object.values(pricingTiers).map((tier) => (
+            <div key={tier.id} style={{ 
+              border: "1px solid #e0e0e0", 
+              borderRadius: "8px", 
+              padding: "24px",
+              backgroundColor: "white"
+            }}>
+              <div style={{ marginBottom: "16px" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }}>
+                  <h3 style={{ margin: 0 }}>{tier.name}</h3>
+                  {tier.badge && (
+                    <span style={{ 
+                      background: "#4caf50", 
+                      color: "white", 
+                      padding: "4px 8px", 
+                      borderRadius: "12px", 
+                      fontSize: "12px" 
+                    }}>
+                      {tier.badge}
+                    </span>
+                  )}
+                </div>
+                
+                <div style={{ display: "flex", alignItems: "baseline", gap: "8px" }}>
+                  <span style={{ fontSize: "32px", fontWeight: "bold" }}>${tier.price}</span>
+                  <span style={{ color: "#666" }}>/month</span>
+                </div>
               </div>
-            </Stack>
-          </Card>
-        </Layout.Section>
 
-        <Layout.Section>
-          <Card sectioned>
-            <Stack spacing="loose">
-              <Text variant="headingMd">Billing Information</Text>
-              
-              <Stack spacing="tight">
-                <Text variant="bodyMd">
-                  • All subscriptions are managed through Shopify
-                </Text>
-                <Text variant="bodyMd">
-                  • Charges appear on your Shopify Partner account
-                </Text>
-                <Text variant="bodyMd">
-                  • Cancel or modify anytime through your Partner Dashboard
-                </Text>
-                <Text variant="bodyMd">
-                  • 14-day free trial on all plans
-                </Text>
-              </Stack>
-              
-              {currentSubscription && (
-                <Stack spacing="tight">
-                  <Text variant="headingSm">Current Subscription Details:</Text>
-                  <Text variant="bodyMd">
-                    Subscription ID: {currentSubscription.id}
-                  </Text>
-                  <Text variant="bodyMd">
-                    Next billing: {new Date(currentSubscription.currentPeriodEnd).toLocaleDateString()}
-                  </Text>
-                </Stack>
-              )}
-            </Stack>
-          </Card>
-        </Layout.Section>
-      </Layout>
-    </Page>
+              <hr style={{ border: "none", borderTop: "1px solid #e0e0e0", margin: "16px 0" }} />
+
+              <div style={{ marginBottom: "16px" }}>
+                <h4 style={{ margin: "0 0 12px 0" }}>Features:</h4>
+                {renderFeatureList(tier.features.slice(0, 5))}
+                {tier.features.length > 5 && (
+                  <p style={{ color: "#666", fontSize: "14px", margin: "8px 0 0 0" }}>
+                    + {tier.features.length - 5} more features
+                  </p>
+                )}
+              </div>
+
+              <hr style={{ border: "none", borderTop: "1px solid #e0e0e0", margin: "16px 0" }} />
+
+              <div style={{ marginBottom: "24px" }}>
+                <h4 style={{ margin: "0 0 12px 0" }}>Limits:</h4>
+                <ul style={{ margin: 0, paddingLeft: "20px" }}>
+                  <li>Campaigns: {tier.limits.campaigns}</li>
+                  <li>Ad Groups: {tier.limits.adGroups}</li>
+                  <li>Keywords: {tier.limits.keywords}</li>
+                  <li>Monthly Spend: {formatPrice(tier.limits.monthlySpend)}</li>
+                </ul>
+              </div>
+
+              <div>
+                {currentTier === tier.id ? (
+                  <button 
+                    disabled 
+                    style={{ 
+                      width: "100%", 
+                      padding: "12px", 
+                      backgroundColor: "#e0e0e0", 
+                      border: "none", 
+                      borderRadius: "4px",
+                      cursor: "not-allowed"
+                    }}
+                  >
+                    Current Plan
+                  </button>
+                ) : (
+                  <Form method="post">
+                    <input type="hidden" name="actionType" value="subscribe" />
+                    <input type="hidden" name="tierId" value={tier.id} />
+                    <button
+                      type="submit"
+                      disabled={isSubmitting}
+                      style={{
+                        width: "100%",
+                        padding: "12px",
+                        backgroundColor: tier.id === "pro" ? "#1976d2" : "#007bff",
+                        color: "white",
+                        border: "none",
+                        borderRadius: "4px",
+                        cursor: isSubmitting ? "not-allowed" : "pointer",
+                        fontSize: "16px"
+                      }}
+                    >
+                      {isSubmitting ? "Processing..." : `${currentTier ? "Switch to" : "Start"} ${tier.name}`}
+                    </button>
+                  </Form>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div style={{ 
+        border: "1px solid #e0e0e0", 
+        borderRadius: "8px", 
+        padding: "24px",
+        backgroundColor: "white"
+      }}>
+        <h3>Billing Information</h3>
+        
+        <ul style={{ paddingLeft: "20px" }}>
+          <li>All subscriptions are managed through Shopify</li>
+          <li>Charges appear on your Shopify Partner account</li>
+          <li>Cancel or modify anytime through your Partner Dashboard</li>
+          <li>14-day free trial on all plans</li>
+        </ul>
+        
+        {currentSubscription && (
+          <div style={{ marginTop: "16px", padding: "16px", backgroundColor: "#f5f5f5", borderRadius: "4px" }}>
+            <h4>Current Subscription Details:</h4>
+            <p>Subscription ID: {currentSubscription.id}</p>
+            <p>Next billing: {new Date(currentSubscription.currentPeriodEnd).toLocaleDateString()}</p>
+          </div>
+        )}
+      </div>
+    </div>
   );
 }
 
