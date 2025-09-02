@@ -102,81 +102,37 @@ const PRICING_TIERS = {
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   try {
-    const { session, admin } = await authenticate.admin(request);
+    const { billing, session } = await authenticate.admin(request);
     const shopName = session?.shop?.replace(".myshopify.com", "");
 
     if (!shopName) {
       throw new Error("Unable to determine shop name from Shopify session");
     }
 
-    // Check current subscription status using Shopify Billing API
+    // Check current subscription status using new billing helper
+    let hasActivePayment = false;
     let currentSubscription = null;
-    let subscriptionStatus = "none";
-    let currentTier = null;
-    let trialEndsAt = null;
     
     try {
-      // Query current app installation and active subscriptions
-      const subscriptionsQuery = `
-        query {
-          currentAppInstallation {
-            id
-            activeSubscriptions {
-              id
-              name
-              status
-              createdAt
-              currentPeriodEnd
-              trialDays
-              test
-              lineItems {
-                id
-                plan {
-                  id
-                  pricingDetails {
-                    ... on AppRecurringPricing {
-                      price {
-                        amount
-                        currencyCode
-                      }
-                      interval
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      `;
-
-      const response = await admin.graphql(subscriptionsQuery);
-      const data = await response.json();
+      // Use the new billing.check() method for managed pricing apps
+      const billingResult = await billing.check();
+      hasActivePayment = billingResult.hasActivePayment;
       
-      if (data.data?.currentAppInstallation?.activeSubscriptions?.length > 0) {
-        currentSubscription = data.data.currentAppInstallation.activeSubscriptions[0];
-        subscriptionStatus = currentSubscription.status.toLowerCase();
-        
-        // Determine tier based on price
-        const amount = parseFloat(currentSubscription.lineItems[0]?.plan?.pricingDetails?.price?.amount || 0);
-        currentTier = Object.values(PRICING_TIERS).find(tier => tier.price === amount)?.id || null;
-        
-        // Check if in trial period
-        if (currentSubscription.trialDays > 0) {
-          const createdAt = new Date(currentSubscription.createdAt);
-          trialEndsAt = new Date(createdAt.getTime() + (currentSubscription.trialDays * 24 * 60 * 60 * 1000));
-        }
+      // If no active payment, we need to redirect to managed pricing page
+      if (!hasActivePayment) {
+        console.log(`No active subscription for shop: ${shopName}`);
       }
+      
     } catch (error) {
-      console.error("Error fetching subscription status:", error);
+      console.error("Error checking billing status:", error);
     }
 
     return json({
       shopName,
+      hasActivePayment,
       currentSubscription,
-      subscriptionStatus,
-      currentTier,
-      trialEndsAt,
       pricingTiers: PRICING_TIERS,
+      appHandle: process.env.SHOPIFY_APP_HANDLE || "proofkit-autopilot"
     });
   } catch (error) {
     console.error("Billing page loader error:", error);
@@ -186,7 +142,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   try {
-    const { session, admin } = await authenticate.admin(request);
+    const { session } = await authenticate.admin(request);
     const shopName = session?.shop?.replace(".myshopify.com", "");
     
     if (!shopName) {
@@ -195,76 +151,16 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
     const formData = await request.formData();
     const actionType = formData.get("actionType");
-    const tierId = formData.get("tierId");
 
-    if (actionType === "subscribe" && tierId) {
-      try {
-        const tier = Object.values(PRICING_TIERS).find(t => t.id === tierId);
-        if (!tier) {
-          return json({ success: false, error: "Invalid pricing tier" });
-        }
-
-        // Create Shopify app subscription
-        const subscriptionMutation = `
-          mutation appSubscriptionCreate($name: String!, $lineItems: [AppSubscriptionLineItemInput!]!, $returnUrl: URL!, $test: Boolean) {
-            appSubscriptionCreate(name: $name, lineItems: $lineItems, returnUrl: $returnUrl, test: $test) {
-              appSubscription {
-                id
-                name
-                status
-              }
-              confirmationUrl
-              userErrors {
-                field
-                message
-              }
-            }
-          }
-        `;
-
-        const variables = {
-          name: `ProofKit ${tier.name} Plan`,
-          lineItems: [
-            {
-              plan: {
-                appRecurringPricingDetails: {
-                  price: {
-                    amount: tier.price,
-                    currencyCode: "USD",
-                  },
-                  interval: "EVERY_30_DAYS",
-                },
-              },
-            },
-          ],
-          returnUrl: `${process.env.SHOPIFY_APP_URL}/app/billing?subscription=success`,
-          test: process.env.SHOPIFY_BILLING_TEST === "true",
-        };
-
-        const response = await admin.graphql(subscriptionMutation, { variables });
-        const result = await response.json();
-
-        if (result.data?.appSubscriptionCreate?.userErrors?.length > 0) {
-          return json({ 
-            success: false, 
-            error: result.data.appSubscriptionCreate.userErrors[0].message 
-          });
-        }
-
-        if (result.data?.appSubscriptionCreate?.confirmationUrl) {
-          return json({
-            success: true,
-            redirectUrl: result.data.appSubscriptionCreate.confirmationUrl,
-            tier: tier.name,
-          });
-        }
-
-        return json({ success: false, error: "Failed to create subscription" });
-        
-      } catch (error) {
-        console.error("Subscription creation error:", error);
-        return json({ success: false, error: "Subscription creation failed" });
-      }
+    if (actionType === "redirect_to_plans") {
+      // For managed pricing apps, redirect to Shopify's hosted plan selection page
+      const appHandle = process.env.SHOPIFY_APP_HANDLE || "proofkit-autopilot";
+      
+      return json({
+        success: true,
+        redirectUrl: `shopify://admin/charges/${appHandle}/pricing_plans`,
+        target: "_top" // Required for external redirect
+      });
     }
 
     return json({ success: false, error: "Invalid action" });
@@ -277,23 +173,28 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 export default function Billing() {
   const { 
     shopName, 
+    hasActivePayment,
     currentSubscription, 
-    subscriptionStatus, 
-    currentTier, 
-    trialEndsAt,
-    pricingTiers 
+    pricingTiers,
+    appHandle
   } = useLoaderData<typeof loader>();
   
   const actionData = useActionData<typeof action>();
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "submitting";
 
-  // Handle redirect after successful subscription creation
+  // Handle redirect to managed pricing page
   React.useEffect(() => {
     if (actionData?.success && actionData?.redirectUrl) {
       window.top?.location.assign(actionData.redirectUrl);
     }
   }, [actionData]);
+
+  // Automatically redirect to managed pricing if no active payment
+  const redirectToManagedPricing = () => {
+    const managedPricingUrl = `shopify://admin/charges/${appHandle}/pricing_plans`;
+    window.top?.location.assign(managedPricingUrl);
+  };
 
   const formatPrice = (price: number | string) => {
     if (price === "Unlimited") return price;
@@ -310,41 +211,60 @@ export default function Billing() {
     </ul>
   );
 
-  const renderCurrentPlan = () => {
-    if (!currentTier || subscriptionStatus === "none") {
+  const renderSubscriptionStatus = () => {
+    if (hasActivePayment) {
       return (
         <div style={{ 
-          background: "#fff2cc", 
-          border: "1px solid #ffc107", 
+          background: "#e8f5e8", 
+          border: "1px solid #4caf50", 
           padding: "16px", 
           borderRadius: "8px", 
           marginBottom: "24px" 
         }}>
-          <h3 style={{ margin: "0 0 8px 0" }}>No Active Subscription</h3>
-          <p style={{ margin: 0 }}>Choose a plan below to start using ProofKit's premium features.</p>
+          <h3 style={{ margin: "0 0 8px 0" }}>Active Subscription</h3>
+          <p style={{ margin: 0 }}>You have an active ProofKit subscription. Manage your plan through Shopify's billing dashboard.</p>
+          <button
+            onClick={redirectToManagedPricing}
+            style={{
+              marginTop: "12px",
+              padding: "8px 16px",
+              backgroundColor: "#007bff",
+              color: "white",
+              border: "none",
+              borderRadius: "4px",
+              cursor: "pointer"
+            }}
+          >
+            Manage Subscription
+          </button>
         </div>
       );
     }
 
-    const tier = pricingTiers[currentTier.toUpperCase()];
-    const isTrialing = trialEndsAt && new Date() < new Date(trialEndsAt);
-    
     return (
       <div style={{ 
-        background: isTrialing ? "#e3f2fd" : "#e8f5e8", 
-        border: `1px solid ${isTrialing ? "#2196f3" : "#4caf50"}`, 
+        background: "#fff2cc", 
+        border: "1px solid #ffc107", 
         padding: "16px", 
         borderRadius: "8px", 
         marginBottom: "24px" 
       }}>
-        <h3 style={{ margin: "0 0 8px 0" }}>Current Plan: {tier?.name}</h3>
-        <p style={{ margin: "0 0 8px 0" }}>${tier?.price}/month</p>
-        {isTrialing && (
-          <p style={{ margin: "0 0 8px 0" }}>
-            Trial ends: {new Date(trialEndsAt).toLocaleDateString()}
-          </p>
-        )}
-        <p style={{ margin: 0 }}>Status: {subscriptionStatus}</p>
+        <h3 style={{ margin: "0 0 8px 0" }}>No Active Subscription</h3>
+        <p style={{ margin: "0 0 12px 0" }}>Choose a plan to start using ProofKit's premium features.</p>
+        <button
+          onClick={redirectToManagedPricing}
+          style={{
+            padding: "12px 24px",
+            backgroundColor: "#007bff",
+            color: "white",
+            border: "none",
+            borderRadius: "4px",
+            cursor: "pointer",
+            fontSize: "16px"
+          }}
+        >
+          Choose Plan
+        </button>
       </div>
     );
   };
@@ -356,7 +276,7 @@ export default function Billing() {
         Manage your ProofKit subscription for {shopName}
       </p>
 
-      {renderCurrentPlan()}
+      {renderSubscriptionStatus()}
       
       {actionData?.error && (
         <div style={{ 
@@ -371,9 +291,9 @@ export default function Billing() {
       )}
 
       <div style={{ marginBottom: "32px" }}>
-        <h2>Choose Your Plan</h2>
+        <h2>Available Plans</h2>
         <p style={{ color: "#666", marginBottom: "24px" }}>
-          All plans include a 14-day free trial. Cancel anytime.
+          All plans include a 14-day free trial. Pricing and subscriptions are managed by Shopify.
         </p>
         
         <div style={{ 
@@ -433,47 +353,35 @@ export default function Billing() {
                   <li>Monthly Spend: {formatPrice(tier.limits.monthlySpend)}</li>
                 </ul>
               </div>
-
-              <div>
-                {currentTier === tier.id ? (
-                  <button 
-                    disabled 
-                    style={{ 
-                      width: "100%", 
-                      padding: "12px", 
-                      backgroundColor: "#e0e0e0", 
-                      border: "none", 
-                      borderRadius: "4px",
-                      cursor: "not-allowed"
-                    }}
-                  >
-                    Current Plan
-                  </button>
-                ) : (
-                  <Form method="post">
-                    <input type="hidden" name="actionType" value="subscribe" />
-                    <input type="hidden" name="tierId" value={tier.id} />
-                    <button
-                      type="submit"
-                      disabled={isSubmitting}
-                      style={{
-                        width: "100%",
-                        padding: "12px",
-                        backgroundColor: tier.id === "pro" ? "#1976d2" : "#007bff",
-                        color: "white",
-                        border: "none",
-                        borderRadius: "4px",
-                        cursor: isSubmitting ? "not-allowed" : "pointer",
-                        fontSize: "16px"
-                      }}
-                    >
-                      {isSubmitting ? "Processing..." : `${currentTier ? "Switch to" : "Start"} ${tier.name}`}
-                    </button>
-                  </Form>
-                )}
-              </div>
             </div>
           ))}
+        </div>
+        
+        <div style={{ 
+          textAlign: "center", 
+          marginTop: "24px", 
+          padding: "20px", 
+          backgroundColor: "#f8f9fa", 
+          borderRadius: "8px" 
+        }}>
+          <p style={{ margin: "0 0 16px 0", fontSize: "16px" }}>
+            Ready to select your plan?
+          </p>
+          <button
+            onClick={redirectToManagedPricing}
+            style={{
+              padding: "16px 32px",
+              backgroundColor: "#28a745",
+              color: "white",
+              border: "none",
+              borderRadius: "8px",
+              cursor: "pointer",
+              fontSize: "18px",
+              fontWeight: "bold"
+            }}
+          >
+            View Plans & Subscribe
+          </button>
         </div>
       </div>
 
