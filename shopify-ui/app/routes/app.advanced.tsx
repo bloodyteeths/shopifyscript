@@ -49,9 +49,9 @@ export async function loader({ request }: LoaderFunctionArgs) {
       tier: subscriptionInfo.subscriptionTier
     });
 
-    // If no access to advanced features, redirect to billing
-    if (!hasAdvancedAccess && subscriptionInfo.needsSubscription) {
-      console.log(`🔄 Redirecting ${shopName} from advanced page - requires Professional+ plan`);
+    // If no access to advanced features, redirect to billing (regardless of subscription status)
+    if (!hasAdvancedAccess) {
+      console.log(`🔄 Redirecting ${shopName} from advanced page - requires Professional+ plan (current: ${subscriptionInfo.subscriptionTier})`);
       return redirect("/app/billing?upgrade=professional&feature=advanced_settings");
     }
   } catch (error) {
