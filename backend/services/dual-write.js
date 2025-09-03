@@ -16,8 +16,9 @@ export async function dualWriteConfig(tenant, configData) {
 
   // Always write to Google Sheets (primary source during migration)
   try {
-    const { setTenantConfig } = await import('../sheets.js');
-    await setTenantConfig(tenant, configData);
+    const { TenantConfigService } = await import('../services/tenant-config.js');
+    const configManager = new TenantConfigService();
+    await configManager.updateTenantConfig(tenant, configData);
     results.sheets.success = true;
     console.log(`✅ Sheets write successful for tenant: ${tenant}`);
   } catch (error) {
@@ -53,8 +54,8 @@ export async function dualWriteMetrics(tenant, metricsData) {
 
   // Always write to Google Sheets
   try {
-    const { appendToSheet } = await import('../sheets.js');
-    await appendToSheet(`METRICS_${tenant}`, metricsData);
+    const { sheets } = await import('../sheets.js');
+    await sheets.addRows(tenant, "METRICS", metricsData);
     results.sheets.success = true;
   } catch (error) {
     results.sheets.error = error.message;
@@ -86,8 +87,8 @@ export async function dualWriteSearchTerms(tenant, searchTermsData) {
 
   // Always write to Google Sheets
   try {
-    const { appendToSheet } = await import('../sheets.js');
-    await appendToSheet(`SEARCH_TERMS_${tenant}`, searchTermsData);
+    const { sheets } = await import('../sheets.js');
+    await sheets.addRows(tenant, "SEARCH_TERMS", searchTermsData);
     results.sheets.success = true;
   } catch (error) {
     results.sheets.error = error.message;
@@ -119,8 +120,8 @@ export async function dualWriteRunLogs(tenant, runLogsData) {
 
   // Always write to Google Sheets
   try {
-    const { appendToSheet } = await import('../sheets.js');
-    await appendToSheet(`RUN_LOGS_${tenant}`, runLogsData);
+    const { sheets } = await import('../sheets.js');
+    await sheets.addRows(tenant, "RUN_LOGS", runLogsData);
     results.sheets.success = true;
   } catch (error) {
     results.sheets.error = error.message;
