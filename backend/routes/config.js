@@ -4,6 +4,7 @@ import { TenantConfigService } from "../services/tenant-config.js";
 import { logAccess, json } from "../utils/response.js";
 import { verify } from "../utils/hmac.js";
 import environmentSecurity from "../services/environment-security.js";
+import { dualWriteConfig } from "../services/dual-write.js";
 
 const router = express.Router();
 
@@ -133,12 +134,22 @@ router.post("/upsertConfig", async (req, res) => {
         plan: tenantInfo.plan,
       });
 
-      const configManager = new TenantConfigService();
-      await configManager.updateTenantConfig(tenant, settings);
-      sheetsSuccess = true;
-      console.log(
-        `✅ Settings successfully saved to Google Sheets for ${tenant}`,
-      );
+      // Use dual-write system to save to both Sheets and Supabase
+      const dualWriteResult = await dualWriteConfig(tenant, settings);
+      sheetsSuccess = dualWriteResult.sheets.success;
+      
+      console.log(`💾 Dual-write results for ${tenant}:`, {
+        sheets: dualWriteResult.sheets.success ? '✅' : `❌ ${dualWriteResult.sheets.error}`,
+        supabase: dualWriteResult.supabase.success ? '✅' : `❌ ${dualWriteResult.supabase.error}`
+      });
+      
+      if (dualWriteResult.sheets.success) {
+        console.log(`✅ Settings saved to Google Sheets for ${tenant}`);
+      }
+      
+      if (dualWriteResult.supabase.success) {
+        console.log(`✅ Settings saved to Supabase for ${tenant}`);
+      }
 
       // Verify the save by reading back the config
       try {

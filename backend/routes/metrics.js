@@ -2,6 +2,7 @@ import express from "express";
 import { sheets } from "../sheets.js";
 import { json } from "../utils/response.js";
 import { verify } from "../utils/hmac.js";
+import { dualWriteMetrics, dualWriteSearchTerms, dualWriteRunLogs } from "../services/dual-write.js";
 
 const router = express.Router();
 
@@ -102,20 +103,29 @@ router.post("/metrics", async (req, res) => {
     let insM = 0,
       insS = 0,
       insL = 0;
+    
+    let dualWriteResults = {
+      metrics: { sheets: { success: true }, supabase: { success: false } },
+      searchTerms: { sheets: { success: true }, supabase: { success: false } },
+      runLogs: { sheets: { success: true }, supabase: { success: false } }
+    };
 
     if (mRows.length) {
-      await sheets.addRows(String(tenant), "METRICS", mRows);
+      dualWriteResults.metrics = await dualWriteMetrics(tenant, mRows);
       insM = mRows.length;
+      console.log(`📊 Metrics dual-write for ${tenant}:`, dualWriteResults.metrics);
     }
 
     if (stRows.length) {
-      await sheets.addRows(String(tenant), "SEARCH_TERMS", stRows);
+      dualWriteResults.searchTerms = await dualWriteSearchTerms(tenant, stRows);
       insS = stRows.length;
+      console.log(`🔍 Search terms dual-write for ${tenant}:`, dualWriteResults.searchTerms);
     }
 
     if (logRows.length) {
-      await sheets.addRows(String(tenant), "RUN_LOGS", logRows);
+      dualWriteResults.runLogs = await dualWriteRunLogs(tenant, logRows);
       insL = logRows.length;
+      console.log(`📝 Run logs dual-write for ${tenant}:`, dualWriteResults.runLogs);
     }
 
     return json(res, 200, {
