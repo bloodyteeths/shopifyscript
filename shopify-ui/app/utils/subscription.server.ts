@@ -220,6 +220,22 @@ export function shouldRedirectToPlans(subscriptionInfo: SubscriptionInfo): boole
   return subscriptionInfo.needsSubscription;
 }
 
+/**
+ * Auto-sync subscription to Supabase (called from backend)
+ */
+async function syncSubscriptionToSupabase(subscription: any, tier: string, shopName: string) {
+  try {
+    // This would typically be called from backend
+    console.log(`🔄 Auto-syncing subscription for ${shopName} to Supabase`);
+    
+    // Implementation would call backend API to sync subscription
+    // For now, just log that sync should happen
+    
+  } catch (error) {
+    console.error('Auto-sync subscription failed:', error);
+  }
+}
+
 export default {
   checkSubscriptionStatus,
   hasFeatureAccess,
