@@ -20,6 +20,15 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
     console.log(`🏪 Dashboard loaded for shop: ${shopName}`);
 
+    // Check for post-subscription redirect parameters
+    const url = new URL(request.url);
+    const chargeId = url.searchParams.get('charge_id');
+    const isPostSubscription = !!chargeId;
+    
+    if (isPostSubscription) {
+      console.log(`🎉 Post-subscription redirect detected for ${shopName}, charge_id: ${chargeId}`);
+    }
+
     // Check subscription status for feature access control (with error handling)
     let subscriptionInfo = {
       hasActivePayment: false,
@@ -39,11 +48,17 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
         hasActivePayment: subscriptionInfo.hasActivePayment,
         isInTrial: subscriptionInfo.isInTrial,
         tier: subscriptionInfo.subscriptionTier,
-        needsSubscription: subscriptionInfo.needsSubscription
+        needsSubscription: subscriptionInfo.needsSubscription,
+        isPostSubscription
       });
 
-      // For embedded apps, we can't do server-side redirects to external URLs
-      // Instead, we'll pass the redirect info to the client component
+      // CRITICAL: Don't redirect if just returned from subscription selection
+      if (subscriptionInfo.needsSubscription && !isPostSubscription) {
+        console.log(`🔄 Redirecting ${shopName} to plan selection - no subscription found`);
+        // Only redirect if NOT coming back from subscription
+      } else if (isPostSubscription) {
+        console.log(`✅ Post-subscription: Allowing app access for ${shopName} (subscription may be processing)`);
+      }
 
     } catch (subscriptionError) {
       console.error('⚠️ Subscription check failed, allowing app access:', subscriptionError);
@@ -81,9 +96,14 @@ export default function AppIndex() {
   const { message, timestamp, shopName, subscriptionInfo, planSelectionUrl } = useLoaderData<typeof loader>();
   const shopContext = useShopContext();
 
-  // Automatic redirect to plan selection if no subscription
+  // Automatic redirect to plan selection if no subscription (but not after subscription completion)
   React.useEffect(() => {
-    if (subscriptionInfo?.needsSubscription && planSelectionUrl) {
+    // Check if we just returned from subscription selection
+    const urlParams = new URLSearchParams(window.location.search);
+    const chargeId = urlParams.get('charge_id');
+    const isPostSubscription = !!chargeId;
+    
+    if (subscriptionInfo?.needsSubscription && planSelectionUrl && !isPostSubscription) {
       console.log('🔄 Client-side redirect to plan selection:', planSelectionUrl);
       
       // Use postMessage to break out of embedded iframe
@@ -106,6 +126,8 @@ export default function AppIndex() {
         // Final fallback: show user the link
         alert(`Please visit: ${planSelectionUrl}`);
       }
+    } else if (isPostSubscription) {
+      console.log(`🎉 Post-subscription detected, staying on dashboard (charge_id: ${chargeId})`);
     }
   }, [subscriptionInfo, planSelectionUrl]);
 
