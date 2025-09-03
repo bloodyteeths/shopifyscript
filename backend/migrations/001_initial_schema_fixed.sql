@@ -1,4 +1,4 @@
--- ProofKit Supabase Schema Migration
+-- ProofKit Supabase Schema Migration (Fixed)
 -- Version: 001 - Initial Schema
 -- Description: Core tables for tenant data, metrics, and logs
 
@@ -101,7 +101,7 @@ CREATE TABLE IF NOT EXISTS tenant_subscriptions (
   shop_domain VARCHAR(255),
   platform VARCHAR(20) DEFAULT 'shopify', -- 'shopify', 'wordpress'
   subscription_id VARCHAR(255),
-  tier VARCHAR(50), -- 'starter', 'pro', 'growth', 'enterprise'
+  tier VARCHAR(50), -- 'starter', 'professional', 'enterprise'
   status VARCHAR(50), -- 'active', 'trialing', 'past_due', 'canceled', 'unpaid'
   current_period_start TIMESTAMP WITH TIME ZONE,
   current_period_end TIMESTAMP WITH TIME ZONE,
@@ -169,35 +169,50 @@ ALTER TABLE tenant_subscriptions ENABLE ROW LEVEL SECURITY;
 ALTER TABLE campaign_configs ENABLE ROW LEVEL SECURITY;
 ALTER TABLE rsa_assets ENABLE ROW LEVEL SECURITY;
 
+-- Create helper function for tenant context
+CREATE OR REPLACE FUNCTION set_tenant_context(tenant_id TEXT)
+RETURNS VOID AS $$
+BEGIN
+  PERFORM set_config('app.current_tenant_id', tenant_id, false);
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
 -- RLS Policies for tenant isolation
 -- Each tenant can only access their own data
 
 -- Tenant Configs Policy
 CREATE POLICY tenant_configs_policy ON tenant_configs
+  FOR ALL 
   USING (tenant_id = current_setting('app.current_tenant_id', true));
 
 -- Tenant Metrics Policy  
 CREATE POLICY tenant_metrics_policy ON tenant_metrics
+  FOR ALL
   USING (tenant_id = current_setting('app.current_tenant_id', true));
 
 -- Search Terms Policy
 CREATE POLICY search_terms_policy ON search_terms
+  FOR ALL
   USING (tenant_id = current_setting('app.current_tenant_id', true));
 
 -- Run Logs Policy
 CREATE POLICY run_logs_policy ON run_logs
+  FOR ALL
   USING (tenant_id = current_setting('app.current_tenant_id', true));
 
 -- Tenant Subscriptions Policy  
 CREATE POLICY tenant_subscriptions_policy ON tenant_subscriptions
+  FOR ALL
   USING (tenant_id = current_setting('app.current_tenant_id', true));
 
 -- Campaign Configs Policy
 CREATE POLICY campaign_configs_policy ON campaign_configs
+  FOR ALL
   USING (tenant_id = current_setting('app.current_tenant_id', true));
 
 -- RSA Assets Policy
 CREATE POLICY rsa_assets_policy ON rsa_assets
+  FOR ALL
   USING (tenant_id = current_setting('app.current_tenant_id', true));
 
 -- Create updated_at trigger function
@@ -207,7 +222,7 @@ BEGIN
     NEW.updated_at = NOW();
     RETURN NEW;
 END;
-$$ language 'plpgsql';
+$$ LANGUAGE plpgsql;
 
 -- Add updated_at triggers
 CREATE TRIGGER update_tenant_configs_updated_at 
@@ -226,7 +241,15 @@ CREATE TRIGGER update_rsa_assets_updated_at
   BEFORE UPDATE ON rsa_assets 
   FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
--- Insert initial data for testing (can be removed in production)
+-- Insert initial migration record with corrected syntax
+INSERT INTO tenant_configs (tenant_id, config_key, config_value) 
+VALUES ('migration', 'schema_version', json_build_object('version', '001', 'created_at', NOW()))
+ON CONFLICT (tenant_id, config_key) 
+DO UPDATE SET 
+  config_value = EXCLUDED.config_value,
+  updated_at = NOW();
+
+-- Add comments for documentation
 COMMENT ON TABLE tenant_configs IS 'Stores tenant-specific configuration data, replacing Google Sheets CONFIG tabs';
 COMMENT ON TABLE tenant_metrics IS 'Stores campaign/ad group performance metrics, replacing Google Sheets METRICS tabs';
 COMMENT ON TABLE search_terms IS 'Stores search terms data for analysis, replacing Google Sheets SEARCH_TERMS tabs';
@@ -234,11 +257,3 @@ COMMENT ON TABLE run_logs IS 'Stores script execution logs, replacing Google She
 COMMENT ON TABLE tenant_subscriptions IS 'Stores subscription and billing information for each tenant';
 COMMENT ON TABLE campaign_configs IS 'Stores campaign-specific settings like budget caps and exclusions';
 COMMENT ON TABLE rsa_assets IS 'Stores RSA headlines and descriptions with performance tracking';
-
--- Migration complete
-INSERT INTO tenant_configs (tenant_id, config_key, config_value) 
-VALUES ('migration', 'schema_version', json_build_object('version', '001', 'created_at', NOW()))
-ON CONFLICT (tenant_id, config_key) 
-DO UPDATE SET 
-  config_value = EXCLUDED.config_value,
-  updated_at = NOW();
