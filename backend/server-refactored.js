@@ -20,6 +20,7 @@ import intentOSRoutes from "./routes/intent-os.js";
 import * as alertsConfigRoutes from "./routes/alerts-config.js";
 import sessionsRoutes from "./routes/sessions.js";
 import supabaseTestRoutes from "./routes/supabase-test.js";
+import subscriptionSyncRoutes from "./routes/subscription-sync.js";
 
 // Load environment configuration
 dotenv.config();
@@ -99,6 +100,7 @@ app.use("/api", aiRoutes);
 app.use("/api/intent-os", intentOSRoutes);
 app.use("/api", sessionsRoutes);
 app.use("/api/supabase", supabaseTestRoutes);
+app.use("/api/subscription", subscriptionSyncRoutes);
 
 // ----- Remaining legacy endpoints (to be extracted later) -----
 
