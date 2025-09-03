@@ -19,6 +19,7 @@ import aiRoutes from "./routes/ai.js";
 import intentOSRoutes from "./routes/intent-os.js";
 import * as alertsConfigRoutes from "./routes/alerts-config.js";
 import sessionsRoutes from "./routes/sessions.js";
+import supabaseTestRoutes from "./routes/supabase-test.js";
 
 // Load environment configuration
 dotenv.config();
@@ -97,6 +98,7 @@ app.use("/api/audiences", audiencesRoutes);
 app.use("/api", aiRoutes);
 app.use("/api/intent-os", intentOSRoutes);
 app.use("/api", sessionsRoutes);
+app.use("/api/supabase", supabaseTestRoutes);
 
 // ----- Remaining legacy endpoints (to be extracted later) -----
 
