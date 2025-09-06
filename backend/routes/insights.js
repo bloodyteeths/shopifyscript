@@ -2,7 +2,8 @@ import express from "express";
 import { sheets } from "../sheets.js";
 import { json } from "../utils/response.js";
 import { verify } from "../utils/hmac.js";
-import { enforceDataRetention } from "../middleware/usage-limits.js";
+import { enforceDataRetention } from "../services/data-retention.js";
+import { requireActiveSubscription } from "../middleware/subscription-check.js";
 
 const router = express.Router();
 
@@ -34,7 +35,7 @@ function parseTsLoose(row) {
 }
 
 // Main insights endpoint with caching
-router.get("/insights", async (req, res) => {
+router.get("/insights", enforceDataRetention(), async (req, res) => {
   const { tenant, sig } = req.query;
   const wq = String(req.query.w || "7d").toLowerCase();
   const w = wq === "24h" || wq === "all" ? wq : "7d";
