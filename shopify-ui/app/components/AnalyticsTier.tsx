@@ -7,17 +7,14 @@ import React, { useState, useEffect } from 'react';
 import {
   Card,
   Text,
-  Stack,
   Badge,
   Button,
   Spinner,
   Banner,
-  Grid,
   Layout,
   ProgressBar,
   Tooltip,
 } from '@shopify/polaris';
-import { ChartMajor, TrendUpMajor, ViewMajor, SettingsMajor } from '@shopify/polaris-icons';
 
 interface TierFeatures {
   tier: 'starter' | 'professional' | 'enterprise';

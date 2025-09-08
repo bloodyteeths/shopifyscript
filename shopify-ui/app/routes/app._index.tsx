@@ -502,6 +502,8 @@ export default function AppIndex() {
             Advanced Settings
           </Link>
         </div>
+          </>
+        )}
       </div>
 
       <div

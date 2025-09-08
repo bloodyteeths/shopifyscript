@@ -13,21 +13,11 @@ import {
   Text,
   Banner,
   Modal,
-  Stack,
   ButtonGroup,
   DataTable,
   EmptyState,
   Spinner,
 } from "@shopify/polaris";
-import {
-  CustomersMajor,
-  EmailMajor,
-  PhoneMajor,
-  ChatMajor,
-  ClockMajor,
-  AlertMajor,
-  TicketMajor,
-} from "@shopify/polaris-icons";
 
 export const meta: MetaFunction = () => {
   return [
