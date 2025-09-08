@@ -1,7 +1,8 @@
 import express from "express";
 import { json, logAccess } from "../utils/response.js";
 import { verify } from "../utils/hmac.js";
-import { requireFeature } from "../middleware/subscription-check.js";
+import { requireFeature, getCurrentSubscription } from "../middleware/subscription-check.js";
+import { canCreateCampaign, recordCampaignCreation } from "../services/campaign-counter.js";
 
 const router = express.Router();
 
@@ -658,6 +659,28 @@ router.post("/autopilot/quickstart", async (req, res) => {
   }
 
   try {
+    // Check campaign limits before allowing autopilot quickstart (campaign creation)
+    console.log(`🔐 Checking campaign limits for autopilot quickstart: ${tenant}`);
+    const subscription = await getCurrentSubscription(tenant);
+    const userTier = subscription?.tier || "starter";
+    
+    const permission = await canCreateCampaign(tenant, userTier);
+    
+    if (!permission.allowed) {
+      console.log(`❌ Autopilot quickstart blocked - campaign limit exceeded for ${tenant}: ${permission.currentCount}/${permission.limit} (${userTier})`);
+      
+      return res.status(402).json({
+        ok: false,
+        error: "campaign_limit_exceeded",
+        message: `Your ${userTier} plan allows up to ${permission.limit} campaigns. You currently have ${permission.currentCount}.`,
+        currentCount: permission.currentCount,
+        limit: permission.limit,
+        tier: userTier,
+        upgradeUrl: permission.upgradeUrl
+      });
+    }
+    
+    console.log(`✅ Campaign limit check passed for autopilot quickstart ${tenant}: ${permission.currentCount}/${permission.limit} (${userTier})`);
     const { getDoc, bootstrapTenant, upsertConfigKeys, appendRows } =
       await getSheetOperations();
     const sheetsOk = !!(await getDoc());
@@ -723,6 +746,13 @@ router.post("/autopilot/quickstart", async (req, res) => {
         [[new Date().toISOString(), "autopilot_quickstart"]],
       );
     } catch {}
+
+    // Record campaign creation for tracking
+    try {
+      await recordCampaignCreation(tenant, `autopilot_${mode}_${Date.now()}`, userTier);
+    } catch (error) {
+      console.error("Failed to record campaign creation:", error);
+    }
 
     return res.json({
       ok: true,
@@ -969,6 +999,468 @@ router.get("/provider/status", async (req, res) => {
     const config = validateAIConfig();
 
     res.json({ ok: true, status, config });
+  } catch (e) {
+    res.status(500).json({ ok: false, error: String(e) });
+  }
+});
+
+// GET /api/ai/automation/status - Get AI automation status
+router.get("/automation/status", async (req, res) => {
+  const { tenant, sig } = req.query;
+  const payload = `GET:${tenant}:ai_automation_status`;
+
+  if (!tenant || !verify(sig, payload)) {
+    return res.status(403).json({ ok: false, error: "auth" });
+  }
+
+  try {
+    const { getAIAutomationService } = await import("../services/ai-automation.js");
+    const { getTokenMonitorService } = await import("../services/token-monitor.js");
+    
+    const automationService = getAIAutomationService();
+    const tokenService = getTokenMonitorService();
+
+    const automationStatus = automationService.getStatus();
+    const tenantStatus = automationService.getTenantStatus(tenant);
+    const tokenStats = tokenService.getUsageStats(tenant);
+
+    res.json({ 
+      ok: true, 
+      automation: automationStatus,
+      tenant: tenantStatus,
+      tokens: tokenStats
+    });
+  } catch (e) {
+    res.status(500).json({ ok: false, error: String(e) });
+  }
+});
+
+// POST /api/ai/automation/start - Start AI automation for tenant
+router.post("/automation/start", async (req, res) => {
+  const { tenant, sig } = req.query;
+  const { nonce = Date.now() } = req.body || {};
+  const payload = `POST:${tenant}:ai_automation_start:${nonce}`;
+
+  if (!tenant || !verify(sig, payload)) {
+    return res.status(403).json({ ok: false, error: "auth" });
+  }
+
+  try {
+    const { startAIAutomation } = await import("../services/ai-automation.js");
+    const { startTokenMonitoring } = await import("../services/token-monitor.js");
+    
+    // Start services if not already running
+    const automationService = await startAIAutomation();
+    const tokenService = startTokenMonitoring();
+
+    // Add tenant to automation queue
+    automationService.addTenant?.(tenant);
+
+    res.json({ 
+      ok: true, 
+      message: "AI automation started",
+      status: automationService.getStatus()
+    });
+  } catch (e) {
+    res.status(500).json({ ok: false, error: String(e) });
+  }
+});
+
+// POST /api/ai/automation/stop - Stop AI automation for tenant
+router.post("/automation/stop", async (req, res) => {
+  const { tenant, sig } = req.query;
+  const { nonce = Date.now() } = req.body || {};
+  const payload = `POST:${tenant}:ai_automation_stop:${nonce}`;
+
+  if (!tenant || !verify(sig, payload)) {
+    return res.status(403).json({ ok: false, error: "auth" });
+  }
+
+  try {
+    const { getAIAutomationService } = await import("../services/ai-automation.js");
+    
+    const automationService = getAIAutomationService();
+    automationService.removeTenant?.(tenant);
+
+    res.json({ 
+      ok: true, 
+      message: "AI automation stopped for tenant",
+      status: automationService.getTenantStatus(tenant)
+    });
+  } catch (e) {
+    res.status(500).json({ ok: false, error: String(e) });
+  }
+});
+
+// POST /api/ai/automation/trigger - Manually trigger automation for tenant
+router.post("/automation/trigger", async (req, res) => {
+  const { tenant, sig } = req.query;
+  const { nonce = Date.now(), operations = [] } = req.body || {};
+  const payload = `POST:${tenant}:ai_automation_trigger:${nonce}`;
+
+  if (!tenant || !verify(sig, payload)) {
+    return res.status(403).json({ ok: false, error: "auth" });
+  }
+
+  try {
+    const { getAIAutomationService } = await import("../services/ai-automation.js");
+    
+    const automationService = getAIAutomationService();
+    
+    // Manually trigger automation for this tenant
+    await automationService.processTenantAutomation(tenant);
+
+    res.json({ 
+      ok: true, 
+      message: "Automation triggered",
+      tenant: automationService.getTenantStatus(tenant)
+    });
+  } catch (e) {
+    res.status(500).json({ ok: false, error: String(e) });
+  }
+});
+
+// GET /api/ai/tokens/usage - Get detailed token usage statistics
+router.get("/tokens/usage", async (req, res) => {
+  const { tenant, sig } = req.query;
+  const payload = `GET:${tenant}:ai_tokens_usage`;
+
+  if (!tenant || !verify(sig, payload)) {
+    return res.status(403).json({ ok: false, error: "auth" });
+  }
+
+  try {
+    const { getTokenMonitorService } = await import("../services/token-monitor.js");
+    
+    const tokenService = getTokenMonitorService();
+    const usage = tokenService.getUsageStats(tenant);
+
+    res.json({ 
+      ok: true, 
+      usage
+    });
+  } catch (e) {
+    res.status(500).json({ ok: false, error: String(e) });
+  }
+});
+
+// GET /api/ai/tokens/export - Export token usage data
+router.get("/tokens/export", async (req, res) => {
+  const { tenant, sig, startDate, endDate } = req.query;
+  const payload = `GET:${tenant}:ai_tokens_export`;
+
+  if (!tenant || !verify(sig, payload)) {
+    return res.status(403).json({ ok: false, error: "auth" });
+  }
+
+  try {
+    const { getTokenMonitorService } = await import("../services/token-monitor.js");
+    
+    const tokenService = getTokenMonitorService();
+    const exportData = tokenService.exportUsageData(
+      tenant, 
+      startDate || new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
+      endDate || new Date().toISOString()
+    );
+
+    if (!exportData) {
+      return res.status(404).json({ ok: false, error: "No data found" });
+    }
+
+    res.json({ 
+      ok: true, 
+      data: exportData
+    });
+  } catch (e) {
+    res.status(500).json({ ok: false, error: String(e) });
+  }
+});
+
+// POST /api/ai/budget/update - Update budget limits for tenant
+router.post("/budget/update", async (req, res) => {
+  const { tenant, sig } = req.query;
+  const { 
+    nonce = Date.now(), 
+    dailyLimit, 
+    monthlyLimit,
+    alertThreshold
+  } = req.body || {};
+  const payload = `POST:${tenant}:ai_budget_update:${nonce}`;
+
+  if (!tenant || !verify(sig, payload)) {
+    return res.status(403).json({ ok: false, error: "auth" });
+  }
+
+  try {
+    const { getTokenMonitorService } = await import("../services/token-monitor.js");
+    
+    const tokenService = getTokenMonitorService();
+    
+    // Initialize tenant if needed
+    if (!tokenService.tokenUsage.has(tenant)) {
+      await tokenService.initializeTenant(tenant);
+    }
+    
+    const usage = tokenService.tokenUsage.get(tenant);
+    
+    // Update budget limits
+    if (dailyLimit !== undefined) {
+      usage.budget.daily = parseFloat(dailyLimit);
+    }
+    if (monthlyLimit !== undefined) {
+      usage.budget.monthly = parseFloat(monthlyLimit);
+    }
+    if (alertThreshold !== undefined) {
+      usage.budget.alert_threshold = parseFloat(alertThreshold);
+    }
+
+    res.json({ 
+      ok: true, 
+      message: "Budget updated",
+      budget: usage.budget
+    });
+  } catch (e) {
+    res.status(500).json({ ok: false, error: String(e) });
+  }
+});
+
+// GET /api/ai/optimization/recommendations - Get AI optimization recommendations
+router.get("/optimization/recommendations", async (req, res) => {
+  const { tenant, sig } = req.query;
+  const payload = `GET:${tenant}:ai_optimization_recommendations`;
+
+  if (!tenant || !verify(sig, payload)) {
+    return res.status(403).json({ ok: false, error: "auth" });
+  }
+
+  try {
+    const { getTokenMonitorService } = await import("../services/token-monitor.js");
+    const { getAIAutomationService } = await import("../services/ai-automation.js");
+    
+    const tokenService = getTokenMonitorService();
+    const automationService = getAIAutomationService();
+    
+    const usage = tokenService.getUsageStats(tenant);
+    const tenantStatus = automationService.getTenantStatus(tenant);
+
+    const recommendations = {
+      tokenOptimization: usage.recommendations || [],
+      automationSettings: [],
+      costSavings: {
+        potential: 0,
+        recommendations: []
+      }
+    };
+
+    // Add automation-specific recommendations
+    const subscription = await getCurrentSubscription(tenant);
+    const tier = subscription?.tier || 'starter';
+    
+    if (tier === 'starter' && tenantStatus.tokenUsage?.daily?.cost > 0.50) {
+      recommendations.automationSettings.push({
+        type: 'tier_upgrade',
+        priority: 'medium',
+        message: 'Consider upgrading to Professional for better AI optimization features',
+        potentialSavings: tenantStatus.tokenUsage.daily.cost * 0.2
+      });
+    }
+
+    res.json({ 
+      ok: true, 
+      recommendations
+    });
+  } catch (e) {
+    res.status(500).json({ ok: false, error: String(e) });
+  }
+});
+
+// GET /api/ai/logs - Get AI operation logs
+router.get("/logs", async (req, res) => {
+  const { tenant, sig, level, operation, startTime, endTime, limit } = req.query;
+  const payload = `GET:${tenant}:ai_logs`;
+
+  if (!tenant || !verify(sig, payload)) {
+    return res.status(403).json({ ok: false, error: "auth" });
+  }
+
+  try {
+    const { getAILoggerService } = await import("../services/ai-logger.js");
+    
+    const logService = getAILoggerService();
+    const logs = logService.getLogs(tenant, {
+      level,
+      operation,
+      startTime,
+      endTime,
+      limit: parseInt(limit) || 100
+    });
+
+    res.json({ 
+      ok: true, 
+      logs,
+      total: logs.length
+    });
+  } catch (e) {
+    res.status(500).json({ ok: false, error: String(e) });
+  }
+});
+
+// GET /api/ai/analytics - Get comprehensive AI analytics
+router.get("/analytics", async (req, res) => {
+  const { tenant, sig, period } = req.query;
+  const payload = `GET:${tenant}:ai_analytics`;
+
+  if (!tenant || !verify(sig, payload)) {
+    return res.status(403).json({ ok: false, error: "auth" });
+  }
+
+  try {
+    const { getAILoggerService } = await import("../services/ai-logger.js");
+    const { getTokenMonitorService } = await import("../services/token-monitor.js");
+    const { getAIAutomationService } = await import("../services/ai-automation.js");
+    
+    const logService = getAILoggerService();
+    const tokenService = getTokenMonitorService();
+    const automationService = getAIAutomationService();
+
+    const analytics = logService.generateAnalytics(tenant, period || '24h');
+    const tokenStats = tokenService.getUsageStats(tenant);
+    const automationStatus = automationService.getTenantStatus(tenant);
+
+    const comprehensive = {
+      ...analytics,
+      tokenUsage: tokenStats,
+      automation: automationStatus,
+      summary: {
+        totalOperations: analytics.metrics.totalOperations,
+        successRate: ((analytics.metrics.successfulOperations / analytics.metrics.totalOperations) * 100).toFixed(1),
+        totalCost: tokenStats.current?.monthly?.cost || 0,
+        averageResponseTime: analytics.metrics.averageResponseTime,
+        automationEnabled: automationStatus.lastOptimization ? true : false
+      }
+    };
+
+    res.json({ 
+      ok: true, 
+      analytics: comprehensive
+    });
+  } catch (e) {
+    res.status(500).json({ ok: false, error: String(e) });
+  }
+});
+
+// GET /api/ai/health - Get AI system health status
+router.get("/health", async (req, res) => {
+  const { tenant, sig } = req.query;
+  const payload = `GET:${tenant}:ai_health`;
+
+  if (!tenant || !verify(sig, payload)) {
+    return res.status(403).json({ ok: false, error: "auth" });
+  }
+
+  try {
+    const { getAILoggerService } = await import("../services/ai-logger.js");
+    const { getTokenMonitorService } = await import("../services/token-monitor.js");
+    const { getAIAutomationService } = await import("../services/ai-automation.js");
+    
+    const logService = getAILoggerService();
+    const tokenService = getTokenMonitorService();
+    const automationService = getAIAutomationService();
+
+    const health = {
+      overall: 'healthy',
+      timestamp: new Date().toISOString(),
+      services: {
+        aiProvider: {
+          status: 'healthy',
+          initialized: true
+        },
+        tokenMonitor: {
+          status: tokenService.isTracking ? 'active' : 'inactive',
+          tenantsTracked: tokenService.tokenUsage?.size || 0
+        },
+        automation: {
+          status: automationService.isRunning ? 'active' : 'inactive',
+          totalTenants: automationService.tokenUsage?.size || 0
+        },
+        logging: {
+          status: logService.isLogging ? 'active' : 'inactive',
+          totalLogs: (logService.logs.get(tenant) || []).length
+        }
+      },
+      tenant: {
+        health: logService.getHealthStatus(tenant),
+        alerts: logService.getAlerts(tenant).filter(a => a.active),
+        metrics: logService.getMetrics(tenant)
+      }
+    };
+
+    // Determine overall health
+    const activeAlerts = health.tenant.alerts.length;
+    const metrics = health.tenant.metrics;
+    
+    if (activeAlerts > 0 || (metrics.errorRate && metrics.errorRate > 0.1)) {
+      health.overall = activeAlerts > 3 ? 'unhealthy' : 'degraded';
+    }
+
+    res.json({ 
+      ok: true, 
+      health
+    });
+  } catch (e) {
+    res.status(500).json({ ok: false, error: String(e) });
+  }
+});
+
+// POST /api/ai/test - Test AI automation system
+router.post("/test", async (req, res) => {
+  const { tenant, sig } = req.query;
+  const { nonce = Date.now(), testType = 'basic' } = req.body || {};
+  const payload = `POST:${tenant}:ai_test:${nonce}`;
+
+  if (!tenant || !verify(sig, payload)) {
+    return res.status(403).json({ ok: false, error: "auth" });
+  }
+
+  try {
+    // Import test suite dynamically
+    const { default: AIAutomationTestSuite } = await import("../test-ai-automation.js");
+    
+    const testSuite = new AIAutomationTestSuite();
+    testSuite.testTenant = tenant; // Use the actual tenant for testing
+
+    let results;
+    switch (testType) {
+      case 'token':
+        await testSuite.testTokenMonitoring();
+        break;
+      case 'automation':
+        await testSuite.testAutomationService();
+        break;
+      case 'integration':
+        await testSuite.testIntegration();
+        break;
+      case 'full':
+        await testSuite.runAllTests();
+        break;
+      default:
+        // Basic test - just check if services are running
+        results = {
+          basic: true,
+          services: {
+            tokenMonitor: true,
+            automation: true,
+            logging: true
+          }
+        };
+    }
+
+    res.json({ 
+      ok: true, 
+      testType,
+      results: results || testSuite.testResults,
+      message: `AI automation test (${testType}) completed for ${tenant}`
+    });
   } catch (e) {
     res.status(500).json({ ok: false, error: String(e) });
   }

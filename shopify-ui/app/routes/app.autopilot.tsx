@@ -30,7 +30,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
       throw new Error("Unable to determine shop name from Shopify session");
     }
 
-    console.log(`🤖 Autopilot loaded for shop: ${shopName}`);
+    console.log(`Autopilot loaded for shop: ${shopName}`);
 
     // Check subscription status for feature access control (with error handling)
     let subscriptionInfo = {
@@ -65,8 +65,37 @@ export async function loader({ request }: LoaderFunctionArgs) {
       console.log(`🔐 Feature access for ${shopName}:`, availableFeatures);
       
     } catch (subscriptionError) {
-      console.error('⚠️ Subscription check failed on autopilot, using basic access:', subscriptionError);
+      console.error('Subscription check failed on autopilot, using basic access:', subscriptionError);
       // Allow basic access if subscription check fails
+    }
+
+    // Check campaign limits based on subscription tier
+    let campaignLimits = {
+      current: 0,
+      limit: 5, // Default to starter limit
+      tier: subscriptionInfo.subscriptionTier || 'starter',
+      canCreate: true,
+      upgradeUrl: '/app/billing'
+    };
+
+    try {
+      // Call backend to check campaign limits
+      const { backendFetch } = await import("../server/hmac.server");
+      const limitsResponse = await backendFetch("/campaign-limits", "GET", undefined, shopName);
+      
+      if (limitsResponse.ok) {
+        const limits = await limitsResponse.json();
+        campaignLimits = {
+          current: limits.currentCount || 0,
+          limit: limits.limit || 5,
+          tier: limits.tier || 'starter',
+          canCreate: limits.allowed || false,
+          upgradeUrl: limits.upgradeUrl || '/app/billing'
+        };
+      }
+    } catch (limitsError) {
+      console.error('Campaign limits check failed:', limitsError);
+      // Continue with default limits
     }
 
     // Return config with authenticated shop name for client
@@ -81,11 +110,12 @@ export async function loader({ request }: LoaderFunctionArgs) {
       config, 
       shopName, 
       subscriptionInfo,
-      availableFeatures
+      availableFeatures,
+      campaignLimits
     });
     
   } catch (authError) {
-    console.error("🚨 Autopilot authentication error:", authError);
+    console.error("Autopilot authentication error:", authError);
     console.error("Request URL:", request.url);
     
     // Redirect to auth with shop context if possible
@@ -115,7 +145,7 @@ export async function action({ request }: ActionFunctionArgs) {
     const actionType = formData.get("actionType");
 
     if (actionType === "generateScript") {
-      console.log(`🔄 Server action generating script for shop: ${currentShopName}`);
+      console.log(`Server action generating script for shop: ${currentShopName}`);
 
       const mode = formData.get("mode") || "protect";
       const budget = formData.get("budget") || "3.00";
@@ -132,16 +162,16 @@ export async function action({ request }: ActionFunctionArgs) {
         );
 
         console.log(
-          `📊 Script fetch result for ${currentShopName}: length=${realScript?.length || 0}, isHTML=${realScript?.includes("<html") || false}`,
+          `Script fetch result for ${currentShopName}: length=${realScript?.length || 0}, isHTML=${realScript?.includes("<html") || false}`,
         );
-        console.log(`📝 Script preview (first 200 chars):`, realScript?.substring(0, 200));
+        console.log(`Script preview (first 200 chars):`, realScript?.substring(0, 200));
 
         if (
           realScript &&
           realScript.length > 1000 &&
           !realScript.includes("<html")
         ) {
-          console.log(`✅ Script validation passed for ${currentShopName}`);
+          console.log(`Script validation passed for ${currentShopName}`);
           const personalizedScript = `/** ProofKit Google Ads Script - Personalized for ${mode} mode
  * Shop: ${currentShopName}
  * Generated: ${new Date().toISOString()}
@@ -165,7 +195,7 @@ ${realScript}
             size: Math.round(personalizedScript.length / 1024),
             shopName: currentShopName,
           };
-          console.log(`🎯 Returning success response:`, { 
+          console.log(`Returning success response:`, { 
             success: response.success, 
             scriptLength: response.script.length, 
             size: response.size, 
@@ -210,7 +240,7 @@ ${realScript}
 }
 
 export default function Autopilot() {
-  const { config, shopName: serverShopName } = useLoaderData<typeof loader>();
+  const { config, shopName: serverShopName, campaignLimits } = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const navigation = useNavigation();
   const [mode, setMode] = React.useState("protect");
@@ -226,7 +256,7 @@ export default function Autopilot() {
   
   // Disable debug state changes that cause hydration issues
   // React.useEffect(() => {
-  //   console.log('🎭 State update:', { 
+  //   console.log('State update:', { 
   //     showScript, 
   //     scriptCodeLength: scriptCode.length,
   //     shopName,
@@ -306,6 +336,72 @@ Shop: ${shopName || "unknown"}`;
   return (
     <div>
       <h1>Autopilot</h1>
+
+      {/* Campaign Limits Warning */}
+      {campaignLimits && !campaignLimits.canCreate && (
+        <div style={{ 
+          backgroundColor: '#fef2f2', 
+          border: '1px solid #fecaca', 
+          borderRadius: '6px', 
+          padding: '16px', 
+          margin: '16px 0',
+          color: '#dc2626'
+        }}>
+          <h3 style={{ margin: '0 0 8px 0', fontSize: '16px', fontWeight: 'bold' }}>
+            Campaign Limit Reached
+          </h3>
+          <p style={{ margin: '0 0 12px 0' }}>
+            Your {campaignLimits.tier} plan allows up to {campaignLimits.limit} campaigns. 
+            You currently have {campaignLimits.current} active campaigns.
+          </p>
+          <a 
+            href={campaignLimits.upgradeUrl} 
+            style={{ 
+              backgroundColor: '#dc2626', 
+              color: 'white', 
+              padding: '8px 16px', 
+              borderRadius: '4px', 
+              textDecoration: 'none',
+              display: 'inline-block'
+            }}
+          >
+            Upgrade Now
+          </a>
+        </div>
+      )}
+
+      {/* Campaign Usage Display for Users Near Limit */}
+      {campaignLimits && campaignLimits.canCreate && campaignLimits.remaining <= 2 && campaignLimits.limit !== -1 && (
+        <div style={{ 
+          backgroundColor: '#fef3c7', 
+          border: '1px solid #fcd34d', 
+          borderRadius: '6px', 
+          padding: '16px', 
+          margin: '16px 0',
+          color: '#d97706'
+        }}>
+          <h3 style={{ margin: '0 0 8px 0', fontSize: '16px', fontWeight: 'bold' }}>
+            Campaign Usage Warning
+          </h3>
+          <p style={{ margin: '0 0 12px 0' }}>
+            You are using {campaignLimits.current} of {campaignLimits.limit} campaigns in your {campaignLimits.tier} plan.
+            {campaignLimits.remaining > 0 && ` You have ${campaignLimits.remaining} campaigns remaining.`}
+          </p>
+          <a 
+            href={campaignLimits.upgradeUrl} 
+            style={{ 
+              backgroundColor: '#d97706', 
+              color: 'white', 
+              padding: '8px 16px', 
+              borderRadius: '4px', 
+              textDecoration: 'none',
+              display: 'inline-block'
+            }}
+          >
+            Upgrade for More Campaigns
+          </a>
+        </div>
+      )}
 
       {/* Shop automatically detected from Shopify authentication */}
 
@@ -429,18 +525,21 @@ Shop: ${shopName || "unknown"}`;
           <input type="hidden" name="url" value={url} />
           <button
             type="submit"
-            disabled={isGeneratingScript}
+            disabled={isGeneratingScript || (campaignLimits && !campaignLimits.canCreate)}
             style={{
-              background: isGeneratingScript ? "#6c757d" : "#007bff",
+              background: (isGeneratingScript || (campaignLimits && !campaignLimits.canCreate)) ? "#6c757d" : "#007bff",
               color: "white",
               padding: "12px 24px",
               border: "none",
               borderRadius: "4px",
-              cursor: isGeneratingScript ? "not-allowed" : "pointer",
+              cursor: (isGeneratingScript || (campaignLimits && !campaignLimits.canCreate)) ? "not-allowed" : "pointer",
               fontSize: "16px",
             }}
+            title={campaignLimits && !campaignLimits.canCreate ? `Campaign limit reached. Upgrade your ${campaignLimits.tier} plan to create more campaigns.` : undefined}
           >
-            {isGeneratingScript ? "Generating..." : "Generate Current Script"}
+            {isGeneratingScript ? "Generating..." : 
+             (campaignLimits && !campaignLimits.canCreate) ? "Campaign Limit Reached" : 
+             "Generate Current Script"}
           </button>
         </Form>
       </div>

@@ -36,6 +36,14 @@ import billingRoutes from "./routes/billing.js";
 import securityRoutes from "./routes/security.js";
 // Config Routes
 import configRoutes from "./routes/config.js";
+// Reports Routes
+import reportsRoutes from "./routes/reports.js";
+// Dashboard Routes
+import dashboardRoutes from "./routes/dashboards.js";
+// Automation Routes
+import automationRoutes from "./routes/automation.js";
+// Scheduled Reports Service
+import scheduledReports from "./jobs/scheduled-reports.js";
 
 // Load env from root and backend/.env (resolve relative to this file)
 dotenv.config();
@@ -995,6 +1003,38 @@ app.use("/api/security", securityRoutes);
 app.use("/api/billing", billingRoutes);
 // ==== CONFIG ROUTES ====
 app.use("/api", configRoutes);
+// ==== REPORTS ROUTES ====
+app.use("/api/reports", reportsRoutes);
+
+// ==== DASHBOARD ROUTES ====
+app.use("/api/dashboards", dashboardRoutes);
+// ==== AUTOMATION ROUTES ====
+app.use("/api/automation", automationRoutes);
+
+// ==== ANALYTICS TIER ENDPOINT ====
+app.get("/api/analytics/tier-features", async (req, res) => {
+  try {
+    const tenant = req.headers['x-tenant-id'] || req.query.tenant;
+    if (!tenant) {
+      return res.status(400).json({
+        error: "Tenant ID is required",
+        code: "MISSING_TENANT"
+      });
+    }
+
+    // Import analytics tiers service
+    const { default: analyticsTiers } = await import('./services/analytics-tiers.js');
+    
+    const features = await analyticsTiers.getTierFeatures(tenant);
+    res.json(features);
+  } catch (error) {
+    console.error('Error getting tier features:', error);
+    res.status(500).json({
+      error: "Failed to get tier features",
+      code: "TIER_FEATURES_ERROR"
+    });
+  }
+});
 
 app.get("/api/diagnostics", async (req, res) => {
   try {
@@ -3989,6 +4029,16 @@ app.listen(PORT, () => {
     hmacSecurityInitialized: true,
     pid: process.pid,
   });
+
+  // Start scheduled reports service
+  if (process.env.ENABLE_SCHEDULED_REPORTS !== 'false') {
+    try {
+      scheduledReports.start();
+      logger.info("Scheduled reports service started");
+    } catch (error) {
+      logger.error("Failed to start scheduled reports service:", error);
+    }
+  }
 
   // Start always-on automation jobs for all tenants
   const jobScheduler = new JobScheduler();

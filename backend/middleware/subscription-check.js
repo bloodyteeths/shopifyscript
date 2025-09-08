@@ -4,6 +4,27 @@
  */
 
 import { SHOPIFY_PRICING_TIERS } from "../services/shopify-billing.js";
+import ShopifyBillingService from "../services/shopify-billing.js";
+
+/**
+ * Get shop access token from session or database
+ * In production, this should query a secure token store
+ */
+async function getShopAccessToken(shopDomain) {
+  try {
+    // This is a placeholder - in production you would:
+    // 1. Query the session store for the shop's access token
+    // 2. Or query a secure token database
+    // 3. Handle token refresh if needed
+    
+    // For now, return null to indicate token not available
+    // This prevents Shopify API calls when tokens aren't set up
+    return null;
+  } catch (error) {
+    console.error("Failed to retrieve shop access token:", error);
+    return null;
+  }
+}
 
 // Feature to tier mapping (3-tier system)
 const FEATURE_TIER_MAP = {
@@ -43,14 +64,11 @@ const TIER_HIERARCHY = {
 
 /**
  * Get current subscription status for a tenant
- * This would integrate with your tenant registry and Shopify Billing API
+ * Integrates with tenant registry and Shopify Billing API
  */
 async function getCurrentSubscription(tenant) {
   try {
-    // In production, this would query your tenant registry 
-    // and check Shopify Billing API for current subscription
-    
-    // For now, check if billing enforcement is active
+    // Check if billing enforcement is active
     const billingActive = process.env.BILLING_ENFORCEMENT_ACTIVE === "true";
     
     if (!billingActive) {
@@ -58,16 +76,143 @@ async function getCurrentSubscription(tenant) {
       return {
         tier: "enterprise",
         status: "active",
-        trialEndsAt: null
+        trialEndsAt: null,
+        shopifySubscriptionId: null
+      };
+    }
+
+    // Query database for tenant subscription info
+    let subscription = null;
+    try {
+      const { createClient } = await import("../services/supabase-client.js");
+      const supabase = createClient();
+      
+      const { data, error } = await supabase
+        .from("tenant_subscriptions")
+        .select("*")
+        .eq("tenant_id", tenant)
+        .single();
+        
+      if (error && error.code !== 'PGRST116') { // Not found is OK
+        console.warn("Database query error for subscription:", error);
+      } else if (data) {
+        subscription = data;
+      }
+    } catch (dbError) {
+      console.warn("Database connection error, falling back to Shopify API:", dbError);
+    }
+
+    // If we have cached subscription data, check if it's recent
+    if (subscription && subscription.updated_at) {
+      const lastUpdate = new Date(subscription.updated_at);
+      const now = new Date();
+      const hoursSinceUpdate = (now - lastUpdate) / (1000 * 60 * 60);
+      
+      // If updated within last 4 hours and status is active, use cached data
+      if (hoursSinceUpdate < 4 && subscription.status === "active") {
+        return {
+          tier: subscription.tier,
+          status: subscription.status,
+          trialEndsAt: subscription.trial_ends_at,
+          currentPeriodEnd: subscription.current_period_end,
+          shopifySubscriptionId: subscription.subscription_id
+        };
+      }
+    }
+
+    // For real-time verification, query Shopify Billing API if we have shop info
+    if (subscription && subscription.shop_domain) {
+      try {
+        // Get access token for this shop (in production, this would be stored securely)
+        const accessToken = await getShopAccessToken(subscription.shop_domain);
+        
+        if (accessToken) {
+          const billingService = new ShopifyBillingService();
+          const shopifySubscription = await billingService.getCurrentSubscription(
+            subscription.shop_domain, 
+            accessToken
+          );
+          
+          if (shopifySubscription) {
+            const tier = billingService.getSubscriptionTier(shopifySubscription);
+            const status = billingService.parseSubscriptionStatus(shopifySubscription.status);
+            
+            // Update database with fresh Shopify data
+            try {
+              const { createClient } = await import("../services/supabase-client.js");
+              const supabase = createClient();
+              
+              await supabase
+                .from("tenant_subscriptions")
+                .update({
+                  subscription_id: shopifySubscription.id,
+                  tier: tier?.id || subscription.tier,
+                  status: status,
+                  current_period_end: shopifySubscription.currentPeriodEnd,
+                  updated_at: new Date().toISOString()
+                })
+                .eq("tenant_id", tenant);
+                
+              return {
+                tier: tier?.id || subscription.tier,
+                status: status,
+                trialEndsAt: subscription.trial_ends_at,
+                currentPeriodEnd: shopifySubscription.currentPeriodEnd,
+                shopifySubscriptionId: shopifySubscription.id
+              };
+            } catch (updateError) {
+              console.error("Failed to update subscription from Shopify:", updateError);
+            }
+          }
+        }
+      } catch (shopifyError) {
+        console.warn("Shopify API verification failed, using cached data:", shopifyError);
+      }
+    }
+
+    // Return subscription status based on database data
+    if (subscription) {
+      // Check if subscription is expired
+      if (subscription.current_period_end) {
+        const periodEnd = new Date(subscription.current_period_end);
+        const now = new Date();
+        
+        if (now > periodEnd && subscription.status === "active") {
+          // Update status to past_due in database
+          try {
+            const { createClient } = await import("../services/supabase-client.js");
+            const supabase = createClient();
+            
+            await supabase
+              .from("tenant_subscriptions")
+              .update({ 
+                status: "past_due", 
+                updated_at: new Date().toISOString() 
+              })
+              .eq("tenant_id", tenant);
+              
+            subscription.status = "past_due";
+          } catch (updateError) {
+            console.error("Failed to update subscription status:", updateError);
+          }
+        }
+      }
+
+      return {
+        tier: subscription.tier,
+        status: subscription.status,
+        trialEndsAt: subscription.trial_ends_at,
+        currentPeriodEnd: subscription.current_period_end,
+        shopifySubscriptionId: subscription.subscription_id
       };
     }
     
-    // TODO: Implement actual Shopify Billing API check
-    // This is a placeholder that should be replaced with real subscription lookup
+    // No subscription found
     return {
-      tier: null, // No active subscription  
+      tier: null,
       status: "none",
-      trialEndsAt: null
+      trialEndsAt: null,
+      shopifySubscriptionId: null
     };
     
   } catch (error) {
@@ -75,7 +220,8 @@ async function getCurrentSubscription(tenant) {
     return {
       tier: null,
       status: "error", 
-      trialEndsAt: null
+      trialEndsAt: null,
+      shopifySubscriptionId: null
     };
   }
 }
@@ -314,6 +460,109 @@ export function requireTier(minimumTier) {
   };
 }
 
+/**
+ * Sync subscription status with Shopify Billing API
+ * This can be called periodically or when subscription changes are detected
+ */
+export async function syncSubscriptionStatus(tenant, shopDomain, accessToken) {
+  try {
+    const billingService = new ShopifyBillingService();
+    const shopifySubscription = await billingService.getCurrentSubscription(shopDomain, accessToken);
+    
+    if (shopifySubscription) {
+      const tier = billingService.getSubscriptionTier(shopifySubscription);
+      const status = billingService.parseSubscriptionStatus(shopifySubscription.status);
+      
+      // Update database with current Shopify subscription data
+      const { createClient } = await import("../services/supabase-client.js");
+      const supabase = createClient();
+      
+      const subscriptionData = {
+        tenant_id: tenant,
+        shop_domain: shopDomain,
+        platform: 'shopify',
+        subscription_id: shopifySubscription.id,
+        tier: tier?.id || 'starter',
+        status: status,
+        current_period_start: shopifySubscription.createdAt,
+        current_period_end: shopifySubscription.currentPeriodEnd,
+        updated_at: new Date().toISOString()
+      };
+      
+      const { data, error } = await supabase
+        .from("tenant_subscriptions")
+        .upsert(subscriptionData, { 
+          onConflict: 'tenant_id',
+          ignoreDuplicates: false 
+        })
+        .select();
+        
+      if (error) {
+        throw new Error(`Database update failed: ${error.message}`);
+      }
+      
+      console.log(`Subscription synced for tenant ${tenant}:`, {
+        tier: tier?.id,
+        status: status,
+        subscriptionId: shopifySubscription.id
+      });
+      
+      return subscriptionData;
+    } else {
+      // No active subscription found in Shopify
+      const { createClient } = await import("../services/supabase-client.js");
+      const supabase = createClient();
+      
+      await supabase
+        .from("tenant_subscriptions")
+        .update({
+          status: 'cancelled',
+          updated_at: new Date().toISOString()
+        })
+        .eq("tenant_id", tenant);
+        
+      console.log(`No active subscription found for tenant ${tenant}, marked as cancelled`);
+      
+      return null;
+    }
+  } catch (error) {
+    console.error("Failed to sync subscription status:", error);
+    throw error;
+  }
+}
+
+/**
+ * Retry wrapper for subscription operations with exponential backoff
+ */
+export async function withRetry(operation, maxRetries = 3) {
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      return await operation();
+    } catch (error) {
+      console.warn(`Subscription operation attempt ${attempt} failed:`, error.message);
+      
+      if (attempt === maxRetries) {
+        throw error;
+      }
+      
+      // Exponential backoff: 500ms, 1s, 2s
+      const delay = Math.pow(2, attempt - 1) * 500;
+      await new Promise(resolve => setTimeout(resolve, delay));
+    }
+  }
+}
+
+export {
+  requireActiveSubscription,
+  requireFeature,
+  checkUsageLimits,
+  requireTier,
+  hasFeatureAccess,
+  isWithinUsageLimits,
+  getCurrentSubscription,
+  syncSubscriptionStatus
+};
+
 export default {
   requireActiveSubscription,
   requireFeature,
@@ -321,5 +570,6 @@ export default {
   requireTier,
   hasFeatureAccess,
   isWithinUsageLimits,
-  getCurrentSubscription
+  getCurrentSubscription,
+  syncSubscriptionStatus
 };

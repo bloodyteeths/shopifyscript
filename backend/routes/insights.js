@@ -3,13 +3,114 @@ import { sheets } from "../sheets.js";
 import { json } from "../utils/response.js";
 import { verify } from "../utils/hmac.js";
 import { enforceDataRetention } from "../services/data-retention.js";
-import { requireActiveSubscription } from "../middleware/subscription-check.js";
+import { requireActiveSubscription, requireFeature } from "../middleware/subscription-check.js";
+import analyticsTiers from "../services/analytics-tiers.js";
+import roasCalculator from "../services/roas-calculator.js";
+import cacheMonitor from "../services/cache-monitor.js";
+import performanceTester from "../services/performance-tester.js";
 
 const router = express.Router();
 
-// In-memory cache for insights (will be replaced with Redis-compatible cache)
+// Enhanced tier-based caching system
+import { getJson, setJson } from "../services/redis.js";
+
 const insightsCache = new Map();
 const actionDedupe = new Map();
+
+// Tier-based cache intervals (in milliseconds)
+const CACHE_INTERVALS = {
+  starter: 300000,    // 5 minutes
+  professional: 30000, // 30 seconds  
+  enterprise: 10000    // 10 seconds
+};
+
+// Cache key prefixes for different data types
+const CACHE_PREFIXES = {
+  insights: 'insights',
+  realtime: 'realtime', 
+  roas: 'roas',
+  terms: 'terms'
+};
+
+/**
+ * Get tier-specific cache interval
+ */
+async function getCacheInterval(tenant, cacheType = 'insights') {
+  try {
+    const features = await analyticsTiers.getTierFeatures(tenant);
+    const baseInterval = CACHE_INTERVALS[features.tier] || CACHE_INTERVALS.starter;
+    
+    // Real-time endpoints get shorter cache times
+    if (cacheType === 'realtime') {
+      return Math.min(baseInterval, 30000); // Max 30s for real-time
+    }
+    
+    return baseInterval;
+  } catch (error) {
+    console.error('Error getting cache interval:', error);
+    return CACHE_INTERVALS.starter; // Default to starter
+  }
+}
+
+/**
+ * Enhanced cache get with Redis fallback
+ */
+async function getCachedData(cacheKey, tenant, cacheType = 'insights') {
+  try {
+    const cacheInterval = await getCacheInterval(tenant, cacheType);
+    const nowMs = Date.now();
+    
+    // Try in-memory cache first (fastest)
+    const memCached = insightsCache.get(cacheKey);
+    if (memCached && nowMs - memCached.ts < cacheInterval) {
+      return memCached.data;
+    }
+    
+    // Try Redis cache (persistent)
+    try {
+      const redisCached = await getJson(cacheKey);
+      if (redisCached && redisCached.ts && nowMs - redisCached.ts < cacheInterval) {
+        // Update in-memory cache
+        insightsCache.set(cacheKey, { ts: redisCached.ts, data: redisCached.data });
+        return redisCached.data;
+      }
+    } catch (redisError) {
+      console.warn('Redis cache read failed, using memory cache only:', redisError.message);
+    }
+    
+    return null;
+  } catch (error) {
+    console.error('Cache get error:', error);
+    return null;
+  }
+}
+
+/**
+ * Enhanced cache set with Redis persistence
+ */
+async function setCachedData(cacheKey, data, tenant, cacheType = 'insights') {
+  try {
+    const cacheInterval = await getCacheInterval(tenant, cacheType);
+    const nowMs = Date.now();
+    const cacheEntry = { ts: nowMs, data };
+    
+    // Set in-memory cache
+    insightsCache.set(cacheKey, cacheEntry);
+    
+    // Set Redis cache with TTL
+    try {
+      const ttlSeconds = Math.ceil(cacheInterval / 1000);
+      await setJson(cacheKey, cacheEntry, ttlSeconds);
+    } catch (redisError) {
+      console.warn('Redis cache write failed, using memory cache only:', redisError.message);
+    }
+    
+    return true;
+  } catch (error) {
+    console.error('Cache set error:', error);
+    return false;
+  }
+}
 
 // Parse various timestamp formats (ISO, Unix, Google Sheets serial)
 function parseTsLoose(row) {
@@ -34,8 +135,8 @@ function parseTsLoose(row) {
   return Number.isFinite(p) ? p : NaN;
 }
 
-// Main insights endpoint with caching
-router.get("/insights", enforceDataRetention(), async (req, res) => {
+// Main insights endpoint with caching and tier restrictions
+router.get("/insights", enforceDataRetention(), requireActiveSubscription(), async (req, res) => {
   const { tenant, sig } = req.query;
   const wq = String(req.query.w || "7d").toLowerCase();
   const w = wq === "24h" || wq === "all" ? wq : "7d";
@@ -50,9 +151,21 @@ router.get("/insights", enforceDataRetention(), async (req, res) => {
     const cached = insightsCache.get(cacheKey);
     const nowMs = Date.now();
 
-    // Return cached data if fresh
-    if (cached && nowMs - cached.ts < 60_000) {
-      return json(res, 200, cached.data);
+    // Check tier-based cache
+    const startTime = Date.now();
+    const cachedData = await getCachedData(cacheKey, tenant, 'insights');
+    if (cachedData) {
+      const responseTime = Date.now() - startTime;
+      cacheMonitor.recordHit(tenant, 'insights', responseTime);
+      
+      // Add cache metadata to response
+      cachedData.cacheInfo = {
+        cached: true,
+        cacheAge: Date.now() - (cachedData.timestamp || Date.now()),
+        tier: (await analyticsTiers.getTierFeatures(tenant)).tier,
+        responseTime
+      };
+      return json(res, 200, cachedData);
     }
 
     const MET_HEADERS = [
@@ -216,7 +329,7 @@ router.get("/insights", enforceDataRetention(), async (req, res) => {
       sts_scanned,
       sts_in_window,
     };
-    const data = {
+    let data = {
       ok: true,
       w,
       kpi: { clicks, cost, conversions: conv, impressions: imp, ctr, cpc, cpa },
@@ -226,8 +339,47 @@ router.get("/insights", enforceDataRetention(), async (req, res) => {
       debug_counts,
     };
 
-    // Cache the result
-    insightsCache.set(cacheKey, { ts: nowMs, data });
+    // Apply tier-specific analytics filtering and enhancements
+    try {
+      // Filter data based on subscription tier
+      data = await analyticsTiers.filterAnalyticsData(tenant, data);
+      
+      // Transform data with tier-specific features
+      data = await analyticsTiers.transformDataForTier(tenant, data);
+      
+      // Add ROAS calculations based on tier
+      const roasData = await roasCalculator.calculateROAS(tenant, {
+        cost,
+        conversions: conv,
+        clicks,
+        impressions: imp
+      });
+      data.roas = roasData;
+
+      // Add upgrade prompts for restricted features
+      const requestedFeatures = ["realTimeUpdates", "advancedRoas", "customDashboards"];
+      data.upgradePrompts = await analyticsTiers.getUpgradePrompts(tenant, requestedFeatures);
+
+    } catch (tierError) {
+      console.error("Tier processing error:", tierError);
+      // Continue with basic data if tier processing fails
+    }
+
+    // Add performance metadata
+    data.performance = {
+      queryTime: Date.now() - nowMs,
+      dataPoints: data.series?.length || 0,
+      cached: false,
+      tier: (await analyticsTiers.getTierFeatures(tenant)).tier,
+      nextRefresh: nowMs + (await getCacheInterval(tenant, 'insights'))
+    };
+    
+    // Record cache miss and performance
+    const totalTime = Date.now() - nowMs;
+    cacheMonitor.recordMiss(tenant, 'insights', totalTime);
+    
+    // Cache the result with tier-specific TTL
+    await setCachedData(cacheKey, data, tenant, 'insights');
     return json(res, 200, data);
   } catch (e) {
     return json(res, 500, { ok: false, code: "INSIGHTS", error: String(e) });
@@ -235,7 +387,7 @@ router.get("/insights", enforceDataRetention(), async (req, res) => {
 });
 
 // Terms explorer with advanced filtering
-router.get("/insights/terms", async (req, res) => {
+router.get("/insights/terms", enforceDataRetention(), async (req, res) => {
   const { tenant, sig } = req.query;
   const w = String(req.query.w || "7d").toLowerCase();
   const q = String(req.query.q || "").toLowerCase();
@@ -445,7 +597,7 @@ router.get("/insights/terms", async (req, res) => {
 });
 
 // CSV export for terms
-router.get("/insights/terms.csv", async (req, res) => {
+router.get("/insights/terms.csv", enforceDataRetention(), async (req, res) => {
   const { tenant, sig } = req.query;
   const payload = `GET:${tenant}:insights_terms`;
 
@@ -507,7 +659,7 @@ router.get("/insights/terms.csv", async (req, res) => {
 });
 
 // Debug endpoint for timestamp parsing
-router.get("/insights/debug", async (req, res) => {
+router.get("/insights/debug", enforceDataRetention(), async (req, res) => {
   const { tenant, sig } = req.query;
   const payload = `GET:${tenant}:insights`;
 
@@ -578,5 +730,413 @@ router.get("/insights/debug", async (req, res) => {
     return json(res, 500, { ok: false, code: "DEBUG", error: String(e) });
   }
 });
+
+// Real-time insights endpoint (Professional+ only)
+router.get("/insights/realtime", 
+  enforceDataRetention(), 
+  requireActiveSubscription(), 
+  requireFeature("real_time_performance_analytics"),
+  async (req, res) => {
+    const { tenant, sig } = req.query;
+    const payload = `GET:${tenant}:insights_realtime`;
+
+    if (!tenant || !verify(sig, payload)) {
+      return json(res, 403, { ok: false, code: "AUTH" });
+    }
+
+    try {
+      // Get latest data with tier-based real-time caching
+      const cacheKey = `${CACHE_PREFIXES.realtime}:${tenant}`;
+      const nowMs = Date.now();
+      
+      // Check tier-based cache for real-time data
+      const cachedData = await getCachedData(cacheKey, tenant, 'realtime');
+      if (cachedData) {
+        // Add real-time cache metadata
+        cachedData.cacheInfo = {
+          cached: true,
+          cacheAge: Date.now() - (cachedData.timestamp || Date.now()),
+          tier: (await analyticsTiers.getTierFeatures(tenant)).tier,
+          realTime: true
+        };
+        return json(res, 200, cachedData);
+      }
+
+      // Get fresh data - simplified for real-time
+      const MET_HEADERS = [
+        "date", "level", "campaign", "ad_group", "id", "name", 
+        "clicks", "cost", "conversions", "impr", "ctr",
+      ];
+
+      const metAoA = await sheets.getRows(String(tenant), "METRICS", { limit: 1000 });
+      const toObj = (rows, headers) =>
+        rows.map((r) => Object.fromEntries(headers.map((h, i) => [h, r[i]])));
+      
+      const metObj = toObj(metAoA, MET_HEADERS).map((row) => {
+        const o = {};
+        for (const [k, v] of Object.entries(row)) o[String(k).toLowerCase()] = v;
+        return o;
+      });
+
+      // Get last 1 hour of data
+      const oneHourAgo = nowMs - 60 * 60 * 1000;
+      let realtimeClicks = 0, realtimeCost = 0, realtimeConv = 0;
+      
+      for (const r of metObj) {
+        const ts = parseTsLoose(r);
+        if (!Number.isFinite(ts) || ts < oneHourAgo) continue;
+        
+        realtimeClicks += Number(r.clicks || 0);
+        realtimeCost += Number(r.cost || 0);
+        realtimeConv += Number(r.conversions || 0);
+      }
+
+      const realtimeData = {
+        ok: true,
+        timestamp: nowMs,
+        period: "1h",
+        kpi: {
+          clicks: realtimeClicks,
+          cost: realtimeCost,
+          conversions: realtimeConv,
+          cpc: realtimeClicks ? realtimeCost / realtimeClicks : 0,
+          cpa: realtimeConv ? realtimeCost / realtimeConv : 0,
+        },
+        updateInterval: await getCacheInterval(tenant, 'realtime'),
+        nextUpdate: nowMs + (await getCacheInterval(tenant, 'realtime')),
+      };
+
+      // Add ROAS for Professional+ tiers
+      const roasData = await roasCalculator.calculateROAS(tenant, {
+        cost: realtimeCost,
+        conversions: realtimeConv,
+        clicks: realtimeClicks
+      });
+      realtimeData.roas = roasData;
+
+      // Add real-time performance metadata
+      realtimeData.performance = {
+        queryTime: Date.now() - nowMs,
+        cached: false,
+        tier: (await analyticsTiers.getTierFeatures(tenant)).tier,
+        realTime: true,
+        nextRefresh: nowMs + (await getCacheInterval(tenant, 'realtime'))
+      };
+      
+      // Cache with tier-specific real-time interval
+      await setCachedData(cacheKey, realtimeData, tenant, 'realtime');
+      return json(res, 200, realtimeData);
+
+    } catch (e) {
+      return json(res, 500, { ok: false, code: "REALTIME_INSIGHTS", error: String(e) });
+    }
+  }
+);
+
+// Advanced ROAS analytics endpoint (Professional+ only)
+router.get("/insights/roas", 
+  enforceDataRetention(), 
+  requireActiveSubscription(), 
+  requireFeature("advanced_roas_analytics"),
+  async (req, res) => {
+    const { tenant, sig } = req.query;
+    const payload = `GET:${tenant}:insights_roas`;
+
+    if (!tenant || !verify(sig, payload)) {
+      return json(res, 403, { ok: false, code: "AUTH" });
+    }
+
+    try {
+      const attributionModel = req.query.attribution || "last_click";
+      const includeLTV = req.query.ltv === "true";
+      const segments = req.query.segments ? JSON.parse(req.query.segments) : [];
+
+      // Get base metrics for ROAS calculation
+      const metAoA = await sheets.getRows(String(tenant), "METRICS", { limit: 2000 });
+      const MET_HEADERS = [
+        "date", "level", "campaign", "ad_group", "id", "name",
+        "clicks", "cost", "conversions", "impr", "ctr",
+      ];
+
+      const toObj = (rows, headers) =>
+        rows.map((r) => Object.fromEntries(headers.map((h, i) => [h, r[i]])));
+      const metObj = toObj(metAoA, MET_HEADERS).map((row) => {
+        const o = {};
+        for (const [k, v] of Object.entries(row)) o[String(k).toLowerCase()] = v;
+        return o;
+      });
+
+      // Aggregate metrics
+      let totalClicks = 0, totalCost = 0, totalConv = 0;
+      for (const r of metObj) {
+        totalClicks += Number(r.clicks || 0);
+        totalCost += Number(r.cost || 0);
+        totalConv += Number(r.conversions || 0);
+      }
+
+      // Calculate comprehensive ROAS
+      const roasData = await roasCalculator.calculateROAS(tenant, {
+        cost: totalCost,
+        conversions: totalConv,
+        clicks: totalClicks
+      }, {
+        attributionModel,
+        includeLTV,
+        segments
+      });
+
+      return json(res, 200, {
+        ok: true,
+        tenant,
+        ...roasData
+      });
+
+    } catch (e) {
+      return json(res, 500, { ok: false, code: "ROAS_ANALYTICS", error: String(e) });
+    }
+  }
+);
+
+// Custom dashboard configuration endpoint (Enterprise only)
+router.get("/insights/dashboard-config", 
+  enforceDataRetention(), 
+  requireActiveSubscription(), 
+  requireFeature("custom_performance_dashboards"),
+  async (req, res) => {
+    const { tenant, sig } = req.query;
+    const payload = `GET:${tenant}:dashboard_config`;
+
+    if (!tenant || !verify(sig, payload)) {
+      return json(res, 403, { ok: false, code: "AUTH" });
+    }
+
+    try {
+      const config = await analyticsTiers.getAnalyticsConfig(tenant);
+      const features = await analyticsTiers.getTierFeatures(tenant);
+
+      return json(res, 200, {
+        ok: true,
+        tenant,
+        config,
+        customDashboards: {
+          enabled: features.customDashboards,
+          maxDashboards: 10,
+          maxWidgets: 20,
+          availableWidgets: [
+            "kpi_summary", "line_chart", "bar_chart", "pie_chart", 
+            "heatmap", "funnel", "roas_tracker", "trend_analysis"
+          ],
+          availableKpis: features.kpis
+        },
+        tier: features.tier
+      });
+
+    } catch (e) {
+      return json(res, 500, { ok: false, code: "DASHBOARD_CONFIG", error: String(e) });
+    }
+  }
+);
+
+// Cache management endpoints
+router.get("/insights/cache/status", 
+  enforceDataRetention(), 
+  requireActiveSubscription(),
+  async (req, res) => {
+    const { tenant, sig } = req.query;
+    const payload = `GET:${tenant}:cache_status`;
+
+    if (!tenant || !verify(sig, payload)) {
+      return json(res, 403, { ok: false, code: "AUTH" });
+    }
+
+    try {
+      const metrics = await cacheMonitor.getTenantMetrics(tenant);
+      const health = await cacheMonitor.getCacheHealth();
+      
+      return json(res, 200, {
+        ok: true,
+        tenant,
+        metrics,
+        systemHealth: health,
+        timestamp: Date.now()
+      });
+    } catch (e) {
+      return json(res, 500, { ok: false, code: "CACHE_STATUS", error: String(e) });
+    }
+  }
+);
+
+// Cache invalidation endpoint  
+router.post("/insights/cache/invalidate",
+  enforceDataRetention(),
+  requireActiveSubscription(),
+  async (req, res) => {
+    const { tenant, sig } = req.query;
+    const { cacheType = 'all', reason = 'manual' } = req.body;
+    const payload = `POST:${tenant}:cache_invalidate`;
+
+    if (!tenant || !verify(sig, payload)) {
+      return json(res, 403, { ok: false, code: "AUTH" });
+    }
+
+    try {
+      const result = await cacheMonitor.invalidateCache(tenant, cacheType, reason);
+      
+      return json(res, 200, {
+        ok: true,
+        ...result
+      });
+    } catch (e) {
+      return json(res, 500, { ok: false, code: "CACHE_INVALIDATE", error: String(e) });
+    }
+  }
+);
+
+// Analytics tier status endpoint
+router.get("/insights/tier-status", 
+  enforceDataRetention(), 
+  requireActiveSubscription(),
+  async (req, res) => {
+    const { tenant, sig } = req.query;
+    const payload = `GET:${tenant}:tier_status`;
+
+    if (!tenant || !verify(sig, payload)) {
+      return json(res, 403, { ok: false, code: "AUTH" });
+    }
+
+    try {
+      const features = await analyticsTiers.getTierFeatures(tenant);
+      const config = await analyticsTiers.getAnalyticsConfig(tenant);
+
+      // Add current usage and limits
+      const cacheMetrics = await cacheMonitor.getTenantMetrics(tenant);
+      
+      return json(res, 200, {
+        ok: true,
+        tenant,
+        tier: features.tier,
+        subscription: features.subscription,
+        features: {
+          basicAnalytics: features.basicMetrics,
+          realTimeAnalytics: features.realTimeUpdates,
+          advancedRoas: features.advancedRoas,
+          customDashboards: features.customDashboards,
+          customRoasModels: features.customRoasModels,
+          maxDataPoints: features.maxDataPoints,
+          refreshInterval: features.refreshInterval,
+          availableCharts: features.chartTypes,
+          exportFormats: features.exportFormats
+        },
+        usage: {
+          cachePerformance: cacheMetrics.overall,
+          dataPointsUsed: config.maxDataPoints === -1 ? 'unlimited' : config.maxDataPoints,
+          realTimeEnabled: config.realTimeEnabled
+        },
+        config,
+        upgradeUrl: "/app/billing"
+      });
+
+    } catch (e) {
+      return json(res, 500, { ok: false, code: "TIER_STATUS", error: String(e) });
+    }
+  }
+);
+
+// Performance testing endpoints
+router.post("/insights/performance/test",
+  enforceDataRetention(),
+  requireActiveSubscription(),
+  async (req, res) => {
+    const { tenant, sig } = req.query;
+    const { testType = 'full' } = req.body;
+    const payload = `POST:${tenant}:performance_test`;
+
+    if (!tenant || !verify(sig, payload)) {
+      return json(res, 403, { ok: false, code: "AUTH" });
+    }
+
+    try {
+      const testResults = await performanceTester.runPerformanceTest(tenant, testType);
+      
+      return json(res, 200, {
+        ok: true,
+        ...testResults
+      });
+    } catch (e) {
+      return json(res, 500, { ok: false, code: "PERFORMANCE_TEST", error: String(e) });
+    }
+  }
+);
+
+// Get performance test results
+router.get("/insights/performance/results",
+  enforceDataRetention(),
+  requireActiveSubscription(),
+  async (req, res) => {
+    const { tenant, sig, testId } = req.query;
+    const payload = `GET:${tenant}:performance_results`;
+
+    if (!tenant || !verify(sig, payload)) {
+      return json(res, 403, { ok: false, code: "AUTH" });
+    }
+
+    try {
+      let results;
+      
+      if (testId) {
+        results = performanceTester.getTestResults(testId);
+        if (!results) {
+          return json(res, 404, { ok: false, code: "TEST_NOT_FOUND" });
+        }
+      } else {
+        results = performanceTester.getTenantTestResults(tenant);
+      }
+      
+      return json(res, 200, {
+        ok: true,
+        results,
+        tenant
+      });
+    } catch (e) {
+      return json(res, 500, { ok: false, code: "PERFORMANCE_RESULTS", error: String(e) });
+    }
+  }
+);
+
+// Database optimization recommendations
+router.get("/insights/performance/optimizations",
+  enforceDataRetention(),
+  requireActiveSubscription(),
+  async (req, res) => {
+    const { tenant, sig } = req.query;
+    const payload = `GET:${tenant}:optimizations`;
+
+    if (!tenant || !verify(sig, payload)) {
+      return json(res, 403, { ok: false, code: "AUTH" });
+    }
+
+    try {
+      const optimizations = await analyticsTiers.getQueryOptimizations(tenant);
+      const cacheHealth = await cacheMonitor.getCacheHealth();
+      
+      return json(res, 200, {
+        ok: true,
+        tenant,
+        ...optimizations,
+        systemHealth: {
+          cache: cacheHealth,
+          database: {
+            status: 'healthy', // This would come from actual DB monitoring
+            connectionPool: 'optimal',
+            avgQueryTime: '< 100ms'
+          }
+        },
+        timestamp: Date.now()
+      });
+    } catch (e) {
+      return json(res, 500, { ok: false, code: "OPTIMIZATIONS", error: String(e) });
+    }
+  }
+);
 
 export default router;

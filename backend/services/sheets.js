@@ -8,6 +8,8 @@ import sheetsBatch from "./sheets-batch.js";
 import tenantCache from "./cache.js";
 import cacheInvalidation from "./cache-invalidation.js";
 import tenantRegistry from "./tenant-registry.js";
+import sheetsRateLimiter from "./sheets-rate-limiter.js";
+import performanceMonitor from "./performance-monitor.js";
 
 class OptimizedSheetsService {
   constructor() {
@@ -125,7 +127,7 @@ class OptimizedSheetsService {
   }
 
   /**
-   * Get rows with smart caching and batching
+   * Get rows with smart caching, batching, and rate limiting
    */
   async getRows(tenantId, sheetTitle, options = {}) {
     const { limit = 100, offset = 0, useCache = true } = options;
@@ -139,89 +141,101 @@ class OptimizedSheetsService {
       const cached = tenantCache.get(tenantId, cacheKey.path, cacheKey.params);
       if (cached) {
         this.metrics.cacheHits++;
+        performanceMonitor.trackCacheOperation('sheets_getRows', true);
         return cached;
       }
     }
 
     this.metrics.cacheMisses++;
+    performanceMonitor.trackCacheOperation('sheets_getRows', false);
 
-    // Use batch operation for efficiency
-    const operation = {
-      type: "getRows",
-      params: {
-        sheetTitle,
-        options: { limit, offset },
-      },
-    };
+    // Use enhanced rate limiter with exponential backoff
+    return await sheetsRateLimiter.executeWithRateLimit(
+      tenantId,
+      async () => {
+        // Use batch operation for efficiency
+        const operation = {
+          type: "getRows",
+          params: {
+            sheetTitle,
+            options: { limit, offset },
+          },
+        };
 
-    try {
-      const startTime = Date.now();
-      const tenant = tenantRegistry.getTenant(tenantId);
-      const rows = await sheetsBatch.queueOperation(
-        tenantId,
-        tenant.sheetId,
-        operation,
-      );
-
-      // Sanitize and cache results
-      const sanitizedRows = this.sanitizeRows(rows);
-
-      if (useCache) {
-        tenantCache.set(
+        const startTime = Date.now();
+        const tenant = tenantRegistry.getTenant(tenantId);
+        const rows = await sheetsBatch.queueOperation(
           tenantId,
-          cacheKey.path,
-          cacheKey.params,
-          sanitizedRows,
-          this.cacheConfig.readTtl,
+          tenant.sheetId,
+          operation,
         );
-      }
 
-      this.updateMetrics(startTime);
-      this.metrics.batchedOperations++;
+        // Sanitize and cache results
+        const sanitizedRows = this.sanitizeRows(rows);
 
-      return sanitizedRows;
-    } catch (error) {
-      this.metrics.errors++;
-      throw error;
-    }
+        if (useCache) {
+          tenantCache.set(
+            tenantId,
+            cacheKey.path,
+            cacheKey.params,
+            sanitizedRows,
+            this.cacheConfig.readTtl,
+          );
+        }
+
+        const duration = Date.now() - startTime;
+        this.updateMetrics(startTime);
+        this.metrics.batchedOperations++;
+        performanceMonitor.trackDatabaseOperation('sheets_getRows', duration, true);
+
+        return sanitizedRows;
+      },
+      'read', // Operation type for rate limiting
+      3 // Max retries
+    );
   }
 
   /**
-   * Add single row with smart batching and cache invalidation
+   * Add single row with smart batching, cache invalidation, and rate limiting
    */
   async addRow(tenantId, sheetTitle, rowData) {
-    const operation = {
-      type: "addRow",
-      params: {
-        sheetTitle,
-        row: rowData,
+    // Use enhanced rate limiter with exponential backoff
+    return await sheetsRateLimiter.executeWithRateLimit(
+      tenantId,
+      async () => {
+        const operation = {
+          type: "addRow",
+          params: {
+            sheetTitle,
+            row: rowData,
+          },
+        };
+
+        const startTime = Date.now();
+        const tenant = tenantRegistry.getTenant(tenantId);
+        const result = await sheetsBatch.queueOperation(
+          tenantId,
+          tenant.sheetId,
+          operation,
+        );
+
+        // Invalidate related caches
+        cacheInvalidation.smartInvalidate(tenantId, "sheet:write", {
+          type: "addRow",
+          sheetTitle,
+          data: rowData,
+        });
+
+        const duration = Date.now() - startTime;
+        this.updateMetrics(startTime);
+        this.metrics.batchedOperations++;
+        performanceMonitor.trackDatabaseOperation('sheets_addRow', duration, true);
+
+        return result;
       },
-    };
-
-    try {
-      const startTime = Date.now();
-      const tenant = tenantRegistry.getTenant(tenantId);
-      const result = await sheetsBatch.queueOperation(
-        tenantId,
-        tenant.sheetId,
-        operation,
-      );
-
-      // Invalidate related caches
-      cacheInvalidation.smartInvalidate(tenantId, "sheet:write", {
-        type: "addRow",
-        sheetTitle,
-        data: rowData,
-      });
-
-      this.updateMetrics(startTime);
-      this.metrics.batchedOperations++;
-
-      return result;
-    } catch (error) {
-      this.metrics.errors++;
-      throw error;
-    }
+      'write', // Operation type for rate limiting
+      3 // Max retries
+    );
   }
 
   /**
@@ -497,13 +511,15 @@ class OptimizedSheetsService {
   }
 
   /**
-   * Get service statistics
+   * Get comprehensive service statistics
    */
   getStats() {
     const poolStats = sheetsPool.getStats();
     const batchStats = sheetsBatch.getStats();
     const cacheStats = tenantCache.getGlobalStats();
     const invalidationStats = cacheInvalidation.getStats();
+    const rateLimiterStats = sheetsRateLimiter.getMetrics();
+    const rateLimiterHealth = sheetsRateLimiter.getHealthStatus();
 
     const cacheHitRate =
       this.metrics.cacheHits + this.metrics.cacheMisses > 0
@@ -529,11 +545,15 @@ class OptimizedSheetsService {
       batch: batchStats,
       cache: cacheStats,
       invalidation: invalidationStats,
+      rateLimiter: {
+        metrics: rateLimiterStats,
+        health: rateLimiterHealth,
+      },
     };
   }
 
   /**
-   * Health check for the service
+   * Enhanced health check for the service
    */
   async healthCheck(tenantId = "default") {
     const health = {
@@ -556,25 +576,57 @@ class OptimizedSheetsService {
       const cacheStats = tenantCache.getGlobalStats();
       health.checks.cache = cacheStats.totalSize >= 0 ? "healthy" : "unhealthy";
 
-      // Test basic operation
+      // Check rate limiter health
+      const rateLimiterHealth = sheetsRateLimiter.getHealthStatus();
+      health.checks.rateLimiter = rateLimiterHealth.status;
+      if (rateLimiterHealth.issues.length > 0) {
+        health.checks.rateLimiterIssues = rateLimiterHealth.issues;
+      }
+
+      // Check circuit breaker status
+      const circuitBreakerStatus = sheetsRateLimiter.getCircuitBreakerStatus(tenantId);
+      health.checks.circuitBreaker = circuitBreakerStatus.state;
+      if (circuitBreakerStatus.state === 'open') {
+        health.checks.circuitBreakerTimeToRetry = `${circuitBreakerStatus.timeToRetry}ms`;
+      }
+
+      // Test basic operation with rate limiting
       try {
-        // Use a very lightweight check to avoid creating extra tabs under high load
-        const connection = await this.getTenantDoc(tenantId);
-        const docTitle = connection.doc?.title || "unknown";
-        health.checks.basicOperation = "healthy";
-        health.checks.docTitle = docTitle;
+        await sheetsRateLimiter.executeWithRateLimit(
+          tenantId,
+          async () => {
+            const connection = await this.getTenantDoc(tenantId);
+            const docTitle = connection.doc?.title || "unknown";
+            health.checks.basicOperation = "healthy";
+            health.checks.docTitle = docTitle;
+            connection.release();
+          },
+          'read',
+          1 // Single retry for health check
+        );
       } catch (error) {
         health.checks.basicOperation = "unhealthy";
         health.errors = health.errors || [];
         health.errors.push(error.message);
       }
 
+      // Performance metrics
+      const stats = this.getStats();
+      health.performance = {
+        avgResponseTime: stats.service.avgResponseTime + 'ms',
+        cacheHitRate: stats.service.cacheHitRate + '%',
+        batchEfficiency: stats.service.batchEfficiency + '%',
+        rateLimiterSuccessRate: stats.rateLimiter.metrics.requests.successRate + '%',
+      };
+
       // Overall status
       const unhealthyChecks = Object.values(health.checks).filter(
-        (status) => status === "unhealthy",
+        (status) => status === "unhealthy" || status === "degraded",
       );
       if (unhealthyChecks.length > 0) {
         health.status = "unhealthy";
+      } else if (circuitBreakerStatus.state === 'half-open' || rateLimiterHealth.status === 'degraded') {
+        health.status = "degraded";
       }
     } catch (error) {
       health.status = "unhealthy";

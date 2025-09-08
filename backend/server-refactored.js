@@ -22,6 +22,10 @@ import sessionsRoutes from "./routes/sessions.js";
 import supabaseTestRoutes from "./routes/supabase-test.js";
 import subscriptionSyncRoutes from "./routes/subscription-sync.js";
 
+// Import campaign enforcement service
+import { canCreateCampaign, recordCampaignCreation } from "./services/campaign-counter.js";
+import { getCurrentSubscription } from "./middleware/subscription-check.js";
+
 // Load environment configuration
 dotenv.config();
 try {
@@ -744,7 +748,7 @@ app.post("/api/pixels/ingest", async (req, res) => {
   }
 });
 
-// Ads Script delivery (HMAC)
+// Ads Script delivery (HMAC) with campaign limit enforcement
 app.get("/api/ads-script/raw", async (req, res) => {
   const { tenant, sig } = req.query;
   const payload = `GET:${tenant}:script_raw`;
@@ -755,6 +759,32 @@ app.get("/api/ads-script/raw", async (req, res) => {
 
   try {
     const tenantId = String(tenant || "default");
+
+    // Check campaign limits before allowing script generation
+    console.log(`🔐 Checking campaign limits for tenant: ${tenantId}`);
+    const subscription = await getCurrentSubscription(tenantId);
+    const userTier = subscription?.tier || "starter";
+    
+    const permission = await canCreateCampaign(tenantId, userTier);
+    
+    if (!permission.allowed) {
+      console.log(`❌ Campaign limit exceeded for ${tenantId}: ${permission.currentCount}/${permission.limit} (${userTier})`);
+      
+      // Return JSON error for limit exceeded
+      return res.status(402).json({
+        ok: false,
+        error: "campaign_limit_exceeded",
+        message: `Your ${userTier} plan allows up to ${permission.limit} campaigns. You currently have ${permission.currentCount}.`,
+        currentCount: permission.currentCount,
+        limit: permission.limit,
+        tier: userTier,
+        upgradeUrl: permission.upgradeUrl
+      });
+    }
+    
+    console.log(`✅ Campaign limit check passed for ${tenantId}: ${permission.currentCount}/${permission.limit} (${userTier})`);
+
+    // Proceed with script generation
     const primary = path.resolve(process.cwd(), "ads-script", "master.gs");
     const fallback = path.resolve(
       process.cwd(),
@@ -776,10 +806,57 @@ app.get("/api/ads-script/raw", async (req, res) => {
       .replace(/__TENANT_ID__/g, tenantId)
       .replace(/__HMAC_SECRET__/g, process.env.HMAC_SECRET || "");
 
+    // Log successful script generation
+    console.log(`📝 Script generated successfully for ${tenantId} (${userTier} tier)`);
+
     res.set("content-type", "text/plain; charset=utf-8");
     return res.status(200).send(out);
   } catch (e) {
     return res.status(404).json({ ok: false, error: String(e) });
+  }
+});
+
+// Campaign Limits API endpoint
+app.get("/api/campaign-limits", async (req, res) => {
+  const { tenant, sig } = req.query;
+  const payload = `GET:${tenant}:campaign_limits`;
+
+  if (!tenant || !verify(sig, payload)) {
+    return res.status(403).json({ ok: false, error: "auth" });
+  }
+
+  try {
+    const tenantId = String(tenant || "default");
+    
+    // Get user tier
+    const subscription = await getCurrentSubscription(tenantId);
+    const userTier = subscription?.tier || "starter";
+    
+    // Check campaign limits
+    const permission = await canCreateCampaign(tenantId, userTier);
+    
+    const response = {
+      ok: true,
+      currentCount: permission.currentCount || 0,
+      limit: permission.limit || 5,
+      tier: userTier,
+      allowed: permission.allowed || false,
+      remaining: permission.remaining || 0,
+      upgradeUrl: permission.upgradeUrl || "/app/billing"
+    };
+
+    console.log(`📊 Campaign limits check for ${tenantId}: ${response.currentCount}/${response.limit} (${userTier})`);
+    
+    return res.json(response);
+  } catch (e) {
+    console.error("Campaign limits check error:", e);
+    return res.status(500).json({ 
+      ok: false, 
+      error: String(e),
+      currentCount: 0,
+      limit: 5,
+      allowed: true // Default to allowing in case of error
+    });
   }
 });
 

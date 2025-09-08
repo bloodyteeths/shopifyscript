@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { useLoaderData, Link } from "@remix-run/react";
@@ -6,6 +6,7 @@ import { authenticate } from "../shopify.server";
 import { checkTenantSetup } from "../utils/tenant.server";
 import { useShopContext, buildAppUrl } from "../utils/navigation";
 import { checkSubscriptionStatus, shouldRedirectToPlans, getPlanSelectionUrl } from "../utils/subscription.server";
+import { SkeletonCard, Toast } from "../components/LoadingStates";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   try {
@@ -18,7 +19,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
       throw new Error("Unable to determine shop name from Shopify session");
     }
 
-    console.log(`🏪 Dashboard loaded for shop: ${shopName}`);
+    console.log(`Dashboard loaded for shop: ${shopName}`);
 
     // Check for post-subscription redirect parameters
     const url = new URL(request.url);
@@ -26,7 +27,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     const isPostSubscription = !!chargeId;
     
     if (isPostSubscription) {
-      console.log(`🎉 Post-subscription redirect detected for ${shopName}, charge_id: ${chargeId}`);
+      console.log(`Post-subscription redirect detected for ${shopName}, charge_id: ${chargeId}`);
     }
 
     // Check subscription status for feature access control (with error handling)
@@ -44,7 +45,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     try {
       subscriptionInfo = await checkSubscriptionStatus(admin);
       
-      console.log(`📊 Subscription check for ${shopName}:`, {
+      console.log(`Subscription check for ${shopName}:`, {
         hasActivePayment: subscriptionInfo.hasActivePayment,
         isInTrial: subscriptionInfo.isInTrial,
         tier: subscriptionInfo.subscriptionTier,
@@ -54,14 +55,14 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
       // CRITICAL: Don't redirect if just returned from subscription selection
       if (subscriptionInfo.needsSubscription && !isPostSubscription) {
-        console.log(`🔄 Redirecting ${shopName} to plan selection - no subscription found`);
+        console.log(`Redirecting ${shopName} to plan selection - no subscription found`);
         // Only redirect if NOT coming back from subscription
       } else if (isPostSubscription) {
-        console.log(`✅ Post-subscription: Allowing app access for ${shopName} (subscription may be processing)`);
+        console.log(`Post-subscription: Allowing app access for ${shopName} (subscription may be processing)`);
       }
 
     } catch (subscriptionError) {
-      console.error('⚠️ Subscription check failed, allowing app access:', subscriptionError);
+      console.error('Subscription check failed, allowing app access:', subscriptionError);
       // Allow app access if subscription check fails to prevent installation crashes
     }
 
@@ -77,7 +78,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     });
     
   } catch (authError) {
-    console.error("🚨 App index authentication error:", authError);
+    console.error("App index authentication error:", authError);
     console.error("Request URL:", request.url);
     
     // Redirect to auth with shop context if possible
@@ -95,6 +96,27 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 export default function AppIndex() {
   const { message, timestamp, shopName, subscriptionInfo, planSelectionUrl } = useLoaderData<typeof loader>();
   const shopContext = useShopContext();
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
+  const [toast, setToast] = useState<{message: string; type: 'success' | 'error' | 'warning' | 'info'; visible: boolean}>({
+    message: '',
+    type: 'success',
+    visible: false
+  });
+
+  // Simulate initial loading state
+  React.useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsInitialLoad(false);
+      if (subscriptionInfo?.hasActivePayment || subscriptionInfo?.isInTrial) {
+        setToast({
+          message: `Welcome back! Your ${subscriptionInfo.subscriptionTier?.toUpperCase()} plan is active.`,
+          type: 'success',
+          visible: true
+        });
+      }
+    }, 800);
+    return () => clearTimeout(timer);
+  }, [subscriptionInfo]);
 
   // Automatic redirect to plan selection if no subscription (but not after subscription completion)
   React.useEffect(() => {
@@ -104,7 +126,7 @@ export default function AppIndex() {
     const isPostSubscription = !!chargeId;
     
     if (subscriptionInfo?.needsSubscription && planSelectionUrl && !isPostSubscription) {
-      console.log('🔄 Client-side redirect to plan selection:', planSelectionUrl);
+      console.log('Client-side redirect to plan selection:', planSelectionUrl);
       
       // Use postMessage to break out of embedded iframe
       const redirectMessage = {
@@ -116,18 +138,18 @@ export default function AppIndex() {
         // Try to redirect parent window
         if (window.parent && window.parent !== window) {
           window.parent.postMessage(JSON.stringify(redirectMessage), '*');
-          console.log('✅ PostMessage sent to parent window');
+          console.log('PostMessage sent to parent window');
         } else {
           // Fallback: direct redirect
           window.top.location.href = planSelectionUrl;
         }
       } catch (error) {
-        console.error('❌ Redirect failed:', error);
+        console.error('Redirect failed:', error);
         // Final fallback: show user the link
         alert(`Please visit: ${planSelectionUrl}`);
       }
     } else if (isPostSubscription) {
-      console.log(`🎉 Post-subscription detected, staying on dashboard (charge_id: ${chargeId})`);
+      console.log(`Post-subscription detected, staying on dashboard (charge_id: ${chargeId})`);
     }
   }, [subscriptionInfo, planSelectionUrl]);
 
@@ -177,9 +199,57 @@ export default function AppIndex() {
     return null;
   };
 
+  const renderDataRetentionInfo = () => {
+    if (!subscriptionInfo?.subscriptionTier) return null;
+    
+    const tier = subscriptionInfo.subscriptionTier.toLowerCase();
+    const retentionDays = tier === 'starter' ? 7 : tier === 'professional' ? 30 : 90;
+    const upgradeMessage = tier === 'starter' ? 'Upgrade to Professional for 30-day retention' : tier === 'professional' ? 'Upgrade to Enterprise for 90-day retention' : null;
+    
+    return (
+      <div style={{
+        background: tier === 'starter' ? "#fff3cd" : tier === 'professional' ? "#e7f3ff" : "#f8f9fa",
+        border: tier === 'starter' ? "1px solid #ffc107" : tier === 'professional' ? "1px solid #007bff" : "1px solid #dee2e6",
+        borderRadius: "8px",
+        padding: "16px",
+        marginBottom: "24px",
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+      }}>
+        <div>
+          <h4 style={{ margin: "0 0 4px 0", fontSize: "16px", color: tier === 'starter' ? "#856404" : tier === 'professional' ? "#004085" : "#495057" }}>
+            Data Retention: {retentionDays} days
+          </h4>
+          <p style={{ margin: "0", fontSize: "14px", color: tier === 'starter' ? "#856404" : tier === 'professional' ? "#004085" : "#6c757d" }}>
+            Your {tier.toUpperCase()} plan shows data from the last {retentionDays} days. Older data is automatically filtered.
+          </p>
+        </div>
+        {upgradeMessage && (
+          <Link
+            to={planSelectionUrl}
+            style={{
+              background: "#007bff",
+              color: "white",
+              padding: "10px 16px",
+              textDecoration: "none",
+              borderRadius: "6px",
+              fontSize: "14px",
+              fontWeight: "bold",
+              whiteSpace: "nowrap",
+            }}
+          >
+            {upgradeMessage}
+          </Link>
+        )}
+      </div>
+    );
+  };
+
   return (
     <div style={{ padding: "2rem" }}>
       {renderSubscriptionBanner()}
+      {renderDataRetentionInfo()}
       
       <div
         style={{
@@ -193,7 +263,18 @@ export default function AppIndex() {
           gap: "12px",
         }}
       >
-        <span style={{ fontSize: "24px" }}>🏪</span>
+        <div style={{ 
+          width: "24px",
+          height: "24px",
+          background: "#007bff",
+          borderRadius: "4px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          color: "white",
+          fontSize: "12px",
+          fontWeight: "bold"
+        }}>✓</div>
         <div>
           <h3 style={{ margin: "0", fontSize: "16px", color: "#0066cc" }}>
             Connected to {shopName}.myshopify.com
@@ -204,7 +285,7 @@ export default function AppIndex() {
         </div>
       </div>
 
-      <h1>🚀 Ads Autopilot AI Dashboard</h1>
+      <h1>Ads Autopilot AI Dashboard</h1>
       <p>{message}</p>
 
       <div
@@ -215,34 +296,63 @@ export default function AppIndex() {
           marginTop: "2rem",
         }}
       >
-        <div
-          style={{
-            border: "1px solid #ddd",
-            borderRadius: "8px",
-            padding: "1.5rem",
-            background: "#f8f9fa",
-          }}
-        >
-          <h3>🤖 Autopilot</h3>
-          <p>Automated campaign management and optimization</p>
-          <Link
-            to={buildAppUrl("/app/autopilot", shopContext)}
-            style={{
-              background: "#007bff",
-              color: "white",
-              padding: "12px 24px",
-              textDecoration: "none",
-              borderRadius: "6px",
-              display: "inline-block",
-              fontSize: "16px",
-              fontWeight: "bold",
-              boxShadow: "0 2px 8px rgba(0, 123, 255, 0.3)",
-              transition: "all 0.2s ease",
-            }}
-          >
-            🤖 Open Autopilot
-          </Link>
-        </div>
+        {isInitialLoad ? (
+          // Show skeleton loading states
+          <>
+            <SkeletonCard />
+            <SkeletonCard />
+            <SkeletonCard />
+            <SkeletonCard />
+            <SkeletonCard />
+          </>
+        ) : (
+          // Show actual content
+          <>
+            <div
+              style={{
+                border: "1px solid #ddd",
+                borderRadius: "8px",
+                padding: "1.5rem",
+                background: "#f8f9fa",
+                transition: "transform 0.2s ease, box-shadow 0.2s ease",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = "translateY(-2px)";
+                e.currentTarget.style.boxShadow = "0 4px 12px rgba(0, 0, 0, 0.1)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = "translateY(0)";
+                e.currentTarget.style.boxShadow = "none";
+              }}
+            >
+              <h3>Autopilot</h3>
+              <p>Automated campaign management and optimization</p>
+              <Link
+                to={buildAppUrl("/app/autopilot", shopContext)}
+                style={{
+                  background: "#007bff",
+                  color: "white",
+                  padding: "12px 24px",
+                  textDecoration: "none",
+                  borderRadius: "6px",
+                  display: "inline-block",
+                  fontSize: "16px",
+                  fontWeight: "bold",
+                  boxShadow: "0 2px 8px rgba(0, 123, 255, 0.3)",
+                  transition: "all 0.2s ease",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = "translateY(-1px)";
+                  e.currentTarget.style.boxShadow = "0 4px 12px rgba(0, 123, 255, 0.4)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.boxShadow = "0 2px 8px rgba(0, 123, 255, 0.3)";
+                }}
+              >
+                Open Autopilot
+              </Link>
+            </div>
 
         <div
           style={{
@@ -252,7 +362,7 @@ export default function AppIndex() {
             background: "#f8f9fa",
           }}
         >
-          <h3>📊 Insights</h3>
+          <h3>Insights</h3>
           <p>Performance analytics and campaign insights</p>
           <Link
             to="/app/insights"
@@ -269,7 +379,52 @@ export default function AppIndex() {
               transition: "all 0.2s ease",
             }}
           >
-            📊 View Insights
+            View Insights
+          </Link>
+        </div>
+
+        <div
+          style={{
+            border: "1px solid #ddd",
+            borderRadius: "8px",
+            padding: "1.5rem",
+            background: "#f8f9fa",
+            position: "relative",
+          }}
+        >
+          <h3>Custom Dashboards</h3>
+          <p>Enterprise-exclusive custom analytics dashboards</p>
+          <div
+            style={{
+              position: "absolute",
+              top: "8px",
+              right: "8px",
+              background: "#6f42c1",
+              color: "white",
+              padding: "4px 8px",
+              borderRadius: "12px",
+              fontSize: "12px",
+              fontWeight: "bold",
+            }}
+          >
+            ENTERPRISE
+          </div>
+          <Link
+            to="/app/dashboards"
+            style={{
+              background: "#6f42c1",
+              color: "white",
+              padding: "12px 24px",
+              textDecoration: "none",
+              borderRadius: "6px",
+              display: "inline-block",
+              fontSize: "16px",
+              fontWeight: "bold",
+              boxShadow: "0 2px 8px rgba(111, 66, 193, 0.3)",
+              transition: "all 0.2s ease",
+            }}
+          >
+            Custom Dashboards
           </Link>
         </div>
 
@@ -283,7 +438,7 @@ export default function AppIndex() {
             position: "relative",
           }}
         >
-          <h3>💡 Smart Website Features</h3>
+          <h3>Smart Website Features</h3>
           <p>Advanced conversion optimization tools</p>
           <div
             style={{
@@ -315,7 +470,7 @@ export default function AppIndex() {
               transition: "all 0.2s ease",
             }}
           >
-            💡 Preview Features
+            Preview Features
           </Link>
         </div>
 
@@ -327,7 +482,7 @@ export default function AppIndex() {
             background: "#f8f9fa",
           }}
         >
-          <h3>⚙️ Advanced</h3>
+          <h3>Advanced</h3>
           <p>Advanced settings and configuration</p>
           <Link
             to="/app/advanced"
@@ -344,7 +499,7 @@ export default function AppIndex() {
               transition: "all 0.2s ease",
             }}
           >
-            ⚙️ Advanced Settings
+            Advanced Settings
           </Link>
         </div>
       </div>
@@ -362,6 +517,14 @@ export default function AppIndex() {
         <strong>Status:</strong> Connected to backend • Last updated:{" "}
         {new Date(timestamp).toLocaleString()}
       </div>
+
+      {/* Professional Toast Notification */}
+      <Toast
+        message={toast.message}
+        type={toast.type}
+        isVisible={toast.visible}
+        onClose={() => setToast(prev => ({ ...prev, visible: false }))}
+      />
     </div>
   );
 }

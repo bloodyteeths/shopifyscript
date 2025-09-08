@@ -3,6 +3,8 @@ import { sheets } from "../sheets.js";
 import { json } from "../utils/response.js";
 import { verify } from "../utils/hmac.js";
 import { dualWriteMetrics, dualWriteSearchTerms, dualWriteRunLogs } from "../services/dual-write.js";
+import { enforceDataRetention } from "../services/data-retention.js";
+import { requireActiveSubscription, checkUsageLimits } from "../middleware/subscription-check.js";
 
 const router = express.Router();
 
@@ -35,7 +37,10 @@ const ST_HEADERS = [
 const LOG_HEADERS = ["timestamp", "message"];
 
 // Post metrics, search terms, and run logs
-router.post("/metrics", async (req, res) => {
+router.post("/metrics", 
+  requireActiveSubscription(),
+  checkUsageLimits(),
+  async (req, res) => {
   const { tenant, sig } = req.query;
   const {
     nonce = Date.now(),
@@ -91,6 +96,21 @@ router.post("/metrics", async (req, res) => {
       .filter(Boolean);
 
     const totalRows = mRows.length + stRows.length + logRows.length;
+    
+    // Check tier-based usage limits before processing
+    const subscription = req.subscription;
+    if (subscription && subscription.tier) {
+      const usage = {
+        monthly_data_rows: totalRows,
+        metrics_rows: mRows.length,
+        search_terms_rows: stRows.length,
+        run_logs_rows: logRows.length
+      };
+      
+      // Add usage info to request for middleware to check
+      req.body.usage = usage;
+    }
+    
     if (totalRows > 5000) {
       return json(res, 413, {
         ok: false,
@@ -142,7 +162,7 @@ router.post("/metrics", async (req, res) => {
 });
 
 // Get run logs with pagination
-router.get("/run-logs", async (req, res) => {
+router.get("/run-logs", enforceDataRetention(), async (req, res) => {
   const { tenant, sig } = req.query;
   const limit = Math.min(200, Math.max(1, Number(req.query.limit || 10)));
   const payload = `GET:${tenant}:run_logs`;
@@ -165,7 +185,7 @@ router.get("/run-logs", async (req, res) => {
 });
 
 // Summary endpoint for quick KPIs
-router.get("/summary", async (req, res) => {
+router.get("/summary", enforceDataRetention(), async (req, res) => {
   const { tenant, sig } = req.query;
   const payload = `GET:${tenant}:summary_get`;
 

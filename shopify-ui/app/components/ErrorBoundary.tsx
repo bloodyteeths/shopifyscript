@@ -45,8 +45,8 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
             margin: "1rem",
           }}
         >
-          <h2>🚨 Something went wrong</h2>
-          <p>The page encountered an error and couldn't render properly.</p>
+          <h2>Application Error</h2>
+          <p>We're sorry, but something went wrong while loading this page. Please try refreshing the page or contact support if the problem persists.</p>
           <details style={{ marginTop: "1rem" }}>
             <summary>Error Details</summary>
             <pre style={{ fontSize: "12px", overflow: "auto" }}>
@@ -65,7 +65,7 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
               cursor: "pointer",
             }}
           >
-            🔄 Try Again
+            Try Again
           </button>
           <button
             onClick={() => window.location.href = "/app"}
@@ -80,7 +80,7 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
               cursor: "pointer",
             }}
           >
-            🏠 Go to Dashboard
+            Go to Dashboard
           </button>
         </div>
       );

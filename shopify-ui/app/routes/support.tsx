@@ -1,50 +1,449 @@
-import type { MetaFunction } from "@remix-run/node";
+import type { MetaFunction, LoaderFunction } from "@remix-run/node";
+import { json } from "@remix-run/node";
+import { useLoaderData } from "@remix-run/react";
+import { useState } from "react";
 
 export const meta: MetaFunction = () => {
   return [
     { title: "Support - Ads Autopilot AI" },
-    { name: "description", content: "Get help with Ads Autopilot AI - Contact information, documentation, and support resources" },
+    { name: "description", content: "Get tier-based support for Ads Autopilot AI - Email, priority, and phone support options" },
   ];
 };
 
+// Loader to detect subscription tier from session
+export const loader: LoaderFunction = async ({ request }) => {
+  try {
+    const url = new URL(request.url);
+    const tenant = url.searchParams.get("tenant");
+    
+    if (!tenant) {
+      // Default to starter tier if no tenant
+      return json({
+        tier: "starter",
+        contactMethods: {
+          email_support: true,
+          phone_support: false,
+          priority_routing: false,
+          support_email: "support@proofkit.com",
+          guaranteed_response_hours: 24
+        }
+      });
+    }
+
+    // In production, this would check the subscription via API
+    // For now, we'll determine tier based on tenant or use environment
+    let tier = "starter";
+    let contactMethods = {
+      email_support: true,
+      phone_support: false,
+      priority_routing: false,
+      support_email: "support@proofkit.com",
+      guaranteed_response_hours: 24
+    };
+
+    // Check if billing enforcement is disabled (development mode)
+    const billingActive = process.env.BILLING_ENFORCEMENT_ACTIVE === "true";
+    if (!billingActive) {
+      tier = "enterprise";
+      contactMethods = {
+        email_support: true,
+        phone_support: true,
+        priority_routing: true,
+        support_email: "enterprise@proofkit.com",
+        support_phone: "(307) 395-9830",
+        guaranteed_response_hours: 6
+      };
+    }
+
+    return json({
+      tier,
+      contactMethods
+    });
+  } catch (error) {
+    console.error("Error loading support data:", error);
+    // Fallback to starter tier on error
+    return json({
+      tier: "starter",
+      contactMethods: {
+        email_support: true,
+        phone_support: false,
+        priority_routing: false,
+        support_email: "support@proofkit.com",
+        guaranteed_response_hours: 24
+      }
+    });
+  }
+};
+
+interface ContactFormData {
+  subject: string;
+  description: string;
+  category: string;
+  priority: string;
+  customer_name: string;
+  customer_email: string;
+  customer_phone?: string;
+}
+
 export default function Support() {
+  const { tier, contactMethods } = useLoaderData<typeof loader>();
+  const [showContactForm, setShowContactForm] = useState(false);
+  const [formData, setFormData] = useState<ContactFormData>({
+    subject: "",
+    description: "",
+    category: "general",
+    priority: "normal",
+    customer_name: "",
+    customer_email: "",
+    customer_phone: ""
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitResult, setSubmitResult] = useState<{ success: boolean; message: string } | null>(null);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitResult(null);
+
+    try {
+      // In production, this would call your support API
+      console.log("Submitting support ticket:", formData);
+      
+      // Simulate API call
+      await new Promise(resolve => setTimeout(resolve, 1500));
+      
+      setSubmitResult({ 
+        success: true, 
+        message: "Support ticket created successfully! You'll receive an email confirmation shortly." 
+      });
+      setShowContactForm(false);
+      setFormData({
+        subject: "",
+        description: "",
+        category: "general", 
+        priority: "normal",
+        customer_name: "",
+        customer_email: "",
+        customer_phone: ""
+      });
+    } catch (error) {
+      setSubmitResult({
+        success: false,
+        message: "Failed to create support ticket. Please try again or email us directly."
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const getTierDisplayName = (tier: string) => {
+    const tierNames = {
+      starter: "Starter Plan",
+      professional: "Professional Plan",
+      enterprise: "Enterprise Plan"
+    };
+    return tierNames[tier as keyof typeof tierNames] || "Unknown Plan";
+  };
+
+  const getTierSupportLevel = (tier: string) => {
+    const supportLevels = {
+      starter: { 
+        type: "Email Support", 
+        response: "24 hours",
+        description: "Email support during business hours",
+        features: ["Email support", "Knowledge base access", "Community forum"]
+      },
+      professional: { 
+        type: "Priority Email Support", 
+        response: "12 hours",
+        description: "Priority email support with faster response times",
+        features: ["Priority email support", "Advanced troubleshooting", "Feature guidance", "Escalation options"]
+      },
+      enterprise: { 
+        type: "Priority Phone & Email Support", 
+        response: "6 hours",
+        description: "Premium support with phone and email options",
+        features: ["Priority phone support", "Priority email support", "Dedicated account manager", "SLA guarantees", "Custom integration support"]
+      }
+    };
+    return supportLevels[tier as keyof typeof supportLevels] || supportLevels.starter;
+  };
+
+  const supportLevel = getTierSupportLevel(tier);
+
   return (
     <div style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8", maxWidth: "800px", margin: "0 auto", padding: "2rem" }}>
       <h1>Ads Autopilot AI Support</h1>
       
       <p>Get help with Ads Autopilot AI - your AI-powered Google Ads optimization tool for Shopify stores.</p>
 
-      <h2>📞 Contact Information</h2>
+      {/* Current Plan Support Level */}
+      <div style={{ 
+        padding: "1.5rem", 
+        background: tier === "enterprise" ? "#fef3e3" : tier === "professional" ? "#f0f9ff" : "#f8fafc", 
+        border: `2px solid ${tier === "enterprise" ? "#f59e0b" : tier === "professional" ? "#3b82f6" : "#64748b"}`, 
+        borderRadius: "8px", 
+        marginBottom: "2rem" 
+      }}>
+        <h2 style={{ 
+          margin: "0 0 1rem 0", 
+          color: tier === "enterprise" ? "#92400e" : tier === "professional" ? "#1e40af" : "#475569" 
+        }}>
+          Your Support Level: {getTierDisplayName(tier)}
+        </h2>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 2fr", gap: "1rem", alignItems: "start" }}>
+          <div>
+            <p style={{ margin: "0 0 0.5rem 0", fontWeight: "bold", fontSize: "1.1rem" }}>
+              {supportLevel.type}
+            </p>
+            <p style={{ margin: "0 0 0.5rem 0", color: "#6b7280" }}>
+              Response within {supportLevel.response}
+            </p>
+            <p style={{ margin: "0", color: "#6b7280", fontSize: "0.9rem" }}>
+              {supportLevel.description}
+            </p>
+          </div>
+          <div>
+            <p style={{ margin: "0 0 0.5rem 0", fontWeight: "bold" }}>Included Features:</p>
+            <ul style={{ margin: "0", paddingLeft: "1.5rem" }}>
+              {supportLevel.features.map((feature, index) => (
+                <li key={index} style={{ color: "#374151", marginBottom: "0.25rem" }}>{feature}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "2rem", margin: "2rem 0" }}>
+      {/* Contact Form or Show Form Button */}
+      {!showContactForm ? (
+        <div style={{ textAlign: "center", margin: "2rem 0" }}>
+          <button
+            onClick={() => setShowContactForm(true)}
+            style={{
+              padding: "1rem 2rem",
+              backgroundColor: tier === "enterprise" ? "#f59e0b" : tier === "professional" ? "#3b82f6" : "#6366f1",
+              color: "white",
+              border: "none",
+              borderRadius: "8px",
+              fontSize: "1.1rem",
+              fontWeight: "bold",
+              cursor: "pointer"
+            }}
+          >
+            Create Support Ticket
+          </button>
+          <p style={{ marginTop: "1rem", color: "#6b7280" }}>
+            Get help with technical issues, billing questions, or general support
+          </p>
+        </div>
+      ) : (
+        <div style={{ 
+          padding: "1.5rem", 
+          border: "1px solid #e5e7eb", 
+          borderRadius: "8px", 
+          marginBottom: "2rem",
+          backgroundColor: "#fafafa"
+        }}>
+          <h3>Create Support Ticket</h3>
+          <form onSubmit={handleSubmit}>
+            <div style={{ marginBottom: "1rem" }}>
+              <label style={{ display: "block", marginBottom: "0.5rem", fontWeight: "bold" }}>
+                Your Name *
+              </label>
+              <input
+                type="text"
+                name="customer_name"
+                value={formData.customer_name}
+                onChange={handleInputChange}
+                required
+                style={{ width: "100%", padding: "0.75rem", border: "1px solid #d1d5db", borderRadius: "4px" }}
+              />
+            </div>
+
+            <div style={{ marginBottom: "1rem" }}>
+              <label style={{ display: "block", marginBottom: "0.5rem", fontWeight: "bold" }}>
+                Email Address *
+              </label>
+              <input
+                type="email"
+                name="customer_email"
+                value={formData.customer_email}
+                onChange={handleInputChange}
+                required
+                style={{ width: "100%", padding: "0.75rem", border: "1px solid #d1d5db", borderRadius: "4px" }}
+              />
+            </div>
+
+            {tier === "enterprise" && (
+              <div style={{ marginBottom: "1rem" }}>
+                <label style={{ display: "block", marginBottom: "0.5rem", fontWeight: "bold" }}>
+                  Phone Number (for phone support)
+                </label>
+                <input
+                  type="tel"
+                  name="customer_phone"
+                  value={formData.customer_phone}
+                  onChange={handleInputChange}
+                  style={{ width: "100%", padding: "0.75rem", border: "1px solid #d1d5db", borderRadius: "4px" }}
+                />
+              </div>
+            )}
+
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem", marginBottom: "1rem" }}>
+              <div>
+                <label style={{ display: "block", marginBottom: "0.5rem", fontWeight: "bold" }}>
+                  Category *
+                </label>
+                <select
+                  name="category"
+                  value={formData.category}
+                  onChange={handleInputChange}
+                  required
+                  style={{ width: "100%", padding: "0.75rem", border: "1px solid #d1d5db", borderRadius: "4px" }}
+                >
+                  <option value="general">General</option>
+                  <option value="technical">Technical</option>
+                  <option value="billing">Billing</option>
+                  {tier === "enterprise" && <option value="urgent">Urgent</option>}
+                </select>
+              </div>
+
+              <div>
+                <label style={{ display: "block", marginBottom: "0.5rem", fontWeight: "bold" }}>
+                  Priority *
+                </label>
+                <select
+                  name="priority"
+                  value={formData.priority}
+                  onChange={handleInputChange}
+                  required
+                  style={{ width: "100%", padding: "0.75rem", border: "1px solid #d1d5db", borderRadius: "4px" }}
+                >
+                  <option value="low">Low</option>
+                  <option value="normal">Normal</option>
+                  {["professional", "enterprise"].includes(tier) && <option value="high">High</option>}
+                  {tier === "enterprise" && <option value="urgent">Urgent</option>}
+                </select>
+              </div>
+            </div>
+
+            <div style={{ marginBottom: "1rem" }}>
+              <label style={{ display: "block", marginBottom: "0.5rem", fontWeight: "bold" }}>
+                Subject *
+              </label>
+              <input
+                type="text"
+                name="subject"
+                value={formData.subject}
+                onChange={handleInputChange}
+                required
+                style={{ width: "100%", padding: "0.75rem", border: "1px solid #d1d5db", borderRadius: "4px" }}
+                placeholder="Brief description of your issue"
+              />
+            </div>
+
+            <div style={{ marginBottom: "1rem" }}>
+              <label style={{ display: "block", marginBottom: "0.5rem", fontWeight: "bold" }}>
+                Description *
+              </label>
+              <textarea
+                name="description"
+                value={formData.description}
+                onChange={handleInputChange}
+                required
+                rows={5}
+                style={{ width: "100%", padding: "0.75rem", border: "1px solid #d1d5db", borderRadius: "4px" }}
+                placeholder="Please provide detailed information about your issue..."
+              />
+            </div>
+
+            <div style={{ display: "flex", gap: "1rem" }}>
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                style={{
+                  padding: "0.75rem 1.5rem",
+                  backgroundColor: tier === "enterprise" ? "#f59e0b" : tier === "professional" ? "#3b82f6" : "#6366f1",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "4px",
+                  fontSize: "1rem",
+                  fontWeight: "bold",
+                  cursor: isSubmitting ? "not-allowed" : "pointer",
+                  opacity: isSubmitting ? 0.6 : 1
+                }}
+              >
+                {isSubmitting ? "Creating Ticket..." : "Create Ticket"}
+              </button>
+              <button
+                type="button"
+                onClick={() => setShowContactForm(false)}
+                style={{
+                  padding: "0.75rem 1.5rem",
+                  backgroundColor: "#6b7280",
+                  color: "white",
+                  border: "none",
+                  borderRadius: "4px",
+                  fontSize: "1rem",
+                  cursor: "pointer"
+                }}
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
+
+      {/* Submit Result */}
+      {submitResult && (
+        <div style={{ 
+          padding: "1rem", 
+          backgroundColor: submitResult.success ? "#dcfce7" : "#fee2e2",
+          border: `1px solid ${submitResult.success ? "#16a34a" : "#dc2626"}`,
+          borderRadius: "4px",
+          marginBottom: "2rem"
+        }}>
+          <p style={{ 
+            margin: "0", 
+            color: submitResult.success ? "#166534" : "#991b1b",
+            fontWeight: "bold"
+          }}>
+            {submitResult.message}
+          </p>
+        </div>
+      )}
+
+      <h2>📞 Direct Contact Information</h2>
+
+      <div style={{ display: "grid", gridTemplateColumns: tier === "enterprise" ? "1fr 1fr 1fr" : "1fr 1fr", gap: "2rem", margin: "2rem 0" }}>
         <div style={{ padding: "1.5rem", border: "1px solid #e5e7eb", borderRadius: "8px" }}>
-          <h3>🎯 General Support</h3>
-          <p><strong>Email:</strong> atanrikulu@e-listele.com<br />
-          <strong>Response Time:</strong> 24 hours<br />
+          <h3>✉️ Email Support</h3>
+          <p><strong>Email:</strong> {contactMethods.support_email}<br />
+          <strong>Response Time:</strong> {contactMethods.guaranteed_response_hours} hours<br />
           <strong>Hours:</strong> Monday-Friday, 9 AM - 6 PM EST</p>
-          <p>For general questions about using Ads Autopilot AI, account issues, billing questions, and technical support.</p>
+          <p>For all general inquiries, technical support, and account questions.</p>
         </div>
 
-        <div style={{ padding: "1.5rem", border: "1px solid #e5e7eb", borderRadius: "8px" }}>
-          <h3>🔒 Privacy & Security</h3>
-          <p><strong>Email:</strong> atanrikulu@e-listele.com<br />
-          <strong>Response Time:</strong> 48 hours<br />
-          <strong>Hours:</strong> Monday-Friday, 9 AM - 6 PM EST</p>
-          <p>For privacy policy questions, data subject requests, and security concerns.</p>
-        </div>
-
-        <div style={{ padding: "1.5rem", border: "1px solid #e5e7eb", borderRadius: "8px" }}>
-          <h3>⚖️ Legal & Compliance</h3>
-          <p><strong>Email:</strong> atanrikulu@e-listele.com<br />
-          <strong>Response Time:</strong> 72 hours<br />
-          <strong>Hours:</strong> Monday-Friday, 9 AM - 6 PM EST</p>
-          <p>For terms of service questions, legal compliance issues, and contract matters.</p>
-        </div>
+        {tier === "enterprise" && (
+          <div style={{ padding: "1.5rem", border: "2px solid #f59e0b", borderRadius: "8px", backgroundColor: "#fef3e3" }}>
+            <h3>📞 Phone Support</h3>
+            <p><strong>Phone:</strong> (307) 395-9830<br />
+            <strong>Response Time:</strong> Immediate<br />
+            <strong>Hours:</strong> Monday-Friday, 9 AM - 6 PM EST</p>
+            <p>Priority phone support for urgent issues and dedicated account management.</p>
+          </div>
+        )}
 
         <div style={{ padding: "1.5rem", border: "1px solid #e5e7eb", borderRadius: "8px" }}>
           <h3>💳 Billing & Accounts</h3>
-          <p><strong>Email:</strong> atanrikulu@e-listele.com<br />
-          <strong>Response Time:</strong> 24 hours<br />
+          <p><strong>Email:</strong> billing@proofkit.com<br />
+          <strong>Response Time:</strong> {tier === "enterprise" ? "4" : tier === "professional" ? "6" : "24"} hours<br />
           <strong>Hours:</strong> Monday-Friday, 9 AM - 6 PM EST</p>
           <p>For subscription issues, billing questions, refund requests, and plan changes.</p>
         </div>

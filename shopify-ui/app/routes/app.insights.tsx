@@ -9,6 +9,7 @@ import {
   useRevalidator,
 } from "@remix-run/react";
 import { checkTenantSetup } from "../utils/tenant.server";
+import { AnalyticsTier } from "../components/AnalyticsTier";
 
 // Real chart component using dynamic import to avoid SSR issues
 function SimpleChart({ data }: { data: any[] }) {
@@ -102,6 +103,14 @@ export async function loader(args: LoaderFunctionArgs) {
       undefined,
       shopName,
     );
+    
+    // Get tier status for analytics differentiation
+    const tierStatus = await backendFetch(
+      `/insights/tier-status`,
+      "GET",
+      undefined,
+      shopName,
+    );
     const base = {
       ok: false,
       w,
@@ -120,8 +129,15 @@ export async function loader(args: LoaderFunctionArgs) {
       logs: [],
     };
     const merged = r?.json?.ok
-      ? { ...r.json, logs: logs.json?.rows || [] }
-      : base;
+      ? { 
+          ...r.json, 
+          logs: logs.json?.rows || [],
+          tierStatus: tierStatus?.json || { tier: 'starter', features: {} }
+        }
+      : { 
+          ...base, 
+          tierStatus: tierStatus?.json || { tier: 'starter', features: {} }
+        };
     return json(merged);
   } catch (error) {
     console.error("Insights loader error:", error);
@@ -183,6 +199,8 @@ function InsightsContent() {
   const revalidator = useRevalidator();
   const [toast, setToast] = React.useState<string>("");
   const [isApplying, setIsApplying] = React.useState<boolean>(false);
+  const [showTierAnalytics, setShowTierAnalytics] = React.useState(true);
+  const [realTimeEnabled, setRealTimeEnabled] = React.useState(false);
 
   // Safe data extraction with proper null checks
   const w = React.useMemo(() => {
@@ -222,6 +240,27 @@ function InsightsContent() {
     () => (Array.isArray(data?.logs) ? data.logs : []),
     [data],
   );
+  const retention = React.useMemo(
+    () => data?._retention || null,
+    [data],
+  );
+
+  // Extract tier information
+  const tierStatus = React.useMemo(
+    () => data?.tierStatus || { tier: 'starter', features: {} },
+    [data],
+  );
+
+  const shopName = React.useMemo(() => {
+    // Extract shop name from URL or data
+    const url = new URL(window.location.href);
+    return url.pathname.split('/')[1] || 'demo-shop';
+  }, []);
+
+  // Check if real-time updates are available
+  React.useEffect(() => {
+    setRealTimeEnabled(tierStatus?.features?.realTimeAnalytics || false);
+  }, [tierStatus]);
 
   // Move onApply outside of render loop to prevent infinite re-renders
   const handleApplyAction = React.useCallback(
@@ -273,6 +312,15 @@ function InsightsContent() {
       return () => clearTimeout(timer);
     }
   }, [toast]);
+  const handleUpgrade = React.useCallback((tier: string) => {
+    // Redirect to billing page
+    window.location.href = `/app/billing?upgrade=${tier}`;
+  }, []);
+
+  const handleDataRefresh = React.useCallback(() => {
+    revalidator.revalidate();
+  }, [revalidator]);
+
   return (
     <div>
       <h1
@@ -284,6 +332,19 @@ function InsightsContent() {
       >
         <span>Insights</span>
         <span style={{ display: "inline-flex", gap: 8 }}>
+          <button
+            onClick={() => setShowTierAnalytics(!showTierAnalytics)}
+            style={{
+              padding: "4px 8px",
+              fontSize: "12px",
+              border: "1px solid #ccc",
+              borderRadius: "4px",
+              backgroundColor: showTierAnalytics ? "#007bff" : "white",
+              color: showTierAnalytics ? "white" : "#007bff"
+            }}
+          >
+            {showTierAnalytics ? "Basic View" : "Tier View"}
+          </button>
           <Link to="/app/insights?w=7d">
             <button disabled={w === "7d" || nav.state !== "idle"}>7d</button>
           </Link>
@@ -292,22 +353,88 @@ function InsightsContent() {
           </Link>
         </span>
       </h1>
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(3,minmax(0,1fr))",
-          gap: 12,
-        }}
-      >
-        <Card label="Clicks" value={k.clicks} />
-        <Card label="Cost" value={fmt(k.cost)} />
-        <Card label="Conv." value={k.conversions} />
-        <Card label="Impr." value={k.impressions} />
-        <Card label="CTR" value={pct(k.ctr)} />
-        <Card label="CPC" value={fmt(k.cpc)} />
-        <Card label="CPA" value={fmt(k.cpa)} />
-      </div>
-      <h3 style={{ marginTop: 16 }}>Trend ({w})</h3>
+
+      {/* Tier-aware analytics view */}
+      {showTierAnalytics && (
+        <div style={{ marginBottom: 20 }}>
+          <AnalyticsTier
+            tenant={shopName}
+            data={{
+              kpi: k,
+              roas: data?.roas,
+              series,
+              tierInfo: {
+                tier: tierStatus.tier,
+                refreshInterval: tierStatus.config?.refreshInterval || 300000,
+                realTimeEnabled: realTimeEnabled
+              },
+              upgradePrompts: data?.upgradePrompts
+            }}
+            onDataRefresh={handleDataRefresh}
+            onUpgrade={handleUpgrade}
+          />
+        </div>
+      )}
+      {retention && (
+        <div
+          style={{
+            background: retention.tier === 'starter' ? "#fff3cd" : retention.tier === 'professional' ? "#e7f3ff" : "#d1eddd",
+            border: retention.tier === 'starter' ? "1px solid #ffc107" : retention.tier === 'professional' ? "1px solid #007bff" : "1px solid #28a745",
+            borderRadius: "8px",
+            padding: "12px 16px",
+            marginBottom: "20px",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <div>
+            <strong>Data Retention:</strong> {retention.description} ({retention.tier.toUpperCase()} plan)
+            <br />
+            <small>Data older than {retention.cutoffDate} is not shown</small>
+          </div>
+          {retention.upgradeMessage && (
+            <div>
+              <Link
+                to="/app/billing"
+                style={{
+                  background: "#007bff",
+                  color: "white",
+                  padding: "8px 16px",
+                  textDecoration: "none",
+                  borderRadius: "6px",
+                  fontSize: "14px",
+                  fontWeight: "bold",
+                }}
+              >
+                {retention.upgradeMessage}
+              </Link>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* Basic analytics view (original) */}
+      {!showTierAnalytics && (
+        <>
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(3,minmax(0,1fr))",
+              gap: 12,
+            }}
+          >
+            <Card label="Clicks" value={k.clicks} />
+            <Card label="Cost" value={fmt(k.cost)} />
+            <Card label="Conv." value={k.conversions} />
+            <Card label="Impr." value={k.impressions} />
+            <Card label="CTR" value={pct(k.ctr)} />
+            <Card label="CPC" value={fmt(k.cpc)} />
+            <Card label="CPA" value={fmt(k.cpa)} />
+          </div>
+        </>
+      )}
+      <h3 style={{ marginTop: 16 }}>Trend ({w}){retention ? ` - ${retention.description}` : ''}</h3>
       <SimpleChart data={series} />
       <h3
         style={{

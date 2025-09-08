@@ -53,7 +53,7 @@ export async function action({ request }: ActionFunctionArgs) {
     // Simply mark setup as completed - no configuration needed
     await markSetupCompleted(shopName);
 
-    console.log(`✅ Setup completed for tenant: ${shopName}`);
+    console.log(`Setup completed for tenant: ${shopName}`);
 
     return redirect("/app");
   } catch (error) {
@@ -81,7 +81,7 @@ export default function Setup() {
         }}
       >
         <h1 style={{ margin: "0 0 16px 0", fontSize: "28px", color: "#333" }}>
-          🎉 Welcome to ProofKit!
+          Welcome to ProofKit!
         </h1>
         <p style={{ margin: "0 0 8px 0", fontSize: "18px", color: "#666" }}>
           Setting up for: <strong>{data.shopDomain}</strong>
@@ -127,7 +127,18 @@ export default function Setup() {
             marginBottom: "32px",
           }}
         >
-          <div style={{ fontSize: "64px", marginBottom: "24px" }}>🚀</div>
+          <div style={{ 
+            width: "64px", 
+            height: "64px", 
+            background: "linear-gradient(135deg, #007bff, #0056b3)", 
+            borderRadius: "50%", 
+            display: "flex", 
+            alignItems: "center", 
+            justifyContent: "center", 
+            margin: "0 auto 24px auto", 
+            fontSize: "24px", 
+            color: "white" 
+          }}>✓</div>
           <h2 style={{ margin: "0 0 16px 0", fontSize: "24px", color: "#333" }}>
             You're All Set!
           </h2>
@@ -182,7 +193,7 @@ export default function Setup() {
             transition: "all 0.2s ease",
           }}
         >
-          {isSubmitting ? "⏳ Loading..." : "🎯 Get Started"}
+          {isSubmitting ? "Loading..." : "Get Started"}
         </button>
       </Form>
     </div>

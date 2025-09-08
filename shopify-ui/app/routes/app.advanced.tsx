@@ -22,7 +22,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
   let shopName: string;
   
   try {
-    console.log(`🏪 Advanced page loading for: ${new URL(request.url).searchParams.get('shop') || 'unknown'}`);
+    console.log(`Advanced page loading for: ${new URL(request.url).searchParams.get('shop') || 'unknown'}`);
     
     // Standard Shopify authentication following best practices
     const { session, admin } = await authenticate.admin(request);
@@ -30,11 +30,11 @@ export async function loader({ request }: LoaderFunctionArgs) {
     shopName = session?.shop?.replace(".myshopify.com", "");
 
     if (!shopName) {
-      console.error("❌ No shop name found in session:", session);
+      console.error("No shop name found in session:", session);
       throw new Error("Unable to determine shop name from Shopify session");
     }
 
-    console.log(`🏪 Advanced page authenticated for shop: ${shopName}`);
+    console.log(`Advanced page authenticated for shop: ${shopName}`);
 
     // Check subscription status for advanced features
     const subscriptionInfo = await checkSubscriptionStatus(admin);
@@ -43,7 +43,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     const hasAdvancedAccess = hasFeatureAccess(subscriptionInfo, 'advanced_ai_optimization');
     const hasCustomRules = hasFeatureAccess(subscriptionInfo, 'custom_ai_optimization_rules');
     
-    console.log(`🔐 Advanced feature access for ${shopName}:`, {
+    console.log(`Advanced feature access for ${shopName}:`, {
       hasAdvancedAccess,
       hasCustomRules,
       tier: subscriptionInfo.subscriptionTier
@@ -51,11 +51,11 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
     // If no access to advanced features, redirect to billing (regardless of subscription status)
     if (!hasAdvancedAccess) {
-      console.log(`🔄 Redirecting ${shopName} from advanced page - requires Professional+ plan (current: ${subscriptionInfo.subscriptionTier})`);
+      console.log(`Redirecting ${shopName} from advanced page - requires Professional+ plan (current: ${subscriptionInfo.subscriptionTier})`);
       return redirect("/app/billing?upgrade=professional&feature=advanced_settings");
     }
   } catch (error) {
-    console.error("🚨 Advanced page authentication error:", error);
+    console.error("Advanced page authentication error:", error);
     console.error("Request URL:", request.url);
     
     // Redirect to auth with shop context if possible
@@ -69,12 +69,12 @@ export async function loader({ request }: LoaderFunctionArgs) {
     });
   }
 
-  console.log(`⚙️ Advanced settings loaded for shop: ${shopName}`);
+  console.log(`Advanced settings loaded for shop: ${shopName}`);
 
   try {
     const { backendFetch } = await import("../server/hmac.server");
 
-    console.log(`📡 Fetching data for shop: ${shopName}`);
+    console.log(`Fetching data for shop: ${shopName}`);
 
     // Fetch data with better error handling for each endpoint
     const [cfg, insights, campaigns, summary] = await Promise.allSettled([
@@ -93,7 +93,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     const summaryData =
       summary.status === "fulfilled" ? summary.value.json || {} : {};
 
-    console.log(`✅ Data fetched successfully for ${shopName}:`, {
+    console.log(`Data fetched successfully for ${shopName}:`, {
       configKeys: Object.keys(configData).length,
       hasInsights: !!insightsData.kpi,
       campaignCount: campaignsData.campaigns?.length || 0,
@@ -308,12 +308,12 @@ export async function action({ request }: ActionFunctionArgs) {
     const formShop = String(fd.get("shop") || "").trim();
     if (formShop && formShop.length > 0) {
       shopName = formShop;
-      console.log(`🔧 Using form shop name: ${shopName}`);
+      console.log(`Using form shop name: ${shopName}`);
     } else {
-      console.log(`🔧 Using detected shop name: ${shopName}`);
+      console.log(`Using detected shop name: ${shopName}`);
     }
 
-    console.log(`🔧 Processing action for shop: ${shopName}`);
+    console.log(`Processing action for shop: ${shopName}`);
     const settings: any = {
       AP_SCHEDULE: String(fd.get("schedule") || "off"),
       AP_TARGET_CPA: String(fd.get("target_cpa") || ""),
@@ -359,7 +359,7 @@ export async function action({ request }: ActionFunctionArgs) {
     }
 
     console.log(
-      `✅ Settings saved successfully for ${shopName}:`,
+      `Settings saved successfully for ${shopName}:`,
       saveResult.json,
     );
 
@@ -585,17 +585,17 @@ export default function Advanced() {
       if (skipped) {
         setButtonFeedback((prev) => ({
           ...prev,
-          runOptimization: `⏸️ Skipped: ${actionData.reason || "Not scheduled to run now"}`,
+          runOptimization: `Skipped: ${actionData.reason || "Not scheduled to run now"}`,
         }));
       } else if (planCount > 0) {
         setButtonFeedback((prev) => ({
           ...prev,
-          runOptimization: `✅ Generated ${planCount} optimization${planCount !== 1 ? "s" : ""}, applied ${appliedCount}`,
+          runOptimization: `Generated ${planCount} optimization${planCount !== 1 ? "s" : ""}, applied ${appliedCount}`,
         }));
       } else {
         setButtonFeedback((prev) => ({
           ...prev,
-          runOptimization: `✅ Analysis complete - no optimizations needed right now`,
+          runOptimization: `Analysis complete - no optimizations needed right now`,
         }));
       }
       setTimeout(
@@ -605,8 +605,8 @@ export default function Advanced() {
     } else if (actionData?.ok && nav.formData?.get("save_caps")) {
       // Bid Limits save button response
       const message = actionData.sheetsSuccess
-        ? "✅ Bid limits saved to Google Sheets!"
-        : "✅ Bid limits saved!";
+        ? "Bid limits saved to Google Sheets!"
+        : "Bid limits saved!";
       setButtonFeedback((prev) => ({
         ...prev,
         saveCaps: message,
@@ -618,8 +618,8 @@ export default function Advanced() {
     } else if (actionData?.ok) {
       // Settings save response with sheets status
       const message = actionData.sheetsSuccess
-        ? "✅ Settings saved to Google Sheets & optimization completed!"
-        : "✅ Settings saved & optimization completed!";
+        ? "Settings saved to Google Sheets & optimization completed!"
+        : "Settings saved & optimization completed!";
       setButtonFeedback((prev) => ({
         ...prev,
         runOptimization: message,
@@ -631,7 +631,7 @@ export default function Advanced() {
     } else if (actionData?.applied !== undefined) {
       setButtonFeedback((prev) => ({
         ...prev,
-        seoApply: `✅ Applied ${actionData.applied} SEO changes!`,
+        seoApply: `Applied ${actionData.applied} SEO changes!`,
       }));
       setTimeout(
         () => setButtonFeedback((prev) => ({ ...prev, seoApply: "" })),
@@ -642,7 +642,7 @@ export default function Advanced() {
       const previewCount = actionData.preview?.length || 0;
       setButtonFeedback((prev) => ({
         ...prev,
-        seoPreview: `👁️ Generated ${previewCount} SEO preview${previewCount !== 1 ? "s" : ""}`,
+        seoPreview: `Generated ${previewCount} SEO preview${previewCount !== 1 ? "s" : ""}`,
       }));
       setPreview(actionData.preview || []);
       setTimeout(
@@ -652,7 +652,7 @@ export default function Advanced() {
     } else if (actionData?.updated !== undefined) {
       setButtonFeedback((prev) => ({
         ...prev,
-        tagsApply: `✅ Updated ${actionData.updated} products!`,
+        tagsApply: `Updated ${actionData.updated} products!`,
       }));
       setTimeout(
         () => setButtonFeedback((prev) => ({ ...prev, tagsApply: "" })),
@@ -685,7 +685,7 @@ export default function Advanced() {
     if (field) {
       field.value = suggestion.recommendedValue;
       setAppliedSuggestions((prev) => new Set([...prev, suggestion.type]));
-      setToast(`✨ Applied suggestion: ${suggestion.title}`);
+      setToast(`Applied suggestion: ${suggestion.title}`);
       setTimeout(() => setToast(""), 3000);
     }
   };
@@ -714,7 +714,7 @@ export default function Advanced() {
 
   return (
     <div style={{ maxWidth: 920 }}>
-      <h1>⚙️ Advanced Settings</h1>
+      <h1>Advanced Settings</h1>
       <p style={{ color: "#666", marginBottom: "24px" }}>
         Fine-tune your ProofKit automation and optimize your store's
         performance.
@@ -739,7 +739,7 @@ export default function Advanced() {
               fontWeight: "bold",
             }}
           >
-            ⚠️ Configuration Issue
+            Configuration Issue
           </h4>
           <p style={{ margin: 0, fontSize: "14px" }}>{data.error}</p>
           {data.needsSetup && (
@@ -783,7 +783,7 @@ export default function Advanced() {
               gap: "8px",
             }}
           >
-            💡 Personalized Recommendations
+            Personalized Recommendations
             <span
               style={{
                 fontSize: "14px",
@@ -862,8 +862,8 @@ export default function Advanced() {
                   }}
                 >
                   {appliedSuggestions.has(suggestion.type)
-                    ? "✅ Applied"
-                    : "✨ Apply"}
+                    ? "Applied"
+                    : "Apply"}
                 </button>
               </div>
             ))}
@@ -890,7 +890,7 @@ export default function Advanced() {
               color: "#333",
             }}
           >
-            📊 Current Performance (Last 7 Days)
+            Current Performance (Last 7 Days)
           </h3>
           <div
             style={{
@@ -1008,7 +1008,7 @@ export default function Advanced() {
 
         {/* Performance Targets */}
         <div style={sectionStyle}>
-          <h3 style={legendStyle}>🎯 Performance Targets</h3>
+          <h3 style={legendStyle}>Performance Targets</h3>
           <p style={helpStyle}>
             Choose from personalized options or enter your own values
           </p>
@@ -1022,7 +1022,7 @@ export default function Advanced() {
                   marginBottom: "8px",
                 }}
               >
-                💰 Target Cost Per Acquisition (CPA)
+                Target Cost Per Acquisition (CPA)
               </label>
               <div style={{ ...helpStyle, marginBottom: "8px" }}>
                 {suggestions.targetCPA?.description}
@@ -1115,7 +1115,7 @@ export default function Advanced() {
                   marginBottom: "8px",
                 }}
               >
-                📈 Target Return on Ad Spend (ROAS)
+                Target Return on Ad Spend (ROAS)
               </label>
               <div style={{ ...helpStyle, marginBottom: "8px" }}>
                 {suggestions.targetROAS?.description}
@@ -1217,7 +1217,7 @@ export default function Advanced() {
                   marginBottom: "8px",
                 }}
               >
-                🚀 Quick Setup (Recommended)
+                Quick Setup (Recommended)
               </h4>
               <div style={{ display: "grid", gap: "8px" }}>
                 {suggestions.bidCeiling?.options.map(
@@ -1237,7 +1237,7 @@ export default function Advanced() {
                           campaignInput.value = "*";
                           valueInput.value = option.value;
                           setToast(
-                            `✨ Set ${option.label} bid limit: $${option.value} for all campaigns`,
+                            `Set ${option.label} bid limit: $${option.value} for all campaigns`,
                           );
                           setTimeout(() => setToast(""), 3000);
                         }
@@ -1276,7 +1276,7 @@ export default function Advanced() {
                           fontWeight: "bold",
                         }}
                       >
-                        ✨ Apply
+                        Apply
                       </span>
                     </button>
                   ),
@@ -1293,7 +1293,7 @@ export default function Advanced() {
                   marginBottom: "8px",
                 }}
               >
-                🎯 Campaign-Specific Limits (Optional)
+                Campaign-Specific Limits (Optional)
               </h4>
               <div
                 style={{
@@ -1420,7 +1420,7 @@ export default function Advanced() {
 
         {/* SEO Optimization */}
         <div style={sectionStyle}>
-          <h3 style={legendStyle}>🔍 SEO Optimization</h3>
+          <h3 style={legendStyle}>SEO Optimization</h3>
           <p style={helpStyle}>Improve your product pages for search engines</p>
           <div style={{ display: "grid", gap: 12, marginTop: "12px" }}>
             <div>
@@ -1469,7 +1469,7 @@ export default function Advanced() {
                   defaultChecked
                   style={{ marginRight: "6px" }}
                 />
-                📝 Template (Use your own patterns)
+                Template (Use your own patterns)
               </label>
               <label>
                 <input
@@ -1478,7 +1478,7 @@ export default function Advanced() {
                   value="ai"
                   style={{ marginRight: "6px" }}
                 />
-                🤖 AI (Let AI write descriptions)
+                AI (Let AI write descriptions)
               </label>
             </div>
 
@@ -1552,7 +1552,7 @@ export default function Advanced() {
                   opacity: nav.state !== "idle" ? 0.7 : 1,
                 }}
               >
-                {nav.state !== "idle" ? "⏳ Loading..." : "👁️ Preview Changes"}
+                {nav.state !== "idle" ? "Loading..." : "Preview Changes"}
               </button>
               <button
                 type="submit"
@@ -1569,7 +1569,7 @@ export default function Advanced() {
                   opacity: nav.state !== "idle" ? 0.7 : 1,
                 }}
               >
-                {nav.state !== "idle" ? "⏳ Applying..." : "✅ Apply to Store"}
+                {nav.state !== "idle" ? "Applying..." : "Apply to Store"}
               </button>
               {buttonFeedback.seoPreview && (
                 <span
@@ -1720,7 +1720,7 @@ export default function Advanced() {
 
         {/* AI Instructions */}
         <div style={sectionStyle}>
-          <h3 style={legendStyle}>🤖 AI Behavior Instructions</h3>
+          <h3 style={legendStyle}>AI Behavior Instructions</h3>
           <p style={helpStyle}>
             Choose a business strategy or write custom instructions for the AI
           </p>
@@ -1797,10 +1797,10 @@ export default function Advanced() {
                               }}
                             >
                               {idx === 0
-                                ? "💎 Premium"
+                                ? "Premium"
                                 : idx === 1
-                                  ? "🚀 Growth"
-                                  : "⚖️ Balanced"}
+                                  ? "Growth"
+                                  : "Balanced"}
                             </span>
                           </div>
                           <div
@@ -1924,7 +1924,7 @@ export default function Advanced() {
             border: "1px solid #e1e5e9",
           }}
         >
-          <h3>👁️ SEO Preview</h3>
+          <h3>SEO Preview</h3>
           <p style={helpStyle}>
             Here's how your product pages will look after optimization:
           </p>

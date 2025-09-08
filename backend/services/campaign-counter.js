@@ -5,11 +5,22 @@
 
 import { supabase, isSupabaseEnabled } from './supabase-client.js';
 
+// In-memory campaign tracking for testing/fallback
+const inMemoryCampaigns = new Map(); // tenant -> Set<campaign_name>
+
 /**
  * Get current campaign count for a tenant from stored data
  */
 export async function getCampaignCount(tenant) {
   try {
+    // Check if we have in-memory data first (for testing/when external sources fail)
+    if (inMemoryCampaigns.has(tenant)) {
+      const campaigns = inMemoryCampaigns.get(tenant);
+      const count = campaigns.size;
+      console.log(`📊 Campaign count for ${tenant} from in-memory: ${count}`);
+      return count;
+    }
+
     if (isSupabaseEnabled() && supabase) {
       // Query campaign count from Supabase metrics data
       const { data, error } = await supabase
@@ -38,7 +49,13 @@ export async function getCampaignCount(tenant) {
     
   } catch (error) {
     console.error('Error getting campaign count:', error);
-    return 0; // Safe default
+    
+    // Use in-memory fallback for testing/development
+    console.log(`📊 Using in-memory fallback for ${tenant}`);
+    const campaigns = inMemoryCampaigns.get(tenant) || new Set();
+    const count = campaigns.size;
+    console.log(`📊 In-memory campaign count for ${tenant}: ${count}`);
+    return count;
   }
 }
 
@@ -83,7 +100,13 @@ async function getCampaignCountFromSheets(tenant) {
     
   } catch (error) {
     console.error('Error getting campaign count from Sheets:', error);
-    return 0;
+    
+    // Use in-memory fallback
+    console.log(`📊 Using in-memory fallback for ${tenant} (Sheets failed)`);
+    const campaigns = inMemoryCampaigns.get(tenant) || new Set();
+    const count = campaigns.size;
+    console.log(`📊 In-memory campaign count for ${tenant}: ${count}`);
+    return count;
   }
 }
 
@@ -180,7 +203,21 @@ export async function recordCampaignCreation(tenant, campaignName, userTier) {
     
   } catch (error) {
     console.error('Error recording campaign creation:', error);
+    
+    // Always record in-memory as fallback
+    if (!inMemoryCampaigns.has(tenant)) {
+      inMemoryCampaigns.set(tenant, new Set());
+    }
+    inMemoryCampaigns.get(tenant).add(campaignName);
+    console.log(`📝 In-memory campaign recorded: ${campaignName} for ${tenant}`);
   }
+  
+  // Always record in-memory for consistency
+  if (!inMemoryCampaigns.has(tenant)) {
+    inMemoryCampaigns.set(tenant, new Set());
+  }
+  inMemoryCampaigns.get(tenant).add(campaignName);
+  console.log(`📝 In-memory campaign recorded: ${campaignName} for ${tenant}`);
 }
 
 /**
@@ -225,9 +262,23 @@ export function enforceCampaignLimits() {
   };
 }
 
+/**
+ * Clear in-memory campaigns for a tenant (testing utility)
+ */
+export function clearInMemoryCampaigns(tenant) {
+  if (tenant) {
+    inMemoryCampaigns.delete(tenant);
+    console.log(`🧹 Cleared in-memory campaigns for ${tenant}`);
+  } else {
+    inMemoryCampaigns.clear();
+    console.log(`🧹 Cleared all in-memory campaigns`);
+  }
+}
+
 export default {
   getCampaignCount,
   canCreateCampaign,
   recordCampaignCreation,
-  enforceCampaignLimits
+  enforceCampaignLimits,
+  clearInMemoryCampaigns
 };
