@@ -559,8 +559,7 @@ export {
   requireTier,
   hasFeatureAccess,
   isWithinUsageLimits,
-  getCurrentSubscription,
-  syncSubscriptionStatus
+  getCurrentSubscription
 };
 
 export default {
@@ -570,6 +569,5 @@ export default {
   requireTier,
   hasFeatureAccess,
   isWithinUsageLimits,
-  getCurrentSubscription,
-  syncSubscriptionStatus
+  getCurrentSubscription
 };
