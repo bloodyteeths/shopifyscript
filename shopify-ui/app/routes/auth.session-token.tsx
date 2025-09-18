@@ -12,14 +12,14 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
       throw new Error("Authentication failed - no session or admin context");
     }
     
-    console.log(`✅ Session token validated for shop: ${session.shop}`);
+    console.log(`Session token validated for shop: ${session.shop}`);
     
     // If authentication succeeds, redirect to the original URL
     const url = new URL(request.url);
     const shopifyReload = url.searchParams.get("shopify-reload");
     
     if (shopifyReload) {
-      console.log("🔄 Redirecting to original URL:", shopifyReload);
+      console.log("Redirecting to original URL:", shopifyReload);
       return new Response(null, {
         status: 302,
         headers: { 

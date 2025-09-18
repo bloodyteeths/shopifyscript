@@ -38,7 +38,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
       <html>
         <head><title>Configuration Error</title></head>
         <body>
-          <h1>❌ Configuration Error</h1>
+          <h1>Configuration Error</h1>
           <p>SHOPIFY_API_KEY is not configured in environment variables.</p>
           <p>Please set the real API key in Vercel environment variables.</p>
           <p>Current value: ${apiKey || 'MISSING'}</p>

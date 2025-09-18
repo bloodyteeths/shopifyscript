@@ -137,7 +137,7 @@ export async function action({ request }: ActionFunctionArgs) {
     const currentShopName = session?.shop?.replace(".myshopify.com", "");
 
     if (!currentShopName) {
-      console.error("❌ No shop name found in Shopify session");
+      console.error("No shop name found in Shopify session");
       return json({ success: false, error: "Authentication required" });
     }
 
@@ -204,7 +204,7 @@ ${realScript}
           return json(response);
         } else {
           console.log(
-            `❌ Script validation failed for ${currentShopName}: length=${realScript?.length || 0}, hasHTML=${realScript?.includes("<html") || false}`,
+            `Script validation failed for ${currentShopName}: length=${realScript?.length || 0}, hasHTML=${realScript?.includes("<html") || false}`,
           );
           return json({
             success: false,
@@ -218,7 +218,7 @@ ${realScript}
         }
       } catch (error) {
         console.error(
-          `❌ Action script fetch failed for ${currentShopName}:`,
+          `Action script fetch failed for ${currentShopName}:`,
           error.message,
         );
         return json({ 
@@ -231,7 +231,7 @@ ${realScript}
 
     return json({ success: false, error: "Unknown action type" });
   } catch (authError) {
-    console.error("❌ Autopilot action authentication failed:", authError);
+    console.error("Autopilot action authentication failed:", authError);
     return json({ 
       success: false, 
       error: "Authentication failed - please reload the page" 

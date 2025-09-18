@@ -124,43 +124,43 @@ interface DashboardSettings {
 const WIDGET_TYPES = {
   metric_card: {
     name: 'Metric Card',
-    icon: '📊',
+    icon: 'Chart',
     defaultSize: { w: 3, h: 2, minW: 2, minH: 2 },
     description: 'Display a single metric with trend'
   },
   line_chart: {
     name: 'Line Chart',
-    icon: '📈',
+    icon: 'Line',
     defaultSize: { w: 6, h: 4, minW: 4, minH: 3 },
     description: 'Show trends over time'
   },
   bar_chart: {
     name: 'Bar Chart',
-    icon: '📊',
+    icon: 'Bar',
     defaultSize: { w: 6, h: 4, minW: 4, minH: 3 },
     description: 'Compare values across categories'
   },
   area_chart: {
     name: 'Area Chart',
-    icon: '⛰️',
+    icon: 'Area',
     defaultSize: { w: 8, h: 4, minW: 4, minH: 3 },
     description: 'Filled area chart for cumulative data'
   },
   pie_chart: {
     name: 'Pie Chart',
-    icon: '🥧',
+    icon: 'Pie',
     defaultSize: { w: 4, h: 4, minW: 3, minH: 3 },
     description: 'Show proportional data'
   },
   table: {
     name: 'Data Table',
-    icon: '📋',
+    icon: 'Table',
     defaultSize: { w: 8, h: 4, minW: 4, minH: 3 },
     description: 'Tabular data display'
   },
   kpi_grid: {
     name: 'KPI Grid',
-    icon: '🎯',
+    icon: 'KPI',
     defaultSize: { w: 12, h: 3, minW: 6, minH: 2 },
     description: 'Grid of key performance indicators'
   }

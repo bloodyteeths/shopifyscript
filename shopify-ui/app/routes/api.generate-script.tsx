@@ -4,18 +4,18 @@ import { getServerShopName } from "../utils/shop-config";
 
 export async function action({ request }: ActionFunctionArgs) {
   try {
-    console.log(`🎯 Script generation API called - Method: ${request.method}, URL: ${request.url}`);
+    console.log(`Script generation API called - Method: ${request.method}, URL: ${request.url}`);
     
     const body = await request.json();
     const { mode, budget, cpc, url, shopName } = body;
     
-    console.log(`📝 Request body parsed:`, { mode, budget, cpc, url, shopName });
+    console.log(`Request body parsed:`, { mode, budget, cpc, url, shopName });
 
     // Use shop name from request body or determine from server context
     const currentShopName =
       shopName || getServerShopName(request.headers, request.url);
 
-    console.log(`🔄 Generating script for shop: ${currentShopName}`);
+    console.log(`Generating script for shop: ${currentShopName}`);
 
     // Use the proper backend fetch function with the detected tenant
     const { backendFetchText, backendFetch } = await import(
@@ -32,7 +32,7 @@ export async function action({ request }: ActionFunctionArgs) {
         currentShopName,
       );
       console.log(
-        `✅ Backend fetch completed for ${currentShopName}, script length: ${realScript?.length || 0}`,
+        `Backend fetch completed for ${currentShopName}, script length: ${realScript?.length || 0}`,
       );
       // Bootstrap Sheets tabs by reading config once for this tenant (auto-creates CONFIG_*)
       try {
@@ -42,13 +42,13 @@ export async function action({ request }: ActionFunctionArgs) {
         await backendFetch("/config", "GET", undefined, currentShopName);
       } catch (e) {
         console.log(
-          `⚠️ Config bootstrap call failed for ${currentShopName}:`,
+          `Config bootstrap call failed for ${currentShopName}:`,
           (e as any)?.message || e,
         );
       }
     } catch (error) {
       console.log(
-        `❌ Backend fetch failed for ${currentShopName}:`,
+        `Backend fetch failed for ${currentShopName}:`,
         error.message,
       );
       throw error;
@@ -84,7 +84,7 @@ ${realScript}
         shopName: currentShopName,
       });
     } else {
-      console.log(`❌ Script validation failed - length: ${realScript?.length || 0}, isHTML: ${realScript?.includes("<html") || false}`);
+      console.log(`Script validation failed - length: ${realScript?.length || 0}, isHTML: ${realScript?.includes("<html") || false}`);
       return json({ 
         success: false, 
         error: "Failed to fetch complete script - backend may be returning fallback content",
@@ -96,7 +96,7 @@ ${realScript}
       });
     }
   } catch (error) {
-    console.error(`❌ Script generation error:`, error);
+    console.error(`Script generation error:`, error);
     return json({ 
       success: false, 
       error: error.message || "Unknown error during script generation",

@@ -21,7 +21,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     const shopName = session?.shop?.replace(".myshopify.com", "");
 
     if (!shopName) {
-      console.error("❌ No shop name found in session:", session);
+      console.error("No shop name found in session:", session);
       throw new Error("Unable to determine shop name from Shopify session");
     }
 

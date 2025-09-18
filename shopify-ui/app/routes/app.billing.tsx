@@ -151,9 +151,9 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
           trialDaysRemaining = isInTrial ? Math.ceil((trialEndDate.getTime() - now.getTime()) / (24 * 60 * 60 * 1000)) : 0;
         }
         
-        console.log(`✅ Subscription found: tier=${subscriptionTier}, status=${currentSubscription.status}, trial=${isInTrial}, daysLeft=${trialDaysRemaining}`);
+        console.log(`Subscription found: tier=${subscriptionTier}, status=${currentSubscription.status}, trial=${isInTrial}, daysLeft=${trialDaysRemaining}`);
       } else {
-        console.log(`❌ No active subscription found for shop: ${shopName}`);
+        console.log(`No active subscription found for shop: ${shopName}`);
       }
 
     } catch (error) {
@@ -245,9 +245,9 @@ export default function Billing() {
     // Use the correct URL format from loader
     try {
       window.open(managedPricingUrl, '_blank');
-      console.log('✅ Opened pricing page in new tab');
+      console.log('Opened pricing page in new tab');
     } catch (error) {
-      console.error('❌ Failed to open pricing page:', error);
+      console.error('Failed to open pricing page:', error);
       
       // Show instructions to user
       alert(`Please visit your Shopify admin and go to:\nSettings → Apps → ProofKit\n\nOr visit: ${managedPricingUrl}`);
@@ -356,7 +356,7 @@ export default function Billing() {
           borderRadius: "8px", 
           marginBottom: "32px"
         }}>
-          <h3 style={{ margin: "0 0 16px 0" }}>✅ Active Subscription</h3>
+          <h3 style={{ margin: "0 0 16px 0" }}>Active Subscription</h3>
           <div style={{ marginBottom: "16px" }}>
             <p style={{ margin: "0 0 8px 0", fontSize: "16px" }}>
               <strong>Current Plan:</strong> {tier?.name || 'Unknown'} (${tier?.price}/month)

@@ -105,7 +105,7 @@ export function ShopSetupTest() {
             cursor: "pointer",
           }}
         >
-          🗑️ Clear Storage (Reset Test)
+          Clear Storage (Reset Test)
         </button>
         <button
           onClick={refreshStatus}
@@ -120,7 +120,7 @@ export function ShopSetupTest() {
             cursor: "pointer",
           }}
         >
-          🔄 Refresh Status
+          Refresh Status
         </button>
       </div>
 
@@ -134,8 +134,8 @@ export function ShopSetupTest() {
         <div style={{ display: "flex", gap: "12px" }}>
           {[
             { key: "banner", label: "🏪 Setup Banner" },
-            { key: "config", label: "⚙️ Shop Config" },
-            { key: "input", label: "📝 Name Input" },
+            { key: "config", label: "Shop Config" },
+            { key: "input", label: "Name Input" },
           ].map(({ key, label }) => (
             <label
               key={key}
@@ -249,7 +249,7 @@ export function ShopSetupTest() {
                   >
                     <div>"{value}"</div>
                     <div style={{ fontSize: "12px", marginTop: "4px" }}>
-                      {isValid ? "✅ Valid" : "❌ Invalid"}
+                      {isValid ? "Valid" : "Invalid"}
                     </div>
                   </div>
                 );

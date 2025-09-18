@@ -16,11 +16,11 @@ export default function Terms() {
       <strong>Last Updated:</strong> August 25, 2025<br />
       <strong>Version:</strong> 1.0</p>
 
-      <h2>📋 Agreement Overview</h2>
+      <h2>Agreement Overview</h2>
       
       <p>These Terms of Service ("Terms") govern your use of Ads Autopilot AI ("the App", "the Service") provided by the Ads Autopilot AI team ("we", "us", "our"). By installing, accessing, or using Ads Autopilot AI, you ("Merchant", "you", "your") agree to be bound by these Terms.</p>
 
-      <h2>🎯 Service Description</h2>
+      <h2>Service Description</h2>
 
       <h3>What Ads Autopilot AI Does</h3>
       <p>Ads Autopilot AI is a Shopify app that provides:</p>
@@ -39,7 +39,7 @@ export default function Terms() {
         <li><strong>Geographic Availability:</strong> Global service with regional data compliance</li>
       </ul>
 
-      <h2>📝 Account Terms</h2>
+      <h2>Account Terms</h2>
 
       <h3>Eligibility</h3>
       <p>To use Ads Autopilot AI, you must:</p>
@@ -59,7 +59,7 @@ export default function Terms() {
         <li>Keeping your contact information current and accurate</li>
       </ul>
 
-      <h2>💰 Pricing and Billing</h2>
+      <h2>Pricing and Billing</h2>
 
       <h3>Subscription Plans</h3>
       <p><strong>Free Plan:</strong></p>
@@ -93,7 +93,7 @@ export default function Terms() {
         <li><strong>Price Changes:</strong> 30-day advance notice for any price changes</li>
       </ul>
 
-      <h2>🔒 Data and Privacy</h2>
+      <h2>Data and Privacy</h2>
 
       <h3>Data Handling</h3>
       <p>Ads Autopilot AI follows strict data minimization principles:</p>
@@ -113,7 +113,7 @@ export default function Terms() {
         <li>Process campaign optimization data</li>
       </ul>
 
-      <h2>✅ Acceptable Use</h2>
+      <h2>Acceptable Use</h2>
 
       <h3>Permitted Uses</h3>
       <p>You may use Ads Autopilot AI to:</p>
@@ -127,15 +127,15 @@ export default function Terms() {
       <h3>Prohibited Uses</h3>
       <p>You may not use Ads Autopilot AI to:</p>
       <ul>
-        <li>❌ Violate any applicable laws or regulations</li>
-        <li>❌ Infringe on intellectual property rights</li>
-        <li>❌ Attempt to reverse engineer the service</li>
-        <li>❌ Use the service for malicious or fraudulent purposes</li>
-        <li>❌ Interfere with service operations or security</li>
-        <li>❌ Share access credentials with unauthorized parties</li>
+        <li>Violate any applicable laws or regulations</li>
+        <li>Infringe on intellectual property rights</li>
+        <li>Attempt to reverse engineer the service</li>
+        <li>Use the service for malicious or fraudulent purposes</li>
+        <li>Interfere with service operations or security</li>
+        <li>Share access credentials with unauthorized parties</li>
       </ul>
 
-      <h2>🎯 Service Limitations</h2>
+      <h2>Service Limitations</h2>
 
       <h3>Technical Limitations</h3>
       <ul>
@@ -153,7 +153,7 @@ export default function Terms() {
         <li><strong>Internet Connectivity:</strong> Reliable internet connection required</li>
       </ul>
 
-      <h2>🔧 Support and Maintenance</h2>
+      <h2>Support and Maintenance</h2>
 
       <h3>Support Services</h3>
       <ul>
@@ -171,7 +171,7 @@ export default function Terms() {
         <li><strong>Feature Updates:</strong> New features rolled out with documentation</li>
       </ul>
 
-      <h2>⚖️ Liability and Disclaimers</h2>
+      <h2>Liability and Disclaimers</h2>
 
       <h3>Service Warranty</h3>
       <p>Ads Autopilot AI is provided "as is" with the following disclaimers:</p>
@@ -189,7 +189,7 @@ export default function Terms() {
         <li><strong>Service Interruptions:</strong> Service credits for extended downtime</li>
       </ul>
 
-      <h2>🚪 Termination</h2>
+      <h2>Termination</h2>
 
       <h3>Termination by You</h3>
       <p>You may terminate your subscription at any time by:</p>
@@ -217,7 +217,7 @@ export default function Terms() {
         <li>No refunds for partial billing periods</li>
       </ul>
 
-      <h2>📜 Legal Terms</h2>
+      <h2>Legal Terms</h2>
 
       <h3>Intellectual Property</h3>
       <ul>
@@ -234,7 +234,7 @@ export default function Terms() {
         <li><strong>Class Action Waiver:</strong> No class action lawsuits permitted</li>
       </ul>
 
-      <h2>🔄 Changes to Terms</h2>
+      <h2>Changes to Terms</h2>
       <p>We may update these Terms of Service from time to time. We will:</p>
       <ul>
         <li>Provide 30-day advance notice of material changes</li>
@@ -243,7 +243,7 @@ export default function Terms() {
         <li>Maintain version history of all changes</li>
       </ul>
 
-      <h2>📞 Contact Information</h2>
+      <h2>Contact Information</h2>
       <p><strong>General Support:</strong> atanrikulu@e-listele.com<br />
       <strong>Legal Questions:</strong> atanrikulu@e-listele.com<br />
       <strong>Billing Issues:</strong> atanrikulu@e-listele.com<br />

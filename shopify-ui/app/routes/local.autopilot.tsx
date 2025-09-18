@@ -243,7 +243,7 @@ Tenant: proofkit`;
         }}
       >
         <h4 style={{ margin: "0 0 8px 0", color: "#0c5460" }}>
-          🤖 Autopilot Status
+          Autopilot Status
         </h4>
         <div
           style={{
@@ -262,7 +262,7 @@ Tenant: proofkit`;
               fontSize: "12px",
             }}
           >
-            ✅ ALWAYS ON
+            ALWAYS ON
           </span>
           <span>
             Automation running for: <strong>proofkit</strong>
@@ -291,7 +291,7 @@ Tenant: proofkit`;
             fontSize: "16px",
           }}
         >
-          🔄 Generate Current Script
+          Generate Current Script
         </button>
       </div>
       {showScript && (
@@ -329,7 +329,7 @@ Tenant: proofkit`;
                 cursor: "pointer",
               }}
             >
-              📋 Copy Script
+              Copy Script
             </button>
           </div>
           <textarea

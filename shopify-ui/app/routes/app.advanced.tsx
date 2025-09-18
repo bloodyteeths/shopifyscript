@@ -345,7 +345,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
     if (!saveResult.json?.ok) {
       console.error(
-        `❌ Failed to save settings for ${shopName}:`,
+        `Failed to save settings for ${shopName}:`,
         saveResult.json,
       );
       return json(
@@ -570,7 +570,7 @@ export default function Advanced() {
       console.error("Action returned error:", actionData.error);
       setButtonFeedback((prev) => ({
         ...prev,
-        runOptimization: `❌ Error: ${actionData.error}`,
+        runOptimization: `Error: ${actionData.error}`,
       }));
       setTimeout(
         () => setButtonFeedback((prev) => ({ ...prev, runOptimization: "" })),

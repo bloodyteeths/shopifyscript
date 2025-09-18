@@ -25,7 +25,7 @@ export default function IntentOSComingSoon() {
       {/* Hero Section */}
       <div style={{ marginBottom: "3rem" }}>
         <h1 style={{ fontSize: "48px", marginBottom: "1rem", color: "#333" }}>
-          🚀 Smart Website Features
+          Smart Website Features
         </h1>
         <p style={{ fontSize: "24px", color: "#666", marginBottom: "2rem" }}>
           Advanced conversion optimization tools coming soon!
@@ -92,7 +92,7 @@ export default function IntentOSComingSoon() {
             }}
           >
             <h3 style={{ color: "#007bff", marginBottom: "1rem" }}>
-              🎁 Welcome Offers
+              Welcome Offers
             </h3>
             <p style={{ color: "#666", fontSize: "14px" }}>
               Show special discounts to first-time visitors to convert them into
@@ -109,7 +109,7 @@ export default function IntentOSComingSoon() {
             }}
           >
             <h3 style={{ color: "#856404", marginBottom: "1rem" }}>
-              🎯 Smart Content
+              Smart Content
             </h3>
             <p style={{ color: "#666", fontSize: "14px" }}>
               Show different headlines and messages based on how visitors found
@@ -147,7 +147,7 @@ export default function IntentOSComingSoon() {
         }}
       >
         <h2 style={{ color: "#0c5460", marginBottom: "1rem" }}>
-          🎯 Our Current Focus
+          Our Current Focus
         </h2>
         <p style={{ fontSize: "18px", color: "#0c5460", marginBottom: "2rem" }}>
           We're focusing on perfecting your{" "}
@@ -191,7 +191,7 @@ export default function IntentOSComingSoon() {
               display: "block",
             }}
           >
-            ⚙️ Configure Settings
+            Configure Settings
           </Link>
 
           <Link
@@ -207,7 +207,7 @@ export default function IntentOSComingSoon() {
               display: "block",
             }}
           >
-            📊 View Performance
+            View Performance
           </Link>
         </div>
       </div>
@@ -222,7 +222,7 @@ export default function IntentOSComingSoon() {
         }}
       >
         <h3 style={{ marginBottom: "1rem", color: "#333" }}>
-          💡 Why We're Building This Step by Step
+          Why We're Building This Step by Step
         </h3>
         <ul style={{ color: "#666", lineHeight: "1.6", paddingLeft: "20px" }}>
           <li>

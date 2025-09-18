@@ -335,7 +335,7 @@ export function ShopConfig({
                 fontWeight: "bold",
               }}
             >
-              🔄 Reset to Default
+              Reset to Default
             </button>
           </div>
 

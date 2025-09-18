@@ -16,20 +16,20 @@ export default function Privacy() {
       <strong>Last Updated:</strong> August 25, 2025<br />
       <strong>Version:</strong> 1.0</p>
 
-      <h2>📋 Executive Summary</h2>
+      <h2>Executive Summary</h2>
       
       <p>Ads Autopilot AI is committed to protecting your privacy and maintaining the highest standards of data protection. This Privacy Policy explains our privacy-by-design approach, minimal data collection practices, and your rights regarding any information we process.</p>
 
       <h3>Key Privacy Principles:</h3>
       <ul>
-        <li>✅ <strong>Data Minimization:</strong> We collect only what's absolutely necessary</li>
-        <li>✅ <strong>No Customer PII:</strong> We don't collect personal information from your customers</li>
-        <li>✅ <strong>Merchant Control:</strong> You maintain full control over your data</li>
-        <li>✅ <strong>Transparency:</strong> Clear documentation of all data handling practices</li>
-        <li>✅ <strong>Compliance:</strong> GDPR, CCPA, and global privacy regulation compliance</li>
+        <li><strong>Data Minimization:</strong> We collect only what's absolutely necessary</li>
+        <li><strong>No Customer PII:</strong> We don't collect personal information from your customers</li>
+        <li><strong>Merchant Control:</strong> You maintain full control over your data</li>
+        <li><strong>Transparency:</strong> Clear documentation of all data handling practices</li>
+        <li><strong>Compliance:</strong> GDPR, CCPA, and global privacy regulation compliance</li>
       </ul>
 
-      <h2>🎯 Information We Collect</h2>
+      <h2>Information We Collect</h2>
 
       <h3>Merchant Account Information</h3>
       <p><strong>When You Install Ads Autopilot AI:</strong></p>
@@ -61,27 +61,27 @@ export default function Privacy() {
 
       <p><strong>What We DON'T Do:</strong></p>
       <ul>
-        <li>❌ Store product data outside of your store</li>
-        <li>❌ Share product information with third parties</li>
-        <li>❌ Modify or update your product information</li>
-        <li>❌ Use product data for competitive analysis</li>
+        <li>Store product data outside of your store</li>
+        <li>Share product information with third parties</li>
+        <li>Modify or update your product information</li>
+        <li>Use product data for competitive analysis</li>
       </ul>
 
-      <h2>❌ Information We DON'T Collect</h2>
+      <h2>Information We DON'T Collect</h2>
 
       <h3>Customer Personal Information</h3>
       <p><strong>We Explicitly Do NOT Collect:</strong></p>
       <ul>
-        <li>❌ Customer names, emails, or contact information</li>
-        <li>❌ Customer addresses or shipping information</li>
-        <li>❌ Phone numbers or personal identifiers</li>
-        <li>❌ Payment or credit card information</li>
-        <li>❌ Purchase history or order details</li>
-        <li>❌ Customer browsing behavior or preferences</li>
-        <li>❌ Individual customer demographic data</li>
+        <li>Customer names, emails, or contact information</li>
+        <li>Customer addresses or shipping information</li>
+        <li>Phone numbers or personal identifiers</li>
+        <li>Payment or credit card information</li>
+        <li>Purchase history or order details</li>
+        <li>Customer browsing behavior or preferences</li>
+        <li>Individual customer demographic data</li>
       </ul>
 
-      <h2>🔒 How We Protect Your Information</h2>
+      <h2>How We Protect Your Information</h2>
 
       <h3>Technical Security Measures</h3>
       <p><strong>Encryption & Transport Security:</strong></p>
@@ -92,7 +92,7 @@ export default function Privacy() {
         <li><strong>Database Encryption:</strong> All stored data encrypted at rest</li>
       </ul>
 
-      <h2>🛡️ Your Privacy Rights</h2>
+      <h2>Your Privacy Rights</h2>
 
       <h3>Data Access & Control</h3>
       <p><strong>Right to Access:</strong></p>
@@ -111,7 +111,7 @@ export default function Privacy() {
         <li>Confirmation of deletion completion</li>
       </ul>
 
-      <h2>🌐 Third-Party Integrations</h2>
+      <h2>Third-Party Integrations</h2>
 
       <h3>Google Services Integration</h3>
       <p><strong>Google Sheets API:</strong></p>
@@ -130,7 +130,7 @@ export default function Privacy() {
         <li><strong>Data Processing:</strong> Scripts run in your Google Ads account</li>
       </ul>
 
-      <h2>🌍 International Data Transfers</h2>
+      <h2>International Data Transfers</h2>
 
       <h3>Regional Compliance</h3>
       <p><strong>GDPR Compliance (EU/UK):</strong></p>
@@ -149,13 +149,13 @@ export default function Privacy() {
         <li><strong>Data Categories:</strong> Clear disclosure of all data categories collected</li>
       </ul>
 
-      <h2>👶 Children's Privacy</h2>
+      <h2>Children's Privacy</h2>
       <p>Ads Autopilot AI is not intended for use by individuals under 13 years of age. We do not knowingly collect personal information from children. If you believe we have inadvertently collected such information, please contact us immediately.</p>
 
-      <h2>🔄 Privacy Policy Updates</h2>
+      <h2>Privacy Policy Updates</h2>
       <p>We may update this Privacy Policy from time to time. We will notify you of any material changes by email and through the Ads Autopilot AI app. Your continued use of Ads Autopilot AI after such modifications constitutes your acceptance of the updated Privacy Policy.</p>
 
-      <h2>📞 Contact Information</h2>
+      <h2>Contact Information</h2>
       <p><strong>Privacy Questions:</strong> atanrikulu@e-listele.com<br />
       <strong>Data Subject Requests:</strong> atanrikulu@e-listele.com<br />
       <strong>Security Incidents:</strong> atanrikulu@e-listele.com<br />

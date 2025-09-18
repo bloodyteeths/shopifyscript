@@ -419,11 +419,11 @@ export default function Support() {
         </div>
       )}
 
-      <h2>📞 Direct Contact Information</h2>
+      <h2>Direct Contact Information</h2>
 
       <div style={{ display: "grid", gridTemplateColumns: tier === "enterprise" ? "1fr 1fr 1fr" : "1fr 1fr", gap: "2rem", margin: "2rem 0" }}>
         <div style={{ padding: "1.5rem", border: "1px solid #e5e7eb", borderRadius: "8px" }}>
-          <h3>✉️ Email Support</h3>
+          <h3>Email Support</h3>
           <p><strong>Email:</strong> {contactMethods.support_email}<br />
           <strong>Response Time:</strong> {contactMethods.guaranteed_response_hours} hours<br />
           <strong>Hours:</strong> Monday-Friday, 9 AM - 6 PM EST</p>
@@ -432,7 +432,7 @@ export default function Support() {
 
         {tier === "enterprise" && (
           <div style={{ padding: "1.5rem", border: "2px solid #f59e0b", borderRadius: "8px", backgroundColor: "#fef3e3" }}>
-            <h3>📞 Phone Support</h3>
+            <h3>Phone Support</h3>
             <p><strong>Phone:</strong> (307) 395-9830<br />
             <strong>Response Time:</strong> Immediate<br />
             <strong>Hours:</strong> Monday-Friday, 9 AM - 6 PM EST</p>
@@ -441,7 +441,7 @@ export default function Support() {
         )}
 
         <div style={{ padding: "1.5rem", border: "1px solid #e5e7eb", borderRadius: "8px" }}>
-          <h3>💳 Billing & Accounts</h3>
+          <h3>Billing & Accounts</h3>
           <p><strong>Email:</strong> billing@proofkit.com<br />
           <strong>Response Time:</strong> {tier === "enterprise" ? "4" : tier === "professional" ? "6" : "24"} hours<br />
           <strong>Hours:</strong> Monday-Friday, 9 AM - 6 PM EST</p>
@@ -449,7 +449,7 @@ export default function Support() {
         </div>
       </div>
 
-      <h2>🚀 Getting Started</h2>
+      <h2>Getting Started</h2>
 
       <h3>Quick Setup Guide (5 Minutes)</h3>
       <ol>
@@ -462,14 +462,14 @@ export default function Support() {
 
       <h3>Key Features</h3>
       <ul>
-        <li><strong>🤖 AI-Powered Optimization:</strong> Automated Google Ads campaign management</li>
-        <li><strong>👥 Smart Audience Targeting:</strong> Anonymous customer segmentation without PII</li>
-        <li><strong>📊 Performance Analytics:</strong> Real-time conversion tracking and insights</li>
-        <li><strong>📝 Google Sheets Integration:</strong> Export data and manage campaigns</li>
-        <li><strong>🔒 Privacy-First:</strong> GDPR & CCPA compliant, no customer data collection</li>
+        <li><strong>AI-Powered Optimization:</strong> Automated Google Ads campaign management</li>
+        <li><strong>Smart Audience Targeting:</strong> Anonymous customer segmentation without PII</li>
+        <li><strong>Performance Analytics:</strong> Real-time conversion tracking and insights</li>
+        <li><strong>Google Sheets Integration:</strong> Export data and manage campaigns</li>
+        <li><strong>Privacy-First:</strong> GDPR & CCPA compliant, no customer data collection</li>
       </ul>
 
-      <h2>📚 Documentation & Resources</h2>
+      <h2>Documentation & Resources</h2>
 
       <h3>Setup Guides</h3>
       <ul>
@@ -487,7 +487,7 @@ export default function Support() {
         <li><strong>Account Problems:</strong> Login, access, and configuration troubleshooting</li>
       </ul>
 
-      <h2>💰 Pricing & Plans</h2>
+      <h2>Pricing & Plans</h2>
 
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "1rem", margin: "2rem 0" }}>
         <div style={{ padding: "1.5rem", border: "1px solid #e5e7eb", borderRadius: "8px", textAlign: "center" }}>
@@ -532,7 +532,7 @@ export default function Support() {
         </div>
       </div>
 
-      <h2>🔧 Technical Support</h2>
+      <h2>Technical Support</h2>
 
       <h3>System Requirements</h3>
       <ul>
@@ -550,7 +550,7 @@ export default function Support() {
         <li><strong>Privacy Compliance:</strong> Fully GDPR and CCPA compliant by design</li>
       </ul>
 
-      <h2>🛡️ Privacy & Security</h2>
+      <h2>Privacy & Security</h2>
 
       <h3>Data Protection</h3>
       <ul>
@@ -568,7 +568,7 @@ export default function Support() {
         <li><strong>Data Processing Agreements:</strong> Available for enterprise customers</li>
       </ul>
 
-      <h2>📈 Performance & Optimization</h2>
+      <h2>Performance & Optimization</h2>
 
       <h3>Expected Results</h3>
       <ul>
@@ -586,7 +586,7 @@ export default function Support() {
         <li><strong>A/B Testing:</strong> Use built-in testing features to optimize campaigns</li>
       </ul>
 
-      <h2>🎓 Training & Onboarding</h2>
+      <h2>Training & Onboarding</h2>
 
       <h3>Available Resources</h3>
       <ul>
@@ -605,7 +605,7 @@ export default function Support() {
         <li><strong>Performance Reviews:</strong> Regular optimization strategy sessions</li>
       </ul>
 
-      <h2>🔄 Updates & Maintenance</h2>
+      <h2>Updates & Maintenance</h2>
 
       <h3>Service Updates</h3>
       <ul>

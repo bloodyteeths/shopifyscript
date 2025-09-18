@@ -141,7 +141,7 @@ export function ShopSetupBanner({
           }
           title="Skip setup for now"
         >
-          ✕
+          ×
         </button>
       )}
 
@@ -159,7 +159,7 @@ export function ShopSetupBanner({
               marginBottom: "12px",
             }}
           >
-            ✅
+            Success
           </div>
           <h3
             style={{
@@ -199,7 +199,7 @@ export function ShopSetupBanner({
                 lineHeight: "1",
               }}
             >
-              🏪
+              Store
             </div>
             <div style={{ flex: 1 }}>
               <h2
@@ -310,7 +310,7 @@ export function ShopSetupBanner({
                       : "0 2px 8px rgba(40, 167, 69, 0.3)",
                 }}
               >
-                {isLoading ? <>⏳ Saving...</> : <>🚀 Save & Continue</>}
+                {isLoading ? <>Saving...</> : <>Save & Continue</>}
               </button>
             </div>
 
@@ -329,7 +329,7 @@ export function ShopSetupBanner({
                   gap: "8px",
                 }}
               >
-                <span>⚠️</span>
+                <span>Warning</span>
                 {error}
               </div>
             )}
@@ -363,7 +363,7 @@ export function ShopSetupBanner({
                 gap: "12px",
               }}
             >
-              <span style={{ fontSize: "20px" }}>💡</span>
+              <span style={{ fontSize: "20px" }}>Info</span>
               <div
                 style={{
                   fontSize: "14px",
