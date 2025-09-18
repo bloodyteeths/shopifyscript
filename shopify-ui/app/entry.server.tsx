@@ -36,9 +36,11 @@ export default function handleRequest(
   context: EntryContext,
 ) {
   try {
+    console.log('🔄 Starting server-side render for:', request.url);
     const markup = renderToString(
       <RemixServer context={context} url={request.url} />,
     );
+    console.log('✅ Server-side render completed successfully');
     headers.set("Content-Type", "text/html");
     // Prevent stale HTML -> stale manifest causing 404s on route chunks
     headers.set(

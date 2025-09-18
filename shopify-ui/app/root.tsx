@@ -20,19 +20,32 @@ export const links: LinksFunction = () => [
 ];
 
 export default function App() {
-  const shopContext = useShopContext();
+  console.log('🔄 App component initializing...');
+  
+  let shopContext;
+  try {
+    shopContext = useShopContext();
+    console.log('✅ Shop context loaded');
+  } catch (error) {
+    console.error('❌ Shop context error:', error);
+    shopContext = null;
+  }
+  
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   
   // Handle unhandled promise rejections globally to prevent serverless crashes
   React.useEffect(() => {
+    console.log('🔄 Setting up global error handlers...');
     const handleUnhandledRejection = (event: PromiseRejectionEvent) => {
-      console.error('Global unhandled promise rejection:', event.reason);
+      console.error('🚨 Global unhandled promise rejection:', event.reason);
+      console.error('🚨 Event details:', event);
       // Prevent the default behavior which crashes the Node.js process
       event.preventDefault();
     };
     
     if (typeof window !== 'undefined') {
       window.addEventListener('unhandledrejection', handleUnhandledRejection);
+      console.log('✅ Client-side error handlers registered');
       return () => {
         window.removeEventListener('unhandledrejection', handleUnhandledRejection);
       };
