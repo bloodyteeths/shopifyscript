@@ -11,7 +11,7 @@ import {
 import type { LinksFunction } from "@remix-run/node";
 import polarisStyles from "@shopify/polaris/build/esm/styles.css";
 import { AppProvider } from "@shopify/polaris";
-import { useShopContext, buildAppUrl } from "./utils/navigation";
+// import { useShopContext, buildAppUrl } from "./utils/navigation"; // Temporarily disabled for debugging
 // Avoid importing JSON locales on Node 22 without import attributes; use empty i18n
 const en: any = {};
 
@@ -22,14 +22,15 @@ export const links: LinksFunction = () => [
 export default function App() {
   console.log('🔄 App component initializing...');
   
-  let shopContext;
-  try {
-    shopContext = useShopContext();
-    console.log('✅ Shop context loaded');
-  } catch (error) {
-    console.error('❌ Shop context error:', error);
-    shopContext = null;
-  }
+  // let shopContext;
+  // try {
+  //   shopContext = useShopContext();
+  //   console.log('✅ Shop context loaded');
+  // } catch (error) {
+  //   console.error('❌ Shop context error:', error);
+  //   shopContext = null;
+  // }
+  const shopContext = null; // Temporarily disabled for debugging
   
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   

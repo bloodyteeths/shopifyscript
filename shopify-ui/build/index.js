@@ -106265,55 +106265,19 @@ __export(root_exports, {
   default: () => App,
   links: () => links
 });
-var import_react3 = __toESM(require_react()), import_react4 = __toESM(require_dist2());
+var import_react2 = __toESM(require_react()), import_react3 = __toESM(require_dist2());
 
 // ../node_modules/@shopify/polaris/build/esm/styles.css
 var styles_default = "/assets/_assets/styles-62I325MT.css";
 
 // app/root.tsx
-var import_polaris = __toESM(require_cjs3());
-
-// app/utils/navigation.tsx
-var import_react2 = __toESM(require_dist2());
-function useShopContext() {
-  let location = (0, import_react2.useLocation)(), searchParams = new URLSearchParams(location.search), urlShop = searchParams.get("shop"), urlHost = searchParams.get("host"), fallbackShop = null;
-  return typeof window < "u" && (fallbackShop = document.getElementById("__shop")?.getAttribute("data-shop-name")), {
-    shop: urlShop || (fallbackShop ? `${fallbackShop}.myshopify.com` : null),
-    host: urlHost,
-    embedded: searchParams.get("embedded"),
-    hmac: searchParams.get("hmac"),
-    session: searchParams.get("session"),
-    id_token: searchParams.get("id_token"),
-    timestamp: searchParams.get("timestamp"),
-    locale: searchParams.get("locale")
-  };
-}
-function buildAppUrl(path, shopContext) {
-  if (!shopContext)
-    return path;
-  let url = new URL(path, "https://example.com"), criticalParams = ["shop", "host", "embedded", "hmac", "session"];
-  return criticalParams.forEach((key) => {
-    let value = shopContext[key];
-    value && url.searchParams.set(key, value);
-  }), Object.entries(shopContext).forEach(([key, value]) => {
-    value && !criticalParams.includes(key) && url.searchParams.set(key, value);
-  }), `${url.pathname}${url.search}`;
-}
-
-// app/root.tsx
-var import_jsx_runtime2 = __toESM(require_jsx_runtime()), en = {}, links = () => [
+var import_polaris = __toESM(require_cjs3()), import_jsx_runtime2 = __toESM(require_jsx_runtime()), en = {}, links = () => [
   { rel: "stylesheet", href: styles_default }
 ];
 function App() {
   console.log("\u{1F504} App component initializing...");
-  let shopContext;
-  try {
-    shopContext = useShopContext(), console.log("\u2705 Shop context loaded");
-  } catch (error) {
-    console.error("\u274C Shop context error:", error), shopContext = null;
-  }
-  let [mobileMenuOpen, setMobileMenuOpen] = (0, import_react3.useState)(!1);
-  return import_react3.default.useEffect(() => {
+  let shopContext = null, [mobileMenuOpen, setMobileMenuOpen] = (0, import_react2.useState)(!1);
+  return import_react2.default.useEffect(() => {
     console.log("\u{1F504} Setting up global error handlers...");
     let handleUnhandledRejection = (event) => {
       console.error("\u{1F6A8} Global unhandled promise rejection:", event.reason), console.error("\u{1F6A8} Event details:", event), event.preventDefault();
@@ -106326,8 +106290,8 @@ function App() {
     /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("head", { children: [
       /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("meta", { charSet: "utf-8" }),
       /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("meta", { name: "viewport", content: "width=device-width, initial-scale=1" }),
-      /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(import_react4.Meta, {}),
-      /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(import_react4.Links, {}),
+      /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(import_react3.Meta, {}),
+      /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(import_react3.Links, {}),
       /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("style", { dangerouslySetInnerHTML: {
         __html: `
             @media (max-width: 768px) {
@@ -106461,7 +106425,7 @@ function App() {
                         },
                         children: [
                           /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("li", { children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
-                            import_react4.NavLink,
+                            import_react3.NavLink,
                             {
                               to: buildAppUrl("/app/", shopContext),
                               style: {
@@ -106478,7 +106442,7 @@ function App() {
                             }
                           ) }),
                           /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("li", { children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
-                            import_react4.NavLink,
+                            import_react3.NavLink,
                             {
                               to: buildAppUrl("/app/autopilot", shopContext),
                               style: {
@@ -106495,7 +106459,7 @@ function App() {
                             }
                           ) }),
                           /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("li", { children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
-                            import_react4.NavLink,
+                            import_react3.NavLink,
                             {
                               to: buildAppUrl("/app/insights", shopContext),
                               style: {
@@ -106512,7 +106476,7 @@ function App() {
                             }
                           ) }),
                           /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("li", { children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
-                            import_react4.NavLink,
+                            import_react3.NavLink,
                             {
                               to: buildAppUrl("/app/advanced", shopContext),
                               style: {
@@ -106537,7 +106501,7 @@ function App() {
                                 borderTop: "1px solid #e1e3e5"
                               },
                               children: /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)(
-                                import_react4.NavLink,
+                                import_react3.NavLink,
                                 {
                                   to: "/app/intent-os",
                                   style: {
@@ -106625,7 +106589,7 @@ function App() {
                         },
                         children: [
                           /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("li", { children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
-                            import_react4.NavLink,
+                            import_react3.NavLink,
                             {
                               to: buildAppUrl("/app/", shopContext),
                               onClick: () => setMobileMenuOpen(!1),
@@ -106643,7 +106607,7 @@ function App() {
                             }
                           ) }),
                           /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("li", { children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
-                            import_react4.NavLink,
+                            import_react3.NavLink,
                             {
                               to: buildAppUrl("/app/autopilot", shopContext),
                               onClick: () => setMobileMenuOpen(!1),
@@ -106661,7 +106625,7 @@ function App() {
                             }
                           ) }),
                           /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("li", { children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
-                            import_react4.NavLink,
+                            import_react3.NavLink,
                             {
                               to: buildAppUrl("/app/insights", shopContext),
                               onClick: () => setMobileMenuOpen(!1),
@@ -106679,7 +106643,7 @@ function App() {
                             }
                           ) }),
                           /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("li", { children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
-                            import_react4.NavLink,
+                            import_react3.NavLink,
                             {
                               to: buildAppUrl("/app/advanced", shopContext),
                               onClick: () => setMobileMenuOpen(!1),
@@ -106705,7 +106669,7 @@ function App() {
                                 borderTop: "1px solid #e1e3e5"
                               },
                               children: /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)(
-                                import_react4.NavLink,
+                                import_react3.NavLink,
                                 {
                                   to: "/app/intent-os",
                                   onClick: () => setMobileMenuOpen(!1),
@@ -106740,7 +106704,7 @@ function App() {
                   className: "main-content-mobile",
                   style: { flex: 1, padding: 24, display: "flex", flexDirection: "column" },
                   children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("div", { style: { flex: 1 }, children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(import_react4.Outlet, {}) }),
+                    /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("div", { style: { flex: 1 }, children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(import_react3.Outlet, {}) }),
                     /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)("footer", { style: {
                       marginTop: "auto",
                       paddingTop: "24px",
@@ -106802,8 +106766,8 @@ function App() {
           ]
         }
       ) }),
-      /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(import_react4.ScrollRestoration, {}),
-      /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(import_react4.Scripts, {})
+      /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(import_react3.ScrollRestoration, {}),
+      /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(import_react3.Scripts, {})
     ] })
   ] });
 }
@@ -106834,31 +106798,31 @@ __export(app_intent_os_broken_exports, {
   default: () => IntentOSPage,
   loader: () => loader2
 });
-var import_node = __toESM(require_dist4()), import_react6 = __toESM(require_dist2());
+var import_node = __toESM(require_dist4()), import_react5 = __toESM(require_dist2());
 
 // app/components/IntentOS.tsx
-var import_react5 = __toESM(require_react()), import_polaris2 = __toESM(require_cjs3()), import_jsx_runtime3 = __toESM(require_jsx_runtime());
+var import_react4 = __toESM(require_react()), import_polaris2 = __toESM(require_cjs3()), import_jsx_runtime3 = __toESM(require_jsx_runtime());
 var EditIcon = () => /* @__PURE__ */ (0, import_jsx_runtime3.jsx)("span", { children: "\u270F\uFE0F" });
 var IntentOS = ({
   tenantId,
   promoteEnabled = !1
 }) => {
-  let [selectedTab, setSelectedTab] = (0, import_react5.useState)(0), [loading, setLoading] = (0, import_react5.useState)(!1), [error, setError] = (0, import_react5.useState)(null), [toastActive, setToastActive] = (0, import_react5.useState)(!1), [toastMessage, setToastMessage] = (0, import_react5.useState)(""), [toastError, setToastError] = (0, import_react5.useState)(!1), [overlayConfig, setOverlayConfig] = (0, import_react5.useState)({
+  let [selectedTab, setSelectedTab] = (0, import_react4.useState)(0), [loading, setLoading] = (0, import_react4.useState)(!1), [error, setError] = (0, import_react4.useState)(null), [toastActive, setToastActive] = (0, import_react4.useState)(!1), [toastMessage, setToastMessage] = (0, import_react4.useState)(""), [toastError, setToastError] = (0, import_react4.useState)(!1), [overlayConfig, setOverlayConfig] = (0, import_react4.useState)({
     selector: "",
     channel: "web",
     metafields: {},
     description: ""
-  }), [overlayHistory, setOverlayHistory] = (0, import_react5.useState)([]), [activeOverlay, setActiveOverlay] = (0, import_react5.useState)(null), [overlayModalActive, setOverlayModalActive] = (0, import_react5.useState)(!1), [intentBlocks, setIntentBlocks] = (0, import_react5.useState)(
+  }), [overlayHistory, setOverlayHistory] = (0, import_react4.useState)([]), [activeOverlay, setActiveOverlay] = (0, import_react4.useState)(null), [overlayModalActive, setOverlayModalActive] = (0, import_react4.useState)(!1), [intentBlocks, setIntentBlocks] = (0, import_react4.useState)(
     {}
-  ), [intentModalActive, setIntentModalActive] = (0, import_react5.useState)(!1), [editingIntent, setEditingIntent] = (0, import_react5.useState)(null), [utmContent, setUtmContent] = (0, import_react5.useState)(null), [utmTerm, setUtmTerm] = (0, import_react5.useState)("high-intent"), [productContext, setProductContext] = (0, import_react5.useState)({}), [promoDrafts, setPromoDrafts] = (0, import_react5.useState)([]), [promoModalActive, setPromoModalActive] = (0, import_react5.useState)(!1), [promoConfig, setPromoConfig] = (0, import_react5.useState)({
+  ), [intentModalActive, setIntentModalActive] = (0, import_react4.useState)(!1), [editingIntent, setEditingIntent] = (0, import_react4.useState)(null), [utmContent, setUtmContent] = (0, import_react4.useState)(null), [utmTerm, setUtmTerm] = (0, import_react4.useState)("high-intent"), [productContext, setProductContext] = (0, import_react4.useState)({}), [promoDrafts, setPromoDrafts] = (0, import_react4.useState)([]), [promoModalActive, setPromoModalActive] = (0, import_react4.useState)(!1), [promoConfig, setPromoConfig] = (0, import_react4.useState)({
     campaign_name: "",
     offer_details: "",
     target_audience: "",
     industry: "ecommerce",
     campaign_type: "sale"
-  }), showToast = (0, import_react5.useCallback)((message2, isError = !1) => {
+  }), showToast = (0, import_react4.useCallback)((message2, isError = !1) => {
     setToastMessage(message2), setToastError(isError), setToastActive(!0);
-  }, []), apiCall = (0, import_react5.useCallback)(
+  }, []), apiCall = (0, import_react4.useCallback)(
     async (endpoint, options = {}) => {
       try {
         let data = await (await fetch(`/api/intent-os/${endpoint}`, {
@@ -106877,7 +106841,7 @@ var IntentOS = ({
     },
     []
   );
-  (0, import_react5.useEffect)(() => {
+  (0, import_react4.useEffect)(() => {
     loadIntentBlocks(), loadOverlayHistory(), loadPromoDrafts();
   }, [tenantId]);
   let loadIntentBlocks = async () => {
@@ -107666,7 +107630,7 @@ var import_jsx_runtime4 = __toESM(require_jsx_runtime()), loader2 = async ({ req
   });
 };
 function IntentOSPage() {
-  let { tenantId, promoteEnabled, shopDomain } = (0, import_react6.useLoaderData)();
+  let { tenantId, promoteEnabled, shopDomain } = (0, import_react5.useLoaderData)();
   return /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(IntentOS_default, { tenantId, promoteEnabled });
 }
 
@@ -109007,7 +108971,7 @@ __export(app_insights_terms_exports, {
   default: () => TermsExplorer,
   loader: () => loader4
 });
-var React6 = __toESM(require_react()), import_node3 = __toESM(require_dist4()), import_react7 = __toESM(require_dist2()), import_jsx_runtime10 = __toESM(require_jsx_runtime());
+var React6 = __toESM(require_react()), import_node3 = __toESM(require_dist4()), import_react6 = __toESM(require_dist2()), import_jsx_runtime10 = __toESM(require_jsx_runtime());
 async function loader4(args) {
   try {
     let url = new URL(args.request.url), w = url.searchParams.get("w") || "7d", q = url.searchParams.get("q") || "", campaign = url.searchParams.get("campaign") || "", min_clicks = url.searchParams.get("min_clicks") || "0", min_cost = url.searchParams.get("min_cost") || "0", sort = url.searchParams.get("sort") || "cost", dir = url.searchParams.get("dir") || "desc", page = url.searchParams.get("page") || "1", page_size = url.searchParams.get("page_size") || "50", { backendFetch: backendFetch2 } = await Promise.resolve().then(() => (init_hmac_server(), hmac_server_exports)), data = await backendFetch2(
@@ -109030,7 +108994,7 @@ async function loader4(args) {
   }
 }
 function TermsExplorer() {
-  let data = (0, import_react7.useLoaderData)(), [sp] = (0, import_react7.useSearchParams)(), nav = (0, import_react7.useNavigation)(), rows = data?.rows || [], [toast, setToast] = React6.useState("");
+  let data = (0, import_react6.useLoaderData)(), [sp] = (0, import_react6.useSearchParams)(), nav = (0, import_react6.useNavigation)(), rows = data?.rows || [], [toast, setToast] = React6.useState("");
   React6.useEffect(() => {
     if (toast) {
       let timer = setTimeout(() => setToast(""), 3e3);
@@ -109094,12 +109058,12 @@ function TermsExplorer() {
         },
         children: [
           /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("span", { children: "Search Terms Explorer" }),
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_react7.Link, { to: "/app/insights", children: "\u2190 Back to Insights" })
+          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_react6.Link, { to: "/app/insights", children: "\u2190 Back to Insights" })
         ]
       }
     ),
     /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(
-      import_react7.Form,
+      import_react6.Form,
       {
         method: "get",
         style: {
@@ -109378,7 +109342,7 @@ __export(local_autopilot_exports, {
   default: () => LocalAutopilot,
   loader: () => loader7
 });
-var React7 = __toESM(require_react()), import_react8 = __toESM(require_dist2()), import_node6 = __toESM(require_dist4());
+var React7 = __toESM(require_react()), import_react7 = __toESM(require_dist2()), import_node6 = __toESM(require_dist4());
 init_hmac_server();
 var import_jsx_runtime12 = __toESM(require_jsx_runtime());
 async function loader7() {
@@ -109429,7 +109393,7 @@ ${realScript}
   return (0, import_node6.json)({ success: !1, error: "Unknown action" });
 }
 function LocalAutopilot() {
-  let { diag, status, tenantInfo } = (0, import_react8.useLoaderData)(), [mode2, setMode] = React7.useState("protect"), [budget, setBudget] = React7.useState("3.00"), [cpc, setCpc] = React7.useState("0.20"), [url, setUrl] = React7.useState(""), [sheetId, setSheetId] = React7.useState(""), [tested, setTested] = React7.useState(!1), [toast, setToast] = React7.useState(""), [scriptCode, setScriptCode] = React7.useState(""), [showScript, setShowScript] = React7.useState(!1);
+  let { diag, status, tenantInfo } = (0, import_react7.useLoaderData)(), [mode2, setMode] = React7.useState("protect"), [budget, setBudget] = React7.useState("3.00"), [cpc, setCpc] = React7.useState("0.20"), [url, setUrl] = React7.useState(""), [sheetId, setSheetId] = React7.useState(""), [tested, setTested] = React7.useState(!1), [toast, setToast] = React7.useState(""), [scriptCode, setScriptCode] = React7.useState(""), [showScript, setShowScript] = React7.useState(!1);
   React7.useEffect(() => {
     showScript && generateDynamicScript();
   }, [mode2, budget, cpc, url, showScript]);
@@ -109722,19 +109686,19 @@ __export(app_dashboards_exports, {
   default: () => CustomDashboards,
   loader: () => loader8
 });
-var import_react14 = __toESM(require_react()), import_node7 = __toESM(require_dist4()), import_react15 = __toESM(require_dist2());
+var import_react13 = __toESM(require_react()), import_node7 = __toESM(require_dist4()), import_react14 = __toESM(require_dist2());
 init_shopify_server();
 var import_polaris3 = __toESM(require_cjs3());
 
 // ../node_modules/@shopify/polaris-icons/dist/icons/DeleteIcon.svg.mjs
-var import_react9 = __toESM(require_react(), 1), SvgDeleteIcon = function(props) {
-  return /* @__PURE__ */ import_react9.default.createElement("svg", Object.assign({
+var import_react8 = __toESM(require_react(), 1), SvgDeleteIcon = function(props) {
+  return /* @__PURE__ */ import_react8.default.createElement("svg", Object.assign({
     viewBox: "0 0 20 20"
-  }, props), /* @__PURE__ */ import_react9.default.createElement("path", {
+  }, props), /* @__PURE__ */ import_react8.default.createElement("path", {
     d: "M11.5 8.25a.75.75 0 0 1 .75.75v4.25a.75.75 0 0 1-1.5 0v-4.25a.75.75 0 0 1 .75-.75Z"
-  }), /* @__PURE__ */ import_react9.default.createElement("path", {
+  }), /* @__PURE__ */ import_react8.default.createElement("path", {
     d: "M9.25 9a.75.75 0 0 0-1.5 0v4.25a.75.75 0 0 0 1.5 0v-4.25Z"
-  }), /* @__PURE__ */ import_react9.default.createElement("path", {
+  }), /* @__PURE__ */ import_react8.default.createElement("path", {
     fillRule: "evenodd",
     d: "M7.25 5.25a2.75 2.75 0 0 1 5.5 0h3a.75.75 0 0 1 0 1.5h-.75v5.45c0 1.68 0 2.52-.327 3.162a3 3 0 0 1-1.311 1.311c-.642.327-1.482.327-3.162.327h-.4c-1.68 0-2.52 0-3.162-.327a3 3 0 0 1-1.311-1.311c-.327-.642-.327-1.482-.327-3.162v-5.45h-.75a.75.75 0 0 1 0-1.5h3Zm1.5 0a1.25 1.25 0 1 1 2.5 0h-2.5Zm-2.25 1.5h7v5.45c0 .865-.001 1.423-.036 1.848-.033.408-.09.559-.128.633a1.5 1.5 0 0 1-.655.655c-.074.038-.225.095-.633.128-.425.035-.983.036-1.848.036h-.4c-.865 0-1.423-.001-1.848-.036-.408-.033-.559-.09-.633-.128a1.5 1.5 0 0 1-.656-.655c-.037-.074-.094-.225-.127-.633-.035-.425-.036-.983-.036-1.848v-5.45Z"
   }));
@@ -109742,10 +109706,10 @@ var import_react9 = __toESM(require_react(), 1), SvgDeleteIcon = function(props)
 SvgDeleteIcon.displayName = "DeleteIcon";
 
 // ../node_modules/@shopify/polaris-icons/dist/icons/EditIcon.svg.mjs
-var import_react10 = __toESM(require_react(), 1), SvgEditIcon = function(props) {
-  return /* @__PURE__ */ import_react10.default.createElement("svg", Object.assign({
+var import_react9 = __toESM(require_react(), 1), SvgEditIcon = function(props) {
+  return /* @__PURE__ */ import_react9.default.createElement("svg", Object.assign({
     viewBox: "0 0 20 20"
-  }, props), /* @__PURE__ */ import_react10.default.createElement("path", {
+  }, props), /* @__PURE__ */ import_react9.default.createElement("path", {
     fillRule: "evenodd",
     d: "M15.655 4.344a2.695 2.695 0 0 0-3.81 0l-.599.599-.009-.009-1.06 1.06.008.01-5.88 5.88a2.75 2.75 0 0 0-.805 1.944v1.922a.75.75 0 0 0 .75.75h1.922a2.75 2.75 0 0 0 1.944-.806l7.54-7.539a2.695 2.695 0 0 0 0-3.81Zm-4.409 2.72-5.88 5.88a1.25 1.25 0 0 0-.366.884v1.172h1.172c.331 0 .65-.132.883-.366l5.88-5.88-1.689-1.69Zm2.75.629.599-.599a1.195 1.195 0 1 0-1.69-1.689l-.598.599 1.69 1.689Z"
   }));
@@ -109753,25 +109717,25 @@ var import_react10 = __toESM(require_react(), 1), SvgEditIcon = function(props) 
 SvgEditIcon.displayName = "EditIcon";
 
 // ../node_modules/@shopify/polaris-icons/dist/icons/ExportIcon.svg.mjs
-var import_react11 = __toESM(require_react(), 1), SvgExportIcon = function(props) {
-  return /* @__PURE__ */ import_react11.default.createElement("svg", Object.assign({
+var import_react10 = __toESM(require_react(), 1), SvgExportIcon = function(props) {
+  return /* @__PURE__ */ import_react10.default.createElement("svg", Object.assign({
     viewBox: "0 0 20 20"
-  }, props), /* @__PURE__ */ import_react11.default.createElement("path", {
+  }, props), /* @__PURE__ */ import_react10.default.createElement("path", {
     d: "M10.75 12.75a.75.75 0 0 1-1.5 0v-6.69l-1.72 1.72a.75.75 0 0 1-1.06-1.06l3-3a.75.75 0 0 1 1.06 0l3 3a.75.75 0 0 1-1.06 1.06l-1.72-1.72v6.69Z"
-  }), /* @__PURE__ */ import_react11.default.createElement("path", {
+  }), /* @__PURE__ */ import_react10.default.createElement("path", {
     d: "M16.5 13.75a.75.75 0 0 0-1.5 0v.76a.75.75 0 0 1-.75.75h-8.5a.75.75 0 0 1-.75-.75v-.76a.75.75 0 0 0-1.5 0v.76a2.25 2.25 0 0 0 2.25 2.25h8.5a2.25 2.25 0 0 0 2.25-2.25v-.76Z"
   }));
 };
 SvgExportIcon.displayName = "ExportIcon";
 
 // ../node_modules/@shopify/polaris-icons/dist/icons/ViewIcon.svg.mjs
-var import_react12 = __toESM(require_react(), 1), SvgViewIcon = function(props) {
-  return /* @__PURE__ */ import_react12.default.createElement("svg", Object.assign({
+var import_react11 = __toESM(require_react(), 1), SvgViewIcon = function(props) {
+  return /* @__PURE__ */ import_react11.default.createElement("svg", Object.assign({
     viewBox: "0 0 20 20"
-  }, props), /* @__PURE__ */ import_react12.default.createElement("path", {
+  }, props), /* @__PURE__ */ import_react11.default.createElement("path", {
     fillRule: "evenodd",
     d: "M13 10a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm-1.5 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"
-  }), /* @__PURE__ */ import_react12.default.createElement("path", {
+  }), /* @__PURE__ */ import_react11.default.createElement("path", {
     fillRule: "evenodd",
     d: "M10 4c-2.476 0-4.348 1.23-5.577 2.532a9.266 9.266 0 0 0-1.4 1.922 5.98 5.98 0 0 0-.37.818c-.082.227-.153.488-.153.728s.071.501.152.728c.088.246.213.524.371.818.317.587.784 1.27 1.4 1.922 1.229 1.302 3.1 2.532 5.577 2.532 2.476 0 4.348-1.23 5.577-2.532a9.265 9.265 0 0 0 1.4-1.922 5.98 5.98 0 0 0 .37-.818c.082-.227.153-.488.153-.728s-.071-.501-.152-.728a5.984 5.984 0 0 0-.371-.818 9.269 9.269 0 0 0-1.4-1.922c-1.229-1.302-3.1-2.532-5.577-2.532Zm-5.999 6.002v-.004c.004-.02.017-.09.064-.223a4.5 4.5 0 0 1 .278-.608 7.768 7.768 0 0 1 1.17-1.605c1.042-1.104 2.545-2.062 4.487-2.062 1.942 0 3.445.958 4.486 2.062a7.77 7.77 0 0 1 1.17 1.605c.13.24.221.447.279.608.047.132.06.203.064.223v.004c-.004.02-.017.09-.064.223a4.503 4.503 0 0 1-.278.608 7.768 7.768 0 0 1-1.17 1.605c-1.042 1.104-2.545 2.062-4.487 2.062-1.942 0-3.445-.958-4.486-2.062a7.766 7.766 0 0 1-1.17-1.605 4.5 4.5 0 0 1-.279-.608c-.047-.132-.06-.203-.064-.223Z"
   }));
@@ -109779,7 +109743,7 @@ var import_react12 = __toESM(require_react(), 1), SvgViewIcon = function(props) 
 SvgViewIcon.displayName = "ViewIcon";
 
 // ../node_modules/@shopify/polaris-icons/dist/index.mjs
-var import_react13 = __toESM(require_react(), 1);
+var import_react12 = __toESM(require_react(), 1);
 
 // app/routes/app.dashboards.tsx
 var import_jsx_runtime13 = __toESM(require_jsx_runtime()), loader8 = async ({ request: request2 }) => {
@@ -109890,7 +109854,7 @@ function CustomDashboards() {
     currentTier,
     shopName,
     error: loaderError
-  } = (0, import_react15.useLoaderData)(), navigate = (0, import_react15.useNavigate)(), submit = (0, import_react15.useSubmit)(), fetcher = (0, import_react15.useFetcher)(), [showCreateModal, setShowCreateModal] = (0, import_react14.useState)(!1), [showTemplateModal, setShowTemplateModal] = (0, import_react14.useState)(!1), [selectedTemplate, setSelectedTemplate] = (0, import_react14.useState)(null), [newDashboardName, setNewDashboardName] = (0, import_react14.useState)(""), [newDashboardDescription, setNewDashboardDescription] = (0, import_react14.useState)(""), [loading, setLoading] = (0, import_react14.useState)(!1), [error, setError] = (0, import_react14.useState)(loaderError || ""), [popoverActive, setPopoverActive] = (0, import_react14.useState)({}), handleCreateDashboard = (0, import_react14.useCallback)(async () => {
+  } = (0, import_react14.useLoaderData)(), navigate = (0, import_react14.useNavigate)(), submit = (0, import_react14.useSubmit)(), fetcher = (0, import_react14.useFetcher)(), [showCreateModal, setShowCreateModal] = (0, import_react13.useState)(!1), [showTemplateModal, setShowTemplateModal] = (0, import_react13.useState)(!1), [selectedTemplate, setSelectedTemplate] = (0, import_react13.useState)(null), [newDashboardName, setNewDashboardName] = (0, import_react13.useState)(""), [newDashboardDescription, setNewDashboardDescription] = (0, import_react13.useState)(""), [loading, setLoading] = (0, import_react13.useState)(!1), [error, setError] = (0, import_react13.useState)(loaderError || ""), [popoverActive, setPopoverActive] = (0, import_react13.useState)({}), handleCreateDashboard = (0, import_react13.useCallback)(async () => {
     if (!newDashboardName.trim()) {
       setError("Dashboard name is required");
       return;
@@ -109898,7 +109862,7 @@ function CustomDashboards() {
     setLoading(!0);
     let formData = new FormData();
     formData.append("action", "create_dashboard"), formData.append("dashboard_name", newDashboardName), formData.append("description", newDashboardDescription), submit(formData, { method: "post" }), setShowCreateModal(!1), setNewDashboardName(""), setNewDashboardDescription(""), setLoading(!1);
-  }, [newDashboardName, newDashboardDescription, submit]), handleCreateFromTemplate = (0, import_react14.useCallback)(async () => {
+  }, [newDashboardName, newDashboardDescription, submit]), handleCreateFromTemplate = (0, import_react13.useCallback)(async () => {
     if (!selectedTemplate || !newDashboardName.trim()) {
       setError("Template and dashboard name are required");
       return;
@@ -109906,21 +109870,21 @@ function CustomDashboards() {
     setLoading(!0);
     let formData = new FormData();
     formData.append("action", "create_from_template"), formData.append("template_id", selectedTemplate.id.toString()), formData.append("dashboard_name", newDashboardName), submit(formData, { method: "post" }), setShowTemplateModal(!1), setSelectedTemplate(null), setNewDashboardName(""), setLoading(!1);
-  }, [selectedTemplate, newDashboardName, submit]), handleDeleteDashboard = (0, import_react14.useCallback)((dashboardId) => {
+  }, [selectedTemplate, newDashboardName, submit]), handleDeleteDashboard = (0, import_react13.useCallback)((dashboardId) => {
     if (confirm("Are you sure you want to delete this dashboard? This action cannot be undone.")) {
       let formData = new FormData();
       formData.append("action", "delete_dashboard"), formData.append("dashboard_id", dashboardId.toString()), submit(formData, { method: "post" });
     }
-  }, [submit]), handleExportDashboard = (0, import_react14.useCallback)((dashboardId, format = "json") => {
+  }, [submit]), handleExportDashboard = (0, import_react13.useCallback)((dashboardId, format = "json") => {
     let formData = new FormData();
     formData.append("action", "export_dashboard"), formData.append("dashboard_id", dashboardId.toString()), formData.append("format", format), submit(formData, { method: "post" });
-  }, [submit]), togglePopover = (0, import_react14.useCallback)((dashboardId) => {
+  }, [submit]), togglePopover = (0, import_react13.useCallback)((dashboardId) => {
     setPopoverActive((prev) => ({
       ...prev,
       [dashboardId]: !prev[dashboardId]
     }));
   }, []);
-  return (0, import_react14.useEffect)(() => {
+  return (0, import_react13.useEffect)(() => {
     if (error) {
       let timer = setTimeout(() => setError(""), 5e3);
       return () => clearTimeout(timer);
@@ -110244,7 +110208,7 @@ __export(app_autopilot_exports, {
   default: () => Autopilot,
   loader: () => loader9
 });
-var React13 = __toESM(require_react()), import_react16 = __toESM(require_dist2()), import_node8 = __toESM(require_dist4());
+var React13 = __toESM(require_react()), import_react15 = __toESM(require_dist2()), import_node8 = __toESM(require_dist4());
 init_shopify_server();
 init_hmac_server();
 
@@ -110534,7 +110498,7 @@ ${realScript}
   }
 }
 function Autopilot() {
-  let { config, shopName: serverShopName, campaignLimits } = (0, import_react16.useLoaderData)(), actionData = (0, import_react16.useActionData)(), navigation = (0, import_react16.useNavigation)(), [mode2, setMode] = React13.useState("protect"), [budget, setBudget] = React13.useState("3.00"), [cpc, setCpc] = React13.useState("0.20"), [url, setUrl] = React13.useState(""), [toast, setToast] = React13.useState(""), [scriptCode, setScriptCode] = React13.useState(""), [showScript, setShowScript] = React13.useState(!1), [shopName, setShopName] = React13.useState(null), isGeneratingScript = navigation.state === "submitting" && navigation.formData?.get("actionType") === "generateScript";
+  let { config, shopName: serverShopName, campaignLimits } = (0, import_react15.useLoaderData)(), actionData = (0, import_react15.useActionData)(), navigation = (0, import_react15.useNavigation)(), [mode2, setMode] = React13.useState("protect"), [budget, setBudget] = React13.useState("3.00"), [cpc, setCpc] = React13.useState("0.20"), [url, setUrl] = React13.useState(""), [toast, setToast] = React13.useState(""), [scriptCode, setScriptCode] = React13.useState(""), [showScript, setShowScript] = React13.useState(!1), [shopName, setShopName] = React13.useState(null), isGeneratingScript = navigation.state === "submitting" && navigation.formData?.get("actionType") === "generateScript";
   React13.useEffect(() => {
     setShopName(serverShopName);
   }, [serverShopName]), React13.useEffect(() => {
@@ -110786,7 +110750,7 @@ In production, this would start the automation.`
         ]
       }
     ),
-    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("div", { style: { marginTop: 8 }, children: /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(import_react16.Form, { method: "post", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("div", { style: { marginTop: 8 }, children: /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(import_react15.Form, { method: "post", children: [
       /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("input", { type: "hidden", name: "actionType", value: "generateScript" }),
       /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("input", { type: "hidden", name: "mode", value: mode2 }),
       /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("input", { type: "hidden", name: "budget", value: budget }),
@@ -110944,6 +110908,35 @@ __export(app_intent_os_exports, {
   loader: () => loader10
 });
 var import_node9 = __toESM(require_dist4()), import_react17 = __toESM(require_dist2());
+
+// app/utils/navigation.tsx
+var import_react16 = __toESM(require_dist2());
+function useShopContext() {
+  let location = (0, import_react16.useLocation)(), searchParams = new URLSearchParams(location.search), urlShop = searchParams.get("shop"), urlHost = searchParams.get("host"), fallbackShop = null;
+  return typeof window < "u" && (fallbackShop = document.getElementById("__shop")?.getAttribute("data-shop-name")), {
+    shop: urlShop || (fallbackShop ? `${fallbackShop}.myshopify.com` : null),
+    host: urlHost,
+    embedded: searchParams.get("embedded"),
+    hmac: searchParams.get("hmac"),
+    session: searchParams.get("session"),
+    id_token: searchParams.get("id_token"),
+    timestamp: searchParams.get("timestamp"),
+    locale: searchParams.get("locale")
+  };
+}
+function buildAppUrl2(path, shopContext) {
+  if (!shopContext)
+    return path;
+  let url = new URL(path, "https://example.com"), criticalParams = ["shop", "host", "embedded", "hmac", "session"];
+  return criticalParams.forEach((key) => {
+    let value = shopContext[key];
+    value && url.searchParams.set(key, value);
+  }), Object.entries(shopContext).forEach(([key, value]) => {
+    value && !criticalParams.includes(key) && url.searchParams.set(key, value);
+  }), `${url.pathname}${url.search}`;
+}
+
+// app/routes/app.intent-os.tsx
 var import_jsx_runtime15 = __toESM(require_jsx_runtime()), loader10 = async ({ request: request2 }) => (0, import_node9.json)({
   tenantId: process.env.TENANT_ID || "proofkit",
   launchDate: "Q1 2026"
@@ -111101,7 +111094,7 @@ function IntentOSComingSoon() {
                     /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(
                       import_react17.Link,
                       {
-                        to: buildAppUrl("/app/autopilot", shopContext),
+                        to: buildAppUrl2("/app/autopilot", shopContext),
                         style: {
                           padding: "1rem",
                           background: "#fff",
@@ -115760,7 +115753,7 @@ function AppIndex() {
                   /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
                     import_react29.Link,
                     {
-                      to: buildAppUrl("/app/autopilot", shopContext),
+                      to: buildAppUrl2("/app/autopilot", shopContext),
                       style: {
                         background: "#007bff",
                         color: "white",
@@ -118421,7 +118414,7 @@ function App2() {
 var ErrorBoundary5 = boundary.error, headers3 = (headersArgs) => boundary.headers(headersArgs);
 
 // server-assets-manifest:@remix-run/dev/assets-manifest
-var assets_manifest_default = { entry: { module: "/assets/entry.client-YO6N4S4G.js", imports: ["/assets/_shared/chunk-6KZRTIW3.js", "/assets/_shared/chunk-6U5IYNIC.js", "/assets/_shared/chunk-FN6342HM.js", "/assets/_shared/chunk-P23QBOGJ.js"] }, routes: { root: { id: "root", parentId: void 0, path: "", index: void 0, caseSensitive: void 0, module: "/assets/root-Z5CAPU45.js", imports: ["/assets/_shared/chunk-LXK74B4C.js", "/assets/_shared/chunk-OSEGCAPX.js", "/assets/_shared/chunk-S3LTH7L6.js", "/assets/_shared/chunk-NAVXS3X4.js"], hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/_health": { id: "routes/_health", parentId: "root", path: void 0, index: void 0, caseSensitive: void 0, module: "/assets/routes/_health-4HY4KIMX.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/_index": { id: "routes/_index", parentId: "root", path: void 0, index: !0, caseSensitive: void 0, module: "/assets/routes/_index-ZZUWPXAO.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/api.generate-script": { id: "routes/api.generate-script", parentId: "root", path: "api/generate-script", index: void 0, caseSensitive: void 0, module: "/assets/routes/api.generate-script-3DUZY66Z.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/api.script-proxy": { id: "routes/api.script-proxy", parentId: "root", path: "api/script-proxy", index: void 0, caseSensitive: void 0, module: "/assets/routes/api.script-proxy-D7CGEASX.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app": { id: "routes/app", parentId: "root", path: "app", index: void 0, caseSensitive: void 0, module: "/assets/routes/app-UMYCOLUB.js", imports: ["/assets/_shared/chunk-OLMBZBAD.js", "/assets/_shared/chunk-6TBH3TG6.js", "/assets/_shared/chunk-X5HD2HZ6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/app._index": { id: "routes/app._index", parentId: "routes/app", path: void 0, index: !0, caseSensitive: void 0, module: "/assets/routes/app._index-RUUWXD7V.js", imports: ["/assets/_shared/chunk-XGZ5RCNR.js", "/assets/_shared/chunk-OSEGCAPX.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.advanced": { id: "routes/app.advanced", parentId: "routes/app", path: "advanced", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.advanced-RZ4AZSEX.js", imports: ["/assets/_shared/chunk-XGZ5RCNR.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.autopilot": { id: "routes/app.autopilot", parentId: "routes/app", path: "autopilot", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.autopilot-V4UJITXD.js", imports: ["/assets/_shared/chunk-YO2XKRKB.js", "/assets/_shared/chunk-XGZ5RCNR.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.billing": { id: "routes/app.billing", parentId: "routes/app", path: "billing", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.billing-IKJLAAYZ.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/app.dashboards": { id: "routes/app.dashboards", parentId: "routes/app", path: "dashboards", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.dashboards-OJMQ6SK5.js", imports: ["/assets/_shared/chunk-S3LTH7L6.js", "/assets/_shared/chunk-NAVXS3X4.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.insights": { id: "routes/app.insights", parentId: "routes/app", path: "insights", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.insights-SQ2R6EFK.js", imports: ["/assets/_shared/chunk-S3LTH7L6.js", "/assets/_shared/chunk-NAVXS3X4.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.insights.terms": { id: "routes/app.insights.terms", parentId: "routes/app.insights", path: "terms", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.insights.terms-32D7EEEW.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.insights.terms.csv": { id: "routes/app.insights.terms.csv", parentId: "routes/app.insights.terms", path: "csv", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.insights.terms.csv-4VGC3PNS.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.intent-os": { id: "routes/app.intent-os", parentId: "routes/app", path: "intent-os", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.intent-os-3L7OUSHK.js", imports: ["/assets/_shared/chunk-OSEGCAPX.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.intent-os.broken": { id: "routes/app.intent-os.broken", parentId: "routes/app.intent-os", path: "broken", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.intent-os.broken-GOPAO6VQ.js", imports: ["/assets/_shared/chunk-S3LTH7L6.js", "/assets/_shared/chunk-NAVXS3X4.js", "/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.reports": { id: "routes/app.reports", parentId: "routes/app", path: "reports", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.reports-OTDTWT3Z.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/app.setup": { id: "routes/app.setup", parentId: "routes/app", path: "setup", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.setup-UPZCB4MD.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.support": { id: "routes/app.support", parentId: "routes/app", path: "support", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.support-VWFLMWSF.js", imports: ["/assets/_shared/chunk-S3LTH7L6.js", "/assets/_shared/chunk-NAVXS3X4.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.test-shop-setup": { id: "routes/app.test-shop-setup", parentId: "routes/app", path: "test-shop-setup", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.test-shop-setup-HZI6YSQI.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/auth.$": { id: "routes/auth.$", parentId: "root", path: "auth/*", index: void 0, caseSensitive: void 0, module: "/assets/routes/auth.$-D4HZOJGU.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/auth.session-token": { id: "routes/auth.session-token", parentId: "root", path: "auth/session-token", index: void 0, caseSensitive: void 0, module: "/assets/routes/auth.session-token-T2WMLCN4.js", imports: ["/assets/_shared/chunk-X5HD2HZ6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/debug": { id: "routes/debug", parentId: "root", path: "debug", index: void 0, caseSensitive: void 0, module: "/assets/routes/debug-NPQ5YZI3.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/health": { id: "routes/health", parentId: "root", path: "health", index: void 0, caseSensitive: void 0, module: "/assets/routes/health-GI3SP7O7.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/install": { id: "routes/install", parentId: "root", path: "install", index: void 0, caseSensitive: void 0, module: "/assets/routes/install-YL2XNGMC.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/local.autopilot": { id: "routes/local.autopilot", parentId: "root", path: "local/autopilot", index: void 0, caseSensitive: void 0, module: "/assets/routes/local.autopilot-H7UX4MZQ.js", imports: ["/assets/_shared/chunk-YO2XKRKB.js", "/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/privacy": { id: "routes/privacy", parentId: "root", path: "privacy", index: void 0, caseSensitive: void 0, module: "/assets/routes/privacy-II7HDWDA.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/support": { id: "routes/support", parentId: "root", path: "support", index: void 0, caseSensitive: void 0, module: "/assets/routes/support-KFET3GRS.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/terms": { id: "routes/terms", parentId: "root", path: "terms", index: void 0, caseSensitive: void 0, module: "/assets/routes/terms-PKGZYJCD.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 } }, version: "48087b75", hmr: void 0, url: "/assets/manifest-48087B75.js" };
+var assets_manifest_default = { entry: { module: "/assets/entry.client-YO6N4S4G.js", imports: ["/assets/_shared/chunk-6KZRTIW3.js", "/assets/_shared/chunk-6U5IYNIC.js", "/assets/_shared/chunk-FN6342HM.js", "/assets/_shared/chunk-P23QBOGJ.js"] }, routes: { root: { id: "root", parentId: void 0, path: "", index: void 0, caseSensitive: void 0, module: "/assets/root-FUEAF5KF.js", imports: ["/assets/_shared/chunk-LXK74B4C.js", "/assets/_shared/chunk-S3LTH7L6.js", "/assets/_shared/chunk-NAVXS3X4.js"], hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/_health": { id: "routes/_health", parentId: "root", path: void 0, index: void 0, caseSensitive: void 0, module: "/assets/routes/_health-4HY4KIMX.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/_index": { id: "routes/_index", parentId: "root", path: void 0, index: !0, caseSensitive: void 0, module: "/assets/routes/_index-ZZUWPXAO.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/api.generate-script": { id: "routes/api.generate-script", parentId: "root", path: "api/generate-script", index: void 0, caseSensitive: void 0, module: "/assets/routes/api.generate-script-3DUZY66Z.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/api.script-proxy": { id: "routes/api.script-proxy", parentId: "root", path: "api/script-proxy", index: void 0, caseSensitive: void 0, module: "/assets/routes/api.script-proxy-D7CGEASX.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app": { id: "routes/app", parentId: "root", path: "app", index: void 0, caseSensitive: void 0, module: "/assets/routes/app-UMYCOLUB.js", imports: ["/assets/_shared/chunk-OLMBZBAD.js", "/assets/_shared/chunk-6TBH3TG6.js", "/assets/_shared/chunk-X5HD2HZ6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/app._index": { id: "routes/app._index", parentId: "routes/app", path: void 0, index: !0, caseSensitive: void 0, module: "/assets/routes/app._index-AFDNFS5N.js", imports: ["/assets/_shared/chunk-OSEGCAPX.js", "/assets/_shared/chunk-XGZ5RCNR.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.advanced": { id: "routes/app.advanced", parentId: "routes/app", path: "advanced", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.advanced-RZ4AZSEX.js", imports: ["/assets/_shared/chunk-XGZ5RCNR.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.autopilot": { id: "routes/app.autopilot", parentId: "routes/app", path: "autopilot", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.autopilot-V4UJITXD.js", imports: ["/assets/_shared/chunk-YO2XKRKB.js", "/assets/_shared/chunk-XGZ5RCNR.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.billing": { id: "routes/app.billing", parentId: "routes/app", path: "billing", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.billing-IKJLAAYZ.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/app.dashboards": { id: "routes/app.dashboards", parentId: "routes/app", path: "dashboards", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.dashboards-OJMQ6SK5.js", imports: ["/assets/_shared/chunk-S3LTH7L6.js", "/assets/_shared/chunk-NAVXS3X4.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.insights": { id: "routes/app.insights", parentId: "routes/app", path: "insights", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.insights-SQ2R6EFK.js", imports: ["/assets/_shared/chunk-S3LTH7L6.js", "/assets/_shared/chunk-NAVXS3X4.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.insights.terms": { id: "routes/app.insights.terms", parentId: "routes/app.insights", path: "terms", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.insights.terms-32D7EEEW.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.insights.terms.csv": { id: "routes/app.insights.terms.csv", parentId: "routes/app.insights.terms", path: "csv", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.insights.terms.csv-4VGC3PNS.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.intent-os": { id: "routes/app.intent-os", parentId: "routes/app", path: "intent-os", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.intent-os-3L7OUSHK.js", imports: ["/assets/_shared/chunk-OSEGCAPX.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.intent-os.broken": { id: "routes/app.intent-os.broken", parentId: "routes/app.intent-os", path: "broken", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.intent-os.broken-GOPAO6VQ.js", imports: ["/assets/_shared/chunk-S3LTH7L6.js", "/assets/_shared/chunk-NAVXS3X4.js", "/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.reports": { id: "routes/app.reports", parentId: "routes/app", path: "reports", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.reports-OTDTWT3Z.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/app.setup": { id: "routes/app.setup", parentId: "routes/app", path: "setup", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.setup-UPZCB4MD.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.support": { id: "routes/app.support", parentId: "routes/app", path: "support", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.support-VWFLMWSF.js", imports: ["/assets/_shared/chunk-S3LTH7L6.js", "/assets/_shared/chunk-NAVXS3X4.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.test-shop-setup": { id: "routes/app.test-shop-setup", parentId: "routes/app", path: "test-shop-setup", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.test-shop-setup-HZI6YSQI.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/auth.$": { id: "routes/auth.$", parentId: "root", path: "auth/*", index: void 0, caseSensitive: void 0, module: "/assets/routes/auth.$-D4HZOJGU.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/auth.session-token": { id: "routes/auth.session-token", parentId: "root", path: "auth/session-token", index: void 0, caseSensitive: void 0, module: "/assets/routes/auth.session-token-T2WMLCN4.js", imports: ["/assets/_shared/chunk-X5HD2HZ6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/debug": { id: "routes/debug", parentId: "root", path: "debug", index: void 0, caseSensitive: void 0, module: "/assets/routes/debug-NPQ5YZI3.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/health": { id: "routes/health", parentId: "root", path: "health", index: void 0, caseSensitive: void 0, module: "/assets/routes/health-GI3SP7O7.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/install": { id: "routes/install", parentId: "root", path: "install", index: void 0, caseSensitive: void 0, module: "/assets/routes/install-YL2XNGMC.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/local.autopilot": { id: "routes/local.autopilot", parentId: "root", path: "local/autopilot", index: void 0, caseSensitive: void 0, module: "/assets/routes/local.autopilot-H7UX4MZQ.js", imports: ["/assets/_shared/chunk-YO2XKRKB.js", "/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/privacy": { id: "routes/privacy", parentId: "root", path: "privacy", index: void 0, caseSensitive: void 0, module: "/assets/routes/privacy-II7HDWDA.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/support": { id: "routes/support", parentId: "root", path: "support", index: void 0, caseSensitive: void 0, module: "/assets/routes/support-KFET3GRS.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/terms": { id: "routes/terms", parentId: "root", path: "terms", index: void 0, caseSensitive: void 0, module: "/assets/routes/terms-PKGZYJCD.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 } }, version: "482ae954", hmr: void 0, url: "/assets/manifest-482AE954.js" };
 
 // server-entry-module:@remix-run/dev/server-build
 var mode = "production", assetsBuildDirectory = "public/assets", future = { v3_fetcherPersist: !1, v3_relativeSplatPath: !1, v3_throwAbortReason: !1, v3_routeConfig: !1, v3_singleFetch: !1, v3_lazyRouteDiscovery: !1, unstable_optimizeDeps: !1 }, publicPath = "/assets/", entry = { module: entry_server_exports }, routes = {
