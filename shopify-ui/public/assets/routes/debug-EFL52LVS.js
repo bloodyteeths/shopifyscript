@@ -1,0 +1,1 @@
+import{a as r}from"/assets/_shared/chunk-XT2LVRN2.js";import{b as o}from"/assets/_shared/chunk-E6CPWDOJ.js";import{c as e}from"/assets/_shared/chunk-F3TRQT5X.js";var I=e(r()),n=e(o());function S(){return(0,n.jsx)("div",{children:"Debug route - check logs for environment info"})}export{S as default};
