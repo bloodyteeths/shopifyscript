@@ -1,0 +1,27 @@
+{
+  "version": 2,
+  "name": "proofkit-saas-backend",
+  "builds": [
+    {
+      "src": "backend/server.js",
+      "use": "@vercel/node",
+      "config": {
+        "maxLambdaSize": "50mb"
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "backend/server.js"
+    }
+  ],
+  "env": {
+    "NODE_ENV": "production"
+  },
+  "functions": {
+    "backend/server.js": {
+      "maxDuration": 30
+    }
+  }
+}

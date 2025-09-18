@@ -27,8 +27,8 @@
     "annotate:images": "node docs/annotate-images.mjs",
     "benchmark": "cd tests/performance && npm run benchmark",
     "install:all": "npm install && cd backend && npm install && cd ../shopify-ui && npm install && cd ../shopify-app && npm install && cd ../tests/performance && npm install",
-    "build": "cd shopify-ui && npm run build",
-    "start": "cd shopify-ui && npm run start",
+    "build": "cd backend && npm install",
+    "start": "cd backend && node server.js",
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check ."
