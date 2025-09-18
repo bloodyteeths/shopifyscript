@@ -37,11 +37,11 @@ import securityRoutes from "./routes/security.js";
 // Config Routes
 import configRoutes from "./routes/config.js";
 // Reports Routes
-// import reportsRoutes from "./routes/reports.js"; // Temporarily disabled due to middleware error
+import reportsRoutes from "./routes/reports.js";
 // Dashboard Routes
-// import dashboardRoutes from "./routes/dashboards.js"; // Temporarily disabled due to middleware error
+import dashboardRoutes from "./routes/dashboards.js";
 // Automation Routes
-// import automationRoutes from "./routes/automation.js"; // Temporarily disabled due to middleware error
+import automationRoutes from "./routes/automation.js";
 // Scheduled Reports Service
 import scheduledReports from "./jobs/scheduled-reports.js";
 
@@ -1004,12 +1004,12 @@ app.use("/api/billing", billingRoutes);
 // ==== CONFIG ROUTES ====
 app.use("/api", configRoutes);
 // ==== REPORTS ROUTES ====
-// app.use("/api/reports", reportsRoutes); // Temporarily disabled due to middleware error
+app.use("/api/reports", reportsRoutes);
 
 // ==== DASHBOARD ROUTES ====
-// app.use("/api/dashboards", dashboardRoutes); // Temporarily disabled due to middleware error
+app.use("/api/dashboards", dashboardRoutes);
 // ==== AUTOMATION ROUTES ====
-// app.use("/api/automation", automationRoutes); // Temporarily disabled due to middleware error
+app.use("/api/automation", automationRoutes);
 
 // ==== ANALYTICS TIER ENDPOINT ====
 app.get("/api/analytics/tier-features", async (req, res) => {

@@ -561,8 +561,5 @@ export {
 export default {
   requireActiveSubscription,
   requireFeature,
-  checkUsageLimits,
-  hasFeatureAccess,
-  isWithinUsageLimits,
-  getCurrentSubscription
+  checkUsageLimits
 };
