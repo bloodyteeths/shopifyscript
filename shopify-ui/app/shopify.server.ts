@@ -34,6 +34,13 @@ try {
   resolvedSessionStorage = new MemorySessionStorage();
 }
 
+console.log('🔄 Creating Shopify app configuration...');
+console.log('Environment check:', {
+  SHOPIFY_API_KEY: !!process.env.SHOPIFY_API_KEY,
+  SHOPIFY_API_SECRET: !!process.env.SHOPIFY_API_SECRET,
+  SHOPIFY_APP_URL: process.env.SHOPIFY_APP_URL || 'NOT_SET'
+});
+
 const shopify = shopifyApp({
   apiKey: process.env.SHOPIFY_API_KEY,
   apiSecretKey: process.env.SHOPIFY_API_SECRET || "",
@@ -51,13 +58,20 @@ const shopify = shopifyApp({
   },
   hooks: {
     afterAuth: async ({ session }) => {
-      console.log(`✅ Authentication successful for shop: ${session.shop}`);
+      try {
+        console.log(`✅ Authentication successful for shop: ${session.shop}`);
+      } catch (error) {
+        console.error('❌ Error in afterAuth hook:', error);
+        throw error;
+      }
     },
   },
   ...(process.env.SHOP_CUSTOM_DOMAIN
     ? { customShopDomains: [process.env.SHOP_CUSTOM_DOMAIN] }
     : {}),
 });
+
+console.log('✅ Shopify app configuration created successfully');
 
 export default shopify;
 export const apiVersion = ApiVersion.January25;
