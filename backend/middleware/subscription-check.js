@@ -553,20 +553,15 @@ export async function withRetry(operation, maxRetries = 3) {
 }
 
 export {
-  requireActiveSubscription,
-  requireFeature,
-  checkUsageLimits,
-  requireTier,
+  getCurrentSubscription,
   hasFeatureAccess,
-  isWithinUsageLimits,
-  getCurrentSubscription
+  isWithinUsageLimits
 };
 
 export default {
   requireActiveSubscription,
   requireFeature,
   checkUsageLimits,
-  requireTier,
   hasFeatureAccess,
   isWithinUsageLimits,
   getCurrentSubscription

@@ -57,7 +57,7 @@ const extractTenant = (req, res, next) => {
 };
 
 // Apply middleware to all routes
-router.use(subscriptionCheck.checkSubscription);
+router.use(subscriptionCheck.requireActiveSubscription());
 router.use(extractTenant);
 
 /**

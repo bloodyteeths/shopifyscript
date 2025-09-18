@@ -9,9 +9,9 @@ import reportGenerator from '../services/report-generator.js';
 import scheduledReports from '../jobs/scheduled-reports.js';
 import emailService from '../services/email-service.js';
 import analyticsTiers from '../services/analytics-tiers.js';
-import subscriptionCheck from '../middleware/subscription-check.js';
+import subscriptionCheck, { requireTier } from '../middleware/subscription-check.js';
 
-const { requireActiveSubscription, requireFeature, requireTier } = subscriptionCheck;
+const { requireActiveSubscription, requireFeature } = subscriptionCheck;
 
 const router = express.Router();
 
