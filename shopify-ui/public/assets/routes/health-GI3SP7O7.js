@@ -1,0 +1,1 @@
+import{a as p}from"/assets/_shared/chunk-6TBH3TG6.js";import{a as r}from"/assets/_shared/chunk-6U5IYNIC.js";import"/assets/_shared/chunk-FN6342HM.js";import{d as o}from"/assets/_shared/chunk-P23QBOGJ.js";var f=o(p()),t=o(r());function e(){return(0,t.jsx)("pre",{children:"OK"})}export{e as default};
