@@ -3,11 +3,31 @@ import type { EntryContext } from "@remix-run/node";
 import { RemixServer } from "@remix-run/react";
 import { renderToString } from "react-dom/server";
 
-// Prevent unhandled promise rejections from crashing the serverless function
+// Comprehensive error tracking for serverless debugging
 process.on('unhandledRejection', (reason, promise) => {
-  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+  console.error('🚨 UNHANDLED REJECTION DETECTED:');
+  console.error('Promise:', promise);
+  console.error('Reason type:', typeof reason);
+  console.error('Reason:', reason);
+  console.error('Stack trace:', reason?.stack || 'No stack trace');
+  console.error('String representation:', String(reason));
+  
+  // Try to extract more info if it's a function
+  if (typeof reason === 'function') {
+    console.error('Function name:', reason.name);
+    console.error('Function toString:', reason.toString().substring(0, 200));
+  }
+  
   // Don't exit the process in serverless environment
 });
+
+process.on('uncaughtException', (error) => {
+  console.error('🚨 UNCAUGHT EXCEPTION:');
+  console.error('Error:', error);
+  console.error('Stack:', error.stack);
+});
+
+console.log('🔍 Error handlers registered in entry.server.tsx');
 
 export default function handleRequest(
   request: Request,

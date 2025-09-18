@@ -106210,8 +106210,12 @@ __export(entry_server_exports, {
 });
 var import_react = __toESM(require_dist2()), import_server = __toESM(require_server_node()), import_jsx_runtime = __toESM(require_jsx_runtime());
 process.on("unhandledRejection", (reason, promise) => {
-  console.error("Unhandled Rejection at:", promise, "reason:", reason);
+  console.error("\u{1F6A8} UNHANDLED REJECTION DETECTED:"), console.error("Promise:", promise), console.error("Reason type:", typeof reason), console.error("Reason:", reason), console.error("Stack trace:", reason?.stack || "No stack trace"), console.error("String representation:", String(reason)), typeof reason == "function" && (console.error("Function name:", reason.name), console.error("Function toString:", reason.toString().substring(0, 200)));
 });
+process.on("uncaughtException", (error) => {
+  console.error("\u{1F6A8} UNCAUGHT EXCEPTION:"), console.error("Error:", error), console.error("Stack:", error.stack);
+});
+console.log("\u{1F50D} Error handlers registered in entry.server.tsx");
 function handleRequest(request2, status, headers4, context) {
   try {
     let markup = (0, import_server.renderToString)(
