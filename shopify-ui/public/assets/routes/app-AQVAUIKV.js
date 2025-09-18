@@ -2,11 +2,11 @@ import {
   require_jsx_runtime
 } from "/assets/_shared/chunk-I7NKL5T4.js";
 import {
-  require_shopify
-} from "/assets/_shared/chunk-7OUBBUAS.js";
-import {
   AppProvider
 } from "/assets/_shared/chunk-BSGQ342U.js";
+import {
+  require_shopify
+} from "/assets/_shared/chunk-7OUBBUAS.js";
 import {
   require_node
 } from "/assets/_shared/chunk-5LF5TODQ.js";
@@ -3978,4 +3978,4 @@ export {
   App as default,
   links
 };
-//# sourceMappingURL=/assets/routes/app-NTCZI3HQ.js.map
+//# sourceMappingURL=/assets/routes/app-AQVAUIKV.js.map
