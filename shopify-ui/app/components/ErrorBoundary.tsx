@@ -14,7 +14,24 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
   constructor(props: ErrorBoundaryProps) {
     super(props);
     this.state = { hasError: false };
+    
+    // Handle unhandled promise rejections
+    if (typeof window !== 'undefined') {
+      window.addEventListener('unhandledrejection', this.handleUnhandledRejection);
+    }
   }
+  
+  componentWillUnmount() {
+    if (typeof window !== 'undefined') {
+      window.removeEventListener('unhandledrejection', this.handleUnhandledRejection);
+    }
+  }
+  
+  handleUnhandledRejection = (event: PromiseRejectionEvent) => {
+    console.error('Unhandled promise rejection caught by ErrorBoundary:', event.reason);
+    this.setState({ hasError: true, error: new Error('Unhandled promise rejection: ' + event.reason) });
+    event.preventDefault();
+  };
 
   static getDerivedStateFromError(error: Error): ErrorBoundaryState {
     return { hasError: true, error };

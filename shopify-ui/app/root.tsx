@@ -23,6 +23,22 @@ export default function App() {
   const shopContext = useShopContext();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   
+  // Handle unhandled promise rejections globally to prevent serverless crashes
+  React.useEffect(() => {
+    const handleUnhandledRejection = (event: PromiseRejectionEvent) => {
+      console.error('Global unhandled promise rejection:', event.reason);
+      // Prevent the default behavior which crashes the Node.js process
+      event.preventDefault();
+    };
+    
+    if (typeof window !== 'undefined') {
+      window.addEventListener('unhandledrejection', handleUnhandledRejection);
+      return () => {
+        window.removeEventListener('unhandledrejection', handleUnhandledRejection);
+      };
+    }
+  }, []);
+  
   return (
     <html lang="en">
       <head>

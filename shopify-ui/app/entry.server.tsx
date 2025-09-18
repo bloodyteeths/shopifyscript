@@ -3,6 +3,12 @@ import type { EntryContext } from "@remix-run/node";
 import { RemixServer } from "@remix-run/react";
 import { renderToString } from "react-dom/server";
 
+// Prevent unhandled promise rejections from crashing the serverless function
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+  // Don't exit the process in serverless environment
+});
+
 export default function handleRequest(
   request: Request,
   status: number,
