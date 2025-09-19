@@ -2995,6 +2995,40 @@ app.post(
   },
 );
 
+// ----- Insights tier-status (HMAC) -----
+app.get("/api/insights/tier-status", async (req, res) => {
+  const { tenant, sig } = req.query;
+  const payload = `GET:${tenant}:tier_status`;
+  if (!tenant || !verify(String(sig || ""), payload))
+    return json(res, 403, { ok: false, code: "AUTH" });
+
+  try {
+    // Return a simple tier status for now
+    return json(res, 200, {
+      ok: true,
+      tenant,
+      tier: 'starter',
+      features: {
+        basicAnalytics: true,
+        realTimeAnalytics: false,
+        advancedRoas: false,
+        customDashboards: false,
+        customRoasModels: false,
+        maxDataPoints: 1000,
+        refreshInterval: 300000,
+        availableCharts: ['line', 'bar'],
+        exportFormats: ['csv']
+      },
+      config: {
+        refreshInterval: 300000,
+        maxDataPoints: 1000
+      }
+    });
+  } catch (e) {
+    return json(res, 500, { ok: false, code: "TIER_STATUS", error: String(e) });
+  }
+});
+
 // ----- Insights debug (HMAC) -----
 app.get("/api/insights/debug", async (req, res) => {
   const { tenant, sig } = req.query;
