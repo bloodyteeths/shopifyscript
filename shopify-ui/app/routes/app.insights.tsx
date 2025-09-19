@@ -68,13 +68,30 @@ export async function loader(args: LoaderFunctionArgs) {
   try {
     // Standard Shopify authentication following best practices
     const { authenticate } = await import("../shopify.server");
-    const { session, admin } = await authenticate.admin(args.request);
 
+    // Handle authentication with proper error checking
+    let authResult;
+    try {
+      authResult = await authenticate.admin(args.request);
+    } catch (authError) {
+      console.error("Authentication failed:", authError);
+      // Return a redirect response if authentication fails
+      return redirect("/");
+    }
+
+    // Check if authResult is a Response (redirect)
+    if (authResult instanceof Response) {
+      console.log("Authentication returned a redirect response");
+      return authResult;
+    }
+
+    const { session, admin } = authResult;
     const shopName = session?.shop?.replace(".myshopify.com", "");
 
     if (!shopName) {
       console.error("Insights loader error: Unable to determine shop name from Shopify session");
-      throw new Error("Unable to determine shop name from Shopify session");
+      // Redirect to home if no shop name
+      return redirect("/");
     }
 
     console.log(`Insights page loaded for shop: ${shopName}`);
