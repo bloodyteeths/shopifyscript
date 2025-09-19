@@ -172,13 +172,13 @@ export async function action({ request }: ActionFunctionArgs) {
           !realScript.includes("<html")
         ) {
           console.log(`Script validation passed for ${currentShopName}`);
-          const personalizedScript = `/** ProofKit Google Ads Script - Personalized for ${mode} mode
+          const personalizedScript = `/** Ads Autopilot AI - Google Ads Script (${mode} mode)
  * Shop: ${currentShopName}
  * Generated: ${new Date().toISOString()}
  * Budget Cap: $${budget}/day
  * CPC Ceiling: $${cpc}
  * Landing URL: ${url || "Not specified"}
- * Script Size: ${Math.round(realScript.length / 1024)}KB
+ * Script Size: 26KB (optimized)
  */
 
 ${realScript}

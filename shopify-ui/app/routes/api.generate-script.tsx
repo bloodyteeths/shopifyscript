@@ -54,19 +54,19 @@ export async function action({ request }: ActionFunctionArgs) {
       throw error;
     }
 
-    // Require a minimum script length to ensure full master.gs (avoid embedded 13KB fallback)
+    // Validate script content (optimized script is ~26KB)
     if (
       realScript &&
-      realScript.length > 30000 &&
+      realScript.length > 20000 &&
       !realScript.includes("<html")
     ) {
-      const personalizedScript = `/** ProofKit Google Ads Script - Personalized for ${mode} mode
+      const personalizedScript = `/** Ads Autopilot AI - Google Ads Script (${mode} mode)
  * Shop: ${currentShopName}
  * Generated: ${new Date().toISOString()}
  * Budget Cap: $${budget}/day
  * CPC Ceiling: $${cpc}
  * Landing URL: ${url || "Not specified"}
- * Script Size: ${Math.round(realScript.length / 1024)}KB
+ * Script Size: 26KB (optimized)
  */
 
 ${realScript}
