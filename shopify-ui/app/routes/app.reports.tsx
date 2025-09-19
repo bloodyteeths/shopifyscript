@@ -10,7 +10,7 @@ import {
   useRevalidator,
   Link
 } from "@remix-run/react";
-import { boundary } from "@shopify/shopify-app-remix/server";
+// import { boundary } from "@shopify/shopify-app-remix/server"; // Temporarily disabled to test crash fix
 import { authenticate } from "../shopify.server";
 
 // Types
@@ -714,11 +714,16 @@ export default function ReportsPage() {
   );
 }
 
-export const ErrorBoundary = boundary.error(({ error }) => {
-  console.error(error);
-  return <div>Something went wrong with the reports page</div>;
-});
+export function ErrorBoundary({ error }: { error: Error }) {
+  console.error('Reports page error:', error);
+  return (
+    <div style={{ padding: '2rem', background: '#fee', border: '1px solid #fcc' }}>
+      <h2>Reports Error</h2>
+      <p>Something went wrong with the reports page: {error?.message}</p>
+    </div>
+  );
+}
 
-export const headers: HeadersFunction = (headersArgs) => {
-  return boundary.headers(headersArgs);
-};
+// export const headers: HeadersFunction = (headersArgs) => {
+//   return boundary.headers(headersArgs);
+// }; // Temporarily disabled to test crash fix

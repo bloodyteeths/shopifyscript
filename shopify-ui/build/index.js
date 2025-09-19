@@ -6782,9 +6782,9 @@ var require_router_cjs = __commonJS({
       init === void 0 && (init = {});
       let responseInit = typeof init == "number" ? {
         status: init
-      } : init, headers3 = new Headers(responseInit.headers);
-      return headers3.has("Content-Type") || headers3.set("Content-Type", "application/json; charset=utf-8"), new Response(JSON.stringify(data2), _extends({}, responseInit, {
-        headers: headers3
+      } : init, headers2 = new Headers(responseInit.headers);
+      return headers2.has("Content-Type") || headers2.set("Content-Type", "application/json; charset=utf-8"), new Response(JSON.stringify(data2), _extends({}, responseInit, {
+        headers: headers2
       }));
     }, DataWithResponseInit = class {
       constructor(data2, init) {
@@ -6895,9 +6895,9 @@ var require_router_cjs = __commonJS({
       typeof responseInit == "number" ? responseInit = {
         status: responseInit
       } : typeof responseInit.status > "u" && (responseInit.status = 302);
-      let headers3 = new Headers(responseInit.headers);
-      return headers3.set("Location", url), new Response(null, _extends({}, responseInit, {
-        headers: headers3
+      let headers2 = new Headers(responseInit.headers);
+      return headers2.set("Location", url), new Response(null, _extends({}, responseInit, {
+        headers: headers2
       }));
     }, redirectDocument = (url, init) => {
       let response = redirect17(url, init);
@@ -11618,16 +11618,16 @@ var require_headers = __commonJS({
           id
         } = match.route, routeModule = build.routes[id].module, loaderHeaders = context.loaderHeaders[id] || new Headers(), actionHeaders = context.actionHeaders[id] || new Headers(), includeErrorHeaders = errorHeaders != null && idx === matches.length - 1, includeErrorCookies = includeErrorHeaders && errorHeaders !== loaderHeaders && errorHeaders !== actionHeaders;
         if (routeModule.headers == null) {
-          let headers4 = new Headers(parentHeaders);
-          return includeErrorCookies && prependCookies(errorHeaders, headers4), prependCookies(actionHeaders, headers4), prependCookies(loaderHeaders, headers4), headers4;
+          let headers3 = new Headers(parentHeaders);
+          return includeErrorCookies && prependCookies(errorHeaders, headers3), prependCookies(actionHeaders, headers3), prependCookies(loaderHeaders, headers3), headers3;
         }
-        let headers3 = new Headers(routeModule.headers ? typeof routeModule.headers == "function" ? routeModule.headers({
+        let headers2 = new Headers(routeModule.headers ? typeof routeModule.headers == "function" ? routeModule.headers({
           loaderHeaders,
           parentHeaders,
           actionHeaders,
           errorHeaders: includeErrorHeaders ? errorHeaders : void 0
         }) : routeModule.headers : void 0);
-        return includeErrorCookies && prependCookies(errorHeaders, headers3), prependCookies(actionHeaders, headers3), prependCookies(loaderHeaders, headers3), prependCookies(parentHeaders, headers3), headers3;
+        return includeErrorCookies && prependCookies(errorHeaders, headers2), prependCookies(actionHeaders, headers2), prependCookies(loaderHeaders, headers2), prependCookies(parentHeaders, headers2), headers2;
       }, new Headers());
     }
     function prependCookies(parentHeaders, childHeaders) {
@@ -11649,7 +11649,7 @@ var require_single_fetch = __commonJS({
   "../node_modules/@remix-run/server-runtime/dist/single-fetch.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: !0 });
-    var router = require_router_cjs(), turboStream = require_turbo_stream(), errors = require_errors(), headers3 = require_headers(), mode2 = require_mode(), responses = require_responses(), SingleFetchRedirectSymbol = Symbol("SingleFetchRedirect"), SINGLE_FETCH_REDIRECT_STATUS = 202;
+    var router = require_router_cjs(), turboStream = require_turbo_stream(), errors = require_errors(), headers2 = require_headers(), mode2 = require_mode(), responses = require_responses(), SingleFetchRedirectSymbol = Symbol("SingleFetchRedirect"), SINGLE_FETCH_REDIRECT_STATUS = 202;
     function getSingleFetchDataStrategy({
       isActionDataRequest,
       loadRouteIds
@@ -11689,7 +11689,7 @@ var require_single_fetch = __commonJS({
             headers: result.headers,
             status: SINGLE_FETCH_REDIRECT_STATUS
           };
-        let context = result, headers$1 = headers3.getDocumentHeaders(build, context);
+        let context = result, headers$1 = headers2.getDocumentHeaders(build, context);
         if (responses.isRedirectStatusCode(context.statusCode) && headers$1.has("Location"))
           return {
             result: getSingleFetchRedirect(context.statusCode, headers$1, build.basename),
@@ -11740,7 +11740,7 @@ var require_single_fetch = __commonJS({
             headers: result.headers,
             status: SINGLE_FETCH_REDIRECT_STATUS
           };
-        let context = result, headers$1 = headers3.getDocumentHeaders(build, context);
+        let context = result, headers$1 = headers2.getDocumentHeaders(build, context);
         if (responses.isRedirectStatusCode(context.statusCode) && headers$1.has("Location"))
           return {
             result: {
@@ -11778,8 +11778,8 @@ var require_single_fetch = __commonJS({
         };
       }
     }
-    function getSingleFetchRedirect(status, headers4, basename) {
-      let redirect17 = headers4.get("Location");
+    function getSingleFetchRedirect(status, headers3, basename) {
+      let redirect17 = headers3.get("Location");
       return basename && (redirect17 = router.stripBasename(redirect17, basename) || redirect17), {
         redirect: redirect17,
         status,
@@ -11791,10 +11791,10 @@ var require_single_fetch = __commonJS({
           // However, we're respecting it for now because it may be something folks have
           // used in their own responses
           // TODO(v3): Consider removing or making this official public API
-          headers4.has("X-Remix-Revalidate") || headers4.has("Set-Cookie")
+          headers3.has("X-Remix-Revalidate") || headers3.has("Set-Cookie")
         ),
-        reload: headers4.has("X-Remix-Reload-Document"),
-        replace: headers4.has("X-Remix-Replace")
+        reload: headers3.has("X-Remix-Reload-Document"),
+        replace: headers3.has("X-Remix-Replace")
       };
     }
     function encodeViaTurboStream(data2, requestSignal, streamTimeout, serverMode) {
@@ -12120,7 +12120,7 @@ var require_server = __commonJS({
   "../node_modules/@remix-run/server-runtime/dist/server.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: !0 });
-    var router = require_router_cjs(), entry2 = require_entry(), errors = require_errors(), headers3 = require_headers(), invariant = require_invariant(), mode2 = require_mode(), routeMatching = require_routeMatching(), routes2 = require_routes(), responses = require_responses(), serverHandoff = require_serverHandoff(), dev = require_dev(), singleFetch = require_single_fetch(), deprecations = require_deprecations(), NO_BODY_STATUS_CODES = /* @__PURE__ */ new Set([100, 101, 204, 205, 304]);
+    var router = require_router_cjs(), entry2 = require_entry(), errors = require_errors(), headers2 = require_headers(), invariant = require_invariant(), mode2 = require_mode(), routeMatching = require_routeMatching(), routes2 = require_routes(), responses = require_responses(), serverHandoff = require_serverHandoff(), dev = require_dev(), singleFetch = require_single_fetch(), deprecations = require_deprecations(), NO_BODY_STATUS_CODES = /* @__PURE__ */ new Set([100, 101, 204, 205, 304]);
     function derive(build, mode$1) {
       var _build$future, _build$future2;
       let routes$1 = routes2.createRoutes(build.routes), dataRoutes = routes2.createStaticHandlerDataRoutes(build.routes, build.future), serverMode = mode2.isServerMode(mode$1) ? mode$1 : mode2.ServerMode.Production, staticHandler = router.createStaticHandler(dataRoutes, {
@@ -12198,10 +12198,10 @@ var require_server = __commonJS({
             request2.method === "GET" && (result = {
               [singleFetch.SingleFetchRedirectSymbol]: result
             });
-            let headers4 = new Headers(response.headers);
-            return headers4.set("Content-Type", "text/x-script"), new Response(singleFetch.encodeViaTurboStream(result, request2.signal, _build.entry.module.streamTimeout, serverMode), {
+            let headers3 = new Headers(response.headers);
+            return headers3.set("Content-Type", "text/x-script"), new Response(singleFetch.encodeViaTurboStream(result, request2.signal, _build.entry.module.streamTimeout, serverMode), {
               status: singleFetch.SINGLE_FETCH_REDIRECT_STATUS,
-              headers: headers4
+              headers: headers3
             });
           }
         } else if (matches && matches[matches.length - 1].route.module.default == null && matches[matches.length - 1].route.module.ErrorBoundary == null)
@@ -12264,8 +12264,8 @@ var require_server = __commonJS({
         if (responses.isRedirectResponse(response))
           return createRemixRedirectResponse(response, build.basename);
         if (router.UNSAFE_DEFERRED_SYMBOL in response) {
-          let deferredData = response[router.UNSAFE_DEFERRED_SYMBOL], body = responses.createDeferredReadableStream(deferredData, request2.signal, serverMode), init = deferredData.init || {}, headers4 = new Headers(init.headers);
-          return headers4.set("Content-Type", "text/remix-deferred"), headers4.set("X-Remix-Response", "yes"), init.headers = headers4, new Response(body, init);
+          let deferredData = response[router.UNSAFE_DEFERRED_SYMBOL], body = responses.createDeferredReadableStream(deferredData, request2.signal, serverMode), init = deferredData.init || {}, headers3 = new Headers(init.headers);
+          return headers3.set("Content-Type", "text/remix-deferred"), headers3.set("X-Remix-Response", "yes"), init.headers = headers3, new Response(body, init);
         }
         return response = safelySetHeader(response, "X-Remix-Response", "yes"), response;
       } catch (error) {
@@ -12285,9 +12285,9 @@ var require_server = __commonJS({
     async function handleSingleFetchRequest(serverMode, build, staticHandler, request2, handlerUrl, loadContext, handleError) {
       let {
         result,
-        headers: headers4,
+        headers: headers3,
         status
-      } = request2.method !== "GET" ? await singleFetch.singleFetchAction(build, serverMode, staticHandler, request2, handlerUrl, loadContext, handleError) : await singleFetch.singleFetchLoaders(build, serverMode, staticHandler, request2, handlerUrl, loadContext, handleError), resultHeaders = new Headers(headers4);
+      } = request2.method !== "GET" ? await singleFetch.singleFetchAction(build, serverMode, staticHandler, request2, handlerUrl, loadContext, handleError) : await singleFetch.singleFetchLoaders(build, serverMode, staticHandler, request2, handlerUrl, loadContext, handleError), resultHeaders = new Headers(headers3);
       return resultHeaders.set("X-Remix-Response", "yes"), NO_BODY_STATUS_CODES.has(status) ? new Response(null, {
         status,
         headers: resultHeaders
@@ -12309,7 +12309,7 @@ var require_server = __commonJS({
       }
       if (responses.isResponse(context))
         return context;
-      let headers$1 = headers3.getDocumentHeaders(build, context);
+      let headers$1 = headers2.getDocumentHeaders(build, context);
       if (NO_BODY_STATUS_CODES.has(context.statusCode))
         return new Response(null, {
           status: context.statusCode,
@@ -12424,18 +12424,18 @@ ${String(error)}`), new Response(message2, {
       return contentType && /\bapplication\/json\b/.test(contentType) ? response.body == null ? null : response.json() : response.text();
     }
     function createRemixRedirectResponse(response, basename) {
-      let headers4 = new Headers(response.headers), redirectUrl = headers4.get("Location");
-      return headers4.set("X-Remix-Redirect", basename && router.stripBasename(redirectUrl, basename) || redirectUrl), headers4.set("X-Remix-Status", String(response.status)), headers4.delete("Location"), response.headers.get("Set-Cookie") !== null && headers4.set("X-Remix-Revalidate", "yes"), new Response(null, {
+      let headers3 = new Headers(response.headers), redirectUrl = headers3.get("Location");
+      return headers3.set("X-Remix-Redirect", basename && router.stripBasename(redirectUrl, basename) || redirectUrl), headers3.set("X-Remix-Status", String(response.status)), headers3.delete("Location"), response.headers.get("Set-Cookie") !== null && headers3.set("X-Remix-Revalidate", "yes"), new Response(null, {
         status: 204,
-        headers: headers4
+        headers: headers3
       });
     }
     function safelySetHeader(response, name, value) {
-      let headers4 = new Headers(response.headers);
-      return headers4.set(name, value), new Response(response.body, {
+      let headers3 = new Headers(response.headers);
+      return headers3.set(name, value), new Response(response.body, {
         status: response.status,
         statusText: response.statusText,
-        headers: headers4,
+        headers: headers3,
         duplex: response.body ? "half" : void 0
       });
     }
@@ -13376,10 +13376,10 @@ var require_single_fetch2 = __commonJS({
       if ("error" in result)
         throw result.error;
       if ("redirect" in result) {
-        let headers3 = {};
-        throw result.revalidate && (headers3["X-Remix-Revalidate"] = "yes"), result.reload && (headers3["X-Remix-Reload-Document"] = "yes"), result.replace && (headers3["X-Remix-Replace"] = "yes"), router.redirect(result.redirect, {
+        let headers2 = {};
+        throw result.revalidate && (headers2["X-Remix-Revalidate"] = "yes"), result.reload && (headers2["X-Remix-Reload-Document"] = "yes"), result.replace && (headers2["X-Remix-Replace"] = "yes"), router.redirect(result.redirect, {
           status: result.status,
-          headers: headers3
+          headers: headers2
         });
       } else {
         if ("data" in result)
@@ -13866,14 +13866,14 @@ var require_routes2 = __commonJS({
       return result;
     }
     function getRedirect(response) {
-      let status = parseInt(response.headers.get("X-Remix-Status"), 10) || 302, url = response.headers.get("X-Remix-Redirect"), headers3 = {}, revalidate = response.headers.get("X-Remix-Revalidate");
-      revalidate && (headers3["X-Remix-Revalidate"] = revalidate);
+      let status = parseInt(response.headers.get("X-Remix-Status"), 10) || 302, url = response.headers.get("X-Remix-Redirect"), headers2 = {}, revalidate = response.headers.get("X-Remix-Revalidate");
+      revalidate && (headers2["X-Remix-Revalidate"] = revalidate);
       let reloadDocument = response.headers.get("X-Remix-Reload-Document");
-      reloadDocument && (headers3["X-Remix-Reload-Document"] = reloadDocument);
+      reloadDocument && (headers2["X-Remix-Reload-Document"] = reloadDocument);
       let replace = response.headers.get("X-Remix-Replace");
-      return replace && (headers3["X-Remix-Replace"] = replace), reactRouterDom.redirect(url, {
+      return replace && (headers2["X-Remix-Replace"] = replace), reactRouterDom.redirect(url, {
         status,
-        headers: headers3
+        headers: headers2
       });
     }
     function getRouteModuleComponent(routeModule) {
@@ -18379,8 +18379,8 @@ var require_errors4 = __commonJS({
         super(message2), this.name = "BodyTimeoutError", this.message = message2 || "Body Timeout Error", this.code = "UND_ERR_BODY_TIMEOUT";
       }
     }, ResponseStatusCodeError = class extends UndiciError {
-      constructor(message2, statusCode, headers3, body) {
-        super(message2), this.name = "ResponseStatusCodeError", this.message = message2 || "Response Status Code Error", this.code = "UND_ERR_RESPONSE_STATUS_CODE", this.body = body, this.status = statusCode, this.statusCode = statusCode, this.headers = headers3;
+      constructor(message2, statusCode, headers2, body) {
+        super(message2), this.name = "ResponseStatusCodeError", this.message = message2 || "Response Status Code Error", this.code = "UND_ERR_RESPONSE_STATUS_CODE", this.body = body, this.status = statusCode, this.statusCode = statusCode, this.headers = headers2;
       }
     }, InvalidArgumentError = class extends UndiciError {
       constructor(message2) {
@@ -18439,12 +18439,12 @@ var require_errors4 = __commonJS({
         super(message2), this.name = "ResponseExceededMaxSizeError", this.message = message2 || "Response content exceeded max size", this.code = "UND_ERR_RES_EXCEEDED_MAX_SIZE";
       }
     }, RequestRetryError = class extends UndiciError {
-      constructor(message2, code, { headers: headers3, data }) {
-        super(message2), this.name = "RequestRetryError", this.message = message2 || "Request retry error", this.code = "UND_ERR_REQ_RETRY", this.statusCode = code, this.data = data, this.headers = headers3;
+      constructor(message2, code, { headers: headers2, data }) {
+        super(message2), this.name = "RequestRetryError", this.message = message2 || "Request retry error", this.code = "UND_ERR_REQ_RETRY", this.statusCode = code, this.data = data, this.headers = headers2;
       }
     }, ResponseError = class extends UndiciError {
-      constructor(message2, code, { headers: headers3, data }) {
-        super(message2), this.name = "ResponseError", this.message = message2 || "Response error", this.code = "UND_ERR_RESPONSE", this.statusCode = code, this.data = data, this.headers = headers3;
+      constructor(message2, code, { headers: headers2, data }) {
+        super(message2), this.name = "ResponseError", this.message = message2 || "Response error", this.code = "UND_ERR_RESPONSE", this.statusCode = code, this.data = data, this.headers = headers2;
       }
     }, SecureProxyConnectionError = class extends UndiciError {
       constructor(cause, message2, options) {
@@ -18848,23 +18848,23 @@ var require_util = __commonJS({
     function bufferToLowerCasedHeaderName(value) {
       return tree.lookup(value) ?? value.toString("latin1").toLowerCase();
     }
-    function parseHeaders(headers3, obj) {
+    function parseHeaders(headers2, obj) {
       obj === void 0 && (obj = {});
-      for (let i = 0; i < headers3.length; i += 2) {
-        let key = headerNameToString(headers3[i]), val = obj[key];
+      for (let i = 0; i < headers2.length; i += 2) {
+        let key = headerNameToString(headers2[i]), val = obj[key];
         if (val)
-          typeof val == "string" && (val = [val], obj[key] = val), val.push(headers3[i + 1].toString("utf8"));
+          typeof val == "string" && (val = [val], obj[key] = val), val.push(headers2[i + 1].toString("utf8"));
         else {
-          let headersValue = headers3[i + 1];
+          let headersValue = headers2[i + 1];
           typeof headersValue == "string" ? obj[key] = headersValue : obj[key] = Array.isArray(headersValue) ? headersValue.map((x) => x.toString("utf8")) : headersValue.toString("utf8");
         }
       }
       return "content-length" in obj && "content-disposition" in obj && (obj["content-disposition"] = Buffer.from(obj["content-disposition"]).toString("latin1")), obj;
     }
-    function parseRawHeaders(headers3) {
-      let len = headers3.length, ret = new Array(len), hasContentLength = !1, contentDispositionIdx = -1, key, val, kLen = 0;
-      for (let n = 0; n < headers3.length; n += 2)
-        key = headers3[n], val = headers3[n + 1], typeof key != "string" && (key = key.toString()), typeof val != "string" && (val = val.toString("utf8")), kLen = key.length, kLen === 14 && key[7] === "-" && (key === "content-length" || key.toLowerCase() === "content-length") ? hasContentLength = !0 : kLen === 19 && key[7] === "-" && (key === "content-disposition" || key.toLowerCase() === "content-disposition") && (contentDispositionIdx = n + 1), ret[n] = key, ret[n + 1] = val;
+    function parseRawHeaders(headers2) {
+      let len = headers2.length, ret = new Array(len), hasContentLength = !1, contentDispositionIdx = -1, key, val, kLen = 0;
+      for (let n = 0; n < headers2.length; n += 2)
+        key = headers2[n], val = headers2[n + 1], typeof key != "string" && (key = key.toString()), typeof val != "string" && (val = val.toString("utf8")), kLen = key.length, kLen === 14 && key[7] === "-" && (key === "content-length" || key.toLowerCase() === "content-length") ? hasContentLength = !0 : kLen === 19 && key[7] === "-" && (key === "content-disposition" || key.toLowerCase() === "content-disposition") && (contentDispositionIdx = n + 1), ret[n] = key, ret[n + 1] = val;
       return hasContentLength && contentDispositionIdx !== -1 && (ret[contentDispositionIdx] = Buffer.from(ret[contentDispositionIdx]).toString("latin1")), ret;
     }
     function isBuffer(buffer) {
@@ -19274,7 +19274,7 @@ var require_request = __commonJS({
         path,
         method,
         body,
-        headers: headers3,
+        headers: headers2,
         query,
         idempotent,
         blocking,
@@ -19328,24 +19328,24 @@ var require_request = __commonJS({
           this.body = body;
         else
           throw new InvalidArgumentError("body must be a string, a Buffer, a Readable stream, an iterable, or an async iterable");
-        if (this.completed = !1, this.aborted = !1, this.upgrade = upgrade || null, this.path = query ? buildURL(path, query) : path, this.origin = origin, this.idempotent = idempotent ?? (method === "HEAD" || method === "GET"), this.blocking = blocking ?? !1, this.reset = reset ?? null, this.host = null, this.contentLength = null, this.contentType = null, this.headers = [], this.expectContinue = expectContinue ?? !1, Array.isArray(headers3)) {
-          if (headers3.length % 2 !== 0)
+        if (this.completed = !1, this.aborted = !1, this.upgrade = upgrade || null, this.path = query ? buildURL(path, query) : path, this.origin = origin, this.idempotent = idempotent ?? (method === "HEAD" || method === "GET"), this.blocking = blocking ?? !1, this.reset = reset ?? null, this.host = null, this.contentLength = null, this.contentType = null, this.headers = [], this.expectContinue = expectContinue ?? !1, Array.isArray(headers2)) {
+          if (headers2.length % 2 !== 0)
             throw new InvalidArgumentError("headers array must be even");
-          for (let i = 0; i < headers3.length; i += 2)
-            processHeader(this, headers3[i], headers3[i + 1]);
-        } else if (headers3 && typeof headers3 == "object")
-          if (headers3[Symbol.iterator])
-            for (let header of headers3) {
+          for (let i = 0; i < headers2.length; i += 2)
+            processHeader(this, headers2[i], headers2[i + 1]);
+        } else if (headers2 && typeof headers2 == "object")
+          if (headers2[Symbol.iterator])
+            for (let header of headers2) {
               if (!Array.isArray(header) || header.length !== 2)
                 throw new InvalidArgumentError("headers must be in key-value pair format");
               processHeader(this, header[0], header[1]);
             }
           else {
-            let keys = Object.keys(headers3);
+            let keys = Object.keys(headers2);
             for (let i = 0; i < keys.length; ++i)
-              processHeader(this, keys[i], headers3[keys[i]]);
+              processHeader(this, keys[i], headers2[keys[i]]);
           }
-        else if (headers3 != null)
+        else if (headers2 != null)
           throw new InvalidArgumentError("headers must be an object or an array");
         validateHandler(handler, method, upgrade), this.servername = servername || getServerName(this.host), this[kHandler] = handler, channels.create.hasSubscribers && channels.create.publish({ request: this });
       }
@@ -19374,10 +19374,10 @@ var require_request = __commonJS({
       onResponseStarted() {
         return this[kHandler].onResponseStarted?.();
       }
-      onHeaders(statusCode, headers3, resume, statusText) {
-        assert(!this.aborted), assert(!this.completed), channels.headers.hasSubscribers && channels.headers.publish({ request: this, response: { statusCode, headers: headers3, statusText } });
+      onHeaders(statusCode, headers2, resume, statusText) {
+        assert(!this.aborted), assert(!this.completed), channels.headers.hasSubscribers && channels.headers.publish({ request: this, response: { statusCode, headers: headers2, statusText } });
         try {
-          return this[kHandler].onHeaders(statusCode, headers3, resume, statusText);
+          return this[kHandler].onHeaders(statusCode, headers2, resume, statusText);
         } catch (err) {
           this.abort(err);
         }
@@ -19390,8 +19390,8 @@ var require_request = __commonJS({
           return this.abort(err), !1;
         }
       }
-      onUpgrade(statusCode, headers3, socket) {
-        return assert(!this.aborted), assert(!this.completed), this[kHandler].onUpgrade(statusCode, headers3, socket);
+      onUpgrade(statusCode, headers2, socket) {
+        return assert(!this.aborted), assert(!this.completed), this[kHandler].onUpgrade(statusCode, headers2, socket);
       }
       onComplete(trailers) {
         this.onFinally(), assert(!this.aborted), this.completed = !0, channels.trailers.hasSubscribers && channels.trailers.publish({ request: this, trailers });
@@ -21502,8 +21502,8 @@ var require_util2 = __commonJS({
     function createInflate(zlibOptions) {
       return new InflateStream(zlibOptions);
     }
-    function extractMimeType(headers3) {
-      let charset = null, essence = null, mimeType = null, values = getDecodeSplit("content-type", headers3);
+    function extractMimeType(headers2) {
+      let charset = null, essence = null, mimeType = null, values = getDecodeSplit("content-type", headers2);
       if (values === null)
         return "failure";
       for (let value of values) {
@@ -22127,7 +22127,7 @@ Content-Type: ${value.type || "application/octet-stream"}\r
       return JSON.parse(utf8DecodeBytes(bytes));
     }
     function bodyMimeType(requestOrResponse) {
-      let headers3 = requestOrResponse[kState].headersList, mimeType = extractMimeType(headers3);
+      let headers2 = requestOrResponse[kState].headersList, mimeType = extractMimeType(headers2);
       return mimeType === "failure" ? null : mimeType;
     }
     module2.exports = {
@@ -22312,19 +22312,19 @@ var require_client_h1 = __commonJS({
         this.headersSize += len, this.headersSize >= this.headersMaxSize && util3.destroy(this.socket, new HeadersOverflowError());
       }
       onUpgrade(head) {
-        let { upgrade, client, socket, headers: headers3, statusCode } = this;
-        assert(upgrade), assert(client[kSocket] === socket), assert(!socket.destroyed), assert(!this.paused), assert((headers3.length & 1) === 0);
+        let { upgrade, client, socket, headers: headers2, statusCode } = this;
+        assert(upgrade), assert(client[kSocket] === socket), assert(!socket.destroyed), assert(!this.paused), assert((headers2.length & 1) === 0);
         let request2 = client[kQueue][client[kRunningIdx]];
         assert(request2), assert(request2.upgrade || request2.method === "CONNECT"), this.statusCode = null, this.statusText = "", this.shouldKeepAlive = null, this.headers = [], this.headersSize = 0, socket.unshift(head), socket[kParser].destroy(), socket[kParser] = null, socket[kClient] = null, socket[kError] = null, removeAllListeners(socket), client[kSocket] = null, client[kHTTPContext] = null, client[kQueue][client[kRunningIdx]++] = null, client.emit("disconnect", client[kUrl], [client], new InformationalError("upgrade"));
         try {
-          request2.onUpgrade(statusCode, headers3, socket);
+          request2.onUpgrade(statusCode, headers2, socket);
         } catch (err) {
           util3.destroy(socket, err);
         }
         client[kResume]();
       }
       onHeadersComplete(statusCode, upgrade, shouldKeepAlive) {
-        let { client, socket, headers: headers3, statusText } = this;
+        let { client, socket, headers: headers2, statusText } = this;
         if (socket.destroyed)
           return -1;
         let request2 = client[kQueue][client[kRunningIdx]];
@@ -22356,7 +22356,7 @@ var require_client_h1 = __commonJS({
             client[kKeepAliveTimeoutValue] = client[kKeepAliveDefaultTimeout];
         } else
           socket[kReset] = !0;
-        let pause = request2.onHeaders(statusCode, headers3, this.resume, statusText) === !1;
+        let pause = request2.onHeaders(statusCode, headers2, this.resume, statusText) === !1;
         return request2.aborted ? -1 : request2.method === "HEAD" || statusCode < 200 ? 1 : (socket[kBlocking] && (socket[kBlocking] = !1, client[kResume]()), pause ? constants2.ERROR.PAUSED : 0);
       }
       onBody(buf) {
@@ -22370,7 +22370,7 @@ var require_client_h1 = __commonJS({
           return constants2.ERROR.PAUSED;
       }
       onMessageComplete() {
-        let { client, socket, statusCode, upgrade, headers: headers3, contentLength, bytesRead, shouldKeepAlive } = this;
+        let { client, socket, statusCode, upgrade, headers: headers2, contentLength, bytesRead, shouldKeepAlive } = this;
         if (socket.destroyed && (!statusCode || shouldKeepAlive))
           return -1;
         if (upgrade)
@@ -22380,7 +22380,7 @@ var require_client_h1 = __commonJS({
         if (assert(request2), this.statusCode = null, this.statusText = "", this.bytesRead = 0, this.contentLength = "", this.keepAlive = "", this.connection = "", this.headers = [], this.headersSize = 0, !(statusCode < 200)) {
           if (request2.method !== "HEAD" && contentLength && bytesRead !== parseInt(contentLength, 10))
             return util3.destroy(socket, new ResponseContentLengthMismatchError()), -1;
-          if (request2.onComplete(headers3), client[kQueue][client[kRunningIdx]++] = null, socket[kWriting])
+          if (request2.onComplete(headers2), client[kQueue][client[kRunningIdx]++] = null, socket[kWriting])
             return assert(client[kRunning] === 0), util3.destroy(socket, new InformationalError("reset")), constants2.ERROR.PAUSED;
           if (shouldKeepAlive) {
             if (socket[kReset] && client[kRunning] === 0)
@@ -22469,13 +22469,13 @@ var require_client_h1 = __commonJS({
       return method !== "GET" && method !== "HEAD" && method !== "OPTIONS" && method !== "TRACE" && method !== "CONNECT";
     }
     function writeH1(client, request2) {
-      let { method, path, host, upgrade, blocking, reset } = request2, { body, headers: headers3, contentLength } = request2, expectsPayload = method === "PUT" || method === "POST" || method === "PATCH" || method === "QUERY" || method === "PROPFIND" || method === "PROPPATCH";
+      let { method, path, host, upgrade, blocking, reset } = request2, { body, headers: headers2, contentLength } = request2, expectsPayload = method === "PUT" || method === "POST" || method === "PATCH" || method === "QUERY" || method === "PROPFIND" || method === "PROPPATCH";
       if (util3.isFormDataLike(body)) {
         extractBody || (extractBody = require_body().extractBody);
         let [bodyStream, contentType] = extractBody(body);
-        request2.contentType == null && headers3.push("content-type", contentType), body = bodyStream.stream, contentLength = bodyStream.length;
+        request2.contentType == null && headers2.push("content-type", contentType), body = bodyStream.stream, contentLength = bodyStream.length;
       } else
-        util3.isBlobLike(body) && request2.contentType == null && body.type && headers3.push("content-type", body.type);
+        util3.isBlobLike(body) && request2.contentType == null && body.type && headers2.push("content-type", body.type);
       body && typeof body.read == "function" && body.read(0);
       let bodyLength = util3.bodyLength(body);
       if (contentLength = bodyLength ?? contentLength, contentLength === null && (contentLength = request2.contentLength), contentLength === 0 && !expectsPayload && (contentLength = null), shouldSendContentLength(method) && contentLength > 0 && request2.contentLength !== null && request2.contentLength !== contentLength) {
@@ -22501,9 +22501,9 @@ var require_client_h1 = __commonJS({
 upgrade: ${upgrade}\r
 ` : client[kPipelining] && !socket[kReset] ? header += `connection: keep-alive\r
 ` : header += `connection: close\r
-`, Array.isArray(headers3))
-        for (let n = 0; n < headers3.length; n += 2) {
-          let key = headers3[n + 0], val = headers3[n + 1];
+`, Array.isArray(headers2))
+        for (let n = 0; n < headers2.length; n += 2) {
+          let key = headers2[n + 0], val = headers2[n + 1];
           if (Array.isArray(val))
             for (let i = 0; i < val.length; i++)
               header += `${key}: ${val[i]}\r
@@ -22696,9 +22696,9 @@ var require_client_h2 = __commonJS({
         HTTP2_HEADER_STATUS
       }
     } = http2;
-    function parseH2Headers(headers3) {
+    function parseH2Headers(headers2) {
       let result = [];
-      for (let [name, value] of Object.entries(headers3))
+      for (let [name, value] of Object.entries(headers2))
         if (Array.isArray(value))
           for (let subvalue of value)
             result.push(Buffer.from(name), Buffer.from(subvalue));
@@ -22787,17 +22787,17 @@ var require_client_h2 = __commonJS({
       let session = client[kHTTP2Session], { method, path, host, upgrade, expectContinue, signal, headers: reqHeaders } = request2, { body } = request2;
       if (upgrade)
         return util3.errorRequest(client, request2, new Error("Upgrade not supported for H2")), !1;
-      let headers3 = {};
+      let headers2 = {};
       for (let n = 0; n < reqHeaders.length; n += 2) {
         let key = reqHeaders[n + 0], val = reqHeaders[n + 1];
         if (Array.isArray(val))
           for (let i = 0; i < val.length; i++)
-            headers3[key] ? headers3[key] += `,${val[i]}` : headers3[key] = val[i];
+            headers2[key] ? headers2[key] += `,${val[i]}` : headers2[key] = val[i];
         else
-          headers3[key] = val;
+          headers2[key] = val;
       }
       let stream, { hostname, port } = client[kUrl];
-      headers3[HTTP2_HEADER_AUTHORITY] = host || `${hostname}${port ? `:${port}` : ""}`, headers3[HTTP2_HEADER_METHOD] = method;
+      headers2[HTTP2_HEADER_AUTHORITY] = host || `${hostname}${port ? `:${port}` : ""}`, headers2[HTTP2_HEADER_METHOD] = method;
       let abort = (err) => {
         request2.aborted || request2.completed || (err = err || new RequestAbortedError(), util3.errorRequest(client, request2, err), stream != null && util3.destroy(stream, err), util3.destroy(body, err), client[kQueue][client[kRunningIdx]++] = null, client[kResume]());
       };
@@ -22809,32 +22809,32 @@ var require_client_h2 = __commonJS({
       if (request2.aborted)
         return !1;
       if (method === "CONNECT")
-        return session.ref(), stream = session.request(headers3, { endStream: !1, signal }), stream.id && !stream.pending ? (request2.onUpgrade(null, null, stream), ++session[kOpenStreams], client[kQueue][client[kRunningIdx]++] = null) : stream.once("ready", () => {
+        return session.ref(), stream = session.request(headers2, { endStream: !1, signal }), stream.id && !stream.pending ? (request2.onUpgrade(null, null, stream), ++session[kOpenStreams], client[kQueue][client[kRunningIdx]++] = null) : stream.once("ready", () => {
           request2.onUpgrade(null, null, stream), ++session[kOpenStreams], client[kQueue][client[kRunningIdx]++] = null;
         }), stream.once("close", () => {
           session[kOpenStreams] -= 1, session[kOpenStreams] === 0 && session.unref();
         }), !0;
-      headers3[HTTP2_HEADER_PATH] = path, headers3[HTTP2_HEADER_SCHEME] = "https";
+      headers2[HTTP2_HEADER_PATH] = path, headers2[HTTP2_HEADER_SCHEME] = "https";
       let expectsPayload = method === "PUT" || method === "POST" || method === "PATCH";
       body && typeof body.read == "function" && body.read(0);
       let contentLength = util3.bodyLength(body);
       if (util3.isFormDataLike(body)) {
         extractBody ??= require_body().extractBody;
         let [bodyStream, contentType] = extractBody(body);
-        headers3["content-type"] = contentType, body = bodyStream.stream, contentLength = bodyStream.length;
+        headers2["content-type"] = contentType, body = bodyStream.stream, contentLength = bodyStream.length;
       }
       if (contentLength == null && (contentLength = request2.contentLength), (contentLength === 0 || !expectsPayload) && (contentLength = null), shouldSendContentLength(method) && contentLength > 0 && request2.contentLength != null && request2.contentLength !== contentLength) {
         if (client[kStrictContentLength])
           return util3.errorRequest(client, request2, new RequestContentLengthMismatchError()), !1;
         process.emitWarning(new RequestContentLengthMismatchError());
       }
-      contentLength != null && (assert(body, "no body must not have content length"), headers3[HTTP2_HEADER_CONTENT_LENGTH] = `${contentLength}`), session.ref();
+      contentLength != null && (assert(body, "no body must not have content length"), headers2[HTTP2_HEADER_CONTENT_LENGTH] = `${contentLength}`), session.ref();
       let shouldEndStream = method === "GET" || method === "HEAD" || body === null;
-      return expectContinue ? (headers3[HTTP2_HEADER_EXPECT] = "100-continue", stream = session.request(headers3, { endStream: shouldEndStream, signal }), stream.once("continue", writeBodyH2)) : (stream = session.request(headers3, {
+      return expectContinue ? (headers2[HTTP2_HEADER_EXPECT] = "100-continue", stream = session.request(headers2, { endStream: shouldEndStream, signal }), stream.once("continue", writeBodyH2)) : (stream = session.request(headers2, {
         endStream: shouldEndStream,
         signal
-      }), writeBodyH2()), ++session[kOpenStreams], stream.once("response", (headers4) => {
-        let { [HTTP2_HEADER_STATUS]: statusCode, ...realHeaders } = headers4;
+      }), writeBodyH2()), ++session[kOpenStreams], stream.once("response", (headers3) => {
+        let { [HTTP2_HEADER_STATUS]: statusCode, ...realHeaders } = headers3;
         if (request2.onResponseStarted(), request2.aborted) {
           let err = new RequestAbortedError();
           util3.errorRequest(client, request2, err), util3.destroy(stream, err);
@@ -22997,19 +22997,19 @@ var require_redirect_handler = __commonJS({
       onConnect(abort) {
         this.abort = abort, this.handler.onConnect(abort, { history: this.history });
       }
-      onUpgrade(statusCode, headers3, socket) {
-        this.handler.onUpgrade(statusCode, headers3, socket);
+      onUpgrade(statusCode, headers2, socket) {
+        this.handler.onUpgrade(statusCode, headers2, socket);
       }
       onError(error) {
         this.handler.onError(error);
       }
-      onHeaders(statusCode, headers3, resume, statusText) {
-        if (this.location = this.history.length >= this.maxRedirections || util3.isDisturbed(this.opts.body) ? null : parseLocation(statusCode, headers3), this.opts.throwOnMaxRedirect && this.history.length >= this.maxRedirections) {
+      onHeaders(statusCode, headers2, resume, statusText) {
+        if (this.location = this.history.length >= this.maxRedirections || util3.isDisturbed(this.opts.body) ? null : parseLocation(statusCode, headers2), this.opts.throwOnMaxRedirect && this.history.length >= this.maxRedirections) {
           this.request && this.request.abort(new Error("max redirects")), this.redirectionLimitReached = !0, this.abort(new Error("max redirects"));
           return;
         }
         if (this.opts.origin && this.history.push(new URL(this.opts.path, this.opts.origin)), !this.location)
-          return this.handler.onHeaders(statusCode, headers3, resume, statusText);
+          return this.handler.onHeaders(statusCode, headers2, resume, statusText);
         let { origin, pathname, search } = util3.parseURL(new URL(this.location, this.opts.origin && new URL(this.opts.path, this.opts.origin))), path = search ? `${pathname}${search}` : pathname;
         this.opts.headers = cleanRequestHeaders(this.opts.headers, statusCode === 303, this.opts.origin !== origin), this.opts.path = path, this.opts.origin = origin, this.opts.maxRedirections = 0, this.opts.query = null, statusCode === 303 && this.opts.method !== "HEAD" && (this.opts.method = "GET", this.opts.body = null);
       }
@@ -23024,12 +23024,12 @@ var require_redirect_handler = __commonJS({
         this.handler.onBodySent && this.handler.onBodySent(chunk);
       }
     };
-    function parseLocation(statusCode, headers3) {
+    function parseLocation(statusCode, headers2) {
       if (redirectableStatusCodes.indexOf(statusCode) === -1)
         return null;
-      for (let i = 0; i < headers3.length; i += 2)
-        if (headers3[i].length === 8 && util3.headerNameToString(headers3[i]) === "location")
-          return headers3[i + 1];
+      for (let i = 0; i < headers2.length; i += 2)
+        if (headers2[i].length === 8 && util3.headerNameToString(headers2[i]) === "location")
+          return headers2[i + 1];
     }
     function shouldRemoveHeader(header, removeContent, unknownOrigin) {
       if (header.length === 4)
@@ -23042,16 +23042,16 @@ var require_redirect_handler = __commonJS({
       }
       return !1;
     }
-    function cleanRequestHeaders(headers3, removeContent, unknownOrigin) {
+    function cleanRequestHeaders(headers2, removeContent, unknownOrigin) {
       let ret = [];
-      if (Array.isArray(headers3))
-        for (let i = 0; i < headers3.length; i += 2)
-          shouldRemoveHeader(headers3[i], removeContent, unknownOrigin) || ret.push(headers3[i], headers3[i + 1]);
-      else if (headers3 && typeof headers3 == "object")
-        for (let key of Object.keys(headers3))
-          shouldRemoveHeader(key, removeContent, unknownOrigin) || ret.push(key, headers3[key]);
+      if (Array.isArray(headers2))
+        for (let i = 0; i < headers2.length; i += 2)
+          shouldRemoveHeader(headers2[i], removeContent, unknownOrigin) || ret.push(headers2[i], headers2[i + 1]);
+      else if (headers2 && typeof headers2 == "object")
+        for (let key of Object.keys(headers2))
+          shouldRemoveHeader(key, removeContent, unknownOrigin) || ret.push(key, headers2[key]);
       else
-        assert(headers3 == null, "headers must be an object or an array");
+        assert(headers2 == null, "headers must be an object or an array");
       return ret;
     }
     module2.exports = RedirectHandler;
@@ -23840,15 +23840,15 @@ var require_proxy_agent = __commonJS({
         });
       }
       dispatch(opts, handler) {
-        let headers3 = buildHeaders(opts.headers);
-        if (throwIfProxyAuthIsSent(headers3), headers3 && !("host" in headers3) && !("Host" in headers3)) {
+        let headers2 = buildHeaders(opts.headers);
+        if (throwIfProxyAuthIsSent(headers2), headers2 && !("host" in headers2) && !("Host" in headers2)) {
           let { host } = new URL3(opts.origin);
-          headers3.host = host;
+          headers2.host = host;
         }
         return this[kAgent].dispatch(
           {
             ...opts,
-            headers: headers3
+            headers: headers2
           },
           handler
         );
@@ -23867,17 +23867,17 @@ var require_proxy_agent = __commonJS({
         await this[kAgent].destroy(), await this[kClient].destroy();
       }
     };
-    function buildHeaders(headers3) {
-      if (Array.isArray(headers3)) {
+    function buildHeaders(headers2) {
+      if (Array.isArray(headers2)) {
         let headersPair = {};
-        for (let i = 0; i < headers3.length; i += 2)
-          headersPair[headers3[i]] = headers3[i + 1];
+        for (let i = 0; i < headers2.length; i += 2)
+          headersPair[headers2[i]] = headers2[i + 1];
         return headersPair;
       }
-      return headers3;
+      return headers2;
     }
-    function throwIfProxyAuthIsSent(headers3) {
-      if (headers3 && Object.keys(headers3).find((key) => key.toLowerCase() === "proxy-authorization"))
+    function throwIfProxyAuthIsSent(headers2) {
+      if (headers2 && Object.keys(headers2).find((key) => key.toLowerCase() === "proxy-authorization"))
         throw new InvalidArgumentError("Proxy-Authorization should be sent in ProxyAgent constructor");
     }
     module2.exports = ProxyAgent;
@@ -24023,8 +24023,8 @@ var require_retry_handler = __commonJS({
       onRequestSent() {
         this.handler.onRequestSent && this.handler.onRequestSent();
       }
-      onUpgrade(statusCode, headers3, socket) {
-        this.handler.onUpgrade && this.handler.onUpgrade(statusCode, headers3, socket);
+      onUpgrade(statusCode, headers2, socket) {
+        this.handler.onUpgrade && this.handler.onUpgrade(statusCode, headers2, socket);
       }
       onConnect(abort) {
         this.aborted ? abort(this.reason) : this.abort = abort;
@@ -24034,7 +24034,7 @@ var require_retry_handler = __commonJS({
           return this.handler.onBodySent(chunk);
       }
       static [kRetryHandlerDefaultRetry](err, { state, opts }, cb) {
-        let { statusCode, code, headers: headers3 } = err, { method, retryOptions } = opts, {
+        let { statusCode, code, headers: headers2 } = err, { method, retryOptions } = opts, {
           maxRetries,
           minTimeout,
           maxTimeout,
@@ -24059,13 +24059,13 @@ var require_retry_handler = __commonJS({
           cb(err);
           return;
         }
-        let retryAfterHeader = headers3?.["retry-after"];
+        let retryAfterHeader = headers2?.["retry-after"];
         retryAfterHeader && (retryAfterHeader = Number(retryAfterHeader), retryAfterHeader = Number.isNaN(retryAfterHeader) ? calculateRetryAfterHeader(retryAfterHeader) : retryAfterHeader * 1e3);
         let retryTimeout = retryAfterHeader > 0 ? Math.min(retryAfterHeader, maxTimeout) : Math.min(minTimeout * timeoutFactor ** (counter - 1), maxTimeout);
         setTimeout(() => cb(null), retryTimeout);
       }
       onHeaders(statusCode, rawHeaders, resume, statusMessage) {
-        let headers3 = parseHeaders(rawHeaders);
+        let headers2 = parseHeaders(rawHeaders);
         if (this.retryCount += 1, statusCode >= 300)
           return this.retryOpts.statusCodes.includes(statusCode) === !1 ? this.handler.onHeaders(
             statusCode,
@@ -24074,7 +24074,7 @@ var require_retry_handler = __commonJS({
             statusMessage
           ) : (this.abort(
             new RequestRetryError("Request failed", statusCode, {
-              headers: headers3,
+              headers: headers2,
               data: {
                 count: this.retryCount
               }
@@ -24084,22 +24084,22 @@ var require_retry_handler = __commonJS({
           if (this.resume = null, statusCode !== 206 && (this.start > 0 || statusCode !== 200))
             return this.abort(
               new RequestRetryError("server does not support the range header and the payload was partially consumed", statusCode, {
-                headers: headers3,
+                headers: headers2,
                 data: { count: this.retryCount }
               })
             ), !1;
-          let contentRange = parseRangeHeader(headers3["content-range"]);
+          let contentRange = parseRangeHeader(headers2["content-range"]);
           if (!contentRange)
             return this.abort(
               new RequestRetryError("Content-Range mismatch", statusCode, {
-                headers: headers3,
+                headers: headers2,
                 data: { count: this.retryCount }
               })
             ), !1;
-          if (this.etag != null && this.etag !== headers3.etag)
+          if (this.etag != null && this.etag !== headers2.etag)
             return this.abort(
               new RequestRetryError("ETag mismatch", statusCode, {
-                headers: headers3,
+                headers: headers2,
                 data: { count: this.retryCount }
               })
             ), !1;
@@ -24108,7 +24108,7 @@ var require_retry_handler = __commonJS({
         }
         if (this.end == null) {
           if (statusCode === 206) {
-            let range = parseRangeHeader(headers3["content-range"]);
+            let range = parseRangeHeader(headers2["content-range"]);
             if (range == null)
               return this.handler.onHeaders(
                 statusCode,
@@ -24123,13 +24123,13 @@ var require_retry_handler = __commonJS({
             ), assert(end != null && Number.isFinite(end), "invalid content-length"), this.start = start, this.end = end;
           }
           if (this.end == null) {
-            let contentLength = headers3["content-length"];
+            let contentLength = headers2["content-length"];
             this.end = contentLength != null ? Number(contentLength) - 1 : null;
           }
           return assert(Number.isFinite(this.start)), assert(
             this.end == null || Number.isFinite(this.end),
             "invalid content-length"
-          ), this.resume = resume, this.etag = headers3.etag != null ? headers3.etag : null, this.etag != null && this.etag.startsWith("W/") && (this.etag = null), this.handler.onHeaders(
+          ), this.resume = resume, this.etag = headers2.etag != null ? headers2.etag : null, this.etag != null && this.etag.startsWith("W/") && (this.etag = null), this.handler.onHeaders(
             statusCode,
             rawHeaders,
             resume,
@@ -24137,7 +24137,7 @@ var require_retry_handler = __commonJS({
           );
         }
         let err = new RequestRetryError("Request failed", statusCode, {
-          headers: headers3,
+          headers: headers2,
           data: { count: this.retryCount }
         });
         return this.abort(err), !1;
@@ -24163,12 +24163,12 @@ var require_retry_handler = __commonJS({
           if (err2 != null || this.aborted || isDisturbed(this.opts.body))
             return this.handler.onError(err2);
           if (this.start !== 0) {
-            let headers3 = { range: `bytes=${this.start}-${this.end ?? ""}` };
-            this.etag != null && (headers3["if-match"] = this.etag), this.opts = {
+            let headers2 = { range: `bytes=${this.start}-${this.end ?? ""}` };
+            this.etag != null && (headers2["if-match"] = this.etag), this.opts = {
               ...this.opts,
               headers: {
                 ...this.opts.headers,
-                ...headers3
+                ...headers2
               }
             };
           }
@@ -24398,7 +24398,7 @@ var require_util3 = __commonJS({
     var assert = require("node:assert"), {
       ResponseStatusCodeError
     } = require_errors4(), { chunksDecode } = require_readable(), CHUNK_LIMIT = 128 * 1024;
-    async function getResolveErrorBodyCallback({ callback: callback2, body, contentType, statusCode, statusMessage, headers: headers3 }) {
+    async function getResolveErrorBodyCallback({ callback: callback2, body, contentType, statusCode, statusMessage, headers: headers2 }) {
       assert(body);
       let chunks = [], length = 0;
       try {
@@ -24412,7 +24412,7 @@ var require_util3 = __commonJS({
       }
       let message2 = `Response status code ${statusCode}${statusMessage ? `: ${statusMessage}` : ""}`;
       if (statusCode === 204 || !contentType || !length) {
-        queueMicrotask(() => callback2(new ResponseStatusCodeError(message2, statusCode, headers3)));
+        queueMicrotask(() => callback2(new ResponseStatusCodeError(message2, statusCode, headers2)));
         return;
       }
       let stackTraceLimit = Error.stackTraceLimit;
@@ -24424,7 +24424,7 @@ var require_util3 = __commonJS({
       } finally {
         Error.stackTraceLimit = stackTraceLimit;
       }
-      queueMicrotask(() => callback2(new ResponseStatusCodeError(message2, statusCode, headers3, payload)));
+      queueMicrotask(() => callback2(new ResponseStatusCodeError(message2, statusCode, headers2, payload)));
     }
     var isContentTypeApplicationJson = (contentType) => contentType.length > 15 && contentType[11] === "/" && contentType[0] === "a" && contentType[1] === "p" && contentType[2] === "p" && contentType[3] === "l" && contentType[4] === "i" && contentType[5] === "c" && contentType[6] === "a" && contentType[7] === "t" && contentType[8] === "i" && contentType[9] === "o" && contentType[10] === "n" && contentType[12] === "j" && contentType[13] === "s" && contentType[14] === "o" && contentType[15] === "n", isContentTypeText = (contentType) => contentType.length > 4 && contentType[4] === "/" && contentType[0] === "t" && contentType[1] === "e" && contentType[2] === "x" && contentType[3] === "t";
     module2.exports = {
@@ -24473,12 +24473,12 @@ var require_api_request = __commonJS({
         assert(this.callback), this.abort = abort, this.context = context;
       }
       onHeaders(statusCode, rawHeaders, resume, statusMessage) {
-        let { callback: callback2, opaque, abort, context, responseHeaders, highWaterMark } = this, headers3 = responseHeaders === "raw" ? util3.parseRawHeaders(rawHeaders) : util3.parseHeaders(rawHeaders);
+        let { callback: callback2, opaque, abort, context, responseHeaders, highWaterMark } = this, headers2 = responseHeaders === "raw" ? util3.parseRawHeaders(rawHeaders) : util3.parseHeaders(rawHeaders);
         if (statusCode < 200) {
-          this.onInfo && this.onInfo({ statusCode, headers: headers3 });
+          this.onInfo && this.onInfo({ statusCode, headers: headers2 });
           return;
         }
-        let parsedHeaders = responseHeaders === "raw" ? util3.parseHeaders(rawHeaders) : headers3, contentType = parsedHeaders["content-type"], contentLength = parsedHeaders["content-length"], res = new Readable({
+        let parsedHeaders = responseHeaders === "raw" ? util3.parseHeaders(rawHeaders) : headers2, contentType = parsedHeaders["content-type"], contentLength = parsedHeaders["content-length"], res = new Readable({
           resume,
           abort,
           contentType,
@@ -24488,10 +24488,10 @@ var require_api_request = __commonJS({
         this.removeAbortListener && res.on("close", this.removeAbortListener), this.callback = null, this.res = res, callback2 !== null && (this.throwOnError && statusCode >= 400 ? this.runInAsyncScope(
           getResolveErrorBodyCallback,
           null,
-          { callback: callback2, body: res, contentType, statusCode, statusMessage, headers: headers3 }
+          { callback: callback2, body: res, contentType, statusCode, statusMessage, headers: headers2 }
         ) : this.runInAsyncScope(callback2, null, null, {
           statusCode,
-          headers: headers3,
+          headers: headers2,
           trailers: this.trailers,
           opaque,
           body: res,
@@ -24596,26 +24596,26 @@ var require_api_stream = __commonJS({
         assert(this.callback), this.abort = abort, this.context = context;
       }
       onHeaders(statusCode, rawHeaders, resume, statusMessage) {
-        let { factory, opaque, context, callback: callback2, responseHeaders } = this, headers3 = responseHeaders === "raw" ? util3.parseRawHeaders(rawHeaders) : util3.parseHeaders(rawHeaders);
+        let { factory, opaque, context, callback: callback2, responseHeaders } = this, headers2 = responseHeaders === "raw" ? util3.parseRawHeaders(rawHeaders) : util3.parseHeaders(rawHeaders);
         if (statusCode < 200) {
-          this.onInfo && this.onInfo({ statusCode, headers: headers3 });
+          this.onInfo && this.onInfo({ statusCode, headers: headers2 });
           return;
         }
         this.factory = null;
         let res;
         if (this.throwOnError && statusCode >= 400) {
-          let contentType = (responseHeaders === "raw" ? util3.parseHeaders(rawHeaders) : headers3)["content-type"];
+          let contentType = (responseHeaders === "raw" ? util3.parseHeaders(rawHeaders) : headers2)["content-type"];
           res = new PassThrough(), this.callback = null, this.runInAsyncScope(
             getResolveErrorBodyCallback,
             null,
-            { callback: callback2, body: res, contentType, statusCode, statusMessage, headers: headers3 }
+            { callback: callback2, body: res, contentType, statusCode, statusMessage, headers: headers2 }
           );
         } else {
           if (factory === null)
             return;
           if (res = this.runInAsyncScope(factory, null, {
             statusCode,
-            headers: headers3,
+            headers: headers2,
             opaque,
             context
           }), !res || typeof res.write != "function" || typeof res.end != "function" || typeof res.on != "function")
@@ -24738,8 +24738,8 @@ var require_api_pipeline = __commonJS({
         let { opaque, handler, context } = this;
         if (statusCode < 200) {
           if (this.onInfo) {
-            let headers3 = this.responseHeaders === "raw" ? util3.parseRawHeaders(rawHeaders) : util3.parseHeaders(rawHeaders);
-            this.onInfo({ statusCode, headers: headers3 });
+            let headers2 = this.responseHeaders === "raw" ? util3.parseRawHeaders(rawHeaders) : util3.parseHeaders(rawHeaders);
+            this.onInfo({ statusCode, headers: headers2 });
           }
           return;
         }
@@ -24747,10 +24747,10 @@ var require_api_pipeline = __commonJS({
         let body;
         try {
           this.handler = null;
-          let headers3 = this.responseHeaders === "raw" ? util3.parseRawHeaders(rawHeaders) : util3.parseHeaders(rawHeaders);
+          let headers2 = this.responseHeaders === "raw" ? util3.parseRawHeaders(rawHeaders) : util3.parseHeaders(rawHeaders);
           body = this.runInAsyncScope(handler, null, {
             statusCode,
-            headers: headers3,
+            headers: headers2,
             opaque,
             body: this.res,
             context
@@ -24828,9 +24828,9 @@ var require_api_upgrade = __commonJS({
         assert(statusCode === 101);
         let { callback: callback2, opaque, context } = this;
         removeSignal(this), this.callback = null;
-        let headers3 = this.responseHeaders === "raw" ? util3.parseRawHeaders(rawHeaders) : util3.parseHeaders(rawHeaders);
+        let headers2 = this.responseHeaders === "raw" ? util3.parseRawHeaders(rawHeaders) : util3.parseHeaders(rawHeaders);
         this.runInAsyncScope(callback2, null, null, {
-          headers: headers3,
+          headers: headers2,
           socket,
           opaque,
           context
@@ -24894,10 +24894,10 @@ var require_api_connect = __commonJS({
       onUpgrade(statusCode, rawHeaders, socket) {
         let { callback: callback2, opaque, context } = this;
         removeSignal(this), this.callback = null;
-        let headers3 = rawHeaders;
-        headers3 != null && (headers3 = this.responseHeaders === "raw" ? util3.parseRawHeaders(rawHeaders) : util3.parseHeaders(rawHeaders)), this.runInAsyncScope(callback2, null, null, {
+        let headers2 = rawHeaders;
+        headers2 != null && (headers2 = this.responseHeaders === "raw" ? util3.parseRawHeaders(rawHeaders) : util3.parseHeaders(rawHeaders)), this.runInAsyncScope(callback2, null, null, {
           statusCode,
-          headers: headers3,
+          headers: headers2,
           socket,
           opaque,
           context
@@ -25002,35 +25002,35 @@ var require_mock_utils = __commonJS({
     function matchValue(match, value) {
       return typeof match == "string" ? match === value : match instanceof RegExp ? match.test(value) : typeof match == "function" ? match(value) === !0 : !1;
     }
-    function lowerCaseEntries(headers3) {
+    function lowerCaseEntries(headers2) {
       return Object.fromEntries(
-        Object.entries(headers3).map(([headerName, headerValue]) => [headerName.toLocaleLowerCase(), headerValue])
+        Object.entries(headers2).map(([headerName, headerValue]) => [headerName.toLocaleLowerCase(), headerValue])
       );
     }
-    function getHeaderByName(headers3, key) {
-      if (Array.isArray(headers3)) {
-        for (let i = 0; i < headers3.length; i += 2)
-          if (headers3[i].toLocaleLowerCase() === key.toLocaleLowerCase())
-            return headers3[i + 1];
+    function getHeaderByName(headers2, key) {
+      if (Array.isArray(headers2)) {
+        for (let i = 0; i < headers2.length; i += 2)
+          if (headers2[i].toLocaleLowerCase() === key.toLocaleLowerCase())
+            return headers2[i + 1];
         return;
       } else
-        return typeof headers3.get == "function" ? headers3.get(key) : lowerCaseEntries(headers3)[key.toLocaleLowerCase()];
+        return typeof headers2.get == "function" ? headers2.get(key) : lowerCaseEntries(headers2)[key.toLocaleLowerCase()];
     }
-    function buildHeadersFromArray(headers3) {
-      let clone = headers3.slice(), entries = [];
+    function buildHeadersFromArray(headers2) {
+      let clone = headers2.slice(), entries = [];
       for (let index = 0; index < clone.length; index += 2)
         entries.push([clone[index], clone[index + 1]]);
       return Object.fromEntries(entries);
     }
-    function matchHeaders(mockDispatch2, headers3) {
+    function matchHeaders(mockDispatch2, headers2) {
       if (typeof mockDispatch2.headers == "function")
-        return Array.isArray(headers3) && (headers3 = buildHeadersFromArray(headers3)), mockDispatch2.headers(headers3 ? lowerCaseEntries(headers3) : {});
+        return Array.isArray(headers2) && (headers2 = buildHeadersFromArray(headers2)), mockDispatch2.headers(headers2 ? lowerCaseEntries(headers2) : {});
       if (typeof mockDispatch2.headers > "u")
         return !0;
-      if (typeof headers3 != "object" || typeof mockDispatch2.headers != "object")
+      if (typeof headers2 != "object" || typeof mockDispatch2.headers != "object")
         return !1;
       for (let [matchHeaderName, matchHeaderValue] of Object.entries(mockDispatch2.headers)) {
-        let headerValue = getHeaderByName(headers3, matchHeaderName);
+        let headerValue = getHeaderByName(headers2, matchHeaderName);
         if (!matchValue(matchHeaderValue, headerValue))
           return !1;
       }
@@ -25045,8 +25045,8 @@ var require_mock_utils = __commonJS({
       let qp = new URLSearchParams(pathSegments.pop());
       return qp.sort(), [...pathSegments, qp.toString()].join("?");
     }
-    function matchKey(mockDispatch2, { path, method, body, headers: headers3 }) {
-      let pathMatch = matchValue(mockDispatch2.path, path), methodMatch = matchValue(mockDispatch2.method, method), bodyMatch = typeof mockDispatch2.body < "u" ? matchValue(mockDispatch2.body, body) : !0, headersMatch = matchHeaders(mockDispatch2, headers3);
+    function matchKey(mockDispatch2, { path, method, body, headers: headers2 }) {
+      let pathMatch = matchValue(mockDispatch2.path, path), methodMatch = matchValue(mockDispatch2.method, method), bodyMatch = typeof mockDispatch2.body < "u" ? matchValue(mockDispatch2.body, body) : !0, headersMatch = matchHeaders(mockDispatch2, headers2);
       return pathMatch && methodMatch && bodyMatch && headersMatch;
     }
     function getResponseData(data) {
@@ -25061,8 +25061,8 @@ var require_mock_utils = __commonJS({
       if (matchedMockDispatches = matchedMockDispatches.filter(({ body }) => typeof body < "u" ? matchValue(body, key.body) : !0), matchedMockDispatches.length === 0)
         throw new MockNotMatchedError(`Mock dispatch not matched for body '${key.body}' on path '${resolvedPath}'`);
       if (matchedMockDispatches = matchedMockDispatches.filter((mockDispatch2) => matchHeaders(mockDispatch2, key.headers)), matchedMockDispatches.length === 0) {
-        let headers3 = typeof key.headers == "object" ? JSON.stringify(key.headers) : key.headers;
-        throw new MockNotMatchedError(`Mock dispatch not matched for headers '${headers3}' on path '${resolvedPath}'`);
+        let headers2 = typeof key.headers == "object" ? JSON.stringify(key.headers) : key.headers;
+        throw new MockNotMatchedError(`Mock dispatch not matched for headers '${headers2}' on path '${resolvedPath}'`);
       }
       return matchedMockDispatches[0];
     }
@@ -25075,12 +25075,12 @@ var require_mock_utils = __commonJS({
       index !== -1 && mockDispatches.splice(index, 1);
     }
     function buildKey(opts) {
-      let { path, method, body, headers: headers3, query } = opts;
+      let { path, method, body, headers: headers2, query } = opts;
       return {
         path,
         method,
         body,
-        headers: headers3,
+        headers: headers2,
         query
       };
     }
@@ -25108,7 +25108,7 @@ var require_mock_utils = __commonJS({
     function mockDispatch(opts, handler) {
       let key = buildKey(opts), mockDispatch2 = getMockDispatch(this[kDispatches], key);
       mockDispatch2.timesInvoked++, mockDispatch2.data.callback && (mockDispatch2.data = { ...mockDispatch2.data, ...mockDispatch2.data.callback(opts) });
-      let { data: { statusCode, data, headers: headers3, trailers, error }, delay, persist } = mockDispatch2, { timesInvoked, times } = mockDispatch2;
+      let { data: { statusCode, data, headers: headers2, trailers, error }, delay, persist } = mockDispatch2, { timesInvoked, times } = mockDispatch2;
       if (mockDispatch2.consumed = !persist && timesInvoked >= times, mockDispatch2.pending = timesInvoked < times, error !== null)
         return deleteMockDispatch(this[kDispatches], key), handler.onError(error), !0;
       typeof delay == "number" && delay > 0 ? setTimeout(() => {
@@ -25120,7 +25120,7 @@ var require_mock_utils = __commonJS({
           body.then((newData) => handleReply(mockDispatches, newData));
           return;
         }
-        let responseData = getResponseData(body), responseHeaders = generateKeyValues(headers3), responseTrailers = generateKeyValues(trailers);
+        let responseData = getResponseData(body), responseHeaders = generateKeyValues(headers2), responseTrailers = generateKeyValues(trailers);
         handler.onConnect?.((err) => handler.onError(err), null), handler.onHeaders?.(statusCode, responseHeaders, resume, getStatusText(statusCode)), handler.onData?.(Buffer.from(responseData)), handler.onComplete?.(responseTrailers), deleteMockDispatch(mockDispatches, key);
       }
       function resume() {
@@ -25232,8 +25232,8 @@ var require_mock_interceptor = __commonJS({
         typeof opts.method == "string" && (opts.method = opts.method.toUpperCase()), this[kDispatchKey] = buildKey(opts), this[kDispatches] = mockDispatches, this[kDefaultHeaders] = {}, this[kDefaultTrailers] = {}, this[kContentLength] = !1;
       }
       createMockScopeDispatchData({ statusCode, data, responseOptions }) {
-        let responseData = getResponseData(data), contentLength = this[kContentLength] ? { "content-length": responseData.length } : {}, headers3 = { ...this[kDefaultHeaders], ...contentLength, ...responseOptions.headers }, trailers = { ...this[kDefaultTrailers], ...responseOptions.trailers };
-        return { statusCode, data, headers: headers3, trailers };
+        let responseData = getResponseData(data), contentLength = this[kContentLength] ? { "content-length": responseData.length } : {}, headers2 = { ...this[kDefaultHeaders], ...contentLength, ...responseOptions.headers }, trailers = { ...this[kDefaultTrailers], ...responseOptions.trailers };
+        return { statusCode, data, headers: headers2, trailers };
       }
       validateReplyParameters(replyParameters) {
         if (typeof replyParameters.statusCode > "u")
@@ -25278,10 +25278,10 @@ var require_mock_interceptor = __commonJS({
       /**
        * Set default reply headers on the interceptor for subsequent replies
        */
-      defaultReplyHeaders(headers3) {
-        if (typeof headers3 > "u")
+      defaultReplyHeaders(headers2) {
+        if (typeof headers2 > "u")
           throw new InvalidArgumentError("headers must be defined");
-        return this[kDefaultHeaders] = headers3, this;
+        return this[kDefaultHeaders] = headers2, this;
       }
       /**
        * Set default reply trailers on the interceptor for subsequent replies
@@ -25921,7 +25921,7 @@ var require_headers2 = __commonJS({
         ++i;
       return i === 0 && j === potentialValue.length ? potentialValue : potentialValue.substring(i, j);
     }
-    function fill(headers3, object) {
+    function fill(headers2, object) {
       if (Array.isArray(object))
         for (let i = 0; i < object.length; ++i) {
           let header = object[i];
@@ -25930,12 +25930,12 @@ var require_headers2 = __commonJS({
               header: "Headers constructor",
               message: `expected name/value pair to be length 2, found ${header.length}.`
             });
-          appendHeader(headers3, header[0], header[1]);
+          appendHeader(headers2, header[0], header[1]);
         }
       else if (typeof object == "object" && object !== null) {
         let keys = Object.keys(object);
         for (let i = 0; i < keys.length; ++i)
-          appendHeader(headers3, keys[i], object[keys[i]]);
+          appendHeader(headers2, keys[i], object[keys[i]]);
       } else
         throw webidl.errors.conversionFailed({
           prefix: "Headers constructor",
@@ -25943,7 +25943,7 @@ var require_headers2 = __commonJS({
           types: ["sequence<sequence<ByteString>>", "record<ByteString, ByteString>"]
         });
     }
-    function appendHeader(headers3, name, value) {
+    function appendHeader(headers2, name, value) {
       if (value = headerValueNormalize(value), isValidHeaderName(name)) {
         if (!isValidHeaderValue(value))
           throw webidl.errors.invalidArgument({
@@ -25957,9 +25957,9 @@ var require_headers2 = __commonJS({
           value: name,
           type: "header name"
         });
-      if (getHeadersGuard(headers3) === "immutable")
+      if (getHeadersGuard(headers2) === "immutable")
         throw new TypeError("immutable");
-      return getHeadersList(headers3).append(name, value, !1);
+      return getHeadersList(headers2).append(name, value, !1);
     }
     function compareHeaderName(a, b) {
       return a[0] < b[0] ? -1 : 1;
@@ -26033,25 +26033,25 @@ var require_headers2 = __commonJS({
           yield [name, value];
       }
       get entries() {
-        let headers3 = {};
+        let headers2 = {};
         if (this[kHeadersMap].size !== 0)
           for (let { name, value } of this[kHeadersMap].values())
-            headers3[name] = value;
-        return headers3;
+            headers2[name] = value;
+        return headers2;
       }
       rawValues() {
         return this[kHeadersMap].values();
       }
       get entriesList() {
-        let headers3 = [];
+        let headers2 = [];
         if (this[kHeadersMap].size !== 0)
           for (let { 0: lowerName, 1: { name, value } } of this[kHeadersMap])
             if (lowerName === "set-cookie")
               for (let cookie of this.cookies)
-                headers3.push([name, cookie]);
+                headers2.push([name, cookie]);
             else
-              headers3.push([name, value]);
-        return headers3;
+              headers2.push([name, value]);
+        return headers2;
       }
       // https://fetch.spec.whatwg.org/#convert-header-names-to-a-sorted-lowercase-set
       toSortedArray() {
@@ -26161,18 +26161,18 @@ var require_headers2 = __commonJS({
       get [kHeadersSortedMap]() {
         if (this.#headersList[kHeadersSortedMap])
           return this.#headersList[kHeadersSortedMap];
-        let headers3 = [], names = this.#headersList.toSortedArray(), cookies = this.#headersList.cookies;
+        let headers2 = [], names = this.#headersList.toSortedArray(), cookies = this.#headersList.cookies;
         if (cookies === null || cookies.length === 1)
           return this.#headersList[kHeadersSortedMap] = names;
         for (let i = 0; i < names.length; ++i) {
           let { 0: name, 1: value } = names[i];
           if (name === "set-cookie")
             for (let j = 0; j < cookies.length; ++j)
-              headers3.push([name, cookies[j]]);
+              headers2.push([name, cookies[j]]);
           else
-            headers3.push([name, value]);
+            headers2.push([name, value]);
         }
-        return this.#headersList[kHeadersSortedMap] = headers3;
+        return this.#headersList[kHeadersSortedMap] = headers2;
       }
       [util3.inspect.custom](depth, options) {
         return options.depth ??= depth, `Headers ${util3.formatWithOptions(options, this.#headersList.entries)}`;
@@ -26739,13 +26739,13 @@ var require_request2 = __commonJS({
           setHeadersGuard(this[kHeaders], "request-no-cors");
         }
         if (initHasKey) {
-          let headersList = getHeadersList(this[kHeaders]), headers3 = init.headers !== void 0 ? init.headers : new HeadersList(headersList);
-          if (headersList.clear(), headers3 instanceof HeadersList) {
-            for (let { name, value } of headers3.rawValues())
+          let headersList = getHeadersList(this[kHeaders]), headers2 = init.headers !== void 0 ? init.headers : new HeadersList(headersList);
+          if (headersList.clear(), headers2 instanceof HeadersList) {
+            for (let { name, value } of headers2.rawValues())
               headersList.append(name, value, !1);
-            headersList.cookies = headers3.cookies;
+            headersList.cookies = headers2.cookies;
           } else
-            fillHeaders(this[kHeaders], headers3);
+            fillHeaders(this[kHeaders], headers2);
         }
         let inputBody = input instanceof Request2 ? input[kState].body : null;
         if ((init.body != null || inputBody != null) && (request2.method === "GET" || request2.method === "HEAD"))
@@ -29067,9 +29067,9 @@ var require_cookies2 = __commonJS({
   "../node_modules/undici/lib/web/cookies/index.js"(exports, module2) {
     "use strict";
     var { parseSetCookie } = require_parse(), { stringify: stringify2 } = require_util6(), { webidl } = require_webidl(), { Headers: Headers2 } = require_headers2();
-    function getCookies(headers3) {
-      webidl.argumentLengthCheck(arguments, 1, "getCookies"), webidl.brandCheck(headers3, Headers2, { strict: !1 });
-      let cookie = headers3.get("cookie"), out = {};
+    function getCookies(headers2) {
+      webidl.argumentLengthCheck(arguments, 1, "getCookies"), webidl.brandCheck(headers2, Headers2, { strict: !1 });
+      let cookie = headers2.get("cookie"), out = {};
       if (!cookie)
         return out;
       for (let piece of cookie.split(";")) {
@@ -29078,25 +29078,25 @@ var require_cookies2 = __commonJS({
       }
       return out;
     }
-    function deleteCookie(headers3, name, attributes) {
-      webidl.brandCheck(headers3, Headers2, { strict: !1 });
+    function deleteCookie(headers2, name, attributes) {
+      webidl.brandCheck(headers2, Headers2, { strict: !1 });
       let prefix = "deleteCookie";
-      webidl.argumentLengthCheck(arguments, 2, prefix), name = webidl.converters.DOMString(name, prefix, "name"), attributes = webidl.converters.DeleteCookieAttributes(attributes), setCookie(headers3, {
+      webidl.argumentLengthCheck(arguments, 2, prefix), name = webidl.converters.DOMString(name, prefix, "name"), attributes = webidl.converters.DeleteCookieAttributes(attributes), setCookie(headers2, {
         name,
         value: "",
         expires: /* @__PURE__ */ new Date(0),
         ...attributes
       });
     }
-    function getSetCookies(headers3) {
-      webidl.argumentLengthCheck(arguments, 1, "getSetCookies"), webidl.brandCheck(headers3, Headers2, { strict: !1 });
-      let cookies = headers3.getSetCookie();
+    function getSetCookies(headers2) {
+      webidl.argumentLengthCheck(arguments, 1, "getSetCookies"), webidl.brandCheck(headers2, Headers2, { strict: !1 });
+      let cookies = headers2.getSetCookie();
       return cookies ? cookies.map((pair) => parseSetCookie(pair)) : [];
     }
-    function setCookie(headers3, cookie) {
-      webidl.argumentLengthCheck(arguments, 2, "setCookie"), webidl.brandCheck(headers3, Headers2, { strict: !1 }), cookie = webidl.converters.Cookie(cookie);
+    function setCookie(headers2, cookie) {
+      webidl.argumentLengthCheck(arguments, 2, "setCookie"), webidl.brandCheck(headers2, Headers2, { strict: !1 }), cookie = webidl.converters.Cookie(cookie);
       let str = stringify2(cookie);
-      str && headers3.append("Set-Cookie", str);
+      str && headers2.append("Set-Cookie", str);
     }
     webidl.converters.DeleteCookieAttributes = webidl.dictionaryConverter([
       {
@@ -35374,7 +35374,7 @@ var require_lib_node4 = __commonJS({
       return length += Buffer.byteLength(getFooter(boundary2)), length;
     }
     var toFormData = async (source) => {
-      let { body, headers: headers3 } = source, contentType = headers3?.get("Content-Type") || "";
+      let { body, headers: headers2 } = source, contentType = headers2?.get("Content-Type") || "";
       if (contentType.startsWith("application/x-www-form-urlencoded") && body != null) {
         let form = new webFormData.FormData(), bodyText = await source.text();
         return new URLSearchParams(bodyText).forEach((v, k) => form.append(k, v)), form;
@@ -35873,9 +35873,9 @@ var require_lib_node4 = __commonJS({
         {}
       )
     );
-    function fromRawHeaders(headers3 = []) {
+    function fromRawHeaders(headers2 = []) {
       return new Headers2(
-        headers3.reduce(
+        headers2.reduce(
           (result, value, index, array) => (index % 2 === 0 && result.push(array.slice(index, index + 2)), result),
           /** @type {string[][]} */
           []
@@ -35895,16 +35895,16 @@ var require_lib_node4 = __commonJS({
        */
       constructor(body = null, options = {}) {
         super(body, options);
-        let status = options.status || 200, headers3 = new Headers2(options.headers);
-        if (body !== null && !headers3.has("Content-Type")) {
+        let status = options.status || 200, headers2 = new Headers2(options.headers);
+        if (body !== null && !headers2.has("Content-Type")) {
           let contentType = extractContentType(this);
-          contentType && headers3.append("Content-Type", contentType);
+          contentType && headers2.append("Content-Type", contentType);
         }
         this[INTERNALS$1] = {
           url: options.url,
           status,
           statusText: options.statusText || "",
-          headers: headers3,
+          headers: headers2,
           counter: options.counter || 0,
           highWaterMark: options.highWaterMark
         };
@@ -36007,13 +36007,13 @@ var require_lib_node4 = __commonJS({
         super(inputBody, {
           size: init.size || settings.size || 0
         });
-        let input = settings, headers3 = (
+        let input = settings, headers2 = (
           /** @type {globalThis.Headers} */
           new Headers2(init.headers || input.headers || {})
         );
-        if (inputBody !== null && !headers3.has("Content-Type")) {
+        if (inputBody !== null && !headers2.has("Content-Type")) {
           let contentType = extractContentType(this);
-          contentType && headers3.append("Content-Type", contentType);
+          contentType && headers2.append("Content-Type", contentType);
         }
         let signal = "signal" in init ? init.signal : isRequest(input) ? input.signal : null;
         if (signal != null && !isAbortSignal(signal))
@@ -36025,7 +36025,7 @@ var require_lib_node4 = __commonJS({
         this[INTERNALS] = {
           method,
           redirect: init.redirect || input.redirect || "follow",
-          headers: headers3,
+          headers: headers2,
           credentials: init.credentials || "same-origin",
           parsedURL,
           signal: signal || null
@@ -36109,16 +36109,16 @@ var require_lib_node4 = __commonJS({
       signal: { enumerable: !0 }
     });
     var getNodeRequestOptions = (request2) => {
-      let { parsedURL } = request2[INTERNALS], headers3 = new Headers2(request2[INTERNALS].headers);
-      headers3.has("Accept") || headers3.set("Accept", "*/*");
+      let { parsedURL } = request2[INTERNALS], headers2 = new Headers2(request2[INTERNALS].headers);
+      headers2.has("Accept") || headers2.set("Accept", "*/*");
       let contentLengthValue = null;
       if (request2.body === null && /^(post|put)$/i.test(request2.method) && (contentLengthValue = "0"), request2.body !== null) {
         let totalBytes = getTotalBytes(request2);
         typeof totalBytes == "number" && !Number.isNaN(totalBytes) && (contentLengthValue = String(totalBytes));
       }
-      contentLengthValue && headers3.set("Content-Length", contentLengthValue), headers3.has("User-Agent") || headers3.set("User-Agent", "node-fetch"), request2.compress && !headers3.has("Accept-Encoding") && headers3.set("Accept-Encoding", "gzip,deflate,br");
+      contentLengthValue && headers2.set("Content-Length", contentLengthValue), headers2.has("User-Agent") || headers2.set("User-Agent", "node-fetch"), request2.compress && !headers2.has("Accept-Encoding") && headers2.set("Accept-Encoding", "gzip,deflate,br");
       let { agent } = request2;
-      typeof agent == "function" && (agent = agent(parsedURL)), !headers3.has("Connection") && !agent && headers3.set("Connection", "close");
+      typeof agent == "function" && (agent = agent(parsedURL)), !headers2.has("Connection") && !agent && headers2.set("Connection", "close");
       let search = getSearch(parsedURL);
       return {
         path: parsedURL.pathname + search,
@@ -36133,7 +36133,7 @@ var require_lib_node4 = __commonJS({
         href: parsedURL.href,
         method: request2.method,
         // @ts-ignore - not sure what this supposed to do
-        headers: headers3[Symbol.for("nodejs.util.inspect.custom")](),
+        headers: headers2[Symbol.for("nodejs.util.inspect.custom")](),
         insecureHTTPParser: request2.insecureHTTPParser,
         agent
       };
@@ -36192,15 +36192,15 @@ var require_lib_node4 = __commonJS({
           });
         }), request_.on("response", (incoming) => {
           response_ = incoming, request_.setTimeout(0);
-          let headers3 = fromRawHeaders(response_.rawHeaders);
+          let headers2 = fromRawHeaders(response_.rawHeaders);
           if (isRedirect(Number(response_.statusCode))) {
-            let location = headers3.get("Location"), locationURL = location === null ? null : new URL(location, request2.url);
+            let location = headers2.get("Location"), locationURL = location === null ? null : new URL(location, request2.url);
             switch (request2.redirect) {
               case "error":
                 reject(new FetchError(`uri requested responds with a redirect, redirect mode is set to error: ${request2.url}`, "no-redirect")), finalize();
                 return;
               case "manual":
-                locationURL !== null && headers3.set("Location", locationURL.toString());
+                locationURL !== null && headers2.set("Location", locationURL.toString());
                 break;
               case "follow": {
                 if (locationURL === null)
@@ -36242,11 +36242,11 @@ var require_lib_node4 = __commonJS({
             url: request2.url,
             status: response_.statusCode,
             statusText: response_.statusMessage,
-            headers: headers3,
+            headers: headers2,
             size: request2.size,
             counter: request2.counter,
             highWaterMark: request2.highWaterMark
-          }, codings = headers3.get("Content-Encoding");
+          }, codings = headers2.get("Content-Encoding");
           if (!request2.compress || request2.method === "HEAD" || codings === null || response_.statusCode === 204 || response_.statusCode === 304) {
             response = new Response2(body, responseOptions), resolve(response);
             return;
@@ -36278,8 +36278,8 @@ var require_lib_node4 = __commonJS({
 \r
 `), isChunkedTransfer = !1, properLastChunkReceived = !1, previousChunk;
       request2.on("response", (response) => {
-        let { headers: headers3 } = response;
-        isChunkedTransfer = headers3["transfer-encoding"] === "chunked" && !headers3["content-length"];
+        let { headers: headers2 } = response;
+        isChunkedTransfer = headers2["transfer-encoding"] === "chunked" && !headers2["content-length"];
       }), request2.on("socket", (socket) => {
         let onSocketClose = () => {
           if (isChunkedTransfer && !properLastChunkReceived) {
@@ -37015,8 +37015,8 @@ async function backendFetch(pathname, method, body, shopNameOverride) {
   }
 }
 async function backendFetchRaw(pathname, method, shopNameOverride) {
-  let cfgBase = (process.env.BACKEND_PUBLIC_URL || "https://ads-autopilot-backend.vercel.app/api").replace(/\/$/, ""), baseHost = normalizeBackendBase(cfgBase), base = /\/api$/.test(baseHost) ? baseHost : `${baseHost}/api`, shopName = shopNameOverride || getServerShopName(), op = opKey(method, pathname), nonce2 = void 0, payload = `${method}:${shopName}:${op}${nonce2 !== void 0 ? `:${nonce2}` : ""}`, sig = sign(payload), sep = pathname.includes("?") ? "&" : "?", url = `${base}${pathname}${sep}tenant=${encodeURIComponent(shopName)}&sig=${encodeURIComponent(sig)}`, bypass = process.env.BACKEND_PROTECTION_BYPASS || process.env.VERCEL_PROTECTION_BYPASS || process.env.VERCEL_AUTOMATION_BYPASS_SECRET, headers3 = {};
-  return bypass && (headers3["x-vercel-protection-bypass"] = bypass), fetch(url, { method, headers: headers3 });
+  let cfgBase = (process.env.BACKEND_PUBLIC_URL || "https://ads-autopilot-backend.vercel.app/api").replace(/\/$/, ""), baseHost = normalizeBackendBase(cfgBase), base = /\/api$/.test(baseHost) ? baseHost : `${baseHost}/api`, shopName = shopNameOverride || getServerShopName(), op = opKey(method, pathname), nonce2 = void 0, payload = `${method}:${shopName}:${op}${nonce2 !== void 0 ? `:${nonce2}` : ""}`, sig = sign(payload), sep = pathname.includes("?") ? "&" : "?", url = `${base}${pathname}${sep}tenant=${encodeURIComponent(shopName)}&sig=${encodeURIComponent(sig)}`, bypass = process.env.BACKEND_PROTECTION_BYPASS || process.env.VERCEL_PROTECTION_BYPASS || process.env.VERCEL_AUTOMATION_BYPASS_SECRET, headers2 = {};
+  return bypass && (headers2["x-vercel-protection-bypass"] = bypass), fetch(url, { method, headers: headers2 });
 }
 async function backendFetchText(pathname, method = "GET", body, shopNameOverride) {
   let cfgBase = (process.env.BACKEND_PUBLIC_URL || "https://ads-autopilot-backend.vercel.app/api").replace(/\/$/, ""), baseHost = normalizeBackendBase(cfgBase), base = /\/api$/.test(baseHost) ? baseHost : `${baseHost}/api`, shopName = shopNameOverride || getServerShopName(), op = opKey(method, pathname), nonce2 = method === "POST" ? body?.nonce ?? Date.now() : void 0, payload = `${method}:${shopName}:${op}${nonce2 !== void 0 ? `:${nonce2}` : ""}`, sig = sign(payload), sep = pathname.includes("?") ? "&" : "?", url = `${base}${pathname}${sep}tenant=${encodeURIComponent(shopName)}&sig=${encodeURIComponent(sig)}`;
@@ -37126,12 +37126,12 @@ var ShopifyError, InvalidHmacError, InvalidShopError, InvalidHostError, InvalidJ
     }, HttpRequestError = class extends ShopifyError {
     }, HttpMaxRetriesError = class extends ShopifyError {
     }, HttpResponseError = class extends ShopifyError {
-      constructor({ message: message2, code, statusText, body, headers: headers3 }) {
+      constructor({ message: message2, code, statusText, body, headers: headers2 }) {
         super(message2), this.response = {
           code,
           statusText,
           body,
-          headers: headers3
+          headers: headers2
         };
       }
     }, HttpRetriableError = class extends HttpResponseError {
@@ -37141,8 +37141,8 @@ var ShopifyError, InvalidHmacError, InvalidShopError, InvalidHostError, InvalidJ
         super(params), this.response.retryAfter = retryAfter;
       }
     }, GraphqlQueryError = class extends ShopifyError {
-      constructor({ message: message2, response, headers: headers3, body }) {
-        super(message2), this.response = response, this.headers = headers3, this.body = body;
+      constructor({ message: message2, response, headers: headers2, body }) {
+        super(message2), this.response = response, this.headers = headers2, this.body = body;
       }
     }, InvalidOAuthError = class extends ShopifyError {
     }, BotActivityDetected = class extends ShopifyError {
@@ -37229,23 +37229,23 @@ var init_utils2 = __esm({
 function canonicalizeHeaderName(hdr) {
   return hdr.replace(/(^|-)(\w+)/g, (_fullMatch, start, letters) => start + letters.slice(0, 1).toUpperCase() + letters.slice(1).toLowerCase());
 }
-function getHeaders(headers3, needle_) {
+function getHeaders(headers2, needle_) {
   let result = [];
-  if (!headers3)
+  if (!headers2)
     return result;
   let needle = canonicalizeHeaderName(needle_);
-  for (let [key, values] of Object.entries(headers3))
+  for (let [key, values] of Object.entries(headers2))
     canonicalizeHeaderName(key) === needle && (Array.isArray(values) ? result.push(...values) : result.push(values));
   return result;
 }
-function getHeader(headers3, needle) {
-  if (headers3)
-    return getHeaders(headers3, needle)?.[0];
+function getHeader(headers2, needle) {
+  if (headers2)
+    return getHeaders(headers2, needle)?.[0];
 }
-function addHeader(headers3, key, value) {
-  canonicalizeHeaders(headers3);
-  let canonKey = canonicalizeHeaderName(key), list = headers3[canonKey];
-  list ? Array.isArray(list) || (list = [list]) : list = [], headers3[canonKey] = list, list.push(value);
+function addHeader(headers2, key, value) {
+  canonicalizeHeaders(headers2);
+  let canonKey = canonicalizeHeaderName(key), list = headers2[canonKey];
+  list ? Array.isArray(list) || (list = [list]) : list = [], headers2[canonKey] = list, list.push(value);
 }
 function canonicalizeValue(value) {
   return typeof value == "number" ? value.toString() : value;
@@ -37257,13 +37257,13 @@ function canonicalizeHeaders(hdr) {
   }
   return hdr;
 }
-function removeHeader(headers3, needle) {
-  canonicalizeHeaders(headers3);
+function removeHeader(headers2, needle) {
+  canonicalizeHeaders(headers2);
   let canonKey = canonicalizeHeaderName(needle);
-  delete headers3[canonKey];
+  delete headers2[canonKey];
 }
-function flatHeaders(headers3) {
-  return Object.entries(headers3).flatMap(([header, values]) => Array.isArray(values) ? values.map((value) => [header, value]) : [[header, values]]);
+function flatHeaders(headers2) {
+  return Object.entries(headers2).flatMap(([header, values]) => Array.isArray(values) ? values.map((value) => [header, value]) : [[header, values]]);
 }
 var init_headers = __esm({
   "node_modules/@shopify/shopify-app-remix/node_modules/@shopify/shopify-api/dist/esm/runtime/http/headers.mjs"() {
@@ -37422,18 +37422,18 @@ var import_crypto5, init_node = __esm({
 
 // node_modules/@shopify/shopify-app-remix/node_modules/@shopify/shopify-api/dist/esm/adapters/web-api/adapter.mjs
 async function webApiConvertRequest(adapterArgs) {
-  let request2 = adapterArgs.rawRequest, headers3 = {};
+  let request2 = adapterArgs.rawRequest, headers2 = {};
   for (let [key, value] of request2.headers.entries())
-    addHeader(headers3, key, value);
+    addHeader(headers2, key, value);
   return {
-    headers: headers3,
+    headers: headers2,
     method: request2.method ?? "GET",
     url: new URL(request2.url).toString()
   };
 }
-async function webApiConvertHeaders(headers3, _adapterArgs) {
+async function webApiConvertHeaders(headers2, _adapterArgs) {
   let remixHeaders = new Headers();
-  return flatHeaders(headers3 ?? {}).forEach(([key, value]) => remixHeaders.append(key, value)), Promise.resolve(remixHeaders);
+  return flatHeaders(headers2 ?? {}).forEach(([key, value]) => remixHeaders.append(key, value)), Promise.resolve(remixHeaders);
 }
 async function webApiConvertResponse(resp, adapterArgs) {
   return new Response(resp.body, {
@@ -37899,10 +37899,10 @@ var init_http_fetch = __esm({
 });
 
 // ../node_modules/@shopify/graphql-client/dist/graphql-client/graphql-client.mjs
-function createGraphQLClient({ headers: headers3, url, customFetchApi = fetch, retries = 0, logger: logger2 }) {
+function createGraphQLClient({ headers: headers2, url, customFetchApi = fetch, retries = 0, logger: logger2 }) {
   validateRetries({ client: CLIENT, retries });
   let config = {
-    headers: headers3,
+    headers: headers2,
     url,
     retries
   }, clientLogger = generateClientLogger(logger2), httpFetch = generateHttpFetch({
@@ -37937,7 +37937,7 @@ async function processJSONResponse(response) {
     } : {}
   };
 }
-function generateFetch(httpFetch, { url, headers: headers3, retries }) {
+function generateFetch(httpFetch, { url, headers: headers2, retries }) {
   return async (operation, options = {}) => {
     let { variables, headers: overrideHeaders, url: overrideUrl, retries: overrideRetries } = options, body = JSON.stringify({
       query: operation,
@@ -37945,9 +37945,9 @@ function generateFetch(httpFetch, { url, headers: headers3, retries }) {
     });
     validateRetries({ client: CLIENT, retries: overrideRetries });
     let flatHeaders2 = Object.entries({
-      ...headers3,
+      ...headers2,
       ...overrideHeaders
-    }).reduce((headers4, [key, value]) => (headers4[key] = Array.isArray(value) ? value.join(", ") : value.toString(), headers4), {});
+    }).reduce((headers3, [key, value]) => (headers3[key] = Array.isArray(value) ? value.join(", ") : value.toString(), headers3), {});
     return !flatHeaders2[SDK_VARIANT_HEADER] && !flatHeaders2[SDK_VERSION_HEADER] && (flatHeaders2[SDK_VARIANT_HEADER] = DEFAULT_SDK_VARIANT, flatHeaders2[SDK_VERSION_HEADER] = DEFAULT_CLIENT_VERSION), httpFetch([
       overrideUrl ?? url,
       {
@@ -38221,10 +38221,10 @@ function generateGetGQLClientParams({ getHeaders: getHeaders2, getApiUrl }) {
   return (operation, options) => {
     let props = [operation];
     if (options && Object.keys(options).length > 0) {
-      let { variables, apiVersion: propApiVersion, headers: headers3, retries } = options;
+      let { variables, apiVersion: propApiVersion, headers: headers2, retries } = options;
       props.push({
         ...variables ? { variables } : {},
-        ...headers3 ? { headers: getHeaders2(headers3) } : {},
+        ...headers2 ? { headers: getHeaders2(headers2) } : {},
         ...propApiVersion ? { url: getApiUrl(propApiVersion) } : {},
         ...retries ? { retries } : {}
       });
@@ -38375,14 +38375,14 @@ function createAdminRestApiClient({ storeDomain, apiVersion: apiVersion2, access
       ...requestHeaders["user-agent"] ? [requestHeaders["user-agent"]] : [],
       ...userAgentPrefix ? [userAgentPrefix] : [],
       `${CLIENT2} v${DEFAULT_CLIENT_VERSION2}`
-    ].join(" | "), headers3 = normalizedHeaders({
+    ].join(" | "), headers2 = normalizedHeaders({
       "Content-Type": DEFAULT_CONTENT_TYPE,
       ...requestHeaders,
       Accept: DEFAULT_CONTENT_TYPE,
       [ACCESS_TOKEN_HEADER]: accessToken,
       "User-Agent": userAgent
     }), body = data && typeof data != "string" ? JSON.stringify(data) : data;
-    return httpFetch([url, { method, headers: headers3, ...body ? { body } : void 0 }], 1, retries ?? clientRetries);
+    return httpFetch([url, { method, headers: headers2, ...body ? { body } : void 0 }], 1, retries ?? clientRetries);
   };
   return {
     get: (path, options) => request2(path, { method: Method.Get, ...options }),
@@ -38644,12 +38644,12 @@ See the migration guide: https://github.com/Shopify/shopify-app-js/blob/main/pac
           throw new MissingRequiredArgument("Query missing.");
         let operation, variables;
         typeof params.data == "string" ? operation = params.data : (operation = params.data.query, variables = params.data.variables);
-        let headers3 = Object.fromEntries(Object.entries(params?.extraHeaders ?? {}).map(([key, value]) => [
+        let headers2 = Object.fromEntries(Object.entries(params?.extraHeaders ?? {}).map(([key, value]) => [
           key,
           Array.isArray(value) ? value.join(", ") : value.toString()
         ]));
         return { body: await this.request(operation, {
-          headers: headers3,
+          headers: headers2,
           retries: params.tries ? params.tries - 1 : void 0,
           variables
         }), headers: {} };
@@ -38994,12 +38994,12 @@ See the migration guide: https://github.com/Shopify/shopify-app-js/blob/main/pac
           throw new MissingRequiredArgument("Query missing.");
         let operation, variables;
         typeof params.data == "string" ? operation = params.data : (operation = params.data.query, variables = params.data.variables);
-        let headers3 = Object.fromEntries(Object.entries(params?.extraHeaders ?? {}).map(([key, value]) => [
+        let headers2 = Object.fromEntries(Object.entries(params?.extraHeaders ?? {}).map(([key, value]) => [
           key,
           Array.isArray(value) ? value.join(", ") : value.toString()
         ]));
         return { body: await this.request(operation, {
-          headers: headers3,
+          headers: headers2,
           retries: params.tries ? params.tries - 1 : void 0,
           variables
         }), headers: {} };
@@ -39815,8 +39815,8 @@ var is_key_like_default, types3, init_is_key_like = __esm({
 // ../node_modules/jose/dist/node/esm/lib/is_disjoint.js
 var isDisjoint, is_disjoint_default, init_is_disjoint = __esm({
   "../node_modules/jose/dist/node/esm/lib/is_disjoint.js"() {
-    isDisjoint = (...headers3) => {
-      let sources = headers3.filter(Boolean);
+    isDisjoint = (...headers2) => {
+      let sources = headers2.filter(Boolean);
       if (sources.length === 0 || sources.length === 1)
         return !0;
       let acc;
@@ -41295,9 +41295,9 @@ function validateFactory(config) {
     return validHmacResult.valid ? checkWebhookHeaders(request2.headers) : (validHmacResult.reason === ValidationErrorReason.InvalidHmac && await logger(config).debug("Webhook HMAC validation failed. Please note that events manually triggered from a store's Notifications settings will fail this validation. To test this, please use the CLI or trigger the actual event in a development store."), validHmacResult);
   };
 }
-function checkWebhookHeaders(headers3) {
+function checkWebhookHeaders(headers2) {
   let missingHeaders = [], headerValues = Object.entries(HANDLER_PROPERTIES).reduce((acc, [property, headerName]) => {
-    let headerValue = getHeader(headers3, headerName);
+    let headerValue = getHeader(headers2, headerName);
     return headerValue ? acc[property] = headerValue : property in OPTIONAL_HANDLER_PROPERTIES || missingHeaders.push(headerName), acc;
   }, {});
   return missingHeaders.length ? {
@@ -42118,8 +42118,8 @@ var AppDistribution, LoginErrorType, init_types8 = __esm({
 });
 
 // node_modules/@shopify/shopify-app-remix/dist/esm/server/boundary/headers.mjs
-function headersBoundary(headers3) {
-  let { parentHeaders, loaderHeaders, actionHeaders, errorHeaders } = headers3;
+function headersBoundary(headers2) {
+  let { parentHeaders, loaderHeaders, actionHeaders, errorHeaders } = headers2;
   return errorHeaders && Array.from(errorHeaders.entries()).length > 0 ? errorHeaders : new Headers([
     ...parentHeaders ? Array.from(parentHeaders.entries()) : [],
     ...loaderHeaders ? Array.from(loaderHeaders.entries()) : [],
@@ -42737,13 +42737,13 @@ var SESSION_TOKEN_PARAM2, ensureSessionTokenSearchParamIfRequired, init_ensure_s
 // node_modules/@shopify/shopify-app-remix/dist/esm/server/authenticate/helpers/add-response-headers.mjs
 function addDocumentResponseHeadersFactory(params) {
   let { api, config } = params;
-  return function(request2, headers3) {
+  return function(request2, headers2) {
     let { searchParams } = new URL(request2.url), shop = api.utils.sanitizeShop(searchParams.get("shop"));
-    addDocumentResponseHeaders(headers3, config.isEmbeddedApp, shop);
+    addDocumentResponseHeaders(headers2, config.isEmbeddedApp, shop);
   };
 }
-function addDocumentResponseHeaders(headers3, isEmbeddedApp, shop) {
-  shop && headers3.set("Link", '<https://cdn.shopify.com/shopifycloud/app-bridge.js>; rel="preload"; as="script";'), isEmbeddedApp ? shop && headers3.set("Content-Security-Policy", `frame-ancestors https://${shop} https://admin.shopify.com https://*.spin.dev;`) : headers3.set("Content-Security-Policy", "frame-ancestors 'none';");
+function addDocumentResponseHeaders(headers2, isEmbeddedApp, shop) {
+  shop && headers2.set("Link", '<https://cdn.shopify.com/shopifycloud/app-bridge.js>; rel="preload"; as="script";'), isEmbeddedApp ? shop && headers2.set("Content-Security-Policy", `frame-ancestors https://${shop} https://admin.shopify.com https://*.spin.dev;`) : headers2.set("Content-Security-Policy", "frame-ancestors 'none';");
 }
 var init_add_response_headers = __esm({
   "node_modules/@shopify/shopify-app-remix/dist/esm/server/authenticate/helpers/add-response-headers.mjs"() {
@@ -44383,10 +44383,10 @@ var liquid, init_authenticate4 = __esm({
             "Content-Type": "application/liquid"
           }
         });
-      let { layout, ...responseInit } = initAndOptions || {}, responseBody = layout === !1 ? `{% layout none %} ${processedBody}` : processedBody, headers3 = new Headers(responseInit.headers);
-      return headers3.set("Content-Type", "application/liquid"), new Response(responseBody, {
+      let { layout, ...responseInit } = initAndOptions || {}, responseBody = layout === !1 ? `{% layout none %} ${processedBody}` : processedBody, headers2 = new Headers(responseInit.headers);
+      return headers2.set("Content-Type", "application/liquid"), new Response(responseBody, {
         ...responseInit,
-        headers: headers3
+        headers: headers2
       });
     };
   }
@@ -45549,12 +45549,12 @@ var require_error = __commonJS({
     };
     exports.HttpMaxRetriesError = HttpMaxRetriesError2;
     var HttpResponseError2 = class extends ShopifyError2 {
-      constructor({ message: message2, code, statusText, body, headers: headers3 }) {
+      constructor({ message: message2, code, statusText, body, headers: headers2 }) {
         super(message2), this.response = {
           code,
           statusText,
           body,
-          headers: headers3
+          headers: headers2
         };
       }
     };
@@ -45575,8 +45575,8 @@ var require_error = __commonJS({
     };
     exports.RestResourceError = RestResourceError2;
     var GraphqlQueryError2 = class extends ShopifyError2 {
-      constructor({ message: message2, response, headers: headers3, body }) {
-        super(message2), this.response = response, this.headers = headers3, this.body = body;
+      constructor({ message: message2, response, headers: headers2, body }) {
+        super(message2), this.response = response, this.headers = headers2, this.body = body;
       }
     };
     exports.GraphqlQueryError = GraphqlQueryError2;
@@ -46013,29 +46013,29 @@ var require_headers3 = __commonJS({
       return hdr.replace(/(^|-)(\w+)/g, (_fullMatch, start, letters) => start + letters.slice(0, 1).toUpperCase() + letters.slice(1).toLowerCase());
     }
     exports.canonicalizeHeaderName = canonicalizeHeaderName2;
-    function getHeaders2(headers3, needle_) {
+    function getHeaders2(headers2, needle_) {
       let result = [];
-      if (!headers3)
+      if (!headers2)
         return result;
       let needle = canonicalizeHeaderName2(needle_);
-      for (let [key, values] of Object.entries(headers3))
+      for (let [key, values] of Object.entries(headers2))
         canonicalizeHeaderName2(key) === needle && (Array.isArray(values) ? result.push(...values) : result.push(values));
       return result;
     }
     exports.getHeaders = getHeaders2;
-    function getHeader2(headers3, needle) {
-      if (headers3)
-        return getHeaders2(headers3, needle)?.[0];
+    function getHeader2(headers2, needle) {
+      if (headers2)
+        return getHeaders2(headers2, needle)?.[0];
     }
     exports.getHeader = getHeader2;
-    function setHeader2(headers3, key, value) {
-      canonicalizeHeaders2(headers3), headers3[canonicalizeHeaderName2(key)] = [value];
+    function setHeader2(headers2, key, value) {
+      canonicalizeHeaders2(headers2), headers2[canonicalizeHeaderName2(key)] = [value];
     }
     exports.setHeader = setHeader2;
-    function addHeader2(headers3, key, value) {
-      canonicalizeHeaders2(headers3);
-      let canonKey = canonicalizeHeaderName2(key), list = headers3[canonKey];
-      list ? Array.isArray(list) || (list = [list]) : list = [], headers3[canonKey] = list, list.push(value);
+    function addHeader2(headers2, key, value) {
+      canonicalizeHeaders2(headers2);
+      let canonKey = canonicalizeHeaderName2(key), list = headers2[canonKey];
+      list ? Array.isArray(list) || (list = [list]) : list = [], headers2[canonKey] = list, list.push(value);
     }
     exports.addHeader = addHeader2;
     function canonicalizeValue2(value) {
@@ -46049,14 +46049,14 @@ var require_headers3 = __commonJS({
       return hdr;
     }
     exports.canonicalizeHeaders = canonicalizeHeaders2;
-    function removeHeader2(headers3, needle) {
-      canonicalizeHeaders2(headers3);
+    function removeHeader2(headers2, needle) {
+      canonicalizeHeaders2(headers2);
       let canonKey = canonicalizeHeaderName2(needle);
-      delete headers3[canonKey];
+      delete headers2[canonKey];
     }
     exports.removeHeader = removeHeader2;
-    function flatHeaders2(headers3) {
-      return Object.entries(headers3).flatMap(([header, values]) => Array.isArray(values) ? values.map((value) => [header, value]) : [[header, values]]);
+    function flatHeaders2(headers2) {
+      return Object.entries(headers2).flatMap(([header, values]) => Array.isArray(values) ? values.map((value) => [header, value]) : [[header, values]]);
     }
     exports.flatHeaders = flatHeaders2;
   }
@@ -46505,12 +46505,12 @@ See the migration guide: https://github.com/Shopify/shopify-app-js/blob/main/pac
           throw new ShopifyErrors.MissingRequiredArgument("Query missing.");
         let operation, variables;
         typeof params.data == "string" ? operation = params.data : (operation = params.data.query, variables = params.data.variables);
-        let headers3 = Object.fromEntries(Object.entries(params?.extraHeaders ?? {}).map(([key, value]) => [
+        let headers2 = Object.fromEntries(Object.entries(params?.extraHeaders ?? {}).map(([key, value]) => [
           key,
           Array.isArray(value) ? value.join(", ") : value.toString()
         ]));
         return { body: await this.request(operation, {
-          headers: headers3,
+          headers: headers2,
           retries: params.tries ? params.tries - 1 : void 0,
           variables
         }), headers: {} };
@@ -46768,12 +46768,12 @@ See the migration guide: https://github.com/Shopify/shopify-app-js/blob/main/pac
           throw new ShopifyErrors.MissingRequiredArgument("Query missing.");
         let operation, variables;
         typeof params.data == "string" ? operation = params.data : (operation = params.data.query, variables = params.data.variables);
-        let headers3 = Object.fromEntries(Object.entries(params?.extraHeaders ?? {}).map(([key, value]) => [
+        let headers2 = Object.fromEntries(Object.entries(params?.extraHeaders ?? {}).map(([key, value]) => [
           key,
           Array.isArray(value) ? value.join(", ") : value.toString()
         ]));
         return { body: await this.request(operation, {
-          headers: headers3,
+          headers: headers2,
           retries: params.tries ? params.tries - 1 : void 0,
           variables
         }), headers: {} };
@@ -48466,8 +48466,8 @@ var require_is_disjoint = __commonJS({
   "../node_modules/jose/dist/node/cjs/lib/is_disjoint.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: !0 });
-    var isDisjoint2 = (...headers3) => {
-      let sources = headers3.filter(Boolean);
+    var isDisjoint2 = (...headers2) => {
+      let sources = headers2.filter(Boolean);
       if (sources.length === 0 || sources.length === 1)
         return !0;
       let acc;
@@ -50723,10 +50723,10 @@ var require_fetch_jwks = __commonJS({
         default:
           throw new TypeError("Unsupported URL protocol.");
       }
-      let { agent, headers: headers3 } = options, req = get(url.href, {
+      let { agent, headers: headers2 } = options, req = get(url.href, {
         agent,
         timeout,
-        headers: headers3
+        headers: headers2
       }), [response] = await Promise.race([(0, node_events_1.once)(req, "response"), (0, node_events_1.once)(req, "timeout")]);
       if (!response)
         throw req.destroy(), new errors_js_1.JWKSTimeout();
@@ -50795,8 +50795,8 @@ var require_remote = __commonJS({
       }
       async reload() {
         this._pendingFetch && isCloudflareWorkers() && (this._pendingFetch = void 0);
-        let headers3 = new Headers(this._options.headers);
-        USER_AGENT && !headers3.has("User-Agent") && (headers3.set("User-Agent", USER_AGENT), this._options.headers = Object.fromEntries(headers3.entries())), this._pendingFetch ||= (0, fetch_jwks_js_1.default)(this._url, this._timeoutDuration, this._options).then((json16) => {
+        let headers2 = new Headers(this._options.headers);
+        USER_AGENT && !headers2.has("User-Agent") && (headers2.set("User-Agent", USER_AGENT), this._options.headers = Object.fromEntries(headers2.entries())), this._pendingFetch ||= (0, fetch_jwks_js_1.default)(this._url, this._timeoutDuration, this._options).then((json16) => {
           this._local = (0, local_js_1.createLocalJWKSet)(json16), this._cache && (this._cache.uat = Date.now(), this._cache.jwks = json16), this._jwksTimestamp = Date.now(), this._pendingFetch = void 0;
         }).catch((err) => {
           throw this._pendingFetch = void 0, err;
@@ -52033,9 +52033,9 @@ var require_validate = __commonJS({
       };
     }
     exports.validateFactory = validateFactory4;
-    function checkWebhookHeaders2(headers3) {
+    function checkWebhookHeaders2(headers2) {
       let missingHeaders = [], headerValues = Object.entries(HANDLER_PROPERTIES2).reduce((acc, [property, headerName]) => {
-        let headerValue = (0, http_1.getHeader)(headers3, headerName);
+        let headerValue = (0, http_1.getHeader)(headers2, headerName);
         return headerValue ? acc[property] = headerValue : property in OPTIONAL_HANDLER_PROPERTIES2 || missingHeaders.push(headerName), acc;
       }, {});
       return missingHeaders.length ? {
@@ -99578,7 +99578,7 @@ var require_Cell3 = __commonJS({
       className: customClassName,
       flush,
       colSpan,
-      headers: headers3,
+      headers: headers2,
       scope,
       as = "td",
       id
@@ -99587,7 +99587,7 @@ var require_Cell3 = __commonJS({
       return /* @__PURE__ */ React16.createElement(as, {
         id,
         colSpan,
-        headers: headers3,
+        headers: headers2,
         scope,
         className
       }, children);
@@ -106164,16 +106164,16 @@ process.on("uncaughtException", (error) => {
   console.error("\u{1F6A8} UNCAUGHT EXCEPTION:"), console.error("Error:", error), console.error("Stack:", error.stack);
 });
 console.log("\u{1F50D} Error handlers registered in entry.server.tsx");
-function handleRequest(request2, status, headers3, context) {
+function handleRequest(request2, status, headers2, context) {
   try {
     console.log("\u{1F504} Starting server-side render for:", request2.url);
     let markup = (0, import_server.renderToString)(
       /* @__PURE__ */ (0, import_jsx_runtime.jsx)(import_react.RemixServer, { context, url: request2.url })
     );
-    return console.log("\u2705 Server-side render completed successfully"), headers3.set("Content-Type", "text/html"), headers3.set(
+    return console.log("\u2705 Server-side render completed successfully"), headers2.set("Content-Type", "text/html"), headers2.set(
       "Cache-Control",
       "no-store, no-cache, must-revalidate, proxy-revalidate"
-    ), new Response("<!DOCTYPE html>" + markup, { status, headers: headers3 });
+    ), new Response("<!DOCTYPE html>" + markup, { status, headers: headers2 });
   } catch (err) {
     try {
       console.error("SSR error details:", {
@@ -106187,10 +106187,10 @@ function handleRequest(request2, status, headers3, context) {
       console.error("SSR error (fallback):", String(err));
     }
     let body = "<!DOCTYPE html><html><body><h1>Server Error</h1></body></html>";
-    return headers3.set("Content-Type", "text/html"), headers3.set(
+    return headers2.set("Content-Type", "text/html"), headers2.set(
       "Cache-Control",
       "no-store, no-cache, must-revalidate, proxy-revalidate"
-    ), new Response(body, { status: 500, headers: headers3 });
+    ), new Response(body, { status: 500, headers: headers2 });
   }
 }
 
@@ -106793,13 +106793,13 @@ var import_jsx_runtime5 = __toESM(require_jsx_runtime()), loader5 = async ({ req
     let { session } = await authenticate.admin(request2), shopName = session?.shop?.replace(".myshopify.com", "");
     if (!shopName)
       throw new Error("Unable to determine shop name");
-    let backendUrl = process.env.BACKEND_URL || "http://localhost:3001", headers3 = {
+    let backendUrl = process.env.BACKEND_URL || "http://localhost:3001", headers2 = {
       "Content-Type": "application/json",
       "x-tenant-id": shopName
     };
     try {
       let tierData = await (await fetch(`${backendUrl}/api/analytics/tier-features`, {
-        headers: headers3
+        headers: headers2
       })).json(), hasEnterpriseAccess = tierData.customDashboards === !0, currentTier = tierData.tier || "starter";
       if (!hasEnterpriseAccess)
         return (0, import_node5.json)({
@@ -106811,8 +106811,8 @@ var import_jsx_runtime5 = __toESM(require_jsx_runtime()), loader5 = async ({ req
           error: "Custom dashboards are available only with Enterprise plan"
         });
       let [dashboardsResponse, templatesResponse] = await Promise.all([
-        fetch(`${backendUrl}/api/dashboards?include_widgets=false`, { headers: headers3 }),
-        fetch(`${backendUrl}/api/dashboards/templates`, { headers: headers3 })
+        fetch(`${backendUrl}/api/dashboards?include_widgets=false`, { headers: headers2 }),
+        fetch(`${backendUrl}/api/dashboards/templates`, { headers: headers2 })
       ]), dashboards = dashboardsResponse.ok ? (await dashboardsResponse.json()).data || [] : [], templates = templatesResponse.ok ? (await templatesResponse.json()).data || [] : [];
       return (0, import_node5.json)({
         dashboards,
@@ -106839,7 +106839,7 @@ var import_jsx_runtime5 = __toESM(require_jsx_runtime()), loader5 = async ({ req
     let { session } = await authenticate.admin(request2), shopName = session?.shop?.replace(".myshopify.com", ""), formData = await request2.formData(), action8 = formData.get("action");
     if (!shopName)
       throw new Error("Unable to determine shop name");
-    let backendUrl = process.env.BACKEND_URL || "http://localhost:3001", headers3 = {
+    let backendUrl = process.env.BACKEND_URL || "http://localhost:3001", headers2 = {
       "Content-Type": "application/json",
       "x-tenant-id": shopName
     };
@@ -106847,7 +106847,7 @@ var import_jsx_runtime5 = __toESM(require_jsx_runtime()), loader5 = async ({ req
       case "create_dashboard": {
         let name = formData.get("dashboard_name"), description = formData.get("description"), response = await fetch(`${backendUrl}/api/dashboards`, {
           method: "POST",
-          headers: headers3,
+          headers: headers2,
           body: JSON.stringify({
             dashboard_name: name,
             description
@@ -106858,7 +106858,7 @@ var import_jsx_runtime5 = __toESM(require_jsx_runtime()), loader5 = async ({ req
       case "create_from_template": {
         let templateId = formData.get("template_id"), name = formData.get("dashboard_name"), response = await fetch(`${backendUrl}/api/dashboards/from-template`, {
           method: "POST",
-          headers: headers3,
+          headers: headers2,
           body: JSON.stringify({
             template_id: parseInt(templateId),
             dashboard_name: name
@@ -106869,14 +106869,14 @@ var import_jsx_runtime5 = __toESM(require_jsx_runtime()), loader5 = async ({ req
       case "delete_dashboard": {
         let dashboardId = formData.get("dashboard_id"), response = await fetch(`${backendUrl}/api/dashboards/${dashboardId}`, {
           method: "DELETE",
-          headers: headers3
+          headers: headers2
         });
         return (0, import_node5.json)(await response.json());
       }
       case "export_dashboard": {
         let dashboardId = formData.get("dashboard_id"), format = formData.get("format") || "json", response = await fetch(`${backendUrl}/api/dashboards/${dashboardId}/export`, {
           method: "POST",
-          headers: headers3,
+          headers: headers2,
           body: JSON.stringify({ format })
         });
         return (0, import_node5.json)(await response.json());
@@ -110585,11 +110585,9 @@ __export(app_reports_exports, {
   ErrorBoundary: () => ErrorBoundary,
   action: () => action6,
   default: () => ReportsPage,
-  headers: () => headers,
   loader: () => loader9
 });
 var import_react15 = __toESM(require_react()), import_node9 = __toESM(require_dist3()), import_react16 = __toESM(require_dist2());
-init_server();
 init_shopify_server();
 var import_jsx_runtime10 = __toESM(require_jsx_runtime()), loader9 = async ({ request: request2 }) => {
   let { session } = await authenticate.admin(request2), shop = session.shop.replace(".myshopify.com", "");
@@ -111118,7 +111116,15 @@ function ReportsPage() {
     ) })
   ] });
 }
-var ErrorBoundary = boundary.error(({ error }) => (console.error(error), /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("div", { children: "Something went wrong with the reports page" }))), headers = (headersArgs) => boundary.headers(headersArgs);
+function ErrorBoundary({ error }) {
+  return console.error("Reports page error:", error), /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { style: { padding: "2rem", background: "#fee", border: "1px solid #fcc" }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("h2", { children: "Reports Error" }),
+    /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("p", { children: [
+      "Something went wrong with the reports page: ",
+      error?.message
+    ] })
+  ] });
+}
 
 // app/routes/app._index.tsx
 var app_index_exports = {};
@@ -113624,7 +113630,7 @@ var app_exports = {};
 __export(app_exports, {
   ErrorBoundary: () => ErrorBoundary3,
   default: () => App2,
-  headers: () => headers2,
+  headers: () => headers,
   links: () => links2,
   loader: () => loader19
 });
@@ -114194,10 +114200,10 @@ function App2() {
     }
   ) }) });
 }
-var ErrorBoundary3 = boundary.error, headers2 = (headersArgs) => boundary.headers(headersArgs);
+var ErrorBoundary3 = boundary.error, headers = (headersArgs) => boundary.headers(headersArgs);
 
 // server-assets-manifest:@remix-run/dev/assets-manifest
-var assets_manifest_default = { entry: { module: "/assets/entry.client-YFVOIIXN.js", imports: ["/assets/_shared/chunk-HBSXC4PT.js", "/assets/_shared/chunk-6U5IYNIC.js", "/assets/_shared/chunk-FN6342HM.js", "/assets/_shared/chunk-P23QBOGJ.js"] }, routes: { root: { id: "root", parentId: void 0, path: "", index: void 0, caseSensitive: void 0, module: "/assets/root-OLUJA2QJ.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/_health": { id: "routes/_health", parentId: "root", path: void 0, index: void 0, caseSensitive: void 0, module: "/assets/routes/_health-4HY4KIMX.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/_index": { id: "routes/_index", parentId: "root", path: void 0, index: !0, caseSensitive: void 0, module: "/assets/routes/_index-ZZUWPXAO.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/api.generate-script": { id: "routes/api.generate-script", parentId: "root", path: "api/generate-script", index: void 0, caseSensitive: void 0, module: "/assets/routes/api.generate-script-3DUZY66Z.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/api.script-proxy": { id: "routes/api.script-proxy", parentId: "root", path: "api/script-proxy", index: void 0, caseSensitive: void 0, module: "/assets/routes/api.script-proxy-D7CGEASX.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app": { id: "routes/app", parentId: "root", path: "app", index: void 0, caseSensitive: void 0, module: "/assets/routes/app-37NHDAFU.js", imports: ["/assets/_shared/chunk-OLMBZBAD.js", "/assets/_shared/chunk-CNXNCETZ.js", "/assets/_shared/chunk-NAVXS3X4.js", "/assets/_shared/chunk-X5HD2HZ6.js", "/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/app._index": { id: "routes/app._index", parentId: "routes/app", path: void 0, index: !0, caseSensitive: void 0, module: "/assets/routes/app._index-KEQP37WN.js", imports: ["/assets/_shared/chunk-XGZ5RCNR.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.advanced": { id: "routes/app.advanced", parentId: "routes/app", path: "advanced", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.advanced-42TKQHWW.js", imports: ["/assets/_shared/chunk-XGZ5RCNR.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.autopilot": { id: "routes/app.autopilot", parentId: "routes/app", path: "autopilot", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.autopilot-6L3EBWMJ.js", imports: ["/assets/_shared/chunk-XGZ5RCNR.js", "/assets/_shared/chunk-YO2XKRKB.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.dashboards": { id: "routes/app.dashboards", parentId: "routes/app", path: "dashboards", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.dashboards-W6GKQGE7.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.insights": { id: "routes/app.insights", parentId: "routes/app", path: "insights", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.insights-PAAJEF2U.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.reports": { id: "routes/app.reports", parentId: "routes/app", path: "reports", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.reports-KH3WWTWW.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/app.setup": { id: "routes/app.setup", parentId: "routes/app", path: "setup", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.setup-FOAHCYRZ.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/auth.$": { id: "routes/auth.$", parentId: "root", path: "auth/*", index: void 0, caseSensitive: void 0, module: "/assets/routes/auth.$-D4HZOJGU.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/auth.session-token": { id: "routes/auth.session-token", parentId: "root", path: "auth/session-token", index: void 0, caseSensitive: void 0, module: "/assets/routes/auth.session-token-T2WMLCN4.js", imports: ["/assets/_shared/chunk-X5HD2HZ6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/debug": { id: "routes/debug", parentId: "root", path: "debug", index: void 0, caseSensitive: void 0, module: "/assets/routes/debug-NPQ5YZI3.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/health": { id: "routes/health", parentId: "root", path: "health", index: void 0, caseSensitive: void 0, module: "/assets/routes/health-GI3SP7O7.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/install": { id: "routes/install", parentId: "root", path: "install", index: void 0, caseSensitive: void 0, module: "/assets/routes/install-YL2XNGMC.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/local.autopilot": { id: "routes/local.autopilot", parentId: "root", path: "local/autopilot", index: void 0, caseSensitive: void 0, module: "/assets/routes/local.autopilot-EEPNYAYD.js", imports: ["/assets/_shared/chunk-YO2XKRKB.js", "/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/privacy": { id: "routes/privacy", parentId: "root", path: "privacy", index: void 0, caseSensitive: void 0, module: "/assets/routes/privacy-II7HDWDA.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/support": { id: "routes/support", parentId: "root", path: "support", index: void 0, caseSensitive: void 0, module: "/assets/routes/support-JDNIQTFH.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/terms": { id: "routes/terms", parentId: "root", path: "terms", index: void 0, caseSensitive: void 0, module: "/assets/routes/terms-PKGZYJCD.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 } }, version: "2d383612", hmr: void 0, url: "/assets/manifest-2D383612.js" };
+var assets_manifest_default = { entry: { module: "/assets/entry.client-YFVOIIXN.js", imports: ["/assets/_shared/chunk-HBSXC4PT.js", "/assets/_shared/chunk-6U5IYNIC.js", "/assets/_shared/chunk-FN6342HM.js", "/assets/_shared/chunk-P23QBOGJ.js"] }, routes: { root: { id: "root", parentId: void 0, path: "", index: void 0, caseSensitive: void 0, module: "/assets/root-OLUJA2QJ.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/_health": { id: "routes/_health", parentId: "root", path: void 0, index: void 0, caseSensitive: void 0, module: "/assets/routes/_health-4HY4KIMX.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/_index": { id: "routes/_index", parentId: "root", path: void 0, index: !0, caseSensitive: void 0, module: "/assets/routes/_index-ZZUWPXAO.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/api.generate-script": { id: "routes/api.generate-script", parentId: "root", path: "api/generate-script", index: void 0, caseSensitive: void 0, module: "/assets/routes/api.generate-script-3DUZY66Z.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/api.script-proxy": { id: "routes/api.script-proxy", parentId: "root", path: "api/script-proxy", index: void 0, caseSensitive: void 0, module: "/assets/routes/api.script-proxy-D7CGEASX.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app": { id: "routes/app", parentId: "root", path: "app", index: void 0, caseSensitive: void 0, module: "/assets/routes/app-IPRUOM4G.js", imports: ["/assets/_shared/chunk-CNXNCETZ.js", "/assets/_shared/chunk-NAVXS3X4.js", "/assets/_shared/chunk-X5HD2HZ6.js", "/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/app._index": { id: "routes/app._index", parentId: "routes/app", path: void 0, index: !0, caseSensitive: void 0, module: "/assets/routes/app._index-KEQP37WN.js", imports: ["/assets/_shared/chunk-XGZ5RCNR.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.advanced": { id: "routes/app.advanced", parentId: "routes/app", path: "advanced", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.advanced-42TKQHWW.js", imports: ["/assets/_shared/chunk-XGZ5RCNR.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.autopilot": { id: "routes/app.autopilot", parentId: "routes/app", path: "autopilot", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.autopilot-6L3EBWMJ.js", imports: ["/assets/_shared/chunk-XGZ5RCNR.js", "/assets/_shared/chunk-YO2XKRKB.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.dashboards": { id: "routes/app.dashboards", parentId: "routes/app", path: "dashboards", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.dashboards-W6GKQGE7.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.insights": { id: "routes/app.insights", parentId: "routes/app", path: "insights", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.insights-PAAJEF2U.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.reports": { id: "routes/app.reports", parentId: "routes/app", path: "reports", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.reports-TA3NWH6L.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/app.setup": { id: "routes/app.setup", parentId: "routes/app", path: "setup", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.setup-FOAHCYRZ.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/auth.$": { id: "routes/auth.$", parentId: "root", path: "auth/*", index: void 0, caseSensitive: void 0, module: "/assets/routes/auth.$-D4HZOJGU.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/auth.session-token": { id: "routes/auth.session-token", parentId: "root", path: "auth/session-token", index: void 0, caseSensitive: void 0, module: "/assets/routes/auth.session-token-T2WMLCN4.js", imports: ["/assets/_shared/chunk-X5HD2HZ6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/debug": { id: "routes/debug", parentId: "root", path: "debug", index: void 0, caseSensitive: void 0, module: "/assets/routes/debug-NPQ5YZI3.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/health": { id: "routes/health", parentId: "root", path: "health", index: void 0, caseSensitive: void 0, module: "/assets/routes/health-GI3SP7O7.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/install": { id: "routes/install", parentId: "root", path: "install", index: void 0, caseSensitive: void 0, module: "/assets/routes/install-YL2XNGMC.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/local.autopilot": { id: "routes/local.autopilot", parentId: "root", path: "local/autopilot", index: void 0, caseSensitive: void 0, module: "/assets/routes/local.autopilot-EEPNYAYD.js", imports: ["/assets/_shared/chunk-YO2XKRKB.js", "/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/privacy": { id: "routes/privacy", parentId: "root", path: "privacy", index: void 0, caseSensitive: void 0, module: "/assets/routes/privacy-II7HDWDA.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/support": { id: "routes/support", parentId: "root", path: "support", index: void 0, caseSensitive: void 0, module: "/assets/routes/support-JDNIQTFH.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/terms": { id: "routes/terms", parentId: "root", path: "terms", index: void 0, caseSensitive: void 0, module: "/assets/routes/terms-PKGZYJCD.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 } }, version: "9aee60d8", hmr: void 0, url: "/assets/manifest-9AEE60D8.js" };
 
 // server-entry-module:@remix-run/dev/server-build
 var mode = "production", assetsBuildDirectory = "public/assets", future = { v3_fetcherPersist: !1, v3_relativeSplatPath: !1, v3_throwAbortReason: !1, v3_routeConfig: !1, v3_singleFetch: !1, v3_lazyRouteDiscovery: !1, unstable_optimizeDeps: !1 }, publicPath = "/assets/", entry = { module: entry_server_exports }, routes = {
