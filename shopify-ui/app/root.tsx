@@ -63,12 +63,15 @@ export default function App() {
               .mobile-nav {
                 position: fixed;
                 top: 0;
-                left: ${mobileMenuOpen ? '0' : '-100%'};
+                left: -100%;
                 width: 280px;
                 height: 100vh;
                 z-index: 1000;
                 transition: left 0.3s ease;
                 box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+              }
+              .mobile-nav.open {
+                left: 0;
               }
               .mobile-overlay {
                 position: fixed;
@@ -78,7 +81,10 @@ export default function App() {
                 bottom: 0;
                 background: rgba(0,0,0,0.5);
                 z-index: 999;
-                display: ${mobileMenuOpen ? 'block' : 'none'};
+                display: none;
+              }
+              .mobile-overlay.open {
+                display: block;
               }
               .desktop-nav {
                 display: none;
@@ -148,9 +154,10 @@ export default function App() {
             </div>
 
             {/* Mobile Overlay */}
-            <div 
-              className="mobile-overlay"
+            <div
+              className={`mobile-overlay ${mobileMenuOpen ? 'open' : ''}`}
               onClick={() => setMobileMenuOpen(false)}
+              suppressHydrationWarning={true}
             />
 
             <div style={{ display: "flex", flex: 1 }}>
@@ -284,7 +291,8 @@ export default function App() {
 
               {/* Mobile Navigation */}
               <nav
-                className="mobile-nav"
+                className={`mobile-nav ${mobileMenuOpen ? 'open' : ''}`}
+                suppressHydrationWarning={true}
                 style={{
                   width: 280,
                   padding: 20,
