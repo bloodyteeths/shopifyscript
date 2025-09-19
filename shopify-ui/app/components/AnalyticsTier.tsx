@@ -14,13 +14,13 @@ import {
   Layout,
   ProgressBar,
   Tooltip,
-  Stack,
+  LegacyStack as Stack,
   Grid,
 } from '@shopify/polaris';
 import {
-  ViewMajor,
-  TrendUpMajor,
-  RefreshMajor,
+  ViewIcon,
+  ChartLineIcon,
+  RefreshIcon,
 } from '@shopify/polaris-icons';
 
 interface TierFeatures {
@@ -263,7 +263,7 @@ export function AnalyticsTier({
                     <Stack horizontal alignment="center">
                       <Text variant="headingMd">LTV ROAS</Text>
                       <Tooltip content="Lifetime Value based ROAS calculation">
-                        <Button plain monochrome icon={ViewMajor} />
+                        <Button plain monochrome icon={ViewIcon} />
                       </Tooltip>
                     </Stack>
                     <Text variant="heading2xl" as="h2" color={advanced.ltvRoas >= 4 ? 'success' : 'warning'}>
@@ -280,7 +280,7 @@ export function AnalyticsTier({
                     <Stack horizontal alignment="center">
                       <Text variant="headingMd">Margin ROAS</Text>
                       <Tooltip content="Profit margin adjusted ROAS">
-                        <Button plain monochrome icon={TrendUpMajor} />
+                        <Button plain monochrome icon={ChartLineIcon} />
                       </Tooltip>
                     </Stack>
                     <Text variant="heading2xl" as="h2">
