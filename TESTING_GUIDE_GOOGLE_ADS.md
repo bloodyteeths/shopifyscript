@@ -36,31 +36,43 @@ vercel --prod
 # 4. Note the deployment URL (e.g., https://ads-autopilot-backend.vercel.app)
 ```
 
-### Step 2: Update Script Configuration
+### Step 2: Generate Your Personalized Script
 
-Replace placeholders in `master.gs`:
+1. **Open your Ads Autopilot AI app** in Shopify
+2. **Choose your optimization mode:**
+   - Grow mode: Focus on expansion
+   - Protect mode: Focus on efficiency
+3. **Set your parameters:**
+   - Budget Cap: Your daily budget limit (e.g., $5/day)
+   - CPC Ceiling: Maximum cost per click (e.g., $0.20)
+   - Landing URL: Your website URL
+4. **Click "Generate Script"** to get your personalized 26KB optimized script
+
+Your script will be pre-configured with:
 ```javascript
-var TENANT_ID = 'mybabybymerry';  // Your shop/tenant name
-var BACKEND_URL = 'https://ads-autopilot-backend.vercel.app/api';  // Your Vercel URL
-var SHARED_SECRET = 'f3a1c9d8b2e47a65c0fb19d7e3a9428c6de5b1a7c4f08923ab56d7e1c2f3a4b5';  // Your HMAC secret
+var TENANT_ID = 'mybabybymerry';  // Your shop name (automatic)
+var BACKEND_URL = 'https://ads-autopilot-backend.vercel.app/api';  // Backend URL (automatic)
+var SHARED_SECRET = 'f3a1c9d8b2e47a65c0fb19d7e3a9428c6de5b1a7c4f08923ab56d7e1c2f3a4b5';  // HMAC secret (automatic)
 ```
 
 ## 🧪 Testing in Google Ads
 
 ### Phase 1: Preview Mode Testing (SAFE)
 
-1. **Enable Preview Mode in Script:**
-```javascript
-var PREVIEW_MODE = true;  // Set to true for testing
-var RUN_MODE = 'PREVIEW';
-```
-
-2. **Create Test Script in Google Ads:**
-   - Go to Tools & Settings → Scripts
+1. **Install Generated Script in Google Ads:**
+   - Go to Tools & Settings → Scripts in Google Ads
    - Click the blue plus button
    - Name it: "Ads Autopilot AI - Test"
-   - Paste the script from `master.gs`
-   - Update configuration values
+   - Paste your personalized script from the app
+   - The script already contains your configuration
+
+2. **Enable Preview Mode (Optional):**
+   - Your generated script may already have safety settings
+   - To force preview mode, modify these lines at the top:
+```javascript
+var PREVIEW_MODE = true;  // Add this line for extra safety
+var RUN_MODE = 'PREVIEW'; // Add this line
+```
 
 3. **Run Preview Test:**
    - Click "Preview" button (not Run)
@@ -80,6 +92,7 @@ var RUN_MODE = 'PREVIEW';
      - SEARCH_TERMS
 
 2. **Verify Backend Connection:**
+   - The generated script is already configured with your backend URL
    - Check script logs for:
      ```
      ✅ Configuration fetched successfully
@@ -87,16 +100,19 @@ var RUN_MODE = 'PREVIEW';
      ```
 
 3. **Test Safety Features:**
-   - Set `PROMOTE: FALSE` in CONFIG_MAIN
-   - Run script
+   - After first run, go to your Google Sheets
+   - Find CONFIG_MAIN tab
+   - Set `PROMOTE: FALSE` to test safety gate
+   - Run script again
    - Verify: "PROMOTE=FALSE - All mutations blocked"
 
 ### Phase 3: Limited Live Testing
 
 1. **Create Canary Campaign:**
-   - Create label: "CANARY_TEST"
+   - In Google Ads, create label: "CANARY_TEST"
    - Apply to ONE small campaign
-   - In CONFIG_MAIN, set:
+   - After running script once, go to Google Sheets
+   - In CONFIG_MAIN tab, set:
      ```
      label_include: CANARY_TEST
      PROMOTE: TRUE
@@ -210,37 +226,38 @@ Open `analytics-dashboard.html` to see:
 ### Common Issues & Solutions
 
 1. **"Config disabled or not found"**
-   - Check HMAC_SECRET matches
-   - Verify backend is deployed
-   - Check BACKEND_URL is correct
+   - Your generated script should have correct credentials
+   - Verify backend is deployed to Vercel
+   - Re-generate script from app if credentials changed
 
 2. **"PROMOTE GATE FAILED"**
-   - Set PROMOTE: TRUE in CONFIG_MAIN
-   - Remove PREVIEW_MODE in script
+   - After first run, go to Google Sheets
+   - Set PROMOTE: TRUE in CONFIG_MAIN tab
+   - Remove any manual PREVIEW_MODE lines you added
 
 3. **No changes happening**
-   - Check PROMOTE: TRUE
-   - Verify not in PREVIEW_MODE
+   - Check PROMOTE: TRUE in Google Sheets CONFIG_MAIN
+   - Remove any PREVIEW_MODE lines you added for testing
    - Check campaign has label if using label_include
 
 4. **"Authentication failed"**
-   - Verify HMAC_SECRET
-   - Check TENANT_ID matches
-   - Ensure backend is running
+   - Re-generate script from Ads Autopilot AI app
+   - The app automatically includes correct credentials
+   - Ensure backend is deployed and running
 
 5. **No AI features**
-   - Set AI_FEATURES_ENABLED: TRUE
-   - Check Gemini API key configured
-   - Verify AI endpoints accessible
+   - Set AI_FEATURES_ENABLED: TRUE in CONFIG_MAIN
+   - Backend must have Gemini API key configured
+   - Check Vercel logs for AI endpoint errors
 
 ## 📋 Testing Checklist
 
 ### Pre-Launch
 - [ ] Backend deployed to Vercel
-- [ ] Environment variables configured
-- [ ] Google Sheets service account setup
-- [ ] Script configuration updated
+- [ ] Script generated from Ads Autopilot AI app
+- [ ] Script installed in Google Ads
 - [ ] Preview mode test passed
+- [ ] Google Sheets tabs auto-created on first run
 
 ### Soft Launch (Day 1)
 - [ ] Canary campaign selected
