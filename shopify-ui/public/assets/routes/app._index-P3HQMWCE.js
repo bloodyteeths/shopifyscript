@@ -1,4 +1,8 @@
 import {
+  buildAppUrl,
+  useShopContext
+} from "/assets/_shared/chunk-BFD47CJF.js";
+import {
   require_subscription
 } from "/assets/_shared/chunk-QFXH3GZH.js";
 import {
@@ -9,8 +13,7 @@ import {
 } from "/assets/_shared/chunk-5LF5TODQ.js";
 import {
   Link,
-  useLoaderData,
-  useLocation
+  useLoaderData
 } from "/assets/_shared/chunk-APMZZZMT.js";
 import "/assets/_shared/chunk-Z7LCWUX7.js";
 import {
@@ -28,64 +31,13 @@ import {
 } from "/assets/_shared/chunk-R6OA4XCD.js";
 
 // app/routes/app._index.tsx
-var import_react3 = __toESM(require_react());
+var import_react2 = __toESM(require_react());
 var import_node = __toESM(require_node());
 var import_shopify = __toESM(require_shopify());
-
-// app/utils/navigation.tsx
-if (import.meta) {
-  import.meta.hot = createHotContext(
-    //@ts-expect-error
-    "app/utils/navigation.tsx"
-  );
-  import.meta.hot.lastModified = "1758229076618.3833";
-}
-function useShopContext() {
-  const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
-  const urlShop = searchParams.get("shop");
-  const urlHost = searchParams.get("host");
-  let fallbackShop = null;
-  if (typeof window !== "undefined") {
-    const shopElement = document.getElementById("__shop");
-    fallbackShop = shopElement?.getAttribute("data-shop-name");
-  }
-  return {
-    shop: urlShop || (fallbackShop ? `${fallbackShop}.myshopify.com` : null),
-    host: urlHost,
-    embedded: searchParams.get("embedded"),
-    hmac: searchParams.get("hmac"),
-    session: searchParams.get("session"),
-    id_token: searchParams.get("id_token"),
-    timestamp: searchParams.get("timestamp"),
-    locale: searchParams.get("locale")
-  };
-}
-function buildAppUrl(path, shopContext) {
-  if (!shopContext) {
-    return path;
-  }
-  const url = new URL(path, "https://example.com");
-  const criticalParams = ["shop", "host", "embedded", "hmac", "session"];
-  criticalParams.forEach((key) => {
-    const value = shopContext[key];
-    if (value) {
-      url.searchParams.set(key, value);
-    }
-  });
-  Object.entries(shopContext).forEach(([key, value]) => {
-    if (value && !criticalParams.includes(key)) {
-      url.searchParams.set(key, value);
-    }
-  });
-  return `${url.pathname}${url.search}`;
-}
-
-// app/routes/app._index.tsx
 var import_subscription = __toESM(require_subscription());
 
 // app/components/LoadingStates.tsx
-var import_react2 = __toESM(require_react());
+var import_react = __toESM(require_react());
 var import_jsx_dev_runtime = __toESM(require_jsx_dev_runtime());
 if (!window.$RefreshReg$ || !window.$RefreshSig$ || !window.$RefreshRuntime$) {
   console.warn("remix:hmr: React Fast Refresh only works when the Remix compiler is running in development mode.");
@@ -366,7 +318,7 @@ function Toast({
   duration = 4e3
 }) {
   _s();
-  import_react2.default.useEffect(() => {
+  import_react.default.useEffect(() => {
     if (isVisible && duration > 0) {
       const timer = setTimeout(() => {
         onClose();
@@ -510,13 +462,13 @@ function AppIndex() {
     planSelectionUrl
   } = useLoaderData();
   const shopContext = useShopContext();
-  const [isInitialLoad, setIsInitialLoad] = (0, import_react3.useState)(true);
-  const [toast, setToast] = (0, import_react3.useState)({
+  const [isInitialLoad, setIsInitialLoad] = (0, import_react2.useState)(true);
+  const [toast, setToast] = (0, import_react2.useState)({
     message: "",
     type: "success",
     visible: false
   });
-  import_react3.default.useEffect(() => {
+  import_react2.default.useEffect(() => {
     const timer = setTimeout(() => {
       setIsInitialLoad(false);
       if (subscriptionInfo?.hasActivePayment || subscriptionInfo?.isInTrial) {
@@ -529,7 +481,7 @@ function AppIndex() {
     }, 800);
     return () => clearTimeout(timer);
   }, [subscriptionInfo]);
-  import_react3.default.useEffect(() => {
+  import_react2.default.useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
     const chargeId = urlParams.get("charge_id");
     const isPostSubscription = !!chargeId;
@@ -1107,4 +1059,4 @@ window.$RefreshSig$ = prevRefreshSig;
 export {
   AppIndex as default
 };
-//# sourceMappingURL=/assets/routes/app._index-RG55HPVE.js.map
+//# sourceMappingURL=/assets/routes/app._index-P3HQMWCE.js.map
