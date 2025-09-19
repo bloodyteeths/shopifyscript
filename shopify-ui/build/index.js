@@ -14151,7 +14151,7 @@ var require_components = __commonJS({
       }) : null);
     });
     NavLink.displayName = "NavLink";
-    var Link7 = /* @__PURE__ */ React__namespace.forwardRef(({
+    var Link8 = /* @__PURE__ */ React__namespace.forwardRef(({
       to,
       prefetch = "none",
       discover = "render",
@@ -14166,7 +14166,7 @@ var require_components = __commonJS({
         page: href
       }) : null);
     });
-    Link7.displayName = "Link";
+    Link8.displayName = "Link";
     var Form8 = /* @__PURE__ */ React__namespace.forwardRef(({
       discover = "render",
       ...props
@@ -14576,7 +14576,7 @@ import(${JSON.stringify(manifest.entry.module)});` : " ";
     }
     exports.Await = Await;
     exports.Form = Form8;
-    exports.Link = Link7;
+    exports.Link = Link8;
     exports.Links = Links2;
     exports.LiveReload = LiveReload;
     exports.Meta = Meta2;
@@ -85066,7 +85066,7 @@ var require_Text_css = __commonJS({
 var require_Text = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Text/Text.js"(exports) {
     "use strict";
-    var React18 = require_react(), css = require_css(), Text_module = require_Text_css(), Text4 = ({
+    var React18 = require_react(), css = require_css(), Text_module = require_Text_css(), Text5 = ({
       alignment,
       as,
       breakWord,
@@ -85087,7 +85087,7 @@ var require_Text = __commonJS({
         id
       }), children);
     };
-    exports.Text = Text4;
+    exports.Text = Text5;
   }
 });
 
@@ -85095,7 +85095,7 @@ var require_Text = __commonJS({
 var require_Icon = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Icon/Icon.js"(exports) {
     "use strict";
-    var React18 = require_react(), css = require_css(), breakpoints = require_breakpoints2(), Icon_module = require_Icon_css(), Text4 = require_Text();
+    var React18 = require_react(), css = require_css(), breakpoints = require_breakpoints2(), Icon_module = require_Icon_css(), Text5 = require_Text();
     function Icon({
       source,
       tone,
@@ -85128,7 +85128,7 @@ var require_Icon = __commonJS({
       };
       return /* @__PURE__ */ React18.createElement("span", {
         className
-      }, accessibilityLabel && /* @__PURE__ */ React18.createElement(Text4.Text, {
+      }, accessibilityLabel && /* @__PURE__ */ React18.createElement(Text5.Text, {
         as: "span",
         visuallyHidden: !0
       }, accessibilityLabel), contentMarkup[sourceType]);
@@ -85155,7 +85155,7 @@ var require_Spinner_css = __commonJS({
 var require_Spinner = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Spinner/Spinner.js"(exports) {
     "use strict";
-    var React18 = require_react(), css = require_css(), useIsAfterInitialMount = require_use_is_after_initial_mount(), Spinner_module = require_Spinner_css(), Text4 = require_Text();
+    var React18 = require_react(), css = require_css(), useIsAfterInitialMount = require_use_is_after_initial_mount(), Spinner_module = require_Spinner_css(), Text5 = require_Text();
     function Spinner4({
       size = "large",
       accessibilityLabel,
@@ -85175,7 +85175,7 @@ var require_Spinner = __commonJS({
         ...!hasFocusableParent && {
           role: "status"
         }
-      }, accessibilityLabelMarkup = (isAfterInitialMount || !hasFocusableParent) && /* @__PURE__ */ React18.createElement(Text4.Text, {
+      }, accessibilityLabelMarkup = (isAfterInitialMount || !hasFocusableParent) && /* @__PURE__ */ React18.createElement(Text5.Text, {
         as: "span",
         visuallyHidden: !0
       }, accessibilityLabel);
@@ -85353,7 +85353,7 @@ var require_hooks2 = __commonJS({
 var require_Button = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Button/Button.js"(exports) {
     "use strict";
-    var React18 = require_react(), polarisIcons = require_dist11(), breakpoints = require_breakpoints2(), css = require_css(), focus = require_focus(), Button_module = require_Button_css(), Icon = require_Icon(), Spinner4 = require_Spinner(), UnstyledButton = require_UnstyledButton(), hooks = require_hooks2(), Text4 = require_Text();
+    var React18 = require_react(), polarisIcons = require_dist11(), breakpoints = require_breakpoints2(), css = require_css(), focus = require_focus(), Button_module = require_Button_css(), Icon = require_Icon(), Spinner4 = require_Spinner(), UnstyledButton = require_UnstyledButton(), hooks = require_hooks2(), Text5 = require_Text();
     function Button4({
       id,
       children,
@@ -85404,7 +85404,7 @@ var require_Button = __commonJS({
       hasPlainText ? textFontWeight = "regular" : variant === "primary" && (textFontWeight = mdUp ? "medium" : "semibold");
       let textVariant = "bodySm";
       (size === "large" || hasPlainText && size !== "micro") && (textVariant = "bodyMd");
-      let childMarkup = children ? /* @__PURE__ */ React18.createElement(Text4.Text, {
+      let childMarkup = children ? /* @__PURE__ */ React18.createElement(Text5.Text, {
         as: "span",
         variant: textVariant,
         fontWeight: textFontWeight,
@@ -85547,7 +85547,7 @@ var require_Box_css = __commonJS({
 var require_Box = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Box/Box.js"(exports) {
     "use strict";
-    var React18 = require_react(), css = require_css(), Box_module = require_Box_css(), Box = /* @__PURE__ */ React18.forwardRef(({
+    var React18 = require_react(), css = require_css(), Box_module = require_Box_css(), Box2 = /* @__PURE__ */ React18.forwardRef(({
       as = "div",
       background,
       borderColor,
@@ -85643,8 +85643,8 @@ var require_Box = __commonJS({
         ...restProps
       }, children);
     });
-    Box.displayName = "Box";
-    exports.Box = Box;
+    Box2.displayName = "Box";
+    exports.Box = Box2;
   }
 });
 
@@ -85652,7 +85652,7 @@ var require_Box = __commonJS({
 var require_Card = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Card/Card.js"(exports) {
     "use strict";
-    var React18 = require_react(), breakpoints = require_breakpoints2(), withinContentContext = require_within_content_context(), ShadowBevel = require_ShadowBevel(), Box = require_Box(), Card5 = ({
+    var React18 = require_react(), breakpoints = require_breakpoints2(), withinContentContext = require_within_content_context(), ShadowBevel = require_ShadowBevel(), Box2 = require_Box(), Card6 = ({
       children,
       background = "bg-surface",
       padding = {
@@ -85667,7 +85667,7 @@ var require_Card = __commonJS({
         boxShadow: "100",
         borderRadius: hasBorderRadius ? defaultBorderRadius : "0",
         zIndex: "32"
-      }, /* @__PURE__ */ React18.createElement(Box.Box, {
+      }, /* @__PURE__ */ React18.createElement(Box2.Box, {
         background,
         padding,
         overflowX: "clip",
@@ -85675,7 +85675,7 @@ var require_Card = __commonJS({
         minHeight: "100%"
       }, children)));
     };
-    exports.Card = Card5;
+    exports.Card = Card6;
   }
 });
 
@@ -85773,7 +85773,7 @@ var require_BlockStack_css = __commonJS({
 var require_BlockStack = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/BlockStack/BlockStack.js"(exports) {
     "use strict";
-    var React18 = require_react(), css = require_css(), BlockStack_module = require_BlockStack_css(), BlockStack = ({
+    var React18 = require_react(), css = require_css(), BlockStack_module = require_BlockStack_css(), BlockStack2 = ({
       as = "div",
       children,
       align,
@@ -85796,7 +85796,7 @@ var require_BlockStack = __commonJS({
         ...restProps
       }, children);
     };
-    exports.BlockStack = BlockStack;
+    exports.BlockStack = BlockStack2;
   }
 });
 
@@ -85964,7 +85964,7 @@ var require_Avatar = __commonJS({
 var require_AccountConnection = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/AccountConnection/AccountConnection.js"(exports) {
     "use strict";
-    var React18 = require_react(), breakpoints = require_breakpoints2(), utils = require_utils11(), Card5 = require_Card(), SettingAction = require_SettingAction(), InlineStack = require_InlineStack(), BlockStack = require_BlockStack(), Avatar2 = require_Avatar(), Box = require_Box(), Text4 = require_Text();
+    var React18 = require_react(), breakpoints = require_breakpoints2(), utils = require_utils11(), Card6 = require_Card(), SettingAction = require_SettingAction(), InlineStack = require_InlineStack(), BlockStack2 = require_BlockStack(), Avatar2 = require_Avatar(), Box2 = require_Box(), Text5 = require_Text();
     function AccountConnection({
       connected = !1,
       action: action10,
@@ -85979,26 +85979,26 @@ var require_AccountConnection = __commonJS({
         name: accountName,
         initials,
         source: avatarUrl
-      })) : null, titleContent = title || accountName, titleMarkup = /* @__PURE__ */ React18.createElement(Text4.Text, {
+      })) : null, titleContent = title || accountName, titleMarkup = /* @__PURE__ */ React18.createElement(Text5.Text, {
         as: "h2",
         variant: "headingSm"
-      }, titleContent), detailsMarkup = details ? /* @__PURE__ */ React18.createElement(Text4.Text, {
+      }, titleContent), detailsMarkup = details ? /* @__PURE__ */ React18.createElement(Text5.Text, {
         as: "span",
         variant: "bodyMd",
         tone: "subdued"
-      }, details) : null, termsOfServiceMarkup = termsOfService ? /* @__PURE__ */ React18.createElement(Box.Box, {
+      }, details) : null, termsOfServiceMarkup = termsOfService ? /* @__PURE__ */ React18.createElement(Box2.Box, {
         paddingBlockStart: breakpoints$1.mdUp ? "400" : "500"
-      }, /* @__PURE__ */ React18.createElement(Text4.Text, {
+      }, /* @__PURE__ */ React18.createElement(Text5.Text, {
         as: "span",
         variant: "bodyMd"
       }, termsOfService)) : null, actionElement = action10 ? utils.buttonFrom(action10, {
         variant: connected ? void 0 : "primary"
       }) : null;
-      return /* @__PURE__ */ React18.createElement(Card5.Card, null, /* @__PURE__ */ React18.createElement(SettingAction.SettingAction, {
+      return /* @__PURE__ */ React18.createElement(Card6.Card, null, /* @__PURE__ */ React18.createElement(SettingAction.SettingAction, {
         action: actionElement
       }, /* @__PURE__ */ React18.createElement(InlineStack.InlineStack, {
         gap: "400"
-      }, avatarMarkup, /* @__PURE__ */ React18.createElement(BlockStack.BlockStack, {
+      }, avatarMarkup, /* @__PURE__ */ React18.createElement(BlockStack2.BlockStack, {
         gap: "100"
       }, titleMarkup, detailsMarkup))), termsOfServiceMarkup);
     }
@@ -86184,7 +86184,7 @@ var require_Pip_css = __commonJS({
 var require_Pip = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Badge/components/Pip/Pip.js"(exports) {
     "use strict";
-    var React18 = require_react(), css = require_css(), utils = require_utils12(), Pip_module = require_Pip_css(), hooks = require_hooks2(), Text4 = require_Text();
+    var React18 = require_react(), css = require_css(), utils = require_utils12(), Pip_module = require_Pip_css(), hooks = require_hooks2(), Text5 = require_Text();
     function Pip({
       tone,
       progress = "complete",
@@ -86193,7 +86193,7 @@ var require_Pip = __commonJS({
       let i18n = hooks.useI18n(), className = css.classNames(Pip_module.default.Pip, tone && Pip_module.default[css.variationName("tone", tone)], progress && Pip_module.default[css.variationName("progress", progress)]), accessibilityLabel = accessibilityLabelOverride || utils.getDefaultAccessibilityLabel(i18n, progress, tone);
       return /* @__PURE__ */ React18.createElement("span", {
         className
-      }, /* @__PURE__ */ React18.createElement(Text4.Text, {
+      }, /* @__PURE__ */ React18.createElement(Text5.Text, {
         as: "span",
         visuallyHidden: !0
       }, accessibilityLabel));
@@ -86206,7 +86206,7 @@ var require_Pip = __commonJS({
 var require_Badge = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Badge/Badge.js"(exports) {
     "use strict";
-    var React18 = require_react(), css = require_css(), withinFilterContext = require_within_filter_context(), Badge_module = require_Badge_css(), utils = require_utils12(), Pip = require_Pip(), hooks = require_hooks2(), Icon = require_Icon(), Text4 = require_Text(), DEFAULT_SIZE = "medium", progressIconMap = {
+    var React18 = require_react(), css = require_css(), withinFilterContext = require_within_filter_context(), Badge_module = require_Badge_css(), utils = require_utils12(), Pip = require_Pip(), hooks = require_hooks2(), Icon = require_Icon(), Text5 = require_Text(), DEFAULT_SIZE = "medium", progressIconMap = {
       complete: () => /* @__PURE__ */ React18.createElement("svg", {
         viewBox: "0 0 20 20"
       }, /* @__PURE__ */ React18.createElement("path", {
@@ -86233,7 +86233,7 @@ var require_Badge = __commonJS({
       size = DEFAULT_SIZE,
       toneAndProgressLabelOverride
     }) {
-      let i18n = hooks.useI18n(), withinFilter = React18.useContext(withinFilterContext.WithinFilterContext), className = css.classNames(Badge_module.default.Badge, tone && Badge_module.default[css.variationName("tone", tone)], size && size !== DEFAULT_SIZE && Badge_module.default[css.variationName("size", size)], withinFilter && Badge_module.default.withinFilter), accessibilityLabel = toneAndProgressLabelOverride || utils.getDefaultAccessibilityLabel(i18n, progress, tone), accessibilityMarkup = Boolean(accessibilityLabel) && /* @__PURE__ */ React18.createElement(Text4.Text, {
+      let i18n = hooks.useI18n(), withinFilter = React18.useContext(withinFilterContext.WithinFilterContext), className = css.classNames(Badge_module.default.Badge, tone && Badge_module.default[css.variationName("tone", tone)], size && size !== DEFAULT_SIZE && Badge_module.default[css.variationName("size", size)], withinFilter && Badge_module.default.withinFilter), accessibilityLabel = toneAndProgressLabelOverride || utils.getDefaultAccessibilityLabel(i18n, progress, tone), accessibilityMarkup = Boolean(accessibilityLabel) && /* @__PURE__ */ React18.createElement(Text5.Text, {
         as: "span",
         visuallyHidden: !0
       }, accessibilityLabel);
@@ -86248,7 +86248,7 @@ var require_Badge = __commonJS({
         className: Badge_module.default.Icon
       }, /* @__PURE__ */ React18.createElement(Icon.Icon, {
         source: icon
-      })), children && /* @__PURE__ */ React18.createElement(Text4.Text, {
+      })), children && /* @__PURE__ */ React18.createElement(Text5.Text, {
         as: "span",
         variant: "bodySm",
         fontWeight: tone === "new" ? "medium" : void 0
@@ -86903,7 +86903,7 @@ var require_TooltipOverlay = __commonJS({
 var require_Tooltip = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Tooltip/Tooltip.js"(exports) {
     "use strict";
-    var React18 = require_react(), focus = require_focus(), useToggle = require_use_toggle(), css = require_css(), Tooltip_module = require_Tooltip_css(), hooks = require_hooks3(), Portal = require_Portal(), TooltipOverlay = require_TooltipOverlay(), Text4 = require_Text(), HOVER_OUT_TIMEOUT = 150;
+    var React18 = require_react(), focus = require_focus(), useToggle = require_use_toggle(), css = require_css(), Tooltip_module = require_Tooltip_css(), hooks = require_hooks3(), Portal = require_Portal(), TooltipOverlay = require_TooltipOverlay(), Text5 = require_Text(), HOVER_OUT_TIMEOUT = 150;
     function Tooltip3({
       children,
       content,
@@ -86969,7 +86969,7 @@ var require_Tooltip = __commonJS({
         borderRadius,
         zIndexOverride,
         instant: !shouldAnimate
-      }, /* @__PURE__ */ React18.createElement(Text4.Text, {
+      }, /* @__PURE__ */ React18.createElement(Text5.Text, {
         as: "span",
         variant: "bodyMd"
       }, content))) : null, wrapperClassNames = css.classNames(activatorWrapper === "div" && Tooltip_module.default.TooltipContainer, hasUnderline && Tooltip_module.default.HasUnderline);
@@ -87017,7 +87017,7 @@ var require_Tooltip = __commonJS({
 var require_Item = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/ActionList/components/Item/Item.js"(exports) {
     "use strict";
-    var React18 = require_react(), css = require_css(), ActionList_module = require_ActionList_css(), focus = require_focus(), useIsomorphicLayoutEffect = require_use_isomorphic_layout_effect(), useTheme = require_use_theme(), Badge4 = require_Badge(), Tooltip3 = require_Tooltip(), Icon = require_Icon(), Box = require_Box(), Text4 = require_Text(), Scrollable = require_Scrollable(), UnstyledLink = require_UnstyledLink(), InlineStack = require_InlineStack();
+    var React18 = require_react(), css = require_css(), ActionList_module = require_ActionList_css(), focus = require_focus(), useIsomorphicLayoutEffect = require_use_isomorphic_layout_effect(), useTheme = require_use_theme(), Badge4 = require_Badge(), Tooltip3 = require_Tooltip(), Icon = require_Icon(), Box2 = require_Box(), Text5 = require_Text(), Scrollable = require_Scrollable(), UnstyledLink = require_UnstyledLink(), InlineStack = require_InlineStack();
     function Item({
       id,
       badge,
@@ -87056,11 +87056,11 @@ var require_Item = __commonJS({
       }));
       let contentText = content || "";
       truncate && content ? contentText = /* @__PURE__ */ React18.createElement(TruncateText, null, content) : ellipsis && (contentText = `${content}\u2026`);
-      let contentMarkup = helpText ? /* @__PURE__ */ React18.createElement(React18.Fragment, null, /* @__PURE__ */ React18.createElement(Box.Box, null, contentText), /* @__PURE__ */ React18.createElement(Text4.Text, {
+      let contentMarkup = helpText ? /* @__PURE__ */ React18.createElement(React18.Fragment, null, /* @__PURE__ */ React18.createElement(Box2.Box, null, contentText), /* @__PURE__ */ React18.createElement(Text5.Text, {
         as: "span",
         variant: "bodySm",
         tone: active || disabled ? void 0 : "subdued"
-      }, helpText)) : /* @__PURE__ */ React18.createElement(Text4.Text, {
+      }, helpText)) : /* @__PURE__ */ React18.createElement(Text5.Text, {
         as: "span",
         variant: "bodyMd",
         fontWeight: active ? "semibold" : "regular"
@@ -87068,11 +87068,11 @@ var require_Item = __commonJS({
         className: ActionList_module.default.Suffix
       }, /* @__PURE__ */ React18.createElement(Badge4.Badge, {
         tone: badge.tone
-      }, badge.content)), suffixMarkup = suffix && /* @__PURE__ */ React18.createElement(Box.Box, null, /* @__PURE__ */ React18.createElement("span", {
+      }, badge.content)), suffixMarkup = suffix && /* @__PURE__ */ React18.createElement(Box2.Box, null, /* @__PURE__ */ React18.createElement("span", {
         className: ActionList_module.default.Suffix
       }, suffix)), textMarkup = /* @__PURE__ */ React18.createElement("span", {
         className: ActionList_module.default.Text
-      }, /* @__PURE__ */ React18.createElement(Text4.Text, {
+      }, /* @__PURE__ */ React18.createElement(Text5.Text, {
         as: "span",
         variant: "bodyMd",
         fontWeight: active ? "semibold" : "regular"
@@ -87080,7 +87080,7 @@ var require_Item = __commonJS({
         blockAlign: "center",
         gap: "150",
         wrap: !1
-      }, prefixMarkup, textMarkup, badgeMarkup, suffixMarkup), contentWrapper = /* @__PURE__ */ React18.createElement(Box.Box, {
+      }, prefixMarkup, textMarkup, badgeMarkup, suffixMarkup), contentWrapper = /* @__PURE__ */ React18.createElement(Box2.Box, {
         width: "100%"
       }, contentElement), scrollMarkup = active ? /* @__PURE__ */ React18.createElement(Scrollable.Scrollable.ScrollTo, null) : null, control = url ? /* @__PURE__ */ React18.createElement(UnstyledLink.UnstyledLink, {
         id,
@@ -87110,10 +87110,10 @@ var require_Item = __commonJS({
       useIsomorphicLayoutEffect.useIsomorphicLayoutEffect(() => {
         textRef.current && setIsOverflowing(textRef.current.scrollWidth > textRef.current.offsetWidth);
       }, [children]);
-      let text = /* @__PURE__ */ React18.createElement(Text4.Text, {
+      let text = /* @__PURE__ */ React18.createElement(Text5.Text, {
         as: "span",
         truncate: !0
-      }, /* @__PURE__ */ React18.createElement(Box.Box, {
+      }, /* @__PURE__ */ React18.createElement(Box2.Box, {
         width: "100%",
         ref: textRef
       }, children));
@@ -87123,7 +87123,7 @@ var require_Item = __commonJS({
         hoverDelay: 1e3,
         content: children,
         dismissOnMouseOut: !0
-      }, /* @__PURE__ */ React18.createElement(Text4.Text, {
+      }, /* @__PURE__ */ React18.createElement(Text5.Text, {
         as: "span",
         truncate: !0
       }, children)) : text;
@@ -87137,7 +87137,7 @@ var require_Item = __commonJS({
 var require_Section = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/ActionList/components/Section/Section.js"(exports) {
     "use strict";
-    var React18 = require_react(), Item = require_Item(), Box = require_Box(), InlineStack = require_InlineStack(), Text4 = require_Text(), BlockStack = require_BlockStack();
+    var React18 = require_react(), Item = require_Item(), Box2 = require_Box(), InlineStack = require_InlineStack(), Text5 = require_Text(), BlockStack2 = require_BlockStack();
     function Section({
       section,
       hasMultipleSections,
@@ -87159,7 +87159,7 @@ var require_Section = __commonJS({
           role: actionRole,
           onAction: handleAction(onAction)
         }, item));
-        return /* @__PURE__ */ React18.createElement(Box.Box, {
+        return /* @__PURE__ */ React18.createElement(Box2.Box, {
           as: "li",
           key: `${content}-${index}`,
           role: actionRole === "menuitem" ? "presentation" : void 0
@@ -87167,15 +87167,15 @@ var require_Section = __commonJS({
           wrap: !1
         }, itemMarkup));
       }), titleMarkup = null;
-      section.title && (titleMarkup = typeof section.title == "string" ? /* @__PURE__ */ React18.createElement(Box.Box, {
+      section.title && (titleMarkup = typeof section.title == "string" ? /* @__PURE__ */ React18.createElement(Box2.Box, {
         paddingBlockStart: "300",
         paddingBlockEnd: "100",
         paddingInlineStart: "300",
         paddingInlineEnd: "300"
-      }, /* @__PURE__ */ React18.createElement(Text4.Text, {
+      }, /* @__PURE__ */ React18.createElement(Text5.Text, {
         as: "p",
         variant: "headingSm"
-      }, section.title)) : /* @__PURE__ */ React18.createElement(Box.Box, {
+      }, section.title)) : /* @__PURE__ */ React18.createElement(Box2.Box, {
         padding: "200",
         paddingInlineEnd: "150"
       }, section.title));
@@ -87191,20 +87191,20 @@ var require_Section = __commonJS({
           sectionRole = void 0;
           break;
       }
-      let sectionMarkup = /* @__PURE__ */ React18.createElement(React18.Fragment, null, titleMarkup, /* @__PURE__ */ React18.createElement(Box.Box, Object.assign({
+      let sectionMarkup = /* @__PURE__ */ React18.createElement(React18.Fragment, null, titleMarkup, /* @__PURE__ */ React18.createElement(Box2.Box, Object.assign({
         as: "div",
         padding: "150"
       }, hasMultipleSections && {
         paddingBlockStart: "0"
       }, {
         tabIndex: hasMultipleSections ? void 0 : -1
-      }), /* @__PURE__ */ React18.createElement(BlockStack.BlockStack, Object.assign({
+      }), /* @__PURE__ */ React18.createElement(BlockStack2.BlockStack, Object.assign({
         gap: "050",
         as: "ul"
       }, sectionRole && {
         role: sectionRole
       }), actionMarkup)));
-      return hasMultipleSections ? /* @__PURE__ */ React18.createElement(Box.Box, Object.assign({
+      return hasMultipleSections ? /* @__PURE__ */ React18.createElement(Box2.Box, Object.assign({
         as: "li",
         role: "presentation",
         borderColor: "border-secondary"
@@ -87391,7 +87391,7 @@ var require_InlineError_css = __commonJS({
 var require_InlineError = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/InlineError/InlineError.js"(exports) {
     "use strict";
-    var React18 = require_react(), polarisIcons = require_dist11(), InlineError_module = require_InlineError_css(), Icon = require_Icon(), Text4 = require_Text();
+    var React18 = require_react(), polarisIcons = require_dist11(), InlineError_module = require_InlineError_css(), Icon = require_Icon(), Text5 = require_Text();
     function InlineError({
       message: message2,
       fieldID
@@ -87403,7 +87403,7 @@ var require_InlineError = __commonJS({
         className: InlineError_module.default.Icon
       }, /* @__PURE__ */ React18.createElement(Icon.Icon, {
         source: polarisIcons.AlertCircleIcon
-      })), /* @__PURE__ */ React18.createElement(Text4.Text, {
+      })), /* @__PURE__ */ React18.createElement(Text5.Text, {
         as: "span",
         variant: "bodyMd"
       }, message2)) : null;
@@ -87435,7 +87435,7 @@ var require_Label_css = __commonJS({
 var require_Label = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Label/Label.js"(exports) {
     "use strict";
-    var React18 = require_react(), css = require_css(), Label_module = require_Label_css(), Text4 = require_Text();
+    var React18 = require_react(), css = require_css(), Label_module = require_Label_css(), Text5 = require_Text();
     function labelID(id) {
       return `${id}Label`;
     }
@@ -87452,7 +87452,7 @@ var require_Label = __commonJS({
         id: labelID(id),
         htmlFor: id,
         className: css.classNames(Label_module.default.Text, requiredIndicator && Label_module.default.RequiredIndicator)
-      }, /* @__PURE__ */ React18.createElement(Text4.Text, {
+      }, /* @__PURE__ */ React18.createElement(Text5.Text, {
         as: "span",
         variant: "bodyMd"
       }, children)));
@@ -87466,7 +87466,7 @@ var require_Label = __commonJS({
 var require_Labelled = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Labelled/Labelled.js"(exports) {
     "use strict";
-    var React18 = require_react(), css = require_css(), Labelled_module = require_Labelled_css(), InlineError = require_InlineError(), Label = require_Label(), utils = require_utils11(), Text4 = require_Text();
+    var React18 = require_react(), css = require_css(), Labelled_module = require_Labelled_css(), InlineError = require_InlineError(), Label = require_Label(), utils = require_utils11(), Text5 = require_Text();
     function Labelled({
       id,
       label,
@@ -87488,7 +87488,7 @@ var require_Labelled = __commonJS({
         className: Labelled_module.default.HelpText,
         id: helpTextID(id),
         "aria-disabled": disabled
-      }, /* @__PURE__ */ React18.createElement(Text4.Text, {
+      }, /* @__PURE__ */ React18.createElement(Text5.Text, {
         as: "span",
         tone: "subdued",
         variant: "bodyMd",
@@ -87655,7 +87655,7 @@ var require_Resizer = __commonJS({
 var require_TextField = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/TextField/TextField.js"(exports) {
     "use strict";
-    var React18 = require_react(), polarisIcons = require_dist11(), css = require_css(), useIsAfterInitialMount = require_use_is_after_initial_mount(), types4 = require_types16(), useEventListener = require_use_event_listener(), TextField_module = require_TextField_css(), Spinner$1 = require_Spinner2(), Labelled = require_Labelled(), Connected = require_Connected(), Resizer = require_Resizer(), Label = require_Label(), hooks = require_hooks2(), Icon = require_Icon(), Text4 = require_Text(), Spinner4 = require_Spinner();
+    var React18 = require_react(), polarisIcons = require_dist11(), css = require_css(), useIsAfterInitialMount = require_use_is_after_initial_mount(), types4 = require_types16(), useEventListener = require_use_event_listener(), TextField_module = require_TextField_css(), Spinner$1 = require_Spinner2(), Labelled = require_Labelled(), Connected = require_Connected(), Resizer = require_Resizer(), Label = require_Label(), hooks = require_hooks2(), Icon = require_Icon(), Text5 = require_Text(), Spinner4 = require_Spinner();
     function TextField3({
       prefix,
       suffix,
@@ -87724,14 +87724,14 @@ var require_TextField = __commonJS({
         className: css.classNames(TextField_module.default.Prefix, iconPrefix && TextField_module.default.PrefixIcon),
         id: `${id}-Prefix`,
         ref: prefixRef
-      }, /* @__PURE__ */ React18.createElement(Text4.Text, {
+      }, /* @__PURE__ */ React18.createElement(Text5.Text, {
         as: "span",
         variant: "bodyMd"
       }, prefix)) : null, suffixMarkup = suffix ? /* @__PURE__ */ React18.createElement("div", {
         className: TextField_module.default.Suffix,
         id: `${id}-Suffix`,
         ref: suffixRef
-      }, /* @__PURE__ */ React18.createElement(Text4.Text, {
+      }, /* @__PURE__ */ React18.createElement(Text5.Text, {
         as: "span",
         variant: "bodyMd"
       }, suffix)) : null, loadingMarkup = loading ? /* @__PURE__ */ React18.createElement("div", {
@@ -87755,7 +87755,7 @@ var require_TextField = __commonJS({
           "aria-live": focus ? "polite" : "off",
           "aria-atomic": "true",
           onClick: handleClickChild
-        }, /* @__PURE__ */ React18.createElement(Text4.Text, {
+        }, /* @__PURE__ */ React18.createElement(Text5.Text, {
           as: "span",
           variant: "bodyMd"
         }, characterCountText));
@@ -87765,7 +87765,7 @@ var require_TextField = __commonJS({
         className: TextField_module.default.ClearButton,
         onClick: handleClearButtonPress,
         disabled
-      }, /* @__PURE__ */ React18.createElement(Text4.Text, {
+      }, /* @__PURE__ */ React18.createElement(Text5.Text, {
         as: "span",
         visuallyHidden: !0
       }, i18n.translate("Polaris.Common.clear")), /* @__PURE__ */ React18.createElement(Icon.Icon, {
@@ -87967,7 +87967,7 @@ var require_TextField = __commonJS({
 var require_ActionList = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/ActionList/ActionList.js"(exports) {
     "use strict";
-    var React18 = require_react(), polarisIcons = require_dist11(), types4 = require_types16(), focus = require_focus(), FilterActionsProvider = require_FilterActionsProvider(), Section = require_Section(), KeypressListener = require_KeypressListener(), TextField3 = require_TextField(), hooks = require_hooks2(), Box = require_Box(), Icon = require_Icon(), Item = require_Item(), FILTER_ACTIONS_THRESHOLD = 8;
+    var React18 = require_react(), polarisIcons = require_dist11(), types4 = require_types16(), focus = require_focus(), FilterActionsProvider = require_FilterActionsProvider(), Section = require_Section(), KeypressListener = require_KeypressListener(), TextField3 = require_TextField(), hooks = require_hooks2(), Box2 = require_Box(), Icon = require_Icon(), Item = require_Item(), FILTER_ACTIONS_THRESHOLD = 8;
     function ActionList2({
       items,
       sections = [],
@@ -88004,7 +88004,7 @@ var require_ActionList = __commonJS({
         keyCode: types4.Key.UpArrow,
         handler: handleFocusPreviousItem
       })) : null, totalFilteredActions = React18.useMemo(() => filteredSections?.reduce((acc, section) => acc + section.items.length, 0) || 0, [filteredSections]), hasManyActions = (finalSections?.reduce((acc, section) => acc + section.items.length, 0) || 0) >= FILTER_ACTIONS_THRESHOLD;
-      return /* @__PURE__ */ React18.createElement(React18.Fragment, null, (allowFiltering || filterActions) && hasManyActions && isFilterable && /* @__PURE__ */ React18.createElement(Box.Box, {
+      return /* @__PURE__ */ React18.createElement(React18.Fragment, null, (allowFiltering || filterActions) && hasManyActions && isFilterable && /* @__PURE__ */ React18.createElement(Box2.Box, {
         padding: "200",
         paddingBlockEnd: totalFilteredActions > 0 ? "0" : "200"
       }, /* @__PURE__ */ React18.createElement(TextField3.TextField, {
@@ -88019,7 +88019,7 @@ var require_ActionList = __commonJS({
           source: polarisIcons.SearchIcon
         }),
         onClearButtonClick: () => setSearchText("")
-      })), /* @__PURE__ */ React18.createElement(Box.Box, {
+      })), /* @__PURE__ */ React18.createElement(Box2.Box, {
         as: hasMultipleSections ? "ul" : "div",
         ref: actionListRef,
         role: elementRole,
@@ -88148,13 +88148,13 @@ var require_Popover_css = __commonJS({
 var require_Section2 = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Popover/components/Section/Section.js"(exports) {
     "use strict";
-    var React18 = require_react(), Popover_module = require_Popover_css(), Box = require_Box();
+    var React18 = require_react(), Popover_module = require_Popover_css(), Box2 = require_Box();
     function Section({
       children
     }) {
       return /* @__PURE__ */ React18.createElement("div", {
         className: Popover_module.default.Section
-      }, /* @__PURE__ */ React18.createElement(Box.Box, {
+      }, /* @__PURE__ */ React18.createElement(Box2.Box, {
         paddingInlineStart: "300",
         paddingInlineEnd: "300",
         paddingBlockStart: "200",
@@ -89100,7 +89100,7 @@ var require_Choice_css = __commonJS({
 var require_Choice = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Choice/Choice.js"(exports) {
     "use strict";
-    var React18 = require_react(), css = require_css(), Choice_module = require_Choice_css(), Text4 = require_Text(), InlineError = require_InlineError();
+    var React18 = require_react(), css = require_css(), Choice_module = require_Choice_css(), Text5 = require_Text(), InlineError = require_InlineError();
     function Choice({
       id,
       label,
@@ -89145,14 +89145,14 @@ var require_Choice = __commonJS({
           className: Choice_module.default.Control
         }, children), /* @__PURE__ */ React18.createElement("span", {
           className: Choice_module.default.Label
-        }, /* @__PURE__ */ React18.createElement(Text4.Text, {
+        }, /* @__PURE__ */ React18.createElement(Text5.Text, {
           as: "span",
           variant: "bodyMd"
         }, label)))
       ), helpTextMarkup = helpText ? /* @__PURE__ */ React18.createElement("div", {
         className: Choice_module.default.HelpText,
         id: helpTextID(id)
-      }, /* @__PURE__ */ React18.createElement(Text4.Text, {
+      }, /* @__PURE__ */ React18.createElement(Text5.Text, {
         as: "span",
         tone: disabled ? void 0 : "subdued"
       }, helpText)) : null, errorMarkup = error && typeof error != "boolean" && /* @__PURE__ */ React18.createElement("div", {
@@ -89292,14 +89292,14 @@ var require_Checkbox = __commonJS({
 var require_TextOption = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Listbox/components/TextOption/TextOption.js"(exports) {
     "use strict";
-    var React18 = require_react(), polarisIcons = require_dist11(), css = require_css(), context = require_context11(), context$1 = require_context12(), TextOption_module = require_TextOption_css(), Checkbox = require_Checkbox(), Box = require_Box(), InlineStack = require_InlineStack(), Icon = require_Icon(), TextOption = /* @__PURE__ */ React18.memo(function({
+    var React18 = require_react(), polarisIcons = require_dist11(), css = require_css(), context = require_context11(), context$1 = require_context12(), TextOption_module = require_TextOption_css(), Checkbox = require_Checkbox(), Box2 = require_Box(), InlineStack = require_InlineStack(), Icon = require_Icon(), TextOption = /* @__PURE__ */ React18.memo(function({
       children,
       selected,
       disabled
     }) {
       let {
         allowMultiple
-      } = React18.useContext(context.ComboboxListboxOptionContext), isAction = React18.useContext(context$1.ActionContext), textOptionClassName = css.classNames(TextOption_module.default.TextOption, selected && !allowMultiple && TextOption_module.default.selected, disabled && TextOption_module.default.disabled, allowMultiple && TextOption_module.default.allowMultiple, isAction && TextOption_module.default.isAction), optionMarkup = selected ? /* @__PURE__ */ React18.createElement(Box.Box, {
+      } = React18.useContext(context.ComboboxListboxOptionContext), isAction = React18.useContext(context$1.ActionContext), textOptionClassName = css.classNames(TextOption_module.default.TextOption, selected && !allowMultiple && TextOption_module.default.selected, disabled && TextOption_module.default.disabled, allowMultiple && TextOption_module.default.allowMultiple, isAction && TextOption_module.default.isAction), optionMarkup = selected ? /* @__PURE__ */ React18.createElement(Box2.Box, {
         width: "100%"
       }, /* @__PURE__ */ React18.createElement(InlineStack.InlineStack, {
         wrap: !1,
@@ -89461,16 +89461,16 @@ var require_hooks7 = __commonJS({
 var require_Header = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Listbox/components/Header/Header.js"(exports) {
     "use strict";
-    var React18 = require_react(), hooks = require_hooks7(), Box = require_Box(), Text4 = require_Text();
+    var React18 = require_react(), hooks = require_hooks7(), Box2 = require_Box(), Text5 = require_Text();
     function Header2({
       children
     }) {
-      let sectionId = hooks.useSection() || "", content = typeof children == "string" ? /* @__PURE__ */ React18.createElement(Box.Box, {
+      let sectionId = hooks.useSection() || "", content = typeof children == "string" ? /* @__PURE__ */ React18.createElement(Box2.Box, {
         paddingBlockStart: "200",
         paddingInlineStart: "400",
         paddingBlockEnd: "200",
         paddingInlineEnd: "400"
-      }, /* @__PURE__ */ React18.createElement(Text4.Text, {
+      }, /* @__PURE__ */ React18.createElement(Text5.Text, {
         as: "span",
         variant: "headingSm",
         tone: "subdued"
@@ -89616,7 +89616,7 @@ var require_Action = __commonJS({
 var require_Listbox = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Listbox/Listbox.js"(exports) {
     "use strict";
-    var React18 = require_react(), debounce = require_debounce(), useToggle = require_use_toggle(), types4 = require_types16(), shared = require_shared(), Listbox_module = require_Listbox_css(), hooks = require_hooks5(), utilities = require_utilities2(), context = require_context12(), TextOption = require_TextOption(), Loading = require_Loading(), Section = require_Section3(), Header2 = require_Header(), Action = require_Action(), KeypressListener = require_KeypressListener(), Text4 = require_Text(), Option = require_Option();
+    var React18 = require_react(), debounce = require_debounce(), useToggle = require_use_toggle(), types4 = require_types16(), shared = require_shared(), Listbox_module = require_Listbox_css(), hooks = require_hooks5(), utilities = require_utilities2(), context = require_context12(), TextOption = require_TextOption(), Loading = require_Loading(), Section = require_Section3(), Header2 = require_Header(), Action = require_Action(), KeypressListener = require_KeypressListener(), Text5 = require_Text(), Option = require_Option();
     exports.AutoSelection = void 0;
     (function(AutoSelection) {
       AutoSelection.FirstSelected = "FIRST_SELECTED", AutoSelection.First = "FIRST", AutoSelection.None = "NONE";
@@ -89785,7 +89785,7 @@ var require_Listbox = __commonJS({
         onOptionSelect,
         setLoading
       }), [onOptionSelect]);
-      return /* @__PURE__ */ React18.createElement(React18.Fragment, null, listeners, /* @__PURE__ */ React18.createElement(Text4.Text, {
+      return /* @__PURE__ */ React18.createElement(React18.Fragment, null, listeners, /* @__PURE__ */ React18.createElement(Text5.Text, {
         as: "span",
         visuallyHidden: !0
       }, /* @__PURE__ */ React18.createElement("div", {
@@ -90020,7 +90020,7 @@ var require_MappedAction_css = __commonJS({
 var require_MappedAction = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Autocomplete/components/MappedAction/MappedAction.js"(exports) {
     "use strict";
-    var React18 = require_react(), css = require_css(), MappedAction_module = require_MappedAction_css(), hooks = require_hooks2(), Icon = require_Icon(), Badge4 = require_Badge(), Text4 = require_Text(), context = require_context14(), Listbox = require_Listbox();
+    var React18 = require_react(), css = require_css(), MappedAction_module = require_MappedAction_css(), hooks = require_hooks2(), Icon = require_Icon(), Badge4 = require_Badge(), Text5 = require_Text(), context = require_context14(), Listbox = require_Listbox();
     function MappedAction({
       active,
       content,
@@ -90063,11 +90063,11 @@ var require_MappedAction = __commonJS({
         content
       }) : content, contentMarkup = /* @__PURE__ */ React18.createElement("div", {
         className: MappedAction_module.default.Text
-      }, /* @__PURE__ */ React18.createElement(Text4.Text, {
+      }, /* @__PURE__ */ React18.createElement(Text5.Text, {
         as: "p",
         variant: "bodyMd",
         breakWord: wrapOverflow
-      }, contentText), helpText ? /* @__PURE__ */ React18.createElement(Text4.Text, {
+      }, contentText), helpText ? /* @__PURE__ */ React18.createElement(Text5.Text, {
         as: "p",
         variant: "bodyMd",
         tone: "subdued"
@@ -90451,7 +90451,7 @@ var require_ButtonGroup = __commonJS({
 var require_Banner = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Banner/Banner.js"(exports) {
     "use strict";
-    var React18 = require_react(), polarisIcons = require_dist11(), bannerContext = require_banner_context(), withinContentContext = require_within_content_context(), css = require_css(), breakpoints = require_breakpoints2(), useEventListener = require_use_event_listener(), Banner_module = require_Banner_css(), utilities = require_utilities3(), ButtonGroup3 = require_ButtonGroup(), hooks = require_hooks2(), Text4 = require_Text(), Icon = require_Icon(), Button4 = require_Button(), Box = require_Box(), BlockStack = require_BlockStack(), InlineStack = require_InlineStack(), Banner4 = /* @__PURE__ */ React18.forwardRef(function(props, bannerRef) {
+    var React18 = require_react(), polarisIcons = require_dist11(), bannerContext = require_banner_context(), withinContentContext = require_within_content_context(), css = require_css(), breakpoints = require_breakpoints2(), useEventListener = require_use_event_listener(), Banner_module = require_Banner_css(), utilities = require_utilities3(), ButtonGroup3 = require_ButtonGroup(), hooks = require_hooks2(), Text5 = require_Text(), Icon = require_Icon(), Button4 = require_Button(), Box2 = require_Box(), BlockStack2 = require_BlockStack(), InlineStack = require_InlineStack(), Banner4 = /* @__PURE__ */ React18.forwardRef(function(props, bannerRef) {
       let {
         tone,
         stopAnnouncements
@@ -90488,7 +90488,7 @@ var require_Banner = __commonJS({
       let i18n = hooks.useI18n(), withinContentContainer = React18.useContext(withinContentContext.WithinContentContext), isInlineIconBanner = !title && !withinContentContainer, bannerTone = Object.keys(utilities.bannerAttributes).includes(tone) ? tone : "info", bannerColors = utilities.bannerAttributes[bannerTone][withinContentContainer ? "withinContentContainer" : "withinPage"], sharedBannerProps = {
         backgroundColor: bannerColors.background,
         textColor: bannerColors.text,
-        bannerTitle: title ? /* @__PURE__ */ React18.createElement(Text4.Text, {
+        bannerTitle: title ? /* @__PURE__ */ React18.createElement(Text5.Text, {
           as: "h2",
           variant: "headingSm",
           breakWord: !0
@@ -90513,7 +90513,7 @@ var require_Banner = __commonJS({
           onClick: onDismiss,
           accessibilityLabel: i18n.translate("Polaris.Banner.dismissButton")
         }) : null
-      }, childrenMarkup = children ? /* @__PURE__ */ React18.createElement(Text4.Text, {
+      }, childrenMarkup = children ? /* @__PURE__ */ React18.createElement(Text5.Text, {
         as: "span",
         variant: "bodyMd"
       }, children) : null;
@@ -90531,11 +90531,11 @@ var require_Banner = __commonJS({
       let {
         smUp
       } = breakpoints.useBreakpoints(), hasContent = children || actionButtons;
-      return /* @__PURE__ */ React18.createElement(Box.Box, {
+      return /* @__PURE__ */ React18.createElement(Box2.Box, {
         width: "100%"
-      }, /* @__PURE__ */ React18.createElement(BlockStack.BlockStack, {
+      }, /* @__PURE__ */ React18.createElement(BlockStack2.BlockStack, {
         align: "space-between"
-      }, /* @__PURE__ */ React18.createElement(Box.Box, {
+      }, /* @__PURE__ */ React18.createElement(Box2.Box, {
         background: backgroundColor,
         color: textColor,
         borderStartStartRadius: smUp ? "300" : void 0,
@@ -90551,13 +90551,13 @@ var require_Banner = __commonJS({
       }, /* @__PURE__ */ React18.createElement(InlineStack.InlineStack, {
         gap: "100",
         wrap: !1
-      }, bannerIcon, bannerTitle), dismissButton)), hasContent && /* @__PURE__ */ React18.createElement(Box.Box, {
+      }, bannerIcon, bannerTitle), dismissButton)), hasContent && /* @__PURE__ */ React18.createElement(Box2.Box, {
         padding: {
           xs: "300",
           md: "400"
         },
         paddingBlockStart: "300"
-      }, /* @__PURE__ */ React18.createElement(BlockStack.BlockStack, {
+      }, /* @__PURE__ */ React18.createElement(BlockStack2.BlockStack, {
         gap: "200"
       }, /* @__PURE__ */ React18.createElement("div", null, children), actionButtons))));
     }
@@ -90572,7 +90572,7 @@ var require_Banner = __commonJS({
         let contentHeight = contentNode.current?.offsetHeight, iconBoxHeight = iconNode.current?.offsetHeight || dismissIconNode.current?.offsetHeight;
         !contentHeight || !iconBoxHeight || (contentHeight > iconBoxHeight ? setBlockAlign("start") : setBlockAlign("center"));
       }, []);
-      return React18.useEffect(() => handleResize(), [handleResize]), useEventListener.useEventListener("resize", handleResize), /* @__PURE__ */ React18.createElement(Box.Box, {
+      return React18.useEffect(() => handleResize(), [handleResize]), useEventListener.useEventListener("resize", handleResize), /* @__PURE__ */ React18.createElement(Box2.Box, {
         width: "100%",
         padding: "300",
         borderRadius: "300"
@@ -90580,7 +90580,7 @@ var require_Banner = __commonJS({
         align: "space-between",
         blockAlign,
         wrap: !1
-      }, /* @__PURE__ */ React18.createElement(Box.Box, {
+      }, /* @__PURE__ */ React18.createElement(Box2.Box, {
         width: "100%"
       }, /* @__PURE__ */ React18.createElement(InlineStack.InlineStack, {
         gap: "200",
@@ -90588,14 +90588,14 @@ var require_Banner = __commonJS({
         blockAlign
       }, bannerIcon ? /* @__PURE__ */ React18.createElement("div", {
         ref: iconNode
-      }, /* @__PURE__ */ React18.createElement(Box.Box, {
+      }, /* @__PURE__ */ React18.createElement(Box2.Box, {
         background: backgroundColor,
         borderRadius: "200",
         padding: "100"
-      }, bannerIcon)) : null, /* @__PURE__ */ React18.createElement(Box.Box, {
+      }, bannerIcon)) : null, /* @__PURE__ */ React18.createElement(Box2.Box, {
         ref: contentNode,
         width: "100%"
-      }, /* @__PURE__ */ React18.createElement(BlockStack.BlockStack, {
+      }, /* @__PURE__ */ React18.createElement(BlockStack2.BlockStack, {
         gap: "200"
       }, /* @__PURE__ */ React18.createElement("div", null, children), actionButtons)))), /* @__PURE__ */ React18.createElement("div", {
         ref: dismissIconNode,
@@ -90611,7 +90611,7 @@ var require_Banner = __commonJS({
       dismissButton,
       children
     }) {
-      return /* @__PURE__ */ React18.createElement(Box.Box, {
+      return /* @__PURE__ */ React18.createElement(Box2.Box, {
         width: "100%",
         background: backgroundColor,
         padding: "200",
@@ -90625,11 +90625,11 @@ var require_Banner = __commonJS({
       }, /* @__PURE__ */ React18.createElement(InlineStack.InlineStack, {
         gap: "150",
         wrap: !1
-      }, bannerIcon, /* @__PURE__ */ React18.createElement(Box.Box, {
+      }, bannerIcon, /* @__PURE__ */ React18.createElement(Box2.Box, {
         width: "100%"
-      }, /* @__PURE__ */ React18.createElement(BlockStack.BlockStack, {
+      }, /* @__PURE__ */ React18.createElement(BlockStack2.BlockStack, {
         gap: "200"
-      }, /* @__PURE__ */ React18.createElement(BlockStack.BlockStack, {
+      }, /* @__PURE__ */ React18.createElement(BlockStack2.BlockStack, {
         gap: "050"
       }, bannerTitle, /* @__PURE__ */ React18.createElement("div", null, children)), actionButtons))), dismissButton));
     }
@@ -90943,7 +90943,7 @@ var require_CheckableButton_css = __commonJS({
 var require_CheckableButton = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/CheckableButton/CheckableButton.js"(exports) {
     "use strict";
-    var React18 = require_react(), CheckableButton_module = require_CheckableButton_css(), Checkbox = require_Checkbox(), Text4 = require_Text(), CheckableButton = /* @__PURE__ */ React18.forwardRef(function({
+    var React18 = require_react(), CheckableButton_module = require_CheckableButton_css(), Checkbox = require_Checkbox(), Text5 = require_Text(), CheckableButton = /* @__PURE__ */ React18.forwardRef(function({
       accessibilityLabel,
       label = "",
       onToggleAll,
@@ -90972,7 +90972,7 @@ var require_CheckableButton = __commonJS({
       })), label ? /* @__PURE__ */ React18.createElement("span", {
         className: CheckableButton_module.default.Label,
         "aria-live": ariaLive
-      }, /* @__PURE__ */ React18.createElement(Text4.Text, {
+      }, /* @__PURE__ */ React18.createElement(Text5.Text, {
         as: "span",
         variant: "bodySm",
         fontWeight: "medium"
@@ -91034,7 +91034,7 @@ var require_BulkActionsMeasurer = __commonJS({
 var require_BulkActions = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/BulkActions/BulkActions.js"(exports) {
     "use strict";
-    var React18 = require_react(), css = require_css(), utilities = require_utilities4(), BulkActions_module = require_BulkActions_css(), BulkActionMenu = require_BulkActionMenu(), CheckableButton = require_CheckableButton(), BulkActionsMeasurer = require_BulkActionsMeasurer(), hooks = require_hooks2(), UnstyledButton = require_UnstyledButton(), Text4 = require_Text(), BulkActionButton = require_BulkActionButton(), Popover2 = require_Popover(), ActionList2 = require_ActionList(), InlineStack = require_InlineStack(), BulkActions = /* @__PURE__ */ React18.forwardRef(function({
+    var React18 = require_react(), css = require_css(), utilities = require_utilities4(), BulkActions_module = require_BulkActions_css(), BulkActionMenu = require_BulkActionMenu(), CheckableButton = require_CheckableButton(), BulkActionsMeasurer = require_BulkActionsMeasurer(), hooks = require_hooks2(), UnstyledButton = require_UnstyledButton(), Text5 = require_Text(), BulkActionButton = require_BulkActionButton(), Popover2 = require_Popover(), ActionList2 = require_ActionList(), InlineStack = require_InlineStack(), BulkActions = /* @__PURE__ */ React18.forwardRef(function({
       promotedActions,
       actions,
       disabled,
@@ -91085,7 +91085,7 @@ var require_BulkActions = __commonJS({
         onClick: paginatedSelectAllAction.onAction,
         size: "slim",
         disabled
-      }, /* @__PURE__ */ React18.createElement(Text4.Text, {
+      }, /* @__PURE__ */ React18.createElement(Text5.Text, {
         as: "span",
         variant: "bodySm",
         fontWeight: "medium"
@@ -91251,7 +91251,7 @@ var require_LegacyCard_css = __commonJS({
 var require_Header2 = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/LegacyCard/components/Header/Header.js"(exports) {
     "use strict";
-    var React18 = require_react(), LegacyCard_module = require_LegacyCard_css(), utils = require_utils11(), ButtonGroup3 = require_ButtonGroup(), InlineStack = require_InlineStack(), Text4 = require_Text();
+    var React18 = require_react(), LegacyCard_module = require_LegacyCard_css(), utils = require_utils11(), ButtonGroup3 = require_ButtonGroup(), InlineStack = require_InlineStack(), Text5 = require_Text();
     function Header2({
       children,
       title,
@@ -91259,7 +91259,7 @@ var require_Header2 = __commonJS({
     }) {
       let actionMarkup = actions ? /* @__PURE__ */ React18.createElement(ButtonGroup3.ButtonGroup, null, utils.buttonsFrom(actions, {
         variant: "plain"
-      })) : null, titleMarkup = /* @__PURE__ */ React18.isValidElement(title) ? title : /* @__PURE__ */ React18.createElement(Text4.Text, {
+      })) : null, titleMarkup = /* @__PURE__ */ React18.isValidElement(title) ? title : /* @__PURE__ */ React18.createElement(Text5.Text, {
         variant: "headingSm",
         as: "h2"
       }, title), headingMarkup = actionMarkup || children ? /* @__PURE__ */ React18.createElement(InlineStack.InlineStack, {
@@ -91362,7 +91362,7 @@ var require_LegacyStack = __commonJS({
 var require_Section4 = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/LegacyCard/components/Section/Section.js"(exports) {
     "use strict";
-    var React18 = require_react(), css = require_css(), LegacyCard_module = require_LegacyCard_css(), LegacyStack = require_LegacyStack(), ButtonGroup3 = require_ButtonGroup(), utils = require_utils11(), Text4 = require_Text();
+    var React18 = require_react(), css = require_css(), LegacyCard_module = require_LegacyCard_css(), LegacyStack = require_LegacyStack(), ButtonGroup3 = require_ButtonGroup(), utils = require_utils11(), Text5 = require_Text();
     function Section({
       children,
       title,
@@ -91374,7 +91374,7 @@ var require_Section4 = __commonJS({
     }) {
       let className = css.classNames(LegacyCard_module.default.Section, flush && LegacyCard_module.default["Section-flush"], subdued && LegacyCard_module.default["Section-subdued"], fullWidth && LegacyCard_module.default["Section-fullWidth"], hideOnPrint && LegacyCard_module.default["Section-hideOnPrint"]), actionMarkup = actions ? /* @__PURE__ */ React18.createElement(ButtonGroup3.ButtonGroup, null, utils.buttonsFrom(actions, {
         variant: "plain"
-      })) : null, titleMarkup = typeof title == "string" ? /* @__PURE__ */ React18.createElement(Text4.Text, {
+      })) : null, titleMarkup = typeof title == "string" ? /* @__PURE__ */ React18.createElement(Text5.Text, {
         variant: "headingSm",
         as: "h3",
         fontWeight: "medium"
@@ -91505,7 +91505,7 @@ var require_LegacyCard = __commonJS({
 var require_CalloutCard = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/CalloutCard/CalloutCard.js"(exports) {
     "use strict";
-    var React18 = require_react(), polarisIcons = require_dist11(), css = require_css(), CalloutCard_module = require_CalloutCard_css(), LegacyCard = require_LegacyCard(), utils = require_utils11(), Button4 = require_Button(), Text4 = require_Text(), BlockStack = require_BlockStack(), Image = require_Image(), ButtonGroup3 = require_ButtonGroup();
+    var React18 = require_react(), polarisIcons = require_dist11(), css = require_css(), CalloutCard_module = require_CalloutCard_css(), LegacyCard = require_LegacyCard(), utils = require_utils11(), Button4 = require_Button(), Text5 = require_Text(), BlockStack2 = require_BlockStack(), Image = require_Image(), ButtonGroup3 = require_ButtonGroup();
     function CalloutCard({
       title,
       children,
@@ -91532,13 +91532,13 @@ var require_CalloutCard = __commonJS({
         className: CalloutCard_module.default.Content
       }, /* @__PURE__ */ React18.createElement("div", {
         className: CalloutCard_module.default.Title
-      }, /* @__PURE__ */ React18.createElement(Text4.Text, {
+      }, /* @__PURE__ */ React18.createElement(Text5.Text, {
         variant: "headingSm",
         as: "h2"
-      }, title)), /* @__PURE__ */ React18.createElement(Text4.Text, {
+      }, title)), /* @__PURE__ */ React18.createElement(Text5.Text, {
         as: "span",
         variant: "bodyMd"
-      }, /* @__PURE__ */ React18.createElement(BlockStack.BlockStack, null, children)), /* @__PURE__ */ React18.createElement("div", {
+      }, /* @__PURE__ */ React18.createElement(BlockStack2.BlockStack, null, children)), /* @__PURE__ */ React18.createElement("div", {
         className: CalloutCard_module.default.Buttons
       }, buttonMarkup)), /* @__PURE__ */ React18.createElement(Image.Image, {
         alt: "",
@@ -91658,7 +91658,7 @@ var require_RadioButton = __commonJS({
 var require_ChoiceList = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/ChoiceList/ChoiceList.js"(exports) {
     "use strict";
-    var React18 = require_react(), ChoiceList_module = require_ChoiceList_css(), Bleed = require_Bleed(), RadioButton = require_RadioButton(), Box = require_Box(), InlineError = require_InlineError(), BlockStack = require_BlockStack(), Checkbox = require_Checkbox(), Text4 = require_Text();
+    var React18 = require_react(), ChoiceList_module = require_ChoiceList_css(), Bleed = require_Bleed(), RadioButton = require_RadioButton(), Box2 = require_Box(), InlineError = require_InlineError(), BlockStack2 = require_BlockStack(), Checkbox = require_Checkbox(), Text5 = require_Text();
     function ChoiceList({
       title,
       titleHidden,
@@ -91671,13 +91671,13 @@ var require_ChoiceList = __commonJS({
       name: nameProp,
       tone
     }) {
-      let ControlComponent = allowMultiple ? Checkbox.Checkbox : RadioButton.RadioButton, uniqName = React18.useId(), name = nameProp ?? uniqName, finalName = allowMultiple ? `${name}[]` : name, titleMarkup = title ? /* @__PURE__ */ React18.createElement(Box.Box, {
+      let ControlComponent = allowMultiple ? Checkbox.Checkbox : RadioButton.RadioButton, uniqName = React18.useId(), name = nameProp ?? uniqName, finalName = allowMultiple ? `${name}[]` : name, titleMarkup = title ? /* @__PURE__ */ React18.createElement(Box2.Box, {
         as: "legend",
         paddingBlockEnd: {
           xs: "0",
           md: "100"
         }
-      }, /* @__PURE__ */ React18.createElement(Text4.Text, {
+      }, /* @__PURE__ */ React18.createElement(Text5.Text, {
         as: "span",
         variant: "bodyMd",
         visuallyHidden: titleHidden
@@ -91695,7 +91695,7 @@ var require_ChoiceList = __commonJS({
         }
         let isSelected = choiceIsSelected(choice, selected), renderedChildren = choice.renderChildren ? choice.renderChildren(isSelected) : null, children = renderedChildren ? /* @__PURE__ */ React18.createElement("div", {
           className: ChoiceList_module.default.ChoiceChildren
-        }, /* @__PURE__ */ React18.createElement(Box.Box, {
+        }, /* @__PURE__ */ React18.createElement(Box2.Box, {
           paddingBlockStart: {
             xs: "400",
             md: "0"
@@ -91726,7 +91726,7 @@ var require_ChoiceList = __commonJS({
           ariaDescribedBy: error && describedByError ? InlineError.errorTextID(finalName) : null,
           tone
         }), children));
-      }), errorMarkup = error && /* @__PURE__ */ React18.createElement(Box.Box, {
+      }), errorMarkup = error && /* @__PURE__ */ React18.createElement(Box2.Box, {
         paddingBlockStart: {
           xs: "0",
           md: "100"
@@ -91736,7 +91736,7 @@ var require_ChoiceList = __commonJS({
         message: error,
         fieldID: finalName
       }));
-      return /* @__PURE__ */ React18.createElement(BlockStack.BlockStack, {
+      return /* @__PURE__ */ React18.createElement(BlockStack2.BlockStack, {
         as: "fieldset",
         gap: {
           xs: "400",
@@ -91744,7 +91744,7 @@ var require_ChoiceList = __commonJS({
         },
         "aria-invalid": error != null,
         id: finalName
-      }, titleMarkup, /* @__PURE__ */ React18.createElement(BlockStack.BlockStack, {
+      }, titleMarkup, /* @__PURE__ */ React18.createElement(BlockStack2.BlockStack, {
         as: "ul",
         gap: {
           xs: "400",
@@ -92702,7 +92702,7 @@ var require_Pagination_css = __commonJS({
 var require_Pagination = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Pagination/Pagination.js"(exports) {
     "use strict";
-    var polarisIcons = require_dist11(), React18 = require_react(), isInputFocused = require_is_input_focused(), css = require_css(), Pagination_module = require_Pagination_css(), hooks = require_hooks2(), KeypressListener = require_KeypressListener(), Box = require_Box(), InlineStack = require_InlineStack(), ButtonGroup3 = require_ButtonGroup(), Tooltip3 = require_Tooltip(), Text4 = require_Text(), Button4 = require_Button();
+    var polarisIcons = require_dist11(), React18 = require_react(), isInputFocused = require_is_input_focused(), css = require_css(), Pagination_module = require_Pagination_css(), hooks = require_hooks2(), KeypressListener = require_KeypressListener(), Box2 = require_Box(), InlineStack = require_InlineStack(), ButtonGroup3 = require_ButtonGroup(), Tooltip3 = require_Tooltip(), Text5 = require_Text(), Button4 = require_Button();
     function Pagination({
       hasNext,
       hasPrevious,
@@ -92751,11 +92751,11 @@ var require_Pagination = __commonJS({
         handler: handleCallback(nextURL ? clickPaginationLink("nextURL", node) : nextHandler)
       }));
       if (type === "table") {
-        let labelMarkup2 = label ? /* @__PURE__ */ React18.createElement(Box.Box, {
+        let labelMarkup2 = label ? /* @__PURE__ */ React18.createElement(Box2.Box, {
           padding: "300",
           paddingBlockStart: "0",
           paddingBlockEnd: "0"
-        }, /* @__PURE__ */ React18.createElement(Text4.Text, {
+        }, /* @__PURE__ */ React18.createElement(Text5.Text, {
           as: "span",
           variant: "bodySm",
           fontWeight: "medium"
@@ -92764,7 +92764,7 @@ var require_Pagination = __commonJS({
           "aria-label": navLabel,
           ref: node,
           className: css.classNames(Pagination_module.default.Pagination, Pagination_module.default.table)
-        }, previousButtonEvents, nextButtonEvents, /* @__PURE__ */ React18.createElement(Box.Box, {
+        }, previousButtonEvents, nextButtonEvents, /* @__PURE__ */ React18.createElement(Box2.Box, {
           background: "bg-surface-secondary",
           paddingBlockStart: "150",
           paddingBlockEnd: "150",
@@ -92778,10 +92778,10 @@ var require_Pagination = __commonJS({
           "data-buttongroup-variant": "segmented"
         }, /* @__PURE__ */ React18.createElement("div", null, constructedPrevious), labelMarkup2, /* @__PURE__ */ React18.createElement("div", null, constructedNext)))));
       }
-      let labelTextMarkup = hasNext && hasPrevious ? /* @__PURE__ */ React18.createElement("span", null, label) : /* @__PURE__ */ React18.createElement(Text4.Text, {
+      let labelTextMarkup = hasNext && hasPrevious ? /* @__PURE__ */ React18.createElement("span", null, label) : /* @__PURE__ */ React18.createElement(Text5.Text, {
         tone: "subdued",
         as: "span"
-      }, label), labelMarkup = label ? /* @__PURE__ */ React18.createElement(Box.Box, {
+      }, label), labelMarkup = label ? /* @__PURE__ */ React18.createElement(Box2.Box, {
         padding: "300",
         paddingBlockStart: "0",
         paddingBlockEnd: "0"
@@ -93659,7 +93659,7 @@ var require_DatePicker_css = __commonJS({
 var require_Weekday = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/DatePicker/components/Weekday/Weekday.js"(exports) {
     "use strict";
-    var React18 = require_react(), DatePicker_module = require_DatePicker_css(), Text4 = require_Text(), Weekday = /* @__PURE__ */ React18.memo(function({
+    var React18 = require_react(), DatePicker_module = require_DatePicker_css(), Text5 = require_Text(), Weekday = /* @__PURE__ */ React18.memo(function({
       label,
       title,
       current
@@ -93668,7 +93668,7 @@ var require_Weekday = __commonJS({
         "aria-label": label,
         scope: "col",
         className: DatePicker_module.default.Weekday
-      }, /* @__PURE__ */ React18.createElement(Text4.Text, {
+      }, /* @__PURE__ */ React18.createElement(Text5.Text, {
         as: "span",
         variant: "bodySm",
         alignment: "center",
@@ -93684,7 +93684,7 @@ var require_Weekday = __commonJS({
 var require_Day = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/DatePicker/components/Day/Day.js"(exports) {
     "use strict";
-    var React18 = require_react(), css = require_css(), dates = require_dates(), utilities = require_utilities8(), DatePicker_module = require_DatePicker_css(), hooks = require_hooks2(), Text4 = require_Text(), Day = /* @__PURE__ */ React18.memo(function({
+    var React18 = require_react(), css = require_css(), dates = require_dates(), utilities = require_utilities8(), DatePicker_module = require_DatePicker_css(), hooks = require_hooks2(), Text5 = require_Text(), Day = /* @__PURE__ */ React18.memo(function({
       day,
       focused,
       onClick,
@@ -93724,7 +93724,7 @@ var require_Day = __commonJS({
         "aria-label": ariaLabel,
         "aria-disabled": disabled,
         "aria-pressed": selected
-      }, /* @__PURE__ */ React18.createElement(Text4.Text, {
+      }, /* @__PURE__ */ React18.createElement(Text5.Text, {
         as: "span",
         variant: "bodySm",
         alignment: "center",
@@ -93741,7 +93741,7 @@ var require_Day = __commonJS({
 var require_Month = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/DatePicker/components/Month/Month.js"(exports) {
     "use strict";
-    var React18 = require_react(), dates = require_dates(), DatePicker_module = require_DatePicker_css(), utilities = require_utilities8(), Weekday = require_Weekday(), Day = require_Day(), hooks = require_hooks2(), Text4 = require_Text();
+    var React18 = require_react(), dates = require_dates(), DatePicker_module = require_DatePicker_css(), utilities = require_utilities8(), Weekday = require_Weekday(), Day = require_Day(), hooks = require_hooks2(), Text5 = require_Text();
     function Month({
       focusedDate,
       selected,
@@ -93804,7 +93804,7 @@ var require_Month = __commonJS({
         className: DatePicker_module.default.Month
       }, /* @__PURE__ */ React18.createElement("caption", {
         className: DatePicker_module.default.Title
-      }, /* @__PURE__ */ React18.createElement(Text4.Text, {
+      }, /* @__PURE__ */ React18.createElement(Text5.Text, {
         as: "span",
         variant: "bodyMd",
         alignment: "center",
@@ -94001,7 +94001,7 @@ var require_DescriptionList_css = __commonJS({
 var require_DescriptionList = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/DescriptionList/DescriptionList.js"(exports) {
     "use strict";
-    var React18 = require_react(), css = require_css(), DescriptionList_module = require_DescriptionList_css(), Text4 = require_Text();
+    var React18 = require_react(), css = require_css(), DescriptionList_module = require_DescriptionList_css(), Text5 = require_Text();
     function DescriptionList({
       items,
       gap = "loose"
@@ -94012,7 +94012,7 @@ var require_DescriptionList = __commonJS({
       }, index) => [...allTerms, /* @__PURE__ */ React18.createElement("dt", {
         key: `dt${index}`,
         className: DescriptionList_module.default.Term
-      }, /* @__PURE__ */ React18.createElement(Text4.Text, {
+      }, /* @__PURE__ */ React18.createElement(Text5.Text, {
         as: "span",
         variant: "headingSm"
       }, term)), /* @__PURE__ */ React18.createElement("dd", {
@@ -94180,7 +94180,7 @@ var require_FileUpload_css = __commonJS({
 var require_FileUpload = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/DropZone/components/FileUpload/FileUpload.js"(exports) {
     "use strict";
-    var React18 = require_react(), polarisIcons = require_dist11(), css = require_css(), capitalize = require_capitalize(), context = require_context16(), index = require_utils13(), FileUpload_module = require_FileUpload_css(), hooks = require_hooks2(), Icon = require_Icon(), BlockStack = require_BlockStack(), Button4 = require_Button(), Text4 = require_Text();
+    var React18 = require_react(), polarisIcons = require_dist11(), css = require_css(), capitalize = require_capitalize(), context = require_context16(), index = require_utils13(), FileUpload_module = require_FileUpload_css(), hooks = require_hooks2(), Icon = require_Icon(), BlockStack2 = require_BlockStack(), Button4 = require_Button(), Text5 = require_Text();
     function FileUpload(props) {
       let i18n = hooks.useI18n(), {
         size,
@@ -94193,7 +94193,7 @@ var require_FileUpload = __commonJS({
         actionHint
       } = props, actionMarkup = /* @__PURE__ */ React18.createElement(Button4.Button, {
         disabled
-      }, actionTitle), fileUploadClassName = css.classNames(FileUpload_module.default.FileUpload, measuring && FileUpload_module.default.measuring, size === "large" && FileUpload_module.default.large, size === "small" && FileUpload_module.default.small), actionHintMarkup = actionHint && /* @__PURE__ */ React18.createElement(Text4.Text, {
+      }, actionTitle), fileUploadClassName = css.classNames(FileUpload_module.default.FileUpload, measuring && FileUpload_module.default.measuring, size === "large" && FileUpload_module.default.large, size === "small" && FileUpload_module.default.small), actionHintMarkup = actionHint && /* @__PURE__ */ React18.createElement(Text5.Text, {
         variant: "bodySm",
         as: "p",
         tone: "subdued"
@@ -94201,7 +94201,7 @@ var require_FileUpload = __commonJS({
       switch (size) {
         case "large":
         case "medium":
-          viewMarkup = /* @__PURE__ */ React18.createElement(BlockStack.BlockStack, {
+          viewMarkup = /* @__PURE__ */ React18.createElement(BlockStack2.BlockStack, {
             inlineAlign: "center",
             gap: "200"
           }, actionMarkup, actionHintMarkup);
@@ -94226,7 +94226,7 @@ var require_FileUpload = __commonJS({
 var require_DropZone = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/DropZone/DropZone.js"(exports) {
     "use strict";
-    var React18 = require_react(), polarisIcons = require_dist11(), debounce = require_debounce(), css = require_css(), capitalize = require_capitalize(), target = require_target(), useComponentDidMount = require_use_component_did_mount(), useToggle = require_use_toggle(), useEventListener = require_use_event_listener(), context = require_context16(), index = require_utils13(), DropZone_module = require_DropZone_css(), FileUpload = require_FileUpload(), hooks = require_hooks2(), BlockStack = require_BlockStack(), Icon = require_Icon(), Text4 = require_Text(), Labelled = require_Labelled(), DropZone = function({
+    var React18 = require_react(), polarisIcons = require_dist11(), debounce = require_debounce(), css = require_css(), capitalize = require_capitalize(), target = require_target(), useComponentDidMount = require_use_component_did_mount(), useToggle = require_use_toggle(), useEventListener = require_use_event_listener(), context = require_context16(), index = require_utils13(), DropZone_module = require_DropZone_css(), FileUpload = require_FileUpload(), hooks = require_hooks2(), BlockStack2 = require_BlockStack(), Icon = require_Icon(), Text5 = require_Text(), Labelled = require_Labelled(), DropZone = function({
       dropOnPage,
       label,
       labelAction,
@@ -94324,13 +94324,13 @@ var require_DropZone = __commonJS({
       function overlayMarkup(icon, text, color) {
         return /* @__PURE__ */ React18.createElement("div", {
           className: DropZone_module.default.Overlay
-        }, /* @__PURE__ */ React18.createElement(BlockStack.BlockStack, {
+        }, /* @__PURE__ */ React18.createElement(BlockStack2.BlockStack, {
           gap: "200",
           inlineAlign: "center"
         }, size === "small" && /* @__PURE__ */ React18.createElement(Icon.Icon, {
           source: icon,
           tone: color
-        }), (size === "medium" || size === "large") && /* @__PURE__ */ React18.createElement(Text4.Text, {
+        }), (size === "medium" || size === "large") && /* @__PURE__ */ React18.createElement(Text5.Text, {
           variant: "bodySm",
           as: "p",
           fontWeight: "bold"
@@ -94355,7 +94355,7 @@ var require_DropZone = __commonJS({
         "aria-disabled": disabled,
         onClick: handleClick,
         onDragStart: stopEvent
-      }, dragOverlay, dragErrorOverlay, /* @__PURE__ */ React18.createElement(Text4.Text, {
+      }, dragOverlay, dragErrorOverlay, /* @__PURE__ */ React18.createElement(Text5.Text, {
         variant: "bodySm",
         as: "span",
         visuallyHidden: !0
@@ -94396,7 +94396,7 @@ var require_empty_search_svg = __commonJS({
 var require_EmptySearchResult = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/EmptySearchResult/EmptySearchResult.js"(exports) {
     "use strict";
-    var React18 = require_react(), emptySearch = require_empty_search_svg(), hooks = require_hooks2(), LegacyStack = require_LegacyStack(), Text4 = require_Text(), Image = require_Image();
+    var React18 = require_react(), emptySearch = require_empty_search_svg(), hooks = require_hooks2(), LegacyStack = require_LegacyStack(), Text5 = require_Text(), Image = require_Image();
     function EmptySearchResult({
       title,
       description,
@@ -94410,10 +94410,10 @@ var require_EmptySearchResult = __commonJS({
       return /* @__PURE__ */ React18.createElement(LegacyStack.LegacyStack, {
         alignment: "center",
         vertical: !0
-      }, illustrationMarkup, /* @__PURE__ */ React18.createElement(Text4.Text, {
+      }, illustrationMarkup, /* @__PURE__ */ React18.createElement(Text5.Text, {
         variant: "headingLg",
         as: "p"
-      }, title), /* @__PURE__ */ React18.createElement(Text4.Text, {
+      }, title), /* @__PURE__ */ React18.createElement(Text5.Text, {
         tone: "subdued",
         as: "span"
       }, descriptionMarkup));
@@ -94443,7 +94443,7 @@ var require_EmptyState_css = __commonJS({
 var require_EmptyState = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/EmptyState/EmptyState.js"(exports) {
     "use strict";
-    var React18 = require_react(), css = require_css(), EmptyState_module = require_EmptyState_css(), utils = require_utils11(), Box = require_Box(), BlockStack = require_BlockStack(), Image = require_Image(), Text4 = require_Text(), InlineStack = require_InlineStack();
+    var React18 = require_react(), css = require_css(), EmptyState_module = require_EmptyState_css(), utils = require_utils11(), Box2 = require_Box(), BlockStack2 = require_BlockStack(), Image = require_Image(), Text5 = require_Text(), InlineStack = require_InlineStack();
     function EmptyState3({
       children,
       heading,
@@ -94481,41 +94481,41 @@ var require_EmptyState = __commonJS({
         className: imageContainerClassNames
       }, loadedImageMarkup, /* @__PURE__ */ React18.createElement("div", {
         className: skeletonImageClassNames
-      })), secondaryActionMarkup = secondaryAction ? utils.buttonFrom(secondaryAction, {}) : null, footerContentMarkup = footerContent ? /* @__PURE__ */ React18.createElement(Box.Box, {
+      })), secondaryActionMarkup = secondaryAction ? utils.buttonFrom(secondaryAction, {}) : null, footerContentMarkup = footerContent ? /* @__PURE__ */ React18.createElement(Box2.Box, {
         paddingBlockStart: "400"
-      }, /* @__PURE__ */ React18.createElement(Text4.Text, {
+      }, /* @__PURE__ */ React18.createElement(Text5.Text, {
         as: "span",
         alignment: "center",
         variant: "bodySm"
       }, footerContent)) : null, primaryActionMarkup = action10 ? utils.buttonFrom(action10, {
         variant: "primary",
         size: "medium"
-      }) : null, headingMarkup = heading ? /* @__PURE__ */ React18.createElement(Box.Box, {
+      }) : null, headingMarkup = heading ? /* @__PURE__ */ React18.createElement(Box2.Box, {
         paddingBlockEnd: "150"
-      }, /* @__PURE__ */ React18.createElement(Text4.Text, {
+      }, /* @__PURE__ */ React18.createElement(Text5.Text, {
         variant: "headingMd",
         as: "p",
         alignment: "center"
-      }, heading)) : null, childrenMarkup = children ? /* @__PURE__ */ React18.createElement(Text4.Text, {
+      }, heading)) : null, childrenMarkup = children ? /* @__PURE__ */ React18.createElement(Text5.Text, {
         as: "span",
         alignment: "center",
         variant: "bodySm"
-      }, children) : null, textContentMarkup = headingMarkup || children ? /* @__PURE__ */ React18.createElement(Box.Box, {
+      }, children) : null, textContentMarkup = headingMarkup || children ? /* @__PURE__ */ React18.createElement(Box2.Box, {
         paddingBlockEnd: "400"
       }, headingMarkup, childrenMarkup) : null, actionsMarkup = primaryActionMarkup || secondaryActionMarkup ? /* @__PURE__ */ React18.createElement(InlineStack.InlineStack, {
         align: "center",
         gap: "200"
-      }, secondaryActionMarkup, primaryActionMarkup) : null, detailsMarkup = textContentMarkup || actionsMarkup || footerContentMarkup ? /* @__PURE__ */ React18.createElement(Box.Box, {
+      }, secondaryActionMarkup, primaryActionMarkup) : null, detailsMarkup = textContentMarkup || actionsMarkup || footerContentMarkup ? /* @__PURE__ */ React18.createElement(Box2.Box, {
         maxWidth: fullWidth ? "100%" : "400px"
-      }, /* @__PURE__ */ React18.createElement(BlockStack.BlockStack, {
+      }, /* @__PURE__ */ React18.createElement(BlockStack2.BlockStack, {
         inlineAlign: "center"
       }, textContentMarkup, actionsMarkup, footerContentMarkup)) : null;
-      return /* @__PURE__ */ React18.createElement(Box.Box, {
+      return /* @__PURE__ */ React18.createElement(Box2.Box, {
         paddingInlineStart: "0",
         paddingInlineEnd: "0",
         paddingBlockStart: "500",
         paddingBlockEnd: "1600"
-      }, /* @__PURE__ */ React18.createElement(BlockStack.BlockStack, {
+      }, /* @__PURE__ */ React18.createElement(BlockStack2.BlockStack, {
         inlineAlign: "center"
       }, imageMarkup, detailsMarkup));
     }
@@ -94635,7 +94635,7 @@ var require_Filters_css = __commonJS({
 var require_SearchField = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Filters/components/SearchField/SearchField.js"(exports) {
     "use strict";
-    var React18 = require_react(), polarisIcons = require_dist11(), breakpoints = require_breakpoints2(), hooks = require_hooks2(), Text4 = require_Text(), TextField3 = require_TextField(), Icon = require_Icon();
+    var React18 = require_react(), polarisIcons = require_dist11(), breakpoints = require_breakpoints2(), hooks = require_hooks2(), Text5 = require_Text(), TextField3 = require_TextField(), Icon = require_Icon();
     function SearchField({
       onChange,
       onClear,
@@ -94651,7 +94651,7 @@ var require_SearchField = __commonJS({
     }) {
       let i18n = hooks.useI18n(), id = React18.useId(), {
         mdUp
-      } = breakpoints.useBreakpoints(), suffix = value && selectedViewName && mdUp ? /* @__PURE__ */ React18.createElement(Text4.Text, {
+      } = breakpoints.useBreakpoints(), suffix = value && selectedViewName && mdUp ? /* @__PURE__ */ React18.createElement(Text5.Text, {
         as: "span",
         variant: "bodyMd",
         tone: "subdued"
@@ -94732,7 +94732,7 @@ var require_FilterPill_css = __commonJS({
 var require_FilterPill = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Filters/components/FilterPill/FilterPill.js"(exports) {
     "use strict";
-    var React18 = require_react(), polarisIcons = require_dist11(), useToggle = require_use_toggle(), css = require_css(), FilterPill_module = require_FilterPill_css(), hooks = require_hooks2(), Icon = require_Icon(), UnstyledButton = require_UnstyledButton(), InlineStack = require_InlineStack(), Button4 = require_Button(), Popover2 = require_Popover(), BlockStack = require_BlockStack(), Box = require_Box(), Text4 = require_Text();
+    var React18 = require_react(), polarisIcons = require_dist11(), useToggle = require_use_toggle(), css = require_css(), FilterPill_module = require_FilterPill_css(), hooks = require_hooks2(), Icon = require_Icon(), UnstyledButton = require_UnstyledButton(), InlineStack = require_InlineStack(), Button4 = require_Button(), Popover2 = require_Popover(), BlockStack2 = require_BlockStack(), Box2 = require_Box(), Text5 = require_Text();
     function FilterPill({
       unsavedChanges = !1,
       filterKey,
@@ -94771,14 +94771,14 @@ var require_FilterPill = __commonJS({
       }, /* @__PURE__ */ React18.createElement(Icon.Icon, {
         source: polarisIcons.ChevronDownIcon,
         tone: "base"
-      })), labelMarkup = /* @__PURE__ */ React18.createElement(Box.Box, {
+      })), labelMarkup = /* @__PURE__ */ React18.createElement(Box2.Box, {
         paddingInlineStart: unsavedChanges ? "0" : "050"
-      }, /* @__PURE__ */ React18.createElement(InlineStack.InlineStack, null, /* @__PURE__ */ React18.createElement(Text4.Text, {
+      }, /* @__PURE__ */ React18.createElement(InlineStack.InlineStack, null, /* @__PURE__ */ React18.createElement(Text5.Text, {
         variant: "bodySm",
         as: "span"
-      }, label))), unsavedPip = unsavedChanges ? /* @__PURE__ */ React18.createElement(Box.Box, {
+      }, label))), unsavedPip = unsavedChanges ? /* @__PURE__ */ React18.createElement(Box2.Box, {
         paddingInlineEnd: "150"
-      }, /* @__PURE__ */ React18.createElement(Box.Box, {
+      }, /* @__PURE__ */ React18.createElement(Box2.Box, {
         background: "bg-fill-emphasis",
         borderRadius: "050",
         width: "6px",
@@ -94831,7 +94831,7 @@ var require_FilterPill = __commonJS({
         preventCloseOnChildOverlayClick: !closeOnChildOverlayClick
       }, /* @__PURE__ */ React18.createElement("div", {
         className: FilterPill_module.default.PopoverWrapper
-      }, /* @__PURE__ */ React18.createElement(Popover2.Popover.Section, null, /* @__PURE__ */ React18.createElement(BlockStack.BlockStack, {
+      }, /* @__PURE__ */ React18.createElement(Popover2.Popover.Section, null, /* @__PURE__ */ React18.createElement(BlockStack2.BlockStack, {
         gap: "100"
       }, filter, clearButtonMarkup)))));
     }
@@ -94843,7 +94843,7 @@ var require_FilterPill = __commonJS({
 var require_FiltersBar = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Filters/components/FiltersBar/FiltersBar.js"(exports) {
     "use strict";
-    var React18 = require_react(), polarisIcons = require_dist11(), useOnValueChange = require_use_on_value_change(), css = require_css(), Filters_module = require_Filters_css(), FilterPill = require_FilterPill(), hooks = require_hooks2(), UnstyledButton = require_UnstyledButton(), Text4 = require_Text(), Popover2 = require_Popover(), ActionList2 = require_ActionList(), Button4 = require_Button(), Box = require_Box(), InlineStack = require_InlineStack();
+    var React18 = require_react(), polarisIcons = require_dist11(), useOnValueChange = require_use_on_value_change(), css = require_css(), Filters_module = require_Filters_css(), FilterPill = require_FilterPill(), hooks = require_hooks2(), UnstyledButton = require_UnstyledButton(), Text5 = require_Text(), Popover2 = require_Popover(), ActionList2 = require_ActionList(), Button4 = require_Button(), Box2 = require_Box(), InlineStack = require_InlineStack();
     function FiltersBar({
       filters,
       appliedFilters,
@@ -94904,7 +94904,7 @@ var require_FiltersBar = __commonJS({
         onClick: handleAddFilterClick,
         "aria-label": i18n.translate("Polaris.Filters.addFilter"),
         disabled: disabled || unsectionedFilters.length === 0 && sectionedFilters.length === 0 || disableFilters
-      }, /* @__PURE__ */ React18.createElement(Text4.Text, {
+      }, /* @__PURE__ */ React18.createElement(Text5.Text, {
         as: "span",
         variant: "bodySm",
         tone: disabled ? "disabled" : "base"
@@ -94959,7 +94959,7 @@ var require_FiltersBar = __commonJS({
         className: css.classNames(Filters_module.default.FiltersInner)
       }, /* @__PURE__ */ React18.createElement("div", {
         className: css.classNames(Filters_module.default.FiltersStickyArea)
-      }, pinnedFiltersMarkup, addButton, clearAllMarkup)), hideQueryField ? /* @__PURE__ */ React18.createElement(Box.Box, {
+      }, pinnedFiltersMarkup, addButton, clearAllMarkup)), hideQueryField ? /* @__PURE__ */ React18.createElement(Box2.Box, {
         paddingInlineEnd: "300",
         paddingBlockStart: "200",
         paddingBlockEnd: "200"
@@ -94980,7 +94980,7 @@ var require_FiltersBar = __commonJS({
 var require_Filters = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Filters/Filters.js"(exports) {
     "use strict";
-    var React18 = require_react(), css = require_css(), Filters_module = require_Filters_css(), SearchField = require_SearchField(), FiltersBar = require_FiltersBar(), Box = require_Box(), InlineStack = require_InlineStack(), TRANSITION_DURATION = "var(--p-motion-duration-150)", TRANSITION_MARGIN = "-36px", defaultStyle = {
+    var React18 = require_react(), css = require_css(), Filters_module = require_Filters_css(), SearchField = require_SearchField(), FiltersBar = require_FiltersBar(), Box2 = require_Box(), InlineStack = require_InlineStack(), TRANSITION_DURATION = "var(--p-motion-duration-150)", TRANSITION_MARGIN = "-36px", defaultStyle = {
       transition: `opacity ${TRANSITION_DURATION} var(--p-motion-ease)`,
       opacity: 0
     }, transitionStyles = {
@@ -95051,7 +95051,7 @@ var require_Filters = __commonJS({
     }) {
       let hideFilterBar = hideFilters || filters.length === 0, queryFieldMarkup = hideQueryField ? null : /* @__PURE__ */ React18.createElement("div", {
         className: Filters_module.default.Container
-      }, /* @__PURE__ */ React18.createElement(Box.Box, {
+      }, /* @__PURE__ */ React18.createElement(Box2.Box, {
         padding: "200"
       }, /* @__PURE__ */ React18.createElement(InlineStack.InlineStack, {
         align: "start",
@@ -95139,7 +95139,7 @@ var require_FooterHelp_css = __commonJS({
 var require_FooterHelp = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/FooterHelp/FooterHelp.js"(exports) {
     "use strict";
-    var React18 = require_react(), FooterHelp_module = require_FooterHelp_css(), Text4 = require_Text();
+    var React18 = require_react(), FooterHelp_module = require_FooterHelp_css(), Text5 = require_Text();
     function FooterHelp({
       children,
       align = "center"
@@ -95150,7 +95150,7 @@ var require_FooterHelp = __commonJS({
       return /* @__PURE__ */ React18.createElement("div", {
         className: FooterHelp_module.default.FooterHelp,
         style
-      }, /* @__PURE__ */ React18.createElement(Text4.Text, {
+      }, /* @__PURE__ */ React18.createElement(Text5.Text, {
         as: "p",
         variant: "bodyLg"
       }, children));
@@ -95163,7 +95163,7 @@ var require_FooterHelp = __commonJS({
 var require_Form = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Form/Form.js"(exports) {
     "use strict";
-    var React18 = require_react(), hooks = require_hooks2(), Text4 = require_Text();
+    var React18 = require_react(), hooks = require_hooks2(), Text5 = require_Text();
     function Form8({
       acceptCharset,
       action: action10,
@@ -95180,7 +95180,7 @@ var require_Form = __commonJS({
     }) {
       let i18n = hooks.useI18n(), handleSubmit = React18.useCallback((event) => {
         preventDefault && (event.preventDefault(), onSubmit(event));
-      }, [onSubmit, preventDefault]), autoCompleteInputs = normalizeAutoComplete(autoComplete), submitMarkup = implicitSubmit ? /* @__PURE__ */ React18.createElement(Text4.Text, {
+      }, [onSubmit, preventDefault]), autoCompleteInputs = normalizeAutoComplete(autoComplete), submitMarkup = implicitSubmit ? /* @__PURE__ */ React18.createElement(Text5.Text, {
         as: "span",
         visuallyHidden: !0
       }, /* @__PURE__ */ React18.createElement("button", {
@@ -95243,7 +95243,7 @@ var require_Item5 = __commonJS({
 var require_Group = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/FormLayout/components/Group/Group.js"(exports) {
     "use strict";
-    var React18 = require_react(), components = require_components2(), Item = require_Item5(), BlockStack = require_BlockStack(), InlineStack = require_InlineStack(), Box = require_Box(), Text4 = require_Text();
+    var React18 = require_react(), components = require_components2(), Item = require_Item5(), BlockStack2 = require_BlockStack(), InlineStack = require_InlineStack(), Box2 = require_Box(), Text5 = require_Text();
     function Group({
       children,
       condensed,
@@ -95251,17 +95251,17 @@ var require_Group = __commonJS({
       helpText
     }) {
       let id = React18.useId(), helpTextElement = null, helpTextId, titleElement = null, titleId;
-      helpText && (helpTextId = `${id}HelpText`, helpTextElement = /* @__PURE__ */ React18.createElement(Box.Box, {
+      helpText && (helpTextId = `${id}HelpText`, helpTextElement = /* @__PURE__ */ React18.createElement(Box2.Box, {
         id: helpTextId,
         color: "text-secondary"
-      }, helpText)), title && (titleId = `${id}Title`, titleElement = /* @__PURE__ */ React18.createElement(Text4.Text, {
+      }, helpText)), title && (titleId = `${id}Title`, titleElement = /* @__PURE__ */ React18.createElement(Text5.Text, {
         id: titleId,
         as: "p"
       }, title));
       let itemsMarkup = React18.Children.map(children, (child) => components.wrapWithComponent(child, Item.Item, {
         condensed
       }));
-      return /* @__PURE__ */ React18.createElement(BlockStack.BlockStack, {
+      return /* @__PURE__ */ React18.createElement(BlockStack2.BlockStack, {
         role: "group",
         gap: "200",
         "aria-labelledby": titleId,
@@ -95278,10 +95278,10 @@ var require_Group = __commonJS({
 var require_FormLayout = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/FormLayout/FormLayout.js"(exports) {
     "use strict";
-    var React18 = require_react(), components = require_components2(), Group = require_Group(), BlockStack = require_BlockStack(), Item = require_Item5(), FormLayout = /* @__PURE__ */ React18.memo(function({
+    var React18 = require_react(), components = require_components2(), Group = require_Group(), BlockStack2 = require_BlockStack(), Item = require_Item5(), FormLayout = /* @__PURE__ */ React18.memo(function({
       children
     }) {
-      return /* @__PURE__ */ React18.createElement(BlockStack.BlockStack, {
+      return /* @__PURE__ */ React18.createElement(BlockStack2.BlockStack, {
         gap: "400"
       }, React18.Children.map(children, wrapChildren));
     });
@@ -96446,7 +96446,7 @@ var require_Section_css2 = __commonJS({
 var require_Section5 = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Modal/components/Section/Section.js"(exports) {
     "use strict";
-    var React18 = require_react(), css = require_css(), Section_module = require_Section_css2(), Box = require_Box();
+    var React18 = require_react(), css = require_css(), Section_module = require_Section_css2(), Box2 = require_Box();
     function Section({
       children,
       flush = !1,
@@ -96456,7 +96456,7 @@ var require_Section5 = __commonJS({
       let className = css.classNames(Section_module.default.Section, titleHidden && Section_module.default.titleHidden);
       return /* @__PURE__ */ React18.createElement("div", {
         className
-      }, /* @__PURE__ */ React18.createElement(Box.Box, Object.assign({
+      }, /* @__PURE__ */ React18.createElement(Box2.Box, Object.assign({
         as: "section",
         padding: flush ? "0" : "400"
       }, titleHidden && {
@@ -96570,7 +96570,7 @@ var require_TrapFocus = __commonJS({
 var require_Dialog = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Modal/components/Dialog/Dialog.js"(exports) {
     "use strict";
-    var React18 = require_react(), reactTransitionGroup = require_cjs5(), css = require_css(), focus = require_focus(), types4 = require_types16(), useTheme = require_use_theme(), Dialog_module = require_Dialog_css(), context = require_context15(), TrapFocus = require_TrapFocus(), Text4 = require_Text(), KeypressListener = require_KeypressListener();
+    var React18 = require_react(), reactTransitionGroup = require_cjs5(), css = require_css(), focus = require_focus(), types4 = require_types16(), useTheme = require_use_theme(), Dialog_module = require_Dialog_css(), context = require_context15(), TrapFocus = require_TrapFocus(), Text5 = require_Text(), KeypressListener = require_KeypressListener();
     function Dialog({
       instant,
       labelledBy,
@@ -96596,7 +96596,7 @@ var require_Dialog = __commonJS({
         setClosing && setClosing(!1), onClose();
       }, ariaLiveAnnouncements = /* @__PURE__ */ React18.createElement("div", {
         "aria-live": "assertive"
-      }, toastMessages ? toastMessages.map((toastMessage) => /* @__PURE__ */ React18.createElement(Text4.Text, {
+      }, toastMessages ? toastMessages.map((toastMessage) => /* @__PURE__ */ React18.createElement(Text5.Text, {
         visuallyHidden: !0,
         as: "p",
         key: toastMessage.id
@@ -96677,7 +96677,7 @@ var require_CloseButton = __commonJS({
 var require_Header3 = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Modal/components/Header/Header.js"(exports) {
     "use strict";
-    var React18 = require_react(), CloseButton = require_CloseButton(), InlineGrid = require_InlineGrid(), Box = require_Box(), InlineStack = require_InlineStack(), Text4 = require_Text();
+    var React18 = require_react(), CloseButton = require_CloseButton(), InlineGrid = require_InlineGrid(), Box2 = require_Box(), InlineStack = require_InlineStack(), Text5 = require_Text();
     function Header2({
       id,
       children,
@@ -96686,14 +96686,14 @@ var require_Header3 = __commonJS({
       onClose
     }) {
       let headerPaddingInline = "400", headerPaddingBlock = "400";
-      return titleHidden || !children ? /* @__PURE__ */ React18.createElement(Box.Box, {
+      return titleHidden || !children ? /* @__PURE__ */ React18.createElement(Box2.Box, {
         position: "absolute",
         insetInlineEnd: headerPaddingInline,
         insetBlockStart: headerPaddingBlock,
         zIndex: "1"
       }, /* @__PURE__ */ React18.createElement(CloseButton.CloseButton, {
         onClick: onClose
-      })) : /* @__PURE__ */ React18.createElement(Box.Box, {
+      })) : /* @__PURE__ */ React18.createElement(Box2.Box, {
         paddingBlockStart: "400",
         paddingBlockEnd: "400",
         paddingInlineStart: headerPaddingInline,
@@ -96709,7 +96709,7 @@ var require_Header3 = __commonJS({
       }, /* @__PURE__ */ React18.createElement(InlineStack.InlineStack, {
         gap: "400",
         blockAlign: "center"
-      }, /* @__PURE__ */ React18.createElement(Text4.Text, {
+      }, /* @__PURE__ */ React18.createElement(Text5.Text, {
         id,
         as: "h2",
         variant: "headingMd",
@@ -96727,7 +96727,7 @@ var require_Header3 = __commonJS({
 var require_Footer = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Modal/components/Footer/Footer.js"(exports) {
     "use strict";
-    var React18 = require_react(), utils = require_utils11(), InlineStack = require_InlineStack(), Box = require_Box();
+    var React18 = require_react(), utils = require_utils11(), InlineStack = require_InlineStack(), Box2 = require_Box();
     function Footer({
       primaryAction,
       secondaryActions,
@@ -96741,7 +96741,7 @@ var require_Footer = __commonJS({
       return /* @__PURE__ */ React18.createElement(InlineStack.InlineStack, {
         gap: "400",
         blockAlign: "center"
-      }, /* @__PURE__ */ React18.createElement(Box.Box, {
+      }, /* @__PURE__ */ React18.createElement(Box2.Box, {
         borderColor: "border",
         borderBlockStartWidth: "025",
         padding: "400",
@@ -96750,7 +96750,7 @@ var require_Footer = __commonJS({
         gap: "400",
         blockAlign: "center",
         align: "space-between"
-      }, /* @__PURE__ */ React18.createElement(Box.Box, null, children), actions)));
+      }, /* @__PURE__ */ React18.createElement(Box2.Box, null, children), actions)));
     }
     exports.Footer = Footer;
   }
@@ -96760,7 +96760,7 @@ var require_Footer = __commonJS({
 var require_Modal = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Modal/Modal.js"(exports) {
     "use strict";
-    var React18 = require_react(), reactTransitionGroup = require_cjs5(), focus = require_focus(), withinContentContext = require_within_content_context(), components = require_components2(), Modal_module = require_Modal_css(), Section = require_Section5(), Dialog = require_Dialog(), Header2 = require_Header3(), Backdrop = require_Backdrop(), Footer = require_Footer(), hooks = require_hooks2(), Box = require_Box(), Scrollable = require_Scrollable(), Portal = require_Portal(), InlineStack = require_InlineStack(), Spinner4 = require_Spinner(), IFRAME_LOADING_HEIGHT = 200, DEFAULT_IFRAME_CONTENT_HEIGHT = 400, Modal3 = function({
+    var React18 = require_react(), reactTransitionGroup = require_cjs5(), focus = require_focus(), withinContentContext = require_within_content_context(), components = require_components2(), Modal_module = require_Modal_css(), Section = require_Section5(), Dialog = require_Dialog(), Header2 = require_Header3(), Backdrop = require_Backdrop(), Footer = require_Footer(), hooks = require_hooks2(), Box2 = require_Box(), Scrollable = require_Scrollable(), Portal = require_Portal(), InlineStack = require_InlineStack(), Spinner4 = require_Spinner(), IFRAME_LOADING_HEIGHT = 200, DEFAULT_IFRAME_CONTENT_HEIGHT = 400, Modal3 = function({
       children,
       title,
       titleHidden = !1,
@@ -96805,7 +96805,7 @@ var require_Modal = __commonJS({
           secondaryActions
         }, footer), content = sectioned ? components.wrapWithComponent(children, Section.Section, {
           titleHidden
-        }) : children, body = loading ? /* @__PURE__ */ React18.createElement(Box.Box, {
+        }) : children, body = loading ? /* @__PURE__ */ React18.createElement(Box2.Box, {
           padding: "400"
         }, /* @__PURE__ */ React18.createElement(InlineStack.InlineStack, {
           gap: "400",
@@ -96813,7 +96813,7 @@ var require_Modal = __commonJS({
           blockAlign: "center"
         }, /* @__PURE__ */ React18.createElement(Spinner4.Spinner, null))) : content, scrollContainerMarkup = noScroll ? /* @__PURE__ */ React18.createElement("div", {
           className: Modal_module.default.NoScrollBody
-        }, /* @__PURE__ */ React18.createElement(Box.Box, {
+        }, /* @__PURE__ */ React18.createElement(Box2.Box, {
           width: "100%",
           overflowX: "hidden",
           overflowY: "hidden"
@@ -96850,7 +96850,7 @@ var require_Modal = __commonJS({
           onClick: onClose
         });
       }
-      let animated = !instant, activatorMarkup = activator && !isRef(activator) ? /* @__PURE__ */ React18.createElement(Box.Box, {
+      let animated = !instant, activatorMarkup = activator && !isRef(activator) ? /* @__PURE__ */ React18.createElement(Box2.Box, {
         ref: activatorRef,
         as: activatorWrapper
       }, activator) : null;
@@ -96907,7 +96907,7 @@ var require_DiscardConfirmationModal = __commonJS({
 var require_ContextualSaveBar2 = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Frame/components/ContextualSaveBar/ContextualSaveBar.js"(exports) {
     "use strict";
-    var React18 = require_react(), polarisIcons = require_dist11(), css = require_css(), getWidth = require_get_width(), useToggle = require_use_toggle(), ContextualSaveBar_module = require_ContextualSaveBar_css(), DiscardConfirmationModal = require_DiscardConfirmationModal(), hooks = require_hooks2(), hooks$1 = require_hooks9(), Button4 = require_Button(), Image = require_Image(), Icon = require_Icon(), Text4 = require_Text(), LegacyStack = require_LegacyStack();
+    var React18 = require_react(), polarisIcons = require_dist11(), css = require_css(), getWidth = require_get_width(), useToggle = require_use_toggle(), ContextualSaveBar_module = require_ContextualSaveBar_css(), DiscardConfirmationModal = require_DiscardConfirmationModal(), hooks = require_hooks2(), hooks$1 = require_hooks9(), Button4 = require_Button(), Image = require_Image(), Icon = require_Icon(), Text5 = require_Text(), LegacyStack = require_LegacyStack();
     function ContextualSaveBar({
       alignContentFlush,
       message: message2,
@@ -96970,7 +96970,7 @@ var require_ContextualSaveBar2 = __commonJS({
         className: ContextualSaveBar_module.default.MessageContainer
       }, /* @__PURE__ */ React18.createElement(Icon.Icon, {
         source: polarisIcons.AlertTriangleIcon
-      }), message2 && /* @__PURE__ */ React18.createElement(Text4.Text, {
+      }), message2 && /* @__PURE__ */ React18.createElement(Text5.Text, {
         as: "h2",
         variant: "headingMd",
         tone: "text-inverse",
@@ -97062,7 +97062,7 @@ var require_Toast_css = __commonJS({
 var require_Toast = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Frame/components/Toast/Toast.js"(exports) {
     "use strict";
-    var React18 = require_react(), polarisIcons = require_dist11(), css = require_css(), types4 = require_types16(), Toast_module = require_Toast_css(), Icon = require_Icon(), Button4 = require_Button(), KeypressListener = require_KeypressListener(), InlineStack = require_InlineStack(), Text4 = require_Text(), DEFAULT_TOAST_DURATION = 5e3, DEFAULT_TOAST_DURATION_WITH_ACTION = 1e4;
+    var React18 = require_react(), polarisIcons = require_dist11(), css = require_css(), types4 = require_types16(), Toast_module = require_Toast_css(), Icon = require_Icon(), Button4 = require_Button(), KeypressListener = require_KeypressListener(), InlineStack = require_InlineStack(), Text5 = require_Text(), DEFAULT_TOAST_DURATION = 5e3, DEFAULT_TOAST_DURATION_WITH_ACTION = 1e4;
     function Toast2({
       content,
       onDismiss,
@@ -97128,7 +97128,7 @@ var require_Toast = __commonJS({
       }), leadingIconMarkup, /* @__PURE__ */ React18.createElement(InlineStack.InlineStack, {
         gap: "400",
         blockAlign: "center"
-      }, /* @__PURE__ */ React18.createElement(Text4.Text, Object.assign({
+      }, /* @__PURE__ */ React18.createElement(Text5.Text, Object.assign({
         as: "span",
         variant: "bodyMd",
         fontWeight: "medium"
@@ -97143,7 +97143,7 @@ var require_Toast = __commonJS({
       }), leadingIconMarkup, /* @__PURE__ */ React18.createElement(InlineStack.InlineStack, {
         gap: "400",
         blockAlign: "center"
-      }, /* @__PURE__ */ React18.createElement(Text4.Text, Object.assign({
+      }, /* @__PURE__ */ React18.createElement(Text5.Text, Object.assign({
         as: "span",
         variant: "bodyMd",
         fontWeight: "medium"
@@ -97241,7 +97241,7 @@ var require_ToastManager = __commonJS({
 var require_Frame = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Frame/Frame.js"(exports) {
     "use strict";
-    var React18 = require_react(), polarisIcons = require_dist11(), reactTransitionGroup = require_cjs5(), css = require_css(), shared = require_shared(), setRootProperty = require_set_root_property(), useTheme = require_use_theme(), Frame_module = require_Frame_css(), hooks$1 = require_hooks11(), Loading = require_Loading2(), CSSAnimation = require_CSSAnimation(), ContextualSaveBar = require_ContextualSaveBar2(), ToastManager = require_ToastManager(), hooks = require_hooks2(), Text4 = require_Text(), Backdrop = require_Backdrop(), context = require_context15(), EventListener = require_EventListener(), TrapFocus = require_TrapFocus(), Icon = require_Icon(), APP_FRAME_MAIN = "AppFrameMain", APP_FRAME_NAV = "AppFrameNav", APP_FRAME_TOP_BAR = "AppFrameTopBar", APP_FRAME_LOADING_BAR = "AppFrameLoadingBar", FrameInner = class extends React18.PureComponent {
+    var React18 = require_react(), polarisIcons = require_dist11(), reactTransitionGroup = require_cjs5(), css = require_css(), shared = require_shared(), setRootProperty = require_set_root_property(), useTheme = require_use_theme(), Frame_module = require_Frame_css(), hooks$1 = require_hooks11(), Loading = require_Loading2(), CSSAnimation = require_CSSAnimation(), ContextualSaveBar = require_ContextualSaveBar2(), ToastManager = require_ToastManager(), hooks = require_hooks2(), Text5 = require_Text(), Backdrop = require_Backdrop(), context = require_context15(), EventListener = require_EventListener(), TrapFocus = require_TrapFocus(), Icon = require_Icon(), APP_FRAME_MAIN = "AppFrameMain", APP_FRAME_NAV = "AppFrameNav", APP_FRAME_TOP_BAR = "AppFrameTopBar", APP_FRAME_LOADING_BAR = "AppFrameLoadingBar", FrameInner = class extends React18.PureComponent {
       constructor(...args) {
         super(...args), this.state = {
           skipFocused: !1,
@@ -97417,7 +97417,7 @@ var require_Frame = __commonJS({
           onFocus: this.handleFocus,
           onBlur: this.handleBlur,
           onClick: this.handleClick
-        }, /* @__PURE__ */ React18.createElement(Text4.Text, {
+        }, /* @__PURE__ */ React18.createElement(Text5.Text, {
           as: "span",
           variant: "bodyLg",
           fontWeight: "medium"
@@ -97493,12 +97493,12 @@ var require_FullscreenBar_css = __commonJS({
 var require_FullscreenBar = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/FullscreenBar/FullscreenBar.js"(exports) {
     "use strict";
-    var React18 = require_react(), polarisIcons = require_dist11(), FullscreenBar_module = require_FullscreenBar_css(), hooks = require_hooks2(), Text4 = require_Text(), Icon = require_Icon();
+    var React18 = require_react(), polarisIcons = require_dist11(), FullscreenBar_module = require_FullscreenBar_css(), hooks = require_hooks2(), Text5 = require_Text(), Icon = require_Icon();
     function FullscreenBar({
       onAction,
       children
     }) {
-      let i18n = hooks.useI18n(), backButtonMarkup = /* @__PURE__ */ React18.createElement(Text4.Text, {
+      let i18n = hooks.useI18n(), backButtonMarkup = /* @__PURE__ */ React18.createElement(Text5.Text, {
         as: "span",
         variant: "bodyLg"
       }, i18n.translate("Polaris.FullscreenBar.back"));
@@ -97857,7 +97857,7 @@ var require_DirectionButton_css = __commonJS({
 var require_DirectionButton = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/IndexFilters/components/SortButton/components/DirectionButton/DirectionButton.js"(exports) {
     "use strict";
-    var React18 = require_react(), polarisIcons = require_dist11(), css = require_css(), DirectionButton_module = require_DirectionButton_css(), UnstyledButton = require_UnstyledButton(), Icon = require_Icon(), Text4 = require_Text();
+    var React18 = require_react(), polarisIcons = require_dist11(), css = require_css(), DirectionButton_module = require_DirectionButton_css(), UnstyledButton = require_UnstyledButton(), Icon = require_Icon(), Text5 = require_Text();
     function DirectionButton({
       onClick,
       active,
@@ -97875,7 +97875,7 @@ var require_DirectionButton = __commonJS({
       }, /* @__PURE__ */ React18.createElement(Icon.Icon, {
         source: direction === "asc" ? polarisIcons.ArrowUpIcon : polarisIcons.ArrowDownIcon,
         tone: "base"
-      }), /* @__PURE__ */ React18.createElement(Text4.Text, {
+      }), /* @__PURE__ */ React18.createElement(Text5.Text, {
         as: "span",
         variant: "bodySm",
         fontWeight: "medium"
@@ -97889,7 +97889,7 @@ var require_DirectionButton = __commonJS({
 var require_SortButton = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/IndexFilters/components/SortButton/SortButton.js"(exports) {
     "use strict";
-    var React18 = require_react(), polarisIcons = require_dist11(), ChoiceList = require_ChoiceList(), DirectionButton = require_DirectionButton(), hooks = require_hooks2(), Tooltip3 = require_Tooltip(), Button4 = require_Button(), Popover2 = require_Popover(), Box = require_Box();
+    var React18 = require_react(), polarisIcons = require_dist11(), ChoiceList = require_ChoiceList(), DirectionButton = require_DirectionButton(), hooks = require_hooks2(), Tooltip3 = require_Tooltip(), Button4 = require_Button(), Popover2 = require_Popover(), Box2 = require_Box();
     exports.SortButtonDirection = void 0;
     (function(SortButtonDirection) {
       SortButtonDirection.Asc = "asc", SortButtonDirection.Desc = "desc";
@@ -97947,7 +97947,7 @@ var require_SortButton = __commonJS({
         onClose: handleClose,
         preferredAlignment: "right",
         fluidContent: !0
-      }, /* @__PURE__ */ React18.createElement(Box.Box, {
+      }, /* @__PURE__ */ React18.createElement(Box2.Box, {
         minWidth: "148px",
         paddingInlineStart: "300",
         paddingInlineEnd: "300",
@@ -97960,7 +97960,7 @@ var require_SortButton = __commonJS({
         choices: choiceListChoices,
         selected,
         onChange: handleChangeChoiceList
-      })), /* @__PURE__ */ React18.createElement(Box.Box, {
+      })), /* @__PURE__ */ React18.createElement(Box2.Box, {
         paddingInlineStart: "150",
         paddingInlineEnd: "150",
         paddingBlockStart: "200",
@@ -98220,7 +98220,7 @@ var require_RenameModal = __commonJS({
 var require_Tab = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Tabs/components/Tab/Tab.js"(exports) {
     "use strict";
-    var React18 = require_react(), polarisIcons = require_dist11(), css = require_css(), focus = require_focus(), Tabs_module = require_Tabs_css(), DuplicateModal = require_DuplicateModal(), RenameModal = require_RenameModal(), hooks = require_hooks2(), Icon = require_Icon(), Modal3 = require_Modal(), Popover2 = require_Popover(), ActionList2 = require_ActionList(), InlineStack = require_InlineStack(), Text4 = require_Text(), UnstyledLink = require_UnstyledLink(), UnstyledButton = require_UnstyledButton(), Badge4 = require_Badge(), Tab = /* @__PURE__ */ React18.forwardRef(({
+    var React18 = require_react(), polarisIcons = require_dist11(), css = require_css(), focus = require_focus(), Tabs_module = require_Tabs_css(), DuplicateModal = require_DuplicateModal(), RenameModal = require_RenameModal(), hooks = require_hooks2(), Icon = require_Icon(), Modal3 = require_Modal(), Popover2 = require_Popover(), ActionList2 = require_ActionList(), InlineStack = require_InlineStack(), Text5 = require_Text(), UnstyledLink = require_UnstyledLink(), UnstyledButton = require_UnstyledButton(), Badge4 = require_Badge(), Tab = /* @__PURE__ */ React18.forwardRef(({
       content,
       accessibilityLabel,
       badge,
@@ -98335,7 +98335,7 @@ var require_Tab = __commonJS({
         align: "center",
         blockAlign: "center",
         wrap: !1
-      }, /* @__PURE__ */ React18.createElement(Text4.Text, {
+      }, /* @__PURE__ */ React18.createElement(Text5.Text, {
         as: "span",
         variant: "bodySm",
         fontWeight: "medium"
@@ -98523,7 +98523,7 @@ var require_List = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Tabs/components/List/List.js"(exports) {
     "use strict";
     var React18 = require_react(), Tabs_module = require_Tabs_css(), Item = require_Item6();
-    function List({
+    function List2({
       focusIndex,
       disclosureTabs,
       onClick = noop,
@@ -98554,7 +98554,7 @@ var require_List = __commonJS({
       } = event;
       (key === "ArrowLeft" || key === "ArrowRight") && (event.preventDefault(), event.stopPropagation());
     }
-    exports.List = List;
+    exports.List = List2;
   }
 });
 
@@ -98628,7 +98628,7 @@ var require_CreateViewModal = __commonJS({
 var require_Tabs = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Tabs/Tabs.js"(exports) {
     "use strict";
-    var React18 = require_react(), polarisIcons = require_dist11(), css = require_css(), breakpoints = require_breakpoints2(), usePrevious = require_use_previous(), utilities = require_utilities9(), Tabs_module = require_Tabs_css(), Tab = require_Tab(), TabMeasurer = require_TabMeasurer(), Panel = require_Panel(), List = require_List(), CreateViewModal = require_CreateViewModal(), hooks = require_hooks2(), Text4 = require_Text(), Icon = require_Icon(), UnstyledButton = require_UnstyledButton(), Box = require_Box(), Popover2 = require_Popover(), Tooltip3 = require_Tooltip(), CREATE_NEW_VIEW_ID = "create-new-view", Tabs = ({
+    var React18 = require_react(), polarisIcons = require_dist11(), css = require_css(), breakpoints = require_breakpoints2(), usePrevious = require_use_previous(), utilities = require_utilities9(), Tabs_module = require_Tabs_css(), Tab = require_Tab(), TabMeasurer = require_TabMeasurer(), Panel = require_Panel(), List2 = require_List(), CreateViewModal = require_CreateViewModal(), hooks = require_hooks2(), Text5 = require_Text(), Icon = require_Icon(), UnstyledButton = require_UnstyledButton(), Box2 = require_Box(), Popover2 = require_Popover(), Tooltip3 = require_Tooltip(), CREATE_NEW_VIEW_ID = "create-new-view", Tabs = ({
       tabs,
       children,
       selected,
@@ -98834,7 +98834,7 @@ var require_Tabs = __commonJS({
             });
           }
         }, 0);
-      }, createViewA11yLabel = newViewAccessibilityLabel || i18n.translate("Polaris.Tabs.newViewAccessibilityLabel"), tabsToShow = mdDown ? [...visibleTabs, ...hiddenTabs] : visibleTabs, tabsMarkup = tabsToShow.sort((tabA, tabB) => tabA - tabB).filter((tabIndex) => tabs[tabIndex]).map((tabIndex) => renderTabMarkup(tabs[tabIndex], tabIndex)), disclosureActivatorVisible = visibleTabs.length < tabs.length && !mdDown, classname = css.classNames(Tabs_module.default.Tabs, fitted && Tabs_module.default.fitted, disclosureActivatorVisible && Tabs_module.default.fillSpace), wrapperClassNames = css.classNames(Tabs_module.default.Wrapper, canCreateNewView && Tabs_module.default.WrapperWithNewButton), disclosureTabClassName = css.classNames(Tabs_module.default.DisclosureTab, disclosureActivatorVisible && Tabs_module.default["DisclosureTab-visible"]), disclosureButtonClassName = css.classNames(Tabs_module.default.DisclosureActivator), disclosureButtonContent = /* @__PURE__ */ React18.createElement(React18.Fragment, null, /* @__PURE__ */ React18.createElement(Text4.Text, {
+      }, createViewA11yLabel = newViewAccessibilityLabel || i18n.translate("Polaris.Tabs.newViewAccessibilityLabel"), tabsToShow = mdDown ? [...visibleTabs, ...hiddenTabs] : visibleTabs, tabsMarkup = tabsToShow.sort((tabA, tabB) => tabA - tabB).filter((tabIndex) => tabs[tabIndex]).map((tabIndex) => renderTabMarkup(tabs[tabIndex], tabIndex)), disclosureActivatorVisible = visibleTabs.length < tabs.length && !mdDown, classname = css.classNames(Tabs_module.default.Tabs, fitted && Tabs_module.default.fitted, disclosureActivatorVisible && Tabs_module.default.fillSpace), wrapperClassNames = css.classNames(Tabs_module.default.Wrapper, canCreateNewView && Tabs_module.default.WrapperWithNewButton), disclosureTabClassName = css.classNames(Tabs_module.default.DisclosureTab, disclosureActivatorVisible && Tabs_module.default["DisclosureTab-visible"]), disclosureButtonClassName = css.classNames(Tabs_module.default.DisclosureActivator), disclosureButtonContent = /* @__PURE__ */ React18.createElement(React18.Fragment, null, /* @__PURE__ */ React18.createElement(Text5.Text, {
         as: "span",
         variant: "bodySm",
         fontWeight: "medium"
@@ -98889,7 +98889,7 @@ var require_Tabs = __commonJS({
       })) : null;
       return /* @__PURE__ */ React18.createElement("div", {
         className: Tabs_module.default.Outer
-      }, /* @__PURE__ */ React18.createElement(Box.Box, {
+      }, /* @__PURE__ */ React18.createElement(Box2.Box, {
         padding: {
           md: "200"
         }
@@ -98917,7 +98917,7 @@ var require_Tabs = __commonJS({
         active: disclosureActivatorVisible && showDisclosure,
         onClose: handleClose,
         autofocusTarget: "first-node"
-      }, /* @__PURE__ */ React18.createElement(List.List, {
+      }, /* @__PURE__ */ React18.createElement(List2.List, {
         focusIndex: hiddenTabs.indexOf(tabToFocus),
         disclosureTabs,
         onClick: handleListTabClick,
@@ -98944,7 +98944,7 @@ var require_Tabs = __commonJS({
 var require_SearchFilterButton = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/IndexFilters/components/SearchFilterButton/SearchFilterButton.js"(exports) {
     "use strict";
-    var React18 = require_react(), polarisIcons = require_dist11(), Tooltip3 = require_Tooltip(), Button4 = require_Button(), Text4 = require_Text(), InlineStack = require_InlineStack(), Icon = require_Icon();
+    var React18 = require_react(), polarisIcons = require_dist11(), Tooltip3 = require_Tooltip(), Button4 = require_Button(), Text5 = require_Text(), InlineStack = require_InlineStack(), Icon = require_Icon();
     function SearchFilterButton({
       onClick,
       label,
@@ -98970,7 +98970,7 @@ var require_SearchFilterButton = __commonJS({
         disabled,
         icon: iconMarkup,
         accessibilityLabel: label
-      })), content = /* @__PURE__ */ React18.createElement(Text4.Text, {
+      })), content = /* @__PURE__ */ React18.createElement(Text5.Text, {
         as: "span",
         variant: "bodyMd",
         alignment: "center"
@@ -98989,12 +98989,12 @@ var require_SearchFilterButton = __commonJS({
 var require_EditColumnsButton = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/IndexFilters/components/EditColumnsButton/EditColumnsButton.js"(exports) {
     "use strict";
-    var React18 = require_react(), polarisIcons = require_dist11(), hooks = require_hooks2(), Text4 = require_Text(), Tooltip3 = require_Tooltip(), Button4 = require_Button();
+    var React18 = require_react(), polarisIcons = require_dist11(), hooks = require_hooks2(), Text5 = require_Text(), Tooltip3 = require_Tooltip(), Button4 = require_Button();
     function EditColumnsButton({
       onClick,
       disabled
     }) {
-      let i18n = hooks.useI18n(), tooltipContent = /* @__PURE__ */ React18.createElement(Text4.Text, {
+      let i18n = hooks.useI18n(), tooltipContent = /* @__PURE__ */ React18.createElement(Text5.Text, {
         as: "span",
         variant: "bodyMd",
         alignment: "center"
@@ -99840,7 +99840,7 @@ var require_ScrollContainer = __commonJS({
 var require_IndexTable = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/IndexTable/IndexTable.js"(exports) {
     "use strict";
-    var React18 = require_react(), polarisIcons = require_dist11(), reactTransitionGroup = require_cjs5(), debounce = require_debounce(), useToggle = require_use_toggle(), css = require_css(), useTheme = require_use_theme(), IndexTable_module = require_IndexTable_css(), IndexProvider = require_IndexProvider(), Cell = require_Cell3(), Row = require_Row(), types4 = require_types19(), utilities = require_utilities10(), EmptySearchResult = require_EmptySearchResult(), ScrollContainer = require_ScrollContainer(), BulkActions = require_BulkActions(), hooks = require_hooks13(), hooks$1 = require_hooks2(), Spinner4 = require_Spinner(), AfterInitialMount = require_AfterInitialMount(), EventListener = require_EventListener(), Pagination = require_Pagination(), Checkbox = require_Checkbox(), Text4 = require_Text(), LegacyStack = require_LegacyStack(), Badge4 = require_Badge(), UnstyledButton = require_UnstyledButton(), Tooltip3 = require_Tooltip(), Sticky = require_Sticky(), SCROLL_BAR_PADDING = 16, SCROLL_BAR_DEBOUNCE_PERIOD = 300;
+    var React18 = require_react(), polarisIcons = require_dist11(), reactTransitionGroup = require_cjs5(), debounce = require_debounce(), useToggle = require_use_toggle(), css = require_css(), useTheme = require_use_theme(), IndexTable_module = require_IndexTable_css(), IndexProvider = require_IndexProvider(), Cell = require_Cell3(), Row = require_Row(), types4 = require_types19(), utilities = require_utilities10(), EmptySearchResult = require_EmptySearchResult(), ScrollContainer = require_ScrollContainer(), BulkActions = require_BulkActions(), hooks = require_hooks13(), hooks$1 = require_hooks2(), Spinner4 = require_Spinner(), AfterInitialMount = require_AfterInitialMount(), EventListener = require_EventListener(), Pagination = require_Pagination(), Checkbox = require_Checkbox(), Text5 = require_Text(), LegacyStack = require_LegacyStack(), Badge4 = require_Badge(), UnstyledButton = require_UnstyledButton(), Tooltip3 = require_Tooltip(), Sticky = require_Sticky(), SCROLL_BAR_PADDING = 16, SCROLL_BAR_DEBOUNCE_PERIOD = 300;
     function IndexTableBase({
       headings,
       bulkActions = [],
@@ -100100,7 +100100,7 @@ var require_IndexTable = __commonJS({
           borderRadius: "200",
           content: heading.tooltipContent,
           preferredPosition: "above"
-        }, headingTitle = /* @__PURE__ */ React18.createElement(Text4.Text, {
+        }, headingTitle = /* @__PURE__ */ React18.createElement(Text5.Text, {
           as: "span",
           variant: "bodySm",
           fontWeight: "medium",
@@ -100341,14 +100341,14 @@ var require_TextContainer = __commonJS({
 var require_AnnotatedSection = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Layout/components/AnnotatedSection/AnnotatedSection.js"(exports) {
     "use strict";
-    var React18 = require_react(), Layout_module = require_Layout_css(), TextContainer = require_TextContainer(), Text4 = require_Text(), Box = require_Box();
+    var React18 = require_react(), Layout_module = require_Layout_css(), TextContainer = require_TextContainer(), Text5 = require_Text(), Box2 = require_Box();
     function AnnotatedSection({
       children,
       title,
       description,
       id
     }) {
-      let descriptionMarkup = typeof description == "string" ? /* @__PURE__ */ React18.createElement(Text4.Text, {
+      let descriptionMarkup = typeof description == "string" ? /* @__PURE__ */ React18.createElement(Text5.Text, {
         as: "p",
         variant: "bodyMd"
       }, description) : description;
@@ -100360,11 +100360,11 @@ var require_AnnotatedSection = __commonJS({
         className: Layout_module.default.Annotation
       }, /* @__PURE__ */ React18.createElement(TextContainer.TextContainer, {
         spacing: "tight"
-      }, /* @__PURE__ */ React18.createElement(Text4.Text, {
+      }, /* @__PURE__ */ React18.createElement(Text5.Text, {
         id,
         variant: "headingMd",
         as: "h2"
-      }, title), descriptionMarkup && /* @__PURE__ */ React18.createElement(Box.Box, {
+      }, title), descriptionMarkup && /* @__PURE__ */ React18.createElement(Box2.Box, {
         color: "text-secondary"
       }, descriptionMarkup))), /* @__PURE__ */ React18.createElement("div", {
         className: Layout_module.default.AnnotationContent
@@ -100396,7 +100396,7 @@ var require_Section6 = __commonJS({
 var require_Layout = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Layout/Layout.js"(exports) {
     "use strict";
-    var React18 = require_react(), Layout_module = require_Layout_css(), AnnotatedSection = require_AnnotatedSection(), Section = require_Section6(), Layout4 = function({
+    var React18 = require_react(), Layout_module = require_Layout_css(), AnnotatedSection = require_AnnotatedSection(), Section = require_Section6(), Layout5 = function({
       sectioned,
       children
     }) {
@@ -100405,9 +100405,9 @@ var require_Layout = __commonJS({
         className: Layout_module.default.Layout
       }, content);
     };
-    Layout4.AnnotatedSection = AnnotatedSection.AnnotatedSection;
-    Layout4.Section = Section.Section;
-    exports.Layout = Layout4;
+    Layout5.AnnotatedSection = AnnotatedSection.AnnotatedSection;
+    Layout5.Section = Section.Section;
+    exports.Layout = Layout5;
   }
 });
 
@@ -100616,12 +100616,12 @@ var require_ConnectedFilterControl = __commonJS({
 var require_TagsWrapper = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/LegacyFilters/components/TagsWrapper/TagsWrapper.js"(exports) {
     "use strict";
-    var React18 = require_react(), Text4 = require_Text();
+    var React18 = require_react(), Text5 = require_Text();
     function TagsWrapper({
       children,
       hidden
     }) {
-      return hidden ? /* @__PURE__ */ React18.createElement(Text4.Text, {
+      return hidden ? /* @__PURE__ */ React18.createElement(Text5.Text, {
         as: "span",
         visuallyHidden: !0
       }, children) : /* @__PURE__ */ React18.createElement(React18.Fragment, null, children);
@@ -100656,7 +100656,7 @@ var require_Tag_css = __commonJS({
 var require_Tag = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Tag/Tag.js"(exports) {
     "use strict";
-    var React18 = require_react(), polarisIcons = require_dist11(), css = require_css(), focus = require_focus(), Tag_module = require_Tag_css(), hooks = require_hooks2(), Text4 = require_Text(), Icon = require_Icon();
+    var React18 = require_react(), polarisIcons = require_dist11(), css = require_css(), focus = require_focus(), Tag_module = require_Tag_css(), hooks = require_hooks2(), Text5 = require_Text(), Icon = require_Icon();
     function Tag({
       children,
       disabled = !1,
@@ -100668,7 +100668,7 @@ var require_Tag = __commonJS({
     }) {
       let i18n = hooks.useI18n(), segmented = onRemove && url, className = css.classNames(Tag_module.default.Tag, disabled && Tag_module.default.disabled, onClick && Tag_module.default.clickable, onRemove && Tag_module.default.removable, url && !disabled && Tag_module.default.linkable, segmented && Tag_module.default.segmented, size && Tag_module.default[css.variationName("size", size)]), tagTitle = accessibilityLabel;
       tagTitle || (tagTitle = typeof children == "string" ? children : void 0);
-      let tagText = /* @__PURE__ */ React18.createElement(Text4.Text, {
+      let tagText = /* @__PURE__ */ React18.createElement(Text5.Text, {
         as: "span",
         variant: "bodySm",
         truncate: !0
@@ -100810,7 +100810,7 @@ var require_Sheet = __commonJS({
 var require_LegacyFilters = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/LegacyFilters/LegacyFilters.js"(exports) {
     "use strict";
-    var React18 = require_react(), polarisIcons = require_dist11(), css = require_css(), focus = require_focus(), withinFilterContext = require_within_filter_context(), types4 = require_types16(), LegacyFilters_module = require_LegacyFilters_css(), context = require_context19(), Collapsible = require_Collapsible(), ConnectedFilterControl = require_ConnectedFilterControl(), TagsWrapper = require_TagsWrapper(), Tag = require_Tag(), Sheet = require_Sheet(), hooks = require_hooks2(), hooks$1 = require_hooks11(), ScrollLock = require_ScrollLock(), Badge4 = require_Badge(), Text4 = require_Text(), Icon = require_Icon(), Focus = require_Focus(), Button4 = require_Button(), TextField3 = require_TextField(), Scrollable = require_Scrollable(), KeypressListener = require_KeypressListener(), LegacyStack = require_LegacyStack(), Suffix;
+    var React18 = require_react(), polarisIcons = require_dist11(), css = require_css(), focus = require_focus(), withinFilterContext = require_within_filter_context(), types4 = require_types16(), LegacyFilters_module = require_LegacyFilters_css(), context = require_context19(), Collapsible = require_Collapsible(), ConnectedFilterControl = require_ConnectedFilterControl(), TagsWrapper = require_TagsWrapper(), Tag = require_Tag(), Sheet = require_Sheet(), hooks = require_hooks2(), hooks$1 = require_hooks11(), ScrollLock = require_ScrollLock(), Badge4 = require_Badge(), Text5 = require_Text(), Icon = require_Icon(), Focus = require_Focus(), Button4 = require_Button(), TextField3 = require_TextField(), Scrollable = require_Scrollable(), KeypressListener = require_KeypressListener(), LegacyStack = require_LegacyStack(), Suffix;
     (function(Suffix2) {
       Suffix2.Filter = "Filter", Suffix2.Shortcut = "Shortcut";
     })(Suffix || (Suffix = {}));
@@ -100885,7 +100885,7 @@ var require_LegacyFilters = __commonJS({
             className: LegacyFilters_module.default.FilterTriggerLabelContainer
           }, /* @__PURE__ */ React18.createElement("h3", {
             className: LegacyFilters_module.default.FilterTriggerTitle
-          }, /* @__PURE__ */ React18.createElement(Text4.Text, {
+          }, /* @__PURE__ */ React18.createElement(Text5.Text, {
             as: "span",
             tone: this.props.disabled || filter.disabled ? "subdued" : void 0
           }, filter.label)), /* @__PURE__ */ React18.createElement("span", {
@@ -100945,7 +100945,7 @@ var require_LegacyFilters = __commonJS({
           autoComplete: "off"
         })), filtersContainerHeaderClassname = css.classNames(LegacyFilters_module.default.LegacyFiltersContainerHeader), filtersDesktopHeaderMarkup = /* @__PURE__ */ React18.createElement("div", {
           className: filtersContainerHeaderClassname
-        }, /* @__PURE__ */ React18.createElement(Text4.Text, {
+        }, /* @__PURE__ */ React18.createElement(Text5.Text, {
           variant: "headingLg",
           as: "h3"
         }, moreFiltersLabel), /* @__PURE__ */ React18.createElement(Button4.Button, {
@@ -100960,7 +100960,7 @@ var require_LegacyFilters = __commonJS({
           variant: "plain",
           accessibilityLabel: i18n.translate("Polaris.Filters.cancel"),
           onClick: this.closeFilters
-        }), /* @__PURE__ */ React18.createElement(Text4.Text, {
+        }), /* @__PURE__ */ React18.createElement(Text5.Text, {
           variant: "headingLg",
           as: "h3"
         }, moreFiltersLabel), /* @__PURE__ */ React18.createElement(Button4.Button, {
@@ -100983,7 +100983,7 @@ var require_LegacyFilters = __commonJS({
           fullWidth: !0
         }, i18n.translate("Polaris.Filters.clearAllFilters")) : /* @__PURE__ */ React18.createElement("div", {
           className: LegacyFilters_module.default.EmptyFooterState
-        }, /* @__PURE__ */ React18.createElement(Text4.Text, {
+        }, /* @__PURE__ */ React18.createElement(Text5.Text, {
           tone: "subdued",
           as: "span"
         }, /* @__PURE__ */ React18.createElement("p", null, i18n.translate("Polaris.Filters.noFiltersApplied"))))), shouldHideTagsContainer = !appliedFilters || appliedFilters.length < 1, tagsMarkup = hideTags ? null : /* @__PURE__ */ React18.createElement(TagsWrapper.TagsWrapper, {
@@ -101020,7 +101020,7 @@ var require_LegacyFilters = __commonJS({
         }, filtersContentMarkup), filtersDesktopFooterMarkup)), helpTextMarkup = helpText ? /* @__PURE__ */ React18.createElement("div", {
           id: "FiltersHelpText",
           className: LegacyFilters_module.default.HelpText
-        }, /* @__PURE__ */ React18.createElement(Text4.Text, {
+        }, /* @__PURE__ */ React18.createElement(Text5.Text, {
           tone: "subdued",
           as: "span"
         }, helpText)) : null;
@@ -101222,7 +101222,7 @@ var require_Panel2 = __commonJS({
 var require_Tab2 = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/LegacyTabs/components/Tab/Tab.js"(exports) {
     "use strict";
-    var React18 = require_react(), css = require_css(), focus = require_focus(), LegacyTabs_module = require_LegacyTabs_css(), UnstyledLink = require_UnstyledLink(), Text4 = require_Text();
+    var React18 = require_react(), css = require_css(), focus = require_focus(), LegacyTabs_module = require_LegacyTabs_css(), UnstyledLink = require_UnstyledLink(), Text5 = require_Text();
     function Tab({
       id,
       focused,
@@ -101256,7 +101256,7 @@ var require_Tab2 = __commonJS({
         onMouseUp: focus.handleMouseUpByBlurring
       }, /* @__PURE__ */ React18.createElement("span", {
         className: LegacyTabs_module.default.Title
-      }, /* @__PURE__ */ React18.createElement(Text4.Text, {
+      }, /* @__PURE__ */ React18.createElement(Text5.Text, {
         as: "span",
         variant: "bodyMd",
         fontWeight: "semibold"
@@ -101273,7 +101273,7 @@ var require_Tab2 = __commonJS({
         onMouseUp: focus.handleMouseUpByBlurring
       }, /* @__PURE__ */ React18.createElement("span", {
         className: LegacyTabs_module.default.Title
-      }, /* @__PURE__ */ React18.createElement(Text4.Text, {
+      }, /* @__PURE__ */ React18.createElement(Text5.Text, {
         as: "span",
         variant: "bodyMd",
         fontWeight: "semibold"
@@ -101407,8 +101407,8 @@ var require_Item8 = __commonJS({
 var require_List2 = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/LegacyTabs/components/List/List.js"(exports) {
     "use strict";
-    var React18 = require_react(), Item = require_Item8(), Box = require_Box();
-    function List({
+    var React18 = require_react(), Item = require_Item8(), Box2 = require_Box();
+    function List2({
       focusIndex,
       disclosureTabs,
       onClick = noop,
@@ -101428,7 +101428,7 @@ var require_List2 = __commonJS({
       return /* @__PURE__ */ React18.createElement("div", {
         onKeyDown: handleKeyDown,
         onKeyUp: onKeyPress
-      }, /* @__PURE__ */ React18.createElement(Box.Box, {
+      }, /* @__PURE__ */ React18.createElement(Box2.Box, {
         as: "ul",
         padding: "200"
       }, tabs));
@@ -101441,7 +101441,7 @@ var require_List2 = __commonJS({
       } = event;
       (key === "ArrowLeft" || key === "ArrowRight") && (event.preventDefault(), event.stopPropagation());
     }
-    exports.List = List;
+    exports.List = List2;
   }
 });
 
@@ -101449,7 +101449,7 @@ var require_List2 = __commonJS({
 var require_LegacyTabs = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/LegacyTabs/LegacyTabs.js"(exports) {
     "use strict";
-    var React18 = require_react(), polarisIcons = require_dist11(), css = require_css(), utilities = require_utilities11(), LegacyTabs_module = require_LegacyTabs_css(), Panel = require_Panel2(), TabMeasurer = require_TabMeasurer2(), List = require_List2(), hooks = require_hooks2(), Tab = require_Tab2(), Icon = require_Icon(), Box = require_Box(), Popover2 = require_Popover(), TabsInner = class extends React18.PureComponent {
+    var React18 = require_react(), polarisIcons = require_dist11(), css = require_css(), utilities = require_utilities11(), LegacyTabs_module = require_LegacyTabs_css(), Panel = require_Panel2(), TabMeasurer = require_TabMeasurer2(), List2 = require_List2(), hooks = require_hooks2(), Tab = require_Tab2(), Icon = require_Icon(), Box2 = require_Box(), Popover2 = require_Popover(), TabsInner = class extends React18.PureComponent {
       constructor(...args) {
         super(...args), this.state = {
           disclosureWidth: 0,
@@ -101618,7 +101618,7 @@ var require_LegacyTabs = __commonJS({
         }, disclosureButtonContent)), activator = disclosureText ? /* @__PURE__ */ React18.createElement("div", {
           className: LegacyTabs_module.default.TabContainer
         }, disclosureButton) : disclosureButton;
-        return /* @__PURE__ */ React18.createElement("div", null, /* @__PURE__ */ React18.createElement(Box.Box, {
+        return /* @__PURE__ */ React18.createElement("div", null, /* @__PURE__ */ React18.createElement(Box2.Box, {
           borderBlockEndWidth: "025",
           borderColor: "border-secondary",
           paddingInlineStart: "200",
@@ -101646,7 +101646,7 @@ var require_LegacyTabs = __commonJS({
           active: disclosureActivatorVisible && showDisclosure,
           onClose: this.handleClose,
           autofocusTarget: "first-node"
-        }, /* @__PURE__ */ React18.createElement(List.List, {
+        }, /* @__PURE__ */ React18.createElement(List2.List, {
           focusIndex: hiddenTabs.indexOf(tabToFocus),
           disclosureTabs,
           onClick: this.handleTabClick,
@@ -101692,7 +101692,7 @@ var require_Link = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Link/Link.js"(exports) {
     "use strict";
     var React18 = require_react(), bannerContext = require_banner_context(), css = require_css(), Link_module = require_Link_css(), UnstyledLink = require_UnstyledLink();
-    function Link7({
+    function Link8({
       url,
       children,
       onClick,
@@ -101725,7 +101725,7 @@ var require_Link = __commonJS({
         }, children);
       });
     }
-    exports.Link = Link7;
+    exports.Link = Link8;
   }
 });
 
@@ -101764,7 +101764,7 @@ var require_Item9 = __commonJS({
 var require_List3 = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/List/List.js"(exports) {
     "use strict";
-    var React18 = require_react(), css = require_css(), List_module = require_List_css(), Item = require_Item9(), List = function({
+    var React18 = require_react(), css = require_css(), List_module = require_List_css(), Item = require_Item9(), List2 = function({
       children,
       gap = "loose",
       type = "bullet"
@@ -101774,8 +101774,8 @@ var require_List3 = __commonJS({
         className
       }, children);
     };
-    List.Item = Item.Item;
-    exports.List = List;
+    List2.Item = Item.Item;
+    exports.List = List2;
   }
 });
 
@@ -101817,7 +101817,7 @@ var require_MediaCard_css = __commonJS({
 var require_MediaCard = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/MediaCard/MediaCard.js"(exports) {
     "use strict";
-    var React18 = require_react(), polarisIcons = require_dist11(), useToggle = require_use_toggle(), css = require_css(), MediaCard_module = require_MediaCard_css(), hooks = require_hooks2(), Button4 = require_Button(), InlineStack = require_InlineStack(), Popover2 = require_Popover(), ActionList2 = require_ActionList(), utils = require_utils11(), LegacyCard = require_LegacyCard(), Box = require_Box(), BlockStack = require_BlockStack(), Text4 = require_Text(), ButtonGroup3 = require_ButtonGroup();
+    var React18 = require_react(), polarisIcons = require_dist11(), useToggle = require_use_toggle(), css = require_css(), MediaCard_module = require_MediaCard_css(), hooks = require_hooks2(), Button4 = require_Button(), InlineStack = require_InlineStack(), Popover2 = require_Popover(), ActionList2 = require_ActionList(), utils = require_utils11(), LegacyCard = require_LegacyCard(), Box2 = require_Box(), BlockStack2 = require_BlockStack(), Text5 = require_Text(), ButtonGroup3 = require_ButtonGroup();
     function MediaCard({
       title,
       children,
@@ -101834,7 +101834,7 @@ var require_MediaCard = __commonJS({
         toggle: togglePopoverActive
       } = useToggle.useToggle(!1), headerMarkup = null;
       if (title) {
-        let headerContent = typeof title == "string" ? /* @__PURE__ */ React18.createElement(Text4.Text, {
+        let headerContent = typeof title == "string" ? /* @__PURE__ */ React18.createElement(Text5.Text, {
           variant: "headingSm",
           as: "h2"
         }, title) : title;
@@ -101865,7 +101865,7 @@ var require_MediaCard = __commonJS({
         onActionAnyItem: togglePopoverActive
       })) : null, primaryActionMarkup = primaryAction ? /* @__PURE__ */ React18.createElement("div", null, utils.buttonFrom(primaryAction)) : null, secondaryActionMarkup = secondaryAction ? /* @__PURE__ */ React18.createElement("div", null, utils.buttonFrom(secondaryAction)) : null, actionClassName = css.classNames(MediaCard_module.default.ActionContainer, portrait && MediaCard_module.default.portrait), actionMarkup = primaryActionMarkup || secondaryActionMarkup ? /* @__PURE__ */ React18.createElement("div", {
         className: actionClassName
-      }, /* @__PURE__ */ React18.createElement(ButtonGroup3.ButtonGroup, null, primaryActionMarkup, secondaryActionMarkup)) : null, mediaCardClassName = css.classNames(MediaCard_module.default.MediaCard, portrait && MediaCard_module.default.portrait), mediaContainerClassName = css.classNames(MediaCard_module.default.MediaContainer, portrait && MediaCard_module.default.portrait, size === "small" && MediaCard_module.default.sizeSmall), infoContainerClassName = css.classNames(MediaCard_module.default.InfoContainer, portrait && MediaCard_module.default.portrait, size === "small" && MediaCard_module.default.sizeSmall), popoverOrDismissMarkup = popoverActionsMarkup || dismissButtonMarkup ? /* @__PURE__ */ React18.createElement(Box.Box, {
+      }, /* @__PURE__ */ React18.createElement(ButtonGroup3.ButtonGroup, null, primaryActionMarkup, secondaryActionMarkup)) : null, mediaCardClassName = css.classNames(MediaCard_module.default.MediaCard, portrait && MediaCard_module.default.portrait), mediaContainerClassName = css.classNames(MediaCard_module.default.MediaContainer, portrait && MediaCard_module.default.portrait, size === "small" && MediaCard_module.default.sizeSmall), infoContainerClassName = css.classNames(MediaCard_module.default.InfoContainer, portrait && MediaCard_module.default.portrait, size === "small" && MediaCard_module.default.sizeSmall), popoverOrDismissMarkup = popoverActionsMarkup || dismissButtonMarkup ? /* @__PURE__ */ React18.createElement(Box2.Box, {
         position: "absolute",
         insetInlineEnd: "500",
         zIndex: "var(--p-z-index-2)"
@@ -101879,15 +101879,15 @@ var require_MediaCard = __commonJS({
         className: mediaContainerClassName
       }, children), /* @__PURE__ */ React18.createElement("div", {
         className: infoContainerClassName
-      }, /* @__PURE__ */ React18.createElement(Box.Box, {
+      }, /* @__PURE__ */ React18.createElement(Box2.Box, {
         padding: "500"
-      }, /* @__PURE__ */ React18.createElement(BlockStack.BlockStack, {
+      }, /* @__PURE__ */ React18.createElement(BlockStack2.BlockStack, {
         gap: "200"
       }, /* @__PURE__ */ React18.createElement(InlineStack.InlineStack, {
         wrap: !1,
         align: "space-between",
         gap: "200"
-      }, headerMarkup, popoverOrDismissMarkup), /* @__PURE__ */ React18.createElement(Text4.Text, {
+      }, headerMarkup, popoverOrDismissMarkup), /* @__PURE__ */ React18.createElement(Text5.Text, {
         as: "p",
         variant: "bodySm"
       }, description), actionMarkup)))));
@@ -102030,7 +102030,7 @@ var require_SecondaryNavigation = __commonJS({
 var require_Item10 = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Navigation/components/Item/Item.js"(exports) {
     "use strict";
-    var React18 = require_react(), useIsomorphicLayoutEffect = require_use_isomorphic_layout_effect(), css = require_css(), context = require_context20(), Navigation_module = require_Navigation_css(), types4 = require_types20(), SecondaryNavigation = require_SecondaryNavigation(), hooks = require_hooks2(), hooks$1 = require_hooks11(), Indicator = require_Indicator(), Icon = require_Icon(), Badge4 = require_Badge(), Text4 = require_Text(), UnstyledLink = require_UnstyledLink(), UnstyledButton = require_UnstyledButton(), Tooltip3 = require_Tooltip(), MAX_SECONDARY_ACTIONS = 2, TOOLTIP_HOVER_DELAY = 1e3;
+    var React18 = require_react(), useIsomorphicLayoutEffect = require_use_isomorphic_layout_effect(), css = require_css(), context = require_context20(), Navigation_module = require_Navigation_css(), types4 = require_types20(), SecondaryNavigation = require_SecondaryNavigation(), hooks = require_hooks2(), hooks$1 = require_hooks11(), Indicator = require_Indicator(), Icon = require_Icon(), Badge4 = require_Badge(), Text5 = require_Text(), UnstyledLink = require_UnstyledLink(), UnstyledButton = require_UnstyledButton(), Tooltip3 = require_Tooltip(), MAX_SECONDARY_ACTIONS = 2, TOOLTIP_HOVER_DELAY = 1e3;
     function Item({
       url,
       icon: baseIcon,
@@ -102103,7 +102103,7 @@ var require_Item10 = __commonJS({
       let itemLabelMarkup = /* @__PURE__ */ React18.createElement("span", {
         className: css.classNames(Navigation_module.default.Text, truncateText && Navigation_module.default["Text-truncated"]),
         ref: navTextRef
-      }, /* @__PURE__ */ React18.createElement(Text4.Text, {
+      }, /* @__PURE__ */ React18.createElement(Text5.Text, {
         as: "span",
         variant: "bodyMd",
         tone,
@@ -102269,7 +102269,7 @@ var require_Item10 = __commonJS({
 var require_Section7 = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Navigation/components/Section/Section.js"(exports) {
     "use strict";
-    var React18 = require_react(), polarisIcons = require_dist11(), css = require_css(), useToggle = require_use_toggle(), Navigation_module = require_Navigation_css(), Item = require_Item10(), hooks = require_hooks11(), Icon = require_Icon(), Tooltip3 = require_Tooltip(), Text4 = require_Text(), Collapsible = require_Collapsible();
+    var React18 = require_react(), polarisIcons = require_dist11(), css = require_css(), useToggle = require_use_toggle(), Navigation_module = require_Navigation_css(), Item = require_Item10(), hooks = require_hooks11(), Icon = require_Icon(), Tooltip3 = require_Tooltip(), Text5 = require_Text(), Collapsible = require_Collapsible();
     function Section({
       title,
       fill,
@@ -102299,7 +102299,7 @@ var require_Section7 = __commonJS({
         source: action10.icon
       })), actionMarkup = action10 && (action10.tooltip ? /* @__PURE__ */ React18.createElement(Tooltip3.Tooltip, action10.tooltip, buttonMarkup) : buttonMarkup), sectionHeadingMarkup = title && /* @__PURE__ */ React18.createElement("li", {
         className: Navigation_module.default.SectionHeading
-      }, /* @__PURE__ */ React18.createElement(Text4.Text, {
+      }, /* @__PURE__ */ React18.createElement(Text5.Text, {
         as: "span",
         variant: "bodySm",
         fontWeight: "medium",
@@ -102541,7 +102541,7 @@ var require_Option2 = __commonJS({
 var require_OptionList = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/OptionList/OptionList.js"(exports) {
     "use strict";
-    var React18 = require_react(), options = require_options(), arrays = require_arrays(), useDeepEffect = require_use_deep_effect(), Option = require_Option2(), Box = require_Box(), BlockStack = require_BlockStack(), Text4 = require_Text();
+    var React18 = require_react(), options = require_options(), arrays = require_arrays(), useDeepEffect = require_use_deep_effect(), Option = require_Option2(), Box2 = require_Box(), BlockStack2 = require_BlockStack(), Text5 = require_Text();
     function OptionList({
       options: options2,
       sections,
@@ -102581,13 +102581,13 @@ var require_OptionList = __commonJS({
         title: title2,
         options: options3
       }, sectionIndex) => {
-        let isFirstOption = sectionIndex === 0, titleLevel = isFirstOption ? "h2" : "h3", titleMarkup = title2 ? /* @__PURE__ */ React18.createElement(Box.Box, {
+        let isFirstOption = sectionIndex === 0, titleLevel = isFirstOption ? "h2" : "h3", titleMarkup = title2 ? /* @__PURE__ */ React18.createElement(Box2.Box, {
           paddingBlockStart: isFirstOption ? "050" : "300",
           paddingInlineStart: "150",
           paddingBlockEnd: "100",
           paddingInlineEnd: "150",
           borderColor: "border-secondary"
-        }, /* @__PURE__ */ React18.createElement(Text4.Text, {
+        }, /* @__PURE__ */ React18.createElement(Text5.Text, {
           as: titleLevel,
           variant: "headingSm"
         }, title2)) : null, optionsMarkup2 = options3 && options3.map((option2, optionIndex) => {
@@ -102605,20 +102605,20 @@ var require_OptionList = __commonJS({
             onPointerEnter: handlePointerEnter,
             onFocus: handleFocus
           }));
-        }), option = /* @__PURE__ */ React18.createElement(Box.Box, {
+        }), option = /* @__PURE__ */ React18.createElement(Box2.Box, {
           as: "ul",
           id: `${id}-${sectionIndex}`,
           role
         }, optionsMarkup2), blockStartPadding = isFirstOption ? title2 ? "100" : "0" : title2 ? "050" : "0";
-        return /* @__PURE__ */ React18.createElement(Box.Box, {
+        return /* @__PURE__ */ React18.createElement(Box2.Box, {
           key: title2 || `noTitle-${sectionIndex}`,
           as: "li",
           paddingBlockStart: blockStartPadding
-        }, /* @__PURE__ */ React18.createElement(BlockStack.BlockStack, {
+        }, /* @__PURE__ */ React18.createElement(BlockStack2.BlockStack, {
           gap: isFirstOption && sections ? void 0 : "0"
         }, titleMarkup, option));
       }) : null;
-      return /* @__PURE__ */ React18.createElement(Box.Box, {
+      return /* @__PURE__ */ React18.createElement(Box2.Box, {
         as: "ul",
         role,
         padding: "150"
@@ -102740,7 +102740,7 @@ var require_Title_css = __commonJS({
 var require_Title = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Page/components/Header/components/Title/Title.js"(exports) {
     "use strict";
-    var React18 = require_react(), css = require_css(), Title_module = require_Title_css(), Text4 = require_Text(), Bleed = require_Bleed();
+    var React18 = require_react(), css = require_css(), Title_module = require_Title_css(), Text5 = require_Text(), Bleed = require_Bleed();
     function Title({
       title,
       subtitle,
@@ -102750,7 +102750,7 @@ var require_Title = __commonJS({
     }) {
       let className = css.classNames(Title_module.default.Title, subtitle && Title_module.default.TitleWithSubtitle), titleMarkup = title ? /* @__PURE__ */ React18.createElement("h1", {
         className
-      }, /* @__PURE__ */ React18.createElement(Text4.Text, {
+      }, /* @__PURE__ */ React18.createElement(Text5.Text, {
         as: "span",
         variant: "headingLg",
         fontWeight: "bold"
@@ -102760,7 +102760,7 @@ var require_Title = __commonJS({
         className: Title_module.default.TitleWrapper
       }, titleMarkup, titleMetadataMarkup), subtitleMarkup = subtitle ? /* @__PURE__ */ React18.createElement("div", {
         className: css.classNames(Title_module.default.SubTitle, compactTitle && Title_module.default.SubtitleCompact, hasSubtitleMaxWidth && Title_module.default.SubtitleMaxWidth)
-      }, /* @__PURE__ */ React18.createElement(Text4.Text, {
+      }, /* @__PURE__ */ React18.createElement(Text5.Text, {
         as: "p",
         variant: "bodySm",
         tone: "subdued"
@@ -102775,7 +102775,7 @@ var require_Title = __commonJS({
 var require_Header4 = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Page/components/Header/Header.js"(exports) {
     "use strict";
-    var React18 = require_react(), css = require_css(), components = require_components2(), isInterface = require_is_interface(), isReactElement = require_is_react_element(), Header_module = require_Header_css(), Breadcrumbs = require_Breadcrumbs(), Title = require_Title(), ActionMenu = require_ActionMenu(), FilterActionsProvider = require_FilterActionsProvider(), hooks = require_hooks2(), hooks$1 = require_hooks11(), Box = require_Box(), Pagination = require_Pagination(), Text4 = require_Text(), InlineStack = require_InlineStack(), utils = require_utils11(), Tooltip3 = require_Tooltip(), SHORT_TITLE = 20, REALLY_SHORT_TITLE = 8, LONG_TITLE = 34;
+    var React18 = require_react(), css = require_css(), components = require_components2(), isInterface = require_is_interface(), isReactElement = require_is_react_element(), Header_module = require_Header_css(), Breadcrumbs = require_Breadcrumbs(), Title = require_Title(), ActionMenu = require_ActionMenu(), FilterActionsProvider = require_FilterActionsProvider(), hooks = require_hooks2(), hooks$1 = require_hooks11(), Box2 = require_Box(), Pagination = require_Pagination(), Text5 = require_Text(), InlineStack = require_InlineStack(), utils = require_utils11(), Tooltip3 = require_Tooltip(), SHORT_TITLE = 20, REALLY_SHORT_TITLE = 8, LONG_TITLE = 34;
     function Header2({
       title,
       subtitle,
@@ -102796,7 +102796,7 @@ var require_Header4 = __commonJS({
         isNavigationCollapsed
       } = hooks$1.useMediaQuery(), isSingleRow = !primaryAction && !pagination && (isInterface.isInterface(secondaryActions) && !secondaryActions.length || isReactElement.isReactElement(secondaryActions)) && !actionGroups.length, hasActionGroupsOrSecondaryActions = actionGroups.length > 0 || isInterface.isInterface(secondaryActions) && secondaryActions.length > 0 || isReactElement.isReactElement(secondaryActions), breadcrumbMarkup = backAction ? /* @__PURE__ */ React18.createElement("div", {
         className: Header_module.default.BreadcrumbWrapper
-      }, /* @__PURE__ */ React18.createElement(Box.Box, {
+      }, /* @__PURE__ */ React18.createElement(Box2.Box, {
         maxWidth: "100%",
         paddingInlineEnd: "100",
         printHidden: !0
@@ -102804,7 +102804,7 @@ var require_Header4 = __commonJS({
         backAction
       }))) : null, paginationMarkup = pagination && !isNavigationCollapsed ? /* @__PURE__ */ React18.createElement("div", {
         className: Header_module.default.PaginationWrapper
-      }, /* @__PURE__ */ React18.createElement(Box.Box, {
+      }, /* @__PURE__ */ React18.createElement(Box2.Box, {
         printHidden: !0
       }, /* @__PURE__ */ React18.createElement(Pagination.Pagination, Object.assign({}, pagination, {
         hasPrevious: pagination.hasPrevious,
@@ -102819,7 +102819,7 @@ var require_Header4 = __commonJS({
         hasSubtitleMaxWidth: hasActionGroupsOrSecondaryActions
       })), labelForPageReadyAccessibilityLabel = pageReadyAccessibilityLabel || title, pageReadyAccessibilityLabelMarkup = labelForPageReadyAccessibilityLabel ? /* @__PURE__ */ React18.createElement("div", {
         role: "status"
-      }, /* @__PURE__ */ React18.createElement(Text4.Text, {
+      }, /* @__PURE__ */ React18.createElement(Text5.Text, {
         visuallyHidden: !0,
         as: "p"
       }, i18n.translate("Polaris.Page.Header.pageReadyAccessibilityLabel", {
@@ -102836,7 +102836,7 @@ var require_Header4 = __commonJS({
         }) : void 0,
         onActionRollup
       }) : isReactElement.isReactElement(secondaryActions) && (actionMenuMarkup = /* @__PURE__ */ React18.createElement(React18.Fragment, null, secondaryActions));
-      let navigationMarkup = breadcrumbMarkup || paginationMarkup ? /* @__PURE__ */ React18.createElement(Box.Box, {
+      let navigationMarkup = breadcrumbMarkup || paginationMarkup ? /* @__PURE__ */ React18.createElement(Box2.Box, {
         printHidden: !0,
         paddingBlockEnd: "100",
         paddingInlineEnd: actionMenuMarkup && isNavigationCollapsed ? "1000" : void 0
@@ -102846,7 +102846,7 @@ var require_Header4 = __commonJS({
         blockAlign: "center"
       }, breadcrumbMarkup, paginationMarkup)) : null, additionalMetadataMarkup = additionalMetadata ? /* @__PURE__ */ React18.createElement("div", {
         className: Header_module.default.AdditionalMetaData
-      }, /* @__PURE__ */ React18.createElement(Text4.Text, {
+      }, /* @__PURE__ */ React18.createElement(Text5.Text, {
         tone: "subdued",
         as: "span",
         variant: "bodySm"
@@ -102866,7 +102866,7 @@ var require_Header4 = __commonJS({
         primaryActionMarkup,
         title
       });
-      return /* @__PURE__ */ React18.createElement(Box.Box, {
+      return /* @__PURE__ */ React18.createElement(Box2.Box, {
         position: "relative",
         paddingBlockStart: {
           xs: "400",
@@ -102930,7 +102930,7 @@ var require_Header4 = __commonJS({
         actionMarkup = primaryAction;
       return /* @__PURE__ */ React18.createElement("div", {
         className: Header_module.default.PrimaryActionWrapper
-      }, /* @__PURE__ */ React18.createElement(Box.Box, {
+      }, /* @__PURE__ */ React18.createElement(Box2.Box, {
         printHidden: !0
       }, actionMarkup));
     }
@@ -103017,7 +103017,7 @@ var require_Page = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Page/Page.js"(exports) {
     "use strict";
     var React18 = require_react(), css = require_css(), isInterface = require_is_interface(), isReactElement = require_is_react_element(), Page_module = require_Page_css(), Header2 = require_Header4();
-    function Page3({
+    function Page4({
       children,
       fullWidth,
       narrowWidth,
@@ -103032,7 +103032,7 @@ var require_Page = __commonJS({
         className: contentClassName
       }, children));
     }
-    exports.Page = Page3;
+    exports.Page = Page4;
   }
 });
 
@@ -103101,7 +103101,7 @@ var require_Activator_css = __commonJS({
 var require_Activator = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Picker/components/Activator/Activator.js"(exports) {
     "use strict";
-    var polarisIcons = require_dist11(), React18 = require_react(), css = require_css(), Activator_module = require_Activator_css(), BlockStack = require_BlockStack(), Text4 = require_Text(), Icon = require_Icon(), Activator = /* @__PURE__ */ React18.forwardRef(({
+    var polarisIcons = require_dist11(), React18 = require_react(), css = require_css(), Activator_module = require_Activator_css(), BlockStack2 = require_BlockStack(), Text5 = require_Text(), Icon = require_Icon(), Activator = /* @__PURE__ */ React18.forwardRef(({
       disabled,
       label,
       placeholder,
@@ -103112,15 +103112,15 @@ var require_Activator = __commonJS({
       disabled,
       onClick,
       className: css.classNames(Activator_module.default.Activator, disabled && Activator_module.default.disabled)
-    }, /* @__PURE__ */ React18.createElement(BlockStack.BlockStack, {
+    }, /* @__PURE__ */ React18.createElement(BlockStack2.BlockStack, {
       as: "span",
       gap: "100"
-    }, label && /* @__PURE__ */ React18.createElement(Text4.Text, {
+    }, label && /* @__PURE__ */ React18.createElement(Text5.Text, {
       as: "span",
       variant: "bodySm",
       alignment: "start",
       tone: "subdued"
-    }, label), (selected !== "" || placeholder) && /* @__PURE__ */ React18.createElement(Text4.Text, {
+    }, label), (selected !== "" || placeholder) && /* @__PURE__ */ React18.createElement(Text5.Text, {
       as: "span",
       variant: "bodyMd",
       alignment: "start",
@@ -103150,7 +103150,7 @@ var require_SearchField_css = __commonJS({
 var require_SearchField2 = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Picker/components/SearchField/SearchField.js"(exports) {
     "use strict";
-    var React18 = require_react(), SearchField_module = require_SearchField_css(), hooks = require_hooks5(), Label = require_Label(), InlineStack = require_InlineStack(), Text4 = require_Text();
+    var React18 = require_react(), SearchField_module = require_SearchField_css(), hooks = require_hooks5(), Label = require_Label(), InlineStack = require_InlineStack(), Text5 = require_Text();
     function SearchField({
       value,
       id: idProp,
@@ -103187,7 +103187,7 @@ var require_SearchField2 = __commonJS({
         blockAlign: "center"
       }, /* @__PURE__ */ React18.createElement(Label.Label, {
         id: textFieldId
-      }, /* @__PURE__ */ React18.createElement(Text4.Text, {
+      }, /* @__PURE__ */ React18.createElement(Text5.Text, {
         as: "span",
         visuallyHidden: !0
       }, label), /* @__PURE__ */ React18.createElement("span", null, prefix)), /* @__PURE__ */ React18.createElement("input", {
@@ -103218,7 +103218,7 @@ var require_SearchField2 = __commonJS({
 var require_Picker = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Picker/Picker.js"(exports) {
     "use strict";
-    var React18 = require_react(), polarisIcons = require_dist11(), string = require_string2(), Activator = require_Activator(), SearchField = require_SearchField2(), Popover2 = require_Popover(), Box = require_Box(), context = require_context11(), Icon = require_Icon(), Listbox = require_Listbox(), FILTER_REGEX = (value) => new RegExp(value, "i"), QUERY_REGEX = (value) => new RegExp(`^${string.escapeRegex(value)}$`, "i");
+    var React18 = require_react(), polarisIcons = require_dist11(), string = require_string2(), Activator = require_Activator(), SearchField = require_SearchField2(), Popover2 = require_Popover(), Box2 = require_Box(), context = require_context11(), Icon = require_Icon(), Listbox = require_Listbox(), FILTER_REGEX = (value) => new RegExp(value, "i"), QUERY_REGEX = (value) => new RegExp(`^${string.escapeRegex(value)}$`, "i");
     function Picker({
       activator,
       allowMultiple,
@@ -103291,7 +103291,7 @@ var require_Picker = __commonJS({
       }, /* @__PURE__ */ React18.createElement(Popover2.Popover.Pane, {
         onScrolledToBottom,
         height
-      }, searchField ? /* @__PURE__ */ React18.createElement(Box.Box, {
+      }, searchField ? /* @__PURE__ */ React18.createElement(Box2.Box, {
         paddingBlockStart: "200",
         paddingBlockEnd: "100",
         paddingInline: "200",
@@ -103313,7 +103313,7 @@ var require_Picker = __commonJS({
         value: listboxContextValue
       }, /* @__PURE__ */ React18.createElement(context.ComboboxListboxOptionContext.Provider, {
         value: listboxOptionContextValue
-      }, /* @__PURE__ */ React18.createElement(Box.Box, {
+      }, /* @__PURE__ */ React18.createElement(Box2.Box, {
         paddingBlock: "200"
       }, /* @__PURE__ */ React18.createElement(Listbox.Listbox, Object.assign({}, listboxProps, {
         onSelect: handleSelect
@@ -103507,7 +103507,7 @@ var require_DualThumb_css = __commonJS({
 var require_DualThumb = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/RangeSlider/components/DualThumb/DualThumb.js"(exports) {
     "use strict";
-    var React18 = require_react(), debounce = require_debounce(), css = require_css(), types4 = require_types16(), RangeSlider_module = require_RangeSlider_css(), DualThumb_module = require_DualThumb_css(), Text4 = require_Text(), Labelled = require_Labelled(), Label = require_Label(), EventListener = require_EventListener(), context = require_context(), Control;
+    var React18 = require_react(), debounce = require_debounce(), css = require_css(), types4 = require_types16(), RangeSlider_module = require_RangeSlider_css(), DualThumb_module = require_DualThumb_css(), Text5 = require_Text(), Labelled = require_Labelled(), Label = require_Label(), EventListener = require_EventListener(), context = require_context(), Control;
     (function(Control2) {
       Control2[Control2.Lower = 0] = "Lower", Control2[Control2.Upper = 1] = "Upper";
     })(Control || (Control = {}));
@@ -103695,7 +103695,7 @@ var require_DualThumb = __commonJS({
           }
         }, /* @__PURE__ */ React18.createElement("div", {
           className: DualThumb_module.default.OutputBubble
-        }, /* @__PURE__ */ React18.createElement(Text4.Text, {
+        }, /* @__PURE__ */ React18.createElement(Text5.Text, {
           as: "span",
           variant: "headingSm",
           alignment: "center"
@@ -103707,7 +103707,7 @@ var require_DualThumb = __commonJS({
           }
         }, /* @__PURE__ */ React18.createElement("div", {
           className: DualThumb_module.default.OutputBubble
-        }, /* @__PURE__ */ React18.createElement(Text4.Text, {
+        }, /* @__PURE__ */ React18.createElement(Text5.Text, {
           as: "span",
           variant: "headingSm",
           alignment: "center"
@@ -103863,7 +103863,7 @@ var require_invertNumber = __commonJS({
 var require_SingleThumb = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/RangeSlider/components/SingleThumb/SingleThumb.js"(exports) {
     "use strict";
-    var React18 = require_react(), css = require_css(), clamp = require_clamp(), RangeSlider_module = require_RangeSlider_css(), SingleThumb_module = require_SingleThumb_css(), invertNumber = require_invertNumber(), Text4 = require_Text(), Labelled = require_Labelled();
+    var React18 = require_react(), css = require_css(), clamp = require_clamp(), RangeSlider_module = require_RangeSlider_css(), SingleThumb_module = require_SingleThumb_css(), invertNumber = require_invertNumber(), Text5 = require_Text(), Labelled = require_Labelled();
     function SingleThumb(props) {
       let {
         id,
@@ -103895,7 +103895,7 @@ var require_SingleThumb = __commonJS({
         className: SingleThumb_module.default.Output
       }, /* @__PURE__ */ React18.createElement("div", {
         className: SingleThumb_module.default.OutputBubble
-      }, /* @__PURE__ */ React18.createElement(Text4.Text, {
+      }, /* @__PURE__ */ React18.createElement(Text5.Text, {
         as: "span",
         variant: "headingSm",
         alignment: "center"
@@ -104015,7 +104015,7 @@ var require_types21 = __commonJS({
 var require_ResourceItem = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/ResourceItem/ResourceItem.js"(exports) {
     "use strict";
-    var React18 = require_react(), polarisIcons = require_dist11(), isEqual = require_react_fast_compare(), breakpoints = require_breakpoints2(), css = require_css(), ResourceItem_module = require_ResourceItem_css(), types4 = require_types21(), context = require_context19(), hooks = require_hooks2(), Checkbox = require_Checkbox(), ButtonGroup3 = require_ButtonGroup(), utils = require_utils11(), Popover2 = require_Popover(), Button4 = require_Button(), ActionList2 = require_ActionList(), Box = require_Box(), InlineGrid = require_InlineGrid(), InlineStack = require_InlineStack(), UnstyledLink = require_UnstyledLink(), BaseResourceItem = class extends React18.Component {
+    var React18 = require_react(), polarisIcons = require_dist11(), isEqual = require_react_fast_compare(), breakpoints = require_breakpoints2(), css = require_css(), ResourceItem_module = require_ResourceItem_css(), types4 = require_types21(), context = require_context19(), hooks = require_hooks2(), Checkbox = require_Checkbox(), ButtonGroup3 = require_ButtonGroup(), utils = require_utils11(), Popover2 = require_Popover(), Button4 = require_Button(), ActionList2 = require_ActionList(), Box2 = require_Box(), InlineGrid = require_InlineGrid(), InlineStack = require_InlineStack(), UnstyledLink = require_UnstyledLink(), BaseResourceItem = class extends React18.Component {
       constructor(...args) {
         super(...args), this.state = {
           actionsMenuVisible: !1,
@@ -104214,7 +104214,7 @@ var require_ResourceItem = __commonJS({
             breakpoints2?.lgUp && (actionsMarkup = /* @__PURE__ */ React18.createElement("div", {
               className: ResourceItem_module.default.Actions,
               onClick: stopPropagation
-            }, /* @__PURE__ */ React18.createElement(Box.Box, {
+            }, /* @__PURE__ */ React18.createElement(Box2.Box, {
               position: "absolute",
               insetBlockStart: "400",
               insetInlineEnd: "500"
@@ -104223,7 +104223,7 @@ var require_ResourceItem = __commonJS({
             }, utils.buttonsFrom(shortcutActions, {
               size: "slim"
             })))));
-        let containerMarkup = /* @__PURE__ */ React18.createElement(Box.Box, {
+        let containerMarkup = /* @__PURE__ */ React18.createElement(Box2.Box, {
           id: this.props.id,
           position: "relative",
           paddingInlineStart: "300",
@@ -104242,7 +104242,7 @@ var require_ResourceItem = __commonJS({
           gap: "300"
         }, ownedMarkup, /* @__PURE__ */ React18.createElement(InlineStack.InlineStack, {
           blockAlign: getAlignment(verticalAlignment)
-        }, /* @__PURE__ */ React18.createElement(Box.Box, {
+        }, /* @__PURE__ */ React18.createElement(Box2.Box, {
           width: "100%",
           padding: "0"
         }, children))), actionsMarkup, disclosureMarkup)), tabIndex = loading ? -1 : 0, ariaLabel = accessibilityLabel || i18n.translate("Polaris.ResourceList.Item.viewItem", {
@@ -104395,7 +104395,7 @@ var require_Select_css = __commonJS({
 var require_Select = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Select/Select.js"(exports) {
     "use strict";
-    var React18 = require_react(), polarisIcons = require_dist11(), css = require_css(), useToggle = require_use_toggle(), Select_module = require_Select_css(), Icon = require_Icon(), Labelled = require_Labelled(), Box = require_Box(), Text4 = require_Text(), PLACEHOLDER_VALUE = "";
+    var React18 = require_react(), polarisIcons = require_dist11(), css = require_css(), useToggle = require_use_toggle(), Select_module = require_Select_css(), Icon = require_Icon(), Labelled = require_Labelled(), Box2 = require_Box(), Text5 = require_Text(), PLACEHOLDER_VALUE = "";
     function Select3({
       options: optionsProp,
       label,
@@ -104430,9 +104430,9 @@ var require_Select = __commonJS({
         value: PLACEHOLDER_VALUE,
         disabled: !0
       }, ...normalizedOptions]);
-      let inlineLabelMarkup = labelInline && /* @__PURE__ */ React18.createElement(Box.Box, {
+      let inlineLabelMarkup = labelInline && /* @__PURE__ */ React18.createElement(Box2.Box, {
         paddingInlineEnd: "100"
-      }, /* @__PURE__ */ React18.createElement(Text4.Text, {
+      }, /* @__PURE__ */ React18.createElement(Text5.Text, {
         as: "span",
         variant: "bodyMd",
         tone: tone && tone === "magic" && !focused ? "magic-subdued" : "subdued",
@@ -104551,7 +104551,7 @@ var require_Select = __commonJS({
 var require_ResourceList = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/ResourceList/ResourceList.js"(exports) {
     "use strict";
-    var React18 = require_react(), polarisIcons = require_dist11(), polarisTokens = require_build(), debounce = require_debounce(), css = require_css(), components = require_components2(), useLazyRef = require_use_lazy_ref(), useEventListener = require_use_event_listener(), ResourceList_module = require_ResourceList_css(), types4 = require_types21(), Select3 = require_Select(), ResourceItem2 = require_ResourceItem(), hooks = require_hooks2(), Text4 = require_Text(), Button4 = require_Button(), CheckableButton = require_CheckableButton(), Sticky = require_Sticky(), EmptySearchResult = require_EmptySearchResult(), Spinner4 = require_Spinner(), Pagination = require_Pagination(), context = require_context19(), BulkActions = require_BulkActions(), SMALL_SPINNER_HEIGHT = 28, LARGE_SPINNER_HEIGHT = 45;
+    var React18 = require_react(), polarisIcons = require_dist11(), polarisTokens = require_build(), debounce = require_debounce(), css = require_css(), components = require_components2(), useLazyRef = require_use_lazy_ref(), useEventListener = require_use_event_listener(), ResourceList_module = require_ResourceList_css(), types4 = require_types21(), Select3 = require_Select(), ResourceItem2 = require_ResourceItem(), hooks = require_hooks2(), Text5 = require_Text(), Button4 = require_Button(), CheckableButton = require_CheckableButton(), Sticky = require_Sticky(), EmptySearchResult = require_EmptySearchResult(), Spinner4 = require_Spinner(), Pagination = require_Pagination(), context = require_context19(), BulkActions = require_BulkActions(), SMALL_SPINNER_HEIGHT = 28, LARGE_SPINNER_HEIGHT = 45;
     function getAllItemsOnPage(items, idForItem) {
       return items.map((item, index) => idForItem(item, index));
     }
@@ -104722,7 +104722,7 @@ var require_ResourceList = __commonJS({
         className: ResourceList_module.default.AlternateToolWrapper
       }, alternateTool) : null, headerTitleMarkup = /* @__PURE__ */ React18.createElement("div", {
         className: ResourceList_module.default.HeaderTitleWrapper
-      }, /* @__PURE__ */ React18.createElement(Text4.Text, {
+      }, /* @__PURE__ */ React18.createElement(Text5.Text, {
         as: "span",
         variant: "bodyMd"
       }, headerTitle())), selectButtonMarkup = isSelectable ? /* @__PURE__ */ React18.createElement("div", {
@@ -104822,7 +104822,7 @@ var require_SelectAllActions_css = __commonJS({
 var require_SelectAllActions = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/SelectAllActions/SelectAllActions.js"(exports) {
     "use strict";
-    var React18 = require_react(), reactTransitionGroup = require_cjs5(), css = require_css(), SelectAllActions_module = require_SelectAllActions_css(), UnstyledButton = require_UnstyledButton(), Text4 = require_Text(), CheckableButton = require_CheckableButton(), Box = require_Box(), InlineStack = require_InlineStack(), SelectAllActions = /* @__PURE__ */ React18.forwardRef(function({
+    var React18 = require_react(), reactTransitionGroup = require_cjs5(), css = require_css(), SelectAllActions_module = require_SelectAllActions_css(), UnstyledButton = require_UnstyledButton(), Text5 = require_Text(), CheckableButton = require_CheckableButton(), Box2 = require_Box(), InlineStack = require_InlineStack(), SelectAllActions = /* @__PURE__ */ React18.forwardRef(function({
       label,
       selectMode,
       paginatedSelectAllText,
@@ -104839,7 +104839,7 @@ var require_SelectAllActions = __commonJS({
         onClick: paginatedSelectAllAction.onAction,
         size: "slim",
         disabled
-      }, /* @__PURE__ */ React18.createElement(Text4.Text, {
+      }, /* @__PURE__ */ React18.createElement(Text5.Text, {
         as: "span",
         variant: "bodySm",
         fontWeight: "medium"
@@ -104862,7 +104862,7 @@ var require_SelectAllActions = __commonJS({
         return /* @__PURE__ */ React18.createElement("div", {
           className: wrapperClasses,
           ref: nodeRef
-        }, /* @__PURE__ */ React18.createElement(Box.Box, {
+        }, /* @__PURE__ */ React18.createElement(Box2.Box, {
           background: "bg-surface-secondary",
           borderBlockStartWidth: "025",
           borderColor: "border",
@@ -104875,7 +104875,7 @@ var require_SelectAllActions = __commonJS({
           gap: "200",
           align: "start",
           blockAlign: "center"
-        }, checkableButtonMarkup, /* @__PURE__ */ React18.createElement(Text4.Text, {
+        }, checkableButtonMarkup, /* @__PURE__ */ React18.createElement(Text5.Text, {
           as: "span",
           variant: "bodySm",
           fontWeight: "medium"
@@ -105001,7 +105001,7 @@ var require_SkeletonPage_css = __commonJS({
 var require_SkeletonPage = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/SkeletonPage/SkeletonPage.js"(exports) {
     "use strict";
-    var React18 = require_react(), SkeletonPage_module = require_SkeletonPage_css(), hooks = require_hooks2(), Text4 = require_Text(), Box = require_Box(), BlockStack = require_BlockStack(), InlineStack = require_InlineStack();
+    var React18 = require_react(), SkeletonPage_module = require_SkeletonPage_css(), hooks = require_hooks2(), Text5 = require_Text(), Box2 = require_Box(), BlockStack2 = require_BlockStack(), InlineStack = require_InlineStack();
     function SkeletonPage({
       children,
       fullWidth,
@@ -105010,34 +105010,34 @@ var require_SkeletonPage = __commonJS({
       title = "",
       backAction
     }) {
-      let i18n = hooks.useI18n(), titleContent = title ? /* @__PURE__ */ React18.createElement(Text4.Text, {
+      let i18n = hooks.useI18n(), titleContent = title ? /* @__PURE__ */ React18.createElement(Text5.Text, {
         as: "h1",
         variant: "headingLg",
         fontWeight: "bold"
       }, title) : /* @__PURE__ */ React18.createElement("div", {
         className: SkeletonPage_module.default.SkeletonTitle
-      }, /* @__PURE__ */ React18.createElement(Box.Box, {
+      }, /* @__PURE__ */ React18.createElement(Box2.Box, {
         background: "bg-fill-tertiary",
         minWidth: "120px",
         minHeight: "28px",
         borderRadius: "100"
-      })), primaryActionMarkup = primaryAction ? /* @__PURE__ */ React18.createElement(Box.Box, {
+      })), primaryActionMarkup = primaryAction ? /* @__PURE__ */ React18.createElement(Box2.Box, {
         id: "SkeletonPage-PrimaryAction",
         borderRadius: "100",
         background: "bg-fill-tertiary",
         minHeight: "2.25rem",
         minWidth: "6.25rem"
-      }) : null, backActionMarkup = backAction ? /* @__PURE__ */ React18.createElement(Box.Box, {
+      }) : null, backActionMarkup = backAction ? /* @__PURE__ */ React18.createElement(Box2.Box, {
         borderRadius: "100",
         background: "bg-fill-tertiary",
         minHeight: "2.25rem",
         minWidth: "2.25rem",
         maxWidth: "2.25rem"
       }) : null;
-      return /* @__PURE__ */ React18.createElement(BlockStack.BlockStack, {
+      return /* @__PURE__ */ React18.createElement(BlockStack2.BlockStack, {
         gap: "400",
         inlineAlign: "center"
-      }, /* @__PURE__ */ React18.createElement(Box.Box, Object.assign({
+      }, /* @__PURE__ */ React18.createElement(Box2.Box, Object.assign({
         width: "100%",
         padding: "0",
         paddingInlineStart: {
@@ -105053,7 +105053,7 @@ var require_SkeletonPage = __commonJS({
         maxWidth: "var(--pc-skeleton-page-max-width-narrow)"
       }, fullWidth && {
         maxWidth: "none"
-      }), /* @__PURE__ */ React18.createElement(BlockStack.BlockStack, null, /* @__PURE__ */ React18.createElement(Box.Box, {
+      }), /* @__PURE__ */ React18.createElement(BlockStack2.BlockStack, null, /* @__PURE__ */ React18.createElement(Box2.Box, {
         paddingBlockStart: {
           xs: "400",
           md: "500"
@@ -105077,10 +105077,10 @@ var require_SkeletonPage = __commonJS({
         blockAlign: "center"
       }, /* @__PURE__ */ React18.createElement(InlineStack.InlineStack, {
         gap: "400"
-      }, backActionMarkup, /* @__PURE__ */ React18.createElement(Box.Box, {
+      }, backActionMarkup, /* @__PURE__ */ React18.createElement(Box2.Box, {
         paddingBlockStart: "100",
         paddingBlockEnd: "100"
-      }, titleContent)), primaryActionMarkup)), /* @__PURE__ */ React18.createElement(Box.Box, {
+      }, titleContent)), primaryActionMarkup)), /* @__PURE__ */ React18.createElement(Box2.Box, {
         paddingBlockEnd: "200",
         width: "100%"
       }, children))));
@@ -105354,7 +105354,7 @@ var require_SearchField_css2 = __commonJS({
 var require_SearchField3 = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/TopBar/components/SearchField/SearchField.js"(exports) {
     "use strict";
-    var React18 = require_react(), polarisIcons = require_dist11(), css = require_css(), SearchField_module = require_SearchField_css2(), hooks = require_hooks2(), Icon = require_Icon(), Text4 = require_Text();
+    var React18 = require_react(), polarisIcons = require_dist11(), css = require_css(), SearchField_module = require_SearchField_css2(), hooks = require_hooks2(), Icon = require_Icon(), Text5 = require_Text();
     function SearchField({
       value,
       focused,
@@ -105394,7 +105394,7 @@ var require_SearchField3 = __commonJS({
         className,
         onFocus: handleFocus,
         onBlur: handleBlur
-      }, /* @__PURE__ */ React18.createElement(Text4.Text, {
+      }, /* @__PURE__ */ React18.createElement(Text5.Text, {
         as: "span",
         visuallyHidden: !0
       }, /* @__PURE__ */ React18.createElement("label", {
@@ -105502,7 +105502,7 @@ var require_Message_css = __commonJS({
 var require_Message = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/TopBar/components/Menu/components/Message/Message.js"(exports) {
     "use strict";
-    var React18 = require_react(), Message_module = require_Message_css(), Link7 = require_Link(), Badge4 = require_Badge(), Popover2 = require_Popover(), LegacyStack = require_LegacyStack(), TextContainer = require_TextContainer(), Text4 = require_Text(), Button4 = require_Button();
+    var React18 = require_react(), Message_module = require_Message_css(), Link8 = require_Link(), Badge4 = require_Badge(), Popover2 = require_Popover(), LegacyStack = require_LegacyStack(), TextContainer = require_TextContainer(), Text5 = require_Text(), Button4 = require_Button();
     function Message({
       title,
       description,
@@ -105524,10 +105524,10 @@ var require_Message = __commonJS({
       }, /* @__PURE__ */ React18.createElement(Popover2.Popover.Section, null, /* @__PURE__ */ React18.createElement(LegacyStack.LegacyStack, {
         vertical: !0,
         spacing: "tight"
-      }, /* @__PURE__ */ React18.createElement(TextContainer.TextContainer, null, /* @__PURE__ */ React18.createElement(Text4.Text, {
+      }, /* @__PURE__ */ React18.createElement(TextContainer.TextContainer, null, /* @__PURE__ */ React18.createElement(Text5.Text, {
         variant: "headingMd",
         as: "h2"
-      }, title, badgeMarkup), /* @__PURE__ */ React18.createElement("p", null, description)), /* @__PURE__ */ React18.createElement(Link7.Link, {
+      }, title, badgeMarkup), /* @__PURE__ */ React18.createElement("p", null, description)), /* @__PURE__ */ React18.createElement(Link8.Link, {
         url: to
       }, linkContent), /* @__PURE__ */ React18.createElement(Button4.Button, {
         variant: "plain",
@@ -105542,7 +105542,7 @@ var require_Message = __commonJS({
 var require_Menu = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/TopBar/components/Menu/Menu.js"(exports) {
     "use strict";
-    var React18 = require_react(), css = require_css(), Menu_module = require_Menu_css(), Message = require_Message(), Popover2 = require_Popover(), Box = require_Box(), ActionList2 = require_ActionList();
+    var React18 = require_react(), css = require_css(), Menu_module = require_Menu_css(), Message = require_Message(), Popover2 = require_Popover(), Box2 = require_Box(), ActionList2 = require_ActionList();
     function Menu(props) {
       let {
         actions,
@@ -105586,7 +105586,7 @@ var require_Menu = __commonJS({
         preferredAlignment: "right"
       }, /* @__PURE__ */ React18.createElement("div", {
         className: Menu_module.default.MenuItems
-      }, /* @__PURE__ */ React18.createElement(Box.Box, {
+      }, /* @__PURE__ */ React18.createElement(Box2.Box, {
         width: customWidth
       }, /* @__PURE__ */ React18.createElement(ActionList2.ActionList, {
         actionRole: "menuitem",
@@ -105602,7 +105602,7 @@ var require_Menu = __commonJS({
 var require_UserMenu = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/TopBar/components/UserMenu/UserMenu.js"(exports) {
     "use strict";
-    var React18 = require_react(), UserMenu_module = require_UserMenu_css(), MessageIndicator = require_MessageIndicator(), Menu = require_Menu(), Text4 = require_Text(), Avatar2 = require_Avatar();
+    var React18 = require_react(), UserMenu_module = require_UserMenu_css(), MessageIndicator = require_MessageIndicator(), Menu = require_Menu(), Text5 = require_Text(), Avatar2 = require_Avatar();
     function UserMenu({
       name,
       detail,
@@ -105618,7 +105618,7 @@ var require_UserMenu = __commonJS({
     }) {
       let showIndicator = Boolean(message2), activatorContentMarkup = customActivator || /* @__PURE__ */ React18.createElement(React18.Fragment, null, /* @__PURE__ */ React18.createElement("span", {
         className: UserMenu_module.default.Details
-      }, /* @__PURE__ */ React18.createElement(Text4.Text, {
+      }, /* @__PURE__ */ React18.createElement(Text5.Text, {
         as: "p",
         variant: "bodySm",
         alignment: "start",
@@ -105626,7 +105626,7 @@ var require_UserMenu = __commonJS({
         truncate: !0
       }, name), /* @__PURE__ */ React18.createElement("span", {
         className: UserMenu_module.default.Message
-      }, /* @__PURE__ */ React18.createElement(Text4.Text, {
+      }, /* @__PURE__ */ React18.createElement(Text5.Text, {
         as: "p",
         variant: "bodyXs",
         alignment: "start",
@@ -105820,7 +105820,7 @@ var require_VideoThumbnail_css = __commonJS({
 var require_VideoThumbnail = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/VideoThumbnail/VideoThumbnail.js"(exports) {
     "use strict";
-    var React18 = require_react(), polarisIcons = require_dist11(), duration = require_duration(), VideoThumbnail_module = require_VideoThumbnail_css(), hooks = require_hooks2(), hooks$1 = require_hooks11(), LegacyStack = require_LegacyStack(), Icon = require_Icon(), Text4 = require_Text();
+    var React18 = require_react(), polarisIcons = require_dist11(), duration = require_duration(), VideoThumbnail_module = require_VideoThumbnail_css(), hooks = require_hooks2(), hooks$1 = require_hooks11(), LegacyStack = require_LegacyStack(), Icon = require_Icon(), Text5 = require_Text();
     function VideoThumbnail({
       thumbnailUrl,
       videoLength = 0,
@@ -105859,7 +105859,7 @@ var require_VideoThumbnail = __commonJS({
         className: VideoThumbnail_module.default.PlayIcon
       }, /* @__PURE__ */ React18.createElement(Icon.Icon, {
         source: polarisIcons.PlayIcon
-      })), /* @__PURE__ */ React18.createElement(Text4.Text, {
+      })), /* @__PURE__ */ React18.createElement(Text5.Text, {
         variant: isNavigationCollapsed ? "bodyLg" : "bodyMd",
         as: "p",
         fontWeight: "semibold"
@@ -105936,7 +105936,7 @@ var require_hooks14 = __commonJS({
 var require_cjs6 = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/index.js"(exports) {
     "use strict";
-    var configure = require_configure(), types4 = require_types16(), shared = require_shared(), ThemeProvider = require_ThemeProvider(), colorTransformers = require_color_transformers(), withinContentContext = require_within_content_context(), useCopyToClipboard = require_use_copy_to_clipboard(), useEventListener = require_use_event_listener(), useFocus = require_use_focus(), useHover = require_use_hover(), useMediaQuery = require_use_media_query(), useTheme = require_use_theme(), useIndexResourceState = require_use_index_resource_state(), breakpoints = require_breakpoints2(), AppProvider2 = require_AppProvider(), AccountConnection = require_AccountConnection(), ActionList2 = require_ActionList(), ActionMenu = require_ActionMenu(), Autocomplete = require_Autocomplete(), Avatar2 = require_Avatar(), Backdrop = require_Backdrop(), Badge4 = require_Badge(), types$1 = require_types17(), Banner4 = require_Banner(), Bleed = require_Bleed(), Box = require_Box(), Breadcrumbs = require_Breadcrumbs(), BulkActions = require_BulkActions(), Button4 = require_Button(), utils = require_utils11(), ButtonGroup3 = require_ButtonGroup(), CalloutCard = require_CalloutCard(), Card5 = require_Card(), Checkbox = require_Checkbox(), ChoiceList = require_ChoiceList(), Collapsible = require_Collapsible(), ColorPicker = require_ColorPicker(), InlineGrid = require_InlineGrid(), Combobox = require_Combobox(), Connected = require_Connected(), ContextualSaveBar = require_ContextualSaveBar(), DataTable2 = require_DataTable(), DatePicker = require_DatePicker(), DescriptionList = require_DescriptionList(), Divider = require_Divider(), DropZone = require_DropZone(), EmptySearchResult = require_EmptySearchResult(), EmptyState3 = require_EmptyState(), EventListener = require_EventListener(), ExceptionList = require_ExceptionList(), Filters = require_Filters(), Focus = require_Focus(), FooterHelp = require_FooterHelp(), Form8 = require_Form(), FormLayout = require_FormLayout(), Frame = require_Frame(), Toast2 = require_Toast(), FullscreenBar = require_FullscreenBar(), Grid2 = require_Grid(), Icon = require_Icon(), Image = require_Image(), IndexFilters = require_IndexFilters(), useSetIndexFiltersMode = require_useSetIndexFiltersMode(), types$2 = require_types18(), IndexTable = require_IndexTable(), Indicator = require_Indicator(), InlineStack = require_InlineStack(), InlineCode = require_InlineCode(), InlineError = require_InlineError(), KeyboardKey = require_KeyboardKey(), KeypressListener = require_KeypressListener(), Label = require_Label(), Labelled = require_Labelled(), Layout4 = require_Layout(), LegacyCard = require_LegacyCard(), LegacyFilters = require_LegacyFilters(), LegacyStack = require_LegacyStack(), LegacyTabs = require_LegacyTabs(), Link7 = require_Link(), List = require_List3(), Listbox = require_Listbox(), Loading = require_Loading3(), MediaCard = require_MediaCard(), Modal3 = require_Modal(), Navigation = require_Navigation2(), Item = require_Item10(), OptionList = require_OptionList(), Page3 = require_Page(), PageActions = require_PageActions(), Pagination = require_Pagination(), Picker = require_Picker(), PolarisTestProvider = require_PolarisTestProvider(), Popover2 = require_Popover(), PopoverOverlay = require_PopoverOverlay(), Portal = require_Portal(), PortalsManager = require_PortalsManager(), PositionedOverlay = require_PositionedOverlay(), ProgressBar3 = require_ProgressBar(), RadioButton = require_RadioButton(), RangeSlider = require_RangeSlider(), ResourceItem2 = require_ResourceItem(), ResourceList2 = require_ResourceList(), Scrollable = require_Scrollable(), ScrollLock = require_ScrollLock(), Select3 = require_Select(), SelectAllActions = require_SelectAllActions(), SettingToggle = require_SettingToggle(), Sheet = require_Sheet(), SkeletonBodyText = require_SkeletonBodyText(), SkeletonDisplayText = require_SkeletonDisplayText(), SkeletonPage = require_SkeletonPage(), SkeletonTabs = require_SkeletonTabs(), SkeletonThumbnail = require_SkeletonThumbnail(), Spinner4 = require_Spinner(), Sticky = require_Sticky(), Tabs = require_Tabs(), Tag = require_Tag(), Text4 = require_Text(), TextContainer = require_TextContainer(), TextField3 = require_TextField(), Thumbnail = require_Thumbnail(), Toast$1 = require_Toast2(), Tooltip3 = require_Tooltip(), TopBar = require_TopBar(), TrapFocus = require_TrapFocus(), Truncate = require_Truncate(), UnstyledButton = require_UnstyledButton(), utils$1 = require_utils14(), UnstyledLink = require_UnstyledLink(), BlockStack = require_BlockStack(), VideoThumbnail = require_VideoThumbnail(), hooks = require_hooks9(), context = require_context15(), context$1 = require_context3(), hooks$1 = require_hooks14(), types$3 = require_types19(), hooks$2 = require_hooks3();
+    var configure = require_configure(), types4 = require_types16(), shared = require_shared(), ThemeProvider = require_ThemeProvider(), colorTransformers = require_color_transformers(), withinContentContext = require_within_content_context(), useCopyToClipboard = require_use_copy_to_clipboard(), useEventListener = require_use_event_listener(), useFocus = require_use_focus(), useHover = require_use_hover(), useMediaQuery = require_use_media_query(), useTheme = require_use_theme(), useIndexResourceState = require_use_index_resource_state(), breakpoints = require_breakpoints2(), AppProvider2 = require_AppProvider(), AccountConnection = require_AccountConnection(), ActionList2 = require_ActionList(), ActionMenu = require_ActionMenu(), Autocomplete = require_Autocomplete(), Avatar2 = require_Avatar(), Backdrop = require_Backdrop(), Badge4 = require_Badge(), types$1 = require_types17(), Banner4 = require_Banner(), Bleed = require_Bleed(), Box2 = require_Box(), Breadcrumbs = require_Breadcrumbs(), BulkActions = require_BulkActions(), Button4 = require_Button(), utils = require_utils11(), ButtonGroup3 = require_ButtonGroup(), CalloutCard = require_CalloutCard(), Card6 = require_Card(), Checkbox = require_Checkbox(), ChoiceList = require_ChoiceList(), Collapsible = require_Collapsible(), ColorPicker = require_ColorPicker(), InlineGrid = require_InlineGrid(), Combobox = require_Combobox(), Connected = require_Connected(), ContextualSaveBar = require_ContextualSaveBar(), DataTable2 = require_DataTable(), DatePicker = require_DatePicker(), DescriptionList = require_DescriptionList(), Divider = require_Divider(), DropZone = require_DropZone(), EmptySearchResult = require_EmptySearchResult(), EmptyState3 = require_EmptyState(), EventListener = require_EventListener(), ExceptionList = require_ExceptionList(), Filters = require_Filters(), Focus = require_Focus(), FooterHelp = require_FooterHelp(), Form8 = require_Form(), FormLayout = require_FormLayout(), Frame = require_Frame(), Toast2 = require_Toast(), FullscreenBar = require_FullscreenBar(), Grid2 = require_Grid(), Icon = require_Icon(), Image = require_Image(), IndexFilters = require_IndexFilters(), useSetIndexFiltersMode = require_useSetIndexFiltersMode(), types$2 = require_types18(), IndexTable = require_IndexTable(), Indicator = require_Indicator(), InlineStack = require_InlineStack(), InlineCode = require_InlineCode(), InlineError = require_InlineError(), KeyboardKey = require_KeyboardKey(), KeypressListener = require_KeypressListener(), Label = require_Label(), Labelled = require_Labelled(), Layout5 = require_Layout(), LegacyCard = require_LegacyCard(), LegacyFilters = require_LegacyFilters(), LegacyStack = require_LegacyStack(), LegacyTabs = require_LegacyTabs(), Link8 = require_Link(), List2 = require_List3(), Listbox = require_Listbox(), Loading = require_Loading3(), MediaCard = require_MediaCard(), Modal3 = require_Modal(), Navigation = require_Navigation2(), Item = require_Item10(), OptionList = require_OptionList(), Page4 = require_Page(), PageActions = require_PageActions(), Pagination = require_Pagination(), Picker = require_Picker(), PolarisTestProvider = require_PolarisTestProvider(), Popover2 = require_Popover(), PopoverOverlay = require_PopoverOverlay(), Portal = require_Portal(), PortalsManager = require_PortalsManager(), PositionedOverlay = require_PositionedOverlay(), ProgressBar3 = require_ProgressBar(), RadioButton = require_RadioButton(), RangeSlider = require_RangeSlider(), ResourceItem2 = require_ResourceItem(), ResourceList2 = require_ResourceList(), Scrollable = require_Scrollable(), ScrollLock = require_ScrollLock(), Select3 = require_Select(), SelectAllActions = require_SelectAllActions(), SettingToggle = require_SettingToggle(), Sheet = require_Sheet(), SkeletonBodyText = require_SkeletonBodyText(), SkeletonDisplayText = require_SkeletonDisplayText(), SkeletonPage = require_SkeletonPage(), SkeletonTabs = require_SkeletonTabs(), SkeletonThumbnail = require_SkeletonThumbnail(), Spinner4 = require_Spinner(), Sticky = require_Sticky(), Tabs = require_Tabs(), Tag = require_Tag(), Text5 = require_Text(), TextContainer = require_TextContainer(), TextField3 = require_TextField(), Thumbnail = require_Thumbnail(), Toast$1 = require_Toast2(), Tooltip3 = require_Tooltip(), TopBar = require_TopBar(), TrapFocus = require_TrapFocus(), Truncate = require_Truncate(), UnstyledButton = require_UnstyledButton(), utils$1 = require_utils14(), UnstyledLink = require_UnstyledLink(), BlockStack2 = require_BlockStack(), VideoThumbnail = require_VideoThumbnail(), hooks = require_hooks9(), context = require_context15(), context$1 = require_context3(), hooks$1 = require_hooks14(), types$3 = require_types19(), hooks$2 = require_hooks3();
     exports.DEFAULT_LOCALE = configure.DEFAULT_LOCALE;
     exports.SUPPORTED_LOCALES = configure.SUPPORTED_LOCALES;
     Object.defineProperty(exports, "Key", {
@@ -105988,7 +105988,7 @@ var require_cjs6 = __commonJS({
     });
     exports.Banner = Banner4.Banner;
     exports.Bleed = Bleed.Bleed;
-    exports.Box = Box.Box;
+    exports.Box = Box2.Box;
     exports.Breadcrumbs = Breadcrumbs.Breadcrumbs;
     exports.UnstableBulkActions = BulkActions.BulkActions;
     exports.Button = Button4.Button;
@@ -105996,7 +105996,7 @@ var require_cjs6 = __commonJS({
     exports.buttonsFrom = utils.buttonsFrom;
     exports.ButtonGroup = ButtonGroup3.ButtonGroup;
     exports.CalloutCard = CalloutCard.CalloutCard;
-    exports.Card = Card5.Card;
+    exports.Card = Card6.Card;
     exports.Checkbox = Checkbox.Checkbox;
     exports.ChoiceList = ChoiceList.ChoiceList;
     exports.Collapsible = Collapsible.Collapsible;
@@ -106045,13 +106045,13 @@ var require_cjs6 = __commonJS({
     exports.Label = Label.Label;
     exports.labelID = Label.labelID;
     exports.Labelled = Labelled.Labelled;
-    exports.Layout = Layout4.Layout;
+    exports.Layout = Layout5.Layout;
     exports.LegacyCard = LegacyCard.LegacyCard;
     exports.LegacyFilters = LegacyFilters.LegacyFilters;
     exports.LegacyStack = LegacyStack.LegacyStack;
     exports.LegacyTabs = LegacyTabs.LegacyTabs;
-    exports.Link = Link7.Link;
-    exports.List = List.List;
+    exports.Link = Link8.Link;
+    exports.List = List2.List;
     Object.defineProperty(exports, "AutoSelection", {
       enumerable: !0,
       get: function() {
@@ -106065,7 +106065,7 @@ var require_cjs6 = __commonJS({
     exports.Navigation = Navigation.Navigation;
     exports.isNavigationItemActive = Item.isNavigationItemActive;
     exports.OptionList = OptionList.OptionList;
-    exports.Page = Page3.Page;
+    exports.Page = Page4.Page;
     exports.PageActions = PageActions.PageActions;
     exports.Pagination = Pagination.Pagination;
     exports.AlphaPicker = Picker.Picker;
@@ -106100,7 +106100,7 @@ var require_cjs6 = __commonJS({
     exports.Sticky = Sticky.Sticky;
     exports.Tabs = Tabs.Tabs;
     exports.Tag = Tag.Tag;
-    exports.Text = Text4.Text;
+    exports.Text = Text5.Text;
     exports.TextContainer = TextContainer.TextContainer;
     exports.TextField = TextField3.TextField;
     exports.Thumbnail = Thumbnail.Thumbnail;
@@ -106112,7 +106112,7 @@ var require_cjs6 = __commonJS({
     exports.UnstyledButton = UnstyledButton.UnstyledButton;
     exports.unstyledButtonFrom = utils$1.unstyledButtonFrom;
     exports.UnstyledLink = UnstyledLink.UnstyledLink;
-    exports.BlockStack = BlockStack.BlockStack;
+    exports.BlockStack = BlockStack2.BlockStack;
     exports.VideoThumbnail = VideoThumbnail.VideoThumbnail;
     exports.useFrame = hooks.useFrame;
     exports.FrameContext = context.FrameContext;
@@ -107042,6 +107042,70 @@ In production, this would start the automation.`
   ] });
 }
 
+// app/routes/app.additional.tsx
+var app_additional_exports = {};
+__export(app_additional_exports, {
+  default: () => AdditionalPage
+});
+var import_polaris = __toESM(require_cjs6()), import_jsx_runtime6 = __toESM(require_jsx_runtime());
+function AdditionalPage() {
+  return /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris.Page, { title: "Additional page", children: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(import_polaris.Layout, { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris.Layout.Section, { children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(import_polaris.BlockStack, { gap: "300", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(import_polaris.Text, { as: "p", variant: "bodyMd", children: [
+        "The app template comes with an additional page which demonstrates how to create multiple pages within app navigation using",
+        " ",
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+          import_polaris.Link,
+          {
+            url: "https://shopify.dev/docs/apps/tools/app-bridge",
+            target: "_blank",
+            removeUnderline: !0,
+            children: "App Bridge"
+          }
+        ),
+        "."
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(import_polaris.Text, { as: "p", variant: "bodyMd", children: [
+        "To create your own page and have it show up in the app navigation, add a page inside ",
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(Code, { children: "app/routes" }),
+        ", and a link to it in the ",
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(Code, { children: "<NavMenu>" }),
+        " component found in ",
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(Code, { children: "app/routes/app.jsx" }),
+        "."
+      ] })
+    ] }) }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris.Layout.Section, { variant: "oneThird", children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(import_polaris.BlockStack, { gap: "200", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris.Text, { as: "h2", variant: "headingMd", children: "Resources" }),
+      /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris.List, { children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris.List.Item, { children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+        import_polaris.Link,
+        {
+          url: "https://shopify.dev/docs/apps/design-guidelines/navigation#app-nav",
+          target: "_blank",
+          removeUnderline: !0,
+          children: "App nav best practices"
+        }
+      ) }) })
+    ] }) }) })
+  ] }) });
+}
+function Code({ children }) {
+  return /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+    import_polaris.Box,
+    {
+      as: "span",
+      padding: "025",
+      paddingInlineStart: "100",
+      paddingInlineEnd: "100",
+      background: "bg-surface-active",
+      borderWidth: "025",
+      borderColor: "border",
+      borderRadius: "100",
+      children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("code", { children })
+    }
+  );
+}
+
 // app/routes/app.dashboards.tsx
 var app_dashboards_exports = {};
 __export(app_dashboards_exports, {
@@ -107051,7 +107115,7 @@ __export(app_dashboards_exports, {
 });
 var import_react10 = __toESM(require_react()), import_node6 = __toESM(require_dist3()), import_react11 = __toESM(require_dist2());
 init_shopify_server();
-var import_polaris = __toESM(require_cjs6());
+var import_polaris2 = __toESM(require_cjs6());
 
 // ../node_modules/@shopify/polaris-icons/dist/icons/DeleteIcon.svg.mjs
 var import_react5 = __toESM(require_react(), 1), SvgDeleteIcon = function(props) {
@@ -107109,7 +107173,7 @@ SvgViewIcon.displayName = "ViewIcon";
 var import_react9 = __toESM(require_react(), 1);
 
 // app/routes/app.dashboards.tsx
-var import_jsx_runtime6 = __toESM(require_jsx_runtime()), loader7 = async ({ request: request2 }) => {
+var import_jsx_runtime7 = __toESM(require_jsx_runtime()), loader7 = async ({ request: request2 }) => {
   try {
     let { session } = await authenticate.admin(request2), shopName = session?.shop?.replace(".myshopify.com", "");
     if (!shopName)
@@ -107252,8 +107316,8 @@ function CustomDashboards() {
       let timer = setTimeout(() => setError(""), 5e3);
       return () => clearTimeout(timer);
     }
-  }, [error]), hasEnterpriseAccess ? /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
-    import_polaris.Page,
+  }, [error]), hasEnterpriseAccess ? /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+    import_polaris2.Page,
     {
       title: "Custom Dashboards",
       subtitle: `Enterprise feature \u2022 ${dashboards.length} dashboard${dashboards.length !== 1 ? "s" : ""}`,
@@ -107267,22 +107331,22 @@ function CustomDashboards() {
           onAction: () => setShowTemplateModal(!0)
         }
       ],
-      children: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(import_polaris.Layout, { children: [
-        error && /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris.Layout.Section, { children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
-          import_polaris.Banner,
+      children: /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)(import_polaris2.Layout, { children: [
+        error && /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(import_polaris2.Layout.Section, { children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+          import_polaris2.Banner,
           {
             title: "Error",
             status: "critical",
             onDismiss: () => setError(""),
-            children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("p", { children: error })
+            children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("p", { children: error })
           }
         ) }),
-        loading && /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris.Layout.Section, { children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { style: { textAlign: "center", padding: "2rem" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris.Spinner, { size: "large" }),
-          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("div", { style: { marginTop: "1rem" }, children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris.Text, { variant: "bodyMd", children: "Processing dashboard operation..." }) })
+        loading && /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(import_polaris2.Layout.Section, { children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(import_polaris2.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { style: { textAlign: "center", padding: "2rem" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(import_polaris2.Spinner, { size: "large" }),
+          /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { style: { marginTop: "1rem" }, children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(import_polaris2.Text, { variant: "bodyMd", children: "Processing dashboard operation..." }) })
         ] }) }) }),
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris.Layout.Section, { children: dashboards.length === 0 ? /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
-          import_polaris.EmptyState,
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(import_polaris2.Layout.Section, { children: dashboards.length === 0 ? /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(import_polaris2.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+          import_polaris2.EmptyState,
           {
             heading: "No custom dashboards yet",
             action: {
@@ -107294,10 +107358,10 @@ function CustomDashboards() {
               onAction: () => setShowTemplateModal(!0)
             },
             image: "https://cdn.shopify.com/s/files/1/0757/9955/files/empty-state.svg",
-            children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("p", { children: "Build custom analytics dashboards tailored to your business needs. Start from scratch or choose from our pre-built templates." })
+            children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("p", { children: "Build custom analytics dashboards tailored to your business needs. Start from scratch or choose from our pre-built templates." })
           }
-        ) }) : /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
-          import_polaris.ResourceList,
+        ) }) : /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(import_polaris2.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+          import_polaris2.ResourceList,
           {
             resourceName: { singular: "dashboard", plural: "dashboards" },
             items: dashboards,
@@ -107329,14 +107393,14 @@ function CustomDashboards() {
                   onAction: () => handleDeleteDashboard(id)
                 }
               ];
-              return /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
-                import_polaris.ResourceItem,
+              return /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+                import_polaris2.ResourceItem,
                 {
                   id: id.toString(),
                   url: `/app/dashboards/${id}`,
                   accessibilityLabel: `View dashboard ${dashboard_name}`,
-                  media: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
-                    import_polaris.Avatar,
+                  media: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+                    import_polaris2.Avatar,
                     {
                       customer: !1,
                       size: "medium",
@@ -107344,32 +107408,32 @@ function CustomDashboards() {
                     }
                   ),
                   shortcutActions,
-                  children: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(Stack, { distribution: "fill", alignment: "center", children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(Stack, { vertical: !0, spacing: "tight", children: [
-                      /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(Stack, { spacing: "tight", children: [
-                        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris.Text, { variant: "bodyMd", fontWeight: "semibold", children: dashboard_name }),
-                        is_default && /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris.Badge, { status: "info", children: "Default" })
+                  children: /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)(Stack, { distribution: "fill", alignment: "center", children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)(Stack, { vertical: !0, spacing: "tight", children: [
+                      /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)(Stack, { spacing: "tight", children: [
+                        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(import_polaris2.Text, { variant: "bodyMd", fontWeight: "semibold", children: dashboard_name }),
+                        is_default && /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(import_polaris2.Badge, { status: "info", children: "Default" })
                       ] }),
-                      description && /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris.Text, { variant: "bodySm", color: "subdued", children: description }),
-                      /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(Stack, { spacing: "tight", children: [
-                        /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(import_polaris.Text, { variant: "bodySm", color: "subdued", children: [
+                      description && /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(import_polaris2.Text, { variant: "bodySm", color: "subdued", children: description }),
+                      /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)(Stack, { spacing: "tight", children: [
+                        /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)(import_polaris2.Text, { variant: "bodySm", color: "subdued", children: [
                           widgets?.length || 0,
                           " widgets \u2022 ",
                           view_count,
                           " views"
                         ] }),
-                        /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(import_polaris.Text, { variant: "bodySm", color: "subdued", children: [
+                        /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)(import_polaris2.Text, { variant: "bodySm", color: "subdued", children: [
                           "Updated ",
                           new Date(updated_at).toLocaleDateString()
                         ] })
                       ] })
                     ] }),
-                    /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
-                      import_polaris.Popover,
+                    /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+                      import_polaris2.Popover,
                       {
                         active: popoverActive[id] || !1,
-                        activator: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
-                          import_polaris.Button,
+                        activator: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+                          import_polaris2.Button,
                           {
                             disclosure: !0,
                             size: "slim",
@@ -107378,8 +107442,8 @@ function CustomDashboards() {
                           }
                         ),
                         onClose: () => togglePopover(id),
-                        children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
-                          import_polaris.ActionList,
+                        children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+                          import_polaris2.ActionList,
                           {
                             items: [
                               {
@@ -107422,8 +107486,8 @@ function CustomDashboards() {
             }
           }
         ) }) }),
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
-          import_polaris.Modal,
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+          import_polaris2.Modal,
           {
             open: showCreateModal,
             onClose: () => setShowCreateModal(!1),
@@ -107439,9 +107503,9 @@ function CustomDashboards() {
                 onAction: () => setShowCreateModal(!1)
               }
             ],
-            children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris.Modal.Section, { children: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(Stack, { vertical: !0, spacing: "loose", children: [
-              /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
-                import_polaris.TextField,
+            children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(import_polaris2.Modal.Section, { children: /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)(Stack, { vertical: !0, spacing: "loose", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+                import_polaris2.TextField,
                 {
                   label: "Dashboard Name",
                   value: newDashboardName,
@@ -107450,8 +107514,8 @@ function CustomDashboards() {
                   autoComplete: "off"
                 }
               ),
-              /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
-                import_polaris.TextField,
+              /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+                import_polaris2.TextField,
                 {
                   label: "Description (optional)",
                   value: newDashboardDescription,
@@ -107464,8 +107528,8 @@ function CustomDashboards() {
             ] }) })
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
-          import_polaris.Modal,
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+          import_polaris2.Modal,
           {
             open: showTemplateModal,
             onClose: () => setShowTemplateModal(!1),
@@ -107483,9 +107547,9 @@ function CustomDashboards() {
               }
             ],
             large: !0,
-            children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris.Modal.Section, { children: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(Stack, { vertical: !0, spacing: "loose", children: [
-              /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
-                import_polaris.TextField,
+            children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(import_polaris2.Modal.Section, { children: /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)(Stack, { vertical: !0, spacing: "loose", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+                import_polaris2.TextField,
                 {
                   label: "Dashboard Name",
                   value: newDashboardName,
@@ -107494,16 +107558,16 @@ function CustomDashboards() {
                   autoComplete: "off"
                 }
               ),
-              /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris.Text, { variant: "headingMd", children: "Available Templates" }),
-              /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("div", { style: {
+              /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(import_polaris2.Text, { variant: "headingMd", children: "Available Templates" }),
+              /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { style: {
                 display: "grid",
                 gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
                 gap: "1rem"
-              }, children: templates.map((template) => /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
-                import_polaris.Card,
+              }, children: templates.map((template) => /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+                import_polaris2.Card,
                 {
                   subdued: selectedTemplate?.id !== template.id,
-                  children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(
+                  children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
                     "div",
                     {
                       style: {
@@ -107512,13 +107576,13 @@ function CustomDashboards() {
                         border: selectedTemplate?.id === template.id ? "2px solid #5C6AC4" : "2px solid transparent"
                       },
                       onClick: () => setSelectedTemplate(template),
-                      children: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(Stack, { vertical: !0, spacing: "tight", children: [
-                        /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(Stack, { distribution: "equalSpacing", children: [
-                          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris.Text, { variant: "bodyMd", fontWeight: "semibold", children: template.template_name }),
-                          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris.Badge, { children: template.template_category })
+                      children: /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)(Stack, { vertical: !0, spacing: "tight", children: [
+                        /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)(Stack, { distribution: "equalSpacing", children: [
+                          /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(import_polaris2.Text, { variant: "bodyMd", fontWeight: "semibold", children: template.template_name }),
+                          /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(import_polaris2.Badge, { children: template.template_category })
                         ] }),
-                        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris.Text, { variant: "bodySm", color: "subdued", children: template.template_description }),
-                        /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(import_polaris.Badge, { status: "info", children: [
+                        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(import_polaris2.Text, { variant: "bodySm", color: "subdued", children: template.template_description }),
+                        /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)(import_polaris2.Badge, { status: "info", children: [
                           template.tier_requirement.toUpperCase(),
                           " tier"
                         ] })
@@ -107533,8 +107597,8 @@ function CustomDashboards() {
         )
       ] })
     }
-  ) : /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris.Page, { title: "Custom Dashboards", children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris.Layout, { children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris.Layout.Section, { children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(
-    import_polaris.EmptyState,
+  ) : /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(import_polaris2.Page, { title: "Custom Dashboards", children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(import_polaris2.Layout, { children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(import_polaris2.Layout.Section, { children: /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(import_polaris2.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)(
+    import_polaris2.EmptyState,
     {
       heading: "Enterprise Feature",
       action: {
@@ -107543,19 +107607,19 @@ function CustomDashboards() {
       },
       image: "https://cdn.shopify.com/s/files/1/0757/9955/files/empty-state.svg",
       children: [
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("p", { children: "Custom dashboards are available exclusively with the Enterprise plan ($199/month). Create personalized analytics views, drag-and-drop widgets, and build the perfect dashboard for your business needs." }),
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("div", { style: { marginTop: "1rem" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris.Text, { variant: "bodyMd", as: "p", fontWeight: "semibold", children: "Enterprise Features Include:" }),
-          /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)("ul", { style: { marginTop: "0.5rem", paddingLeft: "1rem" }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("li", { children: "Unlimited custom dashboards" }),
-            /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("li", { children: "Drag-and-drop dashboard builder" }),
-            /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("li", { children: "Custom KPI definitions" }),
-            /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("li", { children: "Advanced visualization options" }),
-            /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("li", { children: "Dashboard sharing and export" }),
-            /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("li", { children: "Real-time data updates" })
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("p", { children: "Custom dashboards are available exclusively with the Enterprise plan ($199/month). Create personalized analytics views, drag-and-drop widgets, and build the perfect dashboard for your business needs." }),
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { style: { marginTop: "1rem" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(import_polaris2.Text, { variant: "bodyMd", as: "p", fontWeight: "semibold", children: "Enterprise Features Include:" }),
+          /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("ul", { style: { marginTop: "0.5rem", paddingLeft: "1rem" }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("li", { children: "Unlimited custom dashboards" }),
+            /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("li", { children: "Drag-and-drop dashboard builder" }),
+            /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("li", { children: "Custom KPI definitions" }),
+            /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("li", { children: "Advanced visualization options" }),
+            /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("li", { children: "Dashboard sharing and export" }),
+            /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("li", { children: "Real-time data updates" })
           ] })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("div", { style: { marginTop: "1rem" }, children: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(import_polaris.Badge, { status: "warning", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { style: { marginTop: "1rem" }, children: /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)(import_polaris2.Badge, { status: "warning", children: [
           "Current Plan: ",
           currentTier.toUpperCase()
         ] }) })
@@ -107705,7 +107769,7 @@ function isBasicFeature(feature) {
 }
 
 // app/routes/app.autopilot.tsx
-var import_jsx_runtime7 = __toESM(require_jsx_runtime());
+var import_jsx_runtime8 = __toESM(require_jsx_runtime());
 async function loader8({ request: request2 }) {
   try {
     let { session, admin } = await authenticate.admin(request2), shopName = session?.shop?.replace(".myshopify.com", "");
@@ -107904,9 +107968,9 @@ ${config2}
 In production, this would start the automation.`
     ), setToast("Demo: Configuration shown (would enable in production)");
   }
-  return /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("h1", { children: "Autopilot" }),
-    campaignLimits && !campaignLimits.canCreate && /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { style: {
+  return /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("div", { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("h1", { children: "Autopilot" }),
+    campaignLimits && !campaignLimits.canCreate && /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("div", { style: {
       backgroundColor: "#fef2f2",
       border: "1px solid #fecaca",
       borderRadius: "6px",
@@ -107914,8 +107978,8 @@ In production, this would start the automation.`
       margin: "16px 0",
       color: "#dc2626"
     }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("h3", { style: { margin: "0 0 8px 0", fontSize: "16px", fontWeight: "bold" }, children: "Campaign Limit Reached" }),
-      /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("p", { style: { margin: "0 0 12px 0" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("h3", { style: { margin: "0 0 8px 0", fontSize: "16px", fontWeight: "bold" }, children: "Campaign Limit Reached" }),
+      /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("p", { style: { margin: "0 0 12px 0" }, children: [
         "Your ",
         campaignLimits.tier,
         " plan allows up to ",
@@ -107924,7 +107988,7 @@ In production, this would start the automation.`
         campaignLimits.current,
         " active campaigns."
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(
         "a",
         {
           href: campaignLimits.upgradeUrl,
@@ -107940,7 +108004,7 @@ In production, this would start the automation.`
         }
       )
     ] }),
-    campaignLimits && campaignLimits.canCreate && campaignLimits.remaining <= 2 && campaignLimits.limit !== -1 && /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { style: {
+    campaignLimits && campaignLimits.canCreate && campaignLimits.remaining <= 2 && campaignLimits.limit !== -1 && /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("div", { style: {
       backgroundColor: "#fef3c7",
       border: "1px solid #fcd34d",
       borderRadius: "6px",
@@ -107948,8 +108012,8 @@ In production, this would start the automation.`
       margin: "16px 0",
       color: "#d97706"
     }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("h3", { style: { margin: "0 0 8px 0", fontSize: "16px", fontWeight: "bold" }, children: "Campaign Usage Warning" }),
-      /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("p", { style: { margin: "0 0 12px 0" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("h3", { style: { margin: "0 0 8px 0", fontSize: "16px", fontWeight: "bold" }, children: "Campaign Usage Warning" }),
+      /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("p", { style: { margin: "0 0 12px 0" }, children: [
         "You are using ",
         campaignLimits.current,
         " of ",
@@ -107959,7 +108023,7 @@ In production, this would start the automation.`
         " plan.",
         campaignLimits.remaining > 0 && ` You have ${campaignLimits.remaining} campaigns remaining.`
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(
         "a",
         {
           href: campaignLimits.upgradeUrl,
@@ -107975,11 +108039,11 @@ In production, this would start the automation.`
         }
       )
     ] }),
-    toast && /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("p", { children: toast }),
-    /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("section", { style: { border: "1px solid #eee", padding: 12 }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("h3", { children: "Goal" }),
-      /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("label", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+    toast && /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("p", { children: toast }),
+    /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("section", { style: { border: "1px solid #eee", padding: 12 }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("h3", { children: "Goal" }),
+      /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("label", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(
           "input",
           {
             type: "radio",
@@ -107992,9 +108056,9 @@ In production, this would start the automation.`
         " ",
         "Protect"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("label", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("label", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(
           "input",
           {
             type: "radio",
@@ -108007,9 +108071,9 @@ In production, this would start the automation.`
         " ",
         "Grow"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("label", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("label", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(
           "input",
           {
             type: "radio",
@@ -108023,9 +108087,9 @@ In production, this would start the automation.`
         "Scale"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("section", { style: { border: "1px solid #eee", padding: 12 }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("h3", { children: "Budget & CPC" }),
-      /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+    /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("section", { style: { border: "1px solid #eee", padding: 12 }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("h3", { children: "Budget & CPC" }),
+      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(
         "input",
         {
           type: "number",
@@ -108035,7 +108099,7 @@ In production, this would start the automation.`
           placeholder: "$ per day"
         }
       ),
-      /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(
         "input",
         {
           type: "number",
@@ -108046,9 +108110,9 @@ In production, this would start the automation.`
         }
       )
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("section", { style: { border: "1px solid #eee", padding: 12 }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("h3", { children: "Landing URL" }),
-      /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+    /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("section", { style: { border: "1px solid #eee", padding: 12 }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("h3", { children: "Landing URL" }),
+      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(
         "input",
         {
           value: url,
@@ -108058,7 +108122,7 @@ In production, this would start the automation.`
         }
       )
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)(
+    /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(
       "div",
       {
         style: {
@@ -108069,8 +108133,8 @@ In production, this would start the automation.`
           marginBottom: 16
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("h4", { style: { margin: "0 0 8px 0", color: "#0c5460" }, children: "Autopilot Status" }),
-          /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)(
+          /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("h4", { style: { margin: "0 0 8px 0", color: "#0c5460" }, children: "Autopilot Status" }),
+          /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(
             "div",
             {
               style: {
@@ -108080,7 +108144,7 @@ In production, this would start the automation.`
                 marginBottom: 8
               },
               children: [
-                /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+                /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(
                   "span",
                   {
                     style: {
@@ -108093,33 +108157,33 @@ In production, this would start the automation.`
                     children: "ACTIVE"
                   }
                 ),
-                /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("span", { children: [
+                /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("span", { children: [
                   "Automation running for:",
                   " ",
-                  /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("strong", { children: shopName || serverShopName || "Loading..." })
+                  /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("strong", { children: shopName || serverShopName || "Loading..." })
                 ] })
               ]
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { style: { fontSize: "14px", color: "#666" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("div", { style: { fontSize: "14px", color: "#666" }, children: [
             "Budget optimization: Active",
-            /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("br", {}),
+            /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("br", {}),
             "AI analysis: Running every 15min",
-            /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("br", {}),
+            /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("br", {}),
             "Performance monitoring: Continuous",
-            /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("br", {}),
+            /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("br", {}),
             "Script updates: Available below"
           ] })
         ]
       }
     ),
-    /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("div", { style: { marginTop: 8 }, children: /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)(import_react12.Form, { method: "post", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("input", { type: "hidden", name: "actionType", value: "generateScript" }),
-      /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("input", { type: "hidden", name: "mode", value: mode2 }),
-      /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("input", { type: "hidden", name: "budget", value: budget }),
-      /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("input", { type: "hidden", name: "cpc", value: cpc }),
-      /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("input", { type: "hidden", name: "url", value: url }),
-      /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+    /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("div", { style: { marginTop: 8 }, children: /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_react12.Form, { method: "post", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("input", { type: "hidden", name: "actionType", value: "generateScript" }),
+      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("input", { type: "hidden", name: "mode", value: mode2 }),
+      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("input", { type: "hidden", name: "budget", value: budget }),
+      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("input", { type: "hidden", name: "cpc", value: cpc }),
+      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("input", { type: "hidden", name: "url", value: url }),
+      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(
         "button",
         {
           type: "submit",
@@ -108138,23 +108202,23 @@ In production, this would start the automation.`
         }
       )
     ] }) }),
-    actionData?.success && /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { style: {
+    actionData?.success && /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("div", { style: {
       background: "#d4edda",
       border: "1px solid #c3e6cb",
       padding: "12px",
       marginTop: "12px",
       borderRadius: "4px"
     }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("h3", { children: "Script Generated Successfully!" }),
-      /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("p", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("h3", { children: "Script Generated Successfully!" }),
+      /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("p", { children: [
         "Size: ",
         actionData.size,
         "KB for shop: ",
         actionData.shopName
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("details", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("summary", { children: "View Script (Click to expand)" }),
-        /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+      /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("details", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("summary", { children: "View Script (Click to expand)" }),
+        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(
           "textarea",
           {
             readOnly: !0,
@@ -108170,12 +108234,12 @@ In production, this would start the automation.`
         )
       ] })
     ] }),
-    showScript && /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)(
+    showScript && /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(
       "section",
       {
         style: { border: "1px solid #eee", padding: 12, marginTop: 12 },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)(
+          /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(
             "div",
             {
               style: {
@@ -108185,13 +108249,13 @@ In production, this would start the automation.`
                 marginBottom: 10
               },
               children: [
-                /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("h3", { children: [
+                /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("h3", { children: [
                   "Google Ads Script (",
                   Math.round(scriptCode.length / 1024),
                   "KB)"
                 ] }),
-                /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("div", { style: { display: "flex", gap: "8px" }, children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+                /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("div", { style: { display: "flex", gap: "8px" }, children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(
                     "button",
                     {
                       onClick: () => {
@@ -108212,7 +108276,7 @@ In production, this would start the automation.`
                       children: "Copy Script"
                     }
                   ),
-                  /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+                  /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(
                     "button",
                     {
                       onClick: () => {
@@ -108239,7 +108303,7 @@ In production, this would start the automation.`
               ]
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime7.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(
             "textarea",
             {
               readOnly: !0,
@@ -108253,10 +108317,10 @@ In production, this would start the automation.`
               placeholder: "Script will appear here when loaded..."
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime7.jsxs)("ol", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("li", { children: "Google Ads \u2192 Tools \u2192 Bulk actions \u2192 Scripts \u2192 + New script" }),
-            /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("li", { children: "Paste, Authorize, then Preview first" }),
-            /* @__PURE__ */ (0, import_jsx_runtime7.jsx)("li", { children: "If ok, Run once, then Schedule daily" })
+          /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("ol", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("li", { children: "Google Ads \u2192 Tools \u2192 Bulk actions \u2192 Scripts \u2192 + New script" }),
+            /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("li", { children: "Paste, Authorize, then Preview first" }),
+            /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("li", { children: "If ok, Run once, then Schedule daily" })
           ] })
         ]
       }
@@ -108300,13 +108364,13 @@ function buildAppUrl(path, shopContext) {
 }
 
 // app/routes/app.intent-os.tsx
-var import_jsx_runtime8 = __toESM(require_jsx_runtime()), loader9 = async ({ request: request2 }) => (0, import_node8.json)({
+var import_jsx_runtime9 = __toESM(require_jsx_runtime()), loader9 = async ({ request: request2 }) => (0, import_node8.json)({
   tenantId: process.env.TENANT_ID || "proofkit",
   launchDate: "Q1 2026"
 });
 function IntentOSComingSoon() {
   let { tenantId, launchDate } = (0, import_react14.useLoaderData)(), shopContext = useShopContext();
-  return /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(
+  return /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(
     "div",
     {
       style: {
@@ -108316,10 +108380,10 @@ function IntentOSComingSoon() {
         textAlign: "center"
       },
       children: [
-        /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("div", { style: { marginBottom: "3rem" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("h1", { style: { fontSize: "48px", marginBottom: "1rem", color: "#333" }, children: "Smart Website Features" }),
-          /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("p", { style: { fontSize: "24px", color: "#666", marginBottom: "2rem" }, children: "Advanced conversion optimization tools coming soon!" }),
-          /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(
+        /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { style: { marginBottom: "3rem" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("h1", { style: { fontSize: "48px", marginBottom: "1rem", color: "#333" }, children: "Smart Website Features" }),
+          /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("p", { style: { fontSize: "24px", color: "#666", marginBottom: "2rem" }, children: "Advanced conversion optimization tools coming soon!" }),
+          /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(
             "div",
             {
               style: {
@@ -108339,7 +108403,7 @@ function IntentOSComingSoon() {
             }
           )
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(
+        /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(
           "div",
           {
             style: {
@@ -108350,8 +108414,8 @@ function IntentOSComingSoon() {
               background: "#f8f9fa"
             },
             children: [
-              /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("h2", { style: { marginBottom: "2rem", color: "#333" }, children: "What's Coming" }),
-              /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(
+              /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("h2", { style: { marginBottom: "2rem", color: "#333" }, children: "What's Coming" }),
+              /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(
                 "div",
                 {
                   style: {
@@ -108361,7 +108425,7 @@ function IntentOSComingSoon() {
                     textAlign: "left"
                   },
                   children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(
+                    /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(
                       "div",
                       {
                         style: {
@@ -108371,12 +108435,12 @@ function IntentOSComingSoon() {
                           background: "#fff"
                         },
                         children: [
-                          /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("h3", { style: { color: "#28a745", marginBottom: "1rem" }, children: "\u23F0 Stock Urgency" }),
-                          /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("p", { style: { color: "#666", fontSize: "14px" }, children: 'Automatically show "Only X left!" messages on low-stock products to create buying urgency.' })
+                          /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("h3", { style: { color: "#28a745", marginBottom: "1rem" }, children: "\u23F0 Stock Urgency" }),
+                          /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("p", { style: { color: "#666", fontSize: "14px" }, children: 'Automatically show "Only X left!" messages on low-stock products to create buying urgency.' })
                         ]
                       }
                     ),
-                    /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(
+                    /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(
                       "div",
                       {
                         style: {
@@ -108386,12 +108450,12 @@ function IntentOSComingSoon() {
                           background: "#fff"
                         },
                         children: [
-                          /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("h3", { style: { color: "#007bff", marginBottom: "1rem" }, children: "Welcome Offers" }),
-                          /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("p", { style: { color: "#666", fontSize: "14px" }, children: "Show special discounts to first-time visitors to convert them into customers." })
+                          /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("h3", { style: { color: "#007bff", marginBottom: "1rem" }, children: "Welcome Offers" }),
+                          /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("p", { style: { color: "#666", fontSize: "14px" }, children: "Show special discounts to first-time visitors to convert them into customers." })
                         ]
                       }
                     ),
-                    /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(
+                    /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(
                       "div",
                       {
                         style: {
@@ -108401,12 +108465,12 @@ function IntentOSComingSoon() {
                           background: "#fff"
                         },
                         children: [
-                          /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("h3", { style: { color: "#856404", marginBottom: "1rem" }, children: "Smart Content" }),
-                          /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("p", { style: { color: "#666", fontSize: "14px" }, children: "Show different headlines and messages based on how visitors found your store." })
+                          /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("h3", { style: { color: "#856404", marginBottom: "1rem" }, children: "Smart Content" }),
+                          /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("p", { style: { color: "#666", fontSize: "14px" }, children: "Show different headlines and messages based on how visitors found your store." })
                         ]
                       }
                     ),
-                    /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(
+                    /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(
                       "div",
                       {
                         style: {
@@ -108416,8 +108480,8 @@ function IntentOSComingSoon() {
                           background: "#fff"
                         },
                         children: [
-                          /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("h3", { style: { color: "#dc3545", marginBottom: "1rem" }, children: "\u{1F4A8} Exit Intent" }),
-                          /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("p", { style: { color: "#666", fontSize: "14px" }, children: "Catch visitors before they leave with last-chance offers and incentives." })
+                          /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("h3", { style: { color: "#dc3545", marginBottom: "1rem" }, children: "\u{1F4A8} Exit Intent" }),
+                          /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("p", { style: { color: "#666", fontSize: "14px" }, children: "Catch visitors before they leave with last-chance offers and incentives." })
                         ]
                       }
                     )
@@ -108427,7 +108491,7 @@ function IntentOSComingSoon() {
             ]
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(
+        /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(
           "div",
           {
             style: {
@@ -108438,14 +108502,14 @@ function IntentOSComingSoon() {
               background: "#e7f3ff"
             },
             children: [
-              /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("h2", { style: { color: "#0c5460", marginBottom: "1rem" }, children: "Our Current Focus" }),
-              /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("p", { style: { fontSize: "18px", color: "#0c5460", marginBottom: "2rem" }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("h2", { style: { color: "#0c5460", marginBottom: "1rem" }, children: "Our Current Focus" }),
+              /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("p", { style: { fontSize: "18px", color: "#0c5460", marginBottom: "2rem" }, children: [
                 "We're focusing on perfecting your",
                 " ",
-                /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("strong", { children: "Google Ads optimization" }),
+                /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("strong", { children: "Google Ads optimization" }),
                 " first. Once that's delivering amazing results, we'll add these website optimization features."
               ] }),
-              /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(
+              /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(
                 "div",
                 {
                   style: {
@@ -108454,7 +108518,7 @@ function IntentOSComingSoon() {
                     gap: "1rem"
                   },
                   children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(
+                    /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
                       import_react14.Link,
                       {
                         to: buildAppUrl("/app/autopilot", shopContext),
@@ -108471,7 +108535,7 @@ function IntentOSComingSoon() {
                         children: "\u{1F916} Use Autopilot Now"
                       }
                     ),
-                    /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(
+                    /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
                       import_react14.Link,
                       {
                         to: "/app/advanced",
@@ -108488,7 +108552,7 @@ function IntentOSComingSoon() {
                         children: "Configure Settings"
                       }
                     ),
-                    /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(
+                    /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
                       import_react14.Link,
                       {
                         to: "/app/insights",
@@ -108511,7 +108575,7 @@ function IntentOSComingSoon() {
             ]
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(
+        /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(
           "div",
           {
             style: {
@@ -108521,29 +108585,29 @@ function IntentOSComingSoon() {
               textAlign: "left"
             },
             children: [
-              /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("h3", { style: { marginBottom: "1rem", color: "#333" }, children: "Why We're Building This Step by Step" }),
-              /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("ul", { style: { color: "#666", lineHeight: "1.6", paddingLeft: "20px" }, children: [
-                /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("li", { children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("strong", { children: "Better Product:" }),
+              /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("h3", { style: { marginBottom: "1rem", color: "#333" }, children: "Why We're Building This Step by Step" }),
+              /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("ul", { style: { color: "#666", lineHeight: "1.6", paddingLeft: "20px" }, children: [
+                /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("li", { children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("strong", { children: "Better Product:" }),
                   " Perfect your Google Ads optimization first, then add website features"
                 ] }),
-                /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("li", { children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("strong", { children: "Faster Launch:" }),
+                /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("li", { children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("strong", { children: "Faster Launch:" }),
                   " Get you making money sooner with proven Google Ads automation"
                 ] }),
-                /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("li", { children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("strong", { children: "Customer-Driven:" }),
+                /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("li", { children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("strong", { children: "Customer-Driven:" }),
                   " Build website features based on what you actually need"
                 ] }),
-                /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)("li", { children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("strong", { children: "Quality Focus:" }),
+                /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("li", { children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("strong", { children: "Quality Focus:" }),
                   " Each feature gets our full attention instead of rushing everything"
                 ] })
               ] })
             ]
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(
+        /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(
           "div",
           {
             style: {
@@ -108554,9 +108618,9 @@ function IntentOSComingSoon() {
               borderRadius: "8px"
             },
             children: [
-              /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("h3", { style: { marginBottom: "1rem", color: "#333" }, children: "\u{1F4EC} Want to know when Smart Website features launch?" }),
-              /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("p", { style: { color: "#666", marginBottom: "1.5rem" }, children: "We'll email you as soon as these conversion optimization tools are ready." }),
-              /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(
+              /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("h3", { style: { marginBottom: "1rem", color: "#333" }, children: "\u{1F4EC} Want to know when Smart Website features launch?" }),
+              /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("p", { style: { color: "#666", marginBottom: "1.5rem" }, children: "We'll email you as soon as these conversion optimization tools are ready." }),
+              /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(
                 "div",
                 {
                   style: {
@@ -108567,7 +108631,7 @@ function IntentOSComingSoon() {
                     flexWrap: "wrap"
                   },
                   children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(
+                    /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
                       "input",
                       {
                         type: "email",
@@ -108581,7 +108645,7 @@ function IntentOSComingSoon() {
                         }
                       }
                     ),
-                    /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(
+                    /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
                       "button",
                       {
                         style: {
@@ -108617,7 +108681,7 @@ __export(app_advanced_exports, {
 });
 var React9 = __toESM(require_react()), import_node9 = __toESM(require_dist3()), import_react15 = __toESM(require_dist2());
 init_shopify_server();
-var import_jsx_runtime9 = __toESM(require_jsx_runtime());
+var import_jsx_runtime10 = __toESM(require_jsx_runtime());
 async function loader10({ request: request2 }) {
   let shopName;
   try {
@@ -109106,10 +109170,10 @@ function Advanced() {
     color: "#333",
     marginBottom: "8px"
   };
-  return /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { style: { maxWidth: 920 }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("h1", { children: "Advanced Settings" }),
-    /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("p", { style: { color: "#666", marginBottom: "24px" }, children: "Fine-tune your ProofKit automation and optimize your store's performance." }),
-    data?.error && /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(
+  return /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { style: { maxWidth: 920 }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("h1", { children: "Advanced Settings" }),
+    /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("p", { style: { color: "#666", marginBottom: "24px" }, children: "Fine-tune your ProofKit automation and optimize your store's performance." }),
+    data?.error && /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(
       "div",
       {
         style: {
@@ -109121,7 +109185,7 @@ function Advanced() {
           color: "#856404"
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
             "h4",
             {
               style: {
@@ -109132,8 +109196,8 @@ function Advanced() {
               children: "Configuration Issue"
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("p", { style: { margin: 0, fontSize: "14px" }, children: data.error }),
-          data.needsSetup && /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("p", { style: { margin: 0, fontSize: "14px" }, children: data.error }),
+          data.needsSetup && /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
             "p",
             {
               style: {
@@ -109147,7 +109211,7 @@ function Advanced() {
         ]
       }
     ),
-    suggestions.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(
+    suggestions.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(
       "div",
       {
         style: {
@@ -109158,7 +109222,7 @@ function Advanced() {
           marginBottom: "24px"
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(
+          /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(
             "h3",
             {
               style: {
@@ -109172,7 +109236,7 @@ function Advanced() {
               },
               children: [
                 "Personalized Recommendations",
-                /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+                /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
                   "span",
                   {
                     style: {
@@ -109187,7 +109251,7 @@ function Advanced() {
               ]
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("div", { style: { display: "grid", gap: "12px" }, children: suggestions.map((suggestion) => /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(
+          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("div", { style: { display: "grid", gap: "12px" }, children: suggestions.map((suggestion) => /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(
             "div",
             {
               style: {
@@ -109200,8 +109264,8 @@ function Advanced() {
                 alignItems: "center"
               },
               children: [
-                /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+                /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
                     "h4",
                     {
                       style: {
@@ -109213,7 +109277,7 @@ function Advanced() {
                       children: suggestion.title
                     }
                   ),
-                  /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+                  /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
                     "p",
                     {
                       style: {
@@ -109224,7 +109288,7 @@ function Advanced() {
                       children: suggestion.description
                     }
                   ),
-                  /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(
+                  /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(
                     "span",
                     {
                       style: {
@@ -109239,7 +109303,7 @@ function Advanced() {
                     }
                   )
                 ] }),
-                /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+                /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
                   "button",
                   {
                     type: "button",
@@ -109266,7 +109330,7 @@ function Advanced() {
         ]
       }
     ),
-    insights?.kpi && /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(
+    insights?.kpi && /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(
       "div",
       {
         style: {
@@ -109277,7 +109341,7 @@ function Advanced() {
           marginBottom: "24px"
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
             "h3",
             {
               style: {
@@ -109289,7 +109353,7 @@ function Advanced() {
               children: "Current Performance (Last 7 Days)"
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(
+          /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(
             "div",
             {
               style: {
@@ -109298,8 +109362,8 @@ function Advanced() {
                 gap: "16px"
               },
               children: [
-                /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { style: { textAlign: "center" }, children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+                /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { style: { textAlign: "center" }, children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
                     "div",
                     {
                       style: {
@@ -109310,10 +109374,10 @@ function Advanced() {
                       children: insights.kpi.clicks || 0
                     }
                   ),
-                  /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("div", { style: { fontSize: "12px", color: "#666" }, children: "Clicks" })
+                  /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("div", { style: { fontSize: "12px", color: "#666" }, children: "Clicks" })
                 ] }),
-                /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { style: { textAlign: "center" }, children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(
+                /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { style: { textAlign: "center" }, children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(
                     "div",
                     {
                       style: {
@@ -109327,10 +109391,10 @@ function Advanced() {
                       ]
                     }
                   ),
-                  /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("div", { style: { fontSize: "12px", color: "#666" }, children: "Spend" })
+                  /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("div", { style: { fontSize: "12px", color: "#666" }, children: "Spend" })
                 ] }),
-                /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { style: { textAlign: "center" }, children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(
+                /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { style: { textAlign: "center" }, children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(
                     "div",
                     {
                       style: {
@@ -109344,10 +109408,10 @@ function Advanced() {
                       ]
                     }
                   ),
-                  /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("div", { style: { fontSize: "12px", color: "#666" }, children: "Avg CPC" })
+                  /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("div", { style: { fontSize: "12px", color: "#666" }, children: "Avg CPC" })
                 ] }),
-                /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { style: { textAlign: "center" }, children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(
+                /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { style: { textAlign: "center" }, children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(
                     "div",
                     {
                       style: {
@@ -109361,7 +109425,7 @@ function Advanced() {
                       ]
                     }
                   ),
-                  /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("div", { style: { fontSize: "12px", color: "#666" }, children: "CPA" })
+                  /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("div", { style: { fontSize: "12px", color: "#666" }, children: "CPA" })
                 ] })
               ]
             }
@@ -109369,13 +109433,13 @@ function Advanced() {
         ]
       }
     ),
-    /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_react15.Form, { method: "post", style: { display: "grid", gap: 20 }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("input", { type: "hidden", name: "shop", value: data?.shopName || "" }),
-      /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { style: sectionStyle, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("h3", { style: legendStyle, children: "\u{1F552} Automation Schedule" }),
-        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("p", { style: helpStyle, children: "Choose how often ProofKit should optimize your campaigns" }),
-        /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { style: { marginTop: "12px" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("div", { style: { display: "grid", gap: "8px" }, children: suggestions.schedule?.options.map((option, idx) => /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(
+    /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_react15.Form, { method: "post", style: { display: "grid", gap: 20 }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("input", { type: "hidden", name: "shop", value: data?.shopName || "" }),
+      /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { style: sectionStyle, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("h3", { style: legendStyle, children: "\u{1F552} Automation Schedule" }),
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("p", { style: helpStyle, children: "Choose how often ProofKit should optimize your campaigns" }),
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { style: { marginTop: "12px" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("div", { style: { display: "grid", gap: "8px" }, children: suggestions.schedule?.options.map((option, idx) => /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(
             "label",
             {
               style: {
@@ -109388,7 +109452,7 @@ function Advanced() {
                 backgroundColor: "#fafafa"
               },
               children: [
-                /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+                /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
                   "input",
                   {
                     type: "radio",
@@ -109398,9 +109462,9 @@ function Advanced() {
                     style: { marginRight: "12px" }
                   }
                 ),
-                /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("strong", { children: option.label }),
-                  /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+                /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("strong", { children: option.label }),
+                  /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
                     "div",
                     {
                       style: {
@@ -109416,18 +109480,18 @@ function Advanced() {
             },
             idx
           )) }),
-          /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { style: { ...helpStyle, marginTop: "8px" }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("strong", { children: "Tip:" }),
+          /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { style: { ...helpStyle, marginTop: "8px" }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("strong", { children: "Tip:" }),
             ' Start with "Daily" if you have active campaigns. You can change this anytime.'
           ] })
         ] })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { style: sectionStyle, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("h3", { style: legendStyle, children: "Performance Targets" }),
-        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("p", { style: helpStyle, children: "Choose from personalized options or enter your own values" }),
-        /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { style: { display: "grid", gap: "20px", marginTop: "12px" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+      /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { style: sectionStyle, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("h3", { style: legendStyle, children: "Performance Targets" }),
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("p", { style: helpStyle, children: "Choose from personalized options or enter your own values" }),
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { style: { display: "grid", gap: "20px", marginTop: "12px" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
               "label",
               {
                 style: {
@@ -109438,10 +109502,10 @@ function Advanced() {
                 children: "Target Cost Per Acquisition (CPA)"
               }
             ),
-            /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("div", { style: { ...helpStyle, marginBottom: "8px" }, children: suggestions.targetCPA?.description }),
-            /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { style: { marginBottom: "8px" }, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("label", { style: { marginRight: "16px" }, children: [
-                /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("div", { style: { ...helpStyle, marginBottom: "8px" }, children: suggestions.targetCPA?.description }),
+            /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { style: { marginBottom: "8px" }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("label", { style: { marginRight: "16px" }, children: [
+                /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
                   "input",
                   {
                     type: "radio",
@@ -109452,8 +109516,8 @@ function Advanced() {
                 ),
                 "Choose from suggestions"
               ] }),
-              /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("label", { children: [
-                /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+              /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("label", { children: [
+                /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
                   "input",
                   {
                     type: "radio",
@@ -109465,8 +109529,8 @@ function Advanced() {
                 "Enter manually"
               ] })
             ] }),
-            targetCPAMode === "preset" ? /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("div", { style: { display: "grid", gap: "8px" }, children: suggestions.targetCPA?.options.map(
-              (option, idx) => /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(
+            targetCPAMode === "preset" ? /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("div", { style: { display: "grid", gap: "8px" }, children: suggestions.targetCPA?.options.map(
+              (option, idx) => /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(
                 "label",
                 {
                   style: {
@@ -109479,7 +109543,7 @@ function Advanced() {
                     backgroundColor: "#fafafa"
                   },
                   children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+                    /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
                       "input",
                       {
                         type: "radio",
@@ -109489,14 +109553,14 @@ function Advanced() {
                         style: { marginRight: "12px" }
                       }
                     ),
-                    /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { children: [
-                      /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("strong", { children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { children: [
+                      /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("strong", { children: [
                         "$",
                         option.value
                       ] }),
                       " - ",
                       option.label,
-                      /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+                      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
                         "div",
                         {
                           style: {
@@ -109512,7 +109576,7 @@ function Advanced() {
                 },
                 idx
               )
-            ) }) : /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+            ) }) : /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
               "input",
               {
                 name: "target_cpa",
@@ -109530,8 +109594,8 @@ function Advanced() {
               }
             )
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
               "label",
               {
                 style: {
@@ -109542,10 +109606,10 @@ function Advanced() {
                 children: "Target Return on Ad Spend (ROAS)"
               }
             ),
-            /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("div", { style: { ...helpStyle, marginBottom: "8px" }, children: suggestions.targetROAS?.description }),
-            /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { style: { marginBottom: "8px" }, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("label", { style: { marginRight: "16px" }, children: [
-                /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("div", { style: { ...helpStyle, marginBottom: "8px" }, children: suggestions.targetROAS?.description }),
+            /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { style: { marginBottom: "8px" }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("label", { style: { marginRight: "16px" }, children: [
+                /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
                   "input",
                   {
                     type: "radio",
@@ -109556,8 +109620,8 @@ function Advanced() {
                 ),
                 "Choose from suggestions"
               ] }),
-              /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("label", { children: [
-                /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+              /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("label", { children: [
+                /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
                   "input",
                   {
                     type: "radio",
@@ -109569,8 +109633,8 @@ function Advanced() {
                 "Enter manually"
               ] })
             ] }),
-            targetROASMode === "preset" ? /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("div", { style: { display: "grid", gap: "8px" }, children: suggestions.targetROAS?.options.map(
-              (option, idx) => /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(
+            targetROASMode === "preset" ? /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("div", { style: { display: "grid", gap: "8px" }, children: suggestions.targetROAS?.options.map(
+              (option, idx) => /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(
                 "label",
                 {
                   style: {
@@ -109583,7 +109647,7 @@ function Advanced() {
                     backgroundColor: "#fafafa"
                   },
                   children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+                    /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
                       "input",
                       {
                         type: "radio",
@@ -109593,14 +109657,14 @@ function Advanced() {
                         style: { marginRight: "12px" }
                       }
                     ),
-                    /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { children: [
-                      /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("strong", { children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { children: [
+                      /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("strong", { children: [
                         option.value,
                         "x ROAS"
                       ] }),
                       " - ",
                       option.label,
-                      /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+                      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
                         "div",
                         {
                           style: {
@@ -109616,7 +109680,7 @@ function Advanced() {
                 },
                 idx
               )
-            ) }) : /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+            ) }) : /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
               "input",
               {
                 name: "target_roas",
@@ -109636,12 +109700,12 @@ function Advanced() {
           ] })
         ] })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { style: sectionStyle, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("h3", { style: legendStyle, children: "\u{1F4B3} Maximum Bid Limits" }),
-        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("p", { style: helpStyle, children: "Set cost-per-click limits to control your ad spending" }),
-        /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { style: { marginTop: "12px" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { style: { marginBottom: "16px" }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+      /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { style: sectionStyle, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("h3", { style: legendStyle, children: "\u{1F4B3} Maximum Bid Limits" }),
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("p", { style: helpStyle, children: "Set cost-per-click limits to control your ad spending" }),
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { style: { marginTop: "12px" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { style: { marginBottom: "16px" }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
               "h4",
               {
                 style: {
@@ -109652,8 +109716,8 @@ function Advanced() {
                 children: "Quick Setup (Recommended)"
               }
             ),
-            /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("div", { style: { display: "grid", gap: "8px" }, children: suggestions.bidCeiling?.options.map(
-              (option, idx) => /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(
+            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("div", { style: { display: "grid", gap: "8px" }, children: suggestions.bidCeiling?.options.map(
+              (option, idx) => /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(
                 "button",
                 {
                   type: "button",
@@ -109680,14 +109744,14 @@ function Advanced() {
                     fontSize: "14px"
                   },
                   children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { children: [
-                      /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("strong", { children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { children: [
+                      /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("strong", { children: [
                         "$",
                         option.value,
                         " - ",
                         option.label
                       ] }),
-                      /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+                      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
                         "div",
                         {
                           style: {
@@ -109699,7 +109763,7 @@ function Advanced() {
                         }
                       )
                     ] }),
-                    /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+                    /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
                       "span",
                       {
                         style: {
@@ -109716,8 +109780,8 @@ function Advanced() {
               )
             ) })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
               "h4",
               {
                 style: {
@@ -109728,7 +109792,7 @@ function Advanced() {
                 children: "Campaign-Specific Limits (Optional)"
               }
             ),
-            /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(
+            /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(
               "div",
               {
                 style: {
@@ -109738,12 +109802,12 @@ function Advanced() {
                   marginBottom: "8px"
                 },
                 children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("strong", { children: "Campaign Name" }),
-                  /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("strong", { children: "Max CPC ($)" })
+                  /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("strong", { children: "Campaign Name" }),
+                  /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("strong", { children: "Max CPC ($)" })
                 ]
               }
             ),
-            capRows.map((row, i) => /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(
+            capRows.map((row, i) => /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(
               "div",
               {
                 style: {
@@ -109753,7 +109817,7 @@ function Advanced() {
                   marginBottom: "4px"
                 },
                 children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+                  /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
                     "input",
                     {
                       name: "caps_campaign",
@@ -109766,7 +109830,7 @@ function Advanced() {
                       }
                     }
                   ),
-                  /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+                  /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
                     "input",
                     {
                       name: "caps_value",
@@ -109784,7 +109848,7 @@ function Advanced() {
               },
               i
             )),
-            /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(
+            /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(
               "div",
               {
                 style: {
@@ -109794,7 +109858,7 @@ function Advanced() {
                   marginBottom: "8px"
                 },
                 children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+                  /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
                     "input",
                     {
                       name: "caps_campaign",
@@ -109806,7 +109870,7 @@ function Advanced() {
                       }
                     }
                   ),
-                  /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+                  /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
                     "input",
                     {
                       name: "caps_value",
@@ -109823,11 +109887,11 @@ function Advanced() {
                 ]
               }
             ),
-            /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { style: helpStyle, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("strong", { children: "Examples:" }),
+            /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { style: helpStyle, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("strong", { children: "Examples:" }),
               ' Use "*" for all campaigns, "Brand Campaign" for specific ones. Set to 0 to remove a limit.'
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(
+            /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(
               "div",
               {
                 style: {
@@ -109837,7 +109901,7 @@ function Advanced() {
                   marginTop: "12px"
                 },
                 children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+                  /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
                     "button",
                     {
                       type: "submit",
@@ -109856,7 +109920,7 @@ function Advanced() {
                       children: nav.state !== "idle" ? "\u23F3 Saving..." : "\u{1F4BE} Save Bid Limits"
                     }
                   ),
-                  buttonFeedback.saveCaps && /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+                  buttonFeedback.saveCaps && /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
                     "span",
                     {
                       style: {
@@ -109877,12 +109941,12 @@ function Advanced() {
           ] })
         ] })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { style: sectionStyle, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("h3", { style: legendStyle, children: "SEO Optimization" }),
-        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("p", { style: helpStyle, children: "Improve your product pages for search engines" }),
-        /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { style: { display: "grid", gap: 12, marginTop: "12px" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+      /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { style: sectionStyle, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("h3", { style: legendStyle, children: "SEO Optimization" }),
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("p", { style: helpStyle, children: "Improve your product pages for search engines" }),
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { style: { display: "grid", gap: 12, marginTop: "12px" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
               "label",
               {
                 style: {
@@ -109893,7 +109957,7 @@ function Advanced() {
                 children: "Product IDs or Handles"
               }
             ),
-            /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
               "textarea",
               {
                 name: "product_ids",
@@ -109909,10 +109973,10 @@ function Advanced() {
                 }
               }
             ),
-            /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("div", { style: helpStyle, children: 'Example: "12345 67890" or "t-shirt-blue, sneakers-red"' })
+            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("div", { style: helpStyle, children: 'Example: "12345 67890" or "t-shirt-blue, sneakers-red"' })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
               "label",
               {
                 style: {
@@ -109923,8 +109987,8 @@ function Advanced() {
                 children: "SEO Strategy"
               }
             ),
-            /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("label", { style: { marginRight: "20px" }, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+            /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("label", { style: { marginRight: "20px" }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
                 "input",
                 {
                   type: "radio",
@@ -109936,8 +110000,8 @@ function Advanced() {
               ),
               "Template (Use your own patterns)"
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("label", { children: [
-              /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+            /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("label", { children: [
+              /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
                 "input",
                 {
                   type: "radio",
@@ -109949,8 +110013,8 @@ function Advanced() {
               "AI (Let AI write descriptions)"
             ] })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
               "label",
               {
                 style: {
@@ -109961,7 +110025,7 @@ function Advanced() {
                 children: "Title Template"
               }
             ),
-            /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
               "input",
               {
                 name: "template_title",
@@ -109974,7 +110038,7 @@ function Advanced() {
                 }
               }
             ),
-            /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { style: helpStyle, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { style: helpStyle, children: [
               "Use ",
               "{{title}}",
               " for product name, ",
@@ -109982,8 +110046,8 @@ function Advanced() {
               " for brand name"
             ] })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
               "label",
               {
                 style: {
@@ -109994,7 +110058,7 @@ function Advanced() {
                 children: "Description Template"
               }
             ),
-            /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
               "input",
               {
                 name: "template_description",
@@ -110008,7 +110072,7 @@ function Advanced() {
               }
             )
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(
+          /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(
             "div",
             {
               style: {
@@ -110018,7 +110082,7 @@ function Advanced() {
                 alignItems: "center"
               },
               children: [
-                /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+                /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
                   "button",
                   {
                     type: "submit",
@@ -110037,7 +110101,7 @@ function Advanced() {
                     children: nav.state !== "idle" ? "Loading..." : "Preview Changes"
                   }
                 ),
-                /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+                /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
                   "button",
                   {
                     type: "submit",
@@ -110056,7 +110120,7 @@ function Advanced() {
                     children: nav.state !== "idle" ? "Applying..." : "Apply to Store"
                   }
                 ),
-                buttonFeedback.seoPreview && /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+                buttonFeedback.seoPreview && /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
                   "span",
                   {
                     style: {
@@ -110071,7 +110135,7 @@ function Advanced() {
                     children: buttonFeedback.seoPreview
                   }
                 ),
-                buttonFeedback.seoApply && /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+                buttonFeedback.seoApply && /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
                   "span",
                   {
                     style: {
@@ -110091,13 +110155,13 @@ function Advanced() {
           )
         ] })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { style: sectionStyle, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("h3", { style: legendStyle, children: "\u{1F511} Target Keywords" }),
-        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("p", { style: helpStyle, children: "Choose keyword categories that match your business or enter your own" }),
-        /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { style: { marginTop: "12px" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { style: { marginBottom: "12px" }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("label", { style: { marginRight: "16px" }, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+      /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { style: sectionStyle, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("h3", { style: legendStyle, children: "\u{1F511} Target Keywords" }),
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("p", { style: helpStyle, children: "Choose keyword categories that match your business or enter your own" }),
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { style: { marginTop: "12px" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { style: { marginBottom: "12px" }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("label", { style: { marginRight: "16px" }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
                 "input",
                 {
                   type: "radio",
@@ -110108,8 +110172,8 @@ function Advanced() {
               ),
               "Choose keyword category"
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("label", { children: [
-              /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+            /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("label", { children: [
+              /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
                 "input",
                 {
                   type: "radio",
@@ -110121,8 +110185,8 @@ function Advanced() {
               "Enter my own keywords"
             ] })
           ] }),
-          keywordsMode === "preset" ? /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("div", { style: { display: "grid", gap: "12px" }, children: suggestions.keywords?.options.map(
-            (option, idx) => /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+          keywordsMode === "preset" ? /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("div", { style: { display: "grid", gap: "12px" }, children: suggestions.keywords?.options.map(
+            (option, idx) => /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
               "label",
               {
                 style: {
@@ -110133,7 +110197,7 @@ function Advanced() {
                   cursor: "pointer",
                   backgroundColor: "#fafafa"
                 },
-                children: /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(
+                children: /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(
                   "div",
                   {
                     style: {
@@ -110142,7 +110206,7 @@ function Advanced() {
                       gap: "12px"
                     },
                     children: [
-                      /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+                      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
                         "input",
                         {
                           type: "radio",
@@ -110152,9 +110216,9 @@ function Advanced() {
                           style: { marginTop: "4px" }
                         }
                       ),
-                      /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { children: [
-                        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("strong", { children: option.label }),
-                        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+                      /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { children: [
+                        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("strong", { children: option.label }),
+                        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
                           "div",
                           {
                             style: {
@@ -110166,7 +110230,7 @@ function Advanced() {
                             children: option.description
                           }
                         ),
-                        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+                        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
                           "div",
                           {
                             style: {
@@ -110189,7 +110253,7 @@ function Advanced() {
               },
               idx
             )
-          ) }) : /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+          ) }) : /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
             "textarea",
             {
               name: "desired_keywords",
@@ -110211,16 +110275,16 @@ competitor alternatives`,
               }
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("div", { style: helpStyle, children: "These keywords help guide the autopilot's optimization decisions and negative keyword suggestions." })
+          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("div", { style: helpStyle, children: "These keywords help guide the autopilot's optimization decisions and negative keyword suggestions." })
         ] })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { style: sectionStyle, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("h3", { style: legendStyle, children: "AI Behavior Instructions" }),
-        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("p", { style: helpStyle, children: "Choose a business strategy or write custom instructions for the AI" }),
-        /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { style: { marginTop: "12px" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { style: { marginBottom: "12px" }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("label", { style: { marginRight: "16px" }, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+      /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { style: sectionStyle, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("h3", { style: legendStyle, children: "AI Behavior Instructions" }),
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("p", { style: helpStyle, children: "Choose a business strategy or write custom instructions for the AI" }),
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { style: { marginTop: "12px" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { style: { marginBottom: "12px" }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("label", { style: { marginRight: "16px" }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
                 "input",
                 {
                   type: "radio",
@@ -110231,8 +110295,8 @@ competitor alternatives`,
               ),
               "Choose business strategy"
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("label", { children: [
-              /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+            /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("label", { children: [
+              /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
                 "input",
                 {
                   type: "radio",
@@ -110244,8 +110308,8 @@ competitor alternatives`,
               "Write custom instructions"
             ] })
           ] }),
-          aiBehaviorMode === "preset" ? /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("div", { style: { display: "grid", gap: "12px" }, children: suggestions.aiBehavior?.options.map(
-            (option, idx) => /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+          aiBehaviorMode === "preset" ? /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("div", { style: { display: "grid", gap: "12px" }, children: suggestions.aiBehavior?.options.map(
+            (option, idx) => /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
               "label",
               {
                 style: {
@@ -110256,7 +110320,7 @@ competitor alternatives`,
                   cursor: "pointer",
                   backgroundColor: "#fafafa"
                 },
-                children: /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(
+                children: /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(
                   "div",
                   {
                     style: {
@@ -110265,7 +110329,7 @@ competitor alternatives`,
                       gap: "12px"
                     },
                     children: [
-                      /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+                      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
                         "input",
                         {
                           type: "radio",
@@ -110275,8 +110339,8 @@ competitor alternatives`,
                           style: { marginTop: "4px" }
                         }
                       ),
-                      /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("div", { style: { flex: 1 }, children: [
-                        /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(
+                      /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("div", { style: { flex: 1 }, children: [
+                        /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(
                           "div",
                           {
                             style: {
@@ -110286,8 +110350,8 @@ competitor alternatives`,
                               marginBottom: "6px"
                             },
                             children: [
-                              /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("strong", { style: { fontSize: "16px" }, children: option.label }),
-                              /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+                              /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("strong", { style: { fontSize: "16px" }, children: option.label }),
+                              /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
                                 "span",
                                 {
                                   style: {
@@ -110303,7 +110367,7 @@ competitor alternatives`,
                             ]
                           }
                         ),
-                        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+                        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
                           "div",
                           {
                             style: {
@@ -110314,7 +110378,7 @@ competitor alternatives`,
                             children: option.description
                           }
                         ),
-                        /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(
+                        /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(
                           "div",
                           {
                             style: {
@@ -110342,7 +110406,7 @@ competitor alternatives`,
               },
               idx
             )
-          ) }) : /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+          ) }) : /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
             "textarea",
             {
               name: "playbook",
@@ -110365,10 +110429,10 @@ competitor alternatives`,
               }
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("div", { style: { ...helpStyle, marginTop: "8px" }, children: "These instructions help the AI understand your business goals and make better optimization decisions." })
+          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("div", { style: { ...helpStyle, marginTop: "8px" }, children: "These instructions help the AI understand your business goals and make better optimization decisions." })
         ] })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(
+      /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(
         "div",
         {
           style: {
@@ -110381,7 +110445,7 @@ competitor alternatives`,
             marginTop: "20px"
           },
           children: [
-            /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
               "button",
               {
                 type: "submit",
@@ -110404,7 +110468,7 @@ competitor alternatives`,
                 children: nav.state !== "idle" ? "\u23F3 Saving & Running..." : "\u{1F4BE} Save Settings & Run Optimization"
               }
             ),
-            (buttonFeedback.saveSettings || buttonFeedback.runOptimization) && /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+            (buttonFeedback.saveSettings || buttonFeedback.runOptimization) && /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
               "span",
               {
                 style: {
@@ -110424,7 +110488,7 @@ competitor alternatives`,
         }
       )
     ] }),
-    Array.isArray(preview) && preview.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(
+    Array.isArray(preview) && preview.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(
       "div",
       {
         style: {
@@ -110435,9 +110499,9 @@ competitor alternatives`,
           border: "1px solid #e1e5e9"
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("h3", { children: "SEO Preview" }),
-          /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("p", { style: helpStyle, children: "Here's how your product pages will look after optimization:" }),
-          /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("div", { style: { overflowX: "auto", marginTop: "12px" }, children: /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(
+          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("h3", { children: "SEO Preview" }),
+          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("p", { style: helpStyle, children: "Here's how your product pages will look after optimization:" }),
+          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("div", { style: { overflowX: "auto", marginTop: "12px" }, children: /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(
             "table",
             {
               style: {
@@ -110448,8 +110512,8 @@ competitor alternatives`,
                 overflow: "hidden"
               },
               children: [
-                /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("thead", { children: /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("tr", { style: { backgroundColor: "#f1f3f4" }, children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+                /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("thead", { children: /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("tr", { style: { backgroundColor: "#f1f3f4" }, children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
                     "th",
                     {
                       style: {
@@ -110460,7 +110524,7 @@ competitor alternatives`,
                       children: "Product"
                     }
                   ),
-                  /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+                  /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
                     "th",
                     {
                       style: {
@@ -110471,7 +110535,7 @@ competitor alternatives`,
                       children: "New Title"
                     }
                   ),
-                  /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+                  /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
                     "th",
                     {
                       style: {
@@ -110482,7 +110546,7 @@ competitor alternatives`,
                       children: "New Description"
                     }
                   ),
-                  /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+                  /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
                     "th",
                     {
                       style: {
@@ -110494,8 +110558,8 @@ competitor alternatives`,
                     }
                   )
                 ] }) }),
-                /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("tbody", { children: preview.map((p, i) => /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("tr", { style: { borderBottom: "1px solid #eee" }, children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+                /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("tbody", { children: preview.map((p, i) => /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("tr", { style: { borderBottom: "1px solid #eee" }, children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
                     "td",
                     {
                       style: {
@@ -110506,9 +110570,9 @@ competitor alternatives`,
                       children: p.productId
                     }
                   ),
-                  /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("td", { style: { padding: "12px" }, children: p.title }),
-                  /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("td", { style: { padding: "12px" }, children: p.description }),
-                  /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("td", { style: { padding: "12px", fontStyle: "italic" }, children: p.images?.[0]?.altText || "(no alt text)" })
+                  /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("td", { style: { padding: "12px" }, children: p.title }),
+                  /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("td", { style: { padding: "12px" }, children: p.description }),
+                  /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("td", { style: { padding: "12px", fontStyle: "italic" }, children: p.images?.[0]?.altText || "(no alt text)" })
                 ] }, i)) })
               ]
             }
@@ -110528,7 +110592,7 @@ __export(app_insights_exports, {
 var React11 = __toESM(require_react()), import_node10 = __toESM(require_dist3()), import_react17 = __toESM(require_dist2());
 
 // app/components/AnalyticsTier.tsx
-var import_react16 = __toESM(require_react()), import_polaris2 = __toESM(require_cjs6()), import_jsx_runtime10 = __toESM(require_jsx_runtime());
+var import_react16 = __toESM(require_react()), import_polaris3 = __toESM(require_cjs6()), import_jsx_runtime11 = __toESM(require_jsx_runtime());
 function AnalyticsTier({
   tenant,
   data,
@@ -110564,110 +110628,110 @@ function AnalyticsTier({
     currency: "USD"
   }).format(amount), formatNumber = (num) => new Intl.NumberFormat("en-US").format(num), renderBasicKPIs = () => {
     let { kpi } = data;
-    return /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(Grid, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(Grid.Cell, { columnSpan: { xs: 6, sm: 3, md: 2, lg: 2, xl: 2 }, children: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris2.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(Stack, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris2.Text, { variant: "headingMd", children: "Clicks" }),
-        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris2.Text, { variant: "heading2xl", as: "h2", children: formatNumber(kpi.clicks) }),
-        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris2.Text, { variant: "bodyMd", color: "subdued", children: "Total clicks" })
+    return /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(Grid, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(Grid.Cell, { columnSpan: { xs: 6, sm: 3, md: 2, lg: 2, xl: 2 }, children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris3.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(Stack, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris3.Text, { variant: "headingMd", children: "Clicks" }),
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris3.Text, { variant: "heading2xl", as: "h2", children: formatNumber(kpi.clicks) }),
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris3.Text, { variant: "bodyMd", color: "subdued", children: "Total clicks" })
       ] }) }) }),
-      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(Grid.Cell, { columnSpan: { xs: 6, sm: 3, md: 2, lg: 2, xl: 2 }, children: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris2.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(Stack, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris2.Text, { variant: "headingMd", children: "Cost" }),
-        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris2.Text, { variant: "heading2xl", as: "h2", children: formatCurrency(kpi.cost) }),
-        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris2.Text, { variant: "bodyMd", color: "subdued", children: "Total spend" })
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(Grid.Cell, { columnSpan: { xs: 6, sm: 3, md: 2, lg: 2, xl: 2 }, children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris3.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(Stack, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris3.Text, { variant: "headingMd", children: "Cost" }),
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris3.Text, { variant: "heading2xl", as: "h2", children: formatCurrency(kpi.cost) }),
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris3.Text, { variant: "bodyMd", color: "subdued", children: "Total spend" })
       ] }) }) }),
-      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(Grid.Cell, { columnSpan: { xs: 6, sm: 3, md: 2, lg: 2, xl: 2 }, children: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris2.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(Stack, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris2.Text, { variant: "headingMd", children: "Conversions" }),
-        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris2.Text, { variant: "heading2xl", as: "h2", children: formatNumber(kpi.conversions) }),
-        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris2.Text, { variant: "bodyMd", color: "subdued", children: "Total conversions" })
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(Grid.Cell, { columnSpan: { xs: 6, sm: 3, md: 2, lg: 2, xl: 2 }, children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris3.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(Stack, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris3.Text, { variant: "headingMd", children: "Conversions" }),
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris3.Text, { variant: "heading2xl", as: "h2", children: formatNumber(kpi.conversions) }),
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris3.Text, { variant: "bodyMd", color: "subdued", children: "Total conversions" })
       ] }) }) }),
-      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(Grid.Cell, { columnSpan: { xs: 6, sm: 3, md: 2, lg: 2, xl: 2 }, children: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris2.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(Stack, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris2.Text, { variant: "headingMd", children: "CTR" }),
-        /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris2.Text, { variant: "heading2xl", as: "h2", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(Grid.Cell, { columnSpan: { xs: 6, sm: 3, md: 2, lg: 2, xl: 2 }, children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris3.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(Stack, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris3.Text, { variant: "headingMd", children: "CTR" }),
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris3.Text, { variant: "heading2xl", as: "h2", children: [
           (kpi.ctr * 100).toFixed(2),
           "%"
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris2.Text, { variant: "bodyMd", color: "subdued", children: "Click-through rate" })
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris3.Text, { variant: "bodyMd", color: "subdued", children: "Click-through rate" })
       ] }) }) }),
-      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(Grid.Cell, { columnSpan: { xs: 6, sm: 3, md: 2, lg: 2, xl: 2 }, children: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris2.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(Stack, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris2.Text, { variant: "headingMd", children: "CPC" }),
-        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris2.Text, { variant: "heading2xl", as: "h2", children: formatCurrency(kpi.cpc) }),
-        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris2.Text, { variant: "bodyMd", color: "subdued", children: "Cost per click" })
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(Grid.Cell, { columnSpan: { xs: 6, sm: 3, md: 2, lg: 2, xl: 2 }, children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris3.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(Stack, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris3.Text, { variant: "headingMd", children: "CPC" }),
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris3.Text, { variant: "heading2xl", as: "h2", children: formatCurrency(kpi.cpc) }),
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris3.Text, { variant: "bodyMd", color: "subdued", children: "Cost per click" })
       ] }) }) }),
-      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(Grid.Cell, { columnSpan: { xs: 6, sm: 3, md: 2, lg: 2, xl: 2 }, children: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris2.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(Stack, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris2.Text, { variant: "headingMd", children: "CPA" }),
-        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris2.Text, { variant: "heading2xl", as: "h2", children: formatCurrency(kpi.cpa) }),
-        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris2.Text, { variant: "bodyMd", color: "subdued", children: "Cost per acquisition" })
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(Grid.Cell, { columnSpan: { xs: 6, sm: 3, md: 2, lg: 2, xl: 2 }, children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris3.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(Stack, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris3.Text, { variant: "headingMd", children: "CPA" }),
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris3.Text, { variant: "heading2xl", as: "h2", children: formatCurrency(kpi.cpa) }),
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris3.Text, { variant: "bodyMd", color: "subdued", children: "Cost per acquisition" })
       ] }) }) })
     ] });
   }, renderROASMetrics = () => {
     if (!data.roas?.basic)
       return null;
     let { basic, advanced } = data.roas;
-    return /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris2.Card, { sectioned: !0, children: /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(Stack, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(Stack, { horizontal: !0, alignment: "center", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris2.Text, { variant: "headingLg", children: "ROAS Analytics" }),
-        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris2.Badge, { status: getTierBadgeColor(tier), children: getTierDisplayName(tier) })
+    return /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris3.Card, { sectioned: !0, children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(Stack, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(Stack, { horizontal: !0, alignment: "center", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris3.Text, { variant: "headingLg", children: "ROAS Analytics" }),
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris3.Badge, { status: getTierBadgeColor(tier), children: getTierDisplayName(tier) })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(Grid, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(Grid.Cell, { columnSpan: { xs: 6, sm: 3, md: 4, lg: 4, xl: 4 }, children: /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(Stack, { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris2.Text, { variant: "headingMd", children: "Basic ROAS" }),
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris2.Text, { variant: "heading2xl", as: "h2", color: basic.roas >= 2 ? "success" : "critical", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(Grid, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(Grid.Cell, { columnSpan: { xs: 6, sm: 3, md: 4, lg: 4, xl: 4 }, children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(Stack, { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris3.Text, { variant: "headingMd", children: "Basic ROAS" }),
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris3.Text, { variant: "heading2xl", as: "h2", color: basic.roas >= 2 ? "success" : "critical", children: [
             basic.roas.toFixed(2),
             "x"
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris2.Text, { variant: "bodyMd", color: "subdued", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris3.Text, { variant: "bodyMd", color: "subdued", children: [
             "Revenue: ",
             formatCurrency(basic.revenue)
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris2.Text, { variant: "bodyMd", color: "subdued", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris3.Text, { variant: "bodyMd", color: "subdued", children: [
             "Profit: ",
             formatCurrency(basic.profit)
           ] })
         ] }) }),
-        advanced && tier !== "starter" && /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_jsx_runtime10.Fragment, { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(Grid.Cell, { columnSpan: { xs: 6, sm: 3, md: 4, lg: 4, xl: 4 }, children: /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(Stack, { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(Stack, { horizontal: !0, alignment: "center", children: [
-              /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris2.Text, { variant: "headingMd", children: "LTV ROAS" }),
-              /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris2.Tooltip, { content: "Lifetime Value based ROAS calculation", children: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris2.Button, { plain: !0, monochrome: !0, icon: ViewMajor }) })
+        advanced && tier !== "starter" && /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_jsx_runtime11.Fragment, { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(Grid.Cell, { columnSpan: { xs: 6, sm: 3, md: 4, lg: 4, xl: 4 }, children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(Stack, { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(Stack, { horizontal: !0, alignment: "center", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris3.Text, { variant: "headingMd", children: "LTV ROAS" }),
+              /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris3.Tooltip, { content: "Lifetime Value based ROAS calculation", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris3.Button, { plain: !0, monochrome: !0, icon: ViewMajor }) })
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris2.Text, { variant: "heading2xl", as: "h2", color: advanced.ltvRoas >= 4 ? "success" : "warning", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris3.Text, { variant: "heading2xl", as: "h2", color: advanced.ltvRoas >= 4 ? "success" : "warning", children: [
               advanced.ltvRoas.toFixed(2),
               "x"
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris2.Text, { variant: "bodyMd", color: "subdued", children: "Long-term profitability" })
+            /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris3.Text, { variant: "bodyMd", color: "subdued", children: "Long-term profitability" })
           ] }) }),
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(Grid.Cell, { columnSpan: { xs: 6, sm: 3, md: 4, lg: 4, xl: 4 }, children: /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(Stack, { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(Stack, { horizontal: !0, alignment: "center", children: [
-              /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris2.Text, { variant: "headingMd", children: "Margin ROAS" }),
-              /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris2.Tooltip, { content: "Profit margin adjusted ROAS", children: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris2.Button, { plain: !0, monochrome: !0, icon: TrendUpMajor }) })
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(Grid.Cell, { columnSpan: { xs: 6, sm: 3, md: 4, lg: 4, xl: 4 }, children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(Stack, { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(Stack, { horizontal: !0, alignment: "center", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris3.Text, { variant: "headingMd", children: "Margin ROAS" }),
+              /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris3.Tooltip, { content: "Profit margin adjusted ROAS", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris3.Button, { plain: !0, monochrome: !0, icon: TrendUpMajor }) })
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris2.Text, { variant: "heading2xl", as: "h2", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris3.Text, { variant: "heading2xl", as: "h2", children: [
               advanced.marginRoas.toFixed(2),
               "x"
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris2.Text, { variant: "bodyMd", color: "subdued", children: "After-margin profitability" })
+            /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris3.Text, { variant: "bodyMd", color: "subdued", children: "After-margin profitability" })
           ] }) })
         ] })
       ] })
     ] }) });
-  }, renderRealTimeStatus = () => isRealTimeEnabled ? /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris2.Card, { sectioned: !0, children: /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(Stack, { horizontal: !0, alignment: "center", distribution: "equalSpacing", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(Stack, { horizontal: !0, alignment: "center", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("div", { style: {
+  }, renderRealTimeStatus = () => isRealTimeEnabled ? /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris3.Card, { sectioned: !0, children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(Stack, { horizontal: !0, alignment: "center", distribution: "equalSpacing", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(Stack, { horizontal: !0, alignment: "center", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("div", { style: {
         width: 8,
         height: 8,
         borderRadius: "50%",
         backgroundColor: "#00A47C",
         animation: "pulse 2s infinite"
       } }),
-      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris2.Text, { variant: "bodyMd", color: "success", children: "Real-time updates active" })
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris3.Text, { variant: "bodyMd", color: "success", children: "Real-time updates active" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(Stack, { horizontal: !0, alignment: "center", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris2.Text, { variant: "bodySm", color: "subdued", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(Stack, { horizontal: !0, alignment: "center", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris3.Text, { variant: "bodySm", color: "subdued", children: [
         "Last update: ",
         lastUpdate.toLocaleTimeString()
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
-        import_polaris2.Button,
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
+        import_polaris3.Button,
         {
           plain: !0,
           onClick: onDataRefresh,
@@ -110677,33 +110741,33 @@ function AnalyticsTier({
         }
       )
     ] })
-  ] }) }) : null, renderUpgradePrompts = () => !data.upgradePrompts || data.upgradePrompts.length === 0 ? null : /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(Stack, { sectioned: !0, children: data.upgradePrompts.map((prompt, index) => /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
-    import_polaris2.Banner,
+  ] }) }) : null, renderUpgradePrompts = () => !data.upgradePrompts || data.upgradePrompts.length === 0 ? null : /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(Stack, { sectioned: !0, children: data.upgradePrompts.map((prompt, index) => /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
+    import_polaris3.Banner,
     {
       status: "info",
       action: {
         content: `Upgrade to ${getTierDisplayName(prompt.requiredTier)}`,
         onAction: () => onUpgrade?.(prompt.requiredTier)
       },
-      children: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris2.Text, { variant: "bodyMd", children: prompt.message })
+      children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris3.Text, { variant: "bodyMd", children: prompt.message })
     },
     index
-  )) }), renderTierStatus = () => /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris2.Card, { sectioned: !0, children: /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(Stack, { horizontal: !0, alignment: "center", distribution: "equalSpacing", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(Stack, { horizontal: !0, alignment: "center", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris2.Text, { variant: "headingMd", children: "Analytics Tier" }),
-      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris2.Badge, { status: getTierBadgeColor(tier), children: getTierDisplayName(tier) })
+  )) }), renderTierStatus = () => /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris3.Card, { sectioned: !0, children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(Stack, { horizontal: !0, alignment: "center", distribution: "equalSpacing", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(Stack, { horizontal: !0, alignment: "center", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris3.Text, { variant: "headingMd", children: "Analytics Tier" }),
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris3.Badge, { status: getTierBadgeColor(tier), children: getTierDisplayName(tier) })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(Stack, { horizontal: !0, alignment: "center", children: [
-      tier !== "enterprise" && /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
-        import_polaris2.Button,
+    /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(Stack, { horizontal: !0, alignment: "center", children: [
+      tier !== "enterprise" && /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
+        import_polaris3.Button,
         {
           primary: !0,
           onClick: () => onUpgrade?.(tier === "starter" ? "professional" : "enterprise"),
           children: tier === "starter" ? "Upgrade to Professional" : "Upgrade to Enterprise"
         }
       ),
-      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
-        import_polaris2.Button,
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
+        import_polaris3.Button,
         {
           plain: !0,
           icon: SettingsMajor,
@@ -110721,30 +110785,30 @@ function AnalyticsTier({
       professional: ["Real-time analytics", "Advanced ROAS", "Weekly reports", "Attribution modeling"],
       enterprise: ["Custom dashboards", "Custom ROAS models", "Daily reports", "Multi-touch attribution"]
     }, nextTier = tier === "starter" ? "professional" : "enterprise";
-    return /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris2.Card, { sectioned: !0, children: /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(Stack, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris2.Text, { variant: "headingMd", children: "Unlock More Analytics Features" }),
-      /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(Grid, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(Grid.Cell, { columnSpan: { xs: 6, sm: 6, md: 6, lg: 6, xl: 6 }, children: /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(Stack, { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris2.Text, { variant: "headingXs", children: [
+    return /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris3.Card, { sectioned: !0, children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(Stack, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris3.Text, { variant: "headingMd", children: "Unlock More Analytics Features" }),
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(Grid, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(Grid.Cell, { columnSpan: { xs: 6, sm: 6, md: 6, lg: 6, xl: 6 }, children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(Stack, { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris3.Text, { variant: "headingXs", children: [
             "Current Plan: ",
             getTierDisplayName(tier)
           ] }),
-          features[tier].map((feature, index) => /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris2.Text, { variant: "bodyMd", color: "subdued", children: [
+          features[tier].map((feature, index) => /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris3.Text, { variant: "bodyMd", color: "subdued", children: [
             "\u2713 ",
             feature
           ] }, index))
         ] }) }),
-        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(Grid.Cell, { columnSpan: { xs: 6, sm: 6, md: 6, lg: 6, xl: 6 }, children: /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(Stack, { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris2.Text, { variant: "headingXs", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(Grid.Cell, { columnSpan: { xs: 6, sm: 6, md: 6, lg: 6, xl: 6 }, children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(Stack, { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris3.Text, { variant: "headingXs", children: [
             getTierDisplayName(nextTier),
             " Plan"
           ] }),
-          features[nextTier].map((feature, index) => /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris2.Text, { variant: "bodyMd", children: [
+          features[nextTier].map((feature, index) => /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris3.Text, { variant: "bodyMd", children: [
             "\u2713 ",
             feature
           ] }, index)),
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(
-            import_polaris2.Button,
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(
+            import_polaris3.Button,
             {
               primary: !0,
               size: "slim",
@@ -110759,7 +110823,7 @@ function AnalyticsTier({
       ] })
     ] }) });
   };
-  return /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris2.Layout, { children: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris2.Layout.Section, { children: /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(Stack, { children: [
+  return /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris3.Layout, { children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris3.Layout.Section, { children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(Stack, { children: [
     renderTierStatus(),
     renderUpgradePrompts(),
     renderRealTimeStatus(),
@@ -110770,7 +110834,7 @@ function AnalyticsTier({
 }
 
 // app/routes/app.insights.tsx
-var import_jsx_runtime11 = __toESM(require_jsx_runtime());
+var import_jsx_runtime12 = __toESM(require_jsx_runtime());
 function SimpleChart({ data }) {
   let [ChartComponent, setChartComponent] = React11.useState(null);
   return React11.useEffect(() => {
@@ -110780,7 +110844,7 @@ function SimpleChart({ data }) {
     }), () => {
       alive = !1;
     };
-  }, []), data?.length ? ChartComponent ? /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(ChartComponent, { data }) : /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
+  }, []), data?.length ? ChartComponent ? /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(ChartComponent, { data }) : /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
     "div",
     {
       style: {
@@ -110794,7 +110858,7 @@ function SimpleChart({ data }) {
       },
       children: "Loading chart..."
     }
-  ) : /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
+  ) : /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
     "div",
     {
       style: {
@@ -110877,7 +110941,7 @@ var InsightsErrorBoundary = class extends React11.Component {
     console.error("Insights page error:", error, errorInfo);
   }
   render() {
-    return this.state.hasError ? /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(
+    return this.state.hasError ? /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(
       "div",
       {
         style: {
@@ -110887,9 +110951,9 @@ var InsightsErrorBoundary = class extends React11.Component {
           backgroundColor: "#fed7d7"
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("h2", { children: "Something went wrong" }),
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("p", { children: "The insights page encountered an error. Please refresh the page." }),
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("h2", { children: "Something went wrong" }),
+          /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("p", { children: "The insights page encountered an error. Please refresh the page." }),
+          /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
             "button",
             {
               onClick: () => window.location.reload(),
@@ -110986,8 +111050,8 @@ function InsightsContent() {
   }, []), handleDataRefresh = React11.useCallback(() => {
     revalidator.revalidate();
   }, [revalidator]);
-  return /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(
+  return /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(
       "h1",
       {
         style: {
@@ -110996,9 +111060,9 @@ function InsightsContent() {
           alignItems: "center"
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("span", { children: "Insights" }),
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("span", { style: { display: "inline-flex", gap: 8 }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("span", { children: "Insights" }),
+          /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("span", { style: { display: "inline-flex", gap: 8 }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
               "button",
               {
                 onClick: () => setShowTierAnalytics(!showTierAnalytics),
@@ -111013,13 +111077,13 @@ function InsightsContent() {
                 children: showTierAnalytics ? "Basic View" : "Tier View"
               }
             ),
-            /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_react17.Link, { to: "/app/insights?w=7d", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("button", { disabled: w === "7d" || nav.state !== "idle", children: "7d" }) }),
-            /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_react17.Link, { to: "/app/insights?w=24h", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("button", { disabled: w === "24h" || nav.state !== "idle", children: "24h" }) })
+            /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_react17.Link, { to: "/app/insights?w=7d", children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("button", { disabled: w === "7d" || nav.state !== "idle", children: "7d" }) }),
+            /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_react17.Link, { to: "/app/insights?w=24h", children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("button", { disabled: w === "24h" || nav.state !== "idle", children: "24h" }) })
           ] })
         ]
       }
     ),
-    showTierAnalytics && /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("div", { style: { marginBottom: 20 }, children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
+    showTierAnalytics && /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("div", { style: { marginBottom: 20 }, children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
       AnalyticsTier,
       {
         tenant: shopName,
@@ -111038,7 +111102,7 @@ function InsightsContent() {
         onUpgrade: handleUpgrade
       }
     ) }),
-    retention && /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(
+    retention && /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(
       "div",
       {
         style: {
@@ -111052,21 +111116,21 @@ function InsightsContent() {
           alignItems: "center"
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("strong", { children: "Data Retention:" }),
+          /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "Data Retention:" }),
             " ",
             retention.description,
             " (",
             retention.tier.toUpperCase(),
             " plan)",
-            /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("br", {}),
-            /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("small", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("br", {}),
+            /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("small", { children: [
               "Data older than ",
               retention.cutoffDate,
               " is not shown"
             ] })
           ] }),
-          retention.upgradeMessage && /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("div", { children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
+          retention.upgradeMessage && /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("div", { children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
             import_react17.Link,
             {
               to: "/app/billing",
@@ -111085,7 +111149,7 @@ function InsightsContent() {
         ]
       }
     ),
-    !showTierAnalytics && /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_jsx_runtime11.Fragment, { children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(
+    !showTierAnalytics && /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_jsx_runtime12.Fragment, { children: /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(
       "div",
       {
         style: {
@@ -111094,24 +111158,24 @@ function InsightsContent() {
           gap: 12
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(Card3, { label: "Clicks", value: k.clicks }),
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(Card3, { label: "Cost", value: fmt(k.cost) }),
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(Card3, { label: "Conv.", value: k.conversions }),
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(Card3, { label: "Impr.", value: k.impressions }),
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(Card3, { label: "CTR", value: pct(k.ctr) }),
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(Card3, { label: "CPC", value: fmt(k.cpc) }),
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(Card3, { label: "CPA", value: fmt(k.cpa) })
+          /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(Card4, { label: "Clicks", value: k.clicks }),
+          /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(Card4, { label: "Cost", value: fmt(k.cost) }),
+          /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(Card4, { label: "Conv.", value: k.conversions }),
+          /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(Card4, { label: "Impr.", value: k.impressions }),
+          /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(Card4, { label: "CTR", value: pct(k.ctr) }),
+          /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(Card4, { label: "CPC", value: fmt(k.cpc) }),
+          /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(Card4, { label: "CPA", value: fmt(k.cpa) })
         ]
       }
     ) }),
-    /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("h3", { style: { marginTop: 16 }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("h3", { style: { marginTop: 16 }, children: [
       "Trend (",
       w,
       ")",
       retention ? ` - ${retention.description}` : ""
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(SimpleChart, { data: series }),
-    /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(
+    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(SimpleChart, { data: series }),
+    /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(
       "h3",
       {
         style: {
@@ -111121,56 +111185,56 @@ function InsightsContent() {
           alignItems: "center"
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("span", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("span", { children: [
             "Top search terms (",
             w,
             ")"
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_react17.Link, { to: `/app/insights/terms?w=${w}`, children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("button", { children: "View all terms" }) })
+          /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_react17.Link, { to: `/app/insights/terms?w=${w}`, children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("button", { children: "View all terms" }) })
         ]
       }
     ),
-    /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("h3", { style: { marginTop: 16 }, children: "Activity (last 10)" }),
-    /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("ul", { children: [
-      logs.map((l, i) => !l || typeof l != "object" ? null : /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("code", { children: l.timestamp || "No timestamp" }),
+    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("h3", { style: { marginTop: 16 }, children: "Activity (last 10)" }),
+    /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("ul", { children: [
+      logs.map((l, i) => !l || typeof l != "object" ? null : /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("code", { children: l.timestamp || "No timestamp" }),
         " \u2014",
         " ",
         l.message || "No message"
       ] }, `log-${i}-${l.timestamp || i}`)),
-      !logs.length && /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("li", { children: "No recent activity." })
+      !logs.length && /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("li", { children: "No recent activity." })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(
+    /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(
       "table",
       {
         cellPadding: 6,
         style: { width: "100%", borderCollapse: "collapse" },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("thead", { children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("tr", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("th", { align: "left", children: "Term" }),
-            /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("th", { align: "right", children: "Clicks" }),
-            /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("th", { align: "right", children: "Cost" }),
-            /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("th", { align: "right", children: "Conv." })
+          /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("thead", { children: /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("tr", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("th", { align: "left", children: "Term" }),
+            /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("th", { align: "right", children: "Clicks" }),
+            /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("th", { align: "right", children: "Cost" }),
+            /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("th", { align: "right", children: "Conv." })
           ] }) }),
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("tbody", { children: [
-            terms.map((t, i) => !t || typeof t != "object" ? null : /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("tr", { children: [
-              /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("td", { children: t.term || "Unknown term" }),
-              /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("td", { align: "right", children: t.clicks || 0 }),
-              /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("td", { align: "right", children: fmt(t.cost) }),
-              /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("td", { align: "right", children: t.conversions || 0 })
+          /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("tbody", { children: [
+            terms.map((t, i) => !t || typeof t != "object" ? null : /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("tr", { children: [
+              /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("td", { children: t.term || "Unknown term" }),
+              /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("td", { align: "right", children: t.clicks || 0 }),
+              /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("td", { align: "right", children: fmt(t.cost) }),
+              /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("td", { align: "right", children: t.conversions || 0 })
             ] }, `term-${i}-${t.term || i}`)),
-            !terms.length && /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("tr", { children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("td", { colSpan: 4, children: "Not enough data yet." }) })
+            !terms.length && /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("tr", { children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("td", { colSpan: 4, children: "Not enough data yet." }) })
           ] })
         ]
       }
     ),
-    /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("h3", { style: { marginTop: 16 }, children: "Explain my spend" }),
-    /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("ul", { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("h3", { style: { marginTop: 16 }, children: "Explain my spend" }),
+    /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("ul", { children: [
       explain.map((e, i) => {
         if (!e || typeof e != "object")
           return null;
         let disabled = fetcher.state !== "idle" || isApplying;
-        return /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(
+        return /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(
           "li",
           {
             style: {
@@ -111180,17 +111244,17 @@ function InsightsContent() {
               alignItems: "center"
             },
             children: [
-              /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("span", { children: [
-                /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("b", { children: e.label || "Unknown" }),
+              /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("span", { children: [
+                /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("b", { children: e.label || "Unknown" }),
                 " \u2014",
                 " ",
                 e.reason || "No reason provided",
                 ". Suggest:",
                 " ",
-                /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("code", { children: e.action || "none" }),
+                /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("code", { children: e.action || "none" }),
                 e.target ? ` (${e.target})` : ""
               ] }),
-              /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
+              /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
                 "button",
                 {
                   onClick: () => handleApplyAction(e.action, e.target),
@@ -111209,9 +111273,9 @@ function InsightsContent() {
           `explain-${i}-${e.action}-${e.target}`
         );
       }),
-      !explain.length && /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("li", { children: "No high-confidence suggestions yet." })
+      !explain.length && /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("li", { children: "No high-confidence suggestions yet." })
     ] }),
-    !!toast && /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
+    !!toast && /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
       "div",
       {
         style: {
@@ -111229,12 +111293,12 @@ function InsightsContent() {
   ] });
 }
 function Insights() {
-  return /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(InsightsErrorBoundary, { children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(InsightsContent, {}) });
+  return /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(InsightsErrorBoundary, { children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(InsightsContent, {}) });
 }
-function Card3({ label, value }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { style: { border: "1px solid #eee", borderRadius: 8, padding: 12 }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("div", { style: { fontSize: 12, opacity: 0.7 }, children: label }),
-    /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("div", { style: { fontSize: 20, fontWeight: 600 }, children: value ?? "\u2014" })
+function Card4({ label, value }) {
+  return /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { style: { border: "1px solid #eee", borderRadius: 8, padding: 12 }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("div", { style: { fontSize: 12, opacity: 0.7 }, children: label }),
+    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("div", { style: { fontSize: 20, fontWeight: 600 }, children: value ?? "\u2014" })
   ] });
 }
 function fmt(n) {
@@ -111254,7 +111318,7 @@ __export(app_billing_exports, {
 });
 var import_react18 = __toESM(require_react()), import_node11 = __toESM(require_dist3()), import_react19 = __toESM(require_dist2());
 init_shopify_server();
-var import_jsx_runtime12 = __toESM(require_jsx_runtime()), PRICING_TIERS = {
+var import_jsx_runtime13 = __toESM(require_jsx_runtime()), PRICING_TIERS = {
   STARTER: {
     id: "starter",
     name: "Starter Plan",
@@ -111433,19 +111497,19 @@ Settings \u2192 Apps \u2192 ProofKit
 
 Or visit: ${managedPricingUrl}`);
     }
-  }, formatPrice = (price) => price === "Unlimited" ? price : typeof price == "number" ? `$${price.toLocaleString()}` : price, renderFeatureList = (features) => /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("ul", { style: { margin: 0, paddingLeft: "20px" }, children: features.map((feature, index) => /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("li", { style: { marginBottom: "8px", fontSize: "14px" }, children: [
+  }, formatPrice = (price) => price === "Unlimited" ? price : typeof price == "number" ? `$${price.toLocaleString()}` : price, renderFeatureList = (features) => /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("ul", { style: { margin: 0, paddingLeft: "20px" }, children: features.map((feature, index) => /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { style: { marginBottom: "8px", fontSize: "14px" }, children: [
     "\u2713 ",
     feature
   ] }, index)) });
-  return /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { style: { padding: "24px", maxWidth: "1200px", margin: "0 auto" }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("h1", { children: "Billing & Subscription" }),
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("p", { style: { color: "#666", marginBottom: "32px" }, children: [
+  return /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { padding: "24px", maxWidth: "1200px", margin: "0 auto" }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h1", { children: "Billing & Subscription" }),
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("p", { style: { color: "#666", marginBottom: "32px" }, children: [
       "Manage your ProofKit subscription for ",
       shopName
     ] }),
     (() => {
       if (!hasActivePayment && !isInTrial)
-        return /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { style: {
+        return /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: {
           background: "#fff2cc",
           border: "1px solid #ffc107",
           padding: "24px",
@@ -111453,9 +111517,9 @@ Or visit: ${managedPricingUrl}`);
           marginBottom: "32px",
           textAlign: "center"
         }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("h3", { style: { margin: "0 0 16px 0" }, children: "Choose Your Plan" }),
-          /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("p", { style: { margin: "0 0 20px 0", fontSize: "16px" }, children: "Start your 14-day free trial to access ProofKit's powerful features." }),
-          /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h3", { style: { margin: "0 0 16px 0" }, children: "Choose Your Plan" }),
+          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { style: { margin: "0 0 20px 0", fontSize: "16px" }, children: "Start your 14-day free trial to access ProofKit's powerful features." }),
+          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
             "button",
             {
               onClick: redirectToManagedPricing,
@@ -111475,35 +111539,35 @@ Or visit: ${managedPricingUrl}`);
         ] });
       if (isInTrial) {
         let tier = subscriptionTier ? pricingTiers[subscriptionTier.toUpperCase()] : null;
-        return /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { style: {
+        return /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: {
           background: "#e8f5e8",
           border: "1px solid #4caf50",
           padding: "24px",
           borderRadius: "8px",
           marginBottom: "32px"
         }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("h3", { style: { margin: "0 0 16px 0" }, children: "\u{1F389} Free Trial Active" }),
-          /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { style: { marginBottom: "16px" }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("p", { style: { margin: "0 0 8px 0", fontSize: "16px" }, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "Current Plan:" }),
+          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h3", { style: { margin: "0 0 16px 0" }, children: "\u{1F389} Free Trial Active" }),
+          /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { marginBottom: "16px" }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("p", { style: { margin: "0 0 8px 0", fontSize: "16px" }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Current Plan:" }),
               " ",
               tier?.name || "Unknown",
               " ($",
               tier?.price,
               "/month)"
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("p", { style: { margin: "0 0 8px 0", fontSize: "16px" }, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "Trial Days Remaining:" }),
+            /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("p", { style: { margin: "0 0 8px 0", fontSize: "16px" }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Trial Days Remaining:" }),
               " ",
               trialDaysRemaining,
               " days"
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("p", { style: { margin: "0", fontSize: "14px", color: "#666" }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("p", { style: { margin: "0", fontSize: "14px", color: "#666" }, children: [
               "Trial ends: ",
               new Date(new Date(currentSubscription.createdAt).getTime() + currentSubscription.trialDays * 24 * 60 * 60 * 1e3).toLocaleDateString()
             ] })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
             "button",
             {
               onClick: redirectToManagedPricing,
@@ -111523,34 +111587,34 @@ Or visit: ${managedPricingUrl}`);
       }
       if (hasActivePayment) {
         let tier = subscriptionTier ? pricingTiers[subscriptionTier.toUpperCase()] : null;
-        return /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { style: {
+        return /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: {
           background: "#e8f5e8",
           border: "1px solid #4caf50",
           padding: "24px",
           borderRadius: "8px",
           marginBottom: "32px"
         }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("h3", { style: { margin: "0 0 16px 0" }, children: "Active Subscription" }),
-          /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { style: { marginBottom: "16px" }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("p", { style: { margin: "0 0 8px 0", fontSize: "16px" }, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "Current Plan:" }),
+          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h3", { style: { margin: "0 0 16px 0" }, children: "Active Subscription" }),
+          /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { marginBottom: "16px" }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("p", { style: { margin: "0 0 8px 0", fontSize: "16px" }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Current Plan:" }),
               " ",
               tier?.name || "Unknown",
               " ($",
               tier?.price,
               "/month)"
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("p", { style: { margin: "0 0 8px 0", fontSize: "16px" }, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "Status:" }),
+            /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("p", { style: { margin: "0 0 8px 0", fontSize: "16px" }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Status:" }),
               " ",
               currentSubscription.status
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("p", { style: { margin: "0", fontSize: "14px", color: "#666" }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("p", { style: { margin: "0", fontSize: "14px", color: "#666" }, children: [
               "Next billing: ",
               new Date(currentSubscription.currentPeriodEnd).toLocaleDateString()
             ] })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
             "button",
             {
               onClick: redirectToManagedPricing,
@@ -111568,7 +111632,7 @@ Or visit: ${managedPricingUrl}`);
           )
         ] });
       }
-      return /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { style: {
+      return /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: {
         background: "#f8f9fa",
         border: "1px solid #dee2e6",
         padding: "24px",
@@ -111576,8 +111640,8 @@ Or visit: ${managedPricingUrl}`);
         marginBottom: "32px",
         textAlign: "center"
       }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("h3", { style: { margin: "0 0 16px 0" }, children: "Subscription Status Unknown" }),
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h3", { style: { margin: "0 0 16px 0" }, children: "Subscription Status Unknown" }),
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
           "button",
           {
             onClick: redirectToManagedPricing,
@@ -111595,30 +111659,30 @@ Or visit: ${managedPricingUrl}`);
         )
       ] });
     })(),
-    actionData?.error && /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("div", { style: {
+    actionData?.error && /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { style: {
       background: "#ffebee",
       border: "1px solid #f44336",
       padding: "16px",
       borderRadius: "8px",
       marginBottom: "24px"
-    }, children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("p", { style: { margin: 0, color: "#d32f2f" }, children: actionData.error }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { style: { marginBottom: "32px" }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("h2", { children: "Available Plans" }),
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("p", { style: { color: "#666", marginBottom: "24px" }, children: "All plans include a 14-day free trial. Pricing and subscriptions are managed by Shopify." }),
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("div", { style: {
+    }, children: /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { style: { margin: 0, color: "#d32f2f" }, children: actionData.error }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { marginBottom: "32px" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h2", { children: "Available Plans" }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { style: { color: "#666", marginBottom: "24px" }, children: "All plans include a 14-day free trial. Pricing and subscriptions are managed by Shopify." }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { style: {
         display: "grid",
         gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
         gap: "20px"
-      }, children: Object.values(pricingTiers).map((tier) => /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { style: {
+      }, children: Object.values(pricingTiers).map((tier) => /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: {
         border: "1px solid #e0e0e0",
         borderRadius: "8px",
         padding: "24px",
         backgroundColor: "white"
       }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { style: { marginBottom: "16px" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("h3", { style: { margin: 0 }, children: tier.name }),
-            tier.badge && /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("span", { style: {
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { marginBottom: "16px" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h3", { style: { margin: 0 }, children: tier.name }),
+            tier.badge && /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { style: {
               background: "#4caf50",
               color: "white",
               padding: "4px 8px",
@@ -111626,56 +111690,56 @@ Or visit: ${managedPricingUrl}`);
               fontSize: "12px"
             }, children: tier.badge })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { style: { display: "flex", alignItems: "baseline", gap: "8px" }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("span", { style: { fontSize: "32px", fontWeight: "bold" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { display: "flex", alignItems: "baseline", gap: "8px" }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("span", { style: { fontSize: "32px", fontWeight: "bold" }, children: [
               "$",
               tier.price
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("span", { style: { color: "#666" }, children: "/month" })
+            /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { style: { color: "#666" }, children: "/month" })
           ] })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("hr", { style: { border: "none", borderTop: "1px solid #e0e0e0", margin: "16px 0" } }),
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { style: { marginBottom: "16px" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("h4", { style: { margin: "0 0 12px 0" }, children: "Features:" }),
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("hr", { style: { border: "none", borderTop: "1px solid #e0e0e0", margin: "16px 0" } }),
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { marginBottom: "16px" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h4", { style: { margin: "0 0 12px 0" }, children: "Features:" }),
           renderFeatureList(tier.features.slice(0, 5)),
-          tier.features.length > 5 && /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("p", { style: { color: "#666", fontSize: "14px", margin: "8px 0 0 0" }, children: [
+          tier.features.length > 5 && /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("p", { style: { color: "#666", fontSize: "14px", margin: "8px 0 0 0" }, children: [
             "+ ",
             tier.features.length - 5,
             " more features"
           ] })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("hr", { style: { border: "none", borderTop: "1px solid #e0e0e0", margin: "16px 0" } }),
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { style: { marginBottom: "24px" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("h4", { style: { margin: "0 0 12px 0" }, children: "Limits:" }),
-          /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("ul", { style: { margin: 0, paddingLeft: "20px" }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("hr", { style: { border: "none", borderTop: "1px solid #e0e0e0", margin: "16px 0" } }),
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { marginBottom: "24px" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h4", { style: { margin: "0 0 12px 0" }, children: "Limits:" }),
+          /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("ul", { style: { margin: 0, paddingLeft: "20px" }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
               "Campaigns: ",
               tier.limits.campaigns
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("li", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
               "Ad Groups: ",
               tier.limits.adGroups
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("li", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
               "Keywords: ",
               tier.limits.keywords
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("li", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
               "Monthly Spend: ",
               formatPrice(tier.limits.monthlySpend)
             ] })
           ] })
         ] })
       ] }, tier.id)) }),
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { style: {
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: {
         textAlign: "center",
         marginTop: "24px",
         padding: "20px",
         backgroundColor: "#f8f9fa",
         borderRadius: "8px"
       }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("p", { style: { margin: "0 0 16px 0", fontSize: "16px" }, children: "Ready to select your plan?" }),
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { style: { margin: "0 0 16px 0", fontSize: "16px" }, children: "Ready to select your plan?" }),
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
           "button",
           {
             onClick: redirectToManagedPricing,
@@ -111694,61 +111758,61 @@ Or visit: ${managedPricingUrl}`);
         )
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { style: {
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: {
       border: "1px solid #e0e0e0",
       borderRadius: "8px",
       padding: "24px",
       backgroundColor: "white"
     }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("h3", { children: "Billing Information" }),
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("ul", { style: { paddingLeft: "20px" }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("li", { children: "All subscriptions are managed through Shopify" }),
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("li", { children: "Charges appear on your Shopify Partner account" }),
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("li", { children: "Cancel or modify anytime through your Partner Dashboard" }),
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("li", { children: "14-day free trial on all plans" })
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h3", { children: "Billing Information" }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("ul", { style: { paddingLeft: "20px" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("li", { children: "All subscriptions are managed through Shopify" }),
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("li", { children: "Charges appear on your Shopify Partner account" }),
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("li", { children: "Cancel or modify anytime through your Partner Dashboard" }),
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("li", { children: "14-day free trial on all plans" })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { style: { marginTop: "16px", padding: "16px", backgroundColor: "#f0f0f0", borderRadius: "4px", fontSize: "12px" }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("h4", { children: "Debug Info:" }),
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("p", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { marginTop: "16px", padding: "16px", backgroundColor: "#f0f0f0", borderRadius: "4px", fontSize: "12px" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h4", { children: "Debug Info:" }),
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("p", { children: [
           "App Handle: ",
           appHandle
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("p", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("p", { children: [
           "Shop: ",
           shopName
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("p", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("p", { children: [
           "Has Active Payment: ",
           hasActivePayment ? "Yes" : "No"
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("p", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("p", { children: [
           "Subscription Tier: ",
           subscriptionTier || "None"
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("p", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("p", { children: [
           "In Trial: ",
           isInTrial ? "Yes" : "No"
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("p", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("p", { children: [
           "Trial Days Remaining: ",
           trialDaysRemaining || "N/A"
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("p", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("p", { children: [
           "Should Redirect to Plans: ",
           shouldRedirectToPlans2 ? "Yes" : "No"
         ] }),
-        currentSubscription && /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("p", { children: [
+        currentSubscription && /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("p", { children: [
           "Subscription ID: ",
           currentSubscription.id
         ] })
       ] }),
-      currentSubscription && /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { style: { marginTop: "16px", padding: "16px", backgroundColor: "#f5f5f5", borderRadius: "4px" }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("h4", { children: "Current Subscription Details:" }),
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("p", { children: [
+      currentSubscription && /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { marginTop: "16px", padding: "16px", backgroundColor: "#f5f5f5", borderRadius: "4px" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h4", { children: "Current Subscription Details:" }),
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("p", { children: [
           "Subscription ID: ",
           currentSubscription.id
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("p", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("p", { children: [
           "Next billing: ",
           new Date(currentSubscription.currentPeriodEnd).toLocaleDateString()
         ] })
@@ -111757,9 +111821,9 @@ Or visit: ${managedPricingUrl}`);
   ] });
 }
 function ErrorBoundary({ error }) {
-  return console.error("Billing page error:", error), /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { style: { padding: "2rem", background: "#fee", border: "1px solid #fcc" }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("h2", { children: "Billing Error" }),
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("p", { children: [
+  return console.error("Billing page error:", error), /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { padding: "2rem", background: "#fee", border: "1px solid #fcc" }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h2", { children: "Billing Error" }),
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("p", { children: [
       "Something went wrong with the billing page: ",
       error?.message
     ] })
@@ -111776,7 +111840,7 @@ __export(app_reports_exports, {
 });
 var import_react20 = __toESM(require_react()), import_node12 = __toESM(require_dist3()), import_react21 = __toESM(require_dist2());
 init_shopify_server();
-var import_jsx_runtime13 = __toESM(require_jsx_runtime()), loader13 = async ({ request: request2 }) => {
+var import_jsx_runtime14 = __toESM(require_jsx_runtime()), loader13 = async ({ request: request2 }) => {
   let { session } = await authenticate.admin(request2), shop = session.shop.replace(".myshopify.com", "");
   try {
     let settingsData = await (await fetch(
@@ -111897,19 +111961,19 @@ function ReportsPage() {
     professional: "#007bff",
     enterprise: "#ffc107"
   };
-  return error ? /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { padding: "20px" }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: {
+  return error ? /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { style: { padding: "20px" }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { style: {
       background: "#f8d7da",
       color: "#721c24",
       padding: "15px",
       borderRadius: "4px",
       marginBottom: "20px"
     }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Error:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Error:" }),
       " ",
       error
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
       import_react21.Link,
       {
         to: "/app",
@@ -111920,11 +111984,11 @@ function ReportsPage() {
         children: "\u2190 Back to Dashboard"
       }
     )
-  ] }) : /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { padding: "20px", maxWidth: "1200px" }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { marginBottom: "30px" }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h1", { children: "Automated Reports" }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { style: { color: "#666", marginBottom: "20px" }, children: "Manage your automated insights reports and delivery settings" }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(
+  ] }) : /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { style: { padding: "20px", maxWidth: "1200px" }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { style: { marginBottom: "30px" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("h1", { children: "Automated Reports" }),
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { style: { color: "#666", marginBottom: "20px" }, children: "Manage your automated insights reports and delivery settings" }),
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(
         "div",
         {
           style: {
@@ -111945,7 +112009,7 @@ function ReportsPage() {
         }
       )
     ] }),
-    actionData && /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(
+    actionData && /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(
       "div",
       {
         style: {
@@ -111957,25 +112021,25 @@ function ReportsPage() {
           border: `1px solid ${actionData.success ? "#c3e6cb" : "#f5c6cb"}`
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: actionData.success ? "Success:" : "Error:" }),
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: actionData.success ? "Success:" : "Error:" }),
           " ",
           actionData.message
         ]
       }
     ),
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "30px" }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: {
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "30px" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { style: {
           background: "white",
           border: "1px solid #ddd",
           borderRadius: "8px",
           padding: "20px",
           marginBottom: "20px"
         }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h2", { style: { marginTop: 0, marginBottom: "15px" }, children: "Report Settings" }),
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { marginBottom: "15px" }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Current Frequency:" }),
-            /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { style: {
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("h2", { style: { marginTop: 0, marginBottom: "15px" }, children: "Report Settings" }),
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { style: { marginBottom: "15px" }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Current Frequency:" }),
+            /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("span", { style: {
               background: "#e9ecef",
               padding: "2px 8px",
               borderRadius: "4px",
@@ -111983,34 +112047,34 @@ function ReportsPage() {
               textTransform: "capitalize"
             }, children: settings.frequency?.current || "Not set" })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { marginBottom: "15px" }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Next Scheduled:" }),
-            /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { style: { marginLeft: "8px", color: "#666" }, children: settings.frequency?.nextScheduled ? new Date(settings.frequency.nextScheduled).toLocaleString() : "Not scheduled" })
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { style: { marginBottom: "15px" }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Next Scheduled:" }),
+            /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("span", { style: { marginLeft: "8px", color: "#666" }, children: settings.frequency?.nextScheduled ? new Date(settings.frequency.nextScheduled).toLocaleString() : "Not scheduled" })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { marginBottom: "15px" }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Available Features:" }),
-            /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { style: { marginTop: "8px" }, children: settings.features && Object.entries(settings.features).map(([key, value]) => /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { marginBottom: "4px" }, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { style: {
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { style: { marginBottom: "15px" }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Available Features:" }),
+            /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("div", { style: { marginTop: "8px" }, children: settings.features && Object.entries(settings.features).map(([key, value]) => /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { style: { marginBottom: "4px" }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("span", { style: {
                 color: value ? "#28a745" : "#dc3545",
                 marginRight: "8px"
               }, children: value ? "\u2713" : "\u2717" }),
-              /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { style: { textTransform: "capitalize" }, children: key.replace(/([A-Z])/g, " $1").toLowerCase() })
+              /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("span", { style: { textTransform: "capitalize" }, children: key.replace(/([A-Z])/g, " $1").toLowerCase() })
             ] }, key)) })
           ] })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: {
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { style: {
           background: "white",
           border: "1px solid #ddd",
           borderRadius: "8px",
           padding: "20px",
           marginBottom: "20px"
         }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h2", { style: { marginTop: 0, marginBottom: "15px" }, children: "Generate Report Now" }),
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(import_react21.Form, { method: "post", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("input", { type: "hidden", name: "action", value: "generate" }),
-            /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { marginBottom: "15px" }, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("label", { style: { display: "block", marginBottom: "5px", fontWeight: "500" }, children: "Report Type:" }),
-              /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("h2", { style: { marginTop: 0, marginBottom: "15px" }, children: "Generate Report Now" }),
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(import_react21.Form, { method: "post", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("input", { type: "hidden", name: "action", value: "generate" }),
+            /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { style: { marginBottom: "15px" }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("label", { style: { display: "block", marginBottom: "5px", fontWeight: "500" }, children: "Report Type:" }),
+              /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(
                 "select",
                 {
                   name: "reportType",
@@ -112021,15 +112085,15 @@ function ReportsPage() {
                     borderRadius: "4px"
                   },
                   children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("option", { value: "insights", children: "Insights Report" }),
-                    settings.reportTypes?.custom && /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("option", { value: "custom", children: "Custom Report" })
+                    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("option", { value: "insights", children: "Insights Report" }),
+                    settings.reportTypes?.custom && /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("option", { value: "custom", children: "Custom Report" })
                   ]
                 }
               )
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { marginBottom: "15px" }, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("label", { style: { display: "block", marginBottom: "5px", fontWeight: "500" }, children: "Email Address:" }),
-              /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
+            /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { style: { marginBottom: "15px" }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("label", { style: { display: "block", marginBottom: "5px", fontWeight: "500" }, children: "Email Address:" }),
+              /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
                 "input",
                 {
                   type: "email",
@@ -112046,7 +112110,7 @@ function ReportsPage() {
                 }
               )
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
+            /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
               "button",
               {
                 type: "submit",
@@ -112065,19 +112129,19 @@ function ReportsPage() {
             )
           ] })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: {
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { style: {
           background: "white",
           border: "1px solid #ddd",
           borderRadius: "8px",
           padding: "20px"
         }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h2", { style: { marginTop: 0, marginBottom: "15px" }, children: "Test Email Delivery" }),
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { style: { color: "#666", marginBottom: "15px", fontSize: "14px" }, children: "Send a test report to verify email delivery is working properly." }),
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(import_react21.Form, { method: "post", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("input", { type: "hidden", name: "action", value: "test" }),
-            /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { marginBottom: "15px" }, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("label", { style: { display: "block", marginBottom: "5px", fontWeight: "500" }, children: "Test Email Address:" }),
-              /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("h2", { style: { marginTop: 0, marginBottom: "15px" }, children: "Test Email Delivery" }),
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { style: { color: "#666", marginBottom: "15px", fontSize: "14px" }, children: "Send a test report to verify email delivery is working properly." }),
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(import_react21.Form, { method: "post", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("input", { type: "hidden", name: "action", value: "test" }),
+            /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { style: { marginBottom: "15px" }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("label", { style: { display: "block", marginBottom: "5px", fontWeight: "500" }, children: "Test Email Address:" }),
+              /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
                 "input",
                 {
                   type: "email",
@@ -112095,7 +112159,7 @@ function ReportsPage() {
                 }
               )
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
+            /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
               "button",
               {
                 type: "submit",
@@ -112115,48 +112179,48 @@ function ReportsPage() {
           ] })
         ] })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: {
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { style: {
           background: "white",
           border: "1px solid #ddd",
           borderRadius: "8px",
           padding: "20px",
           marginBottom: "20px"
         }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h2", { style: { marginTop: 0, marginBottom: "15px" }, children: "Scheduler Status" }),
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { marginBottom: "10px" }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Status:" }),
-            /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { style: {
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("h2", { style: { marginTop: 0, marginBottom: "15px" }, children: "Scheduler Status" }),
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { style: { marginBottom: "10px" }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Status:" }),
+            /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("span", { style: {
               color: schedulerStatus.status === "running" ? "#28a745" : "#dc3545",
               marginLeft: "8px",
               fontWeight: "500"
             }, children: schedulerStatus.status === "running" ? "Active" : "Inactive" })
           ] }),
-          schedulerStatus.metrics && /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { marginBottom: "5px" }, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Reports Generated:" }),
+          schedulerStatus.metrics && /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { style: { marginBottom: "5px" }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Reports Generated:" }),
               " ",
               schedulerStatus.metrics.reportsGenerated || 0
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { marginBottom: "5px" }, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Emails Sent:" }),
+            /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { style: { marginBottom: "5px" }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Emails Sent:" }),
               " ",
               schedulerStatus.metrics.emailsSent || 0
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { marginBottom: "5px" }, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Last Execution:" }),
-              /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { style: { marginLeft: "4px", fontSize: "14px", color: "#666" }, children: schedulerStatus.metrics.lastExecution ? new Date(schedulerStatus.metrics.lastExecution).toLocaleString() : "Never" })
+            /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { style: { marginBottom: "5px" }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Last Execution:" }),
+              /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("span", { style: { marginLeft: "4px", fontSize: "14px", color: "#666" }, children: schedulerStatus.metrics.lastExecution ? new Date(schedulerStatus.metrics.lastExecution).toLocaleString() : "Never" })
             ] })
           ] })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: {
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { style: {
           background: "white",
           border: "1px solid #ddd",
           borderRadius: "8px",
           padding: "20px"
         }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h2", { style: { marginTop: 0, marginBottom: "15px" }, children: "Recent Reports" }),
-          history.length === 0 ? /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { style: { color: "#666", fontStyle: "italic" }, children: "No reports generated yet" }) : /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { children: history.map((report) => /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("h2", { style: { marginTop: 0, marginBottom: "15px" }, children: "Recent Reports" }),
+          history.length === 0 ? /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { style: { color: "#666", fontStyle: "italic" }, children: "No reports generated yet" }) : /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("div", { children: history.map((report) => /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(
             "div",
             {
               style: {
@@ -112167,20 +112231,20 @@ function ReportsPage() {
                 background: "#f8f9fa"
               },
               children: [
-                /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: {
+                /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { style: {
                   display: "flex",
                   justifyContent: "space-between",
                   alignItems: "flex-start",
                   marginBottom: "8px"
                 }, children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("span", { style: {
+                  /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("span", { style: {
                     fontWeight: "500",
                     textTransform: "capitalize"
                   }, children: [
                     report.type,
                     " Report"
                   ] }),
-                  /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { style: {
+                  /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("span", { style: {
                     background: report.status === "completed" ? "#d4edda" : "#f8d7da",
                     color: report.status === "completed" ? "#155724" : "#721c24",
                     padding: "2px 6px",
@@ -112189,19 +112253,19 @@ function ReportsPage() {
                     textTransform: "capitalize"
                   }, children: report.status })
                 ] }),
-                /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { fontSize: "14px", color: "#666" }, children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { children: [
+                /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { style: { fontSize: "14px", color: "#666" }, children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { children: [
                     "Generated: ",
                     new Date(report.generatedAt).toLocaleString()
                   ] }),
-                  /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { children: [
                     "Generation Time: ",
                     report.generationTime,
                     "ms"
                   ] }),
-                  /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { children: [
                     "Email: ",
-                    report.emailSent ? /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { style: { color: "#28a745" }, children: "\u2713 Sent" }) : /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { style: { color: "#dc3545" }, children: "\u2717 Failed" })
+                    report.emailSent ? /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("span", { style: { color: "#28a745" }, children: "\u2713 Sent" }) : /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("span", { style: { color: "#dc3545" }, children: "\u2717 Failed" })
                   ] })
                 ] })
               ]
@@ -112211,7 +112275,7 @@ function ReportsPage() {
         ] })
       ] })
     ] }),
-    settings.tier === "starter" && /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: {
+    settings.tier === "starter" && /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { style: {
       background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
       color: "white",
       padding: "20px",
@@ -112219,9 +112283,9 @@ function ReportsPage() {
       marginTop: "30px",
       textAlign: "center"
     }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h3", { style: { marginTop: 0 }, children: "Upgrade to Professional" }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { style: { marginBottom: "15px" }, children: "Get weekly reports, real-time analytics, and advanced ROAS tracking" }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("h3", { style: { marginTop: 0 }, children: "Upgrade to Professional" }),
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { style: { marginBottom: "15px" }, children: "Get weekly reports, real-time analytics, and advanced ROAS tracking" }),
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
         import_react21.Link,
         {
           to: "/app/billing",
@@ -112238,20 +112302,20 @@ function ReportsPage() {
         }
       )
     ] }),
-    settings.tier === "enterprise" && /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: {
+    settings.tier === "enterprise" && /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { style: {
       background: "white",
       border: "1px solid #ddd",
       borderRadius: "8px",
       padding: "20px",
       marginTop: "30px"
     }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h2", { style: { marginTop: 0, marginBottom: "15px" }, children: "Enterprise Custom Reports" }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { style: { color: "#666", marginBottom: "15px" }, children: "Create custom reports with advanced analytics and forecasting" }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", gap: "15px" }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { border: "1px solid #eee", padding: "15px", borderRadius: "4px" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h4", { style: { marginTop: 0, marginBottom: "8px" }, children: "Executive Summary" }),
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { style: { fontSize: "14px", color: "#666", marginBottom: "10px" }, children: "High-level KPIs and strategic insights" }),
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("button", { style: {
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("h2", { style: { marginTop: 0, marginBottom: "15px" }, children: "Enterprise Custom Reports" }),
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { style: { color: "#666", marginBottom: "15px" }, children: "Create custom reports with advanced analytics and forecasting" }),
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", gap: "15px" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { style: { border: "1px solid #eee", padding: "15px", borderRadius: "4px" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("h4", { style: { marginTop: 0, marginBottom: "8px" }, children: "Executive Summary" }),
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { style: { fontSize: "14px", color: "#666", marginBottom: "10px" }, children: "High-level KPIs and strategic insights" }),
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("button", { style: {
             background: "#ffc107",
             color: "#212529",
             border: "none",
@@ -112261,10 +112325,10 @@ function ReportsPage() {
             cursor: "pointer"
           }, children: "Generate" })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { border: "1px solid #eee", padding: "15px", borderRadius: "4px" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h4", { style: { marginTop: 0, marginBottom: "8px" }, children: "Customer Lifecycle" }),
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { style: { fontSize: "14px", color: "#666", marginBottom: "10px" }, children: "Detailed customer journey and lifetime value analysis" }),
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("button", { style: {
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { style: { border: "1px solid #eee", padding: "15px", borderRadius: "4px" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("h4", { style: { marginTop: 0, marginBottom: "8px" }, children: "Customer Lifecycle" }),
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { style: { fontSize: "14px", color: "#666", marginBottom: "10px" }, children: "Detailed customer journey and lifetime value analysis" }),
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("button", { style: {
             background: "#ffc107",
             color: "#212529",
             border: "none",
@@ -112274,10 +112338,10 @@ function ReportsPage() {
             cursor: "pointer"
           }, children: "Generate" })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { border: "1px solid #eee", padding: "15px", borderRadius: "4px" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h4", { style: { marginTop: 0, marginBottom: "8px" }, children: "Performance Benchmarks" }),
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { style: { fontSize: "14px", color: "#666", marginBottom: "10px" }, children: "Compare performance against industry benchmarks" }),
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("button", { style: {
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { style: { border: "1px solid #eee", padding: "15px", borderRadius: "4px" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("h4", { style: { marginTop: 0, marginBottom: "8px" }, children: "Performance Benchmarks" }),
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { style: { fontSize: "14px", color: "#666", marginBottom: "10px" }, children: "Compare performance against industry benchmarks" }),
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("button", { style: {
             background: "#ffc107",
             color: "#212529",
             border: "none",
@@ -112289,7 +112353,7 @@ function ReportsPage() {
         ] })
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { style: { marginTop: "30px", textAlign: "center" }, children: /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("div", { style: { marginTop: "30px", textAlign: "center" }, children: /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
       import_react21.Link,
       {
         to: "/app",
@@ -112304,9 +112368,9 @@ function ReportsPage() {
   ] });
 }
 function ErrorBoundary2({ error }) {
-  return console.error("Reports page error:", error), /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { padding: "2rem", background: "#fee", border: "1px solid #fcc" }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h2", { children: "Reports Error" }),
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("p", { children: [
+  return console.error("Reports page error:", error), /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { style: { padding: "2rem", background: "#fee", border: "1px solid #fcc" }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("h2", { children: "Reports Error" }),
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("p", { children: [
       "Something went wrong with the reports page: ",
       error?.message
     ] })
@@ -112321,7 +112385,7 @@ __export(app_support_exports, {
   loader: () => loader14,
   meta: () => meta
 });
-var import_node13 = __toESM(require_dist3()), import_react22 = __toESM(require_dist2()), import_react23 = __toESM(require_react()), import_polaris3 = __toESM(require_cjs6()), import_jsx_runtime14 = __toESM(require_jsx_runtime()), meta = () => [
+var import_node13 = __toESM(require_dist3()), import_react22 = __toESM(require_dist2()), import_react23 = __toESM(require_react()), import_polaris4 = __toESM(require_cjs6()), import_jsx_runtime15 = __toESM(require_jsx_runtime()), meta = () => [
   { title: "Support - Ads Autopilot AI" },
   { name: "description", content: "In-app support center with tier-based assistance" }
 ], loader14 = async ({ request: request2 }) => {
@@ -112433,12 +112497,12 @@ function AppSupport() {
   }), ticketRows = tickets.map((ticket) => [
     ticket.ticket_number,
     ticket.subject,
-    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(import_polaris3.Badge, { ...getStatusBadge(ticket.status), children: getStatusBadge(ticket.status).label }, ticket.id),
-    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(import_polaris3.Badge, { ...getPriorityBadge(ticket.priority), children: getPriorityBadge(ticket.priority).label }, `priority-${ticket.id}`),
+    /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(import_polaris4.Badge, { ...getStatusBadge(ticket.status), children: getStatusBadge(ticket.status).label }, ticket.id),
+    /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(import_polaris4.Badge, { ...getPriorityBadge(ticket.priority), children: getPriorityBadge(ticket.priority).label }, `priority-${ticket.id}`),
     ticket.category,
     formatDate(ticket.created_at),
-    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
-      import_polaris3.Button,
+    /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(
+      import_polaris4.Button,
       {
         size: "slim",
         onClick: () => setSelectedTicket(ticket.id),
@@ -112447,73 +112511,73 @@ function AppSupport() {
       `view-${ticket.id}`
     )
   ]);
-  return /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(
-    import_polaris3.Page,
+  return /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(
+    import_polaris4.Page,
     {
       title: "Support Center",
       subtitle: `${getTierDisplayName(tier)} - Get help when you need it`,
       children: [
-        actionData?.success && /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(
-          import_polaris3.Banner,
+        actionData?.success && /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(
+          import_polaris4.Banner,
           {
             title: "Success",
             status: "success",
             onDismiss: () => {
             },
             children: [
-              /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { children: actionData.message }),
-              actionData.ticket_number && /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("p", { children: [
+              /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("p", { children: actionData.message }),
+              actionData.ticket_number && /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("p", { children: [
                 "Ticket number: ",
-                /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: actionData.ticket_number })
+                /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("strong", { children: actionData.ticket_number })
               ] })
             ]
           }
         ),
-        actionData?.success === !1 && /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
-          import_polaris3.Banner,
+        actionData?.success === !1 && /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(
+          import_polaris4.Banner,
           {
             title: "Error",
             status: "critical",
             onDismiss: () => {
             },
-            children: /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { children: actionData.message })
+            children: /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("p", { children: actionData.message })
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(import_polaris3.Layout, { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(import_polaris3.Layout.Section, { children: /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(import_polaris3.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("div", { style: { padding: "1.5rem" }, children: /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(Stack, { vertical: !0, spacing: "loose", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(Stack, { alignment: "center", children: [
-              /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(Stack.Item, { fill: !0, children: /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(import_polaris3.Text, { variant: "headingLg", as: "h2", children: "Your Support Level" }) }),
-              /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(import_polaris3.Badge, { status: getTierBadgeStatus(tier), children: getTierDisplayName(tier) })
+        /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(import_polaris4.Layout, { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(import_polaris4.Layout.Section, { children: /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(import_polaris4.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("div", { style: { padding: "1.5rem" }, children: /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(Stack, { vertical: !0, spacing: "loose", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(Stack, { alignment: "center", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(Stack.Item, { fill: !0, children: /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(import_polaris4.Text, { variant: "headingLg", as: "h2", children: "Your Support Level" }) }),
+              /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(import_polaris4.Badge, { status: getTierBadgeStatus(tier), children: getTierDisplayName(tier) })
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(Stack, { distribution: "fillEvenly", spacing: "loose", children: [
-              contactMethods.email_support && /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(Stack, { vertical: !0, spacing: "tight", children: [
-                /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(EmailMajor, {}),
-                /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(import_polaris3.Text, { variant: "bodyMd", fontWeight: "semibold", children: "Email Support" }),
-                /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(import_polaris3.Text, { variant: "bodySm", color: "subdued", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(Stack, { distribution: "fillEvenly", spacing: "loose", children: [
+              contactMethods.email_support && /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(Stack, { vertical: !0, spacing: "tight", children: [
+                /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(EmailMajor, {}),
+                /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(import_polaris4.Text, { variant: "bodyMd", fontWeight: "semibold", children: "Email Support" }),
+                /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(import_polaris4.Text, { variant: "bodySm", color: "subdued", children: [
                   "Response within ",
                   contactMethods.guaranteed_response_hours,
                   "h"
                 ] })
               ] }),
-              contactMethods.phone_support && /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(Stack, { vertical: !0, spacing: "tight", children: [
-                /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(PhoneMajor, {}),
-                /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(import_polaris3.Text, { variant: "bodyMd", fontWeight: "semibold", children: "Phone Support" }),
-                /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(import_polaris3.Text, { variant: "bodySm", color: "subdued", children: contactMethods.support_phone })
+              contactMethods.phone_support && /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(Stack, { vertical: !0, spacing: "tight", children: [
+                /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(PhoneMajor, {}),
+                /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(import_polaris4.Text, { variant: "bodyMd", fontWeight: "semibold", children: "Phone Support" }),
+                /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(import_polaris4.Text, { variant: "bodySm", color: "subdued", children: contactMethods.support_phone })
               ] }),
-              contactMethods.priority_routing && /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(Stack, { vertical: !0, spacing: "tight", children: [
-                /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(AlertMajor, {}),
-                /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(import_polaris3.Text, { variant: "bodyMd", fontWeight: "semibold", children: "Priority Routing" }),
-                /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(import_polaris3.Text, { variant: "bodySm", color: "subdued", children: "Fast-tracked support" })
+              contactMethods.priority_routing && /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(Stack, { vertical: !0, spacing: "tight", children: [
+                /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(AlertMajor, {}),
+                /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(import_polaris4.Text, { variant: "bodyMd", fontWeight: "semibold", children: "Priority Routing" }),
+                /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(import_polaris4.Text, { variant: "bodySm", color: "subdued", children: "Fast-tracked support" })
               ] }),
-              contactMethods.dedicated_manager && /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(Stack, { vertical: !0, spacing: "tight", children: [
-                /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(CustomersMajor, {}),
-                /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(import_polaris3.Text, { variant: "bodyMd", fontWeight: "semibold", children: "Account Manager" }),
-                /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(import_polaris3.Text, { variant: "bodySm", color: "subdued", children: "Dedicated support contact" })
+              contactMethods.dedicated_manager && /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(Stack, { vertical: !0, spacing: "tight", children: [
+                /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(CustomersMajor, {}),
+                /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(import_polaris4.Text, { variant: "bodyMd", fontWeight: "semibold", children: "Account Manager" }),
+                /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(import_polaris4.Text, { variant: "bodySm", color: "subdued", children: "Dedicated support contact" })
               ] })
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(import_polaris3.ButtonGroup, { children: [
-              /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
-                import_polaris3.Button,
+            /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(import_polaris4.ButtonGroup, { children: [
+              /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(
+                import_polaris4.Button,
                 {
                   primary: !0,
                   icon: TicketMajor,
@@ -112521,8 +112585,8 @@ function AppSupport() {
                   children: "Create Support Ticket"
                 }
               ),
-              /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
-                import_polaris3.Button,
+              /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(
+                import_polaris4.Button,
                 {
                   url: `mailto:${contactMethods.support_email}`,
                   external: !0,
@@ -112530,8 +112594,8 @@ function AppSupport() {
                   children: "Email Support"
                 }
               ),
-              contactMethods.phone_support && /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
-                import_polaris3.Button,
+              contactMethods.phone_support && /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(
+                import_polaris4.Button,
                 {
                   url: `tel:${contactMethods.support_phone}`,
                   external: !0,
@@ -112541,10 +112605,10 @@ function AppSupport() {
               )
             ] })
           ] }) }) }) }),
-          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(import_polaris3.Layout.Section, { children: /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(import_polaris3.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("div", { style: { padding: "1.5rem" }, children: /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(Stack, { vertical: !0, spacing: "loose", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(import_polaris3.Text, { variant: "headingLg", as: "h2", children: "Your Support Tickets" }),
-            tickets.length > 0 ? /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
-              import_polaris3.DataTable,
+          /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(import_polaris4.Layout.Section, { children: /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(import_polaris4.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("div", { style: { padding: "1.5rem" }, children: /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(Stack, { vertical: !0, spacing: "loose", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(import_polaris4.Text, { variant: "headingLg", as: "h2", children: "Your Support Tickets" }),
+            tickets.length > 0 ? /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(
+              import_polaris4.DataTable,
               {
                 columnContentTypes: [
                   "text",
@@ -112567,15 +112631,15 @@ function AppSupport() {
                 rows: ticketRows,
                 footerContent: `Showing ${tickets.length} of ${tickets.length} tickets`
               }
-            ) : /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(
-              import_polaris3.EmptyState,
+            ) : /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(
+              import_polaris4.EmptyState,
               {
                 heading: "No support tickets yet",
                 image: "https://cdn.shopify.com/s/files/1/0262/4071/2726/files/emptystate-files.png",
                 children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { children: "When you create support tickets, they'll appear here." }),
-                  /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
-                    import_polaris3.Button,
+                  /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("p", { children: "When you create support tickets, they'll appear here." }),
+                  /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(
+                    import_polaris4.Button,
                     {
                       primary: !0,
                       onClick: () => setShowCreateForm(!0),
@@ -112586,37 +112650,37 @@ function AppSupport() {
               }
             )
           ] }) }) }) }),
-          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(import_polaris3.Layout.Section, { secondary: !0, children: /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(import_polaris3.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("div", { style: { padding: "1.5rem" }, children: /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(Stack, { vertical: !0, spacing: "loose", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(import_polaris3.Text, { variant: "headingMd", as: "h3", children: "Service Level Agreement" }),
-            /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(Stack, { vertical: !0, spacing: "tight", children: [
-              /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(Stack, { alignment: "center", children: [
-                /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(ClockMajor, {}),
-                /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(import_polaris3.Text, { variant: "bodyMd", children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Response Time:" }),
+          /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(import_polaris4.Layout.Section, { secondary: !0, children: /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(import_polaris4.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("div", { style: { padding: "1.5rem" }, children: /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(Stack, { vertical: !0, spacing: "loose", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(import_polaris4.Text, { variant: "headingMd", as: "h3", children: "Service Level Agreement" }),
+            /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(Stack, { vertical: !0, spacing: "tight", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(Stack, { alignment: "center", children: [
+                /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(ClockMajor, {}),
+                /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(import_polaris4.Text, { variant: "bodyMd", children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("strong", { children: "Response Time:" }),
                   " ",
                   contactMethods.guaranteed_response_hours,
                   " hours"
                 ] })
               ] }),
-              contactMethods.guaranteed_resolution_hours && /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(Stack, { alignment: "center", children: [
-                /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(ClockMajor, {}),
-                /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(import_polaris3.Text, { variant: "bodyMd", children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Resolution Time:" }),
+              contactMethods.guaranteed_resolution_hours && /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(Stack, { alignment: "center", children: [
+                /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(ClockMajor, {}),
+                /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(import_polaris4.Text, { variant: "bodyMd", children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("strong", { children: "Resolution Time:" }),
                   " ",
                   contactMethods.guaranteed_resolution_hours,
                   " hours"
                 ] })
               ] })
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(import_polaris3.Text, { variant: "bodySm", color: "subdued", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(import_polaris4.Text, { variant: "bodySm", color: "subdued", children: [
               "All times are calculated during business hours (Monday-Friday, 9 AM - 6 PM EST).",
               tier !== "starter" && " Priority routing ensures your tickets are handled by senior support staff."
             ] }),
-            tier === "starter" && /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(import_polaris3.Banner, { status: "info", children: /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { children: "Upgrade to Professional or Enterprise for faster response times and additional support channels." }) })
+            tier === "starter" && /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(import_polaris4.Banner, { status: "info", children: /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("p", { children: "Upgrade to Professional or Enterprise for faster response times and additional support channels." }) })
           ] }) }) }) })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
-          import_polaris3.Modal,
+        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(
+          import_polaris4.Modal,
           {
             open: showCreateForm,
             onClose: () => setShowCreateForm(!1),
@@ -112636,12 +112700,12 @@ function AppSupport() {
               }
             ],
             large: !0,
-            children: /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(import_polaris3.Modal.Section, { children: /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(import_react22.Form, { method: "post", id: "support-ticket-form", children: [
-              /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("input", { type: "hidden", name: "intent", value: "create_ticket" }),
-              /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("input", { type: "hidden", name: "tenant", value: tenant }),
-              /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(Stack, { vertical: !0, spacing: "loose", children: [
-                /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
-                  import_polaris3.TextField,
+            children: /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(import_polaris4.Modal.Section, { children: /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(import_react22.Form, { method: "post", id: "support-ticket-form", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("input", { type: "hidden", name: "intent", value: "create_ticket" }),
+              /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("input", { type: "hidden", name: "tenant", value: tenant }),
+              /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(Stack, { vertical: !0, spacing: "loose", children: [
+                /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(
+                  import_polaris4.TextField,
                   {
                     label: "Your Name",
                     value: formData.customer_name,
@@ -112651,8 +112715,8 @@ function AppSupport() {
                     required: !0
                   }
                 ),
-                /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
-                  import_polaris3.TextField,
+                /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(
+                  import_polaris4.TextField,
                   {
                     label: "Email Address",
                     type: "email",
@@ -112663,8 +112727,8 @@ function AppSupport() {
                     required: !0
                   }
                 ),
-                tier === "enterprise" && /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
-                  import_polaris3.TextField,
+                tier === "enterprise" && /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(
+                  import_polaris4.TextField,
                   {
                     label: "Phone Number (for phone support callback)",
                     type: "tel",
@@ -112675,9 +112739,9 @@ function AppSupport() {
                     helpText: "Enterprise customers can request a phone callback for urgent issues"
                   }
                 ),
-                /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(Stack, { distribution: "fillEvenly", children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(Stack.Item, { fill: !0, children: /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
-                    import_polaris3.Select,
+                /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(Stack, { distribution: "fillEvenly", children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(Stack.Item, { fill: !0, children: /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(
+                    import_polaris4.Select,
                     {
                       label: "Category",
                       options: [
@@ -112691,8 +112755,8 @@ function AppSupport() {
                       name: "category"
                     }
                   ) }),
-                  /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(Stack.Item, { fill: !0, children: /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
-                    import_polaris3.Select,
+                  /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(Stack.Item, { fill: !0, children: /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(
+                    import_polaris4.Select,
                     {
                       label: "Priority",
                       options: [
@@ -112707,8 +112771,8 @@ function AppSupport() {
                     }
                   ) })
                 ] }),
-                /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
-                  import_polaris3.TextField,
+                /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(
+                  import_polaris4.TextField,
                   {
                     label: "Subject",
                     value: formData.subject,
@@ -112718,8 +112782,8 @@ function AppSupport() {
                     required: !0
                   }
                 ),
-                /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
-                  import_polaris3.TextField,
+                /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(
+                  import_polaris4.TextField,
                   {
                     label: "Description",
                     value: formData.description,
@@ -112731,8 +112795,8 @@ function AppSupport() {
                     required: !0
                   }
                 ),
-                tier === "starter" && (formData.priority === "high" || formData.priority === "urgent") && /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(import_polaris3.Banner, { status: "info", children: /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { children: "High and Urgent priorities are available for Professional and Enterprise customers. Your ticket will be processed as Normal priority." }) }),
-                tier !== "enterprise" && formData.category === "urgent" && /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(import_polaris3.Banner, { status: "info", children: /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { children: "Urgent category is available for Enterprise customers only. Your ticket will be processed as Technical category." }) })
+                tier === "starter" && (formData.priority === "high" || formData.priority === "urgent") && /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(import_polaris4.Banner, { status: "info", children: /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("p", { children: "High and Urgent priorities are available for Professional and Enterprise customers. Your ticket will be processed as Normal priority." }) }),
+                tier !== "enterprise" && formData.category === "urgent" && /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(import_polaris4.Banner, { status: "info", children: /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("p", { children: "Urgent category is available for Enterprise customers only. Your ticket will be processed as Technical category." }) })
               ] })
             ] }) })
           }
@@ -112752,13 +112816,13 @@ var import_react25 = __toESM(require_react()), import_node14 = __toESM(require_d
 init_shopify_server();
 
 // app/components/LoadingStates.tsx
-var import_react24 = __toESM(require_react()), import_jsx_runtime15 = __toESM(require_jsx_runtime());
+var import_react24 = __toESM(require_react()), import_jsx_runtime16 = __toESM(require_jsx_runtime());
 function SkeletonText({
   lines = 1,
   width = "100%",
   height = "16px"
 }) {
-  let skeletonItems = Array.from({ length: lines }, (_, i) => /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(
+  let skeletonItems = Array.from({ length: lines }, (_, i) => /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
     "div",
     {
       style: {
@@ -112773,9 +112837,9 @@ function SkeletonText({
     },
     i
   ));
-  return /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("div", { children: [
+  return /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { children: [
     skeletonItems,
-    /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("style", { dangerouslySetInnerHTML: {
+    /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("style", { dangerouslySetInnerHTML: {
       __html: `
           @keyframes shimmer {
             0% { background-position: -200% 0; }
@@ -112786,15 +112850,15 @@ function SkeletonText({
   ] });
 }
 function SkeletonCard() {
-  return /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("div", { style: {
+  return /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { style: {
     border: "1px solid #ddd",
     borderRadius: "8px",
     padding: "1.5rem",
     background: "#f8f9fa"
   }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(SkeletonText, { width: "60%", height: "20px" }),
-    /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("div", { style: { marginTop: "12px", marginBottom: "16px" }, children: /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(SkeletonText, { lines: 2, width: "90%", height: "14px" }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("div", { style: {
+    /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(SkeletonText, { width: "60%", height: "20px" }),
+    /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("div", { style: { marginTop: "12px", marginBottom: "16px" }, children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(SkeletonText, { lines: 2, width: "90%", height: "14px" }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("div", { style: {
       width: "120px",
       height: "40px",
       background: "linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%)",
@@ -112802,7 +112866,7 @@ function SkeletonCard() {
       animation: "shimmer 2s infinite",
       borderRadius: "6px"
     } }),
-    /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("style", { dangerouslySetInnerHTML: {
+    /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("style", { dangerouslySetInnerHTML: {
       __html: `
           @keyframes shimmer {
             0% { background-position: -200% 0; }
@@ -112834,7 +112898,7 @@ function Toast({
     warning: { bg: "#fff3cd", border: "#ffc107", text: "#856404" },
     info: { bg: "#e7f3ff", border: "#007bff", text: "#004085" }
   }[type];
-  return /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("div", { style: {
+  return /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { style: {
     position: "fixed",
     top: "20px",
     right: "20px",
@@ -112854,8 +112918,8 @@ function Toast({
     gap: "12px",
     animation: "slideIn 0.3s ease-out"
   }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("span", { children: message2 }),
-    /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(
+    /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("span", { children: message2 }),
+    /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
       "button",
       {
         onClick: onClose,
@@ -112873,7 +112937,7 @@ function Toast({
         children: "\u2715"
       }
     ),
-    /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("style", { dangerouslySetInnerHTML: {
+    /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("style", { dangerouslySetInnerHTML: {
       __html: `
           @keyframes slideIn {
             from {
@@ -112891,7 +112955,7 @@ function Toast({
 }
 
 // app/routes/app._index.tsx
-var import_jsx_runtime16 = __toESM(require_jsx_runtime()), loader15 = async ({ request: request2 }) => {
+var import_jsx_runtime17 = __toESM(require_jsx_runtime()), loader15 = async ({ request: request2 }) => {
   try {
     let { session, admin } = await authenticate.admin(request2), shopName = session?.shop?.replace(".myshopify.com", "");
     if (!shopName)
@@ -112968,39 +113032,39 @@ function AppIndex() {
     } else
       isPostSubscription && console.log(`Post-subscription detected, staying on dashboard (charge_id: ${chargeId})`);
   }, [subscriptionInfo, planSelectionUrl]);
-  let renderSubscriptionBanner = () => subscriptionInfo ? subscriptionInfo.isInTrial ? /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { style: {
+  let renderSubscriptionBanner = () => subscriptionInfo ? subscriptionInfo.isInTrial ? /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { style: {
     background: "#fff3cd",
     border: "1px solid #ffc107",
     borderRadius: "8px",
     padding: "16px",
     marginBottom: "24px"
   }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("h3", { style: { margin: "0 0 8px 0", fontSize: "16px", color: "#856404" }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("h3", { style: { margin: "0 0 8px 0", fontSize: "16px", color: "#856404" }, children: [
       "Free Trial Active - ",
       subscriptionInfo.subscriptionTier?.toUpperCase(),
       " Plan"
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("p", { style: { margin: "0", fontSize: "14px", color: "#856404" }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("p", { style: { margin: "0", fontSize: "14px", color: "#856404" }, children: [
       subscriptionInfo.trialDaysRemaining,
       " days remaining in your trial"
     ] })
-  ] }) : subscriptionInfo.hasActivePayment ? /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { style: {
+  ] }) : subscriptionInfo.hasActivePayment ? /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { style: {
     background: "#d1eddd",
     border: "1px solid #28a745",
     borderRadius: "8px",
     padding: "16px",
     marginBottom: "24px"
   }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("h3", { style: { margin: "0 0 8px 0", fontSize: "16px", color: "#155724" }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("h3", { style: { margin: "0 0 8px 0", fontSize: "16px", color: "#155724" }, children: [
       subscriptionInfo.subscriptionTier?.toUpperCase(),
       " Plan Active"
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("p", { style: { margin: "0", fontSize: "14px", color: "#155724" }, children: "Full access to all features" })
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { style: { margin: "0", fontSize: "14px", color: "#155724" }, children: "Full access to all features" })
   ] }) : null : null, renderDataRetentionInfo = () => {
     if (!subscriptionInfo?.subscriptionTier)
       return null;
     let tier = subscriptionInfo.subscriptionTier.toLowerCase(), retentionDays = tier === "starter" ? 7 : tier === "professional" ? 30 : 90, upgradeMessage = tier === "starter" ? "Upgrade to Professional for 30-day retention" : tier === "professional" ? "Upgrade to Enterprise for 90-day retention" : null;
-    return /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { style: {
+    return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { style: {
       background: tier === "starter" ? "#fff3cd" : tier === "professional" ? "#e7f3ff" : "#f8f9fa",
       border: tier === "starter" ? "1px solid #ffc107" : tier === "professional" ? "1px solid #007bff" : "1px solid #dee2e6",
       borderRadius: "8px",
@@ -113010,13 +113074,13 @@ function AppIndex() {
       justifyContent: "space-between",
       alignItems: "center"
     }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("h4", { style: { margin: "0 0 4px 0", fontSize: "16px", color: tier === "starter" ? "#856404" : tier === "professional" ? "#004085" : "#495057" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("h4", { style: { margin: "0 0 4px 0", fontSize: "16px", color: tier === "starter" ? "#856404" : tier === "professional" ? "#004085" : "#495057" }, children: [
           "Data Retention: ",
           retentionDays,
           " days"
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("p", { style: { margin: "0", fontSize: "14px", color: tier === "starter" ? "#856404" : tier === "professional" ? "#004085" : "#6c757d" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("p", { style: { margin: "0", fontSize: "14px", color: tier === "starter" ? "#856404" : tier === "professional" ? "#004085" : "#6c757d" }, children: [
           "Your ",
           tier.toUpperCase(),
           " plan shows data from the last ",
@@ -113024,7 +113088,7 @@ function AppIndex() {
           " days. Older data is automatically filtered."
         ] })
       ] }),
-      upgradeMessage && /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
+      upgradeMessage && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
         import_react26.Link,
         {
           to: planSelectionUrl,
@@ -113043,10 +113107,10 @@ function AppIndex() {
       )
     ] });
   };
-  return /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { style: { padding: "2rem" }, children: [
+  return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { style: { padding: "2rem" }, children: [
     renderSubscriptionBanner(),
     renderDataRetentionInfo(),
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(
       "div",
       {
         style: {
@@ -113060,7 +113124,7 @@ function AppIndex() {
           gap: "12px"
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("div", { style: {
+          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("div", { style: {
             width: "24px",
             height: "24px",
             background: "#007bff",
@@ -113072,20 +113136,20 @@ function AppIndex() {
             fontSize: "12px",
             fontWeight: "bold"
           }, children: "\u2713" }),
-          /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("h3", { style: { margin: "0", fontSize: "16px", color: "#0066cc" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("h3", { style: { margin: "0", fontSize: "16px", color: "#0066cc" }, children: [
               "Connected to ",
               shopName,
               ".myshopify.com"
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("p", { style: { margin: "4px 0 0 0", fontSize: "14px", color: "#666" }, children: "Your shop is automatically detected and configured" })
+            /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { style: { margin: "4px 0 0 0", fontSize: "14px", color: "#666" }, children: "Your shop is automatically detected and configured" })
           ] })
         ]
       }
     ),
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("h1", { children: "Ads Autopilot AI Dashboard" }),
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("p", { children: message2 }),
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h1", { children: "Ads Autopilot AI Dashboard" }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { children: message2 }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
       "div",
       {
         style: {
@@ -113096,17 +113160,17 @@ function AppIndex() {
         },
         children: isInitialLoad ? (
           // Show skeleton loading states
-          /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(import_jsx_runtime16.Fragment, { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(SkeletonCard, {}),
-            /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(SkeletonCard, {}),
-            /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(SkeletonCard, {}),
-            /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(SkeletonCard, {}),
-            /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(SkeletonCard, {})
+          /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(import_jsx_runtime17.Fragment, { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(SkeletonCard, {}),
+            /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(SkeletonCard, {}),
+            /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(SkeletonCard, {}),
+            /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(SkeletonCard, {}),
+            /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(SkeletonCard, {})
           ] })
         ) : (
           // Show actual content
-          /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(import_jsx_runtime16.Fragment, { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(
+          /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(import_jsx_runtime17.Fragment, { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(
               "div",
               {
                 style: {
@@ -113123,9 +113187,9 @@ function AppIndex() {
                   e.currentTarget.style.transform = "translateY(0)", e.currentTarget.style.boxShadow = "none";
                 },
                 children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("h3", { children: "Autopilot" }),
-                  /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("p", { children: "Automated campaign management and optimization" }),
-                  /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
+                  /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h3", { children: "Autopilot" }),
+                  /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { children: "Automated campaign management and optimization" }),
+                  /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
                     import_react26.Link,
                     {
                       to: buildAppUrl("/app/autopilot", shopContext),
@@ -113153,7 +113217,7 @@ function AppIndex() {
                 ]
               }
             ),
-            /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(
+            /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(
               "div",
               {
                 style: {
@@ -113163,9 +113227,9 @@ function AppIndex() {
                   background: "#f8f9fa"
                 },
                 children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("h3", { children: "Insights" }),
-                  /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("p", { children: "Performance analytics and campaign insights" }),
-                  /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
+                  /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h3", { children: "Insights" }),
+                  /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { children: "Performance analytics and campaign insights" }),
+                  /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
                     import_react26.Link,
                     {
                       to: "/app/insights",
@@ -113187,7 +113251,7 @@ function AppIndex() {
                 ]
               }
             ),
-            /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(
+            /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(
               "div",
               {
                 style: {
@@ -113198,9 +113262,9 @@ function AppIndex() {
                   position: "relative"
                 },
                 children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("h3", { children: "Custom Dashboards" }),
-                  /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("p", { children: "Enterprise-exclusive custom analytics dashboards" }),
-                  /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
+                  /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h3", { children: "Custom Dashboards" }),
+                  /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { children: "Enterprise-exclusive custom analytics dashboards" }),
+                  /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
                     "div",
                     {
                       style: {
@@ -113217,7 +113281,7 @@ function AppIndex() {
                       children: "ENTERPRISE"
                     }
                   ),
-                  /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
+                  /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
                     import_react26.Link,
                     {
                       to: "/app/dashboards",
@@ -113239,7 +113303,7 @@ function AppIndex() {
                 ]
               }
             ),
-            /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(
+            /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(
               "div",
               {
                 style: {
@@ -113251,9 +113315,9 @@ function AppIndex() {
                   position: "relative"
                 },
                 children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("h3", { children: "Smart Website Features" }),
-                  /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("p", { children: "Advanced conversion optimization tools" }),
-                  /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
+                  /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h3", { children: "Smart Website Features" }),
+                  /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { children: "Advanced conversion optimization tools" }),
+                  /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
                     "div",
                     {
                       style: {
@@ -113270,7 +113334,7 @@ function AppIndex() {
                       children: "Coming Q1 2026"
                     }
                   ),
-                  /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
+                  /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
                     import_react26.Link,
                     {
                       to: "/app/intent-os",
@@ -113292,7 +113356,7 @@ function AppIndex() {
                 ]
               }
             ),
-            /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(
+            /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(
               "div",
               {
                 style: {
@@ -113302,9 +113366,9 @@ function AppIndex() {
                   background: "#f8f9fa"
                 },
                 children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("h3", { children: "Advanced" }),
-                  /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("p", { children: "Advanced settings and configuration" }),
-                  /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
+                  /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h3", { children: "Advanced" }),
+                  /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { children: "Advanced settings and configuration" }),
+                  /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
                     import_react26.Link,
                     {
                       to: "/app/advanced",
@@ -113330,7 +113394,7 @@ function AppIndex() {
         )
       }
     ),
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(
       "div",
       {
         style: {
@@ -113342,14 +113406,14 @@ function AppIndex() {
           color: "#666"
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("strong", { children: "Status:" }),
+          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Status:" }),
           " Connected to backend \u2022 Last updated:",
           " ",
           new Date(timestamp).toLocaleString()
         ]
       }
     ),
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
       Toast,
       {
         message: toast.message,
@@ -113459,7 +113523,7 @@ async function markSetupCompleted(tenantId) {
 }
 
 // app/routes/app.setup.tsx
-var import_jsx_runtime17 = __toESM(require_jsx_runtime());
+var import_jsx_runtime18 = __toESM(require_jsx_runtime());
 async function loader16({ request: request2 }) {
   try {
     let { session } = await authenticate.admin(request2), shopName = session?.shop?.replace(".myshopify.com", "") || "";
@@ -113485,8 +113549,8 @@ async function action9({ request: request2 }) {
 }
 function Setup() {
   let data = (0, import_react27.useLoaderData)(), actionData = (0, import_react27.useActionData)(), isSubmitting = (0, import_react27.useNavigation)().state !== "idle";
-  return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { style: { maxWidth: 600, margin: "0 auto", padding: 20 }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(
+  return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { style: { maxWidth: 600, margin: "0 auto", padding: 20 }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(
       "div",
       {
         style: {
@@ -113498,16 +113562,16 @@ function Setup() {
           textAlign: "center"
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h1", { style: { margin: "0 0 16px 0", fontSize: "28px", color: "#333" }, children: "Welcome to ProofKit!" }),
-          /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("p", { style: { margin: "0 0 8px 0", fontSize: "18px", color: "#666" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h1", { style: { margin: "0 0 16px 0", fontSize: "28px", color: "#333" }, children: "Welcome to ProofKit!" }),
+          /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("p", { style: { margin: "0 0 8px 0", fontSize: "18px", color: "#666" }, children: [
             "Setting up for: ",
-            /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: data.shopDomain })
+            /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: data.shopDomain })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { style: { margin: "0", fontSize: "14px", color: "#888" }, children: "This quick setup will only take 2 minutes" })
+          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { style: { margin: "0", fontSize: "14px", color: "#888" }, children: "This quick setup will only take 2 minutes" })
         ]
       }
     ),
-    actionData?.error && /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(
+    actionData?.error && /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(
       "div",
       {
         style: {
@@ -113519,12 +113583,12 @@ function Setup() {
           color: "#c53030"
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h4", { style: { margin: "0 0 8px 0" }, children: "Setup Error" }),
-          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { style: { margin: 0 }, children: actionData.error })
+          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h4", { style: { margin: "0 0 8px 0" }, children: "Setup Error" }),
+          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { style: { margin: 0 }, children: actionData.error })
         ]
       }
     ),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(
       import_react27.Form,
       {
         method: "post",
@@ -113534,7 +113598,7 @@ function Setup() {
           alignItems: "center"
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(
+          /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(
             "div",
             {
               style: {
@@ -113547,7 +113611,7 @@ function Setup() {
                 marginBottom: "32px"
               },
               children: [
-                /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("div", { style: {
+                /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { style: {
                   width: "64px",
                   height: "64px",
                   background: "linear-gradient(135deg, #007bff, #0056b3)",
@@ -113559,8 +113623,8 @@ function Setup() {
                   fontSize: "24px",
                   color: "white"
                 }, children: "\u2713" }),
-                /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h2", { style: { margin: "0 0 16px 0", fontSize: "24px", color: "#333" }, children: "You're All Set!" }),
-                /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(
+                /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h2", { style: { margin: "0 0 16px 0", fontSize: "24px", color: "#333" }, children: "You're All Set!" }),
+                /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(
                   "p",
                   {
                     style: {
@@ -113571,15 +113635,15 @@ function Setup() {
                     },
                     children: [
                       "ProofKit is now connected to your ",
-                      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: data.shopDomain }),
+                      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: data.shopDomain }),
                       " ",
                       "store.",
-                      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("br", {}),
+                      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("br", {}),
                       "Your AI-powered Google Ads optimization is ready to begin!"
                     ]
                   }
                 ),
-                /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(
+                /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(
                   "div",
                   {
                     style: {
@@ -113591,12 +113655,12 @@ function Setup() {
                       color: "#495057"
                     },
                     children: [
-                      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Next steps:" }),
-                      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("br", {}),
+                      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Next steps:" }),
+                      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("br", {}),
                       "\u2022 Configure your campaign settings in Advanced Settings",
-                      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("br", {}),
+                      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("br", {}),
                       "\u2022 Set up your automation schedule",
-                      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("br", {}),
+                      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("br", {}),
                       "\u2022 Review performance insights as data flows in"
                     ]
                   }
@@ -113604,7 +113668,7 @@ function Setup() {
               ]
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
             "button",
             {
               type: "submit",
@@ -113636,9 +113700,9 @@ __export(health_exports, {
   default: () => Health,
   loader: () => loader17
 });
-var import_node16 = __toESM(require_dist3()), import_jsx_runtime18 = __toESM(require_jsx_runtime()), loader17 = () => (0, import_node16.json)({ ok: !0 });
+var import_node16 = __toESM(require_dist3()), import_jsx_runtime19 = __toESM(require_jsx_runtime()), loader17 = () => (0, import_node16.json)({ ok: !0 });
 function Health() {
-  return /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("pre", { children: "OK" });
+  return /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("pre", { children: "OK" });
 }
 
 // app/routes/install.tsx
@@ -113707,288 +113771,288 @@ __export(privacy_exports, {
   default: () => Privacy,
   meta: () => meta2
 });
-var import_jsx_runtime19 = __toESM(require_jsx_runtime()), meta2 = () => [
+var import_jsx_runtime20 = __toESM(require_jsx_runtime()), meta2 = () => [
   { title: "Privacy Policy - Ads Autopilot AI" },
   { name: "description", content: "Ads Autopilot AI Privacy Policy - Privacy-first conversion optimization for Shopify stores" }
 ];
 function Privacy() {
-  return /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("div", { style: { fontFamily: "system-ui, sans-serif", lineHeight: "1.8", maxWidth: "800px", margin: "0 auto", padding: "2rem" }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("h1", { children: "Ads Autopilot AI Privacy Policy" }),
-    /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("p", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("strong", { children: "Effective Date:" }),
+  return /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { style: { fontFamily: "system-ui, sans-serif", lineHeight: "1.8", maxWidth: "800px", margin: "0 auto", padding: "2rem" }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("h1", { children: "Ads Autopilot AI Privacy Policy" }),
+    /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("p", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Effective Date:" }),
       " August 25, 2025",
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("strong", { children: "Last Updated:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Last Updated:" }),
       " August 25, 2025",
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("strong", { children: "Version:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Version:" }),
       " 1.0"
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("h2", { children: "Executive Summary" }),
-    /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("p", { children: "Ads Autopilot AI is committed to protecting your privacy and maintaining the highest standards of data protection. This Privacy Policy explains our privacy-by-design approach, minimal data collection practices, and your rights regarding any information we process." }),
-    /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("h3", { children: "Key Privacy Principles:" }),
-    /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("strong", { children: "Data Minimization:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("h2", { children: "Executive Summary" }),
+    /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("p", { children: "Ads Autopilot AI is committed to protecting your privacy and maintaining the highest standards of data protection. This Privacy Policy explains our privacy-by-design approach, minimal data collection practices, and your rights regarding any information we process." }),
+    /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("h3", { children: "Key Privacy Principles:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Data Minimization:" }),
         " We collect only what's absolutely necessary"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("strong", { children: "No Customer PII:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "No Customer PII:" }),
         " We don't collect personal information from your customers"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("strong", { children: "Merchant Control:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Merchant Control:" }),
         " You maintain full control over your data"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("strong", { children: "Transparency:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Transparency:" }),
         " Clear documentation of all data handling practices"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("strong", { children: "Compliance:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Compliance:" }),
         " GDPR, CCPA, and global privacy regulation compliance"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("h2", { children: "Information We Collect" }),
-    /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("h3", { children: "Merchant Account Information" }),
-    /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("strong", { children: "When You Install Ads Autopilot AI:" }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("strong", { children: "Store Information:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("h2", { children: "Information We Collect" }),
+    /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("h3", { children: "Merchant Account Information" }),
+    /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "When You Install Ads Autopilot AI:" }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Store Information:" }),
         " Store name, domain, Shopify store ID"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("strong", { children: "Contact Details:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Contact Details:" }),
         " Email address for support and notifications"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("strong", { children: "Authentication Data:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Authentication Data:" }),
         " OAuth tokens for secure API access"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("strong", { children: "App Configuration:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "App Configuration:" }),
         " Settings and preferences you configure in Ads Autopilot AI"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("p", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("strong", { children: "Purpose:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("p", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Purpose:" }),
       " To provide app functionality and support services",
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("strong", { children: "Legal Basis:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Legal Basis:" }),
       " Legitimate business interest and contractual necessity",
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("strong", { children: "Retention:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Retention:" }),
       " Duration of your Ads Autopilot AI subscription plus 30 days"
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("h3", { children: "Product Catalog Data (Read-Only)" }),
-    /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("strong", { children: "What We Access:" }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("strong", { children: "Product Information:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("h3", { children: "Product Catalog Data (Read-Only)" }),
+    /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "What We Access:" }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Product Information:" }),
         " Product titles, descriptions, categories, and variants"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("strong", { children: "Collection Data:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Collection Data:" }),
         " Product collection organization and structure"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("strong", { children: "Metafield Data:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Metafield Data:" }),
         " Custom product attributes (when used for optimization)"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("strong", { children: "How We Use It:" }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("li", { children: "Display products in Ads Autopilot AI configuration interface" }),
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("li", { children: "Generate conversion optimization recommendations" }),
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("li", { children: "Configure product-specific advertising campaigns" })
+    /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "How We Use It:" }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("li", { children: "Display products in Ads Autopilot AI configuration interface" }),
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("li", { children: "Generate conversion optimization recommendations" }),
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("li", { children: "Configure product-specific advertising campaigns" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("strong", { children: "What We DON'T Do:" }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("li", { children: "Store product data outside of your store" }),
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("li", { children: "Share product information with third parties" }),
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("li", { children: "Modify or update your product information" }),
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("li", { children: "Use product data for competitive analysis" })
+    /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "What We DON'T Do:" }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("li", { children: "Store product data outside of your store" }),
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("li", { children: "Share product information with third parties" }),
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("li", { children: "Modify or update your product information" }),
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("li", { children: "Use product data for competitive analysis" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("h2", { children: "Information We DON'T Collect" }),
-    /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("h3", { children: "Customer Personal Information" }),
-    /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("strong", { children: "We Explicitly Do NOT Collect:" }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("li", { children: "Customer names, emails, or contact information" }),
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("li", { children: "Customer addresses or shipping information" }),
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("li", { children: "Phone numbers or personal identifiers" }),
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("li", { children: "Payment or credit card information" }),
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("li", { children: "Purchase history or order details" }),
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("li", { children: "Customer browsing behavior or preferences" }),
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("li", { children: "Individual customer demographic data" })
+    /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("h2", { children: "Information We DON'T Collect" }),
+    /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("h3", { children: "Customer Personal Information" }),
+    /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "We Explicitly Do NOT Collect:" }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("li", { children: "Customer names, emails, or contact information" }),
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("li", { children: "Customer addresses or shipping information" }),
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("li", { children: "Phone numbers or personal identifiers" }),
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("li", { children: "Payment or credit card information" }),
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("li", { children: "Purchase history or order details" }),
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("li", { children: "Customer browsing behavior or preferences" }),
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("li", { children: "Individual customer demographic data" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("h2", { children: "How We Protect Your Information" }),
-    /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("h3", { children: "Technical Security Measures" }),
-    /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("strong", { children: "Encryption & Transport Security:" }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("strong", { children: "HTTPS Everywhere:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("h2", { children: "How We Protect Your Information" }),
+    /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("h3", { children: "Technical Security Measures" }),
+    /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Encryption & Transport Security:" }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "HTTPS Everywhere:" }),
         " All data transmission encrypted with TLS 1.3"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("strong", { children: "API Security:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "API Security:" }),
         " HMAC validation for all requests"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("strong", { children: "Token Security:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Token Security:" }),
         " OAuth tokens encrypted and securely stored"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("strong", { children: "Database Encryption:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Database Encryption:" }),
         " All stored data encrypted at rest"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("h2", { children: "Your Privacy Rights" }),
-    /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("h3", { children: "Data Access & Control" }),
-    /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("strong", { children: "Right to Access:" }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("li", { children: "Request a copy of all data we have about your store" }),
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("li", { children: "Understand how your data is being used" }),
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("li", { children: "Receive data in a portable format (JSON/CSV)" }),
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("li", { children: "Access detailed data processing logs" })
+    /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("h2", { children: "Your Privacy Rights" }),
+    /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("h3", { children: "Data Access & Control" }),
+    /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Right to Access:" }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("li", { children: "Request a copy of all data we have about your store" }),
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("li", { children: "Understand how your data is being used" }),
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("li", { children: "Receive data in a portable format (JSON/CSV)" }),
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("li", { children: "Access detailed data processing logs" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("strong", { children: "Right to Deletion:" }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("li", { children: "Request deletion of all your data when uninstalling the app" }),
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("li", { children: "Selective deletion of specific data categories" }),
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("li", { children: "Immediate deletion upon request (no retention period)" }),
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("li", { children: "Confirmation of deletion completion" })
+    /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Right to Deletion:" }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("li", { children: "Request deletion of all your data when uninstalling the app" }),
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("li", { children: "Selective deletion of specific data categories" }),
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("li", { children: "Immediate deletion upon request (no retention period)" }),
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("li", { children: "Confirmation of deletion completion" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("h2", { children: "Third-Party Integrations" }),
-    /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("h3", { children: "Google Services Integration" }),
-    /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("strong", { children: "Google Sheets API:" }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("strong", { children: "Purpose:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("h2", { children: "Third-Party Integrations" }),
+    /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("h3", { children: "Google Services Integration" }),
+    /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Google Sheets API:" }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Purpose:" }),
         " Store campaign configurations and export data"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("strong", { children: "Data Shared:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Data Shared:" }),
         " Campaign settings, audience configurations"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("strong", { children: "Merchant Control:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Merchant Control:" }),
         " You control access and can revoke permissions anytime"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("strong", { children: "Data Location:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Data Location:" }),
         " Stored in your Google Sheets (your Google account)"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("strong", { children: "Google Ads API:" }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("strong", { children: "Purpose:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Google Ads API:" }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Purpose:" }),
         " Optimize advertising campaigns based on Ads Autopilot AI insights"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("strong", { children: "Data Shared:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Data Shared:" }),
         " Campaign optimization scripts and audience segments"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("strong", { children: "Merchant Control:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Merchant Control:" }),
         " You control Google Ads account access"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("strong", { children: "Data Processing:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Data Processing:" }),
         " Scripts run in your Google Ads account"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("h2", { children: "International Data Transfers" }),
-    /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("h3", { children: "Regional Compliance" }),
-    /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("strong", { children: "GDPR Compliance (EU/UK):" }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("strong", { children: "Legal Basis:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("h2", { children: "International Data Transfers" }),
+    /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("h3", { children: "Regional Compliance" }),
+    /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "GDPR Compliance (EU/UK):" }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Legal Basis:" }),
         " Legitimate interest and contractual necessity"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("strong", { children: "Data Subject Rights:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Data Subject Rights:" }),
         " Full implementation of all GDPR rights"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("strong", { children: "Data Protection Officer:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Data Protection Officer:" }),
         " Available for privacy-related inquiries"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("strong", { children: "Supervisory Authority:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Supervisory Authority:" }),
         " Cooperation with relevant data protection authorities"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("strong", { children: "CCPA Compliance (California):" }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("strong", { children: "Consumer Rights:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "CCPA Compliance (California):" }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Consumer Rights:" }),
         " Full implementation of CCPA rights"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("strong", { children: "Do Not Sell:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Do Not Sell:" }),
         " We do not sell personal information"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("strong", { children: "Opt-Out Rights:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Opt-Out Rights:" }),
         " Comprehensive opt-out mechanisms"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("strong", { children: "Data Categories:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Data Categories:" }),
         " Clear disclosure of all data categories collected"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("h2", { children: "Children's Privacy" }),
-    /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("p", { children: "Ads Autopilot AI is not intended for use by individuals under 13 years of age. We do not knowingly collect personal information from children. If you believe we have inadvertently collected such information, please contact us immediately." }),
-    /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("h2", { children: "Privacy Policy Updates" }),
-    /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("p", { children: "We may update this Privacy Policy from time to time. We will notify you of any material changes by email and through the Ads Autopilot AI app. Your continued use of Ads Autopilot AI after such modifications constitutes your acceptance of the updated Privacy Policy." }),
-    /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("h2", { children: "Contact Information" }),
-    /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("p", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("strong", { children: "Privacy Questions:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("h2", { children: "Children's Privacy" }),
+    /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("p", { children: "Ads Autopilot AI is not intended for use by individuals under 13 years of age. We do not knowingly collect personal information from children. If you believe we have inadvertently collected such information, please contact us immediately." }),
+    /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("h2", { children: "Privacy Policy Updates" }),
+    /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("p", { children: "We may update this Privacy Policy from time to time. We will notify you of any material changes by email and through the Ads Autopilot AI app. Your continued use of Ads Autopilot AI after such modifications constitutes your acceptance of the updated Privacy Policy." }),
+    /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("h2", { children: "Contact Information" }),
+    /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("p", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Privacy Questions:" }),
       " atanrikulu@e-listele.com",
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("strong", { children: "Data Subject Requests:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Data Subject Requests:" }),
       " atanrikulu@e-listele.com",
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("strong", { children: "Security Incidents:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Security Incidents:" }),
       " atanrikulu@e-listele.com",
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("strong", { children: "General Support:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "General Support:" }),
       " atanrikulu@e-listele.com"
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("h3", { children: "Data Subject Request Timeline:" }),
-    /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("strong", { children: "Acknowledgment:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("h3", { children: "Data Subject Request Timeline:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Acknowledgment:" }),
         " Within 48 hours"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("strong", { children: "Processing:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Processing:" }),
         " Within 30 days (GDPR) or 45 days (CCPA)"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("strong", { children: "Complex Requests:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Complex Requests:" }),
         " Up to 60-90 days with regular updates"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("strong", { children: "Verification:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Verification:" }),
         " Identity verification required for sensitive requests"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("hr", { style: { margin: "3rem 0" } }),
-    /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("p", { style: { textAlign: "center", color: "#666" }, children: /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("strong", { children: "This Privacy Policy is effective as of August 25, 2025, and will remain in effect except with respect to any changes in its provisions in the future, which will be in effect immediately after being posted on this page." }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("p", { style: { textAlign: "center", marginTop: "2rem" }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("strong", { children: "Contact Information:" }),
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("strong", { children: "Email:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("hr", { style: { margin: "3rem 0" } }),
+    /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("p", { style: { textAlign: "center", color: "#666" }, children: /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "This Privacy Policy is effective as of August 25, 2025, and will remain in effect except with respect to any changes in its provisions in the future, which will be in effect immediately after being posted on this page." }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("p", { style: { textAlign: "center", marginTop: "2rem" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Contact Information:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Email:" }),
       " atanrikulu@e-listele.com",
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("strong", { children: "Support:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Support:" }),
       " atanrikulu@e-listele.com",
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("strong", { children: "Website:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Website:" }),
       " ",
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("a", { href: "https://proofkit-saas.vercel.app/privacy", children: "https://proofkit-saas.vercel.app/privacy" })
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("a", { href: "https://proofkit-saas.vercel.app/privacy", children: "https://proofkit-saas.vercel.app/privacy" })
     ] })
   ] });
 }
@@ -114000,7 +114064,7 @@ __export(support_exports, {
   loader: () => loader19,
   meta: () => meta3
 });
-var import_node18 = __toESM(require_dist3()), import_react28 = __toESM(require_dist2()), import_react29 = __toESM(require_react()), import_jsx_runtime20 = __toESM(require_jsx_runtime()), meta3 = () => [
+var import_node18 = __toESM(require_dist3()), import_react28 = __toESM(require_dist2()), import_react29 = __toESM(require_react()), import_jsx_runtime21 = __toESM(require_jsx_runtime()), meta3 = () => [
   { title: "Support - Ads Autopilot AI" },
   { name: "description", content: "Get tier-based support for Ads Autopilot AI - Email, priority, and phone support options" }
 ], loader19 = async ({ request: request2 }) => {
@@ -114109,50 +114173,50 @@ function Support() {
     };
     return supportLevels[tier2] || supportLevels.starter;
   })(tier);
-  return /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { style: { fontFamily: "system-ui, sans-serif", lineHeight: "1.8", maxWidth: "800px", margin: "0 auto", padding: "2rem" }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("h1", { children: "Ads Autopilot AI Support" }),
-    /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("p", { children: "Get help with Ads Autopilot AI - your AI-powered Google Ads optimization tool for Shopify stores." }),
-    /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { style: {
+  return /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("div", { style: { fontFamily: "system-ui, sans-serif", lineHeight: "1.8", maxWidth: "800px", margin: "0 auto", padding: "2rem" }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h1", { children: "Ads Autopilot AI Support" }),
+    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("p", { children: "Get help with Ads Autopilot AI - your AI-powered Google Ads optimization tool for Shopify stores." }),
+    /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("div", { style: {
       padding: "1.5rem",
       background: tier === "enterprise" ? "#fef3e3" : tier === "professional" ? "#f0f9ff" : "#f8fafc",
       border: `2px solid ${tier === "enterprise" ? "#f59e0b" : tier === "professional" ? "#3b82f6" : "#64748b"}`,
       borderRadius: "8px",
       marginBottom: "2rem"
     }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("h2", { style: {
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("h2", { style: {
         margin: "0 0 1rem 0",
         color: tier === "enterprise" ? "#92400e" : tier === "professional" ? "#1e40af" : "#475569"
       }, children: [
         "Your Support Level: ",
         getTierDisplayName(tier)
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { style: { display: "grid", gridTemplateColumns: "1fr 2fr", gap: "1rem", alignItems: "start" }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("p", { style: { margin: "0 0 0.5rem 0", fontWeight: "bold", fontSize: "1.1rem" }, children: supportLevel.type }),
-          /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("p", { style: { margin: "0 0 0.5rem 0", color: "#6b7280" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("div", { style: { display: "grid", gridTemplateColumns: "1fr 2fr", gap: "1rem", alignItems: "start" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("div", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("p", { style: { margin: "0 0 0.5rem 0", fontWeight: "bold", fontSize: "1.1rem" }, children: supportLevel.type }),
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("p", { style: { margin: "0 0 0.5rem 0", color: "#6b7280" }, children: [
             "Response within ",
             supportLevel.response
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("p", { style: { margin: "0", color: "#6b7280", fontSize: "0.9rem" }, children: supportLevel.description })
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("p", { style: { margin: "0", color: "#6b7280", fontSize: "0.9rem" }, children: supportLevel.description })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("p", { style: { margin: "0 0 0.5rem 0", fontWeight: "bold" }, children: "Included Features:" }),
-          /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("ul", { style: { margin: "0", paddingLeft: "1.5rem" }, children: supportLevel.features.map((feature, index) => /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("li", { style: { color: "#374151", marginBottom: "0.25rem" }, children: feature }, index)) })
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("div", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("p", { style: { margin: "0 0 0.5rem 0", fontWeight: "bold" }, children: "Included Features:" }),
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("ul", { style: { margin: "0", paddingLeft: "1.5rem" }, children: supportLevel.features.map((feature, index) => /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("li", { style: { color: "#374151", marginBottom: "0.25rem" }, children: feature }, index)) })
         ] })
       ] })
     ] }),
-    showContactForm ? /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { style: {
+    showContactForm ? /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("div", { style: {
       padding: "1.5rem",
       border: "1px solid #e5e7eb",
       borderRadius: "8px",
       marginBottom: "2rem",
       backgroundColor: "#fafafa"
     }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("h3", { children: "Create Support Ticket" }),
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("form", { onSubmit: handleSubmit, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { style: { marginBottom: "1rem" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("label", { style: { display: "block", marginBottom: "0.5rem", fontWeight: "bold" }, children: "Your Name *" }),
-          /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h3", { children: "Create Support Ticket" }),
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("form", { onSubmit: handleSubmit, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("div", { style: { marginBottom: "1rem" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("label", { style: { display: "block", marginBottom: "0.5rem", fontWeight: "bold" }, children: "Your Name *" }),
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
             "input",
             {
               type: "text",
@@ -114164,9 +114228,9 @@ function Support() {
             }
           )
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { style: { marginBottom: "1rem" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("label", { style: { display: "block", marginBottom: "0.5rem", fontWeight: "bold" }, children: "Email Address *" }),
-          /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("div", { style: { marginBottom: "1rem" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("label", { style: { display: "block", marginBottom: "0.5rem", fontWeight: "bold" }, children: "Email Address *" }),
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
             "input",
             {
               type: "email",
@@ -114178,9 +114242,9 @@ function Support() {
             }
           )
         ] }),
-        tier === "enterprise" && /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { style: { marginBottom: "1rem" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("label", { style: { display: "block", marginBottom: "0.5rem", fontWeight: "bold" }, children: "Phone Number (for phone support)" }),
-          /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(
+        tier === "enterprise" && /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("div", { style: { marginBottom: "1rem" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("label", { style: { display: "block", marginBottom: "0.5rem", fontWeight: "bold" }, children: "Phone Number (for phone support)" }),
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
             "input",
             {
               type: "tel",
@@ -114191,10 +114255,10 @@ function Support() {
             }
           )
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem", marginBottom: "1rem" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("label", { style: { display: "block", marginBottom: "0.5rem", fontWeight: "bold" }, children: "Category *" }),
-            /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)(
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem", marginBottom: "1rem" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("label", { style: { display: "block", marginBottom: "0.5rem", fontWeight: "bold" }, children: "Category *" }),
+            /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(
               "select",
               {
                 name: "category",
@@ -114203,17 +114267,17 @@ function Support() {
                 required: !0,
                 style: { width: "100%", padding: "0.75rem", border: "1px solid #d1d5db", borderRadius: "4px" },
                 children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("option", { value: "general", children: "General" }),
-                  /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("option", { value: "technical", children: "Technical" }),
-                  /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("option", { value: "billing", children: "Billing" }),
-                  tier === "enterprise" && /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("option", { value: "urgent", children: "Urgent" })
+                  /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("option", { value: "general", children: "General" }),
+                  /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("option", { value: "technical", children: "Technical" }),
+                  /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("option", { value: "billing", children: "Billing" }),
+                  tier === "enterprise" && /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("option", { value: "urgent", children: "Urgent" })
                 ]
               }
             )
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("label", { style: { display: "block", marginBottom: "0.5rem", fontWeight: "bold" }, children: "Priority *" }),
-            /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)(
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("label", { style: { display: "block", marginBottom: "0.5rem", fontWeight: "bold" }, children: "Priority *" }),
+            /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(
               "select",
               {
                 name: "priority",
@@ -114222,18 +114286,18 @@ function Support() {
                 required: !0,
                 style: { width: "100%", padding: "0.75rem", border: "1px solid #d1d5db", borderRadius: "4px" },
                 children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("option", { value: "low", children: "Low" }),
-                  /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("option", { value: "normal", children: "Normal" }),
-                  ["professional", "enterprise"].includes(tier) && /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("option", { value: "high", children: "High" }),
-                  tier === "enterprise" && /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("option", { value: "urgent", children: "Urgent" })
+                  /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("option", { value: "low", children: "Low" }),
+                  /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("option", { value: "normal", children: "Normal" }),
+                  ["professional", "enterprise"].includes(tier) && /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("option", { value: "high", children: "High" }),
+                  tier === "enterprise" && /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("option", { value: "urgent", children: "Urgent" })
                 ]
               }
             )
           ] })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { style: { marginBottom: "1rem" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("label", { style: { display: "block", marginBottom: "0.5rem", fontWeight: "bold" }, children: "Subject *" }),
-          /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("div", { style: { marginBottom: "1rem" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("label", { style: { display: "block", marginBottom: "0.5rem", fontWeight: "bold" }, children: "Subject *" }),
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
             "input",
             {
               type: "text",
@@ -114246,9 +114310,9 @@ function Support() {
             }
           )
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { style: { marginBottom: "1rem" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("label", { style: { display: "block", marginBottom: "0.5rem", fontWeight: "bold" }, children: "Description *" }),
-          /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("div", { style: { marginBottom: "1rem" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("label", { style: { display: "block", marginBottom: "0.5rem", fontWeight: "bold" }, children: "Description *" }),
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
             "textarea",
             {
               name: "description",
@@ -114261,8 +114325,8 @@ function Support() {
             }
           )
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { style: { display: "flex", gap: "1rem" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("div", { style: { display: "flex", gap: "1rem" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
             "button",
             {
               type: "submit",
@@ -114281,7 +114345,7 @@ function Support() {
               children: isSubmitting ? "Creating Ticket..." : "Create Ticket"
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
             "button",
             {
               type: "button",
@@ -114300,8 +114364,8 @@ function Support() {
           )
         ] })
       ] })
-    ] }) : /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { style: { textAlign: "center", margin: "2rem 0" }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(
+    ] }) : /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("div", { style: { textAlign: "center", margin: "2rem 0" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
         "button",
         {
           onClick: () => setShowContactForm(!0),
@@ -114318,418 +114382,418 @@ function Support() {
           children: "Create Support Ticket"
         }
       ),
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("p", { style: { marginTop: "1rem", color: "#6b7280" }, children: "Get help with technical issues, billing questions, or general support" })
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("p", { style: { marginTop: "1rem", color: "#6b7280" }, children: "Get help with technical issues, billing questions, or general support" })
     ] }),
-    submitResult && /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("div", { style: {
+    submitResult && /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("div", { style: {
       padding: "1rem",
       backgroundColor: submitResult.success ? "#dcfce7" : "#fee2e2",
       border: `1px solid ${submitResult.success ? "#16a34a" : "#dc2626"}`,
       borderRadius: "4px",
       marginBottom: "2rem"
-    }, children: /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("p", { style: {
+    }, children: /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("p", { style: {
       margin: "0",
       color: submitResult.success ? "#166534" : "#991b1b",
       fontWeight: "bold"
     }, children: submitResult.message }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("h2", { children: "Direct Contact Information" }),
-    /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { style: { display: "grid", gridTemplateColumns: tier === "enterprise" ? "1fr 1fr 1fr" : "1fr 1fr", gap: "2rem", margin: "2rem 0" }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { style: { padding: "1.5rem", border: "1px solid #e5e7eb", borderRadius: "8px" }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("h3", { children: "Email Support" }),
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("p", { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Email:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h2", { children: "Direct Contact Information" }),
+    /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("div", { style: { display: "grid", gridTemplateColumns: tier === "enterprise" ? "1fr 1fr 1fr" : "1fr 1fr", gap: "2rem", margin: "2rem 0" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("div", { style: { padding: "1.5rem", border: "1px solid #e5e7eb", borderRadius: "8px" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h3", { children: "Email Support" }),
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("p", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Email:" }),
           " ",
           contactMethods.support_email,
-          /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("br", {}),
-          /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Response Time:" }),
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("br", {}),
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Response Time:" }),
           " ",
           contactMethods.guaranteed_response_hours,
           " hours",
-          /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("br", {}),
-          /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Hours:" }),
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("br", {}),
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Hours:" }),
           " Monday-Friday, 9 AM - 6 PM EST"
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("p", { children: "For all general inquiries, technical support, and account questions." })
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("p", { children: "For all general inquiries, technical support, and account questions." })
       ] }),
-      tier === "enterprise" && /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { style: { padding: "1.5rem", border: "2px solid #f59e0b", borderRadius: "8px", backgroundColor: "#fef3e3" }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("h3", { children: "Phone Support" }),
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("p", { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Phone:" }),
+      tier === "enterprise" && /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("div", { style: { padding: "1.5rem", border: "2px solid #f59e0b", borderRadius: "8px", backgroundColor: "#fef3e3" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h3", { children: "Phone Support" }),
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("p", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Phone:" }),
           " (307) 395-9830",
-          /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("br", {}),
-          /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Response Time:" }),
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("br", {}),
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Response Time:" }),
           " Immediate",
-          /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("br", {}),
-          /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Hours:" }),
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("br", {}),
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Hours:" }),
           " Monday-Friday, 9 AM - 6 PM EST"
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("p", { children: "Priority phone support for urgent issues and dedicated account management." })
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("p", { children: "Priority phone support for urgent issues and dedicated account management." })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { style: { padding: "1.5rem", border: "1px solid #e5e7eb", borderRadius: "8px" }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("h3", { children: "Billing & Accounts" }),
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("p", { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Email:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("div", { style: { padding: "1.5rem", border: "1px solid #e5e7eb", borderRadius: "8px" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h3", { children: "Billing & Accounts" }),
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("p", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Email:" }),
           " billing@proofkit.com",
-          /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("br", {}),
-          /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Response Time:" }),
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("br", {}),
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Response Time:" }),
           " ",
           tier === "enterprise" ? "4" : tier === "professional" ? "6" : "24",
           " hours",
-          /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("br", {}),
-          /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Hours:" }),
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("br", {}),
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Hours:" }),
           " Monday-Friday, 9 AM - 6 PM EST"
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("p", { children: "For subscription issues, billing questions, refund requests, and plan changes." })
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("p", { children: "For subscription issues, billing questions, refund requests, and plan changes." })
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("h2", { children: "Getting Started" }),
-    /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("h3", { children: "Quick Setup Guide (5 Minutes)" }),
-    /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("ol", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Install the App:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h2", { children: "Getting Started" }),
+    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h3", { children: "Quick Setup Guide (5 Minutes)" }),
+    /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("ol", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Install the App:" }),
         " Install Ads Autopilot AI from the Shopify App Store"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Connect Google Ads:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Connect Google Ads:" }),
         " Authorize your Google Ads account integration"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Configure Audiences:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Configure Audiences:" }),
         " Set up your customer segmentation preferences"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Enable Autopilot:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Enable Autopilot:" }),
         " Turn on automated campaign optimization"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Monitor Results:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Monitor Results:" }),
         " Track your conversion rate improvements"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("h3", { children: "Key Features" }),
-    /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "AI-Powered Optimization:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h3", { children: "Key Features" }),
+    /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "AI-Powered Optimization:" }),
         " Automated Google Ads campaign management"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Smart Audience Targeting:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Smart Audience Targeting:" }),
         " Anonymous customer segmentation without PII"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Performance Analytics:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Performance Analytics:" }),
         " Real-time conversion tracking and insights"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Google Sheets Integration:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Google Sheets Integration:" }),
         " Export data and manage campaigns"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Privacy-First:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Privacy-First:" }),
         " GDPR & CCPA compliant, no customer data collection"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("h2", { children: "Documentation & Resources" }),
-    /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("h3", { children: "Setup Guides" }),
-    /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Initial Setup:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h2", { children: "Documentation & Resources" }),
+    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h3", { children: "Setup Guides" }),
+    /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Initial Setup:" }),
         " Complete walkthrough of app installation and configuration"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Google Ads Integration:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Google Ads Integration:" }),
         " Step-by-step guide to connect your Google Ads account"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Audience Configuration:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Audience Configuration:" }),
         " How to set up customer segmentation and targeting"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Campaign Optimization:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Campaign Optimization:" }),
         " Best practices for automated campaign management"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("h3", { children: "Troubleshooting" }),
-    /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Connection Issues:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h3", { children: "Troubleshooting" }),
+    /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Connection Issues:" }),
         " Resolving Google Ads and Shopify integration problems"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Performance Questions:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Performance Questions:" }),
         " Understanding campaign optimization metrics"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Billing Issues:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Billing Issues:" }),
         " Common subscription and payment questions"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Account Problems:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Account Problems:" }),
         " Login, access, and configuration troubleshooting"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("h2", { children: "Pricing & Plans" }),
-    /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "1rem", margin: "2rem 0" }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { style: { padding: "1.5rem", border: "1px solid #e5e7eb", borderRadius: "8px", textAlign: "center" }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("h3", { children: "Free Plan" }),
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("p", { style: { fontSize: "2rem", fontWeight: "bold", color: "#10b981" }, children: "$0" }),
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("p", { children: "per month" }),
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("ul", { style: { textAlign: "left", marginTop: "1rem" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("li", { children: "Up to 1,000 monthly sessions" }),
-          /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("li", { children: "Basic campaign optimization" }),
-          /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("li", { children: "Email support" }),
-          /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("li", { children: "Standard analytics" })
+    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h2", { children: "Pricing & Plans" }),
+    /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "1rem", margin: "2rem 0" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("div", { style: { padding: "1.5rem", border: "1px solid #e5e7eb", borderRadius: "8px", textAlign: "center" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h3", { children: "Free Plan" }),
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("p", { style: { fontSize: "2rem", fontWeight: "bold", color: "#10b981" }, children: "$0" }),
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("p", { children: "per month" }),
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("ul", { style: { textAlign: "left", marginTop: "1rem" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("li", { children: "Up to 1,000 monthly sessions" }),
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("li", { children: "Basic campaign optimization" }),
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("li", { children: "Email support" }),
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("li", { children: "Standard analytics" })
         ] })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { style: { padding: "1.5rem", border: "2px solid #3b82f6", borderRadius: "8px", textAlign: "center", position: "relative" }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("div", { style: { position: "absolute", top: "-10px", left: "50%", transform: "translateX(-50%)", backgroundColor: "#3b82f6", color: "white", padding: "0.25rem 1rem", borderRadius: "12px", fontSize: "0.875rem" }, children: "Popular" }),
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("h3", { children: "Pro Plan" }),
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("p", { style: { fontSize: "2rem", fontWeight: "bold", color: "#3b82f6" }, children: "$29" }),
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("p", { children: "per month" }),
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("ul", { style: { textAlign: "left", marginTop: "1rem" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("li", { children: "Unlimited sessions" }),
-          /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("li", { children: "Advanced AI optimization" }),
-          /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("li", { children: "Priority support" }),
-          /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("li", { children: "Advanced analytics" }),
-          /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("li", { children: "Google Sheets integration" })
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("div", { style: { padding: "1.5rem", border: "2px solid #3b82f6", borderRadius: "8px", textAlign: "center", position: "relative" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("div", { style: { position: "absolute", top: "-10px", left: "50%", transform: "translateX(-50%)", backgroundColor: "#3b82f6", color: "white", padding: "0.25rem 1rem", borderRadius: "12px", fontSize: "0.875rem" }, children: "Popular" }),
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h3", { children: "Pro Plan" }),
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("p", { style: { fontSize: "2rem", fontWeight: "bold", color: "#3b82f6" }, children: "$29" }),
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("p", { children: "per month" }),
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("ul", { style: { textAlign: "left", marginTop: "1rem" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("li", { children: "Unlimited sessions" }),
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("li", { children: "Advanced AI optimization" }),
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("li", { children: "Priority support" }),
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("li", { children: "Advanced analytics" }),
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("li", { children: "Google Sheets integration" })
         ] })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { style: { padding: "1.5rem", border: "1px solid #e5e7eb", borderRadius: "8px", textAlign: "center" }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("h3", { children: "Enterprise" }),
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("p", { style: { fontSize: "2rem", fontWeight: "bold", color: "#8b5cf6" }, children: "$99" }),
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("p", { children: "per month" }),
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("ul", { style: { textAlign: "left", marginTop: "1rem" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("li", { children: "Everything in Pro" }),
-          /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("li", { children: "Multiple store management" }),
-          /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("li", { children: "Dedicated account manager" }),
-          /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("li", { children: "Custom integrations" }),
-          /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("li", { children: "SLA guarantees" })
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("div", { style: { padding: "1.5rem", border: "1px solid #e5e7eb", borderRadius: "8px", textAlign: "center" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h3", { children: "Enterprise" }),
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("p", { style: { fontSize: "2rem", fontWeight: "bold", color: "#8b5cf6" }, children: "$99" }),
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("p", { children: "per month" }),
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("ul", { style: { textAlign: "left", marginTop: "1rem" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("li", { children: "Everything in Pro" }),
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("li", { children: "Multiple store management" }),
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("li", { children: "Dedicated account manager" }),
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("li", { children: "Custom integrations" }),
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("li", { children: "SLA guarantees" })
         ] })
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("h2", { children: "Technical Support" }),
-    /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("h3", { children: "System Requirements" }),
-    /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Shopify Plan:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h2", { children: "Technical Support" }),
+    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h3", { children: "System Requirements" }),
+    /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Shopify Plan:" }),
         " Any Shopify plan (Basic, Shopify, Advanced, Plus)"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Google Ads Account:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Google Ads Account:" }),
         " Active Google Ads account with API access"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Browser:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Browser:" }),
         " Modern browser (Chrome, Firefox, Safari, Edge)"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Permissions:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Permissions:" }),
         " Shopify admin access to install apps"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("h3", { children: "Common Integration Questions" }),
-    /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Google Ads API:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h3", { children: "Common Integration Questions" }),
+    /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Google Ads API:" }),
         " We use read/write access to optimize your campaigns"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Google Sheets:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Google Sheets:" }),
         " Optional integration for data export and management"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Shopify Data:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Shopify Data:" }),
         " We only read product catalog data (no customer PII)"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Privacy Compliance:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Privacy Compliance:" }),
         " Fully GDPR and CCPA compliant by design"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("h2", { children: "Privacy & Security" }),
-    /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("h3", { children: "Data Protection" }),
-    /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "No Customer PII:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h2", { children: "Privacy & Security" }),
+    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h3", { children: "Data Protection" }),
+    /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "No Customer PII:" }),
         " We never collect personal information from your customers"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Minimal Data Collection:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Minimal Data Collection:" }),
         " Only store configuration and campaign settings"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Your Data Control:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Your Data Control:" }),
         " You own and control all your optimization data"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Secure Infrastructure:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Secure Infrastructure:" }),
         " Enterprise-grade security with encryption"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("h3", { children: "Compliance" }),
-    /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "GDPR Compliant:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h3", { children: "Compliance" }),
+    /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "GDPR Compliant:" }),
         " Full compliance with EU privacy regulations"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "CCPA Compliant:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "CCPA Compliant:" }),
         " California privacy law compliance"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "SOC 2 Type II:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "SOC 2 Type II:" }),
         " Audited security and privacy controls"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Data Processing Agreements:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Data Processing Agreements:" }),
         " Available for enterprise customers"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("h2", { children: "Performance & Optimization" }),
-    /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("h3", { children: "Expected Results" }),
-    /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Conversion Rate:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h2", { children: "Performance & Optimization" }),
+    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h3", { children: "Expected Results" }),
+    /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Conversion Rate:" }),
         " Average 15-25% improvement in first 30 days"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Setup Time:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Setup Time:" }),
         " Complete setup in under 5 minutes"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Time to Value:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Time to Value:" }),
         " See optimization results within 24 hours"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Campaign Management:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Campaign Management:" }),
         " Automated optimization saves 5-10 hours/week"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("h3", { children: "Best Practices" }),
-    /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Audience Segmentation:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h3", { children: "Best Practices" }),
+    /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Audience Segmentation:" }),
         " Set up detailed customer segments for better targeting"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Campaign Budgets:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Campaign Budgets:" }),
         " Start with conservative budgets and scale based on performance"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Regular Monitoring:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Regular Monitoring:" }),
         " Review optimization reports weekly"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "A/B Testing:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "A/B Testing:" }),
         " Use built-in testing features to optimize campaigns"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("h2", { children: "Training & Onboarding" }),
-    /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("h3", { children: "Available Resources" }),
-    /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Video Tutorials:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h2", { children: "Training & Onboarding" }),
+    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h3", { children: "Available Resources" }),
+    /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Video Tutorials:" }),
         " Step-by-step setup and optimization guides"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Webinar Series:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Webinar Series:" }),
         " Monthly training sessions with Q&A"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Best Practices Guide:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Best Practices Guide:" }),
         " Comprehensive optimization strategies"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Case Studies:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Case Studies:" }),
         " Real customer success stories and results"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("h3", { children: "Enterprise Support" }),
-    /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("p", { children: "Enterprise customers receive:" }),
-    /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Dedicated Account Manager:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h3", { children: "Enterprise Support" }),
+    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("p", { children: "Enterprise customers receive:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Dedicated Account Manager:" }),
         " Personal support and optimization guidance"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Custom Training:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Custom Training:" }),
         " Tailored training sessions for your team"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Implementation Support:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Implementation Support:" }),
         " Hands-on help with complex setups"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Performance Reviews:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Performance Reviews:" }),
         " Regular optimization strategy sessions"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("h2", { children: "Updates & Maintenance" }),
-    /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("h3", { children: "Service Updates" }),
-    /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Automatic Updates:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h2", { children: "Updates & Maintenance" }),
+    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h3", { children: "Service Updates" }),
+    /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Automatic Updates:" }),
         " New features and improvements deployed continuously"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Maintenance Windows:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Maintenance Windows:" }),
         " Scheduled maintenance with advance notice"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Security Patches:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Security Patches:" }),
         " Immediate deployment of critical updates"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Feature Announcements:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Feature Announcements:" }),
         " Email notifications for major new features"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("h3", { children: "Service Status" }),
-    /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Uptime Target:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h3", { children: "Service Status" }),
+    /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Uptime Target:" }),
         " 99.9% service availability"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Status Page:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Status Page:" }),
         " Real-time service status and incident reports"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Performance Monitoring:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Performance Monitoring:" }),
         " 24/7 monitoring of all systems"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Incident Response:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Incident Response:" }),
         " Rapid response to any service issues"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("hr", { style: { margin: "3rem 0" } }),
-    /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { style: { textAlign: "center", backgroundColor: "#f3f4f6", padding: "2rem", borderRadius: "8px" }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("h3", { children: "Need Help Right Now?" }),
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("p", { style: { marginBottom: "1rem" }, children: "Contact our support team for immediate assistance" }),
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("p", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Email:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("hr", { style: { margin: "3rem 0" } }),
+    /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("div", { style: { textAlign: "center", backgroundColor: "#f3f4f6", padding: "2rem", borderRadius: "8px" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h3", { children: "Need Help Right Now?" }),
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("p", { style: { marginBottom: "1rem" }, children: "Contact our support team for immediate assistance" }),
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("p", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Email:" }),
         " ",
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("a", { href: "mailto:atanrikulu@e-listele.com", children: "atanrikulu@e-listele.com" }),
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("br", {}),
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Response Time:" }),
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("a", { href: "mailto:atanrikulu@e-listele.com", children: "atanrikulu@e-listele.com" }),
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("br", {}),
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Response Time:" }),
         " 24 hours",
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("br", {}),
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Available:" }),
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("br", {}),
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Available:" }),
         " Monday-Friday, 9 AM - 6 PM EST"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { style: { marginTop: "2rem" }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("h4", { children: "Emergency Support" }),
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("p", { children: "For critical issues affecting your campaigns:" }),
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("p", { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Priority Email:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("div", { style: { marginTop: "2rem" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h4", { children: "Emergency Support" }),
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("p", { children: "For critical issues affecting your campaigns:" }),
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("p", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Priority Email:" }),
           " ",
-          /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("a", { href: "mailto:atanrikulu@e-listele.com", children: "atanrikulu@e-listele.com" })
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("a", { href: "mailto:atanrikulu@e-listele.com", children: "atanrikulu@e-listele.com" })
         ] })
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("p", { style: { textAlign: "center", marginTop: "2rem", color: "#666" }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Ads Autopilot AI Support Team" }),
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("br", {}),
+    /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("p", { style: { textAlign: "center", marginTop: "2rem", color: "#666" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Ads Autopilot AI Support Team" }),
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("br", {}),
       "Helping you optimize your Google Ads campaigns with AI-powered automation"
     ] })
   ] });
@@ -114741,18 +114805,18 @@ __export(index_exports, {
   default: () => Index,
   loader: () => loader20
 });
-var import_node19 = __toESM(require_dist3()), import_jsx_runtime21 = __toESM(require_jsx_runtime());
+var import_node19 = __toESM(require_dist3()), import_jsx_runtime22 = __toESM(require_jsx_runtime());
 async function loader20({ request: request2 }) {
   let url = new URL(request2.url), isEmbedded = url.searchParams.get("embedded") === "1", hasHmac = url.searchParams.has("hmac"), hasHost = url.searchParams.has("host");
   return isEmbedded && hasHmac && hasHost ? (0, import_node19.redirect)(`/app/${url.search}`) : null;
 }
 function Index() {
-  return /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("html", { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("head", { children: /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("title", { children: "ProofKit - Shopify App" }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("body", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h1", { children: "ProofKit Shopify App" }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("p", { children: "This app should be accessed through the Shopify Admin panel." }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("p", { children: "If you're seeing this page, please install the app through Shopify." })
+  return /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("html", { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("head", { children: /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("title", { children: "ProofKit - Shopify App" }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("body", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("h1", { children: "ProofKit Shopify App" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("p", { children: "This app should be accessed through the Shopify Admin panel." }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("p", { children: "If you're seeing this page, please install the app through Shopify." })
     ] })
   ] });
 }
@@ -114796,9 +114860,9 @@ __export(health_exports2, {
   default: () => Health2,
   loader: () => loader22
 });
-var import_node21 = __toESM(require_dist3()), import_jsx_runtime22 = __toESM(require_jsx_runtime()), loader22 = () => (0, import_node21.json)({ ok: !0 });
+var import_node21 = __toESM(require_dist3()), import_jsx_runtime23 = __toESM(require_jsx_runtime()), loader22 = () => (0, import_node21.json)({ ok: !0 });
 function Health2() {
-  return /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("pre", { children: "OK" });
+  return /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("pre", { children: "OK" });
 }
 
 // app/routes/debug.tsx
@@ -114807,7 +114871,7 @@ __export(debug_exports, {
   default: () => Debug,
   loader: () => loader23
 });
-var import_node22 = __toESM(require_dist3()), import_jsx_runtime23 = __toESM(require_jsx_runtime());
+var import_node22 = __toESM(require_dist3()), import_jsx_runtime24 = __toESM(require_jsx_runtime());
 async function loader23() {
   return (0, import_node22.json)({
     env: {
@@ -114821,7 +114885,7 @@ async function loader23() {
   });
 }
 function Debug() {
-  return /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("div", { children: "Debug route - check logs for environment info" });
+  return /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("div", { children: "Debug route - check logs for environment info" });
 }
 
 // app/routes/terms.tsx
@@ -114830,386 +114894,386 @@ __export(terms_exports, {
   default: () => Terms,
   meta: () => meta4
 });
-var import_jsx_runtime24 = __toESM(require_jsx_runtime()), meta4 = () => [
+var import_jsx_runtime25 = __toESM(require_jsx_runtime()), meta4 = () => [
   { title: "Terms of Service - Ads Autopilot AI" },
   { name: "description", content: "Ads Autopilot AI Terms of Service - Legal terms for our Shopify conversion optimization app" }
 ];
 function Terms() {
-  return /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("div", { style: { fontFamily: "system-ui, sans-serif", lineHeight: "1.8", maxWidth: "800px", margin: "0 auto", padding: "2rem" }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("h1", { children: "Ads Autopilot AI Terms of Service" }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("p", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("strong", { children: "Effective Date:" }),
+  return /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("div", { style: { fontFamily: "system-ui, sans-serif", lineHeight: "1.8", maxWidth: "800px", margin: "0 auto", padding: "2rem" }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("h1", { children: "Ads Autopilot AI Terms of Service" }),
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("p", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("strong", { children: "Effective Date:" }),
       " August 25, 2025",
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("strong", { children: "Last Updated:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("strong", { children: "Last Updated:" }),
       " August 25, 2025",
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("strong", { children: "Version:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("strong", { children: "Version:" }),
       " 1.0"
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("h2", { children: "Agreement Overview" }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("p", { children: 'These Terms of Service ("Terms") govern your use of Ads Autopilot AI ("the App", "the Service") provided by the Ads Autopilot AI team ("we", "us", "our"). By installing, accessing, or using Ads Autopilot AI, you ("Merchant", "you", "your") agree to be bound by these Terms.' }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("h2", { children: "Service Description" }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("h3", { children: "What Ads Autopilot AI Does" }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("p", { children: "Ads Autopilot AI is a Shopify app that provides:" }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("strong", { children: "AI-Powered Campaign Optimization:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("h2", { children: "Agreement Overview" }),
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("p", { children: 'These Terms of Service ("Terms") govern your use of Ads Autopilot AI ("the App", "the Service") provided by the Ads Autopilot AI team ("we", "us", "our"). By installing, accessing, or using Ads Autopilot AI, you ("Merchant", "you", "your") agree to be bound by these Terms.' }),
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("h2", { children: "Service Description" }),
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("h3", { children: "What Ads Autopilot AI Does" }),
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("p", { children: "Ads Autopilot AI is a Shopify app that provides:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("strong", { children: "AI-Powered Campaign Optimization:" }),
         " Automated Google Ads campaign management and optimization"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("strong", { children: "Audience Management:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("strong", { children: "Audience Management:" }),
         " Anonymous customer segmentation and targeting"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("strong", { children: "Performance Analytics:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("strong", { children: "Performance Analytics:" }),
         " Conversion rate tracking and optimization insights"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("strong", { children: "Google Sheets Integration:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("strong", { children: "Google Sheets Integration:" }),
         " Data export and campaign configuration management"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("h3", { children: "Service Availability" }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("strong", { children: "Uptime Target:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("h3", { children: "Service Availability" }),
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("strong", { children: "Uptime Target:" }),
         " 99.9% service availability"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("strong", { children: "Maintenance Windows:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("strong", { children: "Maintenance Windows:" }),
         " Scheduled maintenance with advance notice"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("strong", { children: "Support Hours:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("strong", { children: "Support Hours:" }),
         " Business hours EST with 24-hour response SLA"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("strong", { children: "Geographic Availability:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("strong", { children: "Geographic Availability:" }),
         " Global service with regional data compliance"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("h2", { children: "Account Terms" }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("h3", { children: "Eligibility" }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("p", { children: "To use Ads Autopilot AI, you must:" }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("li", { children: "Be at least 18 years old or the age of majority in your jurisdiction" }),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("li", { children: "Have a valid Shopify store and merchant account" }),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("li", { children: "Provide accurate and complete registration information" }),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("li", { children: "Comply with all applicable laws and regulations" })
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("h2", { children: "Account Terms" }),
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("h3", { children: "Eligibility" }),
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("p", { children: "To use Ads Autopilot AI, you must:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("li", { children: "Be at least 18 years old or the age of majority in your jurisdiction" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("li", { children: "Have a valid Shopify store and merchant account" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("li", { children: "Provide accurate and complete registration information" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("li", { children: "Comply with all applicable laws and regulations" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("h3", { children: "Account Responsibilities" }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("p", { children: "You are responsible for:" }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("li", { children: "Maintaining the security of your account credentials" }),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("li", { children: "All activities that occur under your account" }),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("li", { children: "Promptly notifying us of any unauthorized use" }),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("li", { children: "Keeping your contact information current and accurate" })
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("h3", { children: "Account Responsibilities" }),
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("p", { children: "You are responsible for:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("li", { children: "Maintaining the security of your account credentials" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("li", { children: "All activities that occur under your account" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("li", { children: "Promptly notifying us of any unauthorized use" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("li", { children: "Keeping your contact information current and accurate" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("h2", { children: "Pricing and Billing" }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("h3", { children: "Subscription Plans" }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("strong", { children: "Free Plan:" }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("li", { children: "Basic features and limited usage" }),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("li", { children: "Up to 1,000 monthly sessions" }),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("li", { children: "Community support" })
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("h2", { children: "Pricing and Billing" }),
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("h3", { children: "Subscription Plans" }),
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("strong", { children: "Free Plan:" }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("li", { children: "Basic features and limited usage" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("li", { children: "Up to 1,000 monthly sessions" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("li", { children: "Community support" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("strong", { children: "Pro Plan ($29/month):" }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("li", { children: "Full feature access" }),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("li", { children: "Unlimited sessions" }),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("li", { children: "Priority support" }),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("li", { children: "Advanced analytics" })
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("strong", { children: "Pro Plan ($29/month):" }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("li", { children: "Full feature access" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("li", { children: "Unlimited sessions" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("li", { children: "Priority support" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("li", { children: "Advanced analytics" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("strong", { children: "Enterprise Plan ($99/month):" }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("li", { children: "Everything in Pro" }),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("li", { children: "Multiple store management" }),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("li", { children: "Dedicated account manager" }),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("li", { children: "Custom integrations" })
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("strong", { children: "Enterprise Plan ($99/month):" }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("li", { children: "Everything in Pro" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("li", { children: "Multiple store management" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("li", { children: "Dedicated account manager" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("li", { children: "Custom integrations" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("h3", { children: "Billing Terms" }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("strong", { children: "Billing Cycle:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("h3", { children: "Billing Terms" }),
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("strong", { children: "Billing Cycle:" }),
         " Monthly subscription billing through Shopify"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("strong", { children: "Payment Method:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("strong", { children: "Payment Method:" }),
         " Charged to your Shopify account"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("strong", { children: "Auto-Renewal:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("strong", { children: "Auto-Renewal:" }),
         " Subscriptions automatically renew unless cancelled"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("strong", { children: "Price Changes:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("strong", { children: "Price Changes:" }),
         " 30-day advance notice for any price changes"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("h2", { children: "Data and Privacy" }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("h3", { children: "Data Handling" }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("p", { children: "Ads Autopilot AI follows strict data minimization principles:" }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("strong", { children: "No Customer PII:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("h2", { children: "Data and Privacy" }),
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("h3", { children: "Data Handling" }),
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("p", { children: "Ads Autopilot AI follows strict data minimization principles:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("strong", { children: "No Customer PII:" }),
         " We do not collect personal information from your customers"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("strong", { children: "Merchant Data Only:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("strong", { children: "Merchant Data Only:" }),
         " We only access store configuration and product catalog data"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("strong", { children: "Your Control:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("strong", { children: "Your Control:" }),
         " You control all integrations and can revoke access anytime"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("strong", { children: "Secure Storage:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("strong", { children: "Secure Storage:" }),
         " All data encrypted in transit and at rest"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("h3", { children: "Third-Party Integrations" }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("p", { children: "By using Ads Autopilot AI, you authorize us to:" }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("li", { children: "Access your Google Sheets (when you connect them)" }),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("li", { children: "Integrate with Google Ads (when you authorize it)" }),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("li", { children: "Read your Shopify product catalog" }),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("li", { children: "Process campaign optimization data" })
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("h3", { children: "Third-Party Integrations" }),
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("p", { children: "By using Ads Autopilot AI, you authorize us to:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("li", { children: "Access your Google Sheets (when you connect them)" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("li", { children: "Integrate with Google Ads (when you authorize it)" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("li", { children: "Read your Shopify product catalog" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("li", { children: "Process campaign optimization data" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("h2", { children: "Acceptable Use" }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("h3", { children: "Permitted Uses" }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("p", { children: "You may use Ads Autopilot AI to:" }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("li", { children: "Optimize your Google Ads campaigns" }),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("li", { children: "Manage audience segmentation for your store" }),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("li", { children: "Analyze conversion performance" }),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("li", { children: "Export campaign data to Google Sheets" })
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("h2", { children: "Acceptable Use" }),
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("h3", { children: "Permitted Uses" }),
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("p", { children: "You may use Ads Autopilot AI to:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("li", { children: "Optimize your Google Ads campaigns" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("li", { children: "Manage audience segmentation for your store" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("li", { children: "Analyze conversion performance" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("li", { children: "Export campaign data to Google Sheets" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("h3", { children: "Prohibited Uses" }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("p", { children: "You may not use Ads Autopilot AI to:" }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("li", { children: "Violate any applicable laws or regulations" }),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("li", { children: "Infringe on intellectual property rights" }),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("li", { children: "Attempt to reverse engineer the service" }),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("li", { children: "Use the service for malicious or fraudulent purposes" }),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("li", { children: "Interfere with service operations or security" }),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("li", { children: "Share access credentials with unauthorized parties" })
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("h3", { children: "Prohibited Uses" }),
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("p", { children: "You may not use Ads Autopilot AI to:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("li", { children: "Violate any applicable laws or regulations" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("li", { children: "Infringe on intellectual property rights" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("li", { children: "Attempt to reverse engineer the service" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("li", { children: "Use the service for malicious or fraudulent purposes" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("li", { children: "Interfere with service operations or security" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("li", { children: "Share access credentials with unauthorized parties" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("h2", { children: "Service Limitations" }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("h3", { children: "Technical Limitations" }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("strong", { children: "Google API Quotas:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("h2", { children: "Service Limitations" }),
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("h3", { children: "Technical Limitations" }),
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("strong", { children: "Google API Quotas:" }),
         " Subject to Google Ads and Sheets API rate limits"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("strong", { children: "Shopify Limits:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("strong", { children: "Shopify Limits:" }),
         " Bound by Shopify platform limitations"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("strong", { children: "Data Processing:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("strong", { children: "Data Processing:" }),
         " Processing times may vary based on data volume"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("strong", { children: "Feature Availability:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("strong", { children: "Feature Availability:" }),
         " Some features may require specific plan tiers"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("h3", { children: "Service Dependencies" }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("p", { children: "Ads Autopilot AI depends on third-party services:" }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("strong", { children: "Shopify Platform:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("h3", { children: "Service Dependencies" }),
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("p", { children: "Ads Autopilot AI depends on third-party services:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("strong", { children: "Shopify Platform:" }),
         " Core functionality requires active Shopify store"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("strong", { children: "Google Services:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("strong", { children: "Google Services:" }),
         " Integrations subject to Google service availability"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("strong", { children: "Internet Connectivity:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("strong", { children: "Internet Connectivity:" }),
         " Reliable internet connection required"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("h2", { children: "Support and Maintenance" }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("h3", { children: "Support Services" }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("strong", { children: "Response Time:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("h2", { children: "Support and Maintenance" }),
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("h3", { children: "Support Services" }),
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("strong", { children: "Response Time:" }),
         " 24-hour response for all support requests"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("strong", { children: "Support Channels:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("strong", { children: "Support Channels:" }),
         " Email support and help documentation"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("strong", { children: "Business Hours:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("strong", { children: "Business Hours:" }),
         " Monday-Friday, 9 AM - 6 PM EST"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("strong", { children: "Languages:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("strong", { children: "Languages:" }),
         " English (primary), Spanish, French"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("h3", { children: "Maintenance and Updates" }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("strong", { children: "Regular Updates:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("h3", { children: "Maintenance and Updates" }),
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("strong", { children: "Regular Updates:" }),
         " Continuous service improvements and bug fixes"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("strong", { children: "Scheduled Maintenance:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("strong", { children: "Scheduled Maintenance:" }),
         " Advance notice for planned downtime"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("strong", { children: "Security Updates:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("strong", { children: "Security Updates:" }),
         " Immediate deployment of critical security patches"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("strong", { children: "Feature Updates:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("strong", { children: "Feature Updates:" }),
         " New features rolled out with documentation"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("h2", { children: "Liability and Disclaimers" }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("h3", { children: "Service Warranty" }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("p", { children: 'Ads Autopilot AI is provided "as is" with the following disclaimers:' }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("strong", { children: "No Revenue Guarantees:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("h2", { children: "Liability and Disclaimers" }),
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("h3", { children: "Service Warranty" }),
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("p", { children: 'Ads Autopilot AI is provided "as is" with the following disclaimers:' }),
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("strong", { children: "No Revenue Guarantees:" }),
         " We do not guarantee specific conversion rate improvements"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("strong", { children: "Third-Party Dependencies:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("strong", { children: "Third-Party Dependencies:" }),
         " Performance may be affected by external services"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("strong", { children: "Compliance Responsibility:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("strong", { children: "Compliance Responsibility:" }),
         " You are responsible for compliance with advertising regulations"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("h3", { children: "Limitation of Liability" }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("p", { children: "Our liability is limited to:" }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("strong", { children: "Direct Damages:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("h3", { children: "Limitation of Liability" }),
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("p", { children: "Our liability is limited to:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("strong", { children: "Direct Damages:" }),
         " Maximum liability limited to subscription fees paid"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("strong", { children: "Indirect Damages:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("strong", { children: "Indirect Damages:" }),
         " Not liable for lost profits or consequential damages"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("strong", { children: "Service Interruptions:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("strong", { children: "Service Interruptions:" }),
         " Service credits for extended downtime"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("h2", { children: "Termination" }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("h3", { children: "Termination by You" }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("p", { children: "You may terminate your subscription at any time by:" }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("li", { children: "Uninstalling the app from your Shopify admin" }),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("li", { children: "Contacting support to cancel your subscription" }),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("li", { children: "Cancelling through your Shopify billing settings" })
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("h2", { children: "Termination" }),
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("h3", { children: "Termination by You" }),
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("p", { children: "You may terminate your subscription at any time by:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("li", { children: "Uninstalling the app from your Shopify admin" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("li", { children: "Contacting support to cancel your subscription" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("li", { children: "Cancelling through your Shopify billing settings" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("h3", { children: "Termination by Us" }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("p", { children: "We may terminate or suspend your access if:" }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("li", { children: "You violate these Terms of Service" }),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("li", { children: "You fail to pay subscription fees" }),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("li", { children: "We detect fraudulent or malicious activity" }),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("li", { children: "Required by law or legal process" })
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("h3", { children: "Termination by Us" }),
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("p", { children: "We may terminate or suspend your access if:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("li", { children: "You violate these Terms of Service" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("li", { children: "You fail to pay subscription fees" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("li", { children: "We detect fraudulent or malicious activity" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("li", { children: "Required by law or legal process" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("h3", { children: "Effect of Termination" }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("p", { children: "Upon termination:" }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("li", { children: "Your access to the service will be immediately suspended" }),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("li", { children: "Your data will be deleted within 30 days" }),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("li", { children: "You can export your data before termination" }),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("li", { children: "No refunds for partial billing periods" })
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("h3", { children: "Effect of Termination" }),
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("p", { children: "Upon termination:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("li", { children: "Your access to the service will be immediately suspended" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("li", { children: "Your data will be deleted within 30 days" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("li", { children: "You can export your data before termination" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("li", { children: "No refunds for partial billing periods" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("h2", { children: "Legal Terms" }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("h3", { children: "Intellectual Property" }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("strong", { children: "Our Rights:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("h2", { children: "Legal Terms" }),
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("h3", { children: "Intellectual Property" }),
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("strong", { children: "Our Rights:" }),
         " We retain all rights to Ads Autopilot AI software and content"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("strong", { children: "Your Rights:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("strong", { children: "Your Rights:" }),
         " You retain all rights to your store data and content"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("strong", { children: "License:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("strong", { children: "License:" }),
         " We grant you a limited license to use the service"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("strong", { children: "Restrictions:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("strong", { children: "Restrictions:" }),
         " You may not copy, modify, or distribute our software"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("h3", { children: "Governing Law" }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("strong", { children: "Jurisdiction:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("h3", { children: "Governing Law" }),
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("strong", { children: "Jurisdiction:" }),
         " These terms are governed by Delaware law"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("strong", { children: "Disputes:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("strong", { children: "Disputes:" }),
         " Disputes resolved through binding arbitration"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("strong", { children: "Class Action Waiver:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("strong", { children: "Class Action Waiver:" }),
         " No class action lawsuits permitted"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("h2", { children: "Changes to Terms" }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("p", { children: "We may update these Terms of Service from time to time. We will:" }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("li", { children: "Provide 30-day advance notice of material changes" }),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("li", { children: "Email notification to all active users" }),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("li", { children: "Post updates prominently in the app" }),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("li", { children: "Maintain version history of all changes" })
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("h2", { children: "Changes to Terms" }),
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("p", { children: "We may update these Terms of Service from time to time. We will:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("li", { children: "Provide 30-day advance notice of material changes" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("li", { children: "Email notification to all active users" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("li", { children: "Post updates prominently in the app" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("li", { children: "Maintain version history of all changes" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("h2", { children: "Contact Information" }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("p", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("strong", { children: "General Support:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("h2", { children: "Contact Information" }),
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("p", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("strong", { children: "General Support:" }),
       " atanrikulu@e-listele.com",
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("strong", { children: "Legal Questions:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("strong", { children: "Legal Questions:" }),
       " atanrikulu@e-listele.com",
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("strong", { children: "Billing Issues:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("strong", { children: "Billing Issues:" }),
       " atanrikulu@e-listele.com",
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("strong", { children: "Privacy Concerns:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("strong", { children: "Privacy Concerns:" }),
       " atanrikulu@e-listele.com"
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("h3", { children: "Business Information" }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("p", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("strong", { children: "Company:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("h3", { children: "Business Information" }),
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("p", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("strong", { children: "Company:" }),
       " Ads Autopilot AI LLC",
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("strong", { children: "Support Hours:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("strong", { children: "Support Hours:" }),
       " Monday-Friday, 9 AM - 6 PM EST",
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("strong", { children: "Response Time:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("strong", { children: "Response Time:" }),
       " 24 hours for all inquiries"
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("hr", { style: { margin: "3rem 0" } }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("p", { style: { textAlign: "center", color: "#666" }, children: /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("strong", { children: "These Terms of Service are effective as of August 25, 2025, and will remain in effect except with respect to any changes in their provisions in the future, which will be in effect immediately after being posted on this page." }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("p", { style: { textAlign: "center", marginTop: "2rem" }, children: /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("strong", { children: "By installing or using Ads Autopilot AI, you acknowledge that you have read, understood, and agree to be bound by these Terms of Service." }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("p", { style: { textAlign: "center", marginTop: "2rem" }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("strong", { children: "Contact Information:" }),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("strong", { children: "Email:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("hr", { style: { margin: "3rem 0" } }),
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("p", { style: { textAlign: "center", color: "#666" }, children: /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("strong", { children: "These Terms of Service are effective as of August 25, 2025, and will remain in effect except with respect to any changes in their provisions in the future, which will be in effect immediately after being posted on this page." }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("p", { style: { textAlign: "center", marginTop: "2rem" }, children: /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("strong", { children: "By installing or using Ads Autopilot AI, you acknowledge that you have read, understood, and agree to be bound by these Terms of Service." }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("p", { style: { textAlign: "center", marginTop: "2rem" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("strong", { children: "Contact Information:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("strong", { children: "Email:" }),
       " atanrikulu@e-listele.com",
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("strong", { children: "Support:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("strong", { children: "Support:" }),
       " atanrikulu@e-listele.com",
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("strong", { children: "Website:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("strong", { children: "Website:" }),
       " ",
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("a", { href: "https://proofkit-saas.vercel.app/terms", children: "https://proofkit-saas.vercel.app/terms" })
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("a", { href: "https://proofkit-saas.vercel.app/terms", children: "https://proofkit-saas.vercel.app/terms" })
     ] })
   ] });
 }
@@ -115227,7 +115291,7 @@ var import_node23 = __toESM(require_dist3()), import_react36 = __toESM(require_d
 init_server();
 
 // node_modules/@shopify/shopify-app-remix/dist/esm/react/components/AppProvider/AppProvider.mjs
-var import_jsx_runtime26 = __toESM(require_jsx_runtime(), 1), import_polaris4 = __toESM(require_cjs6(), 1);
+var import_jsx_runtime27 = __toESM(require_jsx_runtime(), 1), import_polaris5 = __toESM(require_cjs6(), 1);
 
 // ../node_modules/@shopify/polaris/locales/en.json
 var en_default = {
@@ -115643,22 +115707,22 @@ var en_default = {
 var APP_BRIDGE_URL2 = "https://cdn.shopify.com/shopifycloud/app-bridge.js";
 
 // node_modules/@shopify/shopify-app-remix/dist/esm/react/components/RemixPolarisLink.mjs
-var import_jsx_runtime25 = __toESM(require_jsx_runtime(), 1), import_react30 = __toESM(require_react(), 1), import_react31 = __toESM(require_dist2(), 1), RemixPolarisLink = import_react30.default.forwardRef((props, ref) => (0, import_jsx_runtime25.jsx)(import_react31.Link, { ...props, to: props.url ?? props.to, ref }));
+var import_jsx_runtime26 = __toESM(require_jsx_runtime(), 1), import_react30 = __toESM(require_react(), 1), import_react31 = __toESM(require_dist2(), 1), RemixPolarisLink = import_react30.default.forwardRef((props, ref) => (0, import_jsx_runtime26.jsx)(import_react31.Link, { ...props, to: props.url ?? props.to, ref }));
 
 // node_modules/@shopify/shopify-app-remix/dist/esm/react/components/AppProvider/AppProvider.mjs
 function AppProvider(props) {
   let { children, apiKey, i18n, isEmbeddedApp = !0, __APP_BRIDGE_URL = APP_BRIDGE_URL2, ...polarisProps } = props;
-  return (0, import_jsx_runtime26.jsxs)(import_jsx_runtime26.Fragment, { children: [isEmbeddedApp && (0, import_jsx_runtime26.jsx)("script", { src: __APP_BRIDGE_URL, "data-api-key": apiKey }), (0, import_jsx_runtime26.jsx)(import_polaris4.AppProvider, { ...polarisProps, linkComponent: RemixPolarisLink, i18n: i18n || en_default, children })] });
+  return (0, import_jsx_runtime27.jsxs)(import_jsx_runtime27.Fragment, { children: [isEmbeddedApp && (0, import_jsx_runtime27.jsx)("script", { src: __APP_BRIDGE_URL, "data-api-key": apiKey }), (0, import_jsx_runtime27.jsx)(import_polaris5.AppProvider, { ...polarisProps, linkComponent: RemixPolarisLink, i18n: i18n || en_default, children })] });
 }
 
 // node_modules/@shopify/shopify-app-remix/dist/esm/react/components/AppProxyProvider/AppProxyProvider.mjs
-var import_jsx_runtime27 = __toESM(require_jsx_runtime(), 1), import_react32 = __toESM(require_react(), 1), AppProxyProviderContext = (0, import_react32.createContext)(null);
+var import_jsx_runtime28 = __toESM(require_jsx_runtime(), 1), import_react32 = __toESM(require_react(), 1), AppProxyProviderContext = (0, import_react32.createContext)(null);
 
 // node_modules/@shopify/shopify-app-remix/dist/esm/react/components/AppProxyForm/AppProxyForm.mjs
-var import_jsx_runtime28 = __toESM(require_jsx_runtime(), 1), import_react33 = __toESM(require_react(), 1);
+var import_jsx_runtime29 = __toESM(require_jsx_runtime(), 1), import_react33 = __toESM(require_react(), 1);
 
 // node_modules/@shopify/shopify-app-remix/dist/esm/react/components/AppProxyLink/AppProxyLink.mjs
-var import_jsx_runtime29 = __toESM(require_jsx_runtime(), 1), import_react34 = __toESM(require_react(), 1);
+var import_jsx_runtime30 = __toESM(require_jsx_runtime(), 1), import_react34 = __toESM(require_react(), 1);
 
 // ../node_modules/@shopify/polaris/build/esm/styles.css
 var styles_default = "/assets/_assets/styles-62I325MT.css";
@@ -115667,7 +115731,7 @@ var styles_default = "/assets/_assets/styles-62I325MT.css";
 init_shopify_server();
 
 // app/components/ErrorBoundary.tsx
-var import_react35 = __toESM(require_react()), import_jsx_runtime30 = __toESM(require_jsx_runtime()), ErrorBoundary3 = class extends import_react35.default.Component {
+var import_react35 = __toESM(require_react()), import_jsx_runtime31 = __toESM(require_jsx_runtime()), ErrorBoundary3 = class extends import_react35.default.Component {
   constructor(props) {
     super(props);
     this.reset = () => {
@@ -115685,9 +115749,9 @@ var import_react35 = __toESM(require_react()), import_jsx_runtime30 = __toESM(re
     if (this.state.hasError) {
       if (this.props.fallback) {
         let FallbackComponent = this.props.fallback;
-        return /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(FallbackComponent, { error: this.state.error, reset: this.reset });
+        return /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(FallbackComponent, { error: this.state.error, reset: this.reset });
       }
-      return /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(
+      return /* @__PURE__ */ (0, import_jsx_runtime31.jsxs)(
         "div",
         {
           style: {
@@ -115698,13 +115762,13 @@ var import_react35 = __toESM(require_react()), import_jsx_runtime30 = __toESM(re
             margin: "1rem"
           },
           children: [
-            /* @__PURE__ */ (0, import_jsx_runtime30.jsx)("h2", { children: "Application Error" }),
-            /* @__PURE__ */ (0, import_jsx_runtime30.jsx)("p", { children: "We're sorry, but something went wrong while loading this page. Please try refreshing the page or contact support if the problem persists." }),
-            /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)("details", { style: { marginTop: "1rem" }, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime30.jsx)("summary", { children: "Error Details" }),
-              /* @__PURE__ */ (0, import_jsx_runtime30.jsx)("pre", { style: { fontSize: "12px", overflow: "auto" }, children: this.state.error?.message || "Unknown error" })
+            /* @__PURE__ */ (0, import_jsx_runtime31.jsx)("h2", { children: "Application Error" }),
+            /* @__PURE__ */ (0, import_jsx_runtime31.jsx)("p", { children: "We're sorry, but something went wrong while loading this page. Please try refreshing the page or contact support if the problem persists." }),
+            /* @__PURE__ */ (0, import_jsx_runtime31.jsxs)("details", { style: { marginTop: "1rem" }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime31.jsx)("summary", { children: "Error Details" }),
+              /* @__PURE__ */ (0, import_jsx_runtime31.jsx)("pre", { style: { fontSize: "12px", overflow: "auto" }, children: this.state.error?.message || "Unknown error" })
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(
+            /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(
               "button",
               {
                 onClick: this.reset,
@@ -115720,7 +115784,7 @@ var import_react35 = __toESM(require_react()), import_jsx_runtime30 = __toESM(re
                 children: "Try Again"
               }
             ),
-            /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(
+            /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(
               "button",
               {
                 onClick: () => window.location.href = "/app",
@@ -115746,7 +115810,7 @@ var import_react35 = __toESM(require_react()), import_jsx_runtime30 = __toESM(re
 };
 
 // app/routes/app.tsx
-var import_jsx_runtime31 = __toESM(require_jsx_runtime()), links2 = () => [{ rel: "stylesheet", href: styles_default }], loader24 = async ({ request: request2 }) => {
+var import_jsx_runtime32 = __toESM(require_jsx_runtime()), links2 = () => [{ rel: "stylesheet", href: styles_default }], loader24 = async ({ request: request2 }) => {
   try {
     console.log(`\u{1F3EA} Dashboard loaded for shop: ${new URL(request2.url).searchParams.get("shop") || "unknown"}`);
     let { session } = await authenticate.admin(request2), shopName = session?.shop?.replace(".myshopify.com", "");
@@ -115767,7 +115831,7 @@ var import_jsx_runtime31 = __toESM(require_jsx_runtime()), links2 = () => [{ rel
 };
 function App2() {
   let { apiKey, shopName } = (0, import_react36.useLoaderData)();
-  return /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(AppProvider, { isEmbeddedApp: !0, apiKey, children: /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(ErrorBoundary3, { children: /* @__PURE__ */ (0, import_jsx_runtime31.jsxs)(
+  return /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(AppProvider, { isEmbeddedApp: !0, apiKey, children: /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(ErrorBoundary3, { children: /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)(
     "div",
     {
       style: {
@@ -115776,7 +115840,7 @@ function App2() {
         padding: "0"
       },
       children: [
-        /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(
           "div",
           {
             id: "__shop",
@@ -115784,7 +115848,7 @@ function App2() {
             style: { display: "none" }
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(import_react36.Outlet, {})
+        /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(import_react36.Outlet, {})
       ]
     }
   ) }) });
@@ -115792,7 +115856,7 @@ function App2() {
 var ErrorBoundary4 = boundary.error, headers = (headersArgs) => boundary.headers(headersArgs);
 
 // server-assets-manifest:@remix-run/dev/assets-manifest
-var assets_manifest_default = { entry: { module: "/assets/entry.client-YFVOIIXN.js", imports: ["/assets/_shared/chunk-HBSXC4PT.js", "/assets/_shared/chunk-6U5IYNIC.js", "/assets/_shared/chunk-FN6342HM.js", "/assets/_shared/chunk-P23QBOGJ.js"] }, routes: { root: { id: "root", parentId: void 0, path: "", index: void 0, caseSensitive: void 0, module: "/assets/root-OLUJA2QJ.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/_health": { id: "routes/_health", parentId: "root", path: void 0, index: void 0, caseSensitive: void 0, module: "/assets/routes/_health-4HY4KIMX.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/_index": { id: "routes/_index", parentId: "root", path: void 0, index: !0, caseSensitive: void 0, module: "/assets/routes/_index-ZZUWPXAO.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/api.generate-script": { id: "routes/api.generate-script", parentId: "root", path: "api/generate-script", index: void 0, caseSensitive: void 0, module: "/assets/routes/api.generate-script-3DUZY66Z.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/api.script-proxy": { id: "routes/api.script-proxy", parentId: "root", path: "api/script-proxy", index: void 0, caseSensitive: void 0, module: "/assets/routes/api.script-proxy-D7CGEASX.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app": { id: "routes/app", parentId: "root", path: "app", index: void 0, caseSensitive: void 0, module: "/assets/routes/app-WEKVSUXA.js", imports: ["/assets/_shared/chunk-R64XGKNV.js", "/assets/_shared/chunk-NAVXS3X4.js", "/assets/_shared/chunk-X5HD2HZ6.js", "/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/app._index": { id: "routes/app._index", parentId: "routes/app", path: void 0, index: !0, caseSensitive: void 0, module: "/assets/routes/app._index-WQ7UERSQ.js", imports: ["/assets/_shared/chunk-QWLTOK2E.js", "/assets/_shared/chunk-XGZ5RCNR.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.advanced": { id: "routes/app.advanced", parentId: "routes/app", path: "advanced", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.advanced-VEWSAITI.js", imports: ["/assets/_shared/chunk-XGZ5RCNR.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.autopilot": { id: "routes/app.autopilot", parentId: "routes/app", path: "autopilot", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.autopilot-5PRQNDWV.js", imports: ["/assets/_shared/chunk-XGZ5RCNR.js", "/assets/_shared/chunk-YO2XKRKB.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.billing": { id: "routes/app.billing", parentId: "routes/app", path: "billing", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.billing-HIZNTFJM.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/app.dashboards": { id: "routes/app.dashboards", parentId: "routes/app", path: "dashboards", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.dashboards-ECT25MCM.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.insights": { id: "routes/app.insights", parentId: "routes/app", path: "insights", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.insights-U3HP6WFR.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.insights.terms": { id: "routes/app.insights.terms", parentId: "routes/app.insights", path: "terms", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.insights.terms-KIN5NBW3.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.insights.terms.csv": { id: "routes/app.insights.terms.csv", parentId: "routes/app.insights.terms", path: "csv", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.insights.terms.csv-4VGC3PNS.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.intent-os": { id: "routes/app.intent-os", parentId: "routes/app", path: "intent-os", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.intent-os-FZGE77K5.js", imports: ["/assets/_shared/chunk-QWLTOK2E.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.reports": { id: "routes/app.reports", parentId: "routes/app", path: "reports", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.reports-RYQHPTFF.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/app.setup": { id: "routes/app.setup", parentId: "routes/app", path: "setup", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.setup-ALTSSVCE.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.support": { id: "routes/app.support", parentId: "routes/app", path: "support", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.support-KKRI5UMK.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/auth.$": { id: "routes/auth.$", parentId: "root", path: "auth/*", index: void 0, caseSensitive: void 0, module: "/assets/routes/auth.$-D4HZOJGU.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/auth.session-token": { id: "routes/auth.session-token", parentId: "root", path: "auth/session-token", index: void 0, caseSensitive: void 0, module: "/assets/routes/auth.session-token-T2WMLCN4.js", imports: ["/assets/_shared/chunk-X5HD2HZ6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/debug": { id: "routes/debug", parentId: "root", path: "debug", index: void 0, caseSensitive: void 0, module: "/assets/routes/debug-NPQ5YZI3.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/health": { id: "routes/health", parentId: "root", path: "health", index: void 0, caseSensitive: void 0, module: "/assets/routes/health-GI3SP7O7.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/install": { id: "routes/install", parentId: "root", path: "install", index: void 0, caseSensitive: void 0, module: "/assets/routes/install-YL2XNGMC.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/local.autopilot": { id: "routes/local.autopilot", parentId: "root", path: "local/autopilot", index: void 0, caseSensitive: void 0, module: "/assets/routes/local.autopilot-EEPNYAYD.js", imports: ["/assets/_shared/chunk-YO2XKRKB.js", "/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/privacy": { id: "routes/privacy", parentId: "root", path: "privacy", index: void 0, caseSensitive: void 0, module: "/assets/routes/privacy-II7HDWDA.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/support": { id: "routes/support", parentId: "root", path: "support", index: void 0, caseSensitive: void 0, module: "/assets/routes/support-JDNIQTFH.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/terms": { id: "routes/terms", parentId: "root", path: "terms", index: void 0, caseSensitive: void 0, module: "/assets/routes/terms-PKGZYJCD.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 } }, version: "929aecae", hmr: void 0, url: "/assets/manifest-929AECAE.js" };
+var assets_manifest_default = { entry: { module: "/assets/entry.client-QXUOLS77.js", imports: ["/assets/_shared/chunk-LETD7FLA.js", "/assets/_shared/chunk-TCUG7HAW.js", "/assets/_shared/chunk-6U5IYNIC.js", "/assets/_shared/chunk-FN6342HM.js", "/assets/_shared/chunk-P23QBOGJ.js"] }, routes: { root: { id: "root", parentId: void 0, path: "", index: void 0, caseSensitive: void 0, module: "/assets/root-3POINCBW.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/_health": { id: "routes/_health", parentId: "root", path: void 0, index: void 0, caseSensitive: void 0, module: "/assets/routes/_health-4HY4KIMX.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/_index": { id: "routes/_index", parentId: "root", path: void 0, index: !0, caseSensitive: void 0, module: "/assets/routes/_index-ZZUWPXAO.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/api.generate-script": { id: "routes/api.generate-script", parentId: "root", path: "api/generate-script", index: void 0, caseSensitive: void 0, module: "/assets/routes/api.generate-script-3DUZY66Z.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/api.script-proxy": { id: "routes/api.script-proxy", parentId: "root", path: "api/script-proxy", index: void 0, caseSensitive: void 0, module: "/assets/routes/api.script-proxy-D7CGEASX.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app": { id: "routes/app", parentId: "root", path: "app", index: void 0, caseSensitive: void 0, module: "/assets/routes/app-RA6Z5QFT.js", imports: ["/assets/_shared/chunk-MQFPZQUK.js", "/assets/_shared/chunk-NAVXS3X4.js", "/assets/_shared/chunk-X5HD2HZ6.js", "/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/app._index": { id: "routes/app._index", parentId: "routes/app", path: void 0, index: !0, caseSensitive: void 0, module: "/assets/routes/app._index-RJPEXAJE.js", imports: ["/assets/_shared/chunk-JWG44EZT.js", "/assets/_shared/chunk-XGZ5RCNR.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.additional": { id: "routes/app.additional", parentId: "routes/app", path: "additional", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.additional-4NHXT3GF.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.advanced": { id: "routes/app.advanced", parentId: "routes/app", path: "advanced", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.advanced-6JTPK5GO.js", imports: ["/assets/_shared/chunk-XGZ5RCNR.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.autopilot": { id: "routes/app.autopilot", parentId: "routes/app", path: "autopilot", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.autopilot-OHCIYFAH.js", imports: ["/assets/_shared/chunk-XGZ5RCNR.js", "/assets/_shared/chunk-YO2XKRKB.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.billing": { id: "routes/app.billing", parentId: "routes/app", path: "billing", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.billing-7X6KEIFN.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/app.dashboards": { id: "routes/app.dashboards", parentId: "routes/app", path: "dashboards", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.dashboards-XOHL537U.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.insights": { id: "routes/app.insights", parentId: "routes/app", path: "insights", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.insights-XQNJTZ24.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.insights.terms": { id: "routes/app.insights.terms", parentId: "routes/app.insights", path: "terms", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.insights.terms-HI7JDRF3.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.insights.terms.csv": { id: "routes/app.insights.terms.csv", parentId: "routes/app.insights.terms", path: "csv", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.insights.terms.csv-4VGC3PNS.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.intent-os": { id: "routes/app.intent-os", parentId: "routes/app", path: "intent-os", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.intent-os-UNJR33XX.js", imports: ["/assets/_shared/chunk-JWG44EZT.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.reports": { id: "routes/app.reports", parentId: "routes/app", path: "reports", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.reports-CYXZH7N5.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/app.setup": { id: "routes/app.setup", parentId: "routes/app", path: "setup", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.setup-5ZZQOSD5.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.support": { id: "routes/app.support", parentId: "routes/app", path: "support", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.support-APB4TGBQ.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/auth.$": { id: "routes/auth.$", parentId: "root", path: "auth/*", index: void 0, caseSensitive: void 0, module: "/assets/routes/auth.$-D4HZOJGU.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/auth.session-token": { id: "routes/auth.session-token", parentId: "root", path: "auth/session-token", index: void 0, caseSensitive: void 0, module: "/assets/routes/auth.session-token-T2WMLCN4.js", imports: ["/assets/_shared/chunk-X5HD2HZ6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/debug": { id: "routes/debug", parentId: "root", path: "debug", index: void 0, caseSensitive: void 0, module: "/assets/routes/debug-NPQ5YZI3.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/health": { id: "routes/health", parentId: "root", path: "health", index: void 0, caseSensitive: void 0, module: "/assets/routes/health-GI3SP7O7.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/install": { id: "routes/install", parentId: "root", path: "install", index: void 0, caseSensitive: void 0, module: "/assets/routes/install-YL2XNGMC.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/local.autopilot": { id: "routes/local.autopilot", parentId: "root", path: "local/autopilot", index: void 0, caseSensitive: void 0, module: "/assets/routes/local.autopilot-GY2QRL5C.js", imports: ["/assets/_shared/chunk-YO2XKRKB.js", "/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/privacy": { id: "routes/privacy", parentId: "root", path: "privacy", index: void 0, caseSensitive: void 0, module: "/assets/routes/privacy-II7HDWDA.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/support": { id: "routes/support", parentId: "root", path: "support", index: void 0, caseSensitive: void 0, module: "/assets/routes/support-RODLJC6M.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/terms": { id: "routes/terms", parentId: "root", path: "terms", index: void 0, caseSensitive: void 0, module: "/assets/routes/terms-PKGZYJCD.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 } }, version: "3cee39fe", hmr: void 0, url: "/assets/manifest-3CEE39FE.js" };
 
 // server-entry-module:@remix-run/dev/server-build
 var mode = "production", assetsBuildDirectory = "public/assets", future = { v3_fetcherPersist: !1, v3_relativeSplatPath: !1, v3_throwAbortReason: !1, v3_routeConfig: !1, v3_singleFetch: !1, v3_lazyRouteDiscovery: !1, unstable_optimizeDeps: !1 }, publicPath = "/assets/", entry = { module: entry_server_exports }, routes = {
@@ -115851,6 +115915,14 @@ var mode = "production", assetsBuildDirectory = "public/assets", future = { v3_f
     index: void 0,
     caseSensitive: void 0,
     module: local_autopilot_exports
+  },
+  "routes/app.additional": {
+    id: "routes/app.additional",
+    parentId: "routes/app",
+    path: "additional",
+    index: void 0,
+    caseSensitive: void 0,
+    module: app_additional_exports
   },
   "routes/app.dashboards": {
     id: "routes/app.dashboards",
