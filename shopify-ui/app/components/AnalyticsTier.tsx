@@ -14,7 +14,14 @@ import {
   Layout,
   ProgressBar,
   Tooltip,
+  Stack,
+  Grid,
 } from '@shopify/polaris';
+import {
+  ViewMajor,
+  TrendUpMajor,
+  RefreshMajor,
+} from '@shopify/polaris-icons';
 
 interface TierFeatures {
   tier: 'starter' | 'professional' | 'enterprise';

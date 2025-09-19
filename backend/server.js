@@ -1,6 +1,8 @@
 import express from "express";
 import cors from "cors";
 import crypto from "crypto";
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
 import dotenv from "dotenv";
 import {
   getValidatedHMACSecret,
@@ -120,6 +122,14 @@ app.use(
   }),
 );
 app.use(express.json({ limit: "2mb" }));
+
+// ==== STATIC FILES ====
+// Get __dirname for ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+// Serve static files from public directory
+app.use('/dashboard', express.static(join(__dirname, 'public')));
 
 // ==== SECURITY MIDDLEWARE ====
 // Security middleware disabled for Vercel compatibility
