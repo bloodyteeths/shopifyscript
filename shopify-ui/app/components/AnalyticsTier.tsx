@@ -140,34 +140,29 @@ export function AnalyticsTier({
     return (
       <div style={{
         display: "grid",
-        gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-        gap: 24,
-        marginBottom: 32,
+        gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))",
+        gap: 16,
+        marginBottom: 24,
       }}>
         <div style={{
-          background: "rgba(255, 255, 255, 0.95)",
-          backdropFilter: "blur(10px)",
-          border: "1px solid rgba(255, 255, 255, 0.2)",
-          borderRadius: 20,
-          padding: 24,
-          boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
-          transition: "all 0.3s ease"
+          background: "white",
+          border: "1px solid #e3e3e3",
+          borderRadius: 8,
+          padding: 16,
+          boxShadow: "0 1px 0 rgba(0, 0, 0, 0.05)",
         }}>
-          <div style={{ color: "#6b7280", fontSize: 14, marginBottom: 8, fontWeight: "500" }}>
+          <div style={{ color: "#616161", fontSize: 12, marginBottom: 4, fontWeight: "500" }}>
             Clicks
           </div>
-          <div style={{ 
-            fontSize: 32, 
-            fontWeight: "700", 
-            color: "#1f2937", 
-            background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)", 
-            WebkitBackgroundClip: "text", 
-            WebkitTextFillColor: "transparent",
+          <div style={{
+            fontSize: 24,
+            fontWeight: "600",
+            color: "#202223",
             marginBottom: 4
           }}>
             {formatNumber(kpi.clicks)}
           </div>
-          <div style={{ color: "#6b7280", fontSize: 12 }}>
+          <div style={{ color: "#616161", fontSize: 11 }}>
             Total clicks
           </div>
         </div>
@@ -491,13 +486,12 @@ export function AnalyticsTier({
 
     return (
       <div style={{
-        background: "rgba(255, 255, 255, 0.95)",
-        backdropFilter: "blur(10px)",
-        border: "1px solid rgba(255, 255, 255, 0.2)",
-        borderRadius: 20,
-        padding: 32,
-        boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
-        marginBottom: 32,
+        background: "white",
+        border: "1px solid #e3e3e3",
+        borderRadius: 8,
+        padding: 20,
+        boxShadow: "0 1px 0 rgba(0, 0, 0, 0.05)",
+        marginBottom: 24,
       }}>
         <div style={{ marginBottom: 24 }}>
           <h3 style={{ 
@@ -522,8 +516,8 @@ export function AnalyticsTier({
           gap: 32,
         }}>
           <div style={{
-            background: "linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%)",
-            border: "1px solid rgba(102, 126, 234, 0.1)",
+            background: "#f6f6f7",
+            border: "1px solid #e3e3e3",
             borderRadius: 16,
             padding: 24,
           }}>
@@ -569,8 +563,8 @@ export function AnalyticsTier({
           </div>
           
           <div style={{
-            background: "linear-gradient(135deg, rgba(16, 185, 129, 0.05) 0%, rgba(5, 150, 105, 0.05) 100%)",
-            border: "1px solid rgba(16, 185, 129, 0.2)",
+            background: "#f0fbf8",
+            border: "1px solid #008060",
             borderRadius: 16,
             padding: 24,
             position: "relative"
@@ -579,7 +573,7 @@ export function AnalyticsTier({
               position: "absolute",
               top: -8,
               right: 16,
-              background: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+              background: "#008060",
               color: "white",
               padding: "4px 12px",
               borderRadius: 12,
@@ -600,7 +594,7 @@ export function AnalyticsTier({
               </h4>
               <div style={{
                 display: "inline-block",
-                background: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+                background: "#008060",
                 color: "white",
                 padding: "4px 12px",
                 borderRadius: 12,
@@ -634,7 +628,7 @@ export function AnalyticsTier({
             <button
               onClick={() => onUpgrade?.(nextTier)}
               style={{
-                background: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+                background: "#008060",
                 color: "white",
                 border: "none",
                 padding: "12px 24px",

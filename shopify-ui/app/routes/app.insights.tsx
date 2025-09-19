@@ -345,42 +345,37 @@ function InsightsContent() {
   }, [revalidator]);
 
   return (
-    <div style={{ 
-      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+    <div style={{
+      background: '#f6f6f7',
       minHeight: '100vh',
       padding: '0'
     }}>
-      {/* Modern Header */}
+      {/* Clean Header */}
       <div style={{
-        background: 'rgba(255, 255, 255, 0.95)',
-        backdropFilter: 'blur(10px)',
-        borderBottom: '1px solid rgba(255, 255, 255, 0.2)',
-        padding: '24px 32px',
-        boxShadow: '0 4px 20px rgba(0, 0, 0, 0.1)'
+        background: 'white',
+        borderBottom: '1px solid #e3e3e3',
+        padding: '20px 24px',
       }}>
         <div style={{
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          maxWidth: '1400px',
+          maxWidth: '1200px',
           margin: '0 auto'
         }}>
           <div>
             <h1 style={{
-              fontSize: '32px',
-              fontWeight: '700',
-              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
+              fontSize: '24px',
+              fontWeight: '600',
+              color: '#202223',
               margin: '0',
-              letterSpacing: '-0.5px'
             }}>
               Analytics Dashboard
             </h1>
             <p style={{
               margin: '4px 0 0 0',
-              color: '#6b7280',
-              fontSize: '16px',
+              color: '#616161',
+              fontSize: '14px',
               fontWeight: '400'
             }}>
               Real-time insights and performance metrics
@@ -391,26 +386,15 @@ function InsightsContent() {
             <button
               onClick={() => setShowTierAnalytics(!showTierAnalytics)}
               style={{
-                padding: "12px 20px",
-                fontSize: "14px",
-                fontWeight: "600",
-                border: "none",
-                borderRadius: "12px",
-                backgroundColor: showTierAnalytics ? "#667eea" : "rgba(102, 126, 234, 0.1)",
-                color: showTierAnalytics ? "white" : "#667eea",
+                padding: "8px 16px",
+                fontSize: "13px",
+                fontWeight: "500",
+                border: "1px solid #c9cccf",
+                borderRadius: "6px",
+                backgroundColor: showTierAnalytics ? "#f1f2f3" : "white",
+                color: "#202223",
                 cursor: "pointer",
-                transition: "all 0.3s ease",
-                boxShadow: showTierAnalytics ? "0 4px 12px rgba(102, 126, 234, 0.3)" : "none"
-              }}
-              onMouseOver={(e) => {
-                if (!showTierAnalytics) {
-                  e.currentTarget.style.backgroundColor = "rgba(102, 126, 234, 0.2)";
-                }
-              }}
-              onMouseOut={(e) => {
-                if (!showTierAnalytics) {
-                  e.currentTarget.style.backgroundColor = "rgba(102, 126, 234, 0.1)";
-                }
+                transition: "all 0.2s ease",
               }}
             >
               {showTierAnalytics ? "Tier View" : "Basic View"}
@@ -418,22 +402,23 @@ function InsightsContent() {
             
             <div style={{
               display: "flex",
-              background: "rgba(255, 255, 255, 0.8)",
-              borderRadius: "12px",
-              padding: "4px",
-              boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)"
+              gap: "4px",
+              background: "white",
+              border: "1px solid #c9cccf",
+              borderRadius: "6px",
+              padding: "2px",
             }}>
               <Link to="/app/insights?w=7d" style={{ textDecoration: 'none' }}>
                 <button 
                   disabled={w === "7d" || nav.state !== "idle"}
                   style={{
-                    padding: "8px 16px",
-                    fontSize: "14px",
-                    fontWeight: "600",
+                    padding: "6px 12px",
+                    fontSize: "13px",
+                    fontWeight: "500",
                     border: "none",
-                    borderRadius: "8px",
-                    backgroundColor: w === "7d" ? "#667eea" : "transparent",
-                    color: w === "7d" ? "white" : "#6b7280",
+                    borderRadius: "4px",
+                    backgroundColor: w === "7d" ? "#008060" : "transparent",
+                    color: w === "7d" ? "white" : "#202223",
                     cursor: w === "7d" || nav.state !== "idle" ? "not-allowed" : "pointer",
                     transition: "all 0.2s ease",
                     opacity: w === "7d" || nav.state !== "idle" ? 0.6 : 1
@@ -446,13 +431,13 @@ function InsightsContent() {
                 <button 
                   disabled={w === "24h" || nav.state !== "idle"}
                   style={{
-                    padding: "8px 16px",
-                    fontSize: "14px",
-                    fontWeight: "600",
+                    padding: "6px 12px",
+                    fontSize: "13px",
+                    fontWeight: "500",
                     border: "none",
-                    borderRadius: "8px",
-                    backgroundColor: w === "24h" ? "#667eea" : "transparent",
-                    color: w === "24h" ? "white" : "#6b7280",
+                    borderRadius: "4px",
+                    backgroundColor: w === "24h" ? "#008060" : "transparent",
+                    color: w === "24h" ? "white" : "#202223",
                     cursor: w === "24h" || nav.state !== "idle" ? "not-allowed" : "pointer",
                     transition: "all 0.2s ease",
                     opacity: w === "24h" || nav.state !== "idle" ? 0.6 : 1
@@ -468,10 +453,9 @@ function InsightsContent() {
 
       {/* Main Content Container */}
       <div style={{
-        maxWidth: '1400px',
+        maxWidth: '1200px',
         margin: '0 auto',
-        padding: '32px',
-        paddingTop: '24px'
+        padding: '20px',
       }}>
         {/* Tier-aware analytics view */}
         {showTierAnalytics && (
@@ -546,9 +530,9 @@ function InsightsContent() {
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-              gap: 24,
-              marginBottom: 32,
+              gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))",
+              gap: 16,
+              marginBottom: 24,
             }}
           >
             <ModernCard label="Clicks" value={k.clicks} />
@@ -564,33 +548,31 @@ function InsightsContent() {
           style={{
             display: "grid",
             gridTemplateColumns: "1fr 1fr",
-            gap: 32,
-            marginBottom: 32,
+            gap: 16,
+            marginBottom: 24,
           }}
         >
           <div
             style={{
-              background: "rgba(255, 255, 255, 0.95)",
-              backdropFilter: "blur(10px)",
-              border: "1px solid rgba(255, 255, 255, 0.2)",
-              borderRadius: 20,
-              padding: 24,
-              boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
+              background: "white",
+              border: "1px solid #e3e3e3",
+              borderRadius: 8,
+              padding: 20,
+              boxShadow: "0 1px 0 rgba(0, 0, 0, 0.05)",
             }}
           >
-            <h3 style={{ margin: "0 0 20px 0", fontSize: 20, fontWeight: "600", color: "#1f2937" }}>
+            <h3 style={{ margin: "0 0 16px 0", fontSize: 16, fontWeight: "600", color: "#202223" }}>
               Trend ({w}){retention ? ` - ${retention.description}` : ''}
             </h3>
             <SimpleChart data={series} />
           </div>
           <div
             style={{
-              background: "rgba(255, 255, 255, 0.95)",
-              backdropFilter: "blur(10px)",
-              border: "1px solid rgba(255, 255, 255, 0.2)",
-              borderRadius: 20,
-              padding: 24,
-              boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
+              background: "white",
+              border: "1px solid #e3e3e3",
+              borderRadius: 8,
+              padding: 20,
+              boxShadow: "0 1px 0 rgba(0, 0, 0, 0.05)",
             }}
           >
             <div
@@ -598,32 +580,24 @@ function InsightsContent() {
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
-                marginBottom: 20,
+                marginBottom: 16,
               }}
             >
-              <h3 style={{ margin: 0, fontSize: 20, fontWeight: "600", color: "#1f2937" }}>
+              <h3 style={{ margin: 0, fontSize: 16, fontWeight: "600", color: "#202223" }}>
                 Top search terms ({w})
               </h3>
               <Link to={`/app/insights/terms?w=${w}`} style={{ textDecoration: 'none' }}>
                 <button
                   style={{
-                    background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                    background: "#008060",
                     border: "none",
                     color: "white",
                     cursor: "pointer",
-                    fontSize: 14,
-                    fontWeight: "600",
-                    padding: "8px 16px",
-                    borderRadius: 12,
-                    transition: "all 0.3s ease"
-                  }}
-                  onMouseOver={(e) => {
-                    e.currentTarget.style.transform = "translateY(-2px)";
-                    e.currentTarget.style.boxShadow = "0 4px 12px rgba(102, 126, 234, 0.3)";
-                  }}
-                  onMouseOut={(e) => {
-                    e.currentTarget.style.transform = "translateY(0)";
-                    e.currentTarget.style.boxShadow = "none";
+                    fontSize: 13,
+                    fontWeight: "500",
+                    padding: "6px 12px",
+                    borderRadius: 6,
+                    transition: "all 0.2s ease"
                   }}
                 >
                   View all terms
@@ -669,21 +643,20 @@ function InsightsContent() {
           style={{
             display: "grid",
             gridTemplateColumns: "1fr 1fr",
-            gap: 32,
-            marginBottom: 32,
+            gap: 16,
+            marginBottom: 24,
           }}
         >
           <div
             style={{
-              background: "rgba(255, 255, 255, 0.95)",
-              backdropFilter: "blur(10px)",
-              border: "1px solid rgba(255, 255, 255, 0.2)",
-              borderRadius: 20,
-              padding: 24,
-              boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
+              background: "white",
+              border: "1px solid #e3e3e3",
+              borderRadius: 8,
+              padding: 20,
+              boxShadow: "0 1px 0 rgba(0, 0, 0, 0.05)",
             }}
           >
-            <h3 style={{ margin: "0 0 20px 0", fontSize: 20, fontWeight: "600", color: "#1f2937" }}>
+            <h3 style={{ margin: "0 0 16px 0", fontSize: 16, fontWeight: "600", color: "#202223" }}>
               Activity (last 10)
             </h3>
             <div style={{ maxHeight: 200, overflowY: "auto" }}>
@@ -715,15 +688,14 @@ function InsightsContent() {
           </div>
           <div
             style={{
-              background: "rgba(255, 255, 255, 0.95)",
-              backdropFilter: "blur(10px)",
-              border: "1px solid rgba(255, 255, 255, 0.2)",
-              borderRadius: 20,
-              padding: 24,
-              boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
+              background: "white",
+              border: "1px solid #e3e3e3",
+              borderRadius: 8,
+              padding: 20,
+              boxShadow: "0 1px 0 rgba(0, 0, 0, 0.05)",
             }}
           >
-            <h3 style={{ margin: "0 0 20px 0", fontSize: 20, fontWeight: "600", color: "#1f2937" }}>
+            <h3 style={{ margin: "0 0 16px 0", fontSize: 16, fontWeight: "600", color: "#202223" }}>
               Term Details
             </h3>
             {terms.length > 0 ? (
@@ -778,16 +750,15 @@ function InsightsContent() {
         {explain.length > 0 && (
           <div
             style={{
-              background: "rgba(255, 255, 255, 0.95)",
-              backdropFilter: "blur(10px)",
-              border: "1px solid rgba(255, 255, 255, 0.2)",
-              borderRadius: 20,
-              padding: 24,
-              boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
-              marginBottom: 32,
+              background: "white",
+              border: "1px solid #e3e3e3",
+              borderRadius: 8,
+              padding: 20,
+              boxShadow: "0 1px 0 rgba(0, 0, 0, 0.05)",
+              marginBottom: 24,
             }}
           >
-            <h3 style={{ margin: "0 0 20px 0", fontSize: 20, fontWeight: "600", color: "#1f2937" }}>
+            <h3 style={{ margin: "0 0 16px 0", fontSize: 16, fontWeight: "600", color: "#202223" }}>
               Explain my spend
             </h3>
             {explain.map((e: any, i: number) => {
@@ -819,29 +790,16 @@ function InsightsContent() {
                     onClick={() => handleApplyAction(e.action, e.target)}
                     disabled={disabled}
                     style={{
-                      background: disabled ? "#9ca3af" : "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                      background: disabled ? "#c9cccf" : "#008060",
                       color: "white",
                       border: "none",
-                      padding: "12px 24px",
-                      borderRadius: 12,
+                      padding: "8px 16px",
+                      borderRadius: 6,
                       cursor: disabled ? "not-allowed" : "pointer",
-                      fontSize: 14,
-                      fontWeight: "600",
+                      fontSize: 13,
+                      fontWeight: "500",
                       opacity: disabled ? 0.6 : 1,
-                      transition: "all 0.3s ease",
-                      boxShadow: disabled ? "none" : "0 4px 12px rgba(102, 126, 234, 0.3)"
-                    }}
-                    onMouseOver={(e) => {
-                      if (!disabled) {
-                        e.currentTarget.style.transform = "translateY(-2px)";
-                        e.currentTarget.style.boxShadow = "0 6px 20px rgba(102, 126, 234, 0.4)";
-                      }
-                    }}
-                    onMouseOut={(e) => {
-                      if (!disabled) {
-                        e.currentTarget.style.transform = "translateY(0)";
-                        e.currentTarget.style.boxShadow = "0 4px 12px rgba(102, 126, 234, 0.3)";
-                      }
+                      transition: "all 0.2s ease",
                     }}
                   >
                     {isApplying ? "Applying..." : "Apply"}
@@ -855,16 +813,16 @@ function InsightsContent() {
           <div
             style={{
               position: "fixed",
-              bottom: 32,
-              right: 32,
-              background: toast.includes("failed") ? "linear-gradient(135deg, #f56565 0%, #e53e3e 100%)" : "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+              bottom: 20,
+              right: 20,
+              background: toast.includes("failed") ? "#d82c0d" : "#008060",
               color: "white",
-              padding: "16px 24px",
-              borderRadius: 16,
-              boxShadow: "0 8px 32px rgba(0, 0, 0, 0.2)",
+              padding: "12px 20px",
+              borderRadius: 6,
+              boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
               zIndex: 1000,
-              fontWeight: "600",
-              fontSize: 14,
+              fontWeight: "500",
+              fontSize: 13,
             }}
           >
             {toast}
@@ -894,35 +852,22 @@ function Card({ label, value }: { label: string; value: any }) {
 
 function ModernCard({ label, value }: { label: string; value: any }) {
   return (
-    <div 
-      style={{ 
-        background: "rgba(255, 255, 255, 0.95)",
-        backdropFilter: "blur(10px)",
-        border: "1px solid rgba(255, 255, 255, 0.2)",
-        borderRadius: 20,
-        padding: 24,
-        boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
-        transition: "all 0.3s ease"
-      }}
-      onMouseOver={(e) => {
-        e.currentTarget.style.transform = "translateY(-4px)";
-        e.currentTarget.style.boxShadow = "0 12px 40px rgba(0, 0, 0, 0.15)";
-      }}
-      onMouseOut={(e) => {
-        e.currentTarget.style.transform = "translateY(0)";
-        e.currentTarget.style.boxShadow = "0 8px 32px rgba(0, 0, 0, 0.1)";
+    <div
+      style={{
+        background: "white",
+        border: "1px solid #e3e3e3",
+        borderRadius: 8,
+        padding: 16,
+        boxShadow: "0 1px 0 rgba(0, 0, 0, 0.05)",
       }}
     >
-      <div style={{ color: "#6b7280", fontSize: 14, marginBottom: 8, fontWeight: "500" }}>
+      <div style={{ color: "#616161", fontSize: 12, marginBottom: 4, fontWeight: "500" }}>
         {label}
       </div>
-      <div style={{ 
-        fontSize: 32, 
-        fontWeight: "700", 
-        color: "#1f2937", 
-        background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)", 
-        WebkitBackgroundClip: "text", 
-        WebkitTextFillColor: "transparent" 
+      <div style={{
+        fontSize: 24,
+        fontWeight: "600",
+        color: "#202223",
       }}>
         {value ?? "—"}
       </div>

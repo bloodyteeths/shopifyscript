@@ -130625,40 +130625,35 @@ function AnalyticsTier({
     let { kpi } = data;
     return /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("div", { style: {
       display: "grid",
-      gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-      gap: 24,
-      marginBottom: 32
+      gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))",
+      gap: 16,
+      marginBottom: 24
     }, children: [
       /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("div", { style: {
-        background: "rgba(255, 255, 255, 0.95)",
-        backdropFilter: "blur(10px)",
-        border: "1px solid rgba(255, 255, 255, 0.2)",
-        borderRadius: 20,
-        padding: 24,
-        boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
-        transition: "all 0.3s ease"
+        background: "white",
+        border: "1px solid #e3e3e3",
+        borderRadius: 8,
+        padding: 16,
+        boxShadow: "0 1px 0 rgba(0, 0, 0, 0.05)"
       }, children: [
-        /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("div", { style: { color: "#6b7280", fontSize: 14, marginBottom: 8, fontWeight: "500" }, children: "Clicks" }, void 0, !1, {
+        /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("div", { style: { color: "#616161", fontSize: 12, marginBottom: 4, fontWeight: "500" }, children: "Clicks" }, void 0, !1, {
           fileName: "app/components/AnalyticsTier.tsx",
-          lineNumber: 156,
+          lineNumber: 154,
           columnNumber: 11
         }, this),
         /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("div", { style: {
-          fontSize: 32,
-          fontWeight: "700",
-          color: "#1f2937",
-          background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-          WebkitBackgroundClip: "text",
-          WebkitTextFillColor: "transparent",
+          fontSize: 24,
+          fontWeight: "600",
+          color: "#202223",
           marginBottom: 4
         }, children: formatNumber(kpi.clicks) }, void 0, !1, {
           fileName: "app/components/AnalyticsTier.tsx",
-          lineNumber: 159,
+          lineNumber: 157,
           columnNumber: 11
         }, this),
-        /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("div", { style: { color: "#6b7280", fontSize: 12 }, children: "Total clicks" }, void 0, !1, {
+        /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("div", { style: { color: "#616161", fontSize: 11 }, children: "Total clicks" }, void 0, !1, {
           fileName: "app/components/AnalyticsTier.tsx",
-          lineNumber: 170,
+          lineNumber: 165,
           columnNumber: 11
         }, this)
       ] }, void 0, !0, {
@@ -130677,7 +130672,7 @@ function AnalyticsTier({
       }, children: [
         /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("div", { style: { color: "#6b7280", fontSize: 14, marginBottom: 8, fontWeight: "500" }, children: "Cost" }, void 0, !1, {
           fileName: "app/components/AnalyticsTier.tsx",
-          lineNumber: 184,
+          lineNumber: 179,
           columnNumber: 11
         }, this),
         /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("div", { style: {
@@ -130690,17 +130685,17 @@ function AnalyticsTier({
           marginBottom: 4
         }, children: formatCurrency(kpi.cost) }, void 0, !1, {
           fileName: "app/components/AnalyticsTier.tsx",
-          lineNumber: 187,
+          lineNumber: 182,
           columnNumber: 11
         }, this),
         /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("div", { style: { color: "#6b7280", fontSize: 12 }, children: "Total spend" }, void 0, !1, {
           fileName: "app/components/AnalyticsTier.tsx",
-          lineNumber: 198,
+          lineNumber: 193,
           columnNumber: 11
         }, this)
       ] }, void 0, !0, {
         fileName: "app/components/AnalyticsTier.tsx",
-        lineNumber: 175,
+        lineNumber: 170,
         columnNumber: 9
       }, this),
       /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("div", { style: {
@@ -130714,7 +130709,7 @@ function AnalyticsTier({
       }, children: [
         /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("div", { style: { color: "#6b7280", fontSize: 14, marginBottom: 8, fontWeight: "500" }, children: "Conversions" }, void 0, !1, {
           fileName: "app/components/AnalyticsTier.tsx",
-          lineNumber: 212,
+          lineNumber: 207,
           columnNumber: 11
         }, this),
         /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("div", { style: {
@@ -130727,17 +130722,17 @@ function AnalyticsTier({
           marginBottom: 4
         }, children: formatNumber(kpi.conversions) }, void 0, !1, {
           fileName: "app/components/AnalyticsTier.tsx",
-          lineNumber: 215,
+          lineNumber: 210,
           columnNumber: 11
         }, this),
         /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("div", { style: { color: "#6b7280", fontSize: 12 }, children: "Total conversions" }, void 0, !1, {
           fileName: "app/components/AnalyticsTier.tsx",
-          lineNumber: 226,
+          lineNumber: 221,
           columnNumber: 11
         }, this)
       ] }, void 0, !0, {
         fileName: "app/components/AnalyticsTier.tsx",
-        lineNumber: 203,
+        lineNumber: 198,
         columnNumber: 9
       }, this),
       /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("div", { style: {
@@ -130751,7 +130746,7 @@ function AnalyticsTier({
       }, children: [
         /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("div", { style: { color: "#6b7280", fontSize: 14, marginBottom: 8, fontWeight: "500" }, children: "CTR" }, void 0, !1, {
           fileName: "app/components/AnalyticsTier.tsx",
-          lineNumber: 240,
+          lineNumber: 235,
           columnNumber: 11
         }, this),
         /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("div", { style: {
@@ -130767,17 +130762,17 @@ function AnalyticsTier({
           "%"
         ] }, void 0, !0, {
           fileName: "app/components/AnalyticsTier.tsx",
-          lineNumber: 243,
+          lineNumber: 238,
           columnNumber: 11
         }, this),
         /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("div", { style: { color: "#6b7280", fontSize: 12 }, children: "Click-through rate" }, void 0, !1, {
           fileName: "app/components/AnalyticsTier.tsx",
-          lineNumber: 254,
+          lineNumber: 249,
           columnNumber: 11
         }, this)
       ] }, void 0, !0, {
         fileName: "app/components/AnalyticsTier.tsx",
-        lineNumber: 231,
+        lineNumber: 226,
         columnNumber: 9
       }, this),
       /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("div", { style: {
@@ -130791,7 +130786,7 @@ function AnalyticsTier({
       }, children: [
         /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("div", { style: { color: "#6b7280", fontSize: 14, marginBottom: 8, fontWeight: "500" }, children: "CPC" }, void 0, !1, {
           fileName: "app/components/AnalyticsTier.tsx",
-          lineNumber: 268,
+          lineNumber: 263,
           columnNumber: 11
         }, this),
         /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("div", { style: {
@@ -130804,17 +130799,17 @@ function AnalyticsTier({
           marginBottom: 4
         }, children: formatCurrency(kpi.cpc) }, void 0, !1, {
           fileName: "app/components/AnalyticsTier.tsx",
-          lineNumber: 271,
+          lineNumber: 266,
           columnNumber: 11
         }, this),
         /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("div", { style: { color: "#6b7280", fontSize: 12 }, children: "Cost per click" }, void 0, !1, {
           fileName: "app/components/AnalyticsTier.tsx",
-          lineNumber: 282,
+          lineNumber: 277,
           columnNumber: 11
         }, this)
       ] }, void 0, !0, {
         fileName: "app/components/AnalyticsTier.tsx",
-        lineNumber: 259,
+        lineNumber: 254,
         columnNumber: 9
       }, this),
       /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("div", { style: {
@@ -130828,7 +130823,7 @@ function AnalyticsTier({
       }, children: [
         /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("div", { style: { color: "#6b7280", fontSize: 14, marginBottom: 8, fontWeight: "500" }, children: "CPA" }, void 0, !1, {
           fileName: "app/components/AnalyticsTier.tsx",
-          lineNumber: 296,
+          lineNumber: 291,
           columnNumber: 11
         }, this),
         /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("div", { style: {
@@ -130841,17 +130836,17 @@ function AnalyticsTier({
           marginBottom: 4
         }, children: formatCurrency(kpi.cpa) }, void 0, !1, {
           fileName: "app/components/AnalyticsTier.tsx",
-          lineNumber: 299,
+          lineNumber: 294,
           columnNumber: 11
         }, this),
         /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("div", { style: { color: "#6b7280", fontSize: 12 }, children: "Cost per acquisition" }, void 0, !1, {
           fileName: "app/components/AnalyticsTier.tsx",
-          lineNumber: 310,
+          lineNumber: 305,
           columnNumber: 11
         }, this)
       ] }, void 0, !0, {
         fileName: "app/components/AnalyticsTier.tsx",
-        lineNumber: 287,
+        lineNumber: 282,
         columnNumber: 9
       }, this)
     ] }, void 0, !0, {
@@ -130867,24 +130862,24 @@ function AnalyticsTier({
       /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)(import_polaris4.LegacyStack, { horizontal: !0, alignment: "center", children: [
         /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)(import_polaris4.Text, { variant: "headingLg", children: "ROAS Analytics" }, void 0, !1, {
           fileName: "app/components/AnalyticsTier.tsx",
-          lineNumber: 327,
+          lineNumber: 322,
           columnNumber: 13
         }, this),
         /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)(import_polaris4.Badge, { status: getTierBadgeColor(tier), children: getTierDisplayName(tier) }, void 0, !1, {
           fileName: "app/components/AnalyticsTier.tsx",
-          lineNumber: 328,
+          lineNumber: 323,
           columnNumber: 13
         }, this)
       ] }, void 0, !0, {
         fileName: "app/components/AnalyticsTier.tsx",
-        lineNumber: 326,
+        lineNumber: 321,
         columnNumber: 11
       }, this),
       /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)(import_polaris4.Grid, { children: [
         /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)(import_polaris4.Grid.Cell, { columnSpan: { xs: 6, sm: 3, md: 4, lg: 4, xl: 4 }, children: /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)(import_polaris4.LegacyStack, { children: [
           /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)(import_polaris4.Text, { variant: "headingMd", children: "Basic ROAS" }, void 0, !1, {
             fileName: "app/components/AnalyticsTier.tsx",
-            lineNumber: 336,
+            lineNumber: 331,
             columnNumber: 17
           }, this),
           /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)(import_polaris4.Text, { variant: "heading2xl", as: "h2", color: basic.roas >= 2 ? "success" : "critical", children: [
@@ -130892,7 +130887,7 @@ function AnalyticsTier({
             "x"
           ] }, void 0, !0, {
             fileName: "app/components/AnalyticsTier.tsx",
-            lineNumber: 337,
+            lineNumber: 332,
             columnNumber: 17
           }, this),
           /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)(import_polaris4.Text, { variant: "bodyMd", color: "subdued", children: [
@@ -130900,7 +130895,7 @@ function AnalyticsTier({
             formatCurrency(basic.revenue)
           ] }, void 0, !0, {
             fileName: "app/components/AnalyticsTier.tsx",
-            lineNumber: 340,
+            lineNumber: 335,
             columnNumber: 17
           }, this),
           /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)(import_polaris4.Text, { variant: "bodyMd", color: "subdued", children: [
@@ -130908,16 +130903,16 @@ function AnalyticsTier({
             formatCurrency(basic.profit)
           ] }, void 0, !0, {
             fileName: "app/components/AnalyticsTier.tsx",
-            lineNumber: 343,
+            lineNumber: 338,
             columnNumber: 17
           }, this)
         ] }, void 0, !0, {
           fileName: "app/components/AnalyticsTier.tsx",
-          lineNumber: 335,
+          lineNumber: 330,
           columnNumber: 15
         }, this) }, void 0, !1, {
           fileName: "app/components/AnalyticsTier.tsx",
-          lineNumber: 334,
+          lineNumber: 329,
           columnNumber: 13
         }, this),
         advanced && tier !== "starter" && /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)(import_jsx_dev_runtime10.Fragment, { children: [
@@ -130925,21 +130920,21 @@ function AnalyticsTier({
             /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)(import_polaris4.LegacyStack, { horizontal: !0, alignment: "center", children: [
               /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)(import_polaris4.Text, { variant: "headingMd", children: "LTV ROAS" }, void 0, !1, {
                 fileName: "app/components/AnalyticsTier.tsx",
-                lineNumber: 354,
+                lineNumber: 349,
                 columnNumber: 23
               }, this),
               /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)(import_polaris4.Tooltip, { content: "Lifetime Value based ROAS calculation", children: /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)(import_polaris4.Button, { plain: !0, monochrome: !0, icon: SvgViewIcon }, void 0, !1, {
                 fileName: "app/components/AnalyticsTier.tsx",
-                lineNumber: 356,
+                lineNumber: 351,
                 columnNumber: 25
               }, this) }, void 0, !1, {
                 fileName: "app/components/AnalyticsTier.tsx",
-                lineNumber: 355,
+                lineNumber: 350,
                 columnNumber: 23
               }, this)
             ] }, void 0, !0, {
               fileName: "app/components/AnalyticsTier.tsx",
-              lineNumber: 353,
+              lineNumber: 348,
               columnNumber: 21
             }, this),
             /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)(import_polaris4.Text, { variant: "heading2xl", as: "h2", color: advanced.ltvRoas >= 4 ? "success" : "warning", children: [
@@ -130947,42 +130942,42 @@ function AnalyticsTier({
               "x"
             ] }, void 0, !0, {
               fileName: "app/components/AnalyticsTier.tsx",
-              lineNumber: 359,
+              lineNumber: 354,
               columnNumber: 21
             }, this),
             /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)(import_polaris4.Text, { variant: "bodyMd", color: "subdued", children: "Long-term profitability" }, void 0, !1, {
               fileName: "app/components/AnalyticsTier.tsx",
-              lineNumber: 362,
+              lineNumber: 357,
               columnNumber: 21
             }, this)
           ] }, void 0, !0, {
             fileName: "app/components/AnalyticsTier.tsx",
-            lineNumber: 352,
+            lineNumber: 347,
             columnNumber: 19
           }, this) }, void 0, !1, {
             fileName: "app/components/AnalyticsTier.tsx",
-            lineNumber: 351,
+            lineNumber: 346,
             columnNumber: 17
           }, this),
           /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)(import_polaris4.Grid.Cell, { columnSpan: { xs: 6, sm: 3, md: 4, lg: 4, xl: 4 }, children: /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)(import_polaris4.LegacyStack, { children: [
             /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)(import_polaris4.LegacyStack, { horizontal: !0, alignment: "center", children: [
               /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)(import_polaris4.Text, { variant: "headingMd", children: "Margin ROAS" }, void 0, !1, {
                 fileName: "app/components/AnalyticsTier.tsx",
-                lineNumber: 371,
+                lineNumber: 366,
                 columnNumber: 23
               }, this),
               /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)(import_polaris4.Tooltip, { content: "Profit margin adjusted ROAS", children: /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)(import_polaris4.Button, { plain: !0, monochrome: !0, icon: SvgChartLineIcon }, void 0, !1, {
                 fileName: "app/components/AnalyticsTier.tsx",
-                lineNumber: 373,
+                lineNumber: 368,
                 columnNumber: 25
               }, this) }, void 0, !1, {
                 fileName: "app/components/AnalyticsTier.tsx",
-                lineNumber: 372,
+                lineNumber: 367,
                 columnNumber: 23
               }, this)
             ] }, void 0, !0, {
               fileName: "app/components/AnalyticsTier.tsx",
-              lineNumber: 370,
+              lineNumber: 365,
               columnNumber: 21
             }, this),
             /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)(import_polaris4.Text, { variant: "heading2xl", as: "h2", children: [
@@ -130990,40 +130985,40 @@ function AnalyticsTier({
               "x"
             ] }, void 0, !0, {
               fileName: "app/components/AnalyticsTier.tsx",
-              lineNumber: 376,
+              lineNumber: 371,
               columnNumber: 21
             }, this),
             /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)(import_polaris4.Text, { variant: "bodyMd", color: "subdued", children: "After-margin profitability" }, void 0, !1, {
               fileName: "app/components/AnalyticsTier.tsx",
-              lineNumber: 379,
+              lineNumber: 374,
               columnNumber: 21
             }, this)
           ] }, void 0, !0, {
             fileName: "app/components/AnalyticsTier.tsx",
-            lineNumber: 369,
+            lineNumber: 364,
             columnNumber: 19
           }, this) }, void 0, !1, {
             fileName: "app/components/AnalyticsTier.tsx",
-            lineNumber: 368,
+            lineNumber: 363,
             columnNumber: 17
           }, this)
         ] }, void 0, !0, {
           fileName: "app/components/AnalyticsTier.tsx",
-          lineNumber: 350,
+          lineNumber: 345,
           columnNumber: 15
         }, this)
       ] }, void 0, !0, {
         fileName: "app/components/AnalyticsTier.tsx",
-        lineNumber: 333,
+        lineNumber: 328,
         columnNumber: 11
       }, this)
     ] }, void 0, !0, {
       fileName: "app/components/AnalyticsTier.tsx",
-      lineNumber: 325,
+      lineNumber: 320,
       columnNumber: 9
     }, this) }, void 0, !1, {
       fileName: "app/components/AnalyticsTier.tsx",
-      lineNumber: 324,
+      lineNumber: 319,
       columnNumber: 7
     }, this);
   }, renderRealTimeStatus = () => isRealTimeEnabled ? /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)(import_polaris4.Card, { sectioned: !0, children: /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)(import_polaris4.LegacyStack, { horizontal: !0, alignment: "center", distribution: "equalSpacing", children: [
@@ -131036,17 +131031,17 @@ function AnalyticsTier({
         animation: "pulse 2s infinite"
       } }, void 0, !1, {
         fileName: "app/components/AnalyticsTier.tsx",
-        lineNumber: 399,
+        lineNumber: 394,
         columnNumber: 13
       }, this),
       /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)(import_polaris4.Text, { variant: "bodyMd", color: "success", children: "Real-time updates active" }, void 0, !1, {
         fileName: "app/components/AnalyticsTier.tsx",
-        lineNumber: 406,
+        lineNumber: 401,
         columnNumber: 13
       }, this)
     ] }, void 0, !0, {
       fileName: "app/components/AnalyticsTier.tsx",
-      lineNumber: 398,
+      lineNumber: 393,
       columnNumber: 11
     }, this),
     /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)(import_polaris4.LegacyStack, { horizontal: !0, alignment: "center", children: [
@@ -131055,7 +131050,7 @@ function AnalyticsTier({
         lastUpdate.toLocaleTimeString()
       ] }, void 0, !0, {
         fileName: "app/components/AnalyticsTier.tsx",
-        lineNumber: 411,
+        lineNumber: 406,
         columnNumber: 13
       }, this),
       /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)(
@@ -131071,23 +131066,23 @@ function AnalyticsTier({
         !1,
         {
           fileName: "app/components/AnalyticsTier.tsx",
-          lineNumber: 414,
+          lineNumber: 409,
           columnNumber: 13
         },
         this
       )
     ] }, void 0, !0, {
       fileName: "app/components/AnalyticsTier.tsx",
-      lineNumber: 410,
+      lineNumber: 405,
       columnNumber: 11
     }, this)
   ] }, void 0, !0, {
     fileName: "app/components/AnalyticsTier.tsx",
-    lineNumber: 397,
+    lineNumber: 392,
     columnNumber: 9
   }, this) }, void 0, !1, {
     fileName: "app/components/AnalyticsTier.tsx",
-    lineNumber: 396,
+    lineNumber: 391,
     columnNumber: 7
   }, this) : null, renderUpgradePrompts = () => !data.upgradePrompts || data.upgradePrompts.length === 0 ? null : /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)(import_polaris4.LegacyStack, { sectioned: !0, children: data.upgradePrompts.map((prompt, index) => /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)(
     import_polaris4.Banner,
@@ -131099,7 +131094,7 @@ function AnalyticsTier({
       },
       children: /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)(import_polaris4.Text, { variant: "bodyMd", children: prompt.message }, void 0, !1, {
         fileName: "app/components/AnalyticsTier.tsx",
-        lineNumber: 442,
+        lineNumber: 437,
         columnNumber: 13
       }, this)
     },
@@ -131107,29 +131102,29 @@ function AnalyticsTier({
     !1,
     {
       fileName: "app/components/AnalyticsTier.tsx",
-      lineNumber: 434,
+      lineNumber: 429,
       columnNumber: 11
     },
     this
   )) }, void 0, !1, {
     fileName: "app/components/AnalyticsTier.tsx",
-    lineNumber: 432,
+    lineNumber: 427,
     columnNumber: 7
   }, this), renderTierStatus = () => /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)(import_polaris4.Card, { sectioned: !0, children: /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)(import_polaris4.LegacyStack, { horizontal: !0, alignment: "center", distribution: "equalSpacing", children: [
     /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)(import_polaris4.LegacyStack, { horizontal: !0, alignment: "center", children: [
       /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)(import_polaris4.Text, { variant: "headingMd", children: "Analytics Tier" }, void 0, !1, {
         fileName: "app/components/AnalyticsTier.tsx",
-        lineNumber: 453,
+        lineNumber: 448,
         columnNumber: 11
       }, this),
       /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)(import_polaris4.Badge, { status: getTierBadgeColor(tier), children: getTierDisplayName(tier) }, void 0, !1, {
         fileName: "app/components/AnalyticsTier.tsx",
-        lineNumber: 454,
+        lineNumber: 449,
         columnNumber: 11
       }, this)
     ] }, void 0, !0, {
       fileName: "app/components/AnalyticsTier.tsx",
-      lineNumber: 452,
+      lineNumber: 447,
       columnNumber: 9
     }, this),
     /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)(import_polaris4.LegacyStack, { horizontal: !0, alignment: "center", children: [
@@ -131144,7 +131139,7 @@ function AnalyticsTier({
         !1,
         {
           fileName: "app/components/AnalyticsTier.tsx",
-          lineNumber: 461,
+          lineNumber: 456,
           columnNumber: 13
         },
         this
@@ -131162,23 +131157,23 @@ function AnalyticsTier({
         !1,
         {
           fileName: "app/components/AnalyticsTier.tsx",
-          lineNumber: 469,
+          lineNumber: 464,
           columnNumber: 11
         },
         this
       )
     ] }, void 0, !0, {
       fileName: "app/components/AnalyticsTier.tsx",
-      lineNumber: 459,
+      lineNumber: 454,
       columnNumber: 9
     }, this)
   ] }, void 0, !0, {
     fileName: "app/components/AnalyticsTier.tsx",
-    lineNumber: 451,
+    lineNumber: 446,
     columnNumber: 7
   }, this) }, void 0, !1, {
     fileName: "app/components/AnalyticsTier.tsx",
-    lineNumber: 450,
+    lineNumber: 445,
     columnNumber: 5
   }, this), renderTierComparison = () => {
     if (tier === "enterprise")
@@ -131189,13 +131184,12 @@ function AnalyticsTier({
       enterprise: ["Custom dashboards", "Custom ROAS models", "Daily reports", "Multi-touch attribution"]
     }, nextTier = tier === "starter" ? "professional" : "enterprise";
     return /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("div", { style: {
-      background: "rgba(255, 255, 255, 0.95)",
-      backdropFilter: "blur(10px)",
-      border: "1px solid rgba(255, 255, 255, 0.2)",
-      borderRadius: 20,
-      padding: 32,
-      boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
-      marginBottom: 32
+      background: "white",
+      border: "1px solid #e3e3e3",
+      borderRadius: 8,
+      padding: 20,
+      boxShadow: "0 1px 0 rgba(0, 0, 0, 0.05)",
+      marginBottom: 24
     }, children: [
       /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("div", { style: { marginBottom: 24 }, children: [
         /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("h3", { style: {
@@ -131208,17 +131202,17 @@ function AnalyticsTier({
           WebkitTextFillColor: "transparent"
         }, children: "Unlock More Analytics Features" }, void 0, !1, {
           fileName: "app/components/AnalyticsTier.tsx",
-          lineNumber: 503,
+          lineNumber: 497,
           columnNumber: 11
         }, this),
         /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("p", { style: { color: "#6b7280", fontSize: 16, margin: 0 }, children: "Upgrade to access advanced analytics and real-time insights" }, void 0, !1, {
           fileName: "app/components/AnalyticsTier.tsx",
-          lineNumber: 514,
+          lineNumber: 508,
           columnNumber: 11
         }, this)
       ] }, void 0, !0, {
         fileName: "app/components/AnalyticsTier.tsx",
-        lineNumber: 502,
+        lineNumber: 496,
         columnNumber: 9
       }, this),
       /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("div", { style: {
@@ -131227,8 +131221,8 @@ function AnalyticsTier({
         gap: 32
       }, children: [
         /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("div", { style: {
-          background: "linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%)",
-          border: "1px solid rgba(102, 126, 234, 0.1)",
+          background: "#f6f6f7",
+          border: "1px solid #e3e3e3",
           borderRadius: 16,
           padding: 24
         }, children: [
@@ -131243,7 +131237,7 @@ function AnalyticsTier({
               getTierDisplayName(tier)
             ] }, void 0, !0, {
               fileName: "app/components/AnalyticsTier.tsx",
-              lineNumber: 531,
+              lineNumber: 525,
               columnNumber: 15
             }, this),
             /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("div", { style: {
@@ -131256,12 +131250,12 @@ function AnalyticsTier({
               fontWeight: "600"
             }, children: getTierDisplayName(tier) }, void 0, !1, {
               fileName: "app/components/AnalyticsTier.tsx",
-              lineNumber: 539,
+              lineNumber: 533,
               columnNumber: 15
             }, this)
           ] }, void 0, !0, {
             fileName: "app/components/AnalyticsTier.tsx",
-            lineNumber: 530,
+            lineNumber: 524,
             columnNumber: 13
           }, this),
           /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("div", { children: features[tier].map((feature, index) => /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("div", { style: {
@@ -131277,27 +131271,27 @@ function AnalyticsTier({
               fontWeight: "bold"
             }, children: "\u2713" }, void 0, !1, {
               fileName: "app/components/AnalyticsTier.tsx",
-              lineNumber: 560,
+              lineNumber: 554,
               columnNumber: 19
             }, this),
             feature
           ] }, index, !0, {
             fileName: "app/components/AnalyticsTier.tsx",
-            lineNumber: 553,
+            lineNumber: 547,
             columnNumber: 17
           }, this)) }, void 0, !1, {
             fileName: "app/components/AnalyticsTier.tsx",
-            lineNumber: 551,
+            lineNumber: 545,
             columnNumber: 13
           }, this)
         ] }, void 0, !0, {
           fileName: "app/components/AnalyticsTier.tsx",
-          lineNumber: 524,
+          lineNumber: 518,
           columnNumber: 11
         }, this),
         /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("div", { style: {
-          background: "linear-gradient(135deg, rgba(16, 185, 129, 0.05) 0%, rgba(5, 150, 105, 0.05) 100%)",
-          border: "1px solid rgba(16, 185, 129, 0.2)",
+          background: "#f0fbf8",
+          border: "1px solid #008060",
           borderRadius: 16,
           padding: 24,
           position: "relative"
@@ -131306,7 +131300,7 @@ function AnalyticsTier({
             position: "absolute",
             top: -8,
             right: 16,
-            background: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+            background: "#008060",
             color: "white",
             padding: "4px 12px",
             borderRadius: 12,
@@ -131314,7 +131308,7 @@ function AnalyticsTier({
             fontWeight: "600"
           }, children: "RECOMMENDED" }, void 0, !1, {
             fileName: "app/components/AnalyticsTier.tsx",
-            lineNumber: 578,
+            lineNumber: 572,
             columnNumber: 13
           }, this),
           /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("div", { style: { marginBottom: 16 }, children: [
@@ -131328,12 +131322,12 @@ function AnalyticsTier({
               " Plan"
             ] }, void 0, !0, {
               fileName: "app/components/AnalyticsTier.tsx",
-              lineNumber: 593,
+              lineNumber: 587,
               columnNumber: 15
             }, this),
             /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("div", { style: {
               display: "inline-block",
-              background: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+              background: "#008060",
               color: "white",
               padding: "4px 12px",
               borderRadius: 12,
@@ -131341,12 +131335,12 @@ function AnalyticsTier({
               fontWeight: "600"
             }, children: getTierDisplayName(nextTier) }, void 0, !1, {
               fileName: "app/components/AnalyticsTier.tsx",
-              lineNumber: 601,
+              lineNumber: 595,
               columnNumber: 15
             }, this)
           ] }, void 0, !0, {
             fileName: "app/components/AnalyticsTier.tsx",
-            lineNumber: 592,
+            lineNumber: 586,
             columnNumber: 13
           }, this),
           /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("div", { style: { marginBottom: 20 }, children: features[nextTier].map((feature, index) => /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)("div", { style: {
@@ -131363,17 +131357,17 @@ function AnalyticsTier({
               fontWeight: "bold"
             }, children: "\u2713" }, void 0, !1, {
               fileName: "app/components/AnalyticsTier.tsx",
-              lineNumber: 624,
+              lineNumber: 618,
               columnNumber: 19
             }, this),
             feature
           ] }, index, !0, {
             fileName: "app/components/AnalyticsTier.tsx",
-            lineNumber: 616,
+            lineNumber: 610,
             columnNumber: 17
           }, this)) }, void 0, !1, {
             fileName: "app/components/AnalyticsTier.tsx",
-            lineNumber: 614,
+            lineNumber: 608,
             columnNumber: 13
           }, this),
           /* @__PURE__ */ (0, import_jsx_dev_runtime10.jsxDEV)(
@@ -131381,7 +131375,7 @@ function AnalyticsTier({
             {
               onClick: () => onUpgrade?.(nextTier),
               style: {
-                background: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+                background: "#008060",
                 color: "white",
                 border: "none",
                 padding: "12px 24px",
@@ -131408,24 +131402,24 @@ function AnalyticsTier({
             !0,
             {
               fileName: "app/components/AnalyticsTier.tsx",
-              lineNumber: 634,
+              lineNumber: 628,
               columnNumber: 13
             },
             this
           )
         ] }, void 0, !0, {
           fileName: "app/components/AnalyticsTier.tsx",
-          lineNumber: 571,
+          lineNumber: 565,
           columnNumber: 11
         }, this)
       ] }, void 0, !0, {
         fileName: "app/components/AnalyticsTier.tsx",
-        lineNumber: 519,
+        lineNumber: 513,
         columnNumber: 9
       }, this)
     ] }, void 0, !0, {
       fileName: "app/components/AnalyticsTier.tsx",
-      lineNumber: 493,
+      lineNumber: 488,
       columnNumber: 7
     }, this);
   };
@@ -131438,15 +131432,15 @@ function AnalyticsTier({
     renderTierComparison()
   ] }, void 0, !0, {
     fileName: "app/components/AnalyticsTier.tsx",
-    lineNumber: 669,
+    lineNumber: 663,
     columnNumber: 9
   }, this) }, void 0, !1, {
     fileName: "app/components/AnalyticsTier.tsx",
-    lineNumber: 668,
+    lineNumber: 662,
     columnNumber: 7
   }, this) }, void 0, !1, {
     fileName: "app/components/AnalyticsTier.tsx",
-    lineNumber: 667,
+    lineNumber: 661,
     columnNumber: 5
   }, this);
 }
@@ -131724,50 +131718,45 @@ function InsightsContent() {
     revalidator.revalidate();
   }, [revalidator]);
   return /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("div", { style: {
-    background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+    background: "#f6f6f7",
     minHeight: "100vh",
     padding: "0"
   }, children: [
     /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("div", { style: {
-      background: "rgba(255, 255, 255, 0.95)",
-      backdropFilter: "blur(10px)",
-      borderBottom: "1px solid rgba(255, 255, 255, 0.2)",
-      padding: "24px 32px",
-      boxShadow: "0 4px 20px rgba(0, 0, 0, 0.1)"
+      background: "white",
+      borderBottom: "1px solid #e3e3e3",
+      padding: "20px 24px"
     }, children: /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("div", { style: {
       display: "flex",
       justifyContent: "space-between",
       alignItems: "center",
-      maxWidth: "1400px",
+      maxWidth: "1200px",
       margin: "0 auto"
     }, children: [
       /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("div", { children: [
         /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("h1", { style: {
-          fontSize: "32px",
-          fontWeight: "700",
-          background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-          WebkitBackgroundClip: "text",
-          WebkitTextFillColor: "transparent",
-          margin: "0",
-          letterSpacing: "-0.5px"
+          fontSize: "24px",
+          fontWeight: "600",
+          color: "#202223",
+          margin: "0"
         }, children: "Analytics Dashboard" }, void 0, !1, {
           fileName: "app/routes/app.insights.tsx",
-          lineNumber: 369,
+          lineNumber: 367,
           columnNumber: 13
         }, this),
         /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("p", { style: {
           margin: "4px 0 0 0",
-          color: "#6b7280",
-          fontSize: "16px",
+          color: "#616161",
+          fontSize: "14px",
           fontWeight: "400"
         }, children: "Real-time insights and performance metrics" }, void 0, !1, {
           fileName: "app/routes/app.insights.tsx",
-          lineNumber: 380,
+          lineNumber: 375,
           columnNumber: 13
         }, this)
       ] }, void 0, !0, {
         fileName: "app/routes/app.insights.tsx",
-        lineNumber: 368,
+        lineNumber: 366,
         columnNumber: 11
       }, this),
       /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("div", { style: { display: "flex", gap: "12px", alignItems: "center" }, children: [
@@ -131776,22 +131765,15 @@ function InsightsContent() {
           {
             onClick: () => setShowTierAnalytics(!showTierAnalytics),
             style: {
-              padding: "12px 20px",
-              fontSize: "14px",
-              fontWeight: "600",
-              border: "none",
-              borderRadius: "12px",
-              backgroundColor: showTierAnalytics ? "#667eea" : "rgba(102, 126, 234, 0.1)",
-              color: showTierAnalytics ? "white" : "#667eea",
+              padding: "8px 16px",
+              fontSize: "13px",
+              fontWeight: "500",
+              border: "1px solid #c9cccf",
+              borderRadius: "6px",
+              backgroundColor: showTierAnalytics ? "#f1f2f3" : "white",
+              color: "#202223",
               cursor: "pointer",
-              transition: "all 0.3s ease",
-              boxShadow: showTierAnalytics ? "0 4px 12px rgba(102, 126, 234, 0.3)" : "none"
-            },
-            onMouseOver: (e) => {
-              showTierAnalytics || (e.currentTarget.style.backgroundColor = "rgba(102, 126, 234, 0.2)");
-            },
-            onMouseOut: (e) => {
-              showTierAnalytics || (e.currentTarget.style.backgroundColor = "rgba(102, 126, 234, 0.1)");
+              transition: "all 0.2s ease"
             },
             children: showTierAnalytics ? "Tier View" : "Basic View"
           },
@@ -131799,30 +131781,31 @@ function InsightsContent() {
           !1,
           {
             fileName: "app/routes/app.insights.tsx",
-            lineNumber: 391,
+            lineNumber: 386,
             columnNumber: 13
           },
           this
         ),
         /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("div", { style: {
           display: "flex",
-          background: "rgba(255, 255, 255, 0.8)",
-          borderRadius: "12px",
-          padding: "4px",
-          boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)"
+          gap: "4px",
+          background: "white",
+          border: "1px solid #c9cccf",
+          borderRadius: "6px",
+          padding: "2px"
         }, children: [
           /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(import_react20.Link, { to: "/app/insights?w=7d", style: { textDecoration: "none" }, children: /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(
             "button",
             {
               disabled: w === "7d" || nav.state !== "idle",
               style: {
-                padding: "8px 16px",
-                fontSize: "14px",
-                fontWeight: "600",
+                padding: "6px 12px",
+                fontSize: "13px",
+                fontWeight: "500",
                 border: "none",
-                borderRadius: "8px",
-                backgroundColor: w === "7d" ? "#667eea" : "transparent",
-                color: w === "7d" ? "white" : "#6b7280",
+                borderRadius: "4px",
+                backgroundColor: w === "7d" ? "#008060" : "transparent",
+                color: w === "7d" ? "white" : "#202223",
                 cursor: w === "7d" || nav.state !== "idle" ? "not-allowed" : "pointer",
                 transition: "all 0.2s ease",
                 opacity: w === "7d" || nav.state !== "idle" ? 0.6 : 1
@@ -131833,13 +131816,13 @@ function InsightsContent() {
             !1,
             {
               fileName: "app/routes/app.insights.tsx",
-              lineNumber: 427,
+              lineNumber: 412,
               columnNumber: 17
             },
             this
           ) }, void 0, !1, {
             fileName: "app/routes/app.insights.tsx",
-            lineNumber: 426,
+            lineNumber: 411,
             columnNumber: 15
           }, this),
           /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(import_react20.Link, { to: "/app/insights?w=24h", style: { textDecoration: "none" }, children: /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(
@@ -131847,13 +131830,13 @@ function InsightsContent() {
             {
               disabled: w === "24h" || nav.state !== "idle",
               style: {
-                padding: "8px 16px",
-                fontSize: "14px",
-                fontWeight: "600",
+                padding: "6px 12px",
+                fontSize: "13px",
+                fontWeight: "500",
                 border: "none",
-                borderRadius: "8px",
-                backgroundColor: w === "24h" ? "#667eea" : "transparent",
-                color: w === "24h" ? "white" : "#6b7280",
+                borderRadius: "4px",
+                backgroundColor: w === "24h" ? "#008060" : "transparent",
+                color: w === "24h" ? "white" : "#202223",
                 cursor: w === "24h" || nav.state !== "idle" ? "not-allowed" : "pointer",
                 transition: "all 0.2s ease",
                 opacity: w === "24h" || nav.state !== "idle" ? 0.6 : 1
@@ -131864,28 +131847,28 @@ function InsightsContent() {
             !1,
             {
               fileName: "app/routes/app.insights.tsx",
-              lineNumber: 446,
+              lineNumber: 431,
               columnNumber: 17
             },
             this
           ) }, void 0, !1, {
             fileName: "app/routes/app.insights.tsx",
-            lineNumber: 445,
+            lineNumber: 430,
             columnNumber: 15
           }, this)
         ] }, void 0, !0, {
           fileName: "app/routes/app.insights.tsx",
-          lineNumber: 419,
+          lineNumber: 403,
           columnNumber: 13
         }, this)
       ] }, void 0, !0, {
         fileName: "app/routes/app.insights.tsx",
-        lineNumber: 390,
+        lineNumber: 385,
         columnNumber: 11
       }, this)
     ] }, void 0, !0, {
       fileName: "app/routes/app.insights.tsx",
-      lineNumber: 361,
+      lineNumber: 359,
       columnNumber: 9
     }, this) }, void 0, !1, {
       fileName: "app/routes/app.insights.tsx",
@@ -131893,10 +131876,9 @@ function InsightsContent() {
       columnNumber: 7
     }, this),
     /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("div", { style: {
-      maxWidth: "1400px",
+      maxWidth: "1200px",
       margin: "0 auto",
-      padding: "32px",
-      paddingTop: "24px"
+      padding: "20px"
     }, children: [
       showTierAnalytics && /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("div", { style: { marginBottom: "32px" }, children: /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(
         AnalyticsTier,
@@ -131920,13 +131902,13 @@ function InsightsContent() {
         !1,
         {
           fileName: "app/routes/app.insights.tsx",
-          lineNumber: 479,
+          lineNumber: 463,
           columnNumber: 13
         },
         this
       ) }, void 0, !1, {
         fileName: "app/routes/app.insights.tsx",
-        lineNumber: 478,
+        lineNumber: 462,
         columnNumber: 11
       }, this),
       retention && /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(
@@ -131950,7 +131932,7 @@ function InsightsContent() {
               " plan)"
             ] }, void 0, !0, {
               fileName: "app/routes/app.insights.tsx",
-              lineNumber: 508,
+              lineNumber: 492,
               columnNumber: 13
             }, this),
             /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("div", { style: { color: "#6b7280", fontSize: 14, marginBottom: 16 }, children: [
@@ -131959,7 +131941,7 @@ function InsightsContent() {
               " is not shown"
             ] }, void 0, !0, {
               fileName: "app/routes/app.insights.tsx",
-              lineNumber: 511,
+              lineNumber: 495,
               columnNumber: 13
             }, this),
             retention.upgradeMessage && /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(
@@ -131990,7 +131972,7 @@ function InsightsContent() {
               !1,
               {
                 fileName: "app/routes/app.insights.tsx",
-                lineNumber: 515,
+                lineNumber: 499,
                 columnNumber: 15
               },
               this
@@ -132001,7 +131983,7 @@ function InsightsContent() {
         !0,
         {
           fileName: "app/routes/app.insights.tsx",
-          lineNumber: 498,
+          lineNumber: 482,
           columnNumber: 11
         },
         this
@@ -132011,44 +131993,44 @@ function InsightsContent() {
         {
           style: {
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
-            gap: 24,
-            marginBottom: 32
+            gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))",
+            gap: 16,
+            marginBottom: 24
           },
           children: [
             /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(ModernCard, { label: "Clicks", value: k.clicks }, void 0, !1, {
               fileName: "app/routes/app.insights.tsx",
-              lineNumber: 554,
+              lineNumber: 538,
               columnNumber: 13
             }, this),
             /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(ModernCard, { label: "Cost", value: fmt(k.cost) }, void 0, !1, {
               fileName: "app/routes/app.insights.tsx",
-              lineNumber: 555,
+              lineNumber: 539,
               columnNumber: 13
             }, this),
             /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(ModernCard, { label: "Conv.", value: k.conversions }, void 0, !1, {
               fileName: "app/routes/app.insights.tsx",
-              lineNumber: 556,
+              lineNumber: 540,
               columnNumber: 13
             }, this),
             /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(ModernCard, { label: "Impr.", value: k.impressions }, void 0, !1, {
               fileName: "app/routes/app.insights.tsx",
-              lineNumber: 557,
+              lineNumber: 541,
               columnNumber: 13
             }, this),
             /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(ModernCard, { label: "CTR", value: pct(k.ctr) }, void 0, !1, {
               fileName: "app/routes/app.insights.tsx",
-              lineNumber: 558,
+              lineNumber: 542,
               columnNumber: 13
             }, this),
             /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(ModernCard, { label: "CPC", value: fmt(k.cpc) }, void 0, !1, {
               fileName: "app/routes/app.insights.tsx",
-              lineNumber: 559,
+              lineNumber: 543,
               columnNumber: 13
             }, this),
             /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(ModernCard, { label: "CPA", value: fmt(k.cpa) }, void 0, !1, {
               fileName: "app/routes/app.insights.tsx",
-              lineNumber: 560,
+              lineNumber: 544,
               columnNumber: 13
             }, this)
           ]
@@ -132057,7 +132039,7 @@ function InsightsContent() {
         !0,
         {
           fileName: "app/routes/app.insights.tsx",
-          lineNumber: 546,
+          lineNumber: 530,
           columnNumber: 11
         },
         this
@@ -132068,35 +132050,34 @@ function InsightsContent() {
           style: {
             display: "grid",
             gridTemplateColumns: "1fr 1fr",
-            gap: 32,
-            marginBottom: 32
+            gap: 16,
+            marginBottom: 24
           },
           children: [
             /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(
               "div",
               {
                 style: {
-                  background: "rgba(255, 255, 255, 0.95)",
-                  backdropFilter: "blur(10px)",
-                  border: "1px solid rgba(255, 255, 255, 0.2)",
-                  borderRadius: 20,
-                  padding: 24,
-                  boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)"
+                  background: "white",
+                  border: "1px solid #e3e3e3",
+                  borderRadius: 8,
+                  padding: 20,
+                  boxShadow: "0 1px 0 rgba(0, 0, 0, 0.05)"
                 },
                 children: [
-                  /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("h3", { style: { margin: "0 0 20px 0", fontSize: 20, fontWeight: "600", color: "#1f2937" }, children: [
+                  /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("h3", { style: { margin: "0 0 16px 0", fontSize: 16, fontWeight: "600", color: "#202223" }, children: [
                     "Trend (",
                     w,
                     ")",
                     retention ? ` - ${retention.description}` : ""
                   ] }, void 0, !0, {
                     fileName: "app/routes/app.insights.tsx",
-                    lineNumber: 581,
+                    lineNumber: 564,
                     columnNumber: 13
                   }, this),
                   /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(SimpleChart, { data: series }, void 0, !1, {
                     fileName: "app/routes/app.insights.tsx",
-                    lineNumber: 584,
+                    lineNumber: 567,
                     columnNumber: 13
                   }, this)
                 ]
@@ -132105,7 +132086,7 @@ function InsightsContent() {
               !0,
               {
                 fileName: "app/routes/app.insights.tsx",
-                lineNumber: 571,
+                lineNumber: 555,
                 columnNumber: 11
               },
               this
@@ -132114,12 +132095,11 @@ function InsightsContent() {
               "div",
               {
                 style: {
-                  background: "rgba(255, 255, 255, 0.95)",
-                  backdropFilter: "blur(10px)",
-                  border: "1px solid rgba(255, 255, 255, 0.2)",
-                  borderRadius: 20,
-                  padding: 24,
-                  boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)"
+                  background: "white",
+                  border: "1px solid #e3e3e3",
+                  borderRadius: 8,
+                  padding: 20,
+                  boxShadow: "0 1px 0 rgba(0, 0, 0, 0.05)"
                 },
                 children: [
                   /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(
@@ -132129,37 +132109,31 @@ function InsightsContent() {
                         display: "flex",
                         justifyContent: "space-between",
                         alignItems: "center",
-                        marginBottom: 20
+                        marginBottom: 16
                       },
                       children: [
-                        /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("h3", { style: { margin: 0, fontSize: 20, fontWeight: "600", color: "#1f2937" }, children: [
+                        /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("h3", { style: { margin: 0, fontSize: 16, fontWeight: "600", color: "#202223" }, children: [
                           "Top search terms (",
                           w,
                           ")"
                         ] }, void 0, !0, {
                           fileName: "app/routes/app.insights.tsx",
-                          lineNumber: 604,
+                          lineNumber: 586,
                           columnNumber: 15
                         }, this),
                         /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(import_react20.Link, { to: `/app/insights/terms?w=${w}`, style: { textDecoration: "none" }, children: /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(
                           "button",
                           {
                             style: {
-                              background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                              background: "#008060",
                               border: "none",
                               color: "white",
                               cursor: "pointer",
-                              fontSize: 14,
-                              fontWeight: "600",
-                              padding: "8px 16px",
-                              borderRadius: 12,
-                              transition: "all 0.3s ease"
-                            },
-                            onMouseOver: (e) => {
-                              e.currentTarget.style.transform = "translateY(-2px)", e.currentTarget.style.boxShadow = "0 4px 12px rgba(102, 126, 234, 0.3)";
-                            },
-                            onMouseOut: (e) => {
-                              e.currentTarget.style.transform = "translateY(0)", e.currentTarget.style.boxShadow = "none";
+                              fontSize: 13,
+                              fontWeight: "500",
+                              padding: "6px 12px",
+                              borderRadius: 6,
+                              transition: "all 0.2s ease"
                             },
                             children: "View all terms"
                           },
@@ -132167,13 +132141,13 @@ function InsightsContent() {
                           !1,
                           {
                             fileName: "app/routes/app.insights.tsx",
-                            lineNumber: 608,
+                            lineNumber: 590,
                             columnNumber: 17
                           },
                           this
                         ) }, void 0, !1, {
                           fileName: "app/routes/app.insights.tsx",
-                          lineNumber: 607,
+                          lineNumber: 589,
                           columnNumber: 15
                         }, this)
                       ]
@@ -132182,7 +132156,7 @@ function InsightsContent() {
                     !0,
                     {
                       fileName: "app/routes/app.insights.tsx",
-                      lineNumber: 596,
+                      lineNumber: 578,
                       columnNumber: 13
                     },
                     this
@@ -132200,7 +132174,7 @@ function InsightsContent() {
                       children: [
                         /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("span", { style: { fontWeight: "600", color: "#1f2937" }, children: term.term }, void 0, !1, {
                           fileName: "app/routes/app.insights.tsx",
-                          lineNumber: 649,
+                          lineNumber: 623,
                           columnNumber: 21
                         }, this),
                         /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("div", { style: { display: "flex", gap: 16, fontSize: 14 }, children: [
@@ -132209,7 +132183,7 @@ function InsightsContent() {
                             " clicks"
                           ] }, void 0, !0, {
                             fileName: "app/routes/app.insights.tsx",
-                            lineNumber: 651,
+                            lineNumber: 625,
                             columnNumber: 23
                           }, this),
                           /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("span", { style: { color: "#6b7280" }, children: [
@@ -132217,7 +132191,7 @@ function InsightsContent() {
                             term.cost?.toFixed(2)
                           ] }, void 0, !0, {
                             fileName: "app/routes/app.insights.tsx",
-                            lineNumber: 652,
+                            lineNumber: 626,
                             columnNumber: 23
                           }, this),
                           /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("span", { style: { color: "#6b7280" }, children: [
@@ -132225,12 +132199,12 @@ function InsightsContent() {
                             " conv."
                           ] }, void 0, !0, {
                             fileName: "app/routes/app.insights.tsx",
-                            lineNumber: 655,
+                            lineNumber: 629,
                             columnNumber: 23
                           }, this)
                         ] }, void 0, !0, {
                           fileName: "app/routes/app.insights.tsx",
-                          lineNumber: 650,
+                          lineNumber: 624,
                           columnNumber: 21
                         }, this)
                       ]
@@ -132239,17 +132213,17 @@ function InsightsContent() {
                     !0,
                     {
                       fileName: "app/routes/app.insights.tsx",
-                      lineNumber: 636,
+                      lineNumber: 610,
                       columnNumber: 19
                     },
                     this
                   )) : /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("div", { style: { color: "#6b7280", textAlign: "center", padding: 20 }, children: "No search terms data available" }, void 0, !1, {
                     fileName: "app/routes/app.insights.tsx",
-                    lineNumber: 660,
+                    lineNumber: 634,
                     columnNumber: 17
                   }, this) }, void 0, !1, {
                     fileName: "app/routes/app.insights.tsx",
-                    lineNumber: 633,
+                    lineNumber: 607,
                     columnNumber: 13
                   }, this)
                 ]
@@ -132258,7 +132232,7 @@ function InsightsContent() {
               !0,
               {
                 fileName: "app/routes/app.insights.tsx",
-                lineNumber: 586,
+                lineNumber: 569,
                 columnNumber: 11
               },
               this
@@ -132269,7 +132243,7 @@ function InsightsContent() {
         !0,
         {
           fileName: "app/routes/app.insights.tsx",
-          lineNumber: 563,
+          lineNumber: 547,
           columnNumber: 9
         },
         this
@@ -132280,25 +132254,24 @@ function InsightsContent() {
           style: {
             display: "grid",
             gridTemplateColumns: "1fr 1fr",
-            gap: 32,
-            marginBottom: 32
+            gap: 16,
+            marginBottom: 24
           },
           children: [
             /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(
               "div",
               {
                 style: {
-                  background: "rgba(255, 255, 255, 0.95)",
-                  backdropFilter: "blur(10px)",
-                  border: "1px solid rgba(255, 255, 255, 0.2)",
-                  borderRadius: 20,
-                  padding: 24,
-                  boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)"
+                  background: "white",
+                  border: "1px solid #e3e3e3",
+                  borderRadius: 8,
+                  padding: 20,
+                  boxShadow: "0 1px 0 rgba(0, 0, 0, 0.05)"
                 },
                 children: [
-                  /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("h3", { style: { margin: "0 0 20px 0", fontSize: 20, fontWeight: "600", color: "#1f2937" }, children: "Activity (last 10)" }, void 0, !1, {
+                  /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("h3", { style: { margin: "0 0 16px 0", fontSize: 16, fontWeight: "600", color: "#202223" }, children: "Activity (last 10)" }, void 0, !1, {
                     fileName: "app/routes/app.insights.tsx",
-                    lineNumber: 686,
+                    lineNumber: 659,
                     columnNumber: 13
                   }, this),
                   /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("div", { style: { maxHeight: 200, overflowY: "auto" }, children: logs.length > 0 ? logs.map((l, i) => !l || typeof l != "object" ? null : /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(
@@ -132312,14 +132285,14 @@ function InsightsContent() {
                       children: [
                         /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("span", { style: { color: "#6b7280" }, children: l.timestamp || "No timestamp" }, void 0, !1, {
                           fileName: "app/routes/app.insights.tsx",
-                          lineNumber: 702,
+                          lineNumber: 675,
                           columnNumber: 23
                         }, this),
                         " ",
                         "\u2014 ",
                         /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("span", { style: { color: "#1f2937" }, children: l.message || "No message" }, void 0, !1, {
                           fileName: "app/routes/app.insights.tsx",
-                          lineNumber: 705,
+                          lineNumber: 678,
                           columnNumber: 25
                         }, this)
                       ]
@@ -132328,17 +132301,17 @@ function InsightsContent() {
                     !0,
                     {
                       fileName: "app/routes/app.insights.tsx",
-                      lineNumber: 694,
+                      lineNumber: 667,
                       columnNumber: 21
                     },
                     this
                   )) : /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("div", { style: { color: "#6b7280", textAlign: "center", padding: 20 }, children: "No recent activity." }, void 0, !1, {
                     fileName: "app/routes/app.insights.tsx",
-                    lineNumber: 710,
+                    lineNumber: 683,
                     columnNumber: 17
                   }, this) }, void 0, !1, {
                     fileName: "app/routes/app.insights.tsx",
-                    lineNumber: 689,
+                    lineNumber: 662,
                     columnNumber: 13
                   }, this)
                 ]
@@ -132347,7 +132320,7 @@ function InsightsContent() {
               !0,
               {
                 fileName: "app/routes/app.insights.tsx",
-                lineNumber: 676,
+                lineNumber: 650,
                 columnNumber: 11
               },
               this
@@ -132356,17 +132329,16 @@ function InsightsContent() {
               "div",
               {
                 style: {
-                  background: "rgba(255, 255, 255, 0.95)",
-                  backdropFilter: "blur(10px)",
-                  border: "1px solid rgba(255, 255, 255, 0.2)",
-                  borderRadius: 20,
-                  padding: 24,
-                  boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)"
+                  background: "white",
+                  border: "1px solid #e3e3e3",
+                  borderRadius: 8,
+                  padding: 20,
+                  boxShadow: "0 1px 0 rgba(0, 0, 0, 0.05)"
                 },
                 children: [
-                  /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("h3", { style: { margin: "0 0 20px 0", fontSize: 20, fontWeight: "600", color: "#1f2937" }, children: "Term Details" }, void 0, !1, {
+                  /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("h3", { style: { margin: "0 0 16px 0", fontSize: 16, fontWeight: "600", color: "#202223" }, children: "Term Details" }, void 0, !1, {
                     fileName: "app/routes/app.insights.tsx",
-                    lineNumber: 726,
+                    lineNumber: 698,
                     columnNumber: 13
                   }, this),
                   terms.length > 0 ? /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("div", { children: [
@@ -132382,7 +132354,7 @@ function InsightsContent() {
                         },
                         children: /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("span", { style: { fontWeight: "700", fontSize: 18, color: "#1f2937" }, children: terms[0].term }, void 0, !1, {
                           fileName: "app/routes/app.insights.tsx",
-                          lineNumber: 740,
+                          lineNumber: 712,
                           columnNumber: 19
                         }, this)
                       },
@@ -132390,7 +132362,7 @@ function InsightsContent() {
                       !1,
                       {
                         fileName: "app/routes/app.insights.tsx",
-                        lineNumber: 731,
+                        lineNumber: 703,
                         columnNumber: 17
                       },
                       this
@@ -132399,23 +132371,23 @@ function InsightsContent() {
                       /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("div", { children: [
                         /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("div", { style: { color: "#6b7280", fontSize: 12, marginBottom: 8, fontWeight: "500" }, children: "Clicks" }, void 0, !1, {
                           fileName: "app/routes/app.insights.tsx",
-                          lineNumber: 746,
+                          lineNumber: 718,
                           columnNumber: 21
                         }, this),
                         /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("div", { style: { fontSize: 24, fontWeight: "700", color: "#1f2937" }, children: terms[0].clicks }, void 0, !1, {
                           fileName: "app/routes/app.insights.tsx",
-                          lineNumber: 749,
+                          lineNumber: 721,
                           columnNumber: 21
                         }, this)
                       ] }, void 0, !0, {
                         fileName: "app/routes/app.insights.tsx",
-                        lineNumber: 745,
+                        lineNumber: 717,
                         columnNumber: 19
                       }, this),
                       /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("div", { children: [
                         /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("div", { style: { color: "#6b7280", fontSize: 12, marginBottom: 8, fontWeight: "500" }, children: "Cost" }, void 0, !1, {
                           fileName: "app/routes/app.insights.tsx",
-                          lineNumber: 754,
+                          lineNumber: 726,
                           columnNumber: 21
                         }, this),
                         /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("div", { style: { fontSize: 24, fontWeight: "700", color: "#1f2937" }, children: [
@@ -132423,42 +132395,42 @@ function InsightsContent() {
                           terms[0].cost?.toFixed(2)
                         ] }, void 0, !0, {
                           fileName: "app/routes/app.insights.tsx",
-                          lineNumber: 757,
+                          lineNumber: 729,
                           columnNumber: 21
                         }, this)
                       ] }, void 0, !0, {
                         fileName: "app/routes/app.insights.tsx",
-                        lineNumber: 753,
+                        lineNumber: 725,
                         columnNumber: 19
                       }, this),
                       /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("div", { children: [
                         /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("div", { style: { color: "#6b7280", fontSize: 12, marginBottom: 8, fontWeight: "500" }, children: "Conv." }, void 0, !1, {
                           fileName: "app/routes/app.insights.tsx",
-                          lineNumber: 762,
+                          lineNumber: 734,
                           columnNumber: 21
                         }, this),
                         /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("div", { style: { fontSize: 24, fontWeight: "700", color: "#1f2937" }, children: terms[0].conversions || 0 }, void 0, !1, {
                           fileName: "app/routes/app.insights.tsx",
-                          lineNumber: 765,
+                          lineNumber: 737,
                           columnNumber: 21
                         }, this)
                       ] }, void 0, !0, {
                         fileName: "app/routes/app.insights.tsx",
-                        lineNumber: 761,
+                        lineNumber: 733,
                         columnNumber: 19
                       }, this)
                     ] }, void 0, !0, {
                       fileName: "app/routes/app.insights.tsx",
-                      lineNumber: 744,
+                      lineNumber: 716,
                       columnNumber: 17
                     }, this)
                   ] }, void 0, !0, {
                     fileName: "app/routes/app.insights.tsx",
-                    lineNumber: 730,
+                    lineNumber: 702,
                     columnNumber: 15
                   }, this) : /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("div", { style: { color: "#6b7280", textAlign: "center", padding: 20 }, children: "Not enough data yet." }, void 0, !1, {
                     fileName: "app/routes/app.insights.tsx",
-                    lineNumber: 772,
+                    lineNumber: 744,
                     columnNumber: 15
                   }, this)
                 ]
@@ -132467,7 +132439,7 @@ function InsightsContent() {
               !0,
               {
                 fileName: "app/routes/app.insights.tsx",
-                lineNumber: 716,
+                lineNumber: 689,
                 columnNumber: 11
               },
               this
@@ -132478,7 +132450,7 @@ function InsightsContent() {
         !0,
         {
           fileName: "app/routes/app.insights.tsx",
-          lineNumber: 668,
+          lineNumber: 642,
           columnNumber: 9
         },
         this
@@ -132487,18 +132459,17 @@ function InsightsContent() {
         "div",
         {
           style: {
-            background: "rgba(255, 255, 255, 0.95)",
-            backdropFilter: "blur(10px)",
-            border: "1px solid rgba(255, 255, 255, 0.2)",
-            borderRadius: 20,
-            padding: 24,
-            boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
-            marginBottom: 32
+            background: "white",
+            border: "1px solid #e3e3e3",
+            borderRadius: 8,
+            padding: 20,
+            boxShadow: "0 1px 0 rgba(0, 0, 0, 0.05)",
+            marginBottom: 24
           },
           children: [
-            /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("h3", { style: { margin: "0 0 20px 0", fontSize: 20, fontWeight: "600", color: "#1f2937" }, children: "Explain my spend" }, void 0, !1, {
+            /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("h3", { style: { margin: "0 0 16px 0", fontSize: 16, fontWeight: "600", color: "#202223" }, children: "Explain my spend" }, void 0, !1, {
               fileName: "app/routes/app.insights.tsx",
-              lineNumber: 790,
+              lineNumber: 761,
               columnNumber: 13
             }, this),
             explain.map((e, i) => {
@@ -132519,7 +132490,7 @@ function InsightsContent() {
                     /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("div", { children: [
                       /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("div", { style: { fontWeight: "600", marginBottom: 8, fontSize: 16, color: "#1f2937" }, children: e.label || "Unknown" }, void 0, !1, {
                         fileName: "app/routes/app.insights.tsx",
-                        lineNumber: 810,
+                        lineNumber: 781,
                         columnNumber: 21
                       }, this),
                       /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("div", { style: { color: "#6b7280", fontSize: 14 }, children: [
@@ -132527,18 +132498,18 @@ function InsightsContent() {
                         ". Suggest: ",
                         /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("code", { style: { background: "#f3f4f6", padding: "2px 6px", borderRadius: 4 }, children: e.action || "none" }, void 0, !1, {
                           fileName: "app/routes/app.insights.tsx",
-                          lineNumber: 814,
+                          lineNumber: 785,
                           columnNumber: 68
                         }, this),
                         e.target ? ` (${e.target})` : ""
                       ] }, void 0, !0, {
                         fileName: "app/routes/app.insights.tsx",
-                        lineNumber: 813,
+                        lineNumber: 784,
                         columnNumber: 21
                       }, this)
                     ] }, void 0, !0, {
                       fileName: "app/routes/app.insights.tsx",
-                      lineNumber: 809,
+                      lineNumber: 780,
                       columnNumber: 19
                     }, this),
                     /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(
@@ -132547,23 +132518,16 @@ function InsightsContent() {
                         onClick: () => handleApplyAction(e.action, e.target),
                         disabled,
                         style: {
-                          background: disabled ? "#9ca3af" : "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                          background: disabled ? "#c9cccf" : "#008060",
                           color: "white",
                           border: "none",
-                          padding: "12px 24px",
-                          borderRadius: 12,
+                          padding: "8px 16px",
+                          borderRadius: 6,
                           cursor: disabled ? "not-allowed" : "pointer",
-                          fontSize: 14,
-                          fontWeight: "600",
+                          fontSize: 13,
+                          fontWeight: "500",
                           opacity: disabled ? 0.6 : 1,
-                          transition: "all 0.3s ease",
-                          boxShadow: disabled ? "none" : "0 4px 12px rgba(102, 126, 234, 0.3)"
-                        },
-                        onMouseOver: (e2) => {
-                          disabled || (e2.currentTarget.style.transform = "translateY(-2px)", e2.currentTarget.style.boxShadow = "0 6px 20px rgba(102, 126, 234, 0.4)");
-                        },
-                        onMouseOut: (e2) => {
-                          disabled || (e2.currentTarget.style.transform = "translateY(0)", e2.currentTarget.style.boxShadow = "0 4px 12px rgba(102, 126, 234, 0.3)");
+                          transition: "all 0.2s ease"
                         },
                         children: isApplying ? "Applying..." : "Apply"
                       },
@@ -132571,7 +132535,7 @@ function InsightsContent() {
                       !1,
                       {
                         fileName: "app/routes/app.insights.tsx",
-                        lineNumber: 818,
+                        lineNumber: 789,
                         columnNumber: 19
                       },
                       this
@@ -132582,7 +132546,7 @@ function InsightsContent() {
                 !0,
                 {
                   fileName: "app/routes/app.insights.tsx",
-                  lineNumber: 799,
+                  lineNumber: 770,
                   columnNumber: 17
                 },
                 this
@@ -132594,7 +132558,7 @@ function InsightsContent() {
         !0,
         {
           fileName: "app/routes/app.insights.tsx",
-          lineNumber: 779,
+          lineNumber: 751,
           columnNumber: 11
         },
         this
@@ -132604,16 +132568,16 @@ function InsightsContent() {
         {
           style: {
             position: "fixed",
-            bottom: 32,
-            right: 32,
-            background: toast.includes("failed") ? "linear-gradient(135deg, #f56565 0%, #e53e3e 100%)" : "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+            bottom: 20,
+            right: 20,
+            background: toast.includes("failed") ? "#d82c0d" : "#008060",
             color: "white",
-            padding: "16px 24px",
-            borderRadius: 16,
-            boxShadow: "0 8px 32px rgba(0, 0, 0, 0.2)",
+            padding: "12px 20px",
+            borderRadius: 6,
+            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15)",
             zIndex: 1e3,
-            fontWeight: "600",
-            fontSize: 14
+            fontWeight: "500",
+            fontSize: 13
           },
           children: toast
         },
@@ -132621,14 +132585,14 @@ function InsightsContent() {
         !1,
         {
           fileName: "app/routes/app.insights.tsx",
-          lineNumber: 855,
+          lineNumber: 813,
           columnNumber: 11
         },
         this
       )
     ] }, void 0, !0, {
       fileName: "app/routes/app.insights.tsx",
-      lineNumber: 470,
+      lineNumber: 455,
       columnNumber: 7
     }, this)
   ] }, void 0, !0, {
@@ -132640,11 +132604,11 @@ function InsightsContent() {
 function Insights() {
   return /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(InsightsErrorBoundary, { children: /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(InsightsContent, {}, void 0, !1, {
     fileName: "app/routes/app.insights.tsx",
-    lineNumber: 881,
+    lineNumber: 839,
     columnNumber: 7
   }, this) }, void 0, !1, {
     fileName: "app/routes/app.insights.tsx",
-    lineNumber: 880,
+    lineNumber: 838,
     columnNumber: 5
   }, this);
 }
@@ -132653,36 +132617,25 @@ function ModernCard({ label, value }) {
     "div",
     {
       style: {
-        background: "rgba(255, 255, 255, 0.95)",
-        backdropFilter: "blur(10px)",
-        border: "1px solid rgba(255, 255, 255, 0.2)",
-        borderRadius: 20,
-        padding: 24,
-        boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
-        transition: "all 0.3s ease"
-      },
-      onMouseOver: (e) => {
-        e.currentTarget.style.transform = "translateY(-4px)", e.currentTarget.style.boxShadow = "0 12px 40px rgba(0, 0, 0, 0.15)";
-      },
-      onMouseOut: (e) => {
-        e.currentTarget.style.transform = "translateY(0)", e.currentTarget.style.boxShadow = "0 8px 32px rgba(0, 0, 0, 0.1)";
+        background: "white",
+        border: "1px solid #e3e3e3",
+        borderRadius: 8,
+        padding: 16,
+        boxShadow: "0 1px 0 rgba(0, 0, 0, 0.05)"
       },
       children: [
-        /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("div", { style: { color: "#6b7280", fontSize: 14, marginBottom: 8, fontWeight: "500" }, children: label }, void 0, !1, {
+        /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("div", { style: { color: "#616161", fontSize: 12, marginBottom: 4, fontWeight: "500" }, children: label }, void 0, !1, {
           fileName: "app/routes/app.insights.tsx",
-          lineNumber: 916,
+          lineNumber: 864,
           columnNumber: 7
         }, this),
         /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("div", { style: {
-          fontSize: 32,
-          fontWeight: "700",
-          color: "#1f2937",
-          background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-          WebkitBackgroundClip: "text",
-          WebkitTextFillColor: "transparent"
+          fontSize: 24,
+          fontWeight: "600",
+          color: "#202223"
         }, children: value ?? "\u2014" }, void 0, !1, {
           fileName: "app/routes/app.insights.tsx",
-          lineNumber: 919,
+          lineNumber: 867,
           columnNumber: 7
         }, this)
       ]
@@ -132691,7 +132644,7 @@ function ModernCard({ label, value }) {
     !0,
     {
       fileName: "app/routes/app.insights.tsx",
-      lineNumber: 897,
+      lineNumber: 855,
       columnNumber: 5
     },
     this
@@ -141986,7 +141939,7 @@ function App2() {
 var ErrorBoundary5 = boundary.error, headers = (headersArgs) => boundary.headers(headersArgs);
 
 // server-assets-manifest:@remix-run/dev/assets-manifest
-var assets_manifest_default = { entry: { module: "/assets/entry.client-TT34XQ4E.js", imports: ["/assets/_shared/chunk-55IC5345.js", "/assets/_shared/chunk-APMZZZMT.js", "/assets/_shared/chunk-Z7LCWUX7.js", "/assets/_shared/chunk-IFEKMGEG.js", "/assets/_shared/chunk-HGNQ3YCE.js", "/assets/_shared/chunk-GN6N4SDD.js", "/assets/_shared/chunk-FK5MLNU6.js", "/assets/_shared/chunk-R6OA4XCD.js"] }, routes: { root: { id: "root", parentId: void 0, path: "", index: void 0, caseSensitive: void 0, module: "/assets/root-VBYWFF6O.js", imports: ["/assets/_shared/chunk-Y5NHUDNW.js", "/assets/_shared/chunk-5CSWVI4C.js", "/assets/_shared/chunk-QDIWRKG7.js"], hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/_health": { id: "routes/_health", parentId: "root", path: void 0, index: void 0, caseSensitive: void 0, module: "/assets/routes/_health-J4V7PXIA.js", imports: ["/assets/_shared/chunk-5LF5TODQ.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/_index": { id: "routes/_index", parentId: "root", path: void 0, index: !0, caseSensitive: void 0, module: "/assets/routes/_index-SXWPV4KT.js", imports: ["/assets/_shared/chunk-5LF5TODQ.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/api.generate-script": { id: "routes/api.generate-script", parentId: "root", path: "api/generate-script", index: void 0, caseSensitive: void 0, module: "/assets/routes/api.generate-script-LY7A7LFF.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/api.script-proxy": { id: "routes/api.script-proxy", parentId: "root", path: "api/script-proxy", index: void 0, caseSensitive: void 0, module: "/assets/routes/api.script-proxy-H5ANR6MW.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app": { id: "routes/app", parentId: "root", path: "app", index: void 0, caseSensitive: void 0, module: "/assets/routes/app-U2PTHTKH.js", imports: ["/assets/_shared/chunk-I7NKL5T4.js", "/assets/_shared/chunk-7OUBBUAS.js", "/assets/_shared/chunk-5LF5TODQ.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/app._index": { id: "routes/app._index", parentId: "routes/app", path: void 0, index: !0, caseSensitive: void 0, module: "/assets/routes/app._index-6KAUUDZF.js", imports: ["/assets/_shared/chunk-BFD47CJF.js", "/assets/_shared/chunk-QFXH3GZH.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.additional": { id: "routes/app.additional", parentId: "routes/app", path: "additional", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.additional-24NIFFNP.js", imports: ["/assets/_shared/chunk-5CSWVI4C.js", "/assets/_shared/chunk-QDIWRKG7.js"], hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.advanced": { id: "routes/app.advanced", parentId: "routes/app", path: "advanced", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.advanced-QBOQBOOI.js", imports: ["/assets/_shared/chunk-QFXH3GZH.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.autopilot": { id: "routes/app.autopilot", parentId: "routes/app", path: "autopilot", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.autopilot-X5C6QZC2.js", imports: ["/assets/_shared/chunk-QFXH3GZH.js", "/assets/_shared/chunk-7OQ7YQAO.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.billing": { id: "routes/app.billing", parentId: "routes/app", path: "billing", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.billing-TWNST5FK.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/app.dashboards": { id: "routes/app.dashboards", parentId: "routes/app", path: "dashboards", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.dashboards-53FL56RC.js", imports: ["/assets/_shared/chunk-5CSWVI4C.js", "/assets/_shared/chunk-QDIWRKG7.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.insights": { id: "routes/app.insights", parentId: "routes/app", path: "insights", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.insights-DHDFFWI3.js", imports: ["/assets/_shared/chunk-5CSWVI4C.js", "/assets/_shared/chunk-QDIWRKG7.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.insights.terms": { id: "routes/app.insights.terms", parentId: "routes/app.insights", path: "terms", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.insights.terms-THDG6XKD.js", imports: ["/assets/_shared/chunk-5LF5TODQ.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.insights.terms.csv": { id: "routes/app.insights.terms.csv", parentId: "routes/app.insights.terms", path: "csv", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.insights.terms.csv-EVLMQWKE.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.intent-os": { id: "routes/app.intent-os", parentId: "routes/app", path: "intent-os", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.intent-os-WHSGRYJT.js", imports: ["/assets/_shared/chunk-BFD47CJF.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.reports": { id: "routes/app.reports", parentId: "routes/app", path: "reports", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.reports-NT4RIV3P.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/app.setup": { id: "routes/app.setup", parentId: "routes/app", path: "setup", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.setup-JVJDNVKG.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.support": { id: "routes/app.support", parentId: "routes/app", path: "support", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.support-BD2CAFPF.js", imports: ["/assets/_shared/chunk-5CSWVI4C.js", "/assets/_shared/chunk-QDIWRKG7.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/auth.$": { id: "routes/auth.$", parentId: "root", path: "auth/*", index: void 0, caseSensitive: void 0, module: "/assets/routes/auth.$-I5QX7GQX.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/auth.session-token": { id: "routes/auth.session-token", parentId: "root", path: "auth/session-token", index: void 0, caseSensitive: void 0, module: "/assets/routes/auth.session-token-IZHEWWKY.js", imports: ["/assets/_shared/chunk-7OUBBUAS.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/debug": { id: "routes/debug", parentId: "root", path: "debug", index: void 0, caseSensitive: void 0, module: "/assets/routes/debug-JBO5S6XJ.js", imports: ["/assets/_shared/chunk-5LF5TODQ.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/health": { id: "routes/health", parentId: "root", path: "health", index: void 0, caseSensitive: void 0, module: "/assets/routes/health-SLSXGJZ7.js", imports: ["/assets/_shared/chunk-5LF5TODQ.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/install": { id: "routes/install", parentId: "root", path: "install", index: void 0, caseSensitive: void 0, module: "/assets/routes/install-2U6QOOOU.js", imports: ["/assets/_shared/chunk-5LF5TODQ.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/local.autopilot": { id: "routes/local.autopilot", parentId: "root", path: "local/autopilot", index: void 0, caseSensitive: void 0, module: "/assets/routes/local.autopilot-NP3AFLQG.js", imports: ["/assets/_shared/chunk-7OQ7YQAO.js", "/assets/_shared/chunk-5LF5TODQ.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/privacy": { id: "routes/privacy", parentId: "root", path: "privacy", index: void 0, caseSensitive: void 0, module: "/assets/routes/privacy-32VVYI5O.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/support": { id: "routes/support", parentId: "root", path: "support", index: void 0, caseSensitive: void 0, module: "/assets/routes/support-Q72NATWT.js", imports: ["/assets/_shared/chunk-5LF5TODQ.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/terms": { id: "routes/terms", parentId: "root", path: "terms", index: void 0, caseSensitive: void 0, module: "/assets/routes/terms-APZQDPDX.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 } }, version: "f61f6cce", hmr: { runtime: "/assets/_shared/chunk-GN6N4SDD.js", timestamp: 1758319611169 }, url: "/assets/manifest-F61F6CCE.js" };
+var assets_manifest_default = { entry: { module: "/assets/entry.client-TT34XQ4E.js", imports: ["/assets/_shared/chunk-55IC5345.js", "/assets/_shared/chunk-APMZZZMT.js", "/assets/_shared/chunk-Z7LCWUX7.js", "/assets/_shared/chunk-IFEKMGEG.js", "/assets/_shared/chunk-HGNQ3YCE.js", "/assets/_shared/chunk-GN6N4SDD.js", "/assets/_shared/chunk-FK5MLNU6.js", "/assets/_shared/chunk-R6OA4XCD.js"] }, routes: { root: { id: "root", parentId: void 0, path: "", index: void 0, caseSensitive: void 0, module: "/assets/root-VBYWFF6O.js", imports: ["/assets/_shared/chunk-Y5NHUDNW.js", "/assets/_shared/chunk-5CSWVI4C.js", "/assets/_shared/chunk-QDIWRKG7.js"], hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/_health": { id: "routes/_health", parentId: "root", path: void 0, index: void 0, caseSensitive: void 0, module: "/assets/routes/_health-J4V7PXIA.js", imports: ["/assets/_shared/chunk-5LF5TODQ.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/_index": { id: "routes/_index", parentId: "root", path: void 0, index: !0, caseSensitive: void 0, module: "/assets/routes/_index-SXWPV4KT.js", imports: ["/assets/_shared/chunk-5LF5TODQ.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/api.generate-script": { id: "routes/api.generate-script", parentId: "root", path: "api/generate-script", index: void 0, caseSensitive: void 0, module: "/assets/routes/api.generate-script-LY7A7LFF.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/api.script-proxy": { id: "routes/api.script-proxy", parentId: "root", path: "api/script-proxy", index: void 0, caseSensitive: void 0, module: "/assets/routes/api.script-proxy-H5ANR6MW.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app": { id: "routes/app", parentId: "root", path: "app", index: void 0, caseSensitive: void 0, module: "/assets/routes/app-U2PTHTKH.js", imports: ["/assets/_shared/chunk-I7NKL5T4.js", "/assets/_shared/chunk-7OUBBUAS.js", "/assets/_shared/chunk-5LF5TODQ.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/app._index": { id: "routes/app._index", parentId: "routes/app", path: void 0, index: !0, caseSensitive: void 0, module: "/assets/routes/app._index-6KAUUDZF.js", imports: ["/assets/_shared/chunk-BFD47CJF.js", "/assets/_shared/chunk-QFXH3GZH.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.additional": { id: "routes/app.additional", parentId: "routes/app", path: "additional", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.additional-24NIFFNP.js", imports: ["/assets/_shared/chunk-5CSWVI4C.js", "/assets/_shared/chunk-QDIWRKG7.js"], hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.advanced": { id: "routes/app.advanced", parentId: "routes/app", path: "advanced", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.advanced-QBOQBOOI.js", imports: ["/assets/_shared/chunk-QFXH3GZH.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.autopilot": { id: "routes/app.autopilot", parentId: "routes/app", path: "autopilot", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.autopilot-X5C6QZC2.js", imports: ["/assets/_shared/chunk-QFXH3GZH.js", "/assets/_shared/chunk-7OQ7YQAO.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.billing": { id: "routes/app.billing", parentId: "routes/app", path: "billing", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.billing-TWNST5FK.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/app.dashboards": { id: "routes/app.dashboards", parentId: "routes/app", path: "dashboards", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.dashboards-53FL56RC.js", imports: ["/assets/_shared/chunk-5CSWVI4C.js", "/assets/_shared/chunk-QDIWRKG7.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.insights": { id: "routes/app.insights", parentId: "routes/app", path: "insights", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.insights-ZYZIRXUR.js", imports: ["/assets/_shared/chunk-5CSWVI4C.js", "/assets/_shared/chunk-QDIWRKG7.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.insights.terms": { id: "routes/app.insights.terms", parentId: "routes/app.insights", path: "terms", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.insights.terms-THDG6XKD.js", imports: ["/assets/_shared/chunk-5LF5TODQ.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.insights.terms.csv": { id: "routes/app.insights.terms.csv", parentId: "routes/app.insights.terms", path: "csv", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.insights.terms.csv-EVLMQWKE.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.intent-os": { id: "routes/app.intent-os", parentId: "routes/app", path: "intent-os", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.intent-os-WHSGRYJT.js", imports: ["/assets/_shared/chunk-BFD47CJF.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.reports": { id: "routes/app.reports", parentId: "routes/app", path: "reports", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.reports-NT4RIV3P.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/app.setup": { id: "routes/app.setup", parentId: "routes/app", path: "setup", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.setup-JVJDNVKG.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.support": { id: "routes/app.support", parentId: "routes/app", path: "support", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.support-BD2CAFPF.js", imports: ["/assets/_shared/chunk-5CSWVI4C.js", "/assets/_shared/chunk-QDIWRKG7.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/auth.$": { id: "routes/auth.$", parentId: "root", path: "auth/*", index: void 0, caseSensitive: void 0, module: "/assets/routes/auth.$-I5QX7GQX.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/auth.session-token": { id: "routes/auth.session-token", parentId: "root", path: "auth/session-token", index: void 0, caseSensitive: void 0, module: "/assets/routes/auth.session-token-IZHEWWKY.js", imports: ["/assets/_shared/chunk-7OUBBUAS.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/debug": { id: "routes/debug", parentId: "root", path: "debug", index: void 0, caseSensitive: void 0, module: "/assets/routes/debug-JBO5S6XJ.js", imports: ["/assets/_shared/chunk-5LF5TODQ.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/health": { id: "routes/health", parentId: "root", path: "health", index: void 0, caseSensitive: void 0, module: "/assets/routes/health-SLSXGJZ7.js", imports: ["/assets/_shared/chunk-5LF5TODQ.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/install": { id: "routes/install", parentId: "root", path: "install", index: void 0, caseSensitive: void 0, module: "/assets/routes/install-2U6QOOOU.js", imports: ["/assets/_shared/chunk-5LF5TODQ.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/local.autopilot": { id: "routes/local.autopilot", parentId: "root", path: "local/autopilot", index: void 0, caseSensitive: void 0, module: "/assets/routes/local.autopilot-NP3AFLQG.js", imports: ["/assets/_shared/chunk-7OQ7YQAO.js", "/assets/_shared/chunk-5LF5TODQ.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/privacy": { id: "routes/privacy", parentId: "root", path: "privacy", index: void 0, caseSensitive: void 0, module: "/assets/routes/privacy-32VVYI5O.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/support": { id: "routes/support", parentId: "root", path: "support", index: void 0, caseSensitive: void 0, module: "/assets/routes/support-Q72NATWT.js", imports: ["/assets/_shared/chunk-5LF5TODQ.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/terms": { id: "routes/terms", parentId: "root", path: "terms", index: void 0, caseSensitive: void 0, module: "/assets/routes/terms-APZQDPDX.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 } }, version: "e38a99e5", hmr: { runtime: "/assets/_shared/chunk-GN6N4SDD.js", timestamp: 1758319985808 }, url: "/assets/manifest-E38A99E5.js" };
 
 // server-entry-module:@remix-run/dev/server-build
 var mode = "development", assetsBuildDirectory = "public/assets", future = { v3_fetcherPersist: !1, v3_relativeSplatPath: !1, v3_throwAbortReason: !1, v3_routeConfig: !1, v3_singleFetch: !1, v3_lazyRouteDiscovery: !1, unstable_optimizeDeps: !1 }, publicPath = "/assets/", entry = { module: entry_server_exports }, routes = {
