@@ -6241,7 +6241,7 @@ var require_router_cjs = __commonJS({
         v5Compat = !1
       } = options, entries;
       entries = initialEntries.map((entry2, index2) => createMemoryLocation(entry2, typeof entry2 == "string" ? null : entry2.state, index2 === 0 ? "default" : void 0));
-      let index = clampIndex(initialIndex ?? entries.length - 1), action5 = Action.Pop, listener = null;
+      let index = clampIndex(initialIndex ?? entries.length - 1), action6 = Action.Pop, listener = null;
       function clampIndex(n) {
         return Math.min(Math.max(n, 0), entries.length - 1);
       }
@@ -6261,7 +6261,7 @@ var require_router_cjs = __commonJS({
           return index;
         },
         get action() {
-          return action5;
+          return action6;
         },
         get location() {
           return getCurrentLocation();
@@ -6279,28 +6279,28 @@ var require_router_cjs = __commonJS({
           };
         },
         push(to, state) {
-          action5 = Action.Push;
+          action6 = Action.Push;
           let nextLocation = createMemoryLocation(to, state);
           index += 1, entries.splice(index, entries.length, nextLocation), v5Compat && listener && listener({
-            action: action5,
+            action: action6,
             location: nextLocation,
             delta: 1
           });
         },
         replace(to, state) {
-          action5 = Action.Replace;
+          action6 = Action.Replace;
           let nextLocation = createMemoryLocation(to, state);
           entries[index] = nextLocation, v5Compat && listener && listener({
-            action: action5,
+            action: action6,
             location: nextLocation,
             delta: 0
           });
         },
         go(delta) {
-          action5 = Action.Pop;
+          action6 = Action.Pop;
           let nextIndex = clampIndex(index + delta), nextLocation = entries[nextIndex];
           index = nextIndex, listener && listener({
-            action: action5,
+            action: action6,
             location: nextLocation,
             delta
           });
@@ -6430,7 +6430,7 @@ var require_router_cjs = __commonJS({
       let {
         window: window2 = document.defaultView,
         v5Compat = !1
-      } = options, globalHistory = window2.history, action5 = Action.Pop, listener = null, index = getIndex();
+      } = options, globalHistory = window2.history, action6 = Action.Pop, listener = null, index = getIndex();
       index == null && (index = 0, globalHistory.replaceState(_extends({}, globalHistory.state, {
         idx: index
       }), ""));
@@ -6440,16 +6440,16 @@ var require_router_cjs = __commonJS({
         }).idx;
       }
       function handlePop() {
-        action5 = Action.Pop;
+        action6 = Action.Pop;
         let nextIndex = getIndex(), delta = nextIndex == null ? null : nextIndex - index;
         index = nextIndex, listener && listener({
-          action: action5,
+          action: action6,
           location: history.location,
           delta
         });
       }
       function push(to, state) {
-        action5 = Action.Push;
+        action6 = Action.Push;
         let location = createLocation(history.location, to, state);
         validateLocation && validateLocation(location, to), index = getIndex() + 1;
         let historyState = getHistoryState(location, index), url = history.createHref(location);
@@ -6461,18 +6461,18 @@ var require_router_cjs = __commonJS({
           window2.location.assign(url);
         }
         v5Compat && listener && listener({
-          action: action5,
+          action: action6,
           location: history.location,
           delta: 1
         });
       }
       function replace2(to, state) {
-        action5 = Action.Replace;
+        action6 = Action.Replace;
         let location = createLocation(history.location, to, state);
         validateLocation && validateLocation(location, to), index = getIndex();
         let historyState = getHistoryState(location, index), url = history.createHref(location);
         globalHistory.replaceState(historyState, "", url), v5Compat && listener && listener({
-          action: action5,
+          action: action6,
           location: history.location,
           delta: 0
         });
@@ -6483,7 +6483,7 @@ var require_router_cjs = __commonJS({
       }
       let history = {
         get action() {
-          return action5;
+          return action6;
         },
         get location() {
           return getLocation(window2, globalHistory);
@@ -6778,7 +6778,7 @@ var require_router_cjs = __commonJS({
     function getToPathname(to) {
       return to === "" || to.pathname === "" ? "/" : typeof to == "string" ? parsePath(to).pathname : to.pathname;
     }
-    var joinPaths = (paths) => paths.join("/").replace(/\/\/+/g, "/"), normalizePathname = (pathname) => pathname.replace(/\/+$/, "").replace(/^\/*/, "/"), normalizeSearch = (search) => !search || search === "?" ? "" : search.startsWith("?") ? search : "?" + search, normalizeHash = (hash) => !hash || hash === "#" ? "" : hash.startsWith("#") ? hash : "#" + hash, json13 = function(data2, init) {
+    var joinPaths = (paths) => paths.join("/").replace(/\/\/+/g, "/"), normalizePathname = (pathname) => pathname.replace(/\/+$/, "").replace(/^\/*/, "/"), normalizeSearch = (search) => !search || search === "?" ? "" : search.startsWith("?") ? search : "?" + search, normalizeHash = (hash) => !hash || hash === "#" ? "" : hash.startsWith("#") ? hash : "#" + hash, json14 = function(data2, init) {
       init === void 0 && (init = {});
       let responseInit = typeof init == "number" ? {
         status: init
@@ -6889,7 +6889,7 @@ var require_router_cjs = __commonJS({
         status: init
       } : init;
       return new DeferredData(data2, responseInit);
-    }, redirect15 = function(url, init) {
+    }, redirect16 = function(url, init) {
       init === void 0 && (init = 302);
       let responseInit = init;
       typeof responseInit == "number" ? responseInit = {
@@ -6900,10 +6900,10 @@ var require_router_cjs = __commonJS({
         headers: headers2
       }));
     }, redirectDocument = (url, init) => {
-      let response = redirect15(url, init);
+      let response = redirect16(url, init);
       return response.headers.set("X-Remix-Reload-Document", "true"), response;
     }, replace = (url, init) => {
-      let response = redirect15(url, init);
+      let response = redirect16(url, init);
       return response.headers.set("X-Remix-Replace", "true"), response;
     }, ErrorResponseImpl = class {
       constructor(status, statusText, data2, internal) {
@@ -7427,15 +7427,15 @@ var require_router_cjs = __commonJS({
             shortCircuited: !0
           };
         pendingNavigationController && pendingNavigationController.signal.removeEventListener("abort", abortPendingFetchRevalidations), revalidatingFetchers.forEach((rf) => fetchControllers.delete(rf.key));
-        let redirect16 = findRedirect(loaderResults);
-        if (redirect16)
-          return await startRedirectNavigation(request2, redirect16.result, !0, {
+        let redirect17 = findRedirect(loaderResults);
+        if (redirect17)
+          return await startRedirectNavigation(request2, redirect17.result, !0, {
             replace: replace2
           }), {
             shortCircuited: !0
           };
-        if (redirect16 = findRedirect(fetcherResults), redirect16)
-          return fetchRedirectIds.add(redirect16.key), await startRedirectNavigation(request2, redirect16.result, !0, {
+        if (redirect17 = findRedirect(fetcherResults), redirect17)
+          return fetchRedirectIds.add(redirect17.key), await startRedirectNavigation(request2, redirect17.result, !0, {
             replace: replace2
           }), {
             shortCircuited: !0
@@ -7601,13 +7601,13 @@ var require_router_cjs = __commonJS({
         if (abortController.signal.aborted)
           return;
         abortController.signal.removeEventListener("abort", abortPendingFetchRevalidations), fetchReloadIds.delete(key), fetchControllers.delete(key), revalidatingFetchers.forEach((r) => fetchControllers.delete(r.key));
-        let redirect16 = findRedirect(loaderResults);
-        if (redirect16)
-          return startRedirectNavigation(revalidationRequest, redirect16.result, !1, {
+        let redirect17 = findRedirect(loaderResults);
+        if (redirect17)
+          return startRedirectNavigation(revalidationRequest, redirect17.result, !1, {
             preventScrollReset
           });
-        if (redirect16 = findRedirect(fetcherResults), redirect16)
-          return fetchRedirectIds.add(redirect16.key), startRedirectNavigation(revalidationRequest, redirect16.result, !1, {
+        if (redirect17 = findRedirect(fetcherResults), redirect17)
+          return fetchRedirectIds.add(redirect17.key), startRedirectNavigation(revalidationRequest, redirect17.result, !1, {
             preventScrollReset
           });
         let {
@@ -7679,22 +7679,22 @@ var require_router_cjs = __commonJS({
           invariant(!isDeferredResult(result), "Unhandled fetcher deferred data"), updateFetcherState(key, getDoneFetcher(result.data));
         }
       }
-      async function startRedirectNavigation(request2, redirect16, isNavigation, _temp2) {
+      async function startRedirectNavigation(request2, redirect17, isNavigation, _temp2) {
         let {
           submission,
           fetcherSubmission,
           preventScrollReset,
           replace: replace2
         } = _temp2 === void 0 ? {} : _temp2;
-        redirect16.response.headers.has("X-Remix-Revalidate") && (isRevalidationRequired = !0);
-        let location = redirect16.response.headers.get("Location");
+        redirect17.response.headers.has("X-Remix-Revalidate") && (isRevalidationRequired = !0);
+        let location = redirect17.response.headers.get("Location");
         invariant(location, "Expected a Location header on the redirect Response"), location = normalizeRedirectLocation(location, new URL(request2.url), basename);
         let redirectLocation = createLocation(state.location, location, {
           _isRedirect: !0
         });
         if (isBrowser) {
           let isDocumentReload = !1;
-          if (redirect16.response.headers.has("X-Remix-Reload-Document"))
+          if (redirect17.response.headers.has("X-Remix-Reload-Document"))
             isDocumentReload = !0;
           else if (ABSOLUTE_URL_REGEX.test(location)) {
             let url = init.history.createURL(location);
@@ -7708,14 +7708,14 @@ var require_router_cjs = __commonJS({
           }
         }
         pendingNavigationController = null;
-        let redirectHistoryAction = replace2 === !0 || redirect16.response.headers.has("X-Remix-Replace") ? Action.Replace : Action.Push, {
+        let redirectHistoryAction = replace2 === !0 || redirect17.response.headers.has("X-Remix-Replace") ? Action.Replace : Action.Push, {
           formMethod,
           formAction,
           formEncType
         } = state.navigation;
         !submission && !fetcherSubmission && formMethod && formAction && formEncType && (submission = getSubmissionFromNavigation(state.navigation));
         let activeSubmission = submission || fetcherSubmission;
-        if (redirectPreserveMethodStatusCodes.has(redirect16.response.status) && activeSubmission && isMutationMethod(activeSubmission.formMethod))
+        if (redirectPreserveMethodStatusCodes.has(redirect17.response.status) && activeSubmission && isMutationMethod(activeSubmission.formMethod))
           await startNavigation(redirectHistoryAction, redirectLocation, {
             submission: _extends({}, activeSubmission, {
               formAction: location
@@ -8388,7 +8388,7 @@ var require_router_cjs = __commonJS({
           if (!isMutationMethod(formMethod))
             return getInvalidBodyError();
           try {
-            let json14 = typeof opts.body == "string" ? JSON.parse(opts.body) : opts.body;
+            let json15 = typeof opts.body == "string" ? JSON.parse(opts.body) : opts.body;
             return {
               path,
               submission: {
@@ -8396,7 +8396,7 @@ var require_router_cjs = __commonJS({
                 formAction,
                 formEncType: opts.formEncType,
                 formData: void 0,
-                json: json14,
+                json: json15,
                 text: void 0
               }
             };
@@ -9029,7 +9029,7 @@ var require_router_cjs = __commonJS({
         formEncType,
         text,
         formData,
-        json: json14
+        json: json15
       } = navigation;
       if (!(!formMethod || !formAction || !formEncType)) {
         if (text != null)
@@ -9050,13 +9050,13 @@ var require_router_cjs = __commonJS({
             json: void 0,
             text: void 0
           };
-        if (json14 !== void 0)
+        if (json15 !== void 0)
           return {
             formMethod,
             formAction,
             formEncType,
             formData: void 0,
-            json: json14,
+            json: json15,
             text: void 0
           };
       }
@@ -9143,8 +9143,8 @@ var require_router_cjs = __commonJS({
       try {
         let sessionPositions = _window.sessionStorage.getItem(TRANSITIONS_STORAGE_KEY);
         if (sessionPositions) {
-          let json14 = JSON.parse(sessionPositions);
-          for (let [k, v] of Object.entries(json14 || {}))
+          let json15 = JSON.parse(sessionPositions);
+          for (let [k, v] of Object.entries(json15 || {}))
             v && Array.isArray(v) && transitions.set(k, new Set(v || []));
         }
       } catch {
@@ -9152,11 +9152,11 @@ var require_router_cjs = __commonJS({
     }
     function persistAppliedTransitions(_window, transitions) {
       if (transitions.size > 0) {
-        let json14 = {};
+        let json15 = {};
         for (let [k, v] of transitions)
-          json14[k] = [...v];
+          json15[k] = [...v];
         try {
-          _window.sessionStorage.setItem(TRANSITIONS_STORAGE_KEY, JSON.stringify(json14));
+          _window.sessionStorage.setItem(TRANSITIONS_STORAGE_KEY, JSON.stringify(json15));
         } catch (error) {
           warning(!1, "Failed to save applied view transitions in sessionStorage (" + error + ").");
         }
@@ -9191,12 +9191,12 @@ var require_router_cjs = __commonJS({
     exports.isDeferredData = isDeferredData;
     exports.isRouteErrorResponse = isRouteErrorResponse;
     exports.joinPaths = joinPaths;
-    exports.json = json13;
+    exports.json = json14;
     exports.matchPath = matchPath;
     exports.matchRoutes = matchRoutes;
     exports.normalizePathname = normalizePathname;
     exports.parsePath = parsePath;
-    exports.redirect = redirect15;
+    exports.redirect = redirect16;
     exports.redirectDocument = redirectDocument;
     exports.replace = replace;
     exports.resolvePath = resolvePath;
@@ -10620,10 +10620,10 @@ var require_src = __commonJS({
         throw new Error('malformed content-disposition header: missing "form-data" in `' + JSON.stringify(parts) + "`");
       let out = {};
       for (let part of parts) {
-        let kv = part.split("=", 2);
-        if (kv.length !== 2)
+        let kv2 = part.split("=", 2);
+        if (kv2.length !== 2)
           throw new Error("malformed content-disposition header: key-value pair not found - " + part + " in `" + header + "`");
-        let [name, value] = kv;
+        let [name, value] = kv2;
         if (value[0] === '"' && value[value.length - 1] === '"')
           out[name] = value.slice(1, -1).replace(/\\"/g, '"');
         else if (value[0] !== '"' && value[value.length - 1] !== '"')
@@ -10890,7 +10890,7 @@ var require_responses = __commonJS({
   "../node_modules/@remix-run/server-runtime/dist/responses.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: !0 });
-    var router = require_router_cjs(), errors = require_errors(), json13 = (data, init = {}) => router.json(data, init), defer = (data, init = {}) => router.defer(data, init), redirect15 = (url, init = 302) => router.redirect(url, init), replace = (url, init = 302) => router.replace(url, init), redirectDocument = (url, init = 302) => router.redirectDocument(url, init);
+    var router = require_router_cjs(), errors = require_errors(), json14 = (data, init = {}) => router.json(data, init), defer = (data, init = {}) => router.defer(data, init), redirect16 = (url, init = 302) => router.redirect(url, init), replace = (url, init = 302) => router.replace(url, init), redirectDocument = (url, init = 302) => router.redirectDocument(url, init);
     function isDeferredData(value) {
       let deferred = value;
       return deferred && typeof deferred == "object" && typeof deferred.data == "object" && typeof deferred.subscribe == "function" && typeof deferred.cancel == "function" && typeof deferred.resolveData == "function";
@@ -10945,8 +10945,8 @@ var require_responses = __commonJS({
     exports.isRedirectResponse = isRedirectResponse;
     exports.isRedirectStatusCode = isRedirectStatusCode;
     exports.isResponse = isResponse;
-    exports.json = json13;
-    exports.redirect = redirect15;
+    exports.json = json14;
+    exports.redirect = redirect16;
     exports.redirectDocument = redirectDocument;
     exports.replace = replace;
   }
@@ -11779,9 +11779,9 @@ var require_single_fetch = __commonJS({
       }
     }
     function getSingleFetchRedirect(status, headers3, basename) {
-      let redirect15 = headers3.get("Location");
-      return basename && (redirect15 = router.stripBasename(redirect15, basename) || redirect15), {
-        redirect: redirect15,
+      let redirect16 = headers3.get("Location");
+      return basename && (redirect16 = router.stripBasename(redirect16, basename) || redirect16), {
+        redirect: redirect16,
         status,
         revalidate: (
           // Technically X-Remix-Revalidate isn't needed here - that was an implementation
@@ -11892,13 +11892,13 @@ var require_data = __commonJS({
     var responses = require_responses();
     async function callRouteAction({
       loadContext,
-      action: action5,
+      action: action6,
       params,
       request: request2,
       routeId,
       singleFetch
     }) {
-      let result = await action5({
+      let result = await action6({
         request: singleFetch ? stripRoutesParam(stripIndexParam(request2)) : stripDataParam(stripIndexParam(request2)),
         context: loadContext,
         params
@@ -11909,13 +11909,13 @@ var require_data = __commonJS({
     }
     async function callRouteLoader({
       loadContext,
-      loader: loader17,
+      loader: loader18,
       params,
       request: request2,
       routeId,
       singleFetch
     }) {
-      let result = await loader17({
+      let result = await loader18({
         request: singleFetch ? stripRoutesParam(stripIndexParam(request2)) : stripDataParam(stripIndexParam(request2)),
         context: loadContext,
         params
@@ -12657,7 +12657,7 @@ var require_dist = __commonJS({
   "../node_modules/@remix-run/server-runtime/dist/index.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: !0 });
-    var cookies = require_cookies(), formData = require_formData(), responses = require_responses(), singleFetch = require_single_fetch(), server = require_server(), sessions = require_sessions(), cookieStorage = require_cookieStorage(), memoryStorage = require_memoryStorage(), memoryUploadHandler = require_memoryUploadHandler(), errors = require_errors2(), dev = require_dev();
+    var cookies = require_cookies(), formData = require_formData(), responses = require_responses(), singleFetch = require_single_fetch(), server = require_server(), sessions = require_sessions(), cookieStorage = require_cookieStorage(), memoryStorage2 = require_memoryStorage(), memoryUploadHandler = require_memoryUploadHandler(), errors = require_errors2(), dev = require_dev();
     exports.createCookieFactory = cookies.createCookieFactory;
     exports.isCookie = cookies.isCookie;
     exports.unstable_composeUploadHandlers = formData.composeUploadHandlers;
@@ -12674,7 +12674,7 @@ var require_dist = __commonJS({
     exports.createSessionStorageFactory = sessions.createSessionStorageFactory;
     exports.isSession = sessions.isSession;
     exports.createCookieSessionStorageFactory = cookieStorage.createCookieSessionStorageFactory;
-    exports.createMemorySessionStorageFactory = memoryStorage.createMemorySessionStorageFactory;
+    exports.createMemorySessionStorageFactory = memoryStorage2.createMemorySessionStorageFactory;
     exports.unstable_createMemoryUploadHandler = memoryUploadHandler.createMemoryUploadHandler;
     exports.MaxPartSizeExceededError = errors.MaxPartSizeExceededError;
     exports.broadcastDevReady = dev.broadcastDevReady;
@@ -13369,8 +13369,8 @@ var require_single_fetch2 = __commonJS({
       });
     }
     function unwrapSingleFetchResults(results, routeId) {
-      let redirect15 = results[serverRuntime.UNSAFE_SingleFetchRedirectSymbol];
-      return redirect15 ? unwrapSingleFetchResult(redirect15, routeId) : results[routeId] !== void 0 ? unwrapSingleFetchResult(results[routeId], routeId) : null;
+      let redirect16 = results[serverRuntime.UNSAFE_SingleFetchRedirectSymbol];
+      return redirect16 ? unwrapSingleFetchResult(redirect16, routeId) : results[routeId] !== void 0 ? unwrapSingleFetchResult(results[routeId], routeId) : null;
     }
     function unwrapSingleFetchResult(result, routeId) {
       if ("error" in result)
@@ -14167,7 +14167,7 @@ var require_components = __commonJS({
       }) : null);
     });
     Link4.displayName = "Link";
-    var Form3 = /* @__PURE__ */ React__namespace.forwardRef(({
+    var Form4 = /* @__PURE__ */ React__namespace.forwardRef(({
       discover = "render",
       ...props
     }, forwardedRef) => {
@@ -14177,7 +14177,7 @@ var require_components = __commonJS({
         "data-discover": getDiscoverAttr(discover, isAbsolute, props.reloadDocument)
       }));
     });
-    Form3.displayName = "Form";
+    Form4.displayName = "Form";
     function composeEventHandlers(theirHandler, ourHandler) {
       return (event) => {
         theirHandler && theirHandler(event), event.defaultPrevented || ourHandler(event);
@@ -14346,12 +14346,12 @@ To reference the meta function API, see https://remix.run/route/meta`);
           }) : null;
         if ("script:ld+json" in metaProps)
           try {
-            let json13 = JSON.stringify(metaProps["script:ld+json"]);
+            let json14 = JSON.stringify(metaProps["script:ld+json"]);
             return /* @__PURE__ */ React__namespace.createElement("script", {
-              key: `script:ld+json:${json13}`,
+              key: `script:ld+json:${json14}`,
               type: "application/ld+json",
               dangerouslySetInnerHTML: {
-                __html: json13
+                __html: json14
               }
             });
           } catch {
@@ -14554,13 +14554,13 @@ import(${JSON.stringify(manifest.entry.module)});` : " ";
     function useMatches() {
       return reactRouterDom.useMatches();
     }
-    function useLoaderData8() {
+    function useLoaderData9() {
       return reactRouterDom.useLoaderData();
     }
     function useRouteLoaderData(routeId) {
       return reactRouterDom.useRouteLoaderData(routeId);
     }
-    function useActionData3() {
+    function useActionData4() {
       return reactRouterDom.useActionData();
     }
     function useFetcher3(opts = {}) {
@@ -14575,7 +14575,7 @@ import(${JSON.stringify(manifest.entry.module)});` : " ";
       };
     }
     exports.Await = Await;
-    exports.Form = Form3;
+    exports.Form = Form4;
     exports.Link = Link4;
     exports.Links = Links2;
     exports.LiveReload = LiveReload;
@@ -14585,9 +14585,9 @@ import(${JSON.stringify(manifest.entry.module)});` : " ";
     exports.RemixContext = RemixContext;
     exports.Scripts = Scripts2;
     exports.composeEventHandlers = composeEventHandlers;
-    exports.useActionData = useActionData3;
+    exports.useActionData = useActionData4;
     exports.useFetcher = useFetcher3;
-    exports.useLoaderData = useLoaderData8;
+    exports.useLoaderData = useLoaderData9;
     exports.useMatches = useMatches;
     exports.useRemixContext = useRemixContext;
     exports.useRouteLoaderData = useRouteLoaderData;
@@ -14838,7 +14838,7 @@ var require_server2 = __commonJS({
       future: future2
     }) {
       typeof locationProp == "string" && (locationProp = reactRouterDom.parsePath(locationProp));
-      let action5 = router.Action.Pop, location = {
+      let action6 = router.Action.Pop, location = {
         pathname: locationProp.pathname || "/",
         search: locationProp.search || "",
         hash: locationProp.hash || "",
@@ -14849,7 +14849,7 @@ var require_server2 = __commonJS({
         basename,
         children,
         location,
-        navigationType: action5,
+        navigationType: action6,
         navigator: staticNavigator,
         future: future2,
         static: !0
@@ -21969,7 +21969,7 @@ var require_body = __commonJS({
         },
         type: "bytes"
       }), assert(isReadableStreamLike(stream));
-      let action5 = null, source = null, length = null, type = null;
+      let action6 = null, source = null, length = null, type = null;
       if (typeof object == "string")
         source = object, type = "text/plain;charset=UTF-8";
       else if (object instanceof URLSearchParams)
@@ -22001,7 +22001,7 @@ Content-Type: ${value.type || "application/octet-stream"}\r
           }
         let chunk = textEncoder.encode(`--${boundary2}--\r
 `);
-        blobParts.push(chunk), length += chunk.byteLength, hasUnknownSizeValue && (length = null), source = object, action5 = async function* () {
+        blobParts.push(chunk), length += chunk.byteLength, hasUnknownSizeValue && (length = null), source = object, action6 = async function* () {
           for (let part of blobParts)
             part.stream ? yield* part.stream() : yield part;
         }, type = `multipart/form-data; boundary=${boundary2}`;
@@ -22016,11 +22016,11 @@ Content-Type: ${value.type || "application/octet-stream"}\r
           );
         stream = object instanceof ReadableStream ? object : ReadableStreamFrom(object);
       }
-      if ((typeof source == "string" || util3.isBuffer(source)) && (length = Buffer.byteLength(source)), action5 != null) {
+      if ((typeof source == "string" || util3.isBuffer(source)) && (length = Buffer.byteLength(source)), action6 != null) {
         let iterator;
         stream = new ReadableStream({
           async start() {
-            iterator = action5(object)[Symbol.asyncIterator]();
+            iterator = action6(object)[Symbol.asyncIterator]();
           },
           async pull(controller) {
             let { value, done } = await iterator.next();
@@ -28652,8 +28652,8 @@ var require_cache = __commonJS({
        * @returns {requestResponseList}
        */
       #queryCache(requestQuery, options, targetStorage) {
-        let resultList = [], storage = targetStorage ?? this.#relevantRequestResponseList;
-        for (let requestResponse of storage) {
+        let resultList = [], storage2 = targetStorage ?? this.#relevantRequestResponseList;
+        for (let requestResponse of storage2) {
           let [cachedRequest, cachedResponse] = requestResponse;
           this.#requestMatchesCachedItem(requestQuery, cachedRequest, cachedResponse, options) && resultList.push(requestResponse);
         }
@@ -33164,8 +33164,8 @@ var require_ponyfill = __commonJS({
               }), preventCancel || actions.push(function() {
                 return source._state === "readable" ? ReadableStreamCancel(source, error) : promiseResolvedWith(void 0);
               }), shutdownWithAction(function() {
-                return Promise.all(actions.map(function(action5) {
-                  return action5();
+                return Promise.all(actions.map(function(action6) {
+                  return action6();
                 }));
               }, !0, error);
             }, signal.aborted) {
@@ -33222,18 +33222,18 @@ var require_ponyfill = __commonJS({
               return oldCurrentWrite !== currentWrite ? waitForWritesToFinish() : void 0;
             });
           }
-          function isOrBecomesErrored(stream, promise, action5) {
-            stream._state === "errored" ? action5(stream._storedError) : uponRejection(promise, action5);
+          function isOrBecomesErrored(stream, promise, action6) {
+            stream._state === "errored" ? action6(stream._storedError) : uponRejection(promise, action6);
           }
-          function isOrBecomesClosed(stream, promise, action5) {
-            stream._state === "closed" ? action5() : uponFulfillment(promise, action5);
+          function isOrBecomesClosed(stream, promise, action6) {
+            stream._state === "closed" ? action6() : uponFulfillment(promise, action6);
           }
-          function shutdownWithAction(action5, originalIsError, originalError) {
+          function shutdownWithAction(action6, originalIsError, originalError) {
             if (shuttingDown)
               return;
             shuttingDown = !0, dest._state === "writable" && !WritableStreamCloseQueuedOrInFlight(dest) ? uponFulfillment(waitForWritesToFinish(), doTheRest) : doTheRest();
             function doTheRest() {
-              return uponPromise(action5(), function() {
+              return uponPromise(action6(), function() {
                 return finalize(originalIsError, originalError);
               }, function(newError) {
                 return finalize(!0, newError);
@@ -36993,20 +36993,20 @@ async function backendFetch(pathname, method, body, shopNameOverride) {
   try {
     let res = await fetch(url, init), contentType = res.headers.get("content-type") || "", isJson = contentType.includes("application/json");
     console.log(`\u{1F4E5} Response ${res.status} ${res.statusText} (${contentType})`);
-    let json13;
+    let json14;
     if (isJson)
-      json13 = await res.json().catch((err) => (console.error(`\u274C JSON parse error for ${pathname}:`, err.message), { ok: !1, error: "Invalid JSON response" }));
+      json14 = await res.json().catch((err) => (console.error(`\u274C JSON parse error for ${pathname}:`, err.message), { ok: !1, error: "Invalid JSON response" }));
     else {
       let text = await res.text();
       console.warn(
         `\u26A0\uFE0F Non-JSON response for ${pathname}:`,
         text.substring(0, 200)
-      ), json13 = { ok: !1, error: "Non-JSON response", response: text };
+      ), json14 = { ok: !1, error: "Non-JSON response", response: text };
     }
-    return res.ok ? json13?.ok === !1 ? console.warn(`\u26A0\uFE0F Backend error for ${pathname}:`, json13.error) : console.log(
+    return res.ok ? json14?.ok === !1 ? console.warn(`\u26A0\uFE0F Backend error for ${pathname}:`, json14.error) : console.log(
       `\u2705 Success for ${pathname}:`,
-      json13?.ok ? "OK" : "Response received"
-    ) : console.error(`\u274C HTTP error ${res.status} for ${pathname}:`, json13), { status: res.status, json: json13 };
+      json14?.ok ? "OK" : "Response received"
+    ) : console.error(`\u274C HTTP error ${res.status} for ${pathname}:`, json14), { status: res.status, json: json14 };
   } catch (fetchError) {
     return console.error(`\u{1F4A5} Fetch error for ${pathname}:`, fetchError.message), {
       status: 500,
@@ -50796,8 +50796,8 @@ var require_remote = __commonJS({
       async reload() {
         this._pendingFetch && isCloudflareWorkers() && (this._pendingFetch = void 0);
         let headers2 = new Headers(this._options.headers);
-        USER_AGENT && !headers2.has("User-Agent") && (headers2.set("User-Agent", USER_AGENT), this._options.headers = Object.fromEntries(headers2.entries())), this._pendingFetch ||= (0, fetch_jwks_js_1.default)(this._url, this._timeoutDuration, this._options).then((json13) => {
-          this._local = (0, local_js_1.createLocalJWKSet)(json13), this._cache && (this._cache.uat = Date.now(), this._cache.jwks = json13), this._jwksTimestamp = Date.now(), this._pendingFetch = void 0;
+        USER_AGENT && !headers2.has("User-Agent") && (headers2.set("User-Agent", USER_AGENT), this._options.headers = Object.fromEntries(headers2.entries())), this._pendingFetch ||= (0, fetch_jwks_js_1.default)(this._url, this._timeoutDuration, this._options).then((json14) => {
+          this._local = (0, local_js_1.createLocalJWKSet)(json14), this._cache && (this._cache.uat = Date.now(), this._cache.jwks = json14), this._jwksTimestamp = Date.now(), this._pendingFetch = void 0;
         }).catch((err) => {
           throw this._pendingFetch = void 0, err;
         }), await this._pendingFetch;
@@ -65518,8 +65518,8 @@ var require_ARRAPPEND = __commonJS({
     exports.FIRST_KEY_INDEX = 1;
     function transformArguments(key, path, ...jsons) {
       let args = ["JSON.ARRAPPEND", key, path];
-      for (let json13 of jsons)
-        args.push((0, _1.transformRedisJsonArgument)(json13));
+      for (let json14 of jsons)
+        args.push((0, _1.transformRedisJsonArgument)(json14));
       return args;
     }
     exports.transformArguments = transformArguments;
@@ -65535,8 +65535,8 @@ var require_ARRINDEX = __commonJS({
     var _1 = require_commands5();
     exports.FIRST_KEY_INDEX = 1;
     exports.IS_READ_ONLY = !0;
-    function transformArguments(key, path, json13, start, stop) {
-      let args = ["JSON.ARRINDEX", key, path, (0, _1.transformRedisJsonArgument)(json13)];
+    function transformArguments(key, path, json14, start, stop) {
+      let args = ["JSON.ARRINDEX", key, path, (0, _1.transformRedisJsonArgument)(json14)];
       return start != null && (args.push(start.toString()), stop != null && args.push(stop.toString())), args;
     }
     exports.transformArguments = transformArguments;
@@ -65553,8 +65553,8 @@ var require_ARRINSERT = __commonJS({
     exports.FIRST_KEY_INDEX = 1;
     function transformArguments(key, path, index, ...jsons) {
       let args = ["JSON.ARRINSERT", key, path, index.toString()];
-      for (let json13 of jsons)
-        args.push((0, _1.transformRedisJsonArgument)(json13));
+      for (let json14 of jsons)
+        args.push((0, _1.transformRedisJsonArgument)(json14));
       return args;
     }
     exports.transformArguments = transformArguments;
@@ -65685,8 +65685,8 @@ var require_MERGE3 = __commonJS({
     exports.transformArguments = exports.FIRST_KEY_INDEX = void 0;
     var _1 = require_commands5();
     exports.FIRST_KEY_INDEX = 1;
-    function transformArguments(key, path, json13) {
-      return ["JSON.MERGE", key, path, (0, _1.transformRedisJsonArgument)(json13)];
+    function transformArguments(key, path, json14) {
+      return ["JSON.MERGE", key, path, (0, _1.transformRedisJsonArgument)(json14)];
     }
     exports.transformArguments = transformArguments;
   }
@@ -65827,8 +65827,8 @@ var require_SET2 = __commonJS({
     exports.transformArguments = exports.FIRST_KEY_INDEX = void 0;
     var _1 = require_commands5();
     exports.FIRST_KEY_INDEX = 1;
-    function transformArguments(key, path, json13, options) {
-      let args = ["JSON.SET", key, path, (0, _1.transformRedisJsonArgument)(json13)];
+    function transformArguments(key, path, json14, options) {
+      let args = ["JSON.SET", key, path, (0, _1.transformRedisJsonArgument)(json14)];
       return options?.NX ? args.push("NX") : options?.XX && args.push("XX"), args;
     }
     exports.transformArguments = transformArguments;
@@ -65935,16 +65935,16 @@ var require_commands5 = __commonJS({
       TYPE,
       type: TYPE
     };
-    function transformRedisJsonArgument(json13) {
-      return JSON.stringify(json13);
+    function transformRedisJsonArgument(json14) {
+      return JSON.stringify(json14);
     }
     exports.transformRedisJsonArgument = transformRedisJsonArgument;
-    function transformRedisJsonReply(json13) {
-      return JSON.parse(json13);
+    function transformRedisJsonReply(json14) {
+      return JSON.parse(json14);
     }
     exports.transformRedisJsonReply = transformRedisJsonReply;
-    function transformRedisJsonNullReply(json13) {
-      return json13 === null ? null : transformRedisJsonReply(json13);
+    function transformRedisJsonNullReply(json14) {
+      return json14 === null ? null : transformRedisJsonReply(json14);
     }
     exports.transformRedisJsonNullReply = transformRedisJsonNullReply;
     function transformNumbersReply(reply) {
@@ -85463,14 +85463,14 @@ var require_utils11 = __commonJS({
     "use strict";
     var React10 = require_react(), Button2 = require_Button();
     function buttonsFrom(actions, overrides = {}) {
-      return Array.isArray(actions) ? actions.map((action5, index) => buttonFrom(action5, overrides, index)) : buttonFrom(actions, overrides);
+      return Array.isArray(actions) ? actions.map((action6, index) => buttonFrom(action6, overrides, index)) : buttonFrom(actions, overrides);
     }
     function buttonFrom({
       content,
       onAction,
       plain,
       destructive,
-      ...action5
+      ...action6
     }, overrides, key) {
       let plainVariant = plain ? "plain" : void 0, destructiveVariant = destructive ? "primary" : void 0, tone = !overrides?.tone && destructive ? "critical" : overrides?.tone;
       return /* @__PURE__ */ React10.createElement(Button2.Button, Object.assign({
@@ -85478,7 +85478,7 @@ var require_utils11 = __commonJS({
         onClick: onAction,
         tone,
         variant: plainVariant || destructiveVariant
-      }, action5, overrides), content);
+      }, action6, overrides), content);
     }
     exports.buttonFrom = buttonFrom;
     exports.buttonsFrom = buttonsFrom;
@@ -85699,7 +85699,7 @@ var require_SettingAction = __commonJS({
     "use strict";
     var React10 = require_react(), SettingAction_module = require_SettingAction_css();
     function SettingAction({
-      action: action5,
+      action: action6,
       children
     }) {
       return /* @__PURE__ */ React10.createElement("div", {
@@ -85708,7 +85708,7 @@ var require_SettingAction = __commonJS({
         className: SettingAction_module.default.Setting
       }, children), /* @__PURE__ */ React10.createElement("div", {
         className: SettingAction_module.default.Action
-      }, action5));
+      }, action6));
     }
     exports.SettingAction = SettingAction;
   }
@@ -85967,7 +85967,7 @@ var require_AccountConnection = __commonJS({
     var React10 = require_react(), breakpoints = require_breakpoints2(), utils = require_utils11(), Card3 = require_Card(), SettingAction = require_SettingAction(), InlineStack = require_InlineStack(), BlockStack = require_BlockStack(), Avatar = require_Avatar(), Box = require_Box(), Text2 = require_Text();
     function AccountConnection({
       connected = !1,
-      action: action5,
+      action: action6,
       avatarUrl,
       accountName = "",
       title,
@@ -85991,7 +85991,7 @@ var require_AccountConnection = __commonJS({
       }, /* @__PURE__ */ React10.createElement(Text2.Text, {
         as: "span",
         variant: "bodyMd"
-      }, termsOfService)) : null, actionElement = action5 ? utils.buttonFrom(action5, {
+      }, termsOfService)) : null, actionElement = action6 ? utils.buttonFrom(action6, {
         variant: connected ? void 0 : "primary"
       }) : null;
       return /* @__PURE__ */ React10.createElement(Card3.Card, null, /* @__PURE__ */ React10.createElement(SettingAction.SettingAction, {
@@ -87471,7 +87471,7 @@ var require_Labelled = __commonJS({
       id,
       label,
       error,
-      action: action5,
+      action: action6,
       helpText,
       children,
       labelHidden,
@@ -87480,9 +87480,9 @@ var require_Labelled = __commonJS({
       readOnly,
       ...rest
     }) {
-      let className = css.classNames(labelHidden && Labelled_module.default.hidden, disabled && Labelled_module.default.disabled, readOnly && Labelled_module.default.readOnly), actionMarkup = action5 ? /* @__PURE__ */ React10.createElement("div", {
+      let className = css.classNames(labelHidden && Labelled_module.default.hidden, disabled && Labelled_module.default.disabled, readOnly && Labelled_module.default.readOnly), actionMarkup = action6 ? /* @__PURE__ */ React10.createElement("div", {
         className: Labelled_module.default.Action
-      }, utils.buttonFrom(action5, {
+      }, utils.buttonFrom(action6, {
         variant: "plain"
       })) : null, helpTextMarkup = helpText ? /* @__PURE__ */ React10.createElement("div", {
         className: Labelled_module.default.HelpText,
@@ -88704,12 +88704,12 @@ var require_ActionsMeasurer = __commonJS({
       React10.useEffect(() => {
         handleMeasurement();
       }, [handleMeasurement, actions, groups]);
-      let actionsMarkup = actions.map((action5) => {
+      let actionsMarkup = actions.map((action6) => {
         let {
           content,
           onAction,
           ...rest
-        } = action5;
+        } = action6;
         return /* @__PURE__ */ React10.createElement(SecondaryAction.SecondaryAction, Object.assign({
           key: content,
           onClick: onAction
@@ -88786,12 +88786,12 @@ var require_Actions = __commonJS({
           hasMeasured: containerWidth !== 1 / 0
         });
       }, [containerWidth, disclosureWidth, actions, groups, actionsWidths, setState]);
-      let actionsOrDefault = React10.useMemo(() => actions ?? [], [actions]), groupsOrDefault = React10.useMemo(() => groups ?? [], [groups]), actionsMarkup = actionsOrDefault.filter((_, index) => !!visibleActions.includes(index)).map((action5) => {
+      let actionsOrDefault = React10.useMemo(() => actions ?? [], [actions]), groupsOrDefault = React10.useMemo(() => groups ?? [], [groups]), actionsMarkup = actionsOrDefault.filter((_, index) => !!visibleActions.includes(index)).map((action6) => {
         let {
           content,
           onAction,
           ...rest
-        } = action5;
+        } = action6;
         return /* @__PURE__ */ React10.createElement(SecondaryAction.SecondaryAction, Object.assign({
           key: content,
           onClick: onAction
@@ -88799,18 +88799,18 @@ var require_Actions = __commonJS({
       }), filteredGroups = (hiddenGroups.length > 0 || hiddenActions.length > 0 ? [...groupsOrDefault, defaultRollupGroup] : [...groupsOrDefault]).filter((group, index) => {
         let hasNoGroupsProp = groupsOrDefault.length === 0, isVisibleGroup = visibleGroups.includes(index), isDefaultGroup = group === defaultRollupGroup;
         return hasNoGroupsProp ? hiddenActions.length > 0 : isDefaultGroup ? !0 : isVisibleGroup;
-      }), hiddenActionObjects = hiddenActions.map((index) => actionsOrDefault[index]).filter((action5) => action5 != null), hiddenGroupObjects = hiddenGroups.map((index) => groupsOrDefault[index]).filter((group) => group != null), groupsMarkup = filteredGroups.map((group) => {
+      }), hiddenActionObjects = hiddenActions.map((index) => actionsOrDefault[index]).filter((action6) => action6 != null), hiddenGroupObjects = hiddenGroups.map((index) => groupsOrDefault[index]).filter((group) => group != null), groupsMarkup = filteredGroups.map((group) => {
         let {
           title,
           actions: groupActions,
           ...rest
-        } = group, isDefaultGroup = group === defaultRollupGroup, allHiddenItems = [...hiddenActionObjects, ...hiddenGroupObjects], [finalRolledUpActions, finalRolledUpSectionGroups] = allHiddenItems.reduce(([actions2, sections], action5) => (isMenuGroup(action5) ? sections.push({
-          title: action5.title,
-          items: action5.actions.map((sectionAction) => ({
+        } = group, isDefaultGroup = group === defaultRollupGroup, allHiddenItems = [...hiddenActionObjects, ...hiddenGroupObjects], [finalRolledUpActions, finalRolledUpSectionGroups] = allHiddenItems.reduce(([actions2, sections], action6) => (isMenuGroup(action6) ? sections.push({
+          title: action6.title,
+          items: action6.actions.map((sectionAction) => ({
             ...sectionAction,
-            disabled: action5.disabled || sectionAction.disabled
+            disabled: action6.disabled || sectionAction.disabled
           }))
-        }) : actions2.push(action5), [actions2, sections]), [[], []]);
+        }) : actions2.push(action6), [actions2, sections]), [[], []]);
         return isDefaultGroup ? /* @__PURE__ */ React10.createElement(MenuGroup.MenuGroup, Object.assign({
           key: title,
           title,
@@ -88909,9 +88909,9 @@ var require_ActionMenu = __commonJS({
     }) {
       return {
         title,
-        items: actions.map((action5) => ({
-          ...action5,
-          disabled: disabled || action5.disabled
+        items: actions.map((action6) => ({
+          ...action6,
+          disabled: disabled || action6.disabled
         }))
       };
     }
@@ -90480,7 +90480,7 @@ var require_Banner = __commonJS({
       icon,
       hideIcon,
       onDismiss,
-      action: action5,
+      action: action6,
       secondaryAction,
       title,
       children
@@ -90498,9 +90498,9 @@ var require_Banner = __commonJS({
         }, /* @__PURE__ */ React10.createElement(Icon.Icon, {
           source: icon ?? utilities.bannerAttributes[bannerTone].icon
         })),
-        actionButtons: action5 || secondaryAction ? /* @__PURE__ */ React10.createElement(ButtonGroup.ButtonGroup, null, action5 && /* @__PURE__ */ React10.createElement(Button2.Button, Object.assign({
-          onClick: action5.onAction
-        }, action5), action5.content), secondaryAction && /* @__PURE__ */ React10.createElement(Button2.Button, Object.assign({
+        actionButtons: action6 || secondaryAction ? /* @__PURE__ */ React10.createElement(ButtonGroup.ButtonGroup, null, action6 && /* @__PURE__ */ React10.createElement(Button2.Button, Object.assign({
+          onClick: action6.onAction
+        }, action6), action6.content), secondaryAction && /* @__PURE__ */ React10.createElement(Button2.Button, Object.assign({
           onClick: secondaryAction.onAction
         }, secondaryAction), secondaryAction.content)) : null,
         dismissButton: onDismiss ? /* @__PURE__ */ React10.createElement(Button2.Button, {
@@ -90745,18 +90745,18 @@ var require_utilities4 = __commonJS({
       };
     }
     function instanceOfBulkActionListSectionArray(actions) {
-      let validList = actions.filter((action5) => action5.items);
+      let validList = actions.filter((action6) => action6.items);
       return actions.length === validList.length;
     }
     function instanceOfBulkActionArray(actions) {
-      let validList = actions.filter((action5) => !action5.items);
+      let validList = actions.filter((action6) => !action6.items);
       return actions.length === validList.length;
     }
-    function instanceOfMenuGroupDescriptor(action5) {
-      return "title" in action5 && "actions" in action5;
+    function instanceOfMenuGroupDescriptor(action6) {
+      return "title" in action6 && "actions" in action6;
     }
-    function instanceOfBulkActionListSection(action5) {
-      return "items" in action5;
+    function instanceOfBulkActionListSection(action6) {
+      return "items" in action6;
     }
     function getActionSections(actions) {
       if (!(!actions || actions.length === 0)) {
@@ -90771,8 +90771,8 @@ var require_utilities4 = __commonJS({
     function isNewBadgeInBadgeActions(actionSections) {
       if (!actionSections)
         return !1;
-      for (let action5 of actionSections)
-        for (let item of action5.items)
+      for (let action6 of actionSections)
+        for (let item of action6.items)
           if (item.badge?.tone === "new")
             return !0;
       return !1;
@@ -91009,16 +91009,16 @@ var require_BulkActionsMeasurer = __commonJS({
       React10.useEffect(() => {
         handleMeasurement();
       }, [handleMeasurement, promotedActions]);
-      let promotedActionsMarkup = promotedActions.map((action5, index) => utilities.instanceOfMenuGroupDescriptor(action5) ? /* @__PURE__ */ React10.createElement(BulkActionButton.BulkActionButton, {
+      let promotedActionsMarkup = promotedActions.map((action6, index) => utilities.instanceOfMenuGroupDescriptor(action6) ? /* @__PURE__ */ React10.createElement(BulkActionButton.BulkActionButton, {
         key: index,
         disclosure: !0,
         showContentInButton: !0,
-        content: action5.title,
+        content: action6.title,
         size: buttonSize
       }) : /* @__PURE__ */ React10.createElement(BulkActionButton.BulkActionButton, Object.assign({
         key: index,
         disabled
-      }, action5, {
+      }, action6, {
         size: buttonSize
       })));
       return useEventListener.useEventListener("resize", handleMeasurement), /* @__PURE__ */ React10.createElement("div", {
@@ -91119,39 +91119,39 @@ var require_BulkActions = __commonJS({
           disclosureWidth: disclosureWidth2,
           hasMeasured: !0
         });
-      }, [promotedActions]), actionSections = utilities.getActionSections(actions), promotedActionsMarkup = promotedActions ? promotedActions.filter((_, index) => !!visiblePromotedActions.includes(index)).map((action5, index) => utilities.instanceOfMenuGroupDescriptor(action5) ? /* @__PURE__ */ React10.createElement(BulkActionMenu.BulkActionMenu, Object.assign({
+      }, [promotedActions]), actionSections = utilities.getActionSections(actions), promotedActionsMarkup = promotedActions ? promotedActions.filter((_, index) => !!visiblePromotedActions.includes(index)).map((action6, index) => utilities.instanceOfMenuGroupDescriptor(action6) ? /* @__PURE__ */ React10.createElement(BulkActionMenu.BulkActionMenu, Object.assign({
         key: index
-      }, action5, {
+      }, action6, {
         isNewBadgeInBadgeActions: utilities.isNewBadgeInBadgeActions(actionSections),
         size: buttonSize
       })) : /* @__PURE__ */ React10.createElement(BulkActionButton.BulkActionButton, Object.assign({
         key: index,
         disabled
-      }, action5, {
+      }, action6, {
         size: buttonSize
       }))) : null, hiddenPromotedSection = {
-        items: hiddenPromotedActions.map((index) => promotedActions?.[index]).reduce((memo, action5) => action5 ? utilities.instanceOfMenuGroupDescriptor(action5) ? memo.concat(action5.actions) : memo.concat(action5) : memo, [])
+        items: hiddenPromotedActions.map((index) => promotedActions?.[index]).reduce((memo, action6) => action6 ? utilities.instanceOfMenuGroupDescriptor(action6) ? memo.concat(action6.actions) : memo.concat(action6) : memo, [])
       }, allHiddenActions = React10.useMemo(() => {
         if (actionSections)
           return actionSections;
         if (!actions)
           return [];
         let isAFlatArray = !0;
-        return actions.filter((action5) => action5).reduce((memo, action5) => {
-          if (utilities.instanceOfBulkActionListSection(action5))
-            return isAFlatArray = !1, memo.concat(action5);
+        return actions.filter((action6) => action6).reduce((memo, action6) => {
+          if (utilities.instanceOfBulkActionListSection(action6))
+            return isAFlatArray = !1, memo.concat(action6);
           if (isAFlatArray) {
             if (memo.length === 0)
               return [{
-                items: [action5]
+                items: [action6]
               }];
             let lastItem = memo[memo.length - 1];
             return memo.splice(memo.length - 1, 1, {
-              items: [...lastItem.items, action5]
+              items: [...lastItem.items, action6]
             }), memo;
           }
           return isAFlatArray = !0, memo.concat({
-            items: [action5]
+            items: [action6]
           });
         }, []);
       }, [actions, actionSections]), activator = /* @__PURE__ */ React10.createElement(BulkActionButton.BulkActionButton, {
@@ -94451,7 +94451,7 @@ var require_EmptyState = __commonJS({
       largeImage,
       imageContained,
       fullWidth = !1,
-      action: action5,
+      action: action6,
       secondaryAction,
       footerContent
     }) {
@@ -94487,7 +94487,7 @@ var require_EmptyState = __commonJS({
         as: "span",
         alignment: "center",
         variant: "bodySm"
-      }, footerContent)) : null, primaryActionMarkup = action5 ? utils.buttonFrom(action5, {
+      }, footerContent)) : null, primaryActionMarkup = action6 ? utils.buttonFrom(action6, {
         variant: "primary",
         size: "medium"
       }) : null, headingMarkup = heading ? /* @__PURE__ */ React10.createElement(Box.Box, {
@@ -95164,9 +95164,9 @@ var require_Form = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Form/Form.js"(exports) {
     "use strict";
     var React10 = require_react(), hooks = require_hooks2(), Text2 = require_Text();
-    function Form3({
+    function Form4({
       acceptCharset,
-      action: action5,
+      action: action6,
       autoComplete,
       children,
       encType,
@@ -95190,7 +95190,7 @@ var require_Form = __commonJS({
       }, i18n.translate("Polaris.Common.submit"))) : null;
       return /* @__PURE__ */ React10.createElement("form", {
         acceptCharset,
-        action: action5,
+        action: action6,
         autoComplete: autoCompleteInputs,
         encType,
         method,
@@ -95203,7 +95203,7 @@ var require_Form = __commonJS({
     function normalizeAutoComplete(autoComplete) {
       return autoComplete == null ? autoComplete : autoComplete ? "on" : "off";
     }
-    exports.Form = Form3;
+    exports.Form = Form4;
   }
 });
 
@@ -97068,13 +97068,13 @@ var require_Toast = __commonJS({
       onDismiss,
       duration,
       error,
-      action: action5,
+      action: action6,
       tone,
       onClick,
       icon,
       isHovered
     }) {
-      let defaultDuration = action5 && !duration ? DEFAULT_TOAST_DURATION_WITH_ACTION : duration || DEFAULT_TOAST_DURATION, durationRemaining = React10.useRef(defaultDuration), timeoutStart = React10.useRef(null), timer = React10.useRef(null);
+      let defaultDuration = action6 && !duration ? DEFAULT_TOAST_DURATION_WITH_ACTION : duration || DEFAULT_TOAST_DURATION, durationRemaining = React10.useRef(defaultDuration), timeoutStart = React10.useRef(null), timer = React10.useRef(null);
       React10.useEffect(() => {
         function resume() {
           timeoutStart.current = Date.now(), timer.current = setTimeout(() => {
@@ -97088,8 +97088,8 @@ var require_Toast = __commonJS({
           timer.current && clearTimeout(timer.current);
         };
       }, [isHovered, onDismiss]), React10.useEffect(() => {
-        action5 && duration && duration < DEFAULT_TOAST_DURATION_WITH_ACTION && console.log("Toast with action should persist for at least 10,000 milliseconds to give the merchant enough time to act on it.");
-      }, [action5, duration]);
+        action6 && duration && duration < DEFAULT_TOAST_DURATION_WITH_ACTION && console.log("Toast with action should persist for at least 10,000 milliseconds to give the merchant enough time to act on it.");
+      }, [action6, duration]);
       let dismissMarkup = /* @__PURE__ */ React10.createElement("button", {
         type: "button",
         className: Toast_module.default.CloseButton,
@@ -97097,14 +97097,14 @@ var require_Toast = __commonJS({
       }, /* @__PURE__ */ React10.createElement(Icon.Icon, {
         source: polarisIcons.XSmallIcon,
         tone: "inherit"
-      })), actionMarkup = action5 ? /* @__PURE__ */ React10.createElement("div", {
+      })), actionMarkup = action6 ? /* @__PURE__ */ React10.createElement("div", {
         className: Toast_module.default.Action
       }, /* @__PURE__ */ React10.createElement(Button2.Button, {
         variant: "monochromePlain",
         removeUnderline: !0,
         size: "slim",
-        onClick: action5.onAction
-      }, action5.content)) : null, leadingIconMarkup = null;
+        onClick: action6.onAction
+      }, action6.content)) : null, leadingIconMarkup = null;
       error ? leadingIconMarkup = /* @__PURE__ */ React10.createElement("div", {
         className: Toast_module.default.LeadingIcon
       }, /* @__PURE__ */ React10.createElement(Icon.Icon, {
@@ -97117,7 +97117,7 @@ var require_Toast = __commonJS({
         tone: "inherit"
       })));
       let className = css.classNames(Toast_module.default.Toast, error && Toast_module.default.error, tone && Toast_module.default[css.variationName("tone", tone)]);
-      return !action5 && onClick ? /* @__PURE__ */ React10.createElement("button", {
+      return !action6 && onClick ? /* @__PURE__ */ React10.createElement("button", {
         "aria-live": "assertive",
         className: css.classNames(className, Toast_module.default.WithActionOnComponent),
         type: "button",
@@ -97758,7 +97758,7 @@ var require_use_is_touch_device = __commonJS({
 var require_UpdateButtons = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/IndexFilters/components/UpdateButtons/UpdateButtons.js"(exports) {
     "use strict";
-    var React10 = require_react(), focus = require_focus(), useIsTouchDevice = require_use_is_touch_device(), hooks = require_hooks2(), Button2 = require_Button(), InlineStack = require_InlineStack(), Modal = require_Modal(), Form3 = require_Form(), FormLayout = require_FormLayout(), TextField = require_TextField(), MAX_VIEW_NAME_LENGTH = 40;
+    var React10 = require_react(), focus = require_focus(), useIsTouchDevice = require_use_is_touch_device(), hooks = require_hooks2(), Button2 = require_Button(), InlineStack = require_InlineStack(), Modal = require_Modal(), Form4 = require_Form(), FormLayout = require_FormLayout(), TextField = require_TextField(), MAX_VIEW_NAME_LENGTH = 40;
     function UpdateButtons({
       primaryAction,
       cancelAction,
@@ -97820,7 +97820,7 @@ var require_UpdateButtons = __commonJS({
           onAction: handleCloseModal,
           content: i18n.translate("Polaris.IndexFilters.UpdateButtons.modal.cancel")
         }]
-      }, /* @__PURE__ */ React10.createElement(Modal.Modal.Section, null, /* @__PURE__ */ React10.createElement(Form3.Form, {
+      }, /* @__PURE__ */ React10.createElement(Modal.Modal.Section, null, /* @__PURE__ */ React10.createElement(Form4.Form, {
         onSubmit: handlePrimaryAction
       }, /* @__PURE__ */ React10.createElement(FormLayout.FormLayout, null, /* @__PURE__ */ React10.createElement("div", {
         ref: container
@@ -98090,7 +98090,7 @@ var require_Tabs_css = __commonJS({
 var require_DuplicateModal = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Tabs/components/Tab/components/DuplicateModal/DuplicateModal.js"(exports) {
     "use strict";
-    var React10 = require_react(), focus = require_focus(), hooks = require_hooks2(), Modal = require_Modal(), Form3 = require_Form(), FormLayout = require_FormLayout(), TextField = require_TextField(), MAX_VIEW_NAME_LENGTH = 40;
+    var React10 = require_react(), focus = require_focus(), hooks = require_hooks2(), Modal = require_Modal(), Form4 = require_Form(), FormLayout = require_FormLayout(), TextField = require_TextField(), MAX_VIEW_NAME_LENGTH = 40;
     function DuplicateModal({
       open,
       isModalLoading,
@@ -98130,7 +98130,7 @@ var require_DuplicateModal = __commonJS({
           onAction: handleSecondaryAction
         }],
         instant: !0
-      }, /* @__PURE__ */ React10.createElement(Modal.Modal.Section, null, /* @__PURE__ */ React10.createElement(Form3.Form, {
+      }, /* @__PURE__ */ React10.createElement(Modal.Modal.Section, null, /* @__PURE__ */ React10.createElement(Form4.Form, {
         onSubmit: handlePrimaryAction
       }, /* @__PURE__ */ React10.createElement(FormLayout.FormLayout, null, /* @__PURE__ */ React10.createElement("div", {
         ref: container
@@ -98155,7 +98155,7 @@ var require_DuplicateModal = __commonJS({
 var require_RenameModal = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Tabs/components/Tab/components/RenameModal/RenameModal.js"(exports) {
     "use strict";
-    var React10 = require_react(), focus = require_focus(), Form3 = require_Form(), FormLayout = require_FormLayout(), hooks = require_hooks2(), Modal = require_Modal(), TextField = require_TextField();
+    var React10 = require_react(), focus = require_focus(), Form4 = require_Form(), FormLayout = require_FormLayout(), hooks = require_hooks2(), Modal = require_Modal(), TextField = require_TextField();
     function RenameModal({
       open,
       isModalLoading,
@@ -98195,7 +98195,7 @@ var require_RenameModal = __commonJS({
           onAction: handleSecondaryAction
         }],
         instant: !0
-      }, /* @__PURE__ */ React10.createElement(Modal.Modal.Section, null, /* @__PURE__ */ React10.createElement(Form3.Form, {
+      }, /* @__PURE__ */ React10.createElement(Modal.Modal.Section, null, /* @__PURE__ */ React10.createElement(Form4.Form, {
         onSubmit: handlePrimaryAction
       }, /* @__PURE__ */ React10.createElement(FormLayout.FormLayout, null, /* @__PURE__ */ React10.createElement("div", {
         ref: container
@@ -98256,7 +98256,7 @@ var require_Tab = __commonJS({
       }, [focused, id, content, measuring, panelID, selected, activeModalType, disabled]);
       let tabIndex;
       selected && !siblingTabHasFocus && !measuring || focused && !measuring ? tabIndex = 0 : tabIndex = -1, tabIndexOverride != null && (tabIndex = tabIndexOverride);
-      let renameAction = actions?.find((action5) => action5.type === "rename"), duplicateAction = actions?.find((action5) => action5.type === "duplicate"), deleteAction = actions?.find((action5) => action5.type === "delete"), togglePopoverActive = React10.useCallback(() => {
+      let renameAction = actions?.find((action6) => action6.type === "rename"), duplicateAction = actions?.find((action6) => action6.type === "duplicate"), deleteAction = actions?.find((action6) => action6.type === "delete"), togglePopoverActive = React10.useCallback(() => {
         actions?.length && setPopoverActive((popoverActive2) => !popoverActive2);
       }, [actions]), handleClick = React10.useCallback(() => {
         disabled || (selected ? togglePopoverActive() : onAction?.());
@@ -98562,7 +98562,7 @@ var require_List = __commonJS({
 var require_CreateViewModal = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Tabs/components/CreateViewModal/CreateViewModal.js"(exports) {
     "use strict";
-    var React10 = require_react(), useIsTouchDevice = require_use_is_touch_device(), focus = require_focus(), hooks = require_hooks2(), Modal = require_Modal(), Form3 = require_Form(), FormLayout = require_FormLayout(), TextField = require_TextField(), MAX_VIEW_NAME_LENGTH = 40;
+    var React10 = require_react(), useIsTouchDevice = require_use_is_touch_device(), focus = require_focus(), hooks = require_hooks2(), Modal = require_Modal(), Form4 = require_Form(), FormLayout = require_FormLayout(), TextField = require_TextField(), MAX_VIEW_NAME_LENGTH = 40;
     function CreateViewModal({
       activator,
       open,
@@ -98604,7 +98604,7 @@ var require_CreateViewModal = __commonJS({
           content: i18n.translate("Polaris.Tabs.CreateViewModal.cancel"),
           onAction: handleSecondaryAction
         }]
-      }, /* @__PURE__ */ React10.createElement(Modal.Modal.Section, null, /* @__PURE__ */ React10.createElement(Form3.Form, {
+      }, /* @__PURE__ */ React10.createElement(Modal.Modal.Section, null, /* @__PURE__ */ React10.createElement(Form4.Form, {
         onSubmit: handlePrimaryAction
       }, /* @__PURE__ */ React10.createElement(FormLayout.FormLayout, null, /* @__PURE__ */ React10.createElement("div", {
         ref: container
@@ -99110,9 +99110,9 @@ var require_IndexFilters = __commonJS({
         onSort?.(value);
       }, [onSort]), handleChangeSearch = React10.useCallback((value) => {
         onQueryChange(value);
-      }, [onQueryChange]), onExecutedPrimaryAction = ((action5, afterEffect) => React10.useCallback(async (name) => {
-        await action5?.(name) && (setMode(types4.IndexFiltersMode.Default), afterEffect?.());
-      }, [action5, afterEffect]))(primaryAction?.onAction), onExecutedCancelAction = React10.useCallback(() => {
+      }, [onQueryChange]), onExecutedPrimaryAction = ((action6, afterEffect) => React10.useCallback(async (name) => {
+        await action6?.(name) && (setMode(types4.IndexFiltersMode.Default), afterEffect?.());
+      }, [action6, afterEffect]))(primaryAction?.onAction), onExecutedCancelAction = React10.useCallback(() => {
         cancelAction?.onAction?.(), setMode(types4.IndexFiltersMode.Default);
       }, [cancelAction, setMode]), enhancedPrimaryAction = React10.useMemo(() => primaryAction ? {
         ...primaryAction,
@@ -100536,10 +100536,10 @@ var require_ConnectedFilterControl = __commonJS({
           className: ConnectedFilterControl_module.default.ProxyButtonContainer,
           ref: this.proxyButtonContainer,
           "aria-hidden": !0
-        }, rightPopoverableActions.map((action5) => /* @__PURE__ */ React10.createElement("div", {
-          key: action5.key,
-          "data-key": action5.key
-        }, this.activatorButtonFrom(action5, {
+        }, rightPopoverableActions.map((action6) => /* @__PURE__ */ React10.createElement("div", {
+          key: action6.key,
+          "data-key": action6.key
+        }, this.activatorButtonFrom(action6, {
           proxy: !0
         })))) : null, auxMarkup = auxiliary ? /* @__PURE__ */ React10.createElement("div", {
           className: ConnectedFilterControl_module.default.AuxiliaryContainer
@@ -100578,34 +100578,34 @@ var require_ConnectedFilterControl = __commonJS({
       getActionsToRender(actions) {
         let remainingWidth = this.state.availableWidth, actionsToReturn = [];
         for (let i = 0; remainingWidth > 0 && i < actions.length; i++) {
-          let action5 = actions[i], actionWidth = this.state.proxyButtonsWidth[action5.key];
+          let action6 = actions[i], actionWidth = this.state.proxyButtonsWidth[action6.key];
           if (actionWidth <= remainingWidth)
-            actionsToReturn.push(action5), remainingWidth -= actionWidth;
+            actionsToReturn.push(action6), remainingWidth -= actionWidth;
           else
             break;
         }
         return actionsToReturn;
       }
-      activatorButtonFrom(action5, options) {
-        let id = options?.proxy ? void 0 : `Activator-${action5.key}`;
+      activatorButtonFrom(action6, options) {
+        let id = options?.proxy ? void 0 : `Activator-${action6.key}`;
         return /* @__PURE__ */ React10.createElement(Button2.Button, {
-          onClick: action5.onAction,
+          onClick: action6.onAction,
           disclosure: !0,
-          disabled: this.props.disabled || action5.disabled,
+          disabled: this.props.disabled || action6.disabled,
           id,
           size: "large"
-        }, action5.content);
+        }, action6.content);
       }
       popoverFrom(actions) {
-        return actions.map((action5) => /* @__PURE__ */ React10.createElement(Item.Item, {
-          key: action5.key
+        return actions.map((action6) => /* @__PURE__ */ React10.createElement(Item.Item, {
+          key: action6.key
         }, /* @__PURE__ */ React10.createElement(Popover.Popover, {
-          active: action5.popoverOpen,
-          activator: this.activatorButtonFrom(action5),
-          onClose: action5.onAction,
+          active: action6.popoverOpen,
+          activator: this.activatorButtonFrom(action6),
+          onClose: action6.onAction,
           preferredAlignment: "left",
           sectioned: !0
-        }, action5.popoverContent)));
+        }, action6.popoverContent)));
       }
     };
     exports.ConnectedFilterControl = ConnectedFilterControl;
@@ -102130,9 +102130,9 @@ var require_Item10 = __commonJS({
       actions && actions.length > MAX_SECONDARY_ACTIONS && (actions.length = MAX_SECONDARY_ACTIONS);
       let secondaryActionMarkup = actions?.length ? /* @__PURE__ */ React10.createElement("span", {
         className: Navigation_module.default.SecondaryActions
-      }, actions.map((action5) => /* @__PURE__ */ React10.createElement(ItemSecondaryAction, Object.assign({
-        key: action5.accessibilityLabel
-      }, action5, {
+      }, actions.map((action6) => /* @__PURE__ */ React10.createElement(ItemSecondaryAction, Object.assign({
+        key: action6.accessibilityLabel
+      }, action6, {
         tabIndex,
         disabled
       })))) : null, itemContentMarkup = /* @__PURE__ */ React10.createElement(React10.Fragment, null, iconMarkup, itemLabelMarkup, secondaryActionMarkup ? null : wrappedBadgeMarkup), outerContentMarkup = /* @__PURE__ */ React10.createElement(React10.Fragment, null, secondaryActionMarkup ? wrappedBadgeMarkup : null), showExpanded = selected || expanded || childIsActive, itemClassName = css.classNames(Navigation_module.default.Item, disabled && Navigation_module.default["Item-disabled"], (selected || childIsActive) && Navigation_module.default["Item-selected"], showExpanded && Navigation_module.default.subNavigationActive, childIsActive && Navigation_module.default["Item-child-active"], showVerticalLine && Navigation_module.default["Item-line"], matches && Navigation_module.default["Item-line-pointer"], showVerticalHoverPointer && Navigation_module.default["Item-hover-pointer"]), secondaryNavigationMarkup = null;
@@ -102273,7 +102273,7 @@ var require_Section7 = __commonJS({
     function Section({
       title,
       fill,
-      action: action5,
+      action: action6,
       items,
       rollup,
       separator
@@ -102290,14 +102290,14 @@ var require_Section7 = __commonJS({
       React10.useEffect(() => () => {
         animationFrame.current && cancelAnimationFrame(animationFrame.current);
       });
-      let className = css.classNames(Navigation_module.default.Section, separator && Navigation_module.default["Section-withSeparator"], fill && Navigation_module.default["Section-fill"]), buttonMarkup = action5 && /* @__PURE__ */ React10.createElement("button", {
+      let className = css.classNames(Navigation_module.default.Section, separator && Navigation_module.default["Section-withSeparator"], fill && Navigation_module.default["Section-fill"]), buttonMarkup = action6 && /* @__PURE__ */ React10.createElement("button", {
         type: "button",
         className: Navigation_module.default.Action,
-        "aria-label": action5.accessibilityLabel,
-        onClick: action5.onClick
+        "aria-label": action6.accessibilityLabel,
+        onClick: action6.onClick
       }, /* @__PURE__ */ React10.createElement(Icon.Icon, {
-        source: action5.icon
-      })), actionMarkup = action5 && (action5.tooltip ? /* @__PURE__ */ React10.createElement(Tooltip2.Tooltip, action5.tooltip, buttonMarkup) : buttonMarkup), sectionHeadingMarkup = title && /* @__PURE__ */ React10.createElement("li", {
+        source: action6.icon
+      })), actionMarkup = action6 && (action6.tooltip ? /* @__PURE__ */ React10.createElement(Tooltip2.Tooltip, action6.tooltip, buttonMarkup) : buttonMarkup), sectionHeadingMarkup = title && /* @__PURE__ */ React10.createElement("li", {
         className: Navigation_module.default.SectionHeading
       }, /* @__PURE__ */ React10.createElement(Text2.Text, {
         as: "span",
@@ -102934,18 +102934,18 @@ var require_Header4 = __commonJS({
         printHidden: !0
       }, actionMarkup));
     }
-    function shouldShowIconOnly(isMobile, action5) {
+    function shouldShowIconOnly(isMobile, action6) {
       let {
         content,
         accessibilityLabel
-      } = action5, {
+      } = action6, {
         icon
-      } = action5;
+      } = action6;
       return icon == null ? {
-        ...action5,
+        ...action6,
         icon: void 0
       } : (isMobile && (accessibilityLabel = accessibilityLabel || content, content = void 0), {
-        ...action5,
+        ...action6,
         content,
         accessibilityLabel,
         icon
@@ -104893,10 +104893,10 @@ var require_SettingToggle = __commonJS({
     var React10 = require_react(), utils = require_utils11(), LegacyCard = require_LegacyCard(), SettingAction = require_SettingAction();
     function SettingToggle({
       enabled,
-      action: action5,
+      action: action6,
       children
     }) {
-      let id = React10.useId(), actionMarkup = action5 ? utils.buttonFrom(action5, {
+      let id = React10.useId(), actionMarkup = action6 ? utils.buttonFrom(action6, {
         role: "switch",
         ariaChecked: enabled ? "true" : "false",
         size: "slim"
@@ -105506,7 +105506,7 @@ var require_Message = __commonJS({
     function Message({
       title,
       description,
-      action: action5,
+      action: action6,
       link,
       badge
     }) {
@@ -105518,7 +105518,7 @@ var require_Message = __commonJS({
       } = link, {
         onClick,
         content: actionContent
-      } = action5;
+      } = action6;
       return /* @__PURE__ */ React10.createElement("div", {
         className: Message_module.default.Section
       }, /* @__PURE__ */ React10.createElement(Popover.Popover.Section, null, /* @__PURE__ */ React10.createElement(LegacyStack.LegacyStack, {
@@ -105748,12 +105748,12 @@ var require_utils14 = __commonJS({
     function unstyledButtonFrom({
       content,
       onAction,
-      ...action5
+      ...action6
     }, overrides, key) {
       return /* @__PURE__ */ React10.createElement(UnstyledButton.UnstyledButton, Object.assign({
         key,
         onClick: onAction
-      }, action5, overrides), content);
+      }, action6, overrides), content);
     }
     exports.unstyledButtonFrom = unstyledButtonFrom;
   }
@@ -105936,7 +105936,7 @@ var require_hooks14 = __commonJS({
 var require_cjs6 = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/index.js"(exports) {
     "use strict";
-    var configure = require_configure(), types4 = require_types16(), shared = require_shared(), ThemeProvider = require_ThemeProvider(), colorTransformers = require_color_transformers(), withinContentContext = require_within_content_context(), useCopyToClipboard = require_use_copy_to_clipboard(), useEventListener = require_use_event_listener(), useFocus = require_use_focus(), useHover = require_use_hover(), useMediaQuery = require_use_media_query(), useTheme = require_use_theme(), useIndexResourceState = require_use_index_resource_state(), breakpoints = require_breakpoints2(), AppProvider2 = require_AppProvider(), AccountConnection = require_AccountConnection(), ActionList = require_ActionList(), ActionMenu = require_ActionMenu(), Autocomplete = require_Autocomplete(), Avatar = require_Avatar(), Backdrop = require_Backdrop(), Badge2 = require_Badge(), types$1 = require_types17(), Banner2 = require_Banner(), Bleed = require_Bleed(), Box = require_Box(), Breadcrumbs = require_Breadcrumbs(), BulkActions = require_BulkActions(), Button2 = require_Button(), utils = require_utils11(), ButtonGroup = require_ButtonGroup(), CalloutCard = require_CalloutCard(), Card3 = require_Card(), Checkbox = require_Checkbox(), ChoiceList = require_ChoiceList(), Collapsible = require_Collapsible(), ColorPicker = require_ColorPicker(), InlineGrid = require_InlineGrid(), Combobox = require_Combobox(), Connected = require_Connected(), ContextualSaveBar = require_ContextualSaveBar(), DataTable = require_DataTable(), DatePicker = require_DatePicker(), DescriptionList = require_DescriptionList(), Divider = require_Divider(), DropZone = require_DropZone(), EmptySearchResult = require_EmptySearchResult(), EmptyState = require_EmptyState(), EventListener = require_EventListener(), ExceptionList = require_ExceptionList(), Filters = require_Filters(), Focus = require_Focus(), FooterHelp = require_FooterHelp(), Form3 = require_Form(), FormLayout = require_FormLayout(), Frame = require_Frame(), Toast2 = require_Toast(), FullscreenBar = require_FullscreenBar(), Grid2 = require_Grid(), Icon = require_Icon(), Image = require_Image(), IndexFilters = require_IndexFilters(), useSetIndexFiltersMode = require_useSetIndexFiltersMode(), types$2 = require_types18(), IndexTable = require_IndexTable(), Indicator = require_Indicator(), InlineStack = require_InlineStack(), InlineCode = require_InlineCode(), InlineError = require_InlineError(), KeyboardKey = require_KeyboardKey(), KeypressListener = require_KeypressListener(), Label = require_Label(), Labelled = require_Labelled(), Layout2 = require_Layout(), LegacyCard = require_LegacyCard(), LegacyFilters = require_LegacyFilters(), LegacyStack = require_LegacyStack(), LegacyTabs = require_LegacyTabs(), Link4 = require_Link(), List = require_List3(), Listbox = require_Listbox(), Loading = require_Loading3(), MediaCard = require_MediaCard(), Modal = require_Modal(), Navigation = require_Navigation2(), Item = require_Item10(), OptionList = require_OptionList(), Page = require_Page(), PageActions = require_PageActions(), Pagination = require_Pagination(), Picker = require_Picker(), PolarisTestProvider = require_PolarisTestProvider(), Popover = require_Popover(), PopoverOverlay = require_PopoverOverlay(), Portal = require_Portal(), PortalsManager = require_PortalsManager(), PositionedOverlay = require_PositionedOverlay(), ProgressBar2 = require_ProgressBar(), RadioButton = require_RadioButton(), RangeSlider = require_RangeSlider(), ResourceItem = require_ResourceItem(), ResourceList = require_ResourceList(), Scrollable = require_Scrollable(), ScrollLock = require_ScrollLock(), Select = require_Select(), SelectAllActions = require_SelectAllActions(), SettingToggle = require_SettingToggle(), Sheet = require_Sheet(), SkeletonBodyText = require_SkeletonBodyText(), SkeletonDisplayText = require_SkeletonDisplayText(), SkeletonPage = require_SkeletonPage(), SkeletonTabs = require_SkeletonTabs(), SkeletonThumbnail = require_SkeletonThumbnail(), Spinner2 = require_Spinner(), Sticky = require_Sticky(), Tabs = require_Tabs(), Tag = require_Tag(), Text2 = require_Text(), TextContainer = require_TextContainer(), TextField = require_TextField(), Thumbnail = require_Thumbnail(), Toast$1 = require_Toast2(), Tooltip2 = require_Tooltip(), TopBar = require_TopBar(), TrapFocus = require_TrapFocus(), Truncate = require_Truncate(), UnstyledButton = require_UnstyledButton(), utils$1 = require_utils14(), UnstyledLink = require_UnstyledLink(), BlockStack = require_BlockStack(), VideoThumbnail = require_VideoThumbnail(), hooks = require_hooks9(), context = require_context15(), context$1 = require_context3(), hooks$1 = require_hooks14(), types$3 = require_types19(), hooks$2 = require_hooks3();
+    var configure = require_configure(), types4 = require_types16(), shared = require_shared(), ThemeProvider = require_ThemeProvider(), colorTransformers = require_color_transformers(), withinContentContext = require_within_content_context(), useCopyToClipboard = require_use_copy_to_clipboard(), useEventListener = require_use_event_listener(), useFocus = require_use_focus(), useHover = require_use_hover(), useMediaQuery = require_use_media_query(), useTheme = require_use_theme(), useIndexResourceState = require_use_index_resource_state(), breakpoints = require_breakpoints2(), AppProvider2 = require_AppProvider(), AccountConnection = require_AccountConnection(), ActionList = require_ActionList(), ActionMenu = require_ActionMenu(), Autocomplete = require_Autocomplete(), Avatar = require_Avatar(), Backdrop = require_Backdrop(), Badge2 = require_Badge(), types$1 = require_types17(), Banner2 = require_Banner(), Bleed = require_Bleed(), Box = require_Box(), Breadcrumbs = require_Breadcrumbs(), BulkActions = require_BulkActions(), Button2 = require_Button(), utils = require_utils11(), ButtonGroup = require_ButtonGroup(), CalloutCard = require_CalloutCard(), Card3 = require_Card(), Checkbox = require_Checkbox(), ChoiceList = require_ChoiceList(), Collapsible = require_Collapsible(), ColorPicker = require_ColorPicker(), InlineGrid = require_InlineGrid(), Combobox = require_Combobox(), Connected = require_Connected(), ContextualSaveBar = require_ContextualSaveBar(), DataTable = require_DataTable(), DatePicker = require_DatePicker(), DescriptionList = require_DescriptionList(), Divider = require_Divider(), DropZone = require_DropZone(), EmptySearchResult = require_EmptySearchResult(), EmptyState = require_EmptyState(), EventListener = require_EventListener(), ExceptionList = require_ExceptionList(), Filters = require_Filters(), Focus = require_Focus(), FooterHelp = require_FooterHelp(), Form4 = require_Form(), FormLayout = require_FormLayout(), Frame = require_Frame(), Toast2 = require_Toast(), FullscreenBar = require_FullscreenBar(), Grid2 = require_Grid(), Icon = require_Icon(), Image = require_Image(), IndexFilters = require_IndexFilters(), useSetIndexFiltersMode = require_useSetIndexFiltersMode(), types$2 = require_types18(), IndexTable = require_IndexTable(), Indicator = require_Indicator(), InlineStack = require_InlineStack(), InlineCode = require_InlineCode(), InlineError = require_InlineError(), KeyboardKey = require_KeyboardKey(), KeypressListener = require_KeypressListener(), Label = require_Label(), Labelled = require_Labelled(), Layout2 = require_Layout(), LegacyCard = require_LegacyCard(), LegacyFilters = require_LegacyFilters(), LegacyStack = require_LegacyStack(), LegacyTabs = require_LegacyTabs(), Link4 = require_Link(), List = require_List3(), Listbox = require_Listbox(), Loading = require_Loading3(), MediaCard = require_MediaCard(), Modal = require_Modal(), Navigation = require_Navigation2(), Item = require_Item10(), OptionList = require_OptionList(), Page = require_Page(), PageActions = require_PageActions(), Pagination = require_Pagination(), Picker = require_Picker(), PolarisTestProvider = require_PolarisTestProvider(), Popover = require_Popover(), PopoverOverlay = require_PopoverOverlay(), Portal = require_Portal(), PortalsManager = require_PortalsManager(), PositionedOverlay = require_PositionedOverlay(), ProgressBar2 = require_ProgressBar(), RadioButton = require_RadioButton(), RangeSlider = require_RangeSlider(), ResourceItem = require_ResourceItem(), ResourceList = require_ResourceList(), Scrollable = require_Scrollable(), ScrollLock = require_ScrollLock(), Select = require_Select(), SelectAllActions = require_SelectAllActions(), SettingToggle = require_SettingToggle(), Sheet = require_Sheet(), SkeletonBodyText = require_SkeletonBodyText(), SkeletonDisplayText = require_SkeletonDisplayText(), SkeletonPage = require_SkeletonPage(), SkeletonTabs = require_SkeletonTabs(), SkeletonThumbnail = require_SkeletonThumbnail(), Spinner2 = require_Spinner(), Sticky = require_Sticky(), Tabs = require_Tabs(), Tag = require_Tag(), Text2 = require_Text(), TextContainer = require_TextContainer(), TextField = require_TextField(), Thumbnail = require_Thumbnail(), Toast$1 = require_Toast2(), Tooltip2 = require_Tooltip(), TopBar = require_TopBar(), TrapFocus = require_TrapFocus(), Truncate = require_Truncate(), UnstyledButton = require_UnstyledButton(), utils$1 = require_utils14(), UnstyledLink = require_UnstyledLink(), BlockStack = require_BlockStack(), VideoThumbnail = require_VideoThumbnail(), hooks = require_hooks9(), context = require_context15(), context$1 = require_context3(), hooks$1 = require_hooks14(), types$3 = require_types19(), hooks$2 = require_hooks3();
     exports.DEFAULT_LOCALE = configure.DEFAULT_LOCALE;
     exports.SUPPORTED_LOCALES = configure.SUPPORTED_LOCALES;
     Object.defineProperty(exports, "Key", {
@@ -106017,7 +106017,7 @@ var require_cjs6 = __commonJS({
     exports.Filters = Filters.Filters;
     exports.Focus = Focus.Focus;
     exports.FooterHelp = FooterHelp.FooterHelp;
-    exports.Form = Form3.Form;
+    exports.Form = Form4.Form;
     exports.FormLayout = FormLayout.FormLayout;
     exports.Frame = Frame.Frame;
     exports.DEFAULT_TOAST_DURATION = Toast2.DEFAULT_TOAST_DURATION;
@@ -109756,14 +109756,14 @@ function InsightsContent() {
     setRealTimeEnabled(tierStatus?.features?.realTimeAnalytics || !1);
   }, [tierStatus]);
   let handleApplyAction = React5.useCallback(
-    async (action5, target) => {
+    async (action6, target) => {
       if (!isApplying) {
         setIsApplying(!0);
         try {
           let { backendFetch: backendFetch2 } = await Promise.resolve().then(() => (init_hmac_server(), hmac_server_exports)), body = { nonce: Date.now(), actions: [] };
-          if (action5 === "add_exact_negative" && target)
+          if (action6 === "add_exact_negative" && target)
             body.actions.push({ type: "add_exact_negative", target });
-          else if (action5 === "lower_cpc_ceiling") {
+          else if (action6 === "lower_cpc_ceiling") {
             let cur = Number(k?.cpc || 0), newCpc = Math.max(
               0,
               isFinite(cur) && cur > 0 ? cur * 0.8 : 0.15
@@ -110703,25 +110703,294 @@ function AppIndex() {
   ] });
 }
 
+// app/routes/app.setup.tsx
+var app_setup_exports = {};
+__export(app_setup_exports, {
+  action: () => action5,
+  default: () => Setup,
+  loader: () => loader9
+});
+var import_node9 = __toESM(require_dist3()), import_react12 = __toESM(require_dist2());
+init_shopify_server();
+
+// app/utils/database.server.ts
+var import_fs = require("fs"), import_path = require("path"), kv = null, STORAGE_PATH = (0, import_path.join)(process.cwd(), "data", "tenants.json"), memoryStorage = {
+  tenant_config: {},
+  tenant_settings: {}
+};
+function getStorageData() {
+  return process.env.VERCEL, memoryStorage;
+  if ((0, import_fs.existsSync)(STORAGE_PATH))
+    try {
+      let data = (0, import_fs.readFileSync)(STORAGE_PATH, "utf8");
+      return JSON.parse(data);
+    } catch (error) {
+      return console.warn("Failed to read storage file, using memory:", error), memoryStorage;
+    }
+  return memoryStorage;
+}
+function saveStorageData(data) {
+  memoryStorage = { ...data }, process.env.VERCEL;
+  return;
+  try {
+    let dir = (0, import_path.dirname)(STORAGE_PATH);
+    (0, import_fs.existsSync)(dir) || (0, import_fs.mkdirSync)(dir, { recursive: !0 }), (0, import_fs.writeFileSync)(STORAGE_PATH, JSON.stringify(data, null, 2));
+  } catch (error) {
+    console.warn(
+      "Failed to save storage data to file, using memory only:",
+      error
+    );
+  }
+}
+var TenantStorage = class {
+  async get(key) {
+    if (kv)
+      try {
+        return await kv.get(key);
+      } catch (error) {
+        console.warn("KV get failed, falling back to file storage:", error);
+      }
+    let data = getStorageData(), [type, tenantId, field] = key.split(":");
+    return type === "tenant_config" ? data.tenant_config[tenantId] || null : type === "tenant_settings" ? data.tenant_settings[tenantId] || {} : null;
+  }
+  async set(key, value) {
+    if (kv)
+      try {
+        await kv.set(key, value);
+        return;
+      } catch (error) {
+        console.warn("KV set failed, falling back to file storage:", error);
+      }
+    let data = getStorageData(), [type, tenantId, field] = key.split(":");
+    type === "tenant_config" ? data.tenant_config[tenantId] = value : type === "tenant_settings" && (data.tenant_settings[tenantId] || (data.tenant_settings[tenantId] = {}), data.tenant_settings[tenantId] = {
+      ...data.tenant_settings[tenantId],
+      ...value
+    }), saveStorageData(data);
+  }
+  async del(key) {
+    if (kv)
+      try {
+        await kv.del(key);
+        return;
+      } catch (error) {
+        console.warn("KV del failed, falling back to file storage:", error);
+      }
+    let data = getStorageData(), [type, tenantId, field] = key.split(":");
+    type === "tenant_config" ? delete data.tenant_config[tenantId] : type === "tenant_settings" && delete data.tenant_settings[tenantId], saveStorageData(data);
+  }
+}, storage = new TenantStorage();
+async function getTenantConfig(tenantId) {
+  return await storage.get(`tenant_config:${tenantId}`);
+}
+async function upsertTenantConfig(config) {
+  let existing = await getTenantConfig(config.tenant_id), now = (/* @__PURE__ */ new Date()).toISOString(), tenantConfig = {
+    tenant_id: config.tenant_id,
+    shop_domain: config.shop_domain || existing?.shop_domain || `${config.tenant_id}.myshopify.com`,
+    google_sheet_id: config.google_sheet_id || existing?.google_sheet_id,
+    setup_completed_at: config.setup_completed_at || existing?.setup_completed_at,
+    created_at: existing?.created_at || now,
+    updated_at: now
+  };
+  await storage.set(`tenant_config:${config.tenant_id}`, tenantConfig);
+}
+async function markSetupCompleted(tenantId) {
+  await upsertTenantConfig({
+    tenant_id: tenantId,
+    setup_completed_at: (/* @__PURE__ */ new Date()).toISOString()
+  });
+}
+
+// app/routes/app.setup.tsx
+var import_jsx_runtime11 = __toESM(require_jsx_runtime());
+async function loader9({ request: request2 }) {
+  try {
+    let { session } = await authenticate.admin(request2), shopName = session?.shop?.replace(".myshopify.com", "") || "";
+    if (!shopName)
+      throw new Error("Unable to determine shop name from Shopify session");
+    return (0, import_node9.json)({
+      shopName,
+      shopDomain: session?.shop || `${shopName}.myshopify.com`
+    });
+  } catch (error) {
+    throw console.error("Setup loader error:", error), error;
+  }
+}
+async function action5({ request: request2 }) {
+  try {
+    let { session } = await authenticate.admin(request2), shopName = session?.shop?.replace(".myshopify.com", "") || "";
+    if (!shopName)
+      throw new Error("Unable to determine shop name from Shopify session");
+    return await markSetupCompleted(shopName), console.log(`Setup completed for tenant: ${shopName}`), (0, import_node9.redirect)("/app");
+  } catch (error) {
+    return console.error("Setup action error:", error), (0, import_node9.json)({ error: error.message }, { status: 500 });
+  }
+}
+function Setup() {
+  let data = (0, import_react12.useLoaderData)(), actionData = (0, import_react12.useActionData)(), isSubmitting = (0, import_react12.useNavigation)().state !== "idle";
+  return /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("div", { style: { maxWidth: 600, margin: "0 auto", padding: 20 }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(
+      "div",
+      {
+        style: {
+          backgroundColor: "#f8f9fa",
+          border: "1px solid #e1e5e9",
+          borderRadius: "8px",
+          padding: "24px",
+          marginBottom: "24px",
+          textAlign: "center"
+        },
+        children: [
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("h1", { style: { margin: "0 0 16px 0", fontSize: "28px", color: "#333" }, children: "Welcome to ProofKit!" }),
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("p", { style: { margin: "0 0 8px 0", fontSize: "18px", color: "#666" }, children: [
+            "Setting up for: ",
+            /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("strong", { children: data.shopDomain })
+          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("p", { style: { margin: "0", fontSize: "14px", color: "#888" }, children: "This quick setup will only take 2 minutes" })
+        ]
+      }
+    ),
+    actionData?.error && /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(
+      "div",
+      {
+        style: {
+          backgroundColor: "#fed7d7",
+          border: "1px solid #f56565",
+          borderRadius: "8px",
+          padding: "16px",
+          marginBottom: "20px",
+          color: "#c53030"
+        },
+        children: [
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("h4", { style: { margin: "0 0 8px 0" }, children: "Setup Error" }),
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("p", { style: { margin: 0 }, children: actionData.error })
+        ]
+      }
+    ),
+    /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(
+      import_react12.Form,
+      {
+        method: "post",
+        style: {
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center"
+        },
+        children: [
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(
+            "div",
+            {
+              style: {
+                backgroundColor: "white",
+                border: "1px solid #e1e5e9",
+                borderRadius: "12px",
+                padding: "40px",
+                textAlign: "center",
+                maxWidth: "500px",
+                marginBottom: "32px"
+              },
+              children: [
+                /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("div", { style: {
+                  width: "64px",
+                  height: "64px",
+                  background: "linear-gradient(135deg, #007bff, #0056b3)",
+                  borderRadius: "50%",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  margin: "0 auto 24px auto",
+                  fontSize: "24px",
+                  color: "white"
+                }, children: "\u2713" }),
+                /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("h2", { style: { margin: "0 0 16px 0", fontSize: "24px", color: "#333" }, children: "You're All Set!" }),
+                /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(
+                  "p",
+                  {
+                    style: {
+                      margin: "0 0 24px 0",
+                      fontSize: "16px",
+                      color: "#666",
+                      lineHeight: "1.5"
+                    },
+                    children: [
+                      "ProofKit is now connected to your ",
+                      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("strong", { children: data.shopDomain }),
+                      " ",
+                      "store.",
+                      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("br", {}),
+                      "Your AI-powered Google Ads optimization is ready to begin!"
+                    ]
+                  }
+                ),
+                /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(
+                  "div",
+                  {
+                    style: {
+                      backgroundColor: "#f8f9fa",
+                      border: "1px solid #dee2e6",
+                      borderRadius: "8px",
+                      padding: "16px",
+                      fontSize: "14px",
+                      color: "#495057"
+                    },
+                    children: [
+                      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("strong", { children: "Next steps:" }),
+                      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("br", {}),
+                      "\u2022 Configure your campaign settings in Advanced Settings",
+                      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("br", {}),
+                      "\u2022 Set up your automation schedule",
+                      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("br", {}),
+                      "\u2022 Review performance insights as data flows in"
+                    ]
+                  }
+                )
+              ]
+            }
+          ),
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
+            "button",
+            {
+              type: "submit",
+              disabled: isSubmitting,
+              style: {
+                padding: "16px 32px",
+                backgroundColor: isSubmitting ? "#6c757d" : "#007bff",
+                color: "white",
+                border: "none",
+                borderRadius: "8px",
+                cursor: isSubmitting ? "not-allowed" : "pointer",
+                fontSize: "18px",
+                fontWeight: "bold",
+                boxShadow: isSubmitting ? "none" : "0 4px 12px rgba(0, 123, 255, 0.3)",
+                transition: "all 0.2s ease"
+              },
+              children: isSubmitting ? "Loading..." : "Get Started"
+            }
+          )
+        ]
+      }
+    )
+  ] });
+}
+
 // app/routes/_health.tsx
 var health_exports = {};
 __export(health_exports, {
   default: () => Health,
-  loader: () => loader9
+  loader: () => loader10
 });
-var import_node9 = __toESM(require_dist3()), import_jsx_runtime11 = __toESM(require_jsx_runtime()), loader9 = () => (0, import_node9.json)({ ok: !0 });
+var import_node10 = __toESM(require_dist3()), import_jsx_runtime12 = __toESM(require_jsx_runtime()), loader10 = () => (0, import_node10.json)({ ok: !0 });
 function Health() {
-  return /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("pre", { children: "OK" });
+  return /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("pre", { children: "OK" });
 }
 
 // app/routes/install.tsx
 var install_exports = {};
 __export(install_exports, {
   default: () => Install,
-  loader: () => loader10
+  loader: () => loader11
 });
-var import_node10 = __toESM(require_dist3());
-async function loader10({ request: request2 }) {
+var import_node11 = __toESM(require_dist3());
+async function loader11({ request: request2 }) {
   let shop = new URL(request2.url).searchParams.get("shop");
   if (!shop)
     return new Response(
@@ -110768,7 +111037,7 @@ async function loader10({ request: request2 }) {
     redirect_uri: redirectUri,
     state: crypto.randomUUID()
   }), authUrl = `https://${shopDomain}/admin/oauth/authorize?${params.toString()}`;
-  return console.log(`\u{1F517} Redirecting to Shopify OAuth for shop: ${shop}`), console.log(`\u{1F517} Auth URL: ${authUrl}`), (0, import_node10.redirect)(authUrl);
+  return console.log(`\u{1F517} Redirecting to Shopify OAuth for shop: ${shop}`), console.log(`\u{1F517} Auth URL: ${authUrl}`), (0, import_node11.redirect)(authUrl);
 }
 function Install() {
   return null;
@@ -110780,288 +111049,288 @@ __export(privacy_exports, {
   default: () => Privacy,
   meta: () => meta
 });
-var import_jsx_runtime12 = __toESM(require_jsx_runtime()), meta = () => [
+var import_jsx_runtime13 = __toESM(require_jsx_runtime()), meta = () => [
   { title: "Privacy Policy - Ads Autopilot AI" },
   { name: "description", content: "Ads Autopilot AI Privacy Policy - Privacy-first conversion optimization for Shopify stores" }
 ];
 function Privacy() {
-  return /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { style: { fontFamily: "system-ui, sans-serif", lineHeight: "1.8", maxWidth: "800px", margin: "0 auto", padding: "2rem" }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("h1", { children: "Ads Autopilot AI Privacy Policy" }),
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("p", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "Effective Date:" }),
+  return /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { fontFamily: "system-ui, sans-serif", lineHeight: "1.8", maxWidth: "800px", margin: "0 auto", padding: "2rem" }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h1", { children: "Ads Autopilot AI Privacy Policy" }),
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("p", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Effective Date:" }),
       " August 25, 2025",
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "Last Updated:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Last Updated:" }),
       " August 25, 2025",
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "Version:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Version:" }),
       " 1.0"
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("h2", { children: "Executive Summary" }),
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("p", { children: "Ads Autopilot AI is committed to protecting your privacy and maintaining the highest standards of data protection. This Privacy Policy explains our privacy-by-design approach, minimal data collection practices, and your rights regarding any information we process." }),
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("h3", { children: "Key Privacy Principles:" }),
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "Data Minimization:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h2", { children: "Executive Summary" }),
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { children: "Ads Autopilot AI is committed to protecting your privacy and maintaining the highest standards of data protection. This Privacy Policy explains our privacy-by-design approach, minimal data collection practices, and your rights regarding any information we process." }),
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h3", { children: "Key Privacy Principles:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Data Minimization:" }),
         " We collect only what's absolutely necessary"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "No Customer PII:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "No Customer PII:" }),
         " We don't collect personal information from your customers"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "Merchant Control:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Merchant Control:" }),
         " You maintain full control over your data"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "Transparency:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Transparency:" }),
         " Clear documentation of all data handling practices"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "Compliance:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Compliance:" }),
         " GDPR, CCPA, and global privacy regulation compliance"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("h2", { children: "Information We Collect" }),
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("h3", { children: "Merchant Account Information" }),
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "When You Install Ads Autopilot AI:" }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "Store Information:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h2", { children: "Information We Collect" }),
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h3", { children: "Merchant Account Information" }),
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "When You Install Ads Autopilot AI:" }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Store Information:" }),
         " Store name, domain, Shopify store ID"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "Contact Details:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Contact Details:" }),
         " Email address for support and notifications"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "Authentication Data:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Authentication Data:" }),
         " OAuth tokens for secure API access"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "App Configuration:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "App Configuration:" }),
         " Settings and preferences you configure in Ads Autopilot AI"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("p", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "Purpose:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("p", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Purpose:" }),
       " To provide app functionality and support services",
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "Legal Basis:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Legal Basis:" }),
       " Legitimate business interest and contractual necessity",
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "Retention:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Retention:" }),
       " Duration of your Ads Autopilot AI subscription plus 30 days"
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("h3", { children: "Product Catalog Data (Read-Only)" }),
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "What We Access:" }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "Product Information:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h3", { children: "Product Catalog Data (Read-Only)" }),
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "What We Access:" }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Product Information:" }),
         " Product titles, descriptions, categories, and variants"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "Collection Data:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Collection Data:" }),
         " Product collection organization and structure"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "Metafield Data:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Metafield Data:" }),
         " Custom product attributes (when used for optimization)"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "How We Use It:" }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("li", { children: "Display products in Ads Autopilot AI configuration interface" }),
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("li", { children: "Generate conversion optimization recommendations" }),
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("li", { children: "Configure product-specific advertising campaigns" })
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "How We Use It:" }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("li", { children: "Display products in Ads Autopilot AI configuration interface" }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("li", { children: "Generate conversion optimization recommendations" }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("li", { children: "Configure product-specific advertising campaigns" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "What We DON'T Do:" }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("li", { children: "Store product data outside of your store" }),
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("li", { children: "Share product information with third parties" }),
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("li", { children: "Modify or update your product information" }),
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("li", { children: "Use product data for competitive analysis" })
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "What We DON'T Do:" }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("li", { children: "Store product data outside of your store" }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("li", { children: "Share product information with third parties" }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("li", { children: "Modify or update your product information" }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("li", { children: "Use product data for competitive analysis" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("h2", { children: "Information We DON'T Collect" }),
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("h3", { children: "Customer Personal Information" }),
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "We Explicitly Do NOT Collect:" }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("li", { children: "Customer names, emails, or contact information" }),
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("li", { children: "Customer addresses or shipping information" }),
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("li", { children: "Phone numbers or personal identifiers" }),
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("li", { children: "Payment or credit card information" }),
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("li", { children: "Purchase history or order details" }),
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("li", { children: "Customer browsing behavior or preferences" }),
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("li", { children: "Individual customer demographic data" })
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h2", { children: "Information We DON'T Collect" }),
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h3", { children: "Customer Personal Information" }),
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "We Explicitly Do NOT Collect:" }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("li", { children: "Customer names, emails, or contact information" }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("li", { children: "Customer addresses or shipping information" }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("li", { children: "Phone numbers or personal identifiers" }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("li", { children: "Payment or credit card information" }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("li", { children: "Purchase history or order details" }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("li", { children: "Customer browsing behavior or preferences" }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("li", { children: "Individual customer demographic data" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("h2", { children: "How We Protect Your Information" }),
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("h3", { children: "Technical Security Measures" }),
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "Encryption & Transport Security:" }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "HTTPS Everywhere:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h2", { children: "How We Protect Your Information" }),
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h3", { children: "Technical Security Measures" }),
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Encryption & Transport Security:" }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "HTTPS Everywhere:" }),
         " All data transmission encrypted with TLS 1.3"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "API Security:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "API Security:" }),
         " HMAC validation for all requests"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "Token Security:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Token Security:" }),
         " OAuth tokens encrypted and securely stored"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "Database Encryption:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Database Encryption:" }),
         " All stored data encrypted at rest"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("h2", { children: "Your Privacy Rights" }),
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("h3", { children: "Data Access & Control" }),
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "Right to Access:" }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("li", { children: "Request a copy of all data we have about your store" }),
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("li", { children: "Understand how your data is being used" }),
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("li", { children: "Receive data in a portable format (JSON/CSV)" }),
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("li", { children: "Access detailed data processing logs" })
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h2", { children: "Your Privacy Rights" }),
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h3", { children: "Data Access & Control" }),
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Right to Access:" }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("li", { children: "Request a copy of all data we have about your store" }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("li", { children: "Understand how your data is being used" }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("li", { children: "Receive data in a portable format (JSON/CSV)" }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("li", { children: "Access detailed data processing logs" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "Right to Deletion:" }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("li", { children: "Request deletion of all your data when uninstalling the app" }),
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("li", { children: "Selective deletion of specific data categories" }),
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("li", { children: "Immediate deletion upon request (no retention period)" }),
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("li", { children: "Confirmation of deletion completion" })
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Right to Deletion:" }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("li", { children: "Request deletion of all your data when uninstalling the app" }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("li", { children: "Selective deletion of specific data categories" }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("li", { children: "Immediate deletion upon request (no retention period)" }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("li", { children: "Confirmation of deletion completion" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("h2", { children: "Third-Party Integrations" }),
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("h3", { children: "Google Services Integration" }),
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "Google Sheets API:" }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "Purpose:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h2", { children: "Third-Party Integrations" }),
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h3", { children: "Google Services Integration" }),
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Google Sheets API:" }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Purpose:" }),
         " Store campaign configurations and export data"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "Data Shared:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Data Shared:" }),
         " Campaign settings, audience configurations"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "Merchant Control:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Merchant Control:" }),
         " You control access and can revoke permissions anytime"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "Data Location:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Data Location:" }),
         " Stored in your Google Sheets (your Google account)"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "Google Ads API:" }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "Purpose:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Google Ads API:" }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Purpose:" }),
         " Optimize advertising campaigns based on Ads Autopilot AI insights"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "Data Shared:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Data Shared:" }),
         " Campaign optimization scripts and audience segments"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "Merchant Control:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Merchant Control:" }),
         " You control Google Ads account access"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "Data Processing:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Data Processing:" }),
         " Scripts run in your Google Ads account"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("h2", { children: "International Data Transfers" }),
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("h3", { children: "Regional Compliance" }),
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "GDPR Compliance (EU/UK):" }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "Legal Basis:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h2", { children: "International Data Transfers" }),
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h3", { children: "Regional Compliance" }),
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "GDPR Compliance (EU/UK):" }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Legal Basis:" }),
         " Legitimate interest and contractual necessity"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "Data Subject Rights:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Data Subject Rights:" }),
         " Full implementation of all GDPR rights"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "Data Protection Officer:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Data Protection Officer:" }),
         " Available for privacy-related inquiries"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "Supervisory Authority:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Supervisory Authority:" }),
         " Cooperation with relevant data protection authorities"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "CCPA Compliance (California):" }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "Consumer Rights:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "CCPA Compliance (California):" }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Consumer Rights:" }),
         " Full implementation of CCPA rights"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "Do Not Sell:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Do Not Sell:" }),
         " We do not sell personal information"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "Opt-Out Rights:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Opt-Out Rights:" }),
         " Comprehensive opt-out mechanisms"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "Data Categories:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Data Categories:" }),
         " Clear disclosure of all data categories collected"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("h2", { children: "Children's Privacy" }),
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("p", { children: "Ads Autopilot AI is not intended for use by individuals under 13 years of age. We do not knowingly collect personal information from children. If you believe we have inadvertently collected such information, please contact us immediately." }),
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("h2", { children: "Privacy Policy Updates" }),
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("p", { children: "We may update this Privacy Policy from time to time. We will notify you of any material changes by email and through the Ads Autopilot AI app. Your continued use of Ads Autopilot AI after such modifications constitutes your acceptance of the updated Privacy Policy." }),
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("h2", { children: "Contact Information" }),
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("p", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "Privacy Questions:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h2", { children: "Children's Privacy" }),
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { children: "Ads Autopilot AI is not intended for use by individuals under 13 years of age. We do not knowingly collect personal information from children. If you believe we have inadvertently collected such information, please contact us immediately." }),
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h2", { children: "Privacy Policy Updates" }),
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { children: "We may update this Privacy Policy from time to time. We will notify you of any material changes by email and through the Ads Autopilot AI app. Your continued use of Ads Autopilot AI after such modifications constitutes your acceptance of the updated Privacy Policy." }),
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h2", { children: "Contact Information" }),
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("p", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Privacy Questions:" }),
       " atanrikulu@e-listele.com",
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "Data Subject Requests:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Data Subject Requests:" }),
       " atanrikulu@e-listele.com",
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "Security Incidents:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Security Incidents:" }),
       " atanrikulu@e-listele.com",
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "General Support:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "General Support:" }),
       " atanrikulu@e-listele.com"
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("h3", { children: "Data Subject Request Timeline:" }),
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "Acknowledgment:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h3", { children: "Data Subject Request Timeline:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Acknowledgment:" }),
         " Within 48 hours"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "Processing:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Processing:" }),
         " Within 30 days (GDPR) or 45 days (CCPA)"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "Complex Requests:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Complex Requests:" }),
         " Up to 60-90 days with regular updates"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "Verification:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Verification:" }),
         " Identity verification required for sensitive requests"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("hr", { style: { margin: "3rem 0" } }),
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("p", { style: { textAlign: "center", color: "#666" }, children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "This Privacy Policy is effective as of August 25, 2025, and will remain in effect except with respect to any changes in its provisions in the future, which will be in effect immediately after being posted on this page." }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("p", { style: { textAlign: "center", marginTop: "2rem" }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "Contact Information:" }),
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "Email:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("hr", { style: { margin: "3rem 0" } }),
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { style: { textAlign: "center", color: "#666" }, children: /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "This Privacy Policy is effective as of August 25, 2025, and will remain in effect except with respect to any changes in its provisions in the future, which will be in effect immediately after being posted on this page." }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("p", { style: { textAlign: "center", marginTop: "2rem" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Contact Information:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Email:" }),
       " atanrikulu@e-listele.com",
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "Support:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Support:" }),
       " atanrikulu@e-listele.com",
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "Website:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Website:" }),
       " ",
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("a", { href: "https://proofkit-saas.vercel.app/privacy", children: "https://proofkit-saas.vercel.app/privacy" })
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("a", { href: "https://proofkit-saas.vercel.app/privacy", children: "https://proofkit-saas.vercel.app/privacy" })
     ] })
   ] });
 }
@@ -111070,16 +111339,16 @@ function Privacy() {
 var support_exports = {};
 __export(support_exports, {
   default: () => Support,
-  loader: () => loader11,
+  loader: () => loader12,
   meta: () => meta2
 });
-var import_node11 = __toESM(require_dist3()), import_react12 = __toESM(require_dist2()), import_react13 = __toESM(require_react()), import_jsx_runtime13 = __toESM(require_jsx_runtime()), meta2 = () => [
+var import_node12 = __toESM(require_dist3()), import_react13 = __toESM(require_dist2()), import_react14 = __toESM(require_react()), import_jsx_runtime14 = __toESM(require_jsx_runtime()), meta2 = () => [
   { title: "Support - Ads Autopilot AI" },
   { name: "description", content: "Get tier-based support for Ads Autopilot AI - Email, priority, and phone support options" }
-], loader11 = async ({ request: request2 }) => {
+], loader12 = async ({ request: request2 }) => {
   try {
     if (!new URL(request2.url).searchParams.get("tenant"))
-      return (0, import_node11.json)({
+      return (0, import_node12.json)({
         tier: "starter",
         contactMethods: {
           email_support: !0,
@@ -111103,12 +111372,12 @@ var import_node11 = __toESM(require_dist3()), import_react12 = __toESM(require_d
       support_email: "enterprise@proofkit.com",
       support_phone: "(307) 395-9830",
       guaranteed_response_hours: 6
-    }), (0, import_node11.json)({
+    }), (0, import_node12.json)({
       tier,
       contactMethods
     });
   } catch (error) {
-    return console.error("Error loading support data:", error), (0, import_node11.json)({
+    return console.error("Error loading support data:", error), (0, import_node12.json)({
       tier: "starter",
       contactMethods: {
         email_support: !0,
@@ -111121,7 +111390,7 @@ var import_node11 = __toESM(require_dist3()), import_react12 = __toESM(require_d
   }
 };
 function Support() {
-  let { tier, contactMethods } = (0, import_react12.useLoaderData)(), [showContactForm, setShowContactForm] = (0, import_react13.useState)(!1), [formData, setFormData] = (0, import_react13.useState)({
+  let { tier, contactMethods } = (0, import_react13.useLoaderData)(), [showContactForm, setShowContactForm] = (0, import_react14.useState)(!1), [formData, setFormData] = (0, import_react14.useState)({
     subject: "",
     description: "",
     category: "general",
@@ -111129,7 +111398,7 @@ function Support() {
     customer_name: "",
     customer_email: "",
     customer_phone: ""
-  }), [isSubmitting, setIsSubmitting] = (0, import_react13.useState)(!1), [submitResult, setSubmitResult] = (0, import_react13.useState)(null), handleInputChange = (e) => {
+  }), [isSubmitting, setIsSubmitting] = (0, import_react14.useState)(!1), [submitResult, setSubmitResult] = (0, import_react14.useState)(null), handleInputChange = (e) => {
     let { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   }, handleSubmit = async (e) => {
@@ -111182,50 +111451,50 @@ function Support() {
     };
     return supportLevels[tier2] || supportLevels.starter;
   })(tier);
-  return /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { fontFamily: "system-ui, sans-serif", lineHeight: "1.8", maxWidth: "800px", margin: "0 auto", padding: "2rem" }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h1", { children: "Ads Autopilot AI Support" }),
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { children: "Get help with Ads Autopilot AI - your AI-powered Google Ads optimization tool for Shopify stores." }),
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: {
+  return /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { style: { fontFamily: "system-ui, sans-serif", lineHeight: "1.8", maxWidth: "800px", margin: "0 auto", padding: "2rem" }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("h1", { children: "Ads Autopilot AI Support" }),
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { children: "Get help with Ads Autopilot AI - your AI-powered Google Ads optimization tool for Shopify stores." }),
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { style: {
       padding: "1.5rem",
       background: tier === "enterprise" ? "#fef3e3" : tier === "professional" ? "#f0f9ff" : "#f8fafc",
       border: `2px solid ${tier === "enterprise" ? "#f59e0b" : tier === "professional" ? "#3b82f6" : "#64748b"}`,
       borderRadius: "8px",
       marginBottom: "2rem"
     }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("h2", { style: {
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("h2", { style: {
         margin: "0 0 1rem 0",
         color: tier === "enterprise" ? "#92400e" : tier === "professional" ? "#1e40af" : "#475569"
       }, children: [
         "Your Support Level: ",
         getTierDisplayName(tier)
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { display: "grid", gridTemplateColumns: "1fr 2fr", gap: "1rem", alignItems: "start" }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { style: { margin: "0 0 0.5rem 0", fontWeight: "bold", fontSize: "1.1rem" }, children: supportLevel.type }),
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("p", { style: { margin: "0 0 0.5rem 0", color: "#6b7280" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { style: { display: "grid", gridTemplateColumns: "1fr 2fr", gap: "1rem", alignItems: "start" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { style: { margin: "0 0 0.5rem 0", fontWeight: "bold", fontSize: "1.1rem" }, children: supportLevel.type }),
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("p", { style: { margin: "0 0 0.5rem 0", color: "#6b7280" }, children: [
             "Response within ",
             supportLevel.response
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { style: { margin: "0", color: "#6b7280", fontSize: "0.9rem" }, children: supportLevel.description })
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { style: { margin: "0", color: "#6b7280", fontSize: "0.9rem" }, children: supportLevel.description })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { style: { margin: "0 0 0.5rem 0", fontWeight: "bold" }, children: "Included Features:" }),
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("ul", { style: { margin: "0", paddingLeft: "1.5rem" }, children: supportLevel.features.map((feature, index) => /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("li", { style: { color: "#374151", marginBottom: "0.25rem" }, children: feature }, index)) })
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { style: { margin: "0 0 0.5rem 0", fontWeight: "bold" }, children: "Included Features:" }),
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("ul", { style: { margin: "0", paddingLeft: "1.5rem" }, children: supportLevel.features.map((feature, index) => /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("li", { style: { color: "#374151", marginBottom: "0.25rem" }, children: feature }, index)) })
         ] })
       ] })
     ] }),
-    showContactForm ? /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: {
+    showContactForm ? /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { style: {
       padding: "1.5rem",
       border: "1px solid #e5e7eb",
       borderRadius: "8px",
       marginBottom: "2rem",
       backgroundColor: "#fafafa"
     }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h3", { children: "Create Support Ticket" }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("form", { onSubmit: handleSubmit, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { marginBottom: "1rem" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("label", { style: { display: "block", marginBottom: "0.5rem", fontWeight: "bold" }, children: "Your Name *" }),
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("h3", { children: "Create Support Ticket" }),
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("form", { onSubmit: handleSubmit, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { style: { marginBottom: "1rem" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("label", { style: { display: "block", marginBottom: "0.5rem", fontWeight: "bold" }, children: "Your Name *" }),
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
             "input",
             {
               type: "text",
@@ -111237,9 +111506,9 @@ function Support() {
             }
           )
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { marginBottom: "1rem" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("label", { style: { display: "block", marginBottom: "0.5rem", fontWeight: "bold" }, children: "Email Address *" }),
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { style: { marginBottom: "1rem" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("label", { style: { display: "block", marginBottom: "0.5rem", fontWeight: "bold" }, children: "Email Address *" }),
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
             "input",
             {
               type: "email",
@@ -111251,9 +111520,9 @@ function Support() {
             }
           )
         ] }),
-        tier === "enterprise" && /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { marginBottom: "1rem" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("label", { style: { display: "block", marginBottom: "0.5rem", fontWeight: "bold" }, children: "Phone Number (for phone support)" }),
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
+        tier === "enterprise" && /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { style: { marginBottom: "1rem" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("label", { style: { display: "block", marginBottom: "0.5rem", fontWeight: "bold" }, children: "Phone Number (for phone support)" }),
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
             "input",
             {
               type: "tel",
@@ -111264,10 +111533,10 @@ function Support() {
             }
           )
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem", marginBottom: "1rem" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("label", { style: { display: "block", marginBottom: "0.5rem", fontWeight: "bold" }, children: "Category *" }),
-            /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem", marginBottom: "1rem" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("label", { style: { display: "block", marginBottom: "0.5rem", fontWeight: "bold" }, children: "Category *" }),
+            /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(
               "select",
               {
                 name: "category",
@@ -111276,17 +111545,17 @@ function Support() {
                 required: !0,
                 style: { width: "100%", padding: "0.75rem", border: "1px solid #d1d5db", borderRadius: "4px" },
                 children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("option", { value: "general", children: "General" }),
-                  /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("option", { value: "technical", children: "Technical" }),
-                  /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("option", { value: "billing", children: "Billing" }),
-                  tier === "enterprise" && /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("option", { value: "urgent", children: "Urgent" })
+                  /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("option", { value: "general", children: "General" }),
+                  /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("option", { value: "technical", children: "Technical" }),
+                  /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("option", { value: "billing", children: "Billing" }),
+                  tier === "enterprise" && /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("option", { value: "urgent", children: "Urgent" })
                 ]
               }
             )
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("label", { style: { display: "block", marginBottom: "0.5rem", fontWeight: "bold" }, children: "Priority *" }),
-            /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("label", { style: { display: "block", marginBottom: "0.5rem", fontWeight: "bold" }, children: "Priority *" }),
+            /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(
               "select",
               {
                 name: "priority",
@@ -111295,18 +111564,18 @@ function Support() {
                 required: !0,
                 style: { width: "100%", padding: "0.75rem", border: "1px solid #d1d5db", borderRadius: "4px" },
                 children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("option", { value: "low", children: "Low" }),
-                  /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("option", { value: "normal", children: "Normal" }),
-                  ["professional", "enterprise"].includes(tier) && /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("option", { value: "high", children: "High" }),
-                  tier === "enterprise" && /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("option", { value: "urgent", children: "Urgent" })
+                  /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("option", { value: "low", children: "Low" }),
+                  /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("option", { value: "normal", children: "Normal" }),
+                  ["professional", "enterprise"].includes(tier) && /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("option", { value: "high", children: "High" }),
+                  tier === "enterprise" && /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("option", { value: "urgent", children: "Urgent" })
                 ]
               }
             )
           ] })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { marginBottom: "1rem" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("label", { style: { display: "block", marginBottom: "0.5rem", fontWeight: "bold" }, children: "Subject *" }),
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { style: { marginBottom: "1rem" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("label", { style: { display: "block", marginBottom: "0.5rem", fontWeight: "bold" }, children: "Subject *" }),
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
             "input",
             {
               type: "text",
@@ -111319,9 +111588,9 @@ function Support() {
             }
           )
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { marginBottom: "1rem" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("label", { style: { display: "block", marginBottom: "0.5rem", fontWeight: "bold" }, children: "Description *" }),
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { style: { marginBottom: "1rem" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("label", { style: { display: "block", marginBottom: "0.5rem", fontWeight: "bold" }, children: "Description *" }),
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
             "textarea",
             {
               name: "description",
@@ -111334,8 +111603,8 @@ function Support() {
             }
           )
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { display: "flex", gap: "1rem" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { style: { display: "flex", gap: "1rem" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
             "button",
             {
               type: "submit",
@@ -111354,7 +111623,7 @@ function Support() {
               children: isSubmitting ? "Creating Ticket..." : "Create Ticket"
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
             "button",
             {
               type: "button",
@@ -111373,8 +111642,8 @@ function Support() {
           )
         ] })
       ] })
-    ] }) : /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { textAlign: "center", margin: "2rem 0" }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
+    ] }) : /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { style: { textAlign: "center", margin: "2rem 0" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
         "button",
         {
           onClick: () => setShowContactForm(!0),
@@ -111391,418 +111660,418 @@ function Support() {
           children: "Create Support Ticket"
         }
       ),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { style: { marginTop: "1rem", color: "#6b7280" }, children: "Get help with technical issues, billing questions, or general support" })
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { style: { marginTop: "1rem", color: "#6b7280" }, children: "Get help with technical issues, billing questions, or general support" })
     ] }),
-    submitResult && /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { style: {
+    submitResult && /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("div", { style: {
       padding: "1rem",
       backgroundColor: submitResult.success ? "#dcfce7" : "#fee2e2",
       border: `1px solid ${submitResult.success ? "#16a34a" : "#dc2626"}`,
       borderRadius: "4px",
       marginBottom: "2rem"
-    }, children: /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { style: {
+    }, children: /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { style: {
       margin: "0",
       color: submitResult.success ? "#166534" : "#991b1b",
       fontWeight: "bold"
     }, children: submitResult.message }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h2", { children: "Direct Contact Information" }),
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { display: "grid", gridTemplateColumns: tier === "enterprise" ? "1fr 1fr 1fr" : "1fr 1fr", gap: "2rem", margin: "2rem 0" }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { padding: "1.5rem", border: "1px solid #e5e7eb", borderRadius: "8px" }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h3", { children: "Email Support" }),
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("p", { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Email:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("h2", { children: "Direct Contact Information" }),
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { style: { display: "grid", gridTemplateColumns: tier === "enterprise" ? "1fr 1fr 1fr" : "1fr 1fr", gap: "2rem", margin: "2rem 0" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { style: { padding: "1.5rem", border: "1px solid #e5e7eb", borderRadius: "8px" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("h3", { children: "Email Support" }),
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("p", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Email:" }),
           " ",
           contactMethods.support_email,
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("br", {}),
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Response Time:" }),
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("br", {}),
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Response Time:" }),
           " ",
           contactMethods.guaranteed_response_hours,
           " hours",
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("br", {}),
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Hours:" }),
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("br", {}),
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Hours:" }),
           " Monday-Friday, 9 AM - 6 PM EST"
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { children: "For all general inquiries, technical support, and account questions." })
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { children: "For all general inquiries, technical support, and account questions." })
       ] }),
-      tier === "enterprise" && /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { padding: "1.5rem", border: "2px solid #f59e0b", borderRadius: "8px", backgroundColor: "#fef3e3" }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h3", { children: "Phone Support" }),
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("p", { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Phone:" }),
+      tier === "enterprise" && /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { style: { padding: "1.5rem", border: "2px solid #f59e0b", borderRadius: "8px", backgroundColor: "#fef3e3" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("h3", { children: "Phone Support" }),
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("p", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Phone:" }),
           " (307) 395-9830",
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("br", {}),
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Response Time:" }),
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("br", {}),
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Response Time:" }),
           " Immediate",
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("br", {}),
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Hours:" }),
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("br", {}),
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Hours:" }),
           " Monday-Friday, 9 AM - 6 PM EST"
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { children: "Priority phone support for urgent issues and dedicated account management." })
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { children: "Priority phone support for urgent issues and dedicated account management." })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { padding: "1.5rem", border: "1px solid #e5e7eb", borderRadius: "8px" }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h3", { children: "Billing & Accounts" }),
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("p", { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Email:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { style: { padding: "1.5rem", border: "1px solid #e5e7eb", borderRadius: "8px" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("h3", { children: "Billing & Accounts" }),
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("p", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Email:" }),
           " billing@proofkit.com",
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("br", {}),
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Response Time:" }),
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("br", {}),
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Response Time:" }),
           " ",
           tier === "enterprise" ? "4" : tier === "professional" ? "6" : "24",
           " hours",
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("br", {}),
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Hours:" }),
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("br", {}),
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Hours:" }),
           " Monday-Friday, 9 AM - 6 PM EST"
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { children: "For subscription issues, billing questions, refund requests, and plan changes." })
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { children: "For subscription issues, billing questions, refund requests, and plan changes." })
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h2", { children: "Getting Started" }),
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h3", { children: "Quick Setup Guide (5 Minutes)" }),
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("ol", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Install the App:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("h2", { children: "Getting Started" }),
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("h3", { children: "Quick Setup Guide (5 Minutes)" }),
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("ol", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Install the App:" }),
         " Install Ads Autopilot AI from the Shopify App Store"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Connect Google Ads:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Connect Google Ads:" }),
         " Authorize your Google Ads account integration"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Configure Audiences:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Configure Audiences:" }),
         " Set up your customer segmentation preferences"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Enable Autopilot:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Enable Autopilot:" }),
         " Turn on automated campaign optimization"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Monitor Results:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Monitor Results:" }),
         " Track your conversion rate improvements"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h3", { children: "Key Features" }),
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "AI-Powered Optimization:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("h3", { children: "Key Features" }),
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "AI-Powered Optimization:" }),
         " Automated Google Ads campaign management"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Smart Audience Targeting:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Smart Audience Targeting:" }),
         " Anonymous customer segmentation without PII"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Performance Analytics:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Performance Analytics:" }),
         " Real-time conversion tracking and insights"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Google Sheets Integration:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Google Sheets Integration:" }),
         " Export data and manage campaigns"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Privacy-First:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Privacy-First:" }),
         " GDPR & CCPA compliant, no customer data collection"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h2", { children: "Documentation & Resources" }),
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h3", { children: "Setup Guides" }),
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Initial Setup:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("h2", { children: "Documentation & Resources" }),
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("h3", { children: "Setup Guides" }),
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Initial Setup:" }),
         " Complete walkthrough of app installation and configuration"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Google Ads Integration:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Google Ads Integration:" }),
         " Step-by-step guide to connect your Google Ads account"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Audience Configuration:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Audience Configuration:" }),
         " How to set up customer segmentation and targeting"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Campaign Optimization:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Campaign Optimization:" }),
         " Best practices for automated campaign management"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h3", { children: "Troubleshooting" }),
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Connection Issues:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("h3", { children: "Troubleshooting" }),
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Connection Issues:" }),
         " Resolving Google Ads and Shopify integration problems"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Performance Questions:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Performance Questions:" }),
         " Understanding campaign optimization metrics"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Billing Issues:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Billing Issues:" }),
         " Common subscription and payment questions"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Account Problems:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Account Problems:" }),
         " Login, access, and configuration troubleshooting"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h2", { children: "Pricing & Plans" }),
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "1rem", margin: "2rem 0" }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { padding: "1.5rem", border: "1px solid #e5e7eb", borderRadius: "8px", textAlign: "center" }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h3", { children: "Free Plan" }),
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { style: { fontSize: "2rem", fontWeight: "bold", color: "#10b981" }, children: "$0" }),
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { children: "per month" }),
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("ul", { style: { textAlign: "left", marginTop: "1rem" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("li", { children: "Up to 1,000 monthly sessions" }),
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("li", { children: "Basic campaign optimization" }),
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("li", { children: "Email support" }),
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("li", { children: "Standard analytics" })
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("h2", { children: "Pricing & Plans" }),
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "1rem", margin: "2rem 0" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { style: { padding: "1.5rem", border: "1px solid #e5e7eb", borderRadius: "8px", textAlign: "center" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("h3", { children: "Free Plan" }),
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { style: { fontSize: "2rem", fontWeight: "bold", color: "#10b981" }, children: "$0" }),
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { children: "per month" }),
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("ul", { style: { textAlign: "left", marginTop: "1rem" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("li", { children: "Up to 1,000 monthly sessions" }),
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("li", { children: "Basic campaign optimization" }),
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("li", { children: "Email support" }),
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("li", { children: "Standard analytics" })
         ] })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { padding: "1.5rem", border: "2px solid #3b82f6", borderRadius: "8px", textAlign: "center", position: "relative" }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { style: { position: "absolute", top: "-10px", left: "50%", transform: "translateX(-50%)", backgroundColor: "#3b82f6", color: "white", padding: "0.25rem 1rem", borderRadius: "12px", fontSize: "0.875rem" }, children: "Popular" }),
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h3", { children: "Pro Plan" }),
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { style: { fontSize: "2rem", fontWeight: "bold", color: "#3b82f6" }, children: "$29" }),
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { children: "per month" }),
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("ul", { style: { textAlign: "left", marginTop: "1rem" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("li", { children: "Unlimited sessions" }),
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("li", { children: "Advanced AI optimization" }),
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("li", { children: "Priority support" }),
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("li", { children: "Advanced analytics" }),
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("li", { children: "Google Sheets integration" })
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { style: { padding: "1.5rem", border: "2px solid #3b82f6", borderRadius: "8px", textAlign: "center", position: "relative" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("div", { style: { position: "absolute", top: "-10px", left: "50%", transform: "translateX(-50%)", backgroundColor: "#3b82f6", color: "white", padding: "0.25rem 1rem", borderRadius: "12px", fontSize: "0.875rem" }, children: "Popular" }),
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("h3", { children: "Pro Plan" }),
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { style: { fontSize: "2rem", fontWeight: "bold", color: "#3b82f6" }, children: "$29" }),
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { children: "per month" }),
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("ul", { style: { textAlign: "left", marginTop: "1rem" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("li", { children: "Unlimited sessions" }),
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("li", { children: "Advanced AI optimization" }),
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("li", { children: "Priority support" }),
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("li", { children: "Advanced analytics" }),
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("li", { children: "Google Sheets integration" })
         ] })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { padding: "1.5rem", border: "1px solid #e5e7eb", borderRadius: "8px", textAlign: "center" }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h3", { children: "Enterprise" }),
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { style: { fontSize: "2rem", fontWeight: "bold", color: "#8b5cf6" }, children: "$99" }),
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { children: "per month" }),
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("ul", { style: { textAlign: "left", marginTop: "1rem" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("li", { children: "Everything in Pro" }),
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("li", { children: "Multiple store management" }),
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("li", { children: "Dedicated account manager" }),
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("li", { children: "Custom integrations" }),
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("li", { children: "SLA guarantees" })
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { style: { padding: "1.5rem", border: "1px solid #e5e7eb", borderRadius: "8px", textAlign: "center" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("h3", { children: "Enterprise" }),
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { style: { fontSize: "2rem", fontWeight: "bold", color: "#8b5cf6" }, children: "$99" }),
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { children: "per month" }),
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("ul", { style: { textAlign: "left", marginTop: "1rem" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("li", { children: "Everything in Pro" }),
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("li", { children: "Multiple store management" }),
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("li", { children: "Dedicated account manager" }),
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("li", { children: "Custom integrations" }),
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("li", { children: "SLA guarantees" })
         ] })
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h2", { children: "Technical Support" }),
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h3", { children: "System Requirements" }),
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Shopify Plan:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("h2", { children: "Technical Support" }),
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("h3", { children: "System Requirements" }),
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Shopify Plan:" }),
         " Any Shopify plan (Basic, Shopify, Advanced, Plus)"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Google Ads Account:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Google Ads Account:" }),
         " Active Google Ads account with API access"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Browser:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Browser:" }),
         " Modern browser (Chrome, Firefox, Safari, Edge)"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Permissions:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Permissions:" }),
         " Shopify admin access to install apps"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h3", { children: "Common Integration Questions" }),
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Google Ads API:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("h3", { children: "Common Integration Questions" }),
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Google Ads API:" }),
         " We use read/write access to optimize your campaigns"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Google Sheets:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Google Sheets:" }),
         " Optional integration for data export and management"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Shopify Data:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Shopify Data:" }),
         " We only read product catalog data (no customer PII)"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Privacy Compliance:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Privacy Compliance:" }),
         " Fully GDPR and CCPA compliant by design"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h2", { children: "Privacy & Security" }),
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h3", { children: "Data Protection" }),
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "No Customer PII:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("h2", { children: "Privacy & Security" }),
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("h3", { children: "Data Protection" }),
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "No Customer PII:" }),
         " We never collect personal information from your customers"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Minimal Data Collection:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Minimal Data Collection:" }),
         " Only store configuration and campaign settings"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Your Data Control:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Your Data Control:" }),
         " You own and control all your optimization data"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Secure Infrastructure:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Secure Infrastructure:" }),
         " Enterprise-grade security with encryption"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h3", { children: "Compliance" }),
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "GDPR Compliant:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("h3", { children: "Compliance" }),
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "GDPR Compliant:" }),
         " Full compliance with EU privacy regulations"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "CCPA Compliant:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "CCPA Compliant:" }),
         " California privacy law compliance"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "SOC 2 Type II:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "SOC 2 Type II:" }),
         " Audited security and privacy controls"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Data Processing Agreements:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Data Processing Agreements:" }),
         " Available for enterprise customers"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h2", { children: "Performance & Optimization" }),
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h3", { children: "Expected Results" }),
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Conversion Rate:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("h2", { children: "Performance & Optimization" }),
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("h3", { children: "Expected Results" }),
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Conversion Rate:" }),
         " Average 15-25% improvement in first 30 days"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Setup Time:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Setup Time:" }),
         " Complete setup in under 5 minutes"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Time to Value:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Time to Value:" }),
         " See optimization results within 24 hours"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Campaign Management:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Campaign Management:" }),
         " Automated optimization saves 5-10 hours/week"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h3", { children: "Best Practices" }),
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Audience Segmentation:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("h3", { children: "Best Practices" }),
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Audience Segmentation:" }),
         " Set up detailed customer segments for better targeting"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Campaign Budgets:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Campaign Budgets:" }),
         " Start with conservative budgets and scale based on performance"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Regular Monitoring:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Regular Monitoring:" }),
         " Review optimization reports weekly"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "A/B Testing:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "A/B Testing:" }),
         " Use built-in testing features to optimize campaigns"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h2", { children: "Training & Onboarding" }),
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h3", { children: "Available Resources" }),
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Video Tutorials:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("h2", { children: "Training & Onboarding" }),
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("h3", { children: "Available Resources" }),
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Video Tutorials:" }),
         " Step-by-step setup and optimization guides"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Webinar Series:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Webinar Series:" }),
         " Monthly training sessions with Q&A"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Best Practices Guide:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Best Practices Guide:" }),
         " Comprehensive optimization strategies"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Case Studies:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Case Studies:" }),
         " Real customer success stories and results"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h3", { children: "Enterprise Support" }),
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { children: "Enterprise customers receive:" }),
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Dedicated Account Manager:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("h3", { children: "Enterprise Support" }),
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { children: "Enterprise customers receive:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Dedicated Account Manager:" }),
         " Personal support and optimization guidance"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Custom Training:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Custom Training:" }),
         " Tailored training sessions for your team"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Implementation Support:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Implementation Support:" }),
         " Hands-on help with complex setups"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Performance Reviews:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Performance Reviews:" }),
         " Regular optimization strategy sessions"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h2", { children: "Updates & Maintenance" }),
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h3", { children: "Service Updates" }),
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Automatic Updates:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("h2", { children: "Updates & Maintenance" }),
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("h3", { children: "Service Updates" }),
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Automatic Updates:" }),
         " New features and improvements deployed continuously"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Maintenance Windows:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Maintenance Windows:" }),
         " Scheduled maintenance with advance notice"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Security Patches:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Security Patches:" }),
         " Immediate deployment of critical updates"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Feature Announcements:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Feature Announcements:" }),
         " Email notifications for major new features"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h3", { children: "Service Status" }),
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Uptime Target:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("h3", { children: "Service Status" }),
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Uptime Target:" }),
         " 99.9% service availability"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Status Page:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Status Page:" }),
         " Real-time service status and incident reports"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Performance Monitoring:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Performance Monitoring:" }),
         " 24/7 monitoring of all systems"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Incident Response:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Incident Response:" }),
         " Rapid response to any service issues"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("hr", { style: { margin: "3rem 0" } }),
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { textAlign: "center", backgroundColor: "#f3f4f6", padding: "2rem", borderRadius: "8px" }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h3", { children: "Need Help Right Now?" }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { style: { marginBottom: "1rem" }, children: "Contact our support team for immediate assistance" }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("p", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Email:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("hr", { style: { margin: "3rem 0" } }),
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { style: { textAlign: "center", backgroundColor: "#f3f4f6", padding: "2rem", borderRadius: "8px" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("h3", { children: "Need Help Right Now?" }),
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { style: { marginBottom: "1rem" }, children: "Contact our support team for immediate assistance" }),
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("p", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Email:" }),
         " ",
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("a", { href: "mailto:atanrikulu@e-listele.com", children: "atanrikulu@e-listele.com" }),
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("br", {}),
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Response Time:" }),
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("a", { href: "mailto:atanrikulu@e-listele.com", children: "atanrikulu@e-listele.com" }),
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("br", {}),
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Response Time:" }),
         " 24 hours",
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("br", {}),
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Available:" }),
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("br", {}),
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Available:" }),
         " Monday-Friday, 9 AM - 6 PM EST"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { marginTop: "2rem" }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h4", { children: "Emergency Support" }),
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { children: "For critical issues affecting your campaigns:" }),
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("p", { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Priority Email:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { style: { marginTop: "2rem" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("h4", { children: "Emergency Support" }),
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { children: "For critical issues affecting your campaigns:" }),
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("p", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Priority Email:" }),
           " ",
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("a", { href: "mailto:atanrikulu@e-listele.com", children: "atanrikulu@e-listele.com" })
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("a", { href: "mailto:atanrikulu@e-listele.com", children: "atanrikulu@e-listele.com" })
         ] })
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("p", { style: { textAlign: "center", marginTop: "2rem", color: "#666" }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Ads Autopilot AI Support Team" }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("br", {}),
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("p", { style: { textAlign: "center", marginTop: "2rem", color: "#666" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Ads Autopilot AI Support Team" }),
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("br", {}),
       "Helping you optimize your Google Ads campaigns with AI-powered automation"
     ] })
   ] });
@@ -111812,20 +112081,20 @@ function Support() {
 var index_exports = {};
 __export(index_exports, {
   default: () => Index,
-  loader: () => loader12
+  loader: () => loader13
 });
-var import_node12 = __toESM(require_dist3()), import_jsx_runtime14 = __toESM(require_jsx_runtime());
-async function loader12({ request: request2 }) {
+var import_node13 = __toESM(require_dist3()), import_jsx_runtime15 = __toESM(require_jsx_runtime());
+async function loader13({ request: request2 }) {
   let url = new URL(request2.url), isEmbedded = url.searchParams.get("embedded") === "1", hasHmac = url.searchParams.has("hmac"), hasHost = url.searchParams.has("host");
-  return isEmbedded && hasHmac && hasHost ? (0, import_node12.redirect)(`/app/${url.search}`) : null;
+  return isEmbedded && hasHmac && hasHost ? (0, import_node13.redirect)(`/app/${url.search}`) : null;
 }
 function Index() {
-  return /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("html", { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("head", { children: /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("title", { children: "ProofKit - Shopify App" }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("body", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("h1", { children: "ProofKit Shopify App" }),
-      /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { children: "This app should be accessed through the Shopify Admin panel." }),
-      /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { children: "If you're seeing this page, please install the app through Shopify." })
+  return /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("html", { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("head", { children: /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("title", { children: "ProofKit - Shopify App" }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("body", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("h1", { children: "ProofKit Shopify App" }),
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("p", { children: "This app should be accessed through the Shopify Admin panel." }),
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("p", { children: "If you're seeing this page, please install the app through Shopify." })
     ] })
   ] });
 }
@@ -111833,11 +112102,11 @@ function Index() {
 // app/routes/auth.$.tsx
 var auth_exports = {};
 __export(auth_exports, {
-  loader: () => loader13
+  loader: () => loader14
 });
-var import_node13 = __toESM(require_dist3());
+var import_node14 = __toESM(require_dist3());
 init_shopify_server();
-var loader13 = async ({ request: request2 }) => {
+var loader14 = async ({ request: request2 }) => {
   try {
     let url = new URL(request2.url), host = url.searchParams.get("host") || void 0, shopName = extractShopFromRequest(request2);
     if (!shopName && host && (shopName = extractShopFromHost(host) || null), !shopName) {
@@ -111859,7 +112128,7 @@ var loader13 = async ({ request: request2 }) => {
     let auth = await authenticate.admin(request2);
     return auth instanceof Response ? auth : null;
   } catch (error) {
-    return console.error("\u{1F6A8} Auth route error:", error), console.error("Request URL:", request2.url), console.error("Request headers:", Object.fromEntries(request2.headers.entries())), (0, import_node13.redirect)(`/auth/login?error=auth_failed&shop=${extractShopFromRequest(request2) || "unknown"}`);
+    return console.error("\u{1F6A8} Auth route error:", error), console.error("Request URL:", request2.url), console.error("Request headers:", Object.fromEntries(request2.headers.entries())), (0, import_node14.redirect)(`/auth/login?error=auth_failed&shop=${extractShopFromRequest(request2) || "unknown"}`);
   }
 };
 
@@ -111867,22 +112136,22 @@ var loader13 = async ({ request: request2 }) => {
 var health_exports2 = {};
 __export(health_exports2, {
   default: () => Health2,
-  loader: () => loader14
+  loader: () => loader15
 });
-var import_node14 = __toESM(require_dist3()), import_jsx_runtime15 = __toESM(require_jsx_runtime()), loader14 = () => (0, import_node14.json)({ ok: !0 });
+var import_node15 = __toESM(require_dist3()), import_jsx_runtime16 = __toESM(require_jsx_runtime()), loader15 = () => (0, import_node15.json)({ ok: !0 });
 function Health2() {
-  return /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("pre", { children: "OK" });
+  return /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("pre", { children: "OK" });
 }
 
 // app/routes/debug.tsx
 var debug_exports = {};
 __export(debug_exports, {
   default: () => Debug,
-  loader: () => loader15
+  loader: () => loader16
 });
-var import_node15 = __toESM(require_dist3()), import_jsx_runtime16 = __toESM(require_jsx_runtime());
-async function loader15() {
-  return (0, import_node15.json)({
+var import_node16 = __toESM(require_dist3()), import_jsx_runtime17 = __toESM(require_jsx_runtime());
+async function loader16() {
+  return (0, import_node16.json)({
     env: {
       SHOPIFY_API_KEY: process.env.SHOPIFY_API_KEY ? "SET" : "MISSING",
       SHOPIFY_API_SECRET: process.env.SHOPIFY_API_SECRET ? "SET" : "MISSING",
@@ -111894,7 +112163,7 @@ async function loader15() {
   });
 }
 function Debug() {
-  return /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("div", { children: "Debug route - check logs for environment info" });
+  return /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("div", { children: "Debug route - check logs for environment info" });
 }
 
 // app/routes/terms.tsx
@@ -111903,386 +112172,386 @@ __export(terms_exports, {
   default: () => Terms,
   meta: () => meta3
 });
-var import_jsx_runtime17 = __toESM(require_jsx_runtime()), meta3 = () => [
+var import_jsx_runtime18 = __toESM(require_jsx_runtime()), meta3 = () => [
   { title: "Terms of Service - Ads Autopilot AI" },
   { name: "description", content: "Ads Autopilot AI Terms of Service - Legal terms for our Shopify conversion optimization app" }
 ];
 function Terms() {
-  return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { style: { fontFamily: "system-ui, sans-serif", lineHeight: "1.8", maxWidth: "800px", margin: "0 auto", padding: "2rem" }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h1", { children: "Ads Autopilot AI Terms of Service" }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("p", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Effective Date:" }),
+  return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { style: { fontFamily: "system-ui, sans-serif", lineHeight: "1.8", maxWidth: "800px", margin: "0 auto", padding: "2rem" }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h1", { children: "Ads Autopilot AI Terms of Service" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("p", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Effective Date:" }),
       " August 25, 2025",
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Last Updated:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Last Updated:" }),
       " August 25, 2025",
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Version:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Version:" }),
       " 1.0"
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h2", { children: "Agreement Overview" }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { children: 'These Terms of Service ("Terms") govern your use of Ads Autopilot AI ("the App", "the Service") provided by the Ads Autopilot AI team ("we", "us", "our"). By installing, accessing, or using Ads Autopilot AI, you ("Merchant", "you", "your") agree to be bound by these Terms.' }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h2", { children: "Service Description" }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h3", { children: "What Ads Autopilot AI Does" }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { children: "Ads Autopilot AI is a Shopify app that provides:" }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "AI-Powered Campaign Optimization:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h2", { children: "Agreement Overview" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { children: 'These Terms of Service ("Terms") govern your use of Ads Autopilot AI ("the App", "the Service") provided by the Ads Autopilot AI team ("we", "us", "our"). By installing, accessing, or using Ads Autopilot AI, you ("Merchant", "you", "your") agree to be bound by these Terms.' }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h2", { children: "Service Description" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h3", { children: "What Ads Autopilot AI Does" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { children: "Ads Autopilot AI is a Shopify app that provides:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "AI-Powered Campaign Optimization:" }),
         " Automated Google Ads campaign management and optimization"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Audience Management:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Audience Management:" }),
         " Anonymous customer segmentation and targeting"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Performance Analytics:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Performance Analytics:" }),
         " Conversion rate tracking and optimization insights"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Google Sheets Integration:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Google Sheets Integration:" }),
         " Data export and campaign configuration management"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h3", { children: "Service Availability" }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Uptime Target:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h3", { children: "Service Availability" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Uptime Target:" }),
         " 99.9% service availability"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Maintenance Windows:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Maintenance Windows:" }),
         " Scheduled maintenance with advance notice"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Support Hours:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Support Hours:" }),
         " Business hours EST with 24-hour response SLA"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Geographic Availability:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Geographic Availability:" }),
         " Global service with regional data compliance"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h2", { children: "Account Terms" }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h3", { children: "Eligibility" }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { children: "To use Ads Autopilot AI, you must:" }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Be at least 18 years old or the age of majority in your jurisdiction" }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Have a valid Shopify store and merchant account" }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Provide accurate and complete registration information" }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Comply with all applicable laws and regulations" })
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h2", { children: "Account Terms" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h3", { children: "Eligibility" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { children: "To use Ads Autopilot AI, you must:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("li", { children: "Be at least 18 years old or the age of majority in your jurisdiction" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("li", { children: "Have a valid Shopify store and merchant account" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("li", { children: "Provide accurate and complete registration information" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("li", { children: "Comply with all applicable laws and regulations" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h3", { children: "Account Responsibilities" }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { children: "You are responsible for:" }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Maintaining the security of your account credentials" }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "All activities that occur under your account" }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Promptly notifying us of any unauthorized use" }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Keeping your contact information current and accurate" })
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h3", { children: "Account Responsibilities" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { children: "You are responsible for:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("li", { children: "Maintaining the security of your account credentials" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("li", { children: "All activities that occur under your account" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("li", { children: "Promptly notifying us of any unauthorized use" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("li", { children: "Keeping your contact information current and accurate" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h2", { children: "Pricing and Billing" }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h3", { children: "Subscription Plans" }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Free Plan:" }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Basic features and limited usage" }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Up to 1,000 monthly sessions" }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Community support" })
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h2", { children: "Pricing and Billing" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h3", { children: "Subscription Plans" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Free Plan:" }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("li", { children: "Basic features and limited usage" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("li", { children: "Up to 1,000 monthly sessions" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("li", { children: "Community support" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Pro Plan ($29/month):" }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Full feature access" }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Unlimited sessions" }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Priority support" }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Advanced analytics" })
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Pro Plan ($29/month):" }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("li", { children: "Full feature access" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("li", { children: "Unlimited sessions" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("li", { children: "Priority support" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("li", { children: "Advanced analytics" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Enterprise Plan ($99/month):" }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Everything in Pro" }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Multiple store management" }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Dedicated account manager" }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Custom integrations" })
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Enterprise Plan ($99/month):" }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("li", { children: "Everything in Pro" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("li", { children: "Multiple store management" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("li", { children: "Dedicated account manager" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("li", { children: "Custom integrations" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h3", { children: "Billing Terms" }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Billing Cycle:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h3", { children: "Billing Terms" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Billing Cycle:" }),
         " Monthly subscription billing through Shopify"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Payment Method:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Payment Method:" }),
         " Charged to your Shopify account"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Auto-Renewal:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Auto-Renewal:" }),
         " Subscriptions automatically renew unless cancelled"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Price Changes:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Price Changes:" }),
         " 30-day advance notice for any price changes"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h2", { children: "Data and Privacy" }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h3", { children: "Data Handling" }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { children: "Ads Autopilot AI follows strict data minimization principles:" }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "No Customer PII:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h2", { children: "Data and Privacy" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h3", { children: "Data Handling" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { children: "Ads Autopilot AI follows strict data minimization principles:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "No Customer PII:" }),
         " We do not collect personal information from your customers"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Merchant Data Only:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Merchant Data Only:" }),
         " We only access store configuration and product catalog data"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Your Control:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Your Control:" }),
         " You control all integrations and can revoke access anytime"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Secure Storage:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Secure Storage:" }),
         " All data encrypted in transit and at rest"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h3", { children: "Third-Party Integrations" }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { children: "By using Ads Autopilot AI, you authorize us to:" }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Access your Google Sheets (when you connect them)" }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Integrate with Google Ads (when you authorize it)" }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Read your Shopify product catalog" }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Process campaign optimization data" })
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h3", { children: "Third-Party Integrations" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { children: "By using Ads Autopilot AI, you authorize us to:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("li", { children: "Access your Google Sheets (when you connect them)" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("li", { children: "Integrate with Google Ads (when you authorize it)" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("li", { children: "Read your Shopify product catalog" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("li", { children: "Process campaign optimization data" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h2", { children: "Acceptable Use" }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h3", { children: "Permitted Uses" }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { children: "You may use Ads Autopilot AI to:" }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Optimize your Google Ads campaigns" }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Manage audience segmentation for your store" }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Analyze conversion performance" }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Export campaign data to Google Sheets" })
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h2", { children: "Acceptable Use" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h3", { children: "Permitted Uses" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { children: "You may use Ads Autopilot AI to:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("li", { children: "Optimize your Google Ads campaigns" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("li", { children: "Manage audience segmentation for your store" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("li", { children: "Analyze conversion performance" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("li", { children: "Export campaign data to Google Sheets" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h3", { children: "Prohibited Uses" }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { children: "You may not use Ads Autopilot AI to:" }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Violate any applicable laws or regulations" }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Infringe on intellectual property rights" }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Attempt to reverse engineer the service" }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Use the service for malicious or fraudulent purposes" }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Interfere with service operations or security" }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Share access credentials with unauthorized parties" })
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h3", { children: "Prohibited Uses" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { children: "You may not use Ads Autopilot AI to:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("li", { children: "Violate any applicable laws or regulations" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("li", { children: "Infringe on intellectual property rights" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("li", { children: "Attempt to reverse engineer the service" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("li", { children: "Use the service for malicious or fraudulent purposes" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("li", { children: "Interfere with service operations or security" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("li", { children: "Share access credentials with unauthorized parties" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h2", { children: "Service Limitations" }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h3", { children: "Technical Limitations" }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Google API Quotas:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h2", { children: "Service Limitations" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h3", { children: "Technical Limitations" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Google API Quotas:" }),
         " Subject to Google Ads and Sheets API rate limits"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Shopify Limits:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Shopify Limits:" }),
         " Bound by Shopify platform limitations"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Data Processing:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Data Processing:" }),
         " Processing times may vary based on data volume"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Feature Availability:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Feature Availability:" }),
         " Some features may require specific plan tiers"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h3", { children: "Service Dependencies" }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { children: "Ads Autopilot AI depends on third-party services:" }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Shopify Platform:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h3", { children: "Service Dependencies" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { children: "Ads Autopilot AI depends on third-party services:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Shopify Platform:" }),
         " Core functionality requires active Shopify store"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Google Services:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Google Services:" }),
         " Integrations subject to Google service availability"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Internet Connectivity:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Internet Connectivity:" }),
         " Reliable internet connection required"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h2", { children: "Support and Maintenance" }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h3", { children: "Support Services" }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Response Time:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h2", { children: "Support and Maintenance" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h3", { children: "Support Services" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Response Time:" }),
         " 24-hour response for all support requests"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Support Channels:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Support Channels:" }),
         " Email support and help documentation"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Business Hours:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Business Hours:" }),
         " Monday-Friday, 9 AM - 6 PM EST"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Languages:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Languages:" }),
         " English (primary), Spanish, French"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h3", { children: "Maintenance and Updates" }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Regular Updates:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h3", { children: "Maintenance and Updates" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Regular Updates:" }),
         " Continuous service improvements and bug fixes"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Scheduled Maintenance:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Scheduled Maintenance:" }),
         " Advance notice for planned downtime"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Security Updates:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Security Updates:" }),
         " Immediate deployment of critical security patches"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Feature Updates:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Feature Updates:" }),
         " New features rolled out with documentation"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h2", { children: "Liability and Disclaimers" }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h3", { children: "Service Warranty" }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { children: 'Ads Autopilot AI is provided "as is" with the following disclaimers:' }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "No Revenue Guarantees:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h2", { children: "Liability and Disclaimers" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h3", { children: "Service Warranty" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { children: 'Ads Autopilot AI is provided "as is" with the following disclaimers:' }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "No Revenue Guarantees:" }),
         " We do not guarantee specific conversion rate improvements"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Third-Party Dependencies:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Third-Party Dependencies:" }),
         " Performance may be affected by external services"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Compliance Responsibility:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Compliance Responsibility:" }),
         " You are responsible for compliance with advertising regulations"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h3", { children: "Limitation of Liability" }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { children: "Our liability is limited to:" }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Direct Damages:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h3", { children: "Limitation of Liability" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { children: "Our liability is limited to:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Direct Damages:" }),
         " Maximum liability limited to subscription fees paid"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Indirect Damages:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Indirect Damages:" }),
         " Not liable for lost profits or consequential damages"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Service Interruptions:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Service Interruptions:" }),
         " Service credits for extended downtime"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h2", { children: "Termination" }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h3", { children: "Termination by You" }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { children: "You may terminate your subscription at any time by:" }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Uninstalling the app from your Shopify admin" }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Contacting support to cancel your subscription" }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Cancelling through your Shopify billing settings" })
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h2", { children: "Termination" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h3", { children: "Termination by You" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { children: "You may terminate your subscription at any time by:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("li", { children: "Uninstalling the app from your Shopify admin" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("li", { children: "Contacting support to cancel your subscription" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("li", { children: "Cancelling through your Shopify billing settings" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h3", { children: "Termination by Us" }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { children: "We may terminate or suspend your access if:" }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "You violate these Terms of Service" }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "You fail to pay subscription fees" }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "We detect fraudulent or malicious activity" }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Required by law or legal process" })
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h3", { children: "Termination by Us" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { children: "We may terminate or suspend your access if:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("li", { children: "You violate these Terms of Service" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("li", { children: "You fail to pay subscription fees" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("li", { children: "We detect fraudulent or malicious activity" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("li", { children: "Required by law or legal process" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h3", { children: "Effect of Termination" }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { children: "Upon termination:" }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Your access to the service will be immediately suspended" }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Your data will be deleted within 30 days" }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "You can export your data before termination" }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "No refunds for partial billing periods" })
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h3", { children: "Effect of Termination" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { children: "Upon termination:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("li", { children: "Your access to the service will be immediately suspended" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("li", { children: "Your data will be deleted within 30 days" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("li", { children: "You can export your data before termination" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("li", { children: "No refunds for partial billing periods" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h2", { children: "Legal Terms" }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h3", { children: "Intellectual Property" }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Our Rights:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h2", { children: "Legal Terms" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h3", { children: "Intellectual Property" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Our Rights:" }),
         " We retain all rights to Ads Autopilot AI software and content"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Your Rights:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Your Rights:" }),
         " You retain all rights to your store data and content"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "License:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "License:" }),
         " We grant you a limited license to use the service"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Restrictions:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Restrictions:" }),
         " You may not copy, modify, or distribute our software"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h3", { children: "Governing Law" }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Jurisdiction:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h3", { children: "Governing Law" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Jurisdiction:" }),
         " These terms are governed by Delaware law"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Disputes:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Disputes:" }),
         " Disputes resolved through binding arbitration"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Class Action Waiver:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Class Action Waiver:" }),
         " No class action lawsuits permitted"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h2", { children: "Changes to Terms" }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { children: "We may update these Terms of Service from time to time. We will:" }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Provide 30-day advance notice of material changes" }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Email notification to all active users" }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Post updates prominently in the app" }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Maintain version history of all changes" })
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h2", { children: "Changes to Terms" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { children: "We may update these Terms of Service from time to time. We will:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("li", { children: "Provide 30-day advance notice of material changes" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("li", { children: "Email notification to all active users" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("li", { children: "Post updates prominently in the app" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("li", { children: "Maintain version history of all changes" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h2", { children: "Contact Information" }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("p", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "General Support:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h2", { children: "Contact Information" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("p", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "General Support:" }),
       " atanrikulu@e-listele.com",
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Legal Questions:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Legal Questions:" }),
       " atanrikulu@e-listele.com",
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Billing Issues:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Billing Issues:" }),
       " atanrikulu@e-listele.com",
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Privacy Concerns:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Privacy Concerns:" }),
       " atanrikulu@e-listele.com"
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h3", { children: "Business Information" }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("p", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Company:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h3", { children: "Business Information" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("p", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Company:" }),
       " Ads Autopilot AI LLC",
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Support Hours:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Support Hours:" }),
       " Monday-Friday, 9 AM - 6 PM EST",
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Response Time:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Response Time:" }),
       " 24 hours for all inquiries"
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("hr", { style: { margin: "3rem 0" } }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { style: { textAlign: "center", color: "#666" }, children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "These Terms of Service are effective as of August 25, 2025, and will remain in effect except with respect to any changes in their provisions in the future, which will be in effect immediately after being posted on this page." }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { style: { textAlign: "center", marginTop: "2rem" }, children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "By installing or using Ads Autopilot AI, you acknowledge that you have read, understood, and agree to be bound by these Terms of Service." }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("p", { style: { textAlign: "center", marginTop: "2rem" }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Contact Information:" }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Email:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("hr", { style: { margin: "3rem 0" } }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { style: { textAlign: "center", color: "#666" }, children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "These Terms of Service are effective as of August 25, 2025, and will remain in effect except with respect to any changes in their provisions in the future, which will be in effect immediately after being posted on this page." }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { style: { textAlign: "center", marginTop: "2rem" }, children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "By installing or using Ads Autopilot AI, you acknowledge that you have read, understood, and agree to be bound by these Terms of Service." }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("p", { style: { textAlign: "center", marginTop: "2rem" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Contact Information:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Email:" }),
       " atanrikulu@e-listele.com",
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Support:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Support:" }),
       " atanrikulu@e-listele.com",
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Website:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Website:" }),
       " ",
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("a", { href: "https://proofkit-saas.vercel.app/terms", children: "https://proofkit-saas.vercel.app/terms" })
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("a", { href: "https://proofkit-saas.vercel.app/terms", children: "https://proofkit-saas.vercel.app/terms" })
     ] })
   ] });
 }
@@ -112294,13 +112563,13 @@ __export(app_exports, {
   default: () => App2,
   headers: () => headers,
   links: () => links2,
-  loader: () => loader16
+  loader: () => loader17
 });
-var import_node16 = __toESM(require_dist3()), import_react20 = __toESM(require_dist2());
+var import_node17 = __toESM(require_dist3()), import_react21 = __toESM(require_dist2());
 init_server();
 
 // node_modules/@shopify/shopify-app-remix/dist/esm/react/components/AppProvider/AppProvider.mjs
-var import_jsx_runtime19 = __toESM(require_jsx_runtime(), 1), import_polaris2 = __toESM(require_cjs6(), 1);
+var import_jsx_runtime20 = __toESM(require_jsx_runtime(), 1), import_polaris2 = __toESM(require_cjs6(), 1);
 
 // ../node_modules/@shopify/polaris/locales/en.json
 var en_default = {
@@ -112716,22 +112985,22 @@ var en_default = {
 var APP_BRIDGE_URL2 = "https://cdn.shopify.com/shopifycloud/app-bridge.js";
 
 // node_modules/@shopify/shopify-app-remix/dist/esm/react/components/RemixPolarisLink.mjs
-var import_jsx_runtime18 = __toESM(require_jsx_runtime(), 1), import_react14 = __toESM(require_react(), 1), import_react15 = __toESM(require_dist2(), 1), RemixPolarisLink = import_react14.default.forwardRef((props, ref) => (0, import_jsx_runtime18.jsx)(import_react15.Link, { ...props, to: props.url ?? props.to, ref }));
+var import_jsx_runtime19 = __toESM(require_jsx_runtime(), 1), import_react15 = __toESM(require_react(), 1), import_react16 = __toESM(require_dist2(), 1), RemixPolarisLink = import_react15.default.forwardRef((props, ref) => (0, import_jsx_runtime19.jsx)(import_react16.Link, { ...props, to: props.url ?? props.to, ref }));
 
 // node_modules/@shopify/shopify-app-remix/dist/esm/react/components/AppProvider/AppProvider.mjs
 function AppProvider(props) {
   let { children, apiKey, i18n, isEmbeddedApp = !0, __APP_BRIDGE_URL = APP_BRIDGE_URL2, ...polarisProps } = props;
-  return (0, import_jsx_runtime19.jsxs)(import_jsx_runtime19.Fragment, { children: [isEmbeddedApp && (0, import_jsx_runtime19.jsx)("script", { src: __APP_BRIDGE_URL, "data-api-key": apiKey }), (0, import_jsx_runtime19.jsx)(import_polaris2.AppProvider, { ...polarisProps, linkComponent: RemixPolarisLink, i18n: i18n || en_default, children })] });
+  return (0, import_jsx_runtime20.jsxs)(import_jsx_runtime20.Fragment, { children: [isEmbeddedApp && (0, import_jsx_runtime20.jsx)("script", { src: __APP_BRIDGE_URL, "data-api-key": apiKey }), (0, import_jsx_runtime20.jsx)(import_polaris2.AppProvider, { ...polarisProps, linkComponent: RemixPolarisLink, i18n: i18n || en_default, children })] });
 }
 
 // node_modules/@shopify/shopify-app-remix/dist/esm/react/components/AppProxyProvider/AppProxyProvider.mjs
-var import_jsx_runtime20 = __toESM(require_jsx_runtime(), 1), import_react16 = __toESM(require_react(), 1), AppProxyProviderContext = (0, import_react16.createContext)(null);
+var import_jsx_runtime21 = __toESM(require_jsx_runtime(), 1), import_react17 = __toESM(require_react(), 1), AppProxyProviderContext = (0, import_react17.createContext)(null);
 
 // node_modules/@shopify/shopify-app-remix/dist/esm/react/components/AppProxyForm/AppProxyForm.mjs
-var import_jsx_runtime21 = __toESM(require_jsx_runtime(), 1), import_react17 = __toESM(require_react(), 1);
+var import_jsx_runtime22 = __toESM(require_jsx_runtime(), 1), import_react18 = __toESM(require_react(), 1);
 
 // node_modules/@shopify/shopify-app-remix/dist/esm/react/components/AppProxyLink/AppProxyLink.mjs
-var import_jsx_runtime22 = __toESM(require_jsx_runtime(), 1), import_react18 = __toESM(require_react(), 1);
+var import_jsx_runtime23 = __toESM(require_jsx_runtime(), 1), import_react19 = __toESM(require_react(), 1);
 
 // ../node_modules/@shopify/polaris/build/esm/styles.css
 var styles_default = "/assets/_assets/styles-62I325MT.css";
@@ -112740,7 +113009,7 @@ var styles_default = "/assets/_assets/styles-62I325MT.css";
 init_shopify_server();
 
 // app/components/ErrorBoundary.tsx
-var import_react19 = __toESM(require_react()), import_jsx_runtime23 = __toESM(require_jsx_runtime()), ErrorBoundary = class extends import_react19.default.Component {
+var import_react20 = __toESM(require_react()), import_jsx_runtime24 = __toESM(require_jsx_runtime()), ErrorBoundary = class extends import_react20.default.Component {
   constructor(props) {
     super(props);
     this.reset = () => {
@@ -112758,9 +113027,9 @@ var import_react19 = __toESM(require_react()), import_jsx_runtime23 = __toESM(re
     if (this.state.hasError) {
       if (this.props.fallback) {
         let FallbackComponent = this.props.fallback;
-        return /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(FallbackComponent, { error: this.state.error, reset: this.reset });
+        return /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(FallbackComponent, { error: this.state.error, reset: this.reset });
       }
-      return /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(
+      return /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(
         "div",
         {
           style: {
@@ -112771,13 +113040,13 @@ var import_react19 = __toESM(require_react()), import_jsx_runtime23 = __toESM(re
             margin: "1rem"
           },
           children: [
-            /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("h2", { children: "Application Error" }),
-            /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("p", { children: "We're sorry, but something went wrong while loading this page. Please try refreshing the page or contact support if the problem persists." }),
-            /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("details", { style: { marginTop: "1rem" }, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("summary", { children: "Error Details" }),
-              /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("pre", { style: { fontSize: "12px", overflow: "auto" }, children: this.state.error?.message || "Unknown error" })
+            /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("h2", { children: "Application Error" }),
+            /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("p", { children: "We're sorry, but something went wrong while loading this page. Please try refreshing the page or contact support if the problem persists." }),
+            /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("details", { style: { marginTop: "1rem" }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("summary", { children: "Error Details" }),
+              /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("pre", { style: { fontSize: "12px", overflow: "auto" }, children: this.state.error?.message || "Unknown error" })
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
+            /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(
               "button",
               {
                 onClick: this.reset,
@@ -112793,7 +113062,7 @@ var import_react19 = __toESM(require_react()), import_jsx_runtime23 = __toESM(re
                 children: "Try Again"
               }
             ),
-            /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
+            /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(
               "button",
               {
                 onClick: () => window.location.href = "/app",
@@ -112819,13 +113088,13 @@ var import_react19 = __toESM(require_react()), import_jsx_runtime23 = __toESM(re
 };
 
 // app/routes/app.tsx
-var import_jsx_runtime24 = __toESM(require_jsx_runtime()), links2 = () => [{ rel: "stylesheet", href: styles_default }], loader16 = async ({ request: request2 }) => {
+var import_jsx_runtime25 = __toESM(require_jsx_runtime()), links2 = () => [{ rel: "stylesheet", href: styles_default }], loader17 = async ({ request: request2 }) => {
   try {
     console.log(`\u{1F3EA} Dashboard loaded for shop: ${new URL(request2.url).searchParams.get("shop") || "unknown"}`);
     let { session } = await authenticate.admin(request2), shopName = session?.shop?.replace(".myshopify.com", "");
     if (!shopName)
       throw console.error("No shop name found in session:", session), new Error("Unable to determine shop name from Shopify session");
-    return console.log(`\u{1F3EA} Shopify app authenticated for shop: ${shopName}`), (0, import_node16.json)({
+    return console.log(`\u{1F3EA} Shopify app authenticated for shop: ${shopName}`), (0, import_node17.json)({
       apiKey: process.env.SHOPIFY_API_KEY || "",
       shopName
     });
@@ -112839,8 +113108,8 @@ var import_jsx_runtime24 = __toESM(require_jsx_runtime()), links2 = () => [{ rel
   }
 };
 function App2() {
-  let { apiKey, shopName } = (0, import_react20.useLoaderData)();
-  return /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(AppProvider, { isEmbeddedApp: !0, apiKey, children: /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(ErrorBoundary, { children: /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(
+  let { apiKey, shopName } = (0, import_react21.useLoaderData)();
+  return /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(AppProvider, { isEmbeddedApp: !0, apiKey, children: /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(ErrorBoundary, { children: /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)(
     "div",
     {
       style: {
@@ -112849,7 +113118,7 @@ function App2() {
         padding: "0"
       },
       children: [
-        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(
           "div",
           {
             id: "__shop",
@@ -112857,7 +113126,7 @@ function App2() {
             style: { display: "none" }
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_react20.Outlet, {})
+        /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(import_react21.Outlet, {})
       ]
     }
   ) }) });
@@ -112865,7 +113134,7 @@ function App2() {
 var ErrorBoundary2 = boundary.error, headers = (headersArgs) => boundary.headers(headersArgs);
 
 // server-assets-manifest:@remix-run/dev/assets-manifest
-var assets_manifest_default = { entry: { module: "/assets/entry.client-UYU54TU3.js", imports: ["/assets/_shared/chunk-KHZZSETU.js", "/assets/_shared/chunk-6U5IYNIC.js", "/assets/_shared/chunk-FN6342HM.js", "/assets/_shared/chunk-P23QBOGJ.js"] }, routes: { root: { id: "root", parentId: void 0, path: "", index: void 0, caseSensitive: void 0, module: "/assets/root-ZYGDGITR.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/_health": { id: "routes/_health", parentId: "root", path: void 0, index: void 0, caseSensitive: void 0, module: "/assets/routes/_health-4HY4KIMX.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/_index": { id: "routes/_index", parentId: "root", path: void 0, index: !0, caseSensitive: void 0, module: "/assets/routes/_index-ZZUWPXAO.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/api.generate-script": { id: "routes/api.generate-script", parentId: "root", path: "api/generate-script", index: void 0, caseSensitive: void 0, module: "/assets/routes/api.generate-script-3DUZY66Z.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/api.script-proxy": { id: "routes/api.script-proxy", parentId: "root", path: "api/script-proxy", index: void 0, caseSensitive: void 0, module: "/assets/routes/api.script-proxy-D7CGEASX.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app": { id: "routes/app", parentId: "root", path: "app", index: void 0, caseSensitive: void 0, module: "/assets/routes/app-R7GS6VXW.js", imports: ["/assets/_shared/chunk-C365V4IP.js", "/assets/_shared/chunk-X5HD2HZ6.js", "/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/app._index": { id: "routes/app._index", parentId: "routes/app", path: void 0, index: !0, caseSensitive: void 0, module: "/assets/routes/app._index-JNVBA3Z6.js", imports: ["/assets/_shared/chunk-XGZ5RCNR.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.advanced": { id: "routes/app.advanced", parentId: "routes/app", path: "advanced", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.advanced-6CTTV6RZ.js", imports: ["/assets/_shared/chunk-XGZ5RCNR.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.autopilot": { id: "routes/app.autopilot", parentId: "routes/app", path: "autopilot", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.autopilot-POQR6HJR.js", imports: ["/assets/_shared/chunk-YO2XKRKB.js", "/assets/_shared/chunk-XGZ5RCNR.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.insights": { id: "routes/app.insights", parentId: "routes/app", path: "insights", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.insights-GWDBV6LQ.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/auth.$": { id: "routes/auth.$", parentId: "root", path: "auth/*", index: void 0, caseSensitive: void 0, module: "/assets/routes/auth.$-D4HZOJGU.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/auth.session-token": { id: "routes/auth.session-token", parentId: "root", path: "auth/session-token", index: void 0, caseSensitive: void 0, module: "/assets/routes/auth.session-token-T2WMLCN4.js", imports: ["/assets/_shared/chunk-X5HD2HZ6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/debug": { id: "routes/debug", parentId: "root", path: "debug", index: void 0, caseSensitive: void 0, module: "/assets/routes/debug-NPQ5YZI3.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/health": { id: "routes/health", parentId: "root", path: "health", index: void 0, caseSensitive: void 0, module: "/assets/routes/health-GI3SP7O7.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/install": { id: "routes/install", parentId: "root", path: "install", index: void 0, caseSensitive: void 0, module: "/assets/routes/install-YL2XNGMC.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/local.autopilot": { id: "routes/local.autopilot", parentId: "root", path: "local/autopilot", index: void 0, caseSensitive: void 0, module: "/assets/routes/local.autopilot-SR7O2MSH.js", imports: ["/assets/_shared/chunk-YO2XKRKB.js", "/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/privacy": { id: "routes/privacy", parentId: "root", path: "privacy", index: void 0, caseSensitive: void 0, module: "/assets/routes/privacy-II7HDWDA.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/support": { id: "routes/support", parentId: "root", path: "support", index: void 0, caseSensitive: void 0, module: "/assets/routes/support-HWZBGMFS.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/terms": { id: "routes/terms", parentId: "root", path: "terms", index: void 0, caseSensitive: void 0, module: "/assets/routes/terms-PKGZYJCD.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 } }, version: "f76fdd8a", hmr: void 0, url: "/assets/manifest-F76FDD8A.js" };
+var assets_manifest_default = { entry: { module: "/assets/entry.client-UYU54TU3.js", imports: ["/assets/_shared/chunk-KHZZSETU.js", "/assets/_shared/chunk-6U5IYNIC.js", "/assets/_shared/chunk-FN6342HM.js", "/assets/_shared/chunk-P23QBOGJ.js"] }, routes: { root: { id: "root", parentId: void 0, path: "", index: void 0, caseSensitive: void 0, module: "/assets/root-ZYGDGITR.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/_health": { id: "routes/_health", parentId: "root", path: void 0, index: void 0, caseSensitive: void 0, module: "/assets/routes/_health-4HY4KIMX.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/_index": { id: "routes/_index", parentId: "root", path: void 0, index: !0, caseSensitive: void 0, module: "/assets/routes/_index-ZZUWPXAO.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/api.generate-script": { id: "routes/api.generate-script", parentId: "root", path: "api/generate-script", index: void 0, caseSensitive: void 0, module: "/assets/routes/api.generate-script-3DUZY66Z.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/api.script-proxy": { id: "routes/api.script-proxy", parentId: "root", path: "api/script-proxy", index: void 0, caseSensitive: void 0, module: "/assets/routes/api.script-proxy-D7CGEASX.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app": { id: "routes/app", parentId: "root", path: "app", index: void 0, caseSensitive: void 0, module: "/assets/routes/app-R7GS6VXW.js", imports: ["/assets/_shared/chunk-C365V4IP.js", "/assets/_shared/chunk-X5HD2HZ6.js", "/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/app._index": { id: "routes/app._index", parentId: "routes/app", path: void 0, index: !0, caseSensitive: void 0, module: "/assets/routes/app._index-JNVBA3Z6.js", imports: ["/assets/_shared/chunk-XGZ5RCNR.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.advanced": { id: "routes/app.advanced", parentId: "routes/app", path: "advanced", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.advanced-6CTTV6RZ.js", imports: ["/assets/_shared/chunk-XGZ5RCNR.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.autopilot": { id: "routes/app.autopilot", parentId: "routes/app", path: "autopilot", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.autopilot-POQR6HJR.js", imports: ["/assets/_shared/chunk-YO2XKRKB.js", "/assets/_shared/chunk-XGZ5RCNR.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.insights": { id: "routes/app.insights", parentId: "routes/app", path: "insights", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.insights-UHIXAKZW.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.setup": { id: "routes/app.setup", parentId: "routes/app", path: "setup", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.setup-NPHFCJDO.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/auth.$": { id: "routes/auth.$", parentId: "root", path: "auth/*", index: void 0, caseSensitive: void 0, module: "/assets/routes/auth.$-D4HZOJGU.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/auth.session-token": { id: "routes/auth.session-token", parentId: "root", path: "auth/session-token", index: void 0, caseSensitive: void 0, module: "/assets/routes/auth.session-token-T2WMLCN4.js", imports: ["/assets/_shared/chunk-X5HD2HZ6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/debug": { id: "routes/debug", parentId: "root", path: "debug", index: void 0, caseSensitive: void 0, module: "/assets/routes/debug-NPQ5YZI3.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/health": { id: "routes/health", parentId: "root", path: "health", index: void 0, caseSensitive: void 0, module: "/assets/routes/health-GI3SP7O7.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/install": { id: "routes/install", parentId: "root", path: "install", index: void 0, caseSensitive: void 0, module: "/assets/routes/install-YL2XNGMC.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/local.autopilot": { id: "routes/local.autopilot", parentId: "root", path: "local/autopilot", index: void 0, caseSensitive: void 0, module: "/assets/routes/local.autopilot-SR7O2MSH.js", imports: ["/assets/_shared/chunk-YO2XKRKB.js", "/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/privacy": { id: "routes/privacy", parentId: "root", path: "privacy", index: void 0, caseSensitive: void 0, module: "/assets/routes/privacy-II7HDWDA.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/support": { id: "routes/support", parentId: "root", path: "support", index: void 0, caseSensitive: void 0, module: "/assets/routes/support-HWZBGMFS.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/terms": { id: "routes/terms", parentId: "root", path: "terms", index: void 0, caseSensitive: void 0, module: "/assets/routes/terms-PKGZYJCD.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 } }, version: "524b30c9", hmr: void 0, url: "/assets/manifest-524B30C9.js" };
 
 // server-entry-module:@remix-run/dev/server-build
 var mode = "production", assetsBuildDirectory = "public/assets", future = { v3_fetcherPersist: !1, v3_relativeSplatPath: !1, v3_throwAbortReason: !1, v3_routeConfig: !1, v3_singleFetch: !1, v3_lazyRouteDiscovery: !1, unstable_optimizeDeps: !1 }, publicPath = "/assets/", entry = { module: entry_server_exports }, routes = {
@@ -112940,6 +113209,14 @@ var mode = "production", assetsBuildDirectory = "public/assets", future = { v3_f
     index: !0,
     caseSensitive: void 0,
     module: app_index_exports
+  },
+  "routes/app.setup": {
+    id: "routes/app.setup",
+    parentId: "routes/app",
+    path: "setup",
+    index: void 0,
+    caseSensitive: void 0,
+    module: app_setup_exports
   },
   "routes/_health": {
     id: "routes/_health",
