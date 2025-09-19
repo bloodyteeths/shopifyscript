@@ -3,7 +3,7 @@ import {
 } from "/assets/_shared/chunk-Y5NHUDNW.js";
 import {
   AppProvider
-} from "/assets/_shared/chunk-ZXKZ2IIA.js";
+} from "/assets/_shared/chunk-5CSWVI4C.js";
 import "/assets/_shared/chunk-QDIWRKG7.js";
 import {
   Links,
@@ -660,4 +660,4 @@ export {
   App as default,
   links
 };
-//# sourceMappingURL=/assets/root-EJDIQJS6.js.map
+//# sourceMappingURL=/assets/root-JXG6NXVG.js.map

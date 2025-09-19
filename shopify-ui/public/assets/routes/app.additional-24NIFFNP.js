@@ -7,7 +7,7 @@ import {
   List,
   Page,
   Text
-} from "/assets/_shared/chunk-ZXKZ2IIA.js";
+} from "/assets/_shared/chunk-5CSWVI4C.js";
 import "/assets/_shared/chunk-QDIWRKG7.js";
 import "/assets/_shared/chunk-Z7LCWUX7.js";
 import {
@@ -164,4 +164,4 @@ window.$RefreshSig$ = prevRefreshSig;
 export {
   AdditionalPage as default
 };
-//# sourceMappingURL=/assets/routes/app.additional-REZVNYNP.js.map
+//# sourceMappingURL=/assets/routes/app.additional-24NIFFNP.js.map

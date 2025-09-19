@@ -7,10 +7,11 @@ import {
   Layout,
   LegacyStack,
   SvgChartLineIcon,
+  SvgSettingsIcon,
   SvgViewIcon,
   Text,
   Tooltip
-} from "/assets/_shared/chunk-ZXKZ2IIA.js";
+} from "/assets/_shared/chunk-5CSWVI4C.js";
 import "/assets/_shared/chunk-QDIWRKG7.js";
 import {
   require_node
@@ -63,7 +64,7 @@ if (import.meta) {
     //@ts-expect-error
     "app/components/AnalyticsTier.tsx"
   );
-  import.meta.hot.lastModified = "1758315455776.6367";
+  import.meta.hot.lastModified = "1758318726593.0967";
 }
 function AnalyticsTier({
   tenant,
@@ -625,7 +626,7 @@ function AnalyticsTier({
         lineNumber: 346,
         columnNumber: 37
       }, this),
-      /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)(Button, { plain: true, icon: SettingsMajor, onClick: () => {
+      /* @__PURE__ */ (0, import_jsx_dev_runtime.jsxDEV)(Button, { plain: true, icon: SvgSettingsIcon, onClick: () => {
       }, children: "Manage Plan" }, void 0, false, {
         fileName: "app/components/AnalyticsTier.tsx",
         lineNumber: 350,
@@ -1500,4 +1501,4 @@ window.$RefreshSig$ = prevRefreshSig;
 export {
   Insights as default
 };
-//# sourceMappingURL=/assets/routes/app.insights-HT2FRJEI.js.map
+//# sourceMappingURL=/assets/routes/app.insights-X565QZIY.js.map

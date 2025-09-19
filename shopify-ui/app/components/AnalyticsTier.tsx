@@ -21,6 +21,7 @@ import {
   ViewIcon,
   ChartLineIcon,
   RefreshIcon,
+  SettingsIcon,
 } from '@shopify/polaris-icons';
 
 interface TierFeatures {
@@ -378,7 +379,7 @@ export function AnalyticsTier({
           
           <Button
             plain
-            icon={SettingsMajor}
+            icon={SettingsIcon}
             onClick={() => {/* Navigate to billing settings */}}
           >
             Manage Plan
