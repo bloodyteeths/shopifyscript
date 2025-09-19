@@ -138,91 +138,180 @@ export function AnalyticsTier({
     const { kpi } = data;
     
     return (
-      <Grid>
-        <Grid.Cell columnSpan={{xs: 6, sm: 3, md: 2, lg: 2, xl: 2}}>
-          <Card>
-            <Stack>
-              <Text variant="headingMd">Clicks</Text>
-              <Text variant="heading2xl" as="h2">
-                {formatNumber(kpi.clicks)}
-              </Text>
-              <Text variant="bodyMd" color="subdued">
-                Total clicks
-              </Text>
-            </Stack>
-          </Card>
-        </Grid.Cell>
+      <div style={{
+        display: "grid",
+        gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+        gap: 24,
+        marginBottom: 32,
+      }}>
+        <div style={{
+          background: "rgba(255, 255, 255, 0.95)",
+          backdropFilter: "blur(10px)",
+          border: "1px solid rgba(255, 255, 255, 0.2)",
+          borderRadius: 20,
+          padding: 24,
+          boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
+          transition: "all 0.3s ease"
+        }}>
+          <div style={{ color: "#6b7280", fontSize: 14, marginBottom: 8, fontWeight: "500" }}>
+            Clicks
+          </div>
+          <div style={{ 
+            fontSize: 32, 
+            fontWeight: "700", 
+            color: "#1f2937", 
+            background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)", 
+            WebkitBackgroundClip: "text", 
+            WebkitTextFillColor: "transparent",
+            marginBottom: 4
+          }}>
+            {formatNumber(kpi.clicks)}
+          </div>
+          <div style={{ color: "#6b7280", fontSize: 12 }}>
+            Total clicks
+          </div>
+        </div>
 
-        <Grid.Cell columnSpan={{xs: 6, sm: 3, md: 2, lg: 2, xl: 2}}>
-          <Card>
-            <Stack>
-              <Text variant="headingMd">Cost</Text>
-              <Text variant="heading2xl" as="h2">
-                {formatCurrency(kpi.cost)}
-              </Text>
-              <Text variant="bodyMd" color="subdued">
-                Total spend
-              </Text>
-            </Stack>
-          </Card>
-        </Grid.Cell>
+        <div style={{
+          background: "rgba(255, 255, 255, 0.95)",
+          backdropFilter: "blur(10px)",
+          border: "1px solid rgba(255, 255, 255, 0.2)",
+          borderRadius: 20,
+          padding: 24,
+          boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
+          transition: "all 0.3s ease"
+        }}>
+          <div style={{ color: "#6b7280", fontSize: 14, marginBottom: 8, fontWeight: "500" }}>
+            Cost
+          </div>
+          <div style={{ 
+            fontSize: 32, 
+            fontWeight: "700", 
+            color: "#1f2937", 
+            background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)", 
+            WebkitBackgroundClip: "text", 
+            WebkitTextFillColor: "transparent",
+            marginBottom: 4
+          }}>
+            {formatCurrency(kpi.cost)}
+          </div>
+          <div style={{ color: "#6b7280", fontSize: 12 }}>
+            Total spend
+          </div>
+        </div>
 
-        <Grid.Cell columnSpan={{xs: 6, sm: 3, md: 2, lg: 2, xl: 2}}>
-          <Card>
-            <Stack>
-              <Text variant="headingMd">Conversions</Text>
-              <Text variant="heading2xl" as="h2">
-                {formatNumber(kpi.conversions)}
-              </Text>
-              <Text variant="bodyMd" color="subdued">
-                Total conversions
-              </Text>
-            </Stack>
-          </Card>
-        </Grid.Cell>
+        <div style={{
+          background: "rgba(255, 255, 255, 0.95)",
+          backdropFilter: "blur(10px)",
+          border: "1px solid rgba(255, 255, 255, 0.2)",
+          borderRadius: 20,
+          padding: 24,
+          boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
+          transition: "all 0.3s ease"
+        }}>
+          <div style={{ color: "#6b7280", fontSize: 14, marginBottom: 8, fontWeight: "500" }}>
+            Conversions
+          </div>
+          <div style={{ 
+            fontSize: 32, 
+            fontWeight: "700", 
+            color: "#1f2937", 
+            background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)", 
+            WebkitBackgroundClip: "text", 
+            WebkitTextFillColor: "transparent",
+            marginBottom: 4
+          }}>
+            {formatNumber(kpi.conversions)}
+          </div>
+          <div style={{ color: "#6b7280", fontSize: 12 }}>
+            Total conversions
+          </div>
+        </div>
 
-        <Grid.Cell columnSpan={{xs: 6, sm: 3, md: 2, lg: 2, xl: 2}}>
-          <Card>
-            <Stack>
-              <Text variant="headingMd">CTR</Text>
-              <Text variant="heading2xl" as="h2">
-                {(kpi.ctr * 100).toFixed(2)}%
-              </Text>
-              <Text variant="bodyMd" color="subdued">
-                Click-through rate
-              </Text>
-            </Stack>
-          </Card>
-        </Grid.Cell>
+        <div style={{
+          background: "rgba(255, 255, 255, 0.95)",
+          backdropFilter: "blur(10px)",
+          border: "1px solid rgba(255, 255, 255, 0.2)",
+          borderRadius: 20,
+          padding: 24,
+          boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
+          transition: "all 0.3s ease"
+        }}>
+          <div style={{ color: "#6b7280", fontSize: 14, marginBottom: 8, fontWeight: "500" }}>
+            CTR
+          </div>
+          <div style={{ 
+            fontSize: 32, 
+            fontWeight: "700", 
+            color: "#1f2937", 
+            background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)", 
+            WebkitBackgroundClip: "text", 
+            WebkitTextFillColor: "transparent",
+            marginBottom: 4
+          }}>
+            {(kpi.ctr * 100).toFixed(2)}%
+          </div>
+          <div style={{ color: "#6b7280", fontSize: 12 }}>
+            Click-through rate
+          </div>
+        </div>
 
-        <Grid.Cell columnSpan={{xs: 6, sm: 3, md: 2, lg: 2, xl: 2}}>
-          <Card>
-            <Stack>
-              <Text variant="headingMd">CPC</Text>
-              <Text variant="heading2xl" as="h2">
-                {formatCurrency(kpi.cpc)}
-              </Text>
-              <Text variant="bodyMd" color="subdued">
-                Cost per click
-              </Text>
-            </Stack>
-          </Card>
-        </Grid.Cell>
+        <div style={{
+          background: "rgba(255, 255, 255, 0.95)",
+          backdropFilter: "blur(10px)",
+          border: "1px solid rgba(255, 255, 255, 0.2)",
+          borderRadius: 20,
+          padding: 24,
+          boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
+          transition: "all 0.3s ease"
+        }}>
+          <div style={{ color: "#6b7280", fontSize: 14, marginBottom: 8, fontWeight: "500" }}>
+            CPC
+          </div>
+          <div style={{ 
+            fontSize: 32, 
+            fontWeight: "700", 
+            color: "#1f2937", 
+            background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)", 
+            WebkitBackgroundClip: "text", 
+            WebkitTextFillColor: "transparent",
+            marginBottom: 4
+          }}>
+            {formatCurrency(kpi.cpc)}
+          </div>
+          <div style={{ color: "#6b7280", fontSize: 12 }}>
+            Cost per click
+          </div>
+        </div>
 
-        <Grid.Cell columnSpan={{xs: 6, sm: 3, md: 2, lg: 2, xl: 2}}>
-          <Card>
-            <Stack>
-              <Text variant="headingMd">CPA</Text>
-              <Text variant="heading2xl" as="h2">
-                {formatCurrency(kpi.cpa)}
-              </Text>
-              <Text variant="bodyMd" color="subdued">
-                Cost per acquisition
-              </Text>
-            </Stack>
-          </Card>
-        </Grid.Cell>
-      </Grid>
+        <div style={{
+          background: "rgba(255, 255, 255, 0.95)",
+          backdropFilter: "blur(10px)",
+          border: "1px solid rgba(255, 255, 255, 0.2)",
+          borderRadius: 20,
+          padding: 24,
+          boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
+          transition: "all 0.3s ease"
+        }}>
+          <div style={{ color: "#6b7280", fontSize: 14, marginBottom: 8, fontWeight: "500" }}>
+            CPA
+          </div>
+          <div style={{ 
+            fontSize: 32, 
+            fontWeight: "700", 
+            color: "#1f2937", 
+            background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)", 
+            WebkitBackgroundClip: "text", 
+            WebkitTextFillColor: "transparent",
+            marginBottom: 4
+          }}>
+            {formatCurrency(kpi.cpa)}
+          </div>
+          <div style={{ color: "#6b7280", fontSize: 12 }}>
+            Cost per acquisition
+          </div>
+        </div>
+      </div>
     );
   };
 
@@ -401,40 +490,176 @@ export function AnalyticsTier({
     const nextTier = tier === 'starter' ? 'professional' : 'enterprise';
 
     return (
-      <Card sectioned>
-        <Stack>
-          <Text variant="headingMd">Unlock More Analytics Features</Text>
-          <Grid>
-            <Grid.Cell columnSpan={{xs: 6, sm: 6, md: 6, lg: 6, xl: 6}}>
-              <Stack>
-                <Text variant="headingXs">Current Plan: {getTierDisplayName(tier)}</Text>
-                {features[tier as keyof typeof features].map((feature, index) => (
-                  <Text key={index} variant="bodyMd" color="subdued">
-                    ✓ {feature}
-                  </Text>
-                ))}
-              </Stack>
-            </Grid.Cell>
-            <Grid.Cell columnSpan={{xs: 6, sm: 6, md: 6, lg: 6, xl: 6}}>
-              <Stack>
-                <Text variant="headingXs">{getTierDisplayName(nextTier)} Plan</Text>
-                {features[nextTier as keyof typeof features].map((feature, index) => (
-                  <Text key={index} variant="bodyMd">
-                    ✓ {feature}
-                  </Text>
-                ))}
-                <Button
-                  primary
-                  size="slim"
-                  onClick={() => onUpgrade?.(nextTier)}
-                >
-                  Upgrade to {getTierDisplayName(nextTier)}
-                </Button>
-              </Stack>
-            </Grid.Cell>
-          </Grid>
-        </Stack>
-      </Card>
+      <div style={{
+        background: "rgba(255, 255, 255, 0.95)",
+        backdropFilter: "blur(10px)",
+        border: "1px solid rgba(255, 255, 255, 0.2)",
+        borderRadius: 20,
+        padding: 32,
+        boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
+        marginBottom: 32,
+      }}>
+        <div style={{ marginBottom: 24 }}>
+          <h3 style={{ 
+            fontSize: 24, 
+            fontWeight: "700", 
+            color: "#1f2937", 
+            margin: "0 0 8px 0",
+            background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent"
+          }}>
+            Unlock More Analytics Features
+          </h3>
+          <p style={{ color: "#6b7280", fontSize: 16, margin: 0 }}>
+            Upgrade to access advanced analytics and real-time insights
+          </p>
+        </div>
+        
+        <div style={{
+          display: "grid",
+          gridTemplateColumns: "1fr 1fr",
+          gap: 32,
+        }}>
+          <div style={{
+            background: "linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%)",
+            border: "1px solid rgba(102, 126, 234, 0.1)",
+            borderRadius: 16,
+            padding: 24,
+          }}>
+            <div style={{ marginBottom: 16 }}>
+              <h4 style={{ 
+                fontSize: 18, 
+                fontWeight: "600", 
+                color: "#1f2937", 
+                margin: "0 0 8px 0" 
+              }}>
+                Current Plan: {getTierDisplayName(tier)}
+              </h4>
+              <div style={{
+                display: "inline-block",
+                background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+                color: "white",
+                padding: "4px 12px",
+                borderRadius: 12,
+                fontSize: 12,
+                fontWeight: "600"
+              }}>
+                {getTierDisplayName(tier)}
+              </div>
+            </div>
+            <div>
+              {features[tier as keyof typeof features].map((feature, index) => (
+                <div key={index} style={{
+                  display: "flex",
+                  alignItems: "center",
+                  marginBottom: 8,
+                  color: "#6b7280",
+                  fontSize: 14
+                }}>
+                  <span style={{ 
+                    color: "#10b981", 
+                    marginRight: 8, 
+                    fontWeight: "bold" 
+                  }}>✓</span>
+                  {feature}
+                </div>
+              ))}
+            </div>
+          </div>
+          
+          <div style={{
+            background: "linear-gradient(135deg, rgba(16, 185, 129, 0.05) 0%, rgba(5, 150, 105, 0.05) 100%)",
+            border: "1px solid rgba(16, 185, 129, 0.2)",
+            borderRadius: 16,
+            padding: 24,
+            position: "relative"
+          }}>
+            <div style={{
+              position: "absolute",
+              top: -8,
+              right: 16,
+              background: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+              color: "white",
+              padding: "4px 12px",
+              borderRadius: 12,
+              fontSize: 12,
+              fontWeight: "600"
+            }}>
+              RECOMMENDED
+            </div>
+            
+            <div style={{ marginBottom: 16 }}>
+              <h4 style={{ 
+                fontSize: 18, 
+                fontWeight: "600", 
+                color: "#1f2937", 
+                margin: "0 0 8px 0" 
+              }}>
+                {getTierDisplayName(nextTier)} Plan
+              </h4>
+              <div style={{
+                display: "inline-block",
+                background: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+                color: "white",
+                padding: "4px 12px",
+                borderRadius: 12,
+                fontSize: 12,
+                fontWeight: "600"
+              }}>
+                {getTierDisplayName(nextTier)}
+              </div>
+            </div>
+            
+            <div style={{ marginBottom: 20 }}>
+              {features[nextTier as keyof typeof features].map((feature, index) => (
+                <div key={index} style={{
+                  display: "flex",
+                  alignItems: "center",
+                  marginBottom: 8,
+                  color: "#1f2937",
+                  fontSize: 14,
+                  fontWeight: "500"
+                }}>
+                  <span style={{ 
+                    color: "#10b981", 
+                    marginRight: 8, 
+                    fontWeight: "bold" 
+                  }}>✓</span>
+                  {feature}
+                </div>
+              ))}
+            </div>
+            
+            <button
+              onClick={() => onUpgrade?.(nextTier)}
+              style={{
+                background: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
+                color: "white",
+                border: "none",
+                padding: "12px 24px",
+                borderRadius: 12,
+                cursor: "pointer",
+                fontSize: 14,
+                fontWeight: "600",
+                width: "100%",
+                transition: "all 0.3s ease",
+                boxShadow: "0 4px 12px rgba(16, 185, 129, 0.3)"
+              }}
+              onMouseOver={(e) => {
+                e.currentTarget.style.transform = "translateY(-2px)";
+                e.currentTarget.style.boxShadow = "0 6px 20px rgba(16, 185, 129, 0.4)";
+              }}
+              onMouseOut={(e) => {
+                e.currentTarget.style.transform = "translateY(0)";
+                e.currentTarget.style.boxShadow = "0 4px 12px rgba(16, 185, 129, 0.3)";
+              }}
+            >
+              Upgrade to {getTierDisplayName(nextTier)}
+            </button>
+          </div>
+        </div>
+      </div>
     );
   };
 
