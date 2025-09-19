@@ -3,7 +3,7 @@ import {
 } from "/assets/_shared/chunk-I7NKL5T4.js";
 import {
   AppProvider
-} from "/assets/_shared/chunk-LJFOIJQN.js";
+} from "/assets/_shared/chunk-BGDGKMWD.js";
 import "/assets/_shared/chunk-QDIWRKG7.js";
 import {
   require_shopify
@@ -3979,4 +3979,4 @@ export {
   App as default,
   links
 };
-//# sourceMappingURL=/assets/routes/app-5DQWYPSD.js.map
+//# sourceMappingURL=/assets/routes/app-ABRBRSDL.js.map

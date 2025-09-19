@@ -19,7 +19,7 @@ import {
   SvgViewIcon,
   Text,
   TextField
-} from "/assets/_shared/chunk-LJFOIJQN.js";
+} from "/assets/_shared/chunk-BGDGKMWD.js";
 import "/assets/_shared/chunk-QDIWRKG7.js";
 import {
   require_shopify
@@ -616,4 +616,4 @@ window.$RefreshSig$ = prevRefreshSig;
 export {
   CustomDashboards as default
 };
-//# sourceMappingURL=/assets/routes/app.dashboards-JWOW7557.js.map
+//# sourceMappingURL=/assets/routes/app.dashboards-CX4LVF4R.js.map

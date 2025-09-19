@@ -6,7 +6,7 @@ import {
   Layout,
   Text,
   Tooltip
-} from "/assets/_shared/chunk-LJFOIJQN.js";
+} from "/assets/_shared/chunk-BGDGKMWD.js";
 import "/assets/_shared/chunk-QDIWRKG7.js";
 import {
   require_node
@@ -1497,4 +1497,4 @@ window.$RefreshSig$ = prevRefreshSig;
 export {
   Insights as default
 };
-//# sourceMappingURL=/assets/routes/app.insights-C5NC6TY2.js.map
+//# sourceMappingURL=/assets/routes/app.insights-TFTYNIGN.js.map

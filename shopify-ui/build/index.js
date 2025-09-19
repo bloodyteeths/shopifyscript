@@ -6241,7 +6241,7 @@ var require_router_cjs = __commonJS({
         v5Compat = !1
       } = options, entries;
       entries = initialEntries.map((entry2, index2) => createMemoryLocation(entry2, typeof entry2 == "string" ? null : entry2.state, index2 === 0 ? "default" : void 0));
-      let index = clampIndex(initialIndex ?? entries.length - 1), action9 = Action.Pop, listener = null;
+      let index = clampIndex(initialIndex ?? entries.length - 1), action10 = Action.Pop, listener = null;
       function clampIndex(n) {
         return Math.min(Math.max(n, 0), entries.length - 1);
       }
@@ -6261,7 +6261,7 @@ var require_router_cjs = __commonJS({
           return index;
         },
         get action() {
-          return action9;
+          return action10;
         },
         get location() {
           return getCurrentLocation();
@@ -6279,28 +6279,28 @@ var require_router_cjs = __commonJS({
           };
         },
         push(to, state) {
-          action9 = Action.Push;
+          action10 = Action.Push;
           let nextLocation = createMemoryLocation(to, state);
           index += 1, entries.splice(index, entries.length, nextLocation), v5Compat && listener && listener({
-            action: action9,
+            action: action10,
             location: nextLocation,
             delta: 1
           });
         },
         replace(to, state) {
-          action9 = Action.Replace;
+          action10 = Action.Replace;
           let nextLocation = createMemoryLocation(to, state);
           entries[index] = nextLocation, v5Compat && listener && listener({
-            action: action9,
+            action: action10,
             location: nextLocation,
             delta: 0
           });
         },
         go(delta) {
-          action9 = Action.Pop;
+          action10 = Action.Pop;
           let nextIndex = clampIndex(index + delta), nextLocation = entries[nextIndex];
           index = nextIndex, listener && listener({
-            action: action9,
+            action: action10,
             location: nextLocation,
             delta
           });
@@ -6430,7 +6430,7 @@ var require_router_cjs = __commonJS({
       let {
         window: window2 = document.defaultView,
         v5Compat = !1
-      } = options, globalHistory = window2.history, action9 = Action.Pop, listener = null, index = getIndex();
+      } = options, globalHistory = window2.history, action10 = Action.Pop, listener = null, index = getIndex();
       index == null && (index = 0, globalHistory.replaceState(_extends({}, globalHistory.state, {
         idx: index
       }), ""));
@@ -6440,16 +6440,16 @@ var require_router_cjs = __commonJS({
         }).idx;
       }
       function handlePop() {
-        action9 = Action.Pop;
+        action10 = Action.Pop;
         let nextIndex = getIndex(), delta = nextIndex == null ? null : nextIndex - index;
         index = nextIndex, listener && listener({
-          action: action9,
+          action: action10,
           location: history.location,
           delta
         });
       }
       function push(to, state) {
-        action9 = Action.Push;
+        action10 = Action.Push;
         let location = createLocation(history.location, to, state);
         validateLocation && validateLocation(location, to), index = getIndex() + 1;
         let historyState = getHistoryState(location, index), url = history.createHref(location);
@@ -6461,18 +6461,18 @@ var require_router_cjs = __commonJS({
           window2.location.assign(url);
         }
         v5Compat && listener && listener({
-          action: action9,
+          action: action10,
           location: history.location,
           delta: 1
         });
       }
       function replace2(to, state) {
-        action9 = Action.Replace;
+        action10 = Action.Replace;
         let location = createLocation(history.location, to, state);
         validateLocation && validateLocation(location, to), index = getIndex();
         let historyState = getHistoryState(location, index), url = history.createHref(location);
         globalHistory.replaceState(historyState, "", url), v5Compat && listener && listener({
-          action: action9,
+          action: action10,
           location: history.location,
           delta: 0
         });
@@ -6483,7 +6483,7 @@ var require_router_cjs = __commonJS({
       }
       let history = {
         get action() {
-          return action9;
+          return action10;
         },
         get location() {
           return getLocation(window2, globalHistory);
@@ -6571,14 +6571,14 @@ var require_router_cjs = __commonJS({
     function flattenRoutes(routes2, branches, parentsMeta, parentPath) {
       branches === void 0 && (branches = []), parentsMeta === void 0 && (parentsMeta = []), parentPath === void 0 && (parentPath = "");
       let flattenRoute = (route, index, relativePath) => {
-        let meta4 = {
+        let meta5 = {
           relativePath: relativePath === void 0 ? route.path || "" : relativePath,
           caseSensitive: route.caseSensitive === !0,
           childrenIndex: index,
           route
         };
-        meta4.relativePath.startsWith("/") && (invariant(meta4.relativePath.startsWith(parentPath), 'Absolute route path "' + meta4.relativePath + '" nested under path ' + ('"' + parentPath + '" is not valid. An absolute child route path ') + "must start with the combined path of all its parent routes."), meta4.relativePath = meta4.relativePath.slice(parentPath.length));
-        let path = joinPaths([parentPath, meta4.relativePath]), routesMeta = parentsMeta.concat(meta4);
+        meta5.relativePath.startsWith("/") && (invariant(meta5.relativePath.startsWith(parentPath), 'Absolute route path "' + meta5.relativePath + '" nested under path ' + ('"' + parentPath + '" is not valid. An absolute child route path ') + "must start with the combined path of all its parent routes."), meta5.relativePath = meta5.relativePath.slice(parentPath.length));
+        let path = joinPaths([parentPath, meta5.relativePath]), routesMeta = parentsMeta.concat(meta5);
         route.children && route.children.length > 0 && (invariant(
           // Our types know better, but runtime JS may not!
           // @ts-expect-error
@@ -6610,7 +6610,7 @@ var require_router_cjs = __commonJS({
       return result.push(...restExploded.map((subpath) => subpath === "" ? required : [required, subpath].join("/"))), isOptional && result.push(...restExploded), result.map((exploded) => path.startsWith("/") && exploded === "" ? "/" : exploded);
     }
     function rankRouteBranches(branches) {
-      branches.sort((a, b) => a.score !== b.score ? b.score - a.score : compareIndexes(a.routesMeta.map((meta4) => meta4.childrenIndex), b.routesMeta.map((meta4) => meta4.childrenIndex)));
+      branches.sort((a, b) => a.score !== b.score ? b.score - a.score : compareIndexes(a.routesMeta.map((meta5) => meta5.childrenIndex), b.routesMeta.map((meta5) => meta5.childrenIndex)));
     }
     var paramRe = /^:[\w-]+$/, dynamicSegmentValue = 3, indexRouteValue = 2, emptySegmentValue = 1, staticSegmentValue = 10, splatPenalty = -2, isSplat = (s) => s === "*";
     function computeScore(path, index) {
@@ -6636,14 +6636,14 @@ var require_router_cjs = __commonJS({
         routesMeta
       } = branch, matchedParams = {}, matchedPathname = "/", matches = [];
       for (let i = 0; i < routesMeta.length; ++i) {
-        let meta4 = routesMeta[i], end = i === routesMeta.length - 1, remainingPathname = matchedPathname === "/" ? pathname : pathname.slice(matchedPathname.length) || "/", match = matchPath({
-          path: meta4.relativePath,
-          caseSensitive: meta4.caseSensitive,
+        let meta5 = routesMeta[i], end = i === routesMeta.length - 1, remainingPathname = matchedPathname === "/" ? pathname : pathname.slice(matchedPathname.length) || "/", match = matchPath({
+          path: meta5.relativePath,
+          caseSensitive: meta5.caseSensitive,
           end
-        }, remainingPathname), route = meta4.route;
+        }, remainingPathname), route = meta5.route;
         if (!match && end && allowPartial && !routesMeta[routesMeta.length - 1].route.index && (match = matchPath({
-          path: meta4.relativePath,
-          caseSensitive: meta4.caseSensitive,
+          path: meta5.relativePath,
+          caseSensitive: meta5.caseSensitive,
           end: !1
         }, remainingPathname)), !match)
           return null;
@@ -6778,7 +6778,7 @@ var require_router_cjs = __commonJS({
     function getToPathname(to) {
       return to === "" || to.pathname === "" ? "/" : typeof to == "string" ? parsePath(to).pathname : to.pathname;
     }
-    var joinPaths = (paths) => paths.join("/").replace(/\/\/+/g, "/"), normalizePathname = (pathname) => pathname.replace(/\/+$/, "").replace(/^\/*/, "/"), normalizeSearch = (search) => !search || search === "?" ? "" : search.startsWith("?") ? search : "?" + search, normalizeHash = (hash) => !hash || hash === "#" ? "" : hash.startsWith("#") ? hash : "#" + hash, json17 = function(data2, init) {
+    var joinPaths = (paths) => paths.join("/").replace(/\/\/+/g, "/"), normalizePathname = (pathname) => pathname.replace(/\/+$/, "").replace(/^\/*/, "/"), normalizeSearch = (search) => !search || search === "?" ? "" : search.startsWith("?") ? search : "?" + search, normalizeHash = (hash) => !hash || hash === "#" ? "" : hash.startsWith("#") ? hash : "#" + hash, json18 = function(data2, init) {
       init === void 0 && (init = {});
       let responseInit = typeof init == "number" ? {
         status: init
@@ -8388,7 +8388,7 @@ var require_router_cjs = __commonJS({
           if (!isMutationMethod(formMethod))
             return getInvalidBodyError();
           try {
-            let json18 = typeof opts.body == "string" ? JSON.parse(opts.body) : opts.body;
+            let json19 = typeof opts.body == "string" ? JSON.parse(opts.body) : opts.body;
             return {
               path,
               submission: {
@@ -8396,7 +8396,7 @@ var require_router_cjs = __commonJS({
                 formAction,
                 formEncType: opts.formEncType,
                 formData: void 0,
-                json: json18,
+                json: json19,
                 text: void 0
               }
             };
@@ -9029,7 +9029,7 @@ var require_router_cjs = __commonJS({
         formEncType,
         text,
         formData,
-        json: json18
+        json: json19
       } = navigation;
       if (!(!formMethod || !formAction || !formEncType)) {
         if (text != null)
@@ -9050,13 +9050,13 @@ var require_router_cjs = __commonJS({
             json: void 0,
             text: void 0
           };
-        if (json18 !== void 0)
+        if (json19 !== void 0)
           return {
             formMethod,
             formAction,
             formEncType,
             formData: void 0,
-            json: json18,
+            json: json19,
             text: void 0
           };
       }
@@ -9143,8 +9143,8 @@ var require_router_cjs = __commonJS({
       try {
         let sessionPositions = _window.sessionStorage.getItem(TRANSITIONS_STORAGE_KEY);
         if (sessionPositions) {
-          let json18 = JSON.parse(sessionPositions);
-          for (let [k, v] of Object.entries(json18 || {}))
+          let json19 = JSON.parse(sessionPositions);
+          for (let [k, v] of Object.entries(json19 || {}))
             v && Array.isArray(v) && transitions.set(k, new Set(v || []));
         }
       } catch {
@@ -9152,11 +9152,11 @@ var require_router_cjs = __commonJS({
     }
     function persistAppliedTransitions(_window, transitions) {
       if (transitions.size > 0) {
-        let json18 = {};
+        let json19 = {};
         for (let [k, v] of transitions)
-          json18[k] = [...v];
+          json19[k] = [...v];
         try {
-          _window.sessionStorage.setItem(TRANSITIONS_STORAGE_KEY, JSON.stringify(json18));
+          _window.sessionStorage.setItem(TRANSITIONS_STORAGE_KEY, JSON.stringify(json19));
         } catch (error) {
           warning(!1, "Failed to save applied view transitions in sessionStorage (" + error + ").");
         }
@@ -9191,7 +9191,7 @@ var require_router_cjs = __commonJS({
     exports.isDeferredData = isDeferredData;
     exports.isRouteErrorResponse = isRouteErrorResponse;
     exports.joinPaths = joinPaths;
-    exports.json = json17;
+    exports.json = json18;
     exports.matchPath = matchPath;
     exports.matchRoutes = matchRoutes;
     exports.normalizePathname = normalizePathname;
@@ -10890,7 +10890,7 @@ var require_responses = __commonJS({
   "../node_modules/@remix-run/server-runtime/dist/responses.js"(exports) {
     "use strict";
     Object.defineProperty(exports, "__esModule", { value: !0 });
-    var router = require_router_cjs(), errors = require_errors(), json17 = (data, init = {}) => router.json(data, init), defer = (data, init = {}) => router.defer(data, init), redirect17 = (url, init = 302) => router.redirect(url, init), replace = (url, init = 302) => router.replace(url, init), redirectDocument = (url, init = 302) => router.redirectDocument(url, init);
+    var router = require_router_cjs(), errors = require_errors(), json18 = (data, init = {}) => router.json(data, init), defer = (data, init = {}) => router.defer(data, init), redirect17 = (url, init = 302) => router.redirect(url, init), replace = (url, init = 302) => router.replace(url, init), redirectDocument = (url, init = 302) => router.redirectDocument(url, init);
     function isDeferredData(value) {
       let deferred = value;
       return deferred && typeof deferred == "object" && typeof deferred.data == "object" && typeof deferred.subscribe == "function" && typeof deferred.cancel == "function" && typeof deferred.resolveData == "function";
@@ -10945,7 +10945,7 @@ var require_responses = __commonJS({
     exports.isRedirectResponse = isRedirectResponse;
     exports.isRedirectStatusCode = isRedirectStatusCode;
     exports.isResponse = isResponse;
-    exports.json = json17;
+    exports.json = json18;
     exports.redirect = redirect17;
     exports.redirectDocument = redirectDocument;
     exports.replace = replace;
@@ -11892,13 +11892,13 @@ var require_data = __commonJS({
     var responses = require_responses();
     async function callRouteAction({
       loadContext,
-      action: action9,
+      action: action10,
       params,
       request: request2,
       routeId,
       singleFetch
     }) {
-      let result = await action9({
+      let result = await action10({
         request: singleFetch ? stripRoutesParam(stripIndexParam(request2)) : stripDataParam(stripIndexParam(request2)),
         context: loadContext,
         params
@@ -11909,13 +11909,13 @@ var require_data = __commonJS({
     }
     async function callRouteLoader({
       loadContext,
-      loader: loader21,
+      loader: loader22,
       params,
       request: request2,
       routeId,
       singleFetch
     }) {
-      let result = await loader21({
+      let result = await loader22({
         request: singleFetch ? stripRoutesParam(stripIndexParam(request2)) : stripDataParam(stripIndexParam(request2)),
         context: loadContext,
         params
@@ -14167,7 +14167,7 @@ var require_components = __commonJS({
       }) : null);
     });
     Link5.displayName = "Link";
-    var Form6 = /* @__PURE__ */ React__namespace.forwardRef(({
+    var Form7 = /* @__PURE__ */ React__namespace.forwardRef(({
       discover = "render",
       ...props
     }, forwardedRef) => {
@@ -14177,7 +14177,7 @@ var require_components = __commonJS({
         "data-discover": getDiscoverAttr(discover, isAbsolute, props.reloadDocument)
       }));
     });
-    Form6.displayName = "Form";
+    Form7.displayName = "Form";
     function composeEventHandlers(theirHandler, ourHandler) {
       return (event) => {
         theirHandler && theirHandler(event), event.defaultPrevented || ourHandler(event);
@@ -14297,7 +14297,7 @@ var require_components = __commonJS({
         loaderData
       } = useDataRouterStateContext(), location = reactRouterDom.useLocation(), _matches = getActiveMatches(routerMatches, errors, isSpaMode), error = null;
       errors && (error = errors[_matches[_matches.length - 1].route.id]);
-      let meta4 = [], leafMeta = null, matches = [];
+      let meta5 = [], leafMeta = null, matches = [];
       for (let i = 0; i < _matches.length; i++) {
         let _match = _matches[i], routeId = _match.route.id, data = loaderData[routeId], params = _match.params, routeModule = routeModules[routeId], routeMeta = [], match = {
           id: routeId,
@@ -14318,9 +14318,9 @@ var require_components = __commonJS({
           throw new Error("The route at " + _match.route.path + ` returns an invalid value. All route meta functions must return an array of meta objects.
 
 To reference the meta function API, see https://remix.run/route/meta`);
-        match.meta = routeMeta, matches[i] = match, meta4 = [...routeMeta], leafMeta = meta4;
+        match.meta = routeMeta, matches[i] = match, meta5 = [...routeMeta], leafMeta = meta5;
       }
-      return /* @__PURE__ */ React__namespace.createElement(React__namespace.Fragment, null, meta4.flat().map((metaProps) => {
+      return /* @__PURE__ */ React__namespace.createElement(React__namespace.Fragment, null, meta5.flat().map((metaProps) => {
         if (!metaProps)
           return null;
         if ("tagName" in metaProps) {
@@ -14346,12 +14346,12 @@ To reference the meta function API, see https://remix.run/route/meta`);
           }) : null;
         if ("script:ld+json" in metaProps)
           try {
-            let json17 = JSON.stringify(metaProps["script:ld+json"]);
+            let json18 = JSON.stringify(metaProps["script:ld+json"]);
             return /* @__PURE__ */ React__namespace.createElement("script", {
-              key: `script:ld+json:${json17}`,
+              key: `script:ld+json:${json18}`,
               type: "application/ld+json",
               dangerouslySetInnerHTML: {
-                __html: json17
+                __html: json18
               }
             });
           } catch {
@@ -14554,13 +14554,13 @@ import(${JSON.stringify(manifest.entry.module)});` : " ";
     function useMatches() {
       return reactRouterDom.useMatches();
     }
-    function useLoaderData12() {
+    function useLoaderData13() {
       return reactRouterDom.useLoaderData();
     }
     function useRouteLoaderData(routeId) {
       return reactRouterDom.useRouteLoaderData(routeId);
     }
-    function useActionData6() {
+    function useActionData7() {
       return reactRouterDom.useActionData();
     }
     function useFetcher5(opts = {}) {
@@ -14575,7 +14575,7 @@ import(${JSON.stringify(manifest.entry.module)});` : " ";
       };
     }
     exports.Await = Await;
-    exports.Form = Form6;
+    exports.Form = Form7;
     exports.Link = Link5;
     exports.Links = Links2;
     exports.LiveReload = LiveReload;
@@ -14585,9 +14585,9 @@ import(${JSON.stringify(manifest.entry.module)});` : " ";
     exports.RemixContext = RemixContext;
     exports.Scripts = Scripts2;
     exports.composeEventHandlers = composeEventHandlers;
-    exports.useActionData = useActionData6;
+    exports.useActionData = useActionData7;
     exports.useFetcher = useFetcher5;
-    exports.useLoaderData = useLoaderData12;
+    exports.useLoaderData = useLoaderData13;
     exports.useMatches = useMatches;
     exports.useRemixContext = useRemixContext;
     exports.useRouteLoaderData = useRouteLoaderData;
@@ -14838,7 +14838,7 @@ var require_server2 = __commonJS({
       future: future2
     }) {
       typeof locationProp == "string" && (locationProp = reactRouterDom.parsePath(locationProp));
-      let action9 = router.Action.Pop, location = {
+      let action10 = router.Action.Pop, location = {
         pathname: locationProp.pathname || "/",
         search: locationProp.search || "",
         hash: locationProp.hash || "",
@@ -14849,7 +14849,7 @@ var require_server2 = __commonJS({
         basename,
         children,
         location,
-        navigationType: action9,
+        navigationType: action10,
         navigator: staticNavigator,
         future: future2,
         static: !0
@@ -21969,7 +21969,7 @@ var require_body = __commonJS({
         },
         type: "bytes"
       }), assert(isReadableStreamLike(stream));
-      let action9 = null, source = null, length = null, type = null;
+      let action10 = null, source = null, length = null, type = null;
       if (typeof object == "string")
         source = object, type = "text/plain;charset=UTF-8";
       else if (object instanceof URLSearchParams)
@@ -22001,7 +22001,7 @@ Content-Type: ${value.type || "application/octet-stream"}\r
           }
         let chunk = textEncoder.encode(`--${boundary2}--\r
 `);
-        blobParts.push(chunk), length += chunk.byteLength, hasUnknownSizeValue && (length = null), source = object, action9 = async function* () {
+        blobParts.push(chunk), length += chunk.byteLength, hasUnknownSizeValue && (length = null), source = object, action10 = async function* () {
           for (let part of blobParts)
             part.stream ? yield* part.stream() : yield part;
         }, type = `multipart/form-data; boundary=${boundary2}`;
@@ -22016,11 +22016,11 @@ Content-Type: ${value.type || "application/octet-stream"}\r
           );
         stream = object instanceof ReadableStream ? object : ReadableStreamFrom(object);
       }
-      if ((typeof source == "string" || util3.isBuffer(source)) && (length = Buffer.byteLength(source)), action9 != null) {
+      if ((typeof source == "string" || util3.isBuffer(source)) && (length = Buffer.byteLength(source)), action10 != null) {
         let iterator;
         stream = new ReadableStream({
           async start() {
-            iterator = action9(object)[Symbol.asyncIterator]();
+            iterator = action10(object)[Symbol.asyncIterator]();
           },
           async pull(controller) {
             let { value, done } = await iterator.next();
@@ -25811,8 +25811,8 @@ var require_dns = __commonJS({
         }
         this.#records.set(origin.hostname, records);
       }
-      getHandler(meta4, opts) {
-        return new DNSDispatchHandler(this, meta4, opts);
+      getHandler(meta5, opts) {
+        return new DNSDispatchHandler(this, meta5, opts);
       }
     }, DNSDispatchHandler = class extends DecoratorHandler {
       #state = null;
@@ -31251,10 +31251,10 @@ var require_src2 = __commonJS({
       let firstComma = uri.indexOf(",");
       if (firstComma === -1 || firstComma <= 4)
         throw new TypeError("malformed data: URI");
-      let meta4 = uri.substring(5, firstComma).split(";"), charset = "", base64 = !1, type = meta4[0] || "text/plain", typeFull = type;
-      for (let i = 1; i < meta4.length; i++)
-        meta4[i] === "base64" ? base64 = !0 : (typeFull += `;${meta4[i]}`, meta4[i].indexOf("charset=") === 0 && (charset = meta4[i].substring(8)));
-      !meta4[0] && !charset.length && (typeFull += ";charset=US-ASCII", charset = "US-ASCII");
+      let meta5 = uri.substring(5, firstComma).split(";"), charset = "", base64 = !1, type = meta5[0] || "text/plain", typeFull = type;
+      for (let i = 1; i < meta5.length; i++)
+        meta5[i] === "base64" ? base64 = !0 : (typeFull += `;${meta5[i]}`, meta5[i].indexOf("charset=") === 0 && (charset = meta5[i].substring(8)));
+      !meta5[0] && !charset.length && (typeFull += ";charset=US-ASCII", charset = "US-ASCII");
       let encoding = base64 ? "base64" : "ascii", data = unescape(uri.substring(firstComma + 1)), buffer = Buffer.from(data, encoding);
       return buffer.type = type, buffer.typeFull = typeFull, buffer.charset = charset, buffer;
     }
@@ -33164,8 +33164,8 @@ var require_ponyfill = __commonJS({
               }), preventCancel || actions.push(function() {
                 return source._state === "readable" ? ReadableStreamCancel(source, error) : promiseResolvedWith(void 0);
               }), shutdownWithAction(function() {
-                return Promise.all(actions.map(function(action9) {
-                  return action9();
+                return Promise.all(actions.map(function(action10) {
+                  return action10();
                 }));
               }, !0, error);
             }, signal.aborted) {
@@ -33222,18 +33222,18 @@ var require_ponyfill = __commonJS({
               return oldCurrentWrite !== currentWrite ? waitForWritesToFinish() : void 0;
             });
           }
-          function isOrBecomesErrored(stream, promise, action9) {
-            stream._state === "errored" ? action9(stream._storedError) : uponRejection(promise, action9);
+          function isOrBecomesErrored(stream, promise, action10) {
+            stream._state === "errored" ? action10(stream._storedError) : uponRejection(promise, action10);
           }
-          function isOrBecomesClosed(stream, promise, action9) {
-            stream._state === "closed" ? action9() : uponFulfillment(promise, action9);
+          function isOrBecomesClosed(stream, promise, action10) {
+            stream._state === "closed" ? action10() : uponFulfillment(promise, action10);
           }
-          function shutdownWithAction(action9, originalIsError, originalError) {
+          function shutdownWithAction(action10, originalIsError, originalError) {
             if (shuttingDown)
               return;
             shuttingDown = !0, dest._state === "writable" && !WritableStreamCloseQueuedOrInFlight(dest) ? uponFulfillment(waitForWritesToFinish(), doTheRest) : doTheRest();
             function doTheRest() {
-              return uponPromise(action9(), function() {
+              return uponPromise(action10(), function() {
                 return finalize(originalIsError, originalError);
               }, function(newError) {
                 return finalize(!0, newError);
@@ -36993,20 +36993,20 @@ async function backendFetch(pathname, method, body, shopNameOverride) {
   try {
     let res = await fetch(url, init), contentType = res.headers.get("content-type") || "", isJson = contentType.includes("application/json");
     console.log(`\u{1F4E5} Response ${res.status} ${res.statusText} (${contentType})`);
-    let json17;
+    let json18;
     if (isJson)
-      json17 = await res.json().catch((err) => (console.error(`\u274C JSON parse error for ${pathname}:`, err.message), { ok: !1, error: "Invalid JSON response" }));
+      json18 = await res.json().catch((err) => (console.error(`\u274C JSON parse error for ${pathname}:`, err.message), { ok: !1, error: "Invalid JSON response" }));
     else {
       let text = await res.text();
       console.warn(
         `\u26A0\uFE0F Non-JSON response for ${pathname}:`,
         text.substring(0, 200)
-      ), json17 = { ok: !1, error: "Non-JSON response", response: text };
+      ), json18 = { ok: !1, error: "Non-JSON response", response: text };
     }
-    return res.ok ? json17?.ok === !1 ? console.warn(`\u26A0\uFE0F Backend error for ${pathname}:`, json17.error) : console.log(
+    return res.ok ? json18?.ok === !1 ? console.warn(`\u26A0\uFE0F Backend error for ${pathname}:`, json18.error) : console.log(
       `\u2705 Success for ${pathname}:`,
-      json17?.ok ? "OK" : "Response received"
-    ) : console.error(`\u274C HTTP error ${res.status} for ${pathname}:`, json17), { status: res.status, json: json17 };
+      json18?.ok ? "OK" : "Response received"
+    ) : console.error(`\u274C HTTP error ${res.status} for ${pathname}:`, json18), { status: res.status, json: json18 };
   } catch (fetchError) {
     return console.error(`\u{1F4A5} Fetch error for ${pathname}:`, fetchError.message), {
       status: 500,
@@ -50796,8 +50796,8 @@ var require_remote = __commonJS({
       async reload() {
         this._pendingFetch && isCloudflareWorkers() && (this._pendingFetch = void 0);
         let headers2 = new Headers(this._options.headers);
-        USER_AGENT && !headers2.has("User-Agent") && (headers2.set("User-Agent", USER_AGENT), this._options.headers = Object.fromEntries(headers2.entries())), this._pendingFetch ||= (0, fetch_jwks_js_1.default)(this._url, this._timeoutDuration, this._options).then((json17) => {
-          this._local = (0, local_js_1.createLocalJWKSet)(json17), this._cache && (this._cache.uat = Date.now(), this._cache.jwks = json17), this._jwksTimestamp = Date.now(), this._pendingFetch = void 0;
+        USER_AGENT && !headers2.has("User-Agent") && (headers2.set("User-Agent", USER_AGENT), this._options.headers = Object.fromEntries(headers2.entries())), this._pendingFetch ||= (0, fetch_jwks_js_1.default)(this._url, this._timeoutDuration, this._options).then((json18) => {
+          this._local = (0, local_js_1.createLocalJWKSet)(json18), this._cache && (this._cache.uat = Date.now(), this._cache.jwks = json18), this._jwksTimestamp = Date.now(), this._pendingFetch = void 0;
         }).catch((err) => {
           throw this._pendingFetch = void 0, err;
         }), await this._pendingFetch;
@@ -65518,8 +65518,8 @@ var require_ARRAPPEND = __commonJS({
     exports.FIRST_KEY_INDEX = 1;
     function transformArguments(key, path, ...jsons) {
       let args = ["JSON.ARRAPPEND", key, path];
-      for (let json17 of jsons)
-        args.push((0, _1.transformRedisJsonArgument)(json17));
+      for (let json18 of jsons)
+        args.push((0, _1.transformRedisJsonArgument)(json18));
       return args;
     }
     exports.transformArguments = transformArguments;
@@ -65535,8 +65535,8 @@ var require_ARRINDEX = __commonJS({
     var _1 = require_commands5();
     exports.FIRST_KEY_INDEX = 1;
     exports.IS_READ_ONLY = !0;
-    function transformArguments(key, path, json17, start, stop) {
-      let args = ["JSON.ARRINDEX", key, path, (0, _1.transformRedisJsonArgument)(json17)];
+    function transformArguments(key, path, json18, start, stop) {
+      let args = ["JSON.ARRINDEX", key, path, (0, _1.transformRedisJsonArgument)(json18)];
       return start != null && (args.push(start.toString()), stop != null && args.push(stop.toString())), args;
     }
     exports.transformArguments = transformArguments;
@@ -65553,8 +65553,8 @@ var require_ARRINSERT = __commonJS({
     exports.FIRST_KEY_INDEX = 1;
     function transformArguments(key, path, index, ...jsons) {
       let args = ["JSON.ARRINSERT", key, path, index.toString()];
-      for (let json17 of jsons)
-        args.push((0, _1.transformRedisJsonArgument)(json17));
+      for (let json18 of jsons)
+        args.push((0, _1.transformRedisJsonArgument)(json18));
       return args;
     }
     exports.transformArguments = transformArguments;
@@ -65685,8 +65685,8 @@ var require_MERGE3 = __commonJS({
     exports.transformArguments = exports.FIRST_KEY_INDEX = void 0;
     var _1 = require_commands5();
     exports.FIRST_KEY_INDEX = 1;
-    function transformArguments(key, path, json17) {
-      return ["JSON.MERGE", key, path, (0, _1.transformRedisJsonArgument)(json17)];
+    function transformArguments(key, path, json18) {
+      return ["JSON.MERGE", key, path, (0, _1.transformRedisJsonArgument)(json18)];
     }
     exports.transformArguments = transformArguments;
   }
@@ -65827,8 +65827,8 @@ var require_SET2 = __commonJS({
     exports.transformArguments = exports.FIRST_KEY_INDEX = void 0;
     var _1 = require_commands5();
     exports.FIRST_KEY_INDEX = 1;
-    function transformArguments(key, path, json17, options) {
-      let args = ["JSON.SET", key, path, (0, _1.transformRedisJsonArgument)(json17)];
+    function transformArguments(key, path, json18, options) {
+      let args = ["JSON.SET", key, path, (0, _1.transformRedisJsonArgument)(json18)];
       return options?.NX ? args.push("NX") : options?.XX && args.push("XX"), args;
     }
     exports.transformArguments = transformArguments;
@@ -65935,16 +65935,16 @@ var require_commands5 = __commonJS({
       TYPE,
       type: TYPE
     };
-    function transformRedisJsonArgument(json17) {
-      return JSON.stringify(json17);
+    function transformRedisJsonArgument(json18) {
+      return JSON.stringify(json18);
     }
     exports.transformRedisJsonArgument = transformRedisJsonArgument;
-    function transformRedisJsonReply(json17) {
-      return JSON.parse(json17);
+    function transformRedisJsonReply(json18) {
+      return JSON.parse(json18);
     }
     exports.transformRedisJsonReply = transformRedisJsonReply;
-    function transformRedisJsonNullReply(json17) {
-      return json17 === null ? null : transformRedisJsonReply(json17);
+    function transformRedisJsonNullReply(json18) {
+      return json18 === null ? null : transformRedisJsonReply(json18);
     }
     exports.transformRedisJsonNullReply = transformRedisJsonNullReply;
     function transformNumbersReply(reply) {
@@ -85066,7 +85066,7 @@ var require_Text_css = __commonJS({
 var require_Text = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Text/Text.js"(exports) {
     "use strict";
-    var React17 = require_react(), css = require_css(), Text_module = require_Text_css(), Text3 = ({
+    var React17 = require_react(), css = require_css(), Text_module = require_Text_css(), Text4 = ({
       alignment,
       as,
       breakWord,
@@ -85087,7 +85087,7 @@ var require_Text = __commonJS({
         id
       }), children);
     };
-    exports.Text = Text3;
+    exports.Text = Text4;
   }
 });
 
@@ -85095,7 +85095,7 @@ var require_Text = __commonJS({
 var require_Icon = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Icon/Icon.js"(exports) {
     "use strict";
-    var React17 = require_react(), css = require_css(), breakpoints = require_breakpoints2(), Icon_module = require_Icon_css(), Text3 = require_Text();
+    var React17 = require_react(), css = require_css(), breakpoints = require_breakpoints2(), Icon_module = require_Icon_css(), Text4 = require_Text();
     function Icon({
       source,
       tone,
@@ -85128,7 +85128,7 @@ var require_Icon = __commonJS({
       };
       return /* @__PURE__ */ React17.createElement("span", {
         className
-      }, accessibilityLabel && /* @__PURE__ */ React17.createElement(Text3.Text, {
+      }, accessibilityLabel && /* @__PURE__ */ React17.createElement(Text4.Text, {
         as: "span",
         visuallyHidden: !0
       }, accessibilityLabel), contentMarkup[sourceType]);
@@ -85155,8 +85155,8 @@ var require_Spinner_css = __commonJS({
 var require_Spinner = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Spinner/Spinner.js"(exports) {
     "use strict";
-    var React17 = require_react(), css = require_css(), useIsAfterInitialMount = require_use_is_after_initial_mount(), Spinner_module = require_Spinner_css(), Text3 = require_Text();
-    function Spinner3({
+    var React17 = require_react(), css = require_css(), useIsAfterInitialMount = require_use_is_after_initial_mount(), Spinner_module = require_Spinner_css(), Text4 = require_Text();
+    function Spinner4({
       size = "large",
       accessibilityLabel,
       hasFocusableParent
@@ -85175,7 +85175,7 @@ var require_Spinner = __commonJS({
         ...!hasFocusableParent && {
           role: "status"
         }
-      }, accessibilityLabelMarkup = (isAfterInitialMount || !hasFocusableParent) && /* @__PURE__ */ React17.createElement(Text3.Text, {
+      }, accessibilityLabelMarkup = (isAfterInitialMount || !hasFocusableParent) && /* @__PURE__ */ React17.createElement(Text4.Text, {
         as: "span",
         visuallyHidden: !0
       }, accessibilityLabel);
@@ -85183,7 +85183,7 @@ var require_Spinner = __commonJS({
         className
       }, spinnerSVGMarkup), /* @__PURE__ */ React17.createElement("span", spanAttributes, accessibilityLabelMarkup));
     }
-    exports.Spinner = Spinner3;
+    exports.Spinner = Spinner4;
   }
 });
 
@@ -85353,8 +85353,8 @@ var require_hooks2 = __commonJS({
 var require_Button = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Button/Button.js"(exports) {
     "use strict";
-    var React17 = require_react(), polarisIcons = require_dist11(), breakpoints = require_breakpoints2(), css = require_css(), focus = require_focus(), Button_module = require_Button_css(), Icon = require_Icon(), Spinner3 = require_Spinner(), UnstyledButton = require_UnstyledButton(), hooks = require_hooks2(), Text3 = require_Text();
-    function Button3({
+    var React17 = require_react(), polarisIcons = require_dist11(), breakpoints = require_breakpoints2(), css = require_css(), focus = require_focus(), Button_module = require_Button_css(), Icon = require_Icon(), Spinner4 = require_Spinner(), UnstyledButton = require_UnstyledButton(), hooks = require_hooks2(), Text4 = require_Text();
+    function Button4({
       id,
       children,
       url,
@@ -85404,14 +85404,14 @@ var require_Button = __commonJS({
       hasPlainText ? textFontWeight = "regular" : variant === "primary" && (textFontWeight = mdUp ? "medium" : "semibold");
       let textVariant = "bodySm";
       (size === "large" || hasPlainText && size !== "micro") && (textVariant = "bodyMd");
-      let childMarkup = children ? /* @__PURE__ */ React17.createElement(Text3.Text, {
+      let childMarkup = children ? /* @__PURE__ */ React17.createElement(Text4.Text, {
         as: "span",
         variant: textVariant,
         fontWeight: textFontWeight,
         key: disabled ? "text-disabled" : "text"
       }, children) : null, spinnerSVGMarkup = loading ? /* @__PURE__ */ React17.createElement("span", {
         className: Button_module.default.Spinner
-      }, /* @__PURE__ */ React17.createElement(Spinner3.Spinner, {
+      }, /* @__PURE__ */ React17.createElement(Spinner4.Spinner, {
         size: "small",
         accessibilityLabel: i18n.translate("Polaris.Button.spinnerAccessibilityLabel")
       })) : null, commonProps = {
@@ -85453,7 +85453,7 @@ var require_Button = __commonJS({
     function getDisclosureIconSource(disclosure, upIcon, downIcon) {
       return disclosure === "select" ? polarisIcons.SelectIcon : disclosure === "up" ? upIcon : downIcon;
     }
-    exports.Button = Button3;
+    exports.Button = Button4;
   }
 });
 
@@ -85461,24 +85461,24 @@ var require_Button = __commonJS({
 var require_utils11 = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Button/utils.js"(exports) {
     "use strict";
-    var React17 = require_react(), Button3 = require_Button();
+    var React17 = require_react(), Button4 = require_Button();
     function buttonsFrom(actions, overrides = {}) {
-      return Array.isArray(actions) ? actions.map((action9, index) => buttonFrom(action9, overrides, index)) : buttonFrom(actions, overrides);
+      return Array.isArray(actions) ? actions.map((action10, index) => buttonFrom(action10, overrides, index)) : buttonFrom(actions, overrides);
     }
     function buttonFrom({
       content,
       onAction,
       plain,
       destructive,
-      ...action9
+      ...action10
     }, overrides, key) {
       let plainVariant = plain ? "plain" : void 0, destructiveVariant = destructive ? "primary" : void 0, tone = !overrides?.tone && destructive ? "critical" : overrides?.tone;
-      return /* @__PURE__ */ React17.createElement(Button3.Button, Object.assign({
+      return /* @__PURE__ */ React17.createElement(Button4.Button, Object.assign({
         key,
         onClick: onAction,
         tone,
         variant: plainVariant || destructiveVariant
-      }, action9, overrides), content);
+      }, action10, overrides), content);
     }
     exports.buttonFrom = buttonFrom;
     exports.buttonsFrom = buttonsFrom;
@@ -85652,7 +85652,7 @@ var require_Box = __commonJS({
 var require_Card = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Card/Card.js"(exports) {
     "use strict";
-    var React17 = require_react(), breakpoints = require_breakpoints2(), withinContentContext = require_within_content_context(), ShadowBevel = require_ShadowBevel(), Box = require_Box(), Card4 = ({
+    var React17 = require_react(), breakpoints = require_breakpoints2(), withinContentContext = require_within_content_context(), ShadowBevel = require_ShadowBevel(), Box = require_Box(), Card5 = ({
       children,
       background = "bg-surface",
       padding = {
@@ -85675,7 +85675,7 @@ var require_Card = __commonJS({
         minHeight: "100%"
       }, children)));
     };
-    exports.Card = Card4;
+    exports.Card = Card5;
   }
 });
 
@@ -85699,7 +85699,7 @@ var require_SettingAction = __commonJS({
     "use strict";
     var React17 = require_react(), SettingAction_module = require_SettingAction_css();
     function SettingAction({
-      action: action9,
+      action: action10,
       children
     }) {
       return /* @__PURE__ */ React17.createElement("div", {
@@ -85708,7 +85708,7 @@ var require_SettingAction = __commonJS({
         className: SettingAction_module.default.Setting
       }, children), /* @__PURE__ */ React17.createElement("div", {
         className: SettingAction_module.default.Action
-      }, action9));
+      }, action10));
     }
     exports.SettingAction = SettingAction;
   }
@@ -85964,10 +85964,10 @@ var require_Avatar = __commonJS({
 var require_AccountConnection = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/AccountConnection/AccountConnection.js"(exports) {
     "use strict";
-    var React17 = require_react(), breakpoints = require_breakpoints2(), utils = require_utils11(), Card4 = require_Card(), SettingAction = require_SettingAction(), InlineStack = require_InlineStack(), BlockStack = require_BlockStack(), Avatar2 = require_Avatar(), Box = require_Box(), Text3 = require_Text();
+    var React17 = require_react(), breakpoints = require_breakpoints2(), utils = require_utils11(), Card5 = require_Card(), SettingAction = require_SettingAction(), InlineStack = require_InlineStack(), BlockStack = require_BlockStack(), Avatar2 = require_Avatar(), Box = require_Box(), Text4 = require_Text();
     function AccountConnection({
       connected = !1,
-      action: action9,
+      action: action10,
       avatarUrl,
       accountName = "",
       title,
@@ -85979,22 +85979,22 @@ var require_AccountConnection = __commonJS({
         name: accountName,
         initials,
         source: avatarUrl
-      })) : null, titleContent = title || accountName, titleMarkup = /* @__PURE__ */ React17.createElement(Text3.Text, {
+      })) : null, titleContent = title || accountName, titleMarkup = /* @__PURE__ */ React17.createElement(Text4.Text, {
         as: "h2",
         variant: "headingSm"
-      }, titleContent), detailsMarkup = details ? /* @__PURE__ */ React17.createElement(Text3.Text, {
+      }, titleContent), detailsMarkup = details ? /* @__PURE__ */ React17.createElement(Text4.Text, {
         as: "span",
         variant: "bodyMd",
         tone: "subdued"
       }, details) : null, termsOfServiceMarkup = termsOfService ? /* @__PURE__ */ React17.createElement(Box.Box, {
         paddingBlockStart: breakpoints$1.mdUp ? "400" : "500"
-      }, /* @__PURE__ */ React17.createElement(Text3.Text, {
+      }, /* @__PURE__ */ React17.createElement(Text4.Text, {
         as: "span",
         variant: "bodyMd"
-      }, termsOfService)) : null, actionElement = action9 ? utils.buttonFrom(action9, {
+      }, termsOfService)) : null, actionElement = action10 ? utils.buttonFrom(action10, {
         variant: connected ? void 0 : "primary"
       }) : null;
-      return /* @__PURE__ */ React17.createElement(Card4.Card, null, /* @__PURE__ */ React17.createElement(SettingAction.SettingAction, {
+      return /* @__PURE__ */ React17.createElement(Card5.Card, null, /* @__PURE__ */ React17.createElement(SettingAction.SettingAction, {
         action: actionElement
       }, /* @__PURE__ */ React17.createElement(InlineStack.InlineStack, {
         gap: "400"
@@ -86184,7 +86184,7 @@ var require_Pip_css = __commonJS({
 var require_Pip = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Badge/components/Pip/Pip.js"(exports) {
     "use strict";
-    var React17 = require_react(), css = require_css(), utils = require_utils12(), Pip_module = require_Pip_css(), hooks = require_hooks2(), Text3 = require_Text();
+    var React17 = require_react(), css = require_css(), utils = require_utils12(), Pip_module = require_Pip_css(), hooks = require_hooks2(), Text4 = require_Text();
     function Pip({
       tone,
       progress = "complete",
@@ -86193,7 +86193,7 @@ var require_Pip = __commonJS({
       let i18n = hooks.useI18n(), className = css.classNames(Pip_module.default.Pip, tone && Pip_module.default[css.variationName("tone", tone)], progress && Pip_module.default[css.variationName("progress", progress)]), accessibilityLabel = accessibilityLabelOverride || utils.getDefaultAccessibilityLabel(i18n, progress, tone);
       return /* @__PURE__ */ React17.createElement("span", {
         className
-      }, /* @__PURE__ */ React17.createElement(Text3.Text, {
+      }, /* @__PURE__ */ React17.createElement(Text4.Text, {
         as: "span",
         visuallyHidden: !0
       }, accessibilityLabel));
@@ -86206,7 +86206,7 @@ var require_Pip = __commonJS({
 var require_Badge = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Badge/Badge.js"(exports) {
     "use strict";
-    var React17 = require_react(), css = require_css(), withinFilterContext = require_within_filter_context(), Badge_module = require_Badge_css(), utils = require_utils12(), Pip = require_Pip(), hooks = require_hooks2(), Icon = require_Icon(), Text3 = require_Text(), DEFAULT_SIZE = "medium", progressIconMap = {
+    var React17 = require_react(), css = require_css(), withinFilterContext = require_within_filter_context(), Badge_module = require_Badge_css(), utils = require_utils12(), Pip = require_Pip(), hooks = require_hooks2(), Icon = require_Icon(), Text4 = require_Text(), DEFAULT_SIZE = "medium", progressIconMap = {
       complete: () => /* @__PURE__ */ React17.createElement("svg", {
         viewBox: "0 0 20 20"
       }, /* @__PURE__ */ React17.createElement("path", {
@@ -86225,7 +86225,7 @@ var require_Badge = __commonJS({
         d: "M8.547 12.69c.183.05.443.06 1.453.06s1.27-.01 1.453-.06a1.75 1.75 0 0 0 1.237-1.237c.05-.182.06-.443.06-1.453s-.01-1.27-.06-1.453a1.75 1.75 0 0 0-1.237-1.237c-.182-.05-.443-.06-1.453-.06s-1.27.01-1.453.06A1.75 1.75 0 0 0 7.31 8.547c-.05.183-.06.443-.06 1.453s.01 1.27.06 1.453a1.75 1.75 0 0 0 1.237 1.237ZM6.102 8.224C6 8.605 6 9.07 6 10s0 1.395.102 1.777a3 3 0 0 0 2.122 2.12C8.605 14 9.07 14 10 14s1.395 0 1.777-.102a3 3 0 0 0 2.12-2.121C14 11.395 14 10.93 14 10c0-.93 0-1.395-.102-1.776a3 3 0 0 0-2.121-2.122C11.395 6 10.93 6 10 6c-.93 0-1.395 0-1.776.102a3 3 0 0 0-2.122 2.122Z"
       }))
     };
-    function Badge3({
+    function Badge4({
       children,
       tone,
       progress,
@@ -86233,7 +86233,7 @@ var require_Badge = __commonJS({
       size = DEFAULT_SIZE,
       toneAndProgressLabelOverride
     }) {
-      let i18n = hooks.useI18n(), withinFilter = React17.useContext(withinFilterContext.WithinFilterContext), className = css.classNames(Badge_module.default.Badge, tone && Badge_module.default[css.variationName("tone", tone)], size && size !== DEFAULT_SIZE && Badge_module.default[css.variationName("size", size)], withinFilter && Badge_module.default.withinFilter), accessibilityLabel = toneAndProgressLabelOverride || utils.getDefaultAccessibilityLabel(i18n, progress, tone), accessibilityMarkup = Boolean(accessibilityLabel) && /* @__PURE__ */ React17.createElement(Text3.Text, {
+      let i18n = hooks.useI18n(), withinFilter = React17.useContext(withinFilterContext.WithinFilterContext), className = css.classNames(Badge_module.default.Badge, tone && Badge_module.default[css.variationName("tone", tone)], size && size !== DEFAULT_SIZE && Badge_module.default[css.variationName("size", size)], withinFilter && Badge_module.default.withinFilter), accessibilityLabel = toneAndProgressLabelOverride || utils.getDefaultAccessibilityLabel(i18n, progress, tone), accessibilityMarkup = Boolean(accessibilityLabel) && /* @__PURE__ */ React17.createElement(Text4.Text, {
         as: "span",
         visuallyHidden: !0
       }, accessibilityLabel);
@@ -86248,14 +86248,14 @@ var require_Badge = __commonJS({
         className: Badge_module.default.Icon
       }, /* @__PURE__ */ React17.createElement(Icon.Icon, {
         source: icon
-      })), children && /* @__PURE__ */ React17.createElement(Text3.Text, {
+      })), children && /* @__PURE__ */ React17.createElement(Text4.Text, {
         as: "span",
         variant: "bodySm",
         fontWeight: tone === "new" ? "medium" : void 0
       }, children));
     }
-    Badge3.Pip = Pip.Pip;
-    exports.Badge = Badge3;
+    Badge4.Pip = Pip.Pip;
+    exports.Badge = Badge4;
   }
 });
 
@@ -86903,7 +86903,7 @@ var require_TooltipOverlay = __commonJS({
 var require_Tooltip = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Tooltip/Tooltip.js"(exports) {
     "use strict";
-    var React17 = require_react(), focus = require_focus(), useToggle = require_use_toggle(), css = require_css(), Tooltip_module = require_Tooltip_css(), hooks = require_hooks3(), Portal = require_Portal(), TooltipOverlay = require_TooltipOverlay(), Text3 = require_Text(), HOVER_OUT_TIMEOUT = 150;
+    var React17 = require_react(), focus = require_focus(), useToggle = require_use_toggle(), css = require_css(), Tooltip_module = require_Tooltip_css(), hooks = require_hooks3(), Portal = require_Portal(), TooltipOverlay = require_TooltipOverlay(), Text4 = require_Text(), HOVER_OUT_TIMEOUT = 150;
     function Tooltip3({
       children,
       content,
@@ -86969,7 +86969,7 @@ var require_Tooltip = __commonJS({
         borderRadius,
         zIndexOverride,
         instant: !shouldAnimate
-      }, /* @__PURE__ */ React17.createElement(Text3.Text, {
+      }, /* @__PURE__ */ React17.createElement(Text4.Text, {
         as: "span",
         variant: "bodyMd"
       }, content))) : null, wrapperClassNames = css.classNames(activatorWrapper === "div" && Tooltip_module.default.TooltipContainer, hasUnderline && Tooltip_module.default.HasUnderline);
@@ -87017,7 +87017,7 @@ var require_Tooltip = __commonJS({
 var require_Item = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/ActionList/components/Item/Item.js"(exports) {
     "use strict";
-    var React17 = require_react(), css = require_css(), ActionList_module = require_ActionList_css(), focus = require_focus(), useIsomorphicLayoutEffect = require_use_isomorphic_layout_effect(), useTheme = require_use_theme(), Badge3 = require_Badge(), Tooltip3 = require_Tooltip(), Icon = require_Icon(), Box = require_Box(), Text3 = require_Text(), Scrollable = require_Scrollable(), UnstyledLink = require_UnstyledLink(), InlineStack = require_InlineStack();
+    var React17 = require_react(), css = require_css(), ActionList_module = require_ActionList_css(), focus = require_focus(), useIsomorphicLayoutEffect = require_use_isomorphic_layout_effect(), useTheme = require_use_theme(), Badge4 = require_Badge(), Tooltip3 = require_Tooltip(), Icon = require_Icon(), Box = require_Box(), Text4 = require_Text(), Scrollable = require_Scrollable(), UnstyledLink = require_UnstyledLink(), InlineStack = require_InlineStack();
     function Item({
       id,
       badge,
@@ -87056,23 +87056,23 @@ var require_Item = __commonJS({
       }));
       let contentText = content || "";
       truncate && content ? contentText = /* @__PURE__ */ React17.createElement(TruncateText, null, content) : ellipsis && (contentText = `${content}\u2026`);
-      let contentMarkup = helpText ? /* @__PURE__ */ React17.createElement(React17.Fragment, null, /* @__PURE__ */ React17.createElement(Box.Box, null, contentText), /* @__PURE__ */ React17.createElement(Text3.Text, {
+      let contentMarkup = helpText ? /* @__PURE__ */ React17.createElement(React17.Fragment, null, /* @__PURE__ */ React17.createElement(Box.Box, null, contentText), /* @__PURE__ */ React17.createElement(Text4.Text, {
         as: "span",
         variant: "bodySm",
         tone: active || disabled ? void 0 : "subdued"
-      }, helpText)) : /* @__PURE__ */ React17.createElement(Text3.Text, {
+      }, helpText)) : /* @__PURE__ */ React17.createElement(Text4.Text, {
         as: "span",
         variant: "bodyMd",
         fontWeight: active ? "semibold" : "regular"
       }, contentText), badgeMarkup = badge && /* @__PURE__ */ React17.createElement("span", {
         className: ActionList_module.default.Suffix
-      }, /* @__PURE__ */ React17.createElement(Badge3.Badge, {
+      }, /* @__PURE__ */ React17.createElement(Badge4.Badge, {
         tone: badge.tone
       }, badge.content)), suffixMarkup = suffix && /* @__PURE__ */ React17.createElement(Box.Box, null, /* @__PURE__ */ React17.createElement("span", {
         className: ActionList_module.default.Suffix
       }, suffix)), textMarkup = /* @__PURE__ */ React17.createElement("span", {
         className: ActionList_module.default.Text
-      }, /* @__PURE__ */ React17.createElement(Text3.Text, {
+      }, /* @__PURE__ */ React17.createElement(Text4.Text, {
         as: "span",
         variant: "bodyMd",
         fontWeight: active ? "semibold" : "regular"
@@ -87110,7 +87110,7 @@ var require_Item = __commonJS({
       useIsomorphicLayoutEffect.useIsomorphicLayoutEffect(() => {
         textRef.current && setIsOverflowing(textRef.current.scrollWidth > textRef.current.offsetWidth);
       }, [children]);
-      let text = /* @__PURE__ */ React17.createElement(Text3.Text, {
+      let text = /* @__PURE__ */ React17.createElement(Text4.Text, {
         as: "span",
         truncate: !0
       }, /* @__PURE__ */ React17.createElement(Box.Box, {
@@ -87123,7 +87123,7 @@ var require_Item = __commonJS({
         hoverDelay: 1e3,
         content: children,
         dismissOnMouseOut: !0
-      }, /* @__PURE__ */ React17.createElement(Text3.Text, {
+      }, /* @__PURE__ */ React17.createElement(Text4.Text, {
         as: "span",
         truncate: !0
       }, children)) : text;
@@ -87137,7 +87137,7 @@ var require_Item = __commonJS({
 var require_Section = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/ActionList/components/Section/Section.js"(exports) {
     "use strict";
-    var React17 = require_react(), Item = require_Item(), Box = require_Box(), InlineStack = require_InlineStack(), Text3 = require_Text(), BlockStack = require_BlockStack();
+    var React17 = require_react(), Item = require_Item(), Box = require_Box(), InlineStack = require_InlineStack(), Text4 = require_Text(), BlockStack = require_BlockStack();
     function Section({
       section,
       hasMultipleSections,
@@ -87172,7 +87172,7 @@ var require_Section = __commonJS({
         paddingBlockEnd: "100",
         paddingInlineStart: "300",
         paddingInlineEnd: "300"
-      }, /* @__PURE__ */ React17.createElement(Text3.Text, {
+      }, /* @__PURE__ */ React17.createElement(Text4.Text, {
         as: "p",
         variant: "headingSm"
       }, section.title)) : /* @__PURE__ */ React17.createElement(Box.Box, {
@@ -87306,7 +87306,7 @@ var require_TextField_css = __commonJS({
 var require_Spinner2 = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/TextField/components/Spinner/Spinner.js"(exports) {
     "use strict";
-    var React17 = require_react(), polarisIcons = require_dist11(), TextField_module = require_TextField_css(), Icon = require_Icon(), Spinner3 = /* @__PURE__ */ React17.forwardRef(function({
+    var React17 = require_react(), polarisIcons = require_dist11(), TextField_module = require_TextField_css(), Icon = require_Icon(), Spinner4 = /* @__PURE__ */ React17.forwardRef(function({
       onChange,
       onClick,
       onMouseDown,
@@ -87352,7 +87352,7 @@ var require_Spinner2 = __commonJS({
         source: polarisIcons.ChevronDownIcon
       }))));
     });
-    exports.Spinner = Spinner3;
+    exports.Spinner = Spinner4;
   }
 });
 
@@ -87391,7 +87391,7 @@ var require_InlineError_css = __commonJS({
 var require_InlineError = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/InlineError/InlineError.js"(exports) {
     "use strict";
-    var React17 = require_react(), polarisIcons = require_dist11(), InlineError_module = require_InlineError_css(), Icon = require_Icon(), Text3 = require_Text();
+    var React17 = require_react(), polarisIcons = require_dist11(), InlineError_module = require_InlineError_css(), Icon = require_Icon(), Text4 = require_Text();
     function InlineError({
       message: message2,
       fieldID
@@ -87403,7 +87403,7 @@ var require_InlineError = __commonJS({
         className: InlineError_module.default.Icon
       }, /* @__PURE__ */ React17.createElement(Icon.Icon, {
         source: polarisIcons.AlertCircleIcon
-      })), /* @__PURE__ */ React17.createElement(Text3.Text, {
+      })), /* @__PURE__ */ React17.createElement(Text4.Text, {
         as: "span",
         variant: "bodyMd"
       }, message2)) : null;
@@ -87435,7 +87435,7 @@ var require_Label_css = __commonJS({
 var require_Label = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Label/Label.js"(exports) {
     "use strict";
-    var React17 = require_react(), css = require_css(), Label_module = require_Label_css(), Text3 = require_Text();
+    var React17 = require_react(), css = require_css(), Label_module = require_Label_css(), Text4 = require_Text();
     function labelID(id) {
       return `${id}Label`;
     }
@@ -87452,7 +87452,7 @@ var require_Label = __commonJS({
         id: labelID(id),
         htmlFor: id,
         className: css.classNames(Label_module.default.Text, requiredIndicator && Label_module.default.RequiredIndicator)
-      }, /* @__PURE__ */ React17.createElement(Text3.Text, {
+      }, /* @__PURE__ */ React17.createElement(Text4.Text, {
         as: "span",
         variant: "bodyMd"
       }, children)));
@@ -87466,12 +87466,12 @@ var require_Label = __commonJS({
 var require_Labelled = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Labelled/Labelled.js"(exports) {
     "use strict";
-    var React17 = require_react(), css = require_css(), Labelled_module = require_Labelled_css(), InlineError = require_InlineError(), Label = require_Label(), utils = require_utils11(), Text3 = require_Text();
+    var React17 = require_react(), css = require_css(), Labelled_module = require_Labelled_css(), InlineError = require_InlineError(), Label = require_Label(), utils = require_utils11(), Text4 = require_Text();
     function Labelled({
       id,
       label,
       error,
-      action: action9,
+      action: action10,
       helpText,
       children,
       labelHidden,
@@ -87480,15 +87480,15 @@ var require_Labelled = __commonJS({
       readOnly,
       ...rest
     }) {
-      let className = css.classNames(labelHidden && Labelled_module.default.hidden, disabled && Labelled_module.default.disabled, readOnly && Labelled_module.default.readOnly), actionMarkup = action9 ? /* @__PURE__ */ React17.createElement("div", {
+      let className = css.classNames(labelHidden && Labelled_module.default.hidden, disabled && Labelled_module.default.disabled, readOnly && Labelled_module.default.readOnly), actionMarkup = action10 ? /* @__PURE__ */ React17.createElement("div", {
         className: Labelled_module.default.Action
-      }, utils.buttonFrom(action9, {
+      }, utils.buttonFrom(action10, {
         variant: "plain"
       })) : null, helpTextMarkup = helpText ? /* @__PURE__ */ React17.createElement("div", {
         className: Labelled_module.default.HelpText,
         id: helpTextID(id),
         "aria-disabled": disabled
-      }, /* @__PURE__ */ React17.createElement(Text3.Text, {
+      }, /* @__PURE__ */ React17.createElement(Text4.Text, {
         as: "span",
         tone: "subdued",
         variant: "bodyMd",
@@ -87655,8 +87655,8 @@ var require_Resizer = __commonJS({
 var require_TextField = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/TextField/TextField.js"(exports) {
     "use strict";
-    var React17 = require_react(), polarisIcons = require_dist11(), css = require_css(), useIsAfterInitialMount = require_use_is_after_initial_mount(), types4 = require_types16(), useEventListener = require_use_event_listener(), TextField_module = require_TextField_css(), Spinner$1 = require_Spinner2(), Labelled = require_Labelled(), Connected = require_Connected(), Resizer = require_Resizer(), Label = require_Label(), hooks = require_hooks2(), Icon = require_Icon(), Text3 = require_Text(), Spinner3 = require_Spinner();
-    function TextField2({
+    var React17 = require_react(), polarisIcons = require_dist11(), css = require_css(), useIsAfterInitialMount = require_use_is_after_initial_mount(), types4 = require_types16(), useEventListener = require_use_event_listener(), TextField_module = require_TextField_css(), Spinner$1 = require_Spinner2(), Labelled = require_Labelled(), Connected = require_Connected(), Resizer = require_Resizer(), Label = require_Label(), hooks = require_hooks2(), Icon = require_Icon(), Text4 = require_Text(), Spinner4 = require_Spinner();
+    function TextField3({
       prefix,
       suffix,
       verticalContent,
@@ -87724,21 +87724,21 @@ var require_TextField = __commonJS({
         className: css.classNames(TextField_module.default.Prefix, iconPrefix && TextField_module.default.PrefixIcon),
         id: `${id}-Prefix`,
         ref: prefixRef
-      }, /* @__PURE__ */ React17.createElement(Text3.Text, {
+      }, /* @__PURE__ */ React17.createElement(Text4.Text, {
         as: "span",
         variant: "bodyMd"
       }, prefix)) : null, suffixMarkup = suffix ? /* @__PURE__ */ React17.createElement("div", {
         className: TextField_module.default.Suffix,
         id: `${id}-Suffix`,
         ref: suffixRef
-      }, /* @__PURE__ */ React17.createElement(Text3.Text, {
+      }, /* @__PURE__ */ React17.createElement(Text4.Text, {
         as: "span",
         variant: "bodyMd"
       }, suffix)) : null, loadingMarkup = loading ? /* @__PURE__ */ React17.createElement("div", {
         className: TextField_module.default.Loading,
         id: `${id}-Loading`,
         ref: loadingRef
-      }, /* @__PURE__ */ React17.createElement(Spinner3.Spinner, {
+      }, /* @__PURE__ */ React17.createElement(Spinner4.Spinner, {
         size: "small"
       })) : null, characterCountMarkup = null;
       if (showCharacterCount) {
@@ -87755,7 +87755,7 @@ var require_TextField = __commonJS({
           "aria-live": focus ? "polite" : "off",
           "aria-atomic": "true",
           onClick: handleClickChild
-        }, /* @__PURE__ */ React17.createElement(Text3.Text, {
+        }, /* @__PURE__ */ React17.createElement(Text4.Text, {
           as: "span",
           variant: "bodyMd"
         }, characterCountText));
@@ -87765,7 +87765,7 @@ var require_TextField = __commonJS({
         className: TextField_module.default.ClearButton,
         onClick: handleClearButtonPress,
         disabled
-      }, /* @__PURE__ */ React17.createElement(Text3.Text, {
+      }, /* @__PURE__ */ React17.createElement(Text4.Text, {
         as: "span",
         visuallyHidden: !0
       }, i18n.translate("Polaris.Common.clear")), /* @__PURE__ */ React17.createElement(Icon.Icon, {
@@ -87959,7 +87959,7 @@ var require_TextField = __commonJS({
           "aria-multiline": !0
         } : void 0;
     }
-    exports.TextField = TextField2;
+    exports.TextField = TextField3;
   }
 });
 
@@ -87967,7 +87967,7 @@ var require_TextField = __commonJS({
 var require_ActionList = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/ActionList/ActionList.js"(exports) {
     "use strict";
-    var React17 = require_react(), polarisIcons = require_dist11(), types4 = require_types16(), focus = require_focus(), FilterActionsProvider = require_FilterActionsProvider(), Section = require_Section(), KeypressListener = require_KeypressListener(), TextField2 = require_TextField(), hooks = require_hooks2(), Box = require_Box(), Icon = require_Icon(), Item = require_Item(), FILTER_ACTIONS_THRESHOLD = 8;
+    var React17 = require_react(), polarisIcons = require_dist11(), types4 = require_types16(), focus = require_focus(), FilterActionsProvider = require_FilterActionsProvider(), Section = require_Section(), KeypressListener = require_KeypressListener(), TextField3 = require_TextField(), hooks = require_hooks2(), Box = require_Box(), Icon = require_Icon(), Item = require_Item(), FILTER_ACTIONS_THRESHOLD = 8;
     function ActionList2({
       items,
       sections = [],
@@ -88007,7 +88007,7 @@ var require_ActionList = __commonJS({
       return /* @__PURE__ */ React17.createElement(React17.Fragment, null, (allowFiltering || filterActions) && hasManyActions && isFilterable && /* @__PURE__ */ React17.createElement(Box.Box, {
         padding: "200",
         paddingBlockEnd: totalFilteredActions > 0 ? "0" : "200"
-      }, /* @__PURE__ */ React17.createElement(TextField2.TextField, {
+      }, /* @__PURE__ */ React17.createElement(TextField3.TextField, {
         clearButton: !0,
         labelHidden: !0,
         label: i18n.translate("Polaris.ActionList.SearchField.placeholder"),
@@ -88487,7 +88487,7 @@ var require_Popover = __commonJS({
 var require_RollupActions = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/ActionMenu/components/RollupActions/RollupActions.js"(exports) {
     "use strict";
-    var React17 = require_react(), polarisIcons = require_dist11(), useToggle = require_use_toggle(), RollupActions_module = require_RollupActions_css(), hooks = require_hooks2(), Button3 = require_Button(), Popover2 = require_Popover(), ActionList2 = require_ActionList();
+    var React17 = require_react(), polarisIcons = require_dist11(), useToggle = require_use_toggle(), RollupActions_module = require_RollupActions_css(), hooks = require_hooks2(), Button4 = require_Button(), Popover2 = require_Popover(), ActionList2 = require_ActionList();
     function RollupActions({
       accessibilityLabel,
       items = [],
@@ -88501,7 +88501,7 @@ var require_RollupActions = __commonJS({
         return null;
       let activatorMarkup = /* @__PURE__ */ React17.createElement("div", {
         className: RollupActions_module.default.RollupActivator
-      }, /* @__PURE__ */ React17.createElement(Button3.Button, {
+      }, /* @__PURE__ */ React17.createElement(Button4.Button, {
         icon: polarisIcons.MenuHorizontalIcon,
         accessibilityLabel: accessibilityLabel || i18n.translate("Polaris.ActionMenu.RollupActions.rollupButton"),
         onClick: toggleRollupOpen
@@ -88603,7 +88603,7 @@ var require_SecondaryAction_css = __commonJS({
 var require_SecondaryAction = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/ActionMenu/components/SecondaryAction/SecondaryAction.js"(exports) {
     "use strict";
-    var React17 = require_react(), css = require_css(), SecondaryAction_module = require_SecondaryAction_css(), Button3 = require_Button(), Tooltip3 = require_Tooltip();
+    var React17 = require_react(), css = require_css(), SecondaryAction_module = require_SecondaryAction_css(), Button4 = require_Button(), Tooltip3 = require_Tooltip();
     function SecondaryAction({
       children,
       tone,
@@ -88612,7 +88612,7 @@ var require_SecondaryAction = __commonJS({
       destructive,
       ...rest
     }) {
-      let buttonMarkup = /* @__PURE__ */ React17.createElement(Button3.Button, Object.assign({
+      let buttonMarkup = /* @__PURE__ */ React17.createElement(Button4.Button, Object.assign({
         onClick: onAction,
         tone: destructive ? "critical" : void 0
       }, rest), children), actionMarkup = helpText ? /* @__PURE__ */ React17.createElement(Tooltip3.Tooltip, {
@@ -88704,12 +88704,12 @@ var require_ActionsMeasurer = __commonJS({
       React17.useEffect(() => {
         handleMeasurement();
       }, [handleMeasurement, actions, groups]);
-      let actionsMarkup = actions.map((action9) => {
+      let actionsMarkup = actions.map((action10) => {
         let {
           content,
           onAction,
           ...rest
-        } = action9;
+        } = action10;
         return /* @__PURE__ */ React17.createElement(SecondaryAction.SecondaryAction, Object.assign({
           key: content,
           onClick: onAction
@@ -88786,12 +88786,12 @@ var require_Actions = __commonJS({
           hasMeasured: containerWidth !== 1 / 0
         });
       }, [containerWidth, disclosureWidth, actions, groups, actionsWidths, setState]);
-      let actionsOrDefault = React17.useMemo(() => actions ?? [], [actions]), groupsOrDefault = React17.useMemo(() => groups ?? [], [groups]), actionsMarkup = actionsOrDefault.filter((_, index) => !!visibleActions.includes(index)).map((action9) => {
+      let actionsOrDefault = React17.useMemo(() => actions ?? [], [actions]), groupsOrDefault = React17.useMemo(() => groups ?? [], [groups]), actionsMarkup = actionsOrDefault.filter((_, index) => !!visibleActions.includes(index)).map((action10) => {
         let {
           content,
           onAction,
           ...rest
-        } = action9;
+        } = action10;
         return /* @__PURE__ */ React17.createElement(SecondaryAction.SecondaryAction, Object.assign({
           key: content,
           onClick: onAction
@@ -88799,18 +88799,18 @@ var require_Actions = __commonJS({
       }), filteredGroups = (hiddenGroups.length > 0 || hiddenActions.length > 0 ? [...groupsOrDefault, defaultRollupGroup] : [...groupsOrDefault]).filter((group, index) => {
         let hasNoGroupsProp = groupsOrDefault.length === 0, isVisibleGroup = visibleGroups.includes(index), isDefaultGroup = group === defaultRollupGroup;
         return hasNoGroupsProp ? hiddenActions.length > 0 : isDefaultGroup ? !0 : isVisibleGroup;
-      }), hiddenActionObjects = hiddenActions.map((index) => actionsOrDefault[index]).filter((action9) => action9 != null), hiddenGroupObjects = hiddenGroups.map((index) => groupsOrDefault[index]).filter((group) => group != null), groupsMarkup = filteredGroups.map((group) => {
+      }), hiddenActionObjects = hiddenActions.map((index) => actionsOrDefault[index]).filter((action10) => action10 != null), hiddenGroupObjects = hiddenGroups.map((index) => groupsOrDefault[index]).filter((group) => group != null), groupsMarkup = filteredGroups.map((group) => {
         let {
           title,
           actions: groupActions,
           ...rest
-        } = group, isDefaultGroup = group === defaultRollupGroup, allHiddenItems = [...hiddenActionObjects, ...hiddenGroupObjects], [finalRolledUpActions, finalRolledUpSectionGroups] = allHiddenItems.reduce(([actions2, sections], action9) => (isMenuGroup(action9) ? sections.push({
-          title: action9.title,
-          items: action9.actions.map((sectionAction) => ({
+        } = group, isDefaultGroup = group === defaultRollupGroup, allHiddenItems = [...hiddenActionObjects, ...hiddenGroupObjects], [finalRolledUpActions, finalRolledUpSectionGroups] = allHiddenItems.reduce(([actions2, sections], action10) => (isMenuGroup(action10) ? sections.push({
+          title: action10.title,
+          items: action10.actions.map((sectionAction) => ({
             ...sectionAction,
-            disabled: action9.disabled || sectionAction.disabled
+            disabled: action10.disabled || sectionAction.disabled
           }))
-        }) : actions2.push(action9), [actions2, sections]), [[], []]);
+        }) : actions2.push(action10), [actions2, sections]), [[], []]);
         return isDefaultGroup ? /* @__PURE__ */ React17.createElement(MenuGroup.MenuGroup, Object.assign({
           key: title,
           title,
@@ -88909,9 +88909,9 @@ var require_ActionMenu = __commonJS({
     }) {
       return {
         title,
-        items: actions.map((action9) => ({
-          ...action9,
-          disabled: disabled || action9.disabled
+        items: actions.map((action10) => ({
+          ...action10,
+          disabled: disabled || action10.disabled
         }))
       };
     }
@@ -89100,7 +89100,7 @@ var require_Choice_css = __commonJS({
 var require_Choice = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Choice/Choice.js"(exports) {
     "use strict";
-    var React17 = require_react(), css = require_css(), Choice_module = require_Choice_css(), Text3 = require_Text(), InlineError = require_InlineError();
+    var React17 = require_react(), css = require_css(), Choice_module = require_Choice_css(), Text4 = require_Text(), InlineError = require_InlineError();
     function Choice({
       id,
       label,
@@ -89145,14 +89145,14 @@ var require_Choice = __commonJS({
           className: Choice_module.default.Control
         }, children), /* @__PURE__ */ React17.createElement("span", {
           className: Choice_module.default.Label
-        }, /* @__PURE__ */ React17.createElement(Text3.Text, {
+        }, /* @__PURE__ */ React17.createElement(Text4.Text, {
           as: "span",
           variant: "bodyMd"
         }, label)))
       ), helpTextMarkup = helpText ? /* @__PURE__ */ React17.createElement("div", {
         className: Choice_module.default.HelpText,
         id: helpTextID(id)
-      }, /* @__PURE__ */ React17.createElement(Text3.Text, {
+      }, /* @__PURE__ */ React17.createElement(Text4.Text, {
         as: "span",
         tone: disabled ? void 0 : "subdued"
       }, helpText)) : null, errorMarkup = error && typeof error != "boolean" && /* @__PURE__ */ React17.createElement("div", {
@@ -89358,7 +89358,7 @@ var require_hooks6 = __commonJS({
 var require_Loading = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Listbox/components/Loading/Loading.js"(exports) {
     "use strict";
-    var React17 = require_react(), Loading_module = require_Loading_css(), hooks = require_hooks6(), Spinner3 = require_Spinner(), Loading = /* @__PURE__ */ React17.memo(function({
+    var React17 = require_react(), Loading_module = require_Loading_css(), hooks = require_hooks6(), Spinner4 = require_Spinner(), Loading = /* @__PURE__ */ React17.memo(function({
       children,
       accessibilityLabel: label
     }) {
@@ -89372,7 +89372,7 @@ var require_Loading = __commonJS({
         role: "presentation"
       }, children || /* @__PURE__ */ React17.createElement("div", {
         className: Loading_module.default.Loading
-      }, /* @__PURE__ */ React17.createElement(Spinner3.Spinner, {
+      }, /* @__PURE__ */ React17.createElement(Spinner4.Spinner, {
         size: "small",
         accessibilityLabel: label
       })));
@@ -89461,7 +89461,7 @@ var require_hooks7 = __commonJS({
 var require_Header = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Listbox/components/Header/Header.js"(exports) {
     "use strict";
-    var React17 = require_react(), hooks = require_hooks7(), Box = require_Box(), Text3 = require_Text();
+    var React17 = require_react(), hooks = require_hooks7(), Box = require_Box(), Text4 = require_Text();
     function Header2({
       children
     }) {
@@ -89470,7 +89470,7 @@ var require_Header = __commonJS({
         paddingInlineStart: "400",
         paddingBlockEnd: "200",
         paddingInlineEnd: "400"
-      }, /* @__PURE__ */ React17.createElement(Text3.Text, {
+      }, /* @__PURE__ */ React17.createElement(Text4.Text, {
         as: "span",
         variant: "headingSm",
         tone: "subdued"
@@ -89616,7 +89616,7 @@ var require_Action = __commonJS({
 var require_Listbox = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Listbox/Listbox.js"(exports) {
     "use strict";
-    var React17 = require_react(), debounce = require_debounce(), useToggle = require_use_toggle(), types4 = require_types16(), shared = require_shared(), Listbox_module = require_Listbox_css(), hooks = require_hooks5(), utilities = require_utilities2(), context = require_context12(), TextOption = require_TextOption(), Loading = require_Loading(), Section = require_Section3(), Header2 = require_Header(), Action = require_Action(), KeypressListener = require_KeypressListener(), Text3 = require_Text(), Option = require_Option();
+    var React17 = require_react(), debounce = require_debounce(), useToggle = require_use_toggle(), types4 = require_types16(), shared = require_shared(), Listbox_module = require_Listbox_css(), hooks = require_hooks5(), utilities = require_utilities2(), context = require_context12(), TextOption = require_TextOption(), Loading = require_Loading(), Section = require_Section3(), Header2 = require_Header(), Action = require_Action(), KeypressListener = require_KeypressListener(), Text4 = require_Text(), Option = require_Option();
     exports.AutoSelection = void 0;
     (function(AutoSelection) {
       AutoSelection.FirstSelected = "FIRST_SELECTED", AutoSelection.First = "FIRST", AutoSelection.None = "NONE";
@@ -89785,7 +89785,7 @@ var require_Listbox = __commonJS({
         onOptionSelect,
         setLoading
       }), [onOptionSelect]);
-      return /* @__PURE__ */ React17.createElement(React17.Fragment, null, listeners, /* @__PURE__ */ React17.createElement(Text3.Text, {
+      return /* @__PURE__ */ React17.createElement(React17.Fragment, null, listeners, /* @__PURE__ */ React17.createElement(Text4.Text, {
         as: "span",
         visuallyHidden: !0
       }, /* @__PURE__ */ React17.createElement("div", {
@@ -89867,7 +89867,7 @@ var require_TextField2 = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Combobox/components/TextField/TextField.js"(exports) {
     "use strict";
     var React17 = require_react(), hooks = require_hooks5(), Label = require_Label(), TextField$1 = require_TextField();
-    function TextField2({
+    function TextField3({
       value,
       id: idProp,
       type = "text",
@@ -89912,7 +89912,7 @@ var require_TextField2 = __commonJS({
         onChange: handleChange
       }));
     }
-    exports.TextField = TextField2;
+    exports.TextField = TextField3;
   }
 });
 
@@ -89920,7 +89920,7 @@ var require_TextField2 = __commonJS({
 var require_Combobox = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Combobox/Combobox.js"(exports) {
     "use strict";
-    var React17 = require_react(), Combobox_module = require_Combobox_css(), context = require_context11(), TextField2 = require_TextField2(), Popover2 = require_Popover();
+    var React17 = require_react(), Combobox_module = require_Combobox_css(), context = require_context11(), TextField3 = require_TextField2(), Popover2 = require_Popover();
     function Combobox({
       activator,
       allowMultiple,
@@ -89991,7 +89991,7 @@ var require_Combobox = __commonJS({
         className: Combobox_module.default.Listbox
       }, children)))) : null);
     }
-    Combobox.TextField = TextField2.TextField;
+    Combobox.TextField = TextField3.TextField;
     exports.Combobox = Combobox;
   }
 });
@@ -90020,7 +90020,7 @@ var require_MappedAction_css = __commonJS({
 var require_MappedAction = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Autocomplete/components/MappedAction/MappedAction.js"(exports) {
     "use strict";
-    var React17 = require_react(), css = require_css(), MappedAction_module = require_MappedAction_css(), hooks = require_hooks2(), Icon = require_Icon(), Badge3 = require_Badge(), Text3 = require_Text(), context = require_context14(), Listbox = require_Listbox();
+    var React17 = require_react(), css = require_css(), MappedAction_module = require_MappedAction_css(), hooks = require_hooks2(), Icon = require_Icon(), Badge4 = require_Badge(), Text4 = require_Text(), context = require_context14(), Listbox = require_Listbox();
     function MappedAction({
       active,
       content,
@@ -90055,7 +90055,7 @@ var require_MappedAction = __commonJS({
       }));
       let badgeMarkup = badge && /* @__PURE__ */ React17.createElement("span", {
         className: MappedAction_module.default.Suffix
-      }, /* @__PURE__ */ React17.createElement(Badge3.Badge, {
+      }, /* @__PURE__ */ React17.createElement(Badge4.Badge, {
         tone: badge.tone
       }, badge.content)), suffixMarkup = suffix && /* @__PURE__ */ React17.createElement("span", {
         className: MappedAction_module.default.Suffix
@@ -90063,11 +90063,11 @@ var require_MappedAction = __commonJS({
         content
       }) : content, contentMarkup = /* @__PURE__ */ React17.createElement("div", {
         className: MappedAction_module.default.Text
-      }, /* @__PURE__ */ React17.createElement(Text3.Text, {
+      }, /* @__PURE__ */ React17.createElement(Text4.Text, {
         as: "p",
         variant: "bodyMd",
         breakWord: wrapOverflow
-      }, contentText), helpText ? /* @__PURE__ */ React17.createElement(Text3.Text, {
+      }, contentText), helpText ? /* @__PURE__ */ React17.createElement(Text4.Text, {
         as: "p",
         variant: "bodyMd",
         tone: "subdued"
@@ -90423,7 +90423,7 @@ var require_ButtonGroup = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/ButtonGroup/ButtonGroup.js"(exports) {
     "use strict";
     var React17 = require_react(), css = require_css(), components = require_components2(), ButtonGroup_module = require_ButtonGroup_css(), Item = require_Item3();
-    function ButtonGroup2({
+    function ButtonGroup3({
       children,
       gap,
       variant,
@@ -90443,7 +90443,7 @@ var require_ButtonGroup = __commonJS({
         "data-buttongroup-no-wrap": noWrap
       }, contents);
     }
-    exports.ButtonGroup = ButtonGroup2;
+    exports.ButtonGroup = ButtonGroup3;
   }
 });
 
@@ -90451,7 +90451,7 @@ var require_ButtonGroup = __commonJS({
 var require_Banner = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Banner/Banner.js"(exports) {
     "use strict";
-    var React17 = require_react(), polarisIcons = require_dist11(), bannerContext = require_banner_context(), withinContentContext = require_within_content_context(), css = require_css(), breakpoints = require_breakpoints2(), useEventListener = require_use_event_listener(), Banner_module = require_Banner_css(), utilities = require_utilities3(), ButtonGroup2 = require_ButtonGroup(), hooks = require_hooks2(), Text3 = require_Text(), Icon = require_Icon(), Button3 = require_Button(), Box = require_Box(), BlockStack = require_BlockStack(), InlineStack = require_InlineStack(), Banner3 = /* @__PURE__ */ React17.forwardRef(function(props, bannerRef) {
+    var React17 = require_react(), polarisIcons = require_dist11(), bannerContext = require_banner_context(), withinContentContext = require_within_content_context(), css = require_css(), breakpoints = require_breakpoints2(), useEventListener = require_use_event_listener(), Banner_module = require_Banner_css(), utilities = require_utilities3(), ButtonGroup3 = require_ButtonGroup(), hooks = require_hooks2(), Text4 = require_Text(), Icon = require_Icon(), Button4 = require_Button(), Box = require_Box(), BlockStack = require_BlockStack(), InlineStack = require_InlineStack(), Banner4 = /* @__PURE__ */ React17.forwardRef(function(props, bannerRef) {
       let {
         tone,
         stopAnnouncements
@@ -90480,7 +90480,7 @@ var require_Banner = __commonJS({
       icon,
       hideIcon,
       onDismiss,
-      action: action9,
+      action: action10,
       secondaryAction,
       title,
       children
@@ -90488,7 +90488,7 @@ var require_Banner = __commonJS({
       let i18n = hooks.useI18n(), withinContentContainer = React17.useContext(withinContentContext.WithinContentContext), isInlineIconBanner = !title && !withinContentContainer, bannerTone = Object.keys(utilities.bannerAttributes).includes(tone) ? tone : "info", bannerColors = utilities.bannerAttributes[bannerTone][withinContentContainer ? "withinContentContainer" : "withinPage"], sharedBannerProps = {
         backgroundColor: bannerColors.background,
         textColor: bannerColors.text,
-        bannerTitle: title ? /* @__PURE__ */ React17.createElement(Text3.Text, {
+        bannerTitle: title ? /* @__PURE__ */ React17.createElement(Text4.Text, {
           as: "h2",
           variant: "headingSm",
           breakWord: !0
@@ -90498,12 +90498,12 @@ var require_Banner = __commonJS({
         }, /* @__PURE__ */ React17.createElement(Icon.Icon, {
           source: icon ?? utilities.bannerAttributes[bannerTone].icon
         })),
-        actionButtons: action9 || secondaryAction ? /* @__PURE__ */ React17.createElement(ButtonGroup2.ButtonGroup, null, action9 && /* @__PURE__ */ React17.createElement(Button3.Button, Object.assign({
-          onClick: action9.onAction
-        }, action9), action9.content), secondaryAction && /* @__PURE__ */ React17.createElement(Button3.Button, Object.assign({
+        actionButtons: action10 || secondaryAction ? /* @__PURE__ */ React17.createElement(ButtonGroup3.ButtonGroup, null, action10 && /* @__PURE__ */ React17.createElement(Button4.Button, Object.assign({
+          onClick: action10.onAction
+        }, action10), action10.content), secondaryAction && /* @__PURE__ */ React17.createElement(Button4.Button, Object.assign({
           onClick: secondaryAction.onAction
         }, secondaryAction), secondaryAction.content)) : null,
-        dismissButton: onDismiss ? /* @__PURE__ */ React17.createElement(Button3.Button, {
+        dismissButton: onDismiss ? /* @__PURE__ */ React17.createElement(Button4.Button, {
           variant: "tertiary",
           icon: /* @__PURE__ */ React17.createElement("span", {
             className: Banner_module.default[isInlineIconBanner ? "icon-secondary" : bannerColors.icon]
@@ -90513,7 +90513,7 @@ var require_Banner = __commonJS({
           onClick: onDismiss,
           accessibilityLabel: i18n.translate("Polaris.Banner.dismissButton")
         }) : null
-      }, childrenMarkup = children ? /* @__PURE__ */ React17.createElement(Text3.Text, {
+      }, childrenMarkup = children ? /* @__PURE__ */ React17.createElement(Text4.Text, {
         as: "span",
         variant: "bodyMd"
       }, children) : null;
@@ -90633,7 +90633,7 @@ var require_Banner = __commonJS({
         gap: "050"
       }, bannerTitle, /* @__PURE__ */ React17.createElement("div", null, children)), actionButtons))), dismissButton));
     }
-    exports.Banner = Banner3;
+    exports.Banner = Banner4;
     exports.BannerLayout = BannerLayout;
     exports.DefaultBanner = DefaultBanner;
     exports.InlineIconBanner = InlineIconBanner;
@@ -90700,14 +90700,14 @@ var require_Bleed = __commonJS({
 var require_Breadcrumbs = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Breadcrumbs/Breadcrumbs.js"(exports) {
     "use strict";
-    var React17 = require_react(), polarisIcons = require_dist11(), focus = require_focus(), Button3 = require_Button();
+    var React17 = require_react(), polarisIcons = require_dist11(), focus = require_focus(), Button4 = require_Button();
     function Breadcrumbs({
       backAction
     }) {
       let {
         content
       } = backAction;
-      return /* @__PURE__ */ React17.createElement(Button3.Button, {
+      return /* @__PURE__ */ React17.createElement(Button4.Button, {
         key: content,
         url: "url" in backAction ? backAction.url : void 0,
         onClick: "onAction" in backAction ? backAction.onAction : void 0,
@@ -90745,18 +90745,18 @@ var require_utilities4 = __commonJS({
       };
     }
     function instanceOfBulkActionListSectionArray(actions) {
-      let validList = actions.filter((action9) => action9.items);
+      let validList = actions.filter((action10) => action10.items);
       return actions.length === validList.length;
     }
     function instanceOfBulkActionArray(actions) {
-      let validList = actions.filter((action9) => !action9.items);
+      let validList = actions.filter((action10) => !action10.items);
       return actions.length === validList.length;
     }
-    function instanceOfMenuGroupDescriptor(action9) {
-      return "title" in action9 && "actions" in action9;
+    function instanceOfMenuGroupDescriptor(action10) {
+      return "title" in action10 && "actions" in action10;
     }
-    function instanceOfBulkActionListSection(action9) {
-      return "items" in action9;
+    function instanceOfBulkActionListSection(action10) {
+      return "items" in action10;
     }
     function getActionSections(actions) {
       if (!(!actions || actions.length === 0)) {
@@ -90771,8 +90771,8 @@ var require_utilities4 = __commonJS({
     function isNewBadgeInBadgeActions(actionSections) {
       if (!actionSections)
         return !1;
-      for (let action9 of actionSections)
-        for (let item of action9.items)
+      for (let action10 of actionSections)
+        for (let item of action10.items)
           if (item.badge?.tone === "new")
             return !0;
       return !1;
@@ -90841,7 +90841,7 @@ var require_Indicator = __commonJS({
 var require_BulkActionButton = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/BulkActions/components/BulkActionButton/BulkActionButton.js"(exports) {
     "use strict";
-    var React17 = require_react(), polarisIcons = require_dist11(), useComponentDidMount = require_use_component_did_mount(), BulkActions_module = require_BulkActions_css(), Indicator = require_Indicator(), Tooltip3 = require_Tooltip(), Button3 = require_Button(), Icon = require_Icon();
+    var React17 = require_react(), polarisIcons = require_dist11(), useComponentDidMount = require_use_component_did_mount(), BulkActions_module = require_BulkActions_css(), Indicator = require_Indicator(), Tooltip3 = require_Tooltip(), Button4 = require_Button(), Icon = require_Icon();
     function BulkActionButton({
       handleMeasurement,
       url,
@@ -90863,7 +90863,7 @@ var require_BulkActionButton = __commonJS({
           handleMeasurement(width);
         }
       });
-      let isActivatorForMoreActionsPopover = disclosure && !showContentInButton, buttonContent = isActivatorForMoreActionsPopover ? void 0 : content, buttonMarkup = /* @__PURE__ */ React17.createElement(Button3.Button, {
+      let isActivatorForMoreActionsPopover = disclosure && !showContentInButton, buttonContent = isActivatorForMoreActionsPopover ? void 0 : content, buttonMarkup = /* @__PURE__ */ React17.createElement(Button4.Button, {
         external,
         url,
         accessibilityLabel: isActivatorForMoreActionsPopover ? content : accessibilityLabel,
@@ -90943,7 +90943,7 @@ var require_CheckableButton_css = __commonJS({
 var require_CheckableButton = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/CheckableButton/CheckableButton.js"(exports) {
     "use strict";
-    var React17 = require_react(), CheckableButton_module = require_CheckableButton_css(), Checkbox = require_Checkbox(), Text3 = require_Text(), CheckableButton = /* @__PURE__ */ React17.forwardRef(function({
+    var React17 = require_react(), CheckableButton_module = require_CheckableButton_css(), Checkbox = require_Checkbox(), Text4 = require_Text(), CheckableButton = /* @__PURE__ */ React17.forwardRef(function({
       accessibilityLabel,
       label = "",
       onToggleAll,
@@ -90972,7 +90972,7 @@ var require_CheckableButton = __commonJS({
       })), label ? /* @__PURE__ */ React17.createElement("span", {
         className: CheckableButton_module.default.Label,
         "aria-live": ariaLive
-      }, /* @__PURE__ */ React17.createElement(Text3.Text, {
+      }, /* @__PURE__ */ React17.createElement(Text4.Text, {
         as: "span",
         variant: "bodySm",
         fontWeight: "medium"
@@ -91009,16 +91009,16 @@ var require_BulkActionsMeasurer = __commonJS({
       React17.useEffect(() => {
         handleMeasurement();
       }, [handleMeasurement, promotedActions]);
-      let promotedActionsMarkup = promotedActions.map((action9, index) => utilities.instanceOfMenuGroupDescriptor(action9) ? /* @__PURE__ */ React17.createElement(BulkActionButton.BulkActionButton, {
+      let promotedActionsMarkup = promotedActions.map((action10, index) => utilities.instanceOfMenuGroupDescriptor(action10) ? /* @__PURE__ */ React17.createElement(BulkActionButton.BulkActionButton, {
         key: index,
         disclosure: !0,
         showContentInButton: !0,
-        content: action9.title,
+        content: action10.title,
         size: buttonSize
       }) : /* @__PURE__ */ React17.createElement(BulkActionButton.BulkActionButton, Object.assign({
         key: index,
         disabled
-      }, action9, {
+      }, action10, {
         size: buttonSize
       })));
       return useEventListener.useEventListener("resize", handleMeasurement), /* @__PURE__ */ React17.createElement("div", {
@@ -91034,7 +91034,7 @@ var require_BulkActionsMeasurer = __commonJS({
 var require_BulkActions = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/BulkActions/BulkActions.js"(exports) {
     "use strict";
-    var React17 = require_react(), css = require_css(), utilities = require_utilities4(), BulkActions_module = require_BulkActions_css(), BulkActionMenu = require_BulkActionMenu(), CheckableButton = require_CheckableButton(), BulkActionsMeasurer = require_BulkActionsMeasurer(), hooks = require_hooks2(), UnstyledButton = require_UnstyledButton(), Text3 = require_Text(), BulkActionButton = require_BulkActionButton(), Popover2 = require_Popover(), ActionList2 = require_ActionList(), InlineStack = require_InlineStack(), BulkActions = /* @__PURE__ */ React17.forwardRef(function({
+    var React17 = require_react(), css = require_css(), utilities = require_utilities4(), BulkActions_module = require_BulkActions_css(), BulkActionMenu = require_BulkActionMenu(), CheckableButton = require_CheckableButton(), BulkActionsMeasurer = require_BulkActionsMeasurer(), hooks = require_hooks2(), UnstyledButton = require_UnstyledButton(), Text4 = require_Text(), BulkActionButton = require_BulkActionButton(), Popover2 = require_Popover(), ActionList2 = require_ActionList(), InlineStack = require_InlineStack(), BulkActions = /* @__PURE__ */ React17.forwardRef(function({
       promotedActions,
       actions,
       disabled,
@@ -91085,7 +91085,7 @@ var require_BulkActions = __commonJS({
         onClick: paginatedSelectAllAction.onAction,
         size: "slim",
         disabled
-      }, /* @__PURE__ */ React17.createElement(Text3.Text, {
+      }, /* @__PURE__ */ React17.createElement(Text4.Text, {
         as: "span",
         variant: "bodySm",
         fontWeight: "medium"
@@ -91119,39 +91119,39 @@ var require_BulkActions = __commonJS({
           disclosureWidth: disclosureWidth2,
           hasMeasured: !0
         });
-      }, [promotedActions]), actionSections = utilities.getActionSections(actions), promotedActionsMarkup = promotedActions ? promotedActions.filter((_, index) => !!visiblePromotedActions.includes(index)).map((action9, index) => utilities.instanceOfMenuGroupDescriptor(action9) ? /* @__PURE__ */ React17.createElement(BulkActionMenu.BulkActionMenu, Object.assign({
+      }, [promotedActions]), actionSections = utilities.getActionSections(actions), promotedActionsMarkup = promotedActions ? promotedActions.filter((_, index) => !!visiblePromotedActions.includes(index)).map((action10, index) => utilities.instanceOfMenuGroupDescriptor(action10) ? /* @__PURE__ */ React17.createElement(BulkActionMenu.BulkActionMenu, Object.assign({
         key: index
-      }, action9, {
+      }, action10, {
         isNewBadgeInBadgeActions: utilities.isNewBadgeInBadgeActions(actionSections),
         size: buttonSize
       })) : /* @__PURE__ */ React17.createElement(BulkActionButton.BulkActionButton, Object.assign({
         key: index,
         disabled
-      }, action9, {
+      }, action10, {
         size: buttonSize
       }))) : null, hiddenPromotedSection = {
-        items: hiddenPromotedActions.map((index) => promotedActions?.[index]).reduce((memo, action9) => action9 ? utilities.instanceOfMenuGroupDescriptor(action9) ? memo.concat(action9.actions) : memo.concat(action9) : memo, [])
+        items: hiddenPromotedActions.map((index) => promotedActions?.[index]).reduce((memo, action10) => action10 ? utilities.instanceOfMenuGroupDescriptor(action10) ? memo.concat(action10.actions) : memo.concat(action10) : memo, [])
       }, allHiddenActions = React17.useMemo(() => {
         if (actionSections)
           return actionSections;
         if (!actions)
           return [];
         let isAFlatArray = !0;
-        return actions.filter((action9) => action9).reduce((memo, action9) => {
-          if (utilities.instanceOfBulkActionListSection(action9))
-            return isAFlatArray = !1, memo.concat(action9);
+        return actions.filter((action10) => action10).reduce((memo, action10) => {
+          if (utilities.instanceOfBulkActionListSection(action10))
+            return isAFlatArray = !1, memo.concat(action10);
           if (isAFlatArray) {
             if (memo.length === 0)
               return [{
-                items: [action9]
+                items: [action10]
               }];
             let lastItem = memo[memo.length - 1];
             return memo.splice(memo.length - 1, 1, {
-              items: [...lastItem.items, action9]
+              items: [...lastItem.items, action10]
             }), memo;
           }
           return isAFlatArray = !0, memo.concat({
-            items: [action9]
+            items: [action10]
           });
         }, []);
       }, [actions, actionSections]), activator = /* @__PURE__ */ React17.createElement(BulkActionButton.BulkActionButton, {
@@ -91251,15 +91251,15 @@ var require_LegacyCard_css = __commonJS({
 var require_Header2 = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/LegacyCard/components/Header/Header.js"(exports) {
     "use strict";
-    var React17 = require_react(), LegacyCard_module = require_LegacyCard_css(), utils = require_utils11(), ButtonGroup2 = require_ButtonGroup(), InlineStack = require_InlineStack(), Text3 = require_Text();
+    var React17 = require_react(), LegacyCard_module = require_LegacyCard_css(), utils = require_utils11(), ButtonGroup3 = require_ButtonGroup(), InlineStack = require_InlineStack(), Text4 = require_Text();
     function Header2({
       children,
       title,
       actions
     }) {
-      let actionMarkup = actions ? /* @__PURE__ */ React17.createElement(ButtonGroup2.ButtonGroup, null, utils.buttonsFrom(actions, {
+      let actionMarkup = actions ? /* @__PURE__ */ React17.createElement(ButtonGroup3.ButtonGroup, null, utils.buttonsFrom(actions, {
         variant: "plain"
-      })) : null, titleMarkup = /* @__PURE__ */ React17.isValidElement(title) ? title : /* @__PURE__ */ React17.createElement(Text3.Text, {
+      })) : null, titleMarkup = /* @__PURE__ */ React17.isValidElement(title) ? title : /* @__PURE__ */ React17.createElement(Text4.Text, {
         variant: "headingSm",
         as: "h2"
       }, title), headingMarkup = actionMarkup || children ? /* @__PURE__ */ React17.createElement(InlineStack.InlineStack, {
@@ -91362,7 +91362,7 @@ var require_LegacyStack = __commonJS({
 var require_Section4 = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/LegacyCard/components/Section/Section.js"(exports) {
     "use strict";
-    var React17 = require_react(), css = require_css(), LegacyCard_module = require_LegacyCard_css(), LegacyStack = require_LegacyStack(), ButtonGroup2 = require_ButtonGroup(), utils = require_utils11(), Text3 = require_Text();
+    var React17 = require_react(), css = require_css(), LegacyCard_module = require_LegacyCard_css(), LegacyStack = require_LegacyStack(), ButtonGroup3 = require_ButtonGroup(), utils = require_utils11(), Text4 = require_Text();
     function Section({
       children,
       title,
@@ -91372,9 +91372,9 @@ var require_Section4 = __commonJS({
       actions,
       hideOnPrint
     }) {
-      let className = css.classNames(LegacyCard_module.default.Section, flush && LegacyCard_module.default["Section-flush"], subdued && LegacyCard_module.default["Section-subdued"], fullWidth && LegacyCard_module.default["Section-fullWidth"], hideOnPrint && LegacyCard_module.default["Section-hideOnPrint"]), actionMarkup = actions ? /* @__PURE__ */ React17.createElement(ButtonGroup2.ButtonGroup, null, utils.buttonsFrom(actions, {
+      let className = css.classNames(LegacyCard_module.default.Section, flush && LegacyCard_module.default["Section-flush"], subdued && LegacyCard_module.default["Section-subdued"], fullWidth && LegacyCard_module.default["Section-fullWidth"], hideOnPrint && LegacyCard_module.default["Section-hideOnPrint"]), actionMarkup = actions ? /* @__PURE__ */ React17.createElement(ButtonGroup3.ButtonGroup, null, utils.buttonsFrom(actions, {
         variant: "plain"
-      })) : null, titleMarkup = typeof title == "string" ? /* @__PURE__ */ React17.createElement(Text3.Text, {
+      })) : null, titleMarkup = typeof title == "string" ? /* @__PURE__ */ React17.createElement(Text4.Text, {
         variant: "headingSm",
         as: "h3",
         fontWeight: "medium"
@@ -91413,7 +91413,7 @@ var require_Subsection = __commonJS({
 var require_LegacyCard = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/LegacyCard/LegacyCard.js"(exports) {
     "use strict";
-    var React17 = require_react(), css = require_css(), useToggle = require_use_toggle(), withinContentContext = require_within_content_context(), LegacyCard_module = require_LegacyCard_css(), Header2 = require_Header2(), Section = require_Section4(), Subsection = require_Subsection(), hooks = require_hooks2(), utils = require_utils11(), Popover2 = require_Popover(), Button3 = require_Button(), ActionList2 = require_ActionList(), ButtonGroup2 = require_ButtonGroup(), LegacyCard = function({
+    var React17 = require_react(), css = require_css(), useToggle = require_use_toggle(), withinContentContext = require_within_content_context(), LegacyCard_module = require_LegacyCard_css(), Header2 = require_Header2(), Section = require_Section4(), Subsection = require_Subsection(), hooks = require_hooks2(), utils = require_utils11(), Popover2 = require_Popover(), Button4 = require_Button(), ActionList2 = require_ActionList(), ButtonGroup3 = require_ButtonGroup(), LegacyCard = function({
       children,
       hideOnPrint,
       title,
@@ -91436,7 +91436,7 @@ var require_LegacyCard = __commonJS({
       }) : null, secondaryFooterActionsMarkup = null;
       secondaryFooterActions && secondaryFooterActions.length && (secondaryFooterActions.length === 1 ? secondaryFooterActionsMarkup = utils.buttonFrom(secondaryFooterActions[0]) : secondaryFooterActionsMarkup = /* @__PURE__ */ React17.createElement(React17.Fragment, null, /* @__PURE__ */ React17.createElement(Popover2.Popover, {
         active: secondaryActionsPopoverOpen,
-        activator: /* @__PURE__ */ React17.createElement(Button3.Button, {
+        activator: /* @__PURE__ */ React17.createElement(Button4.Button, {
           disclosure: !0,
           onClick: toggleSecondaryActionsPopoverOpen
         }, secondaryFooterActionsDisclosureText || i18n.translate("Polaris.Common.more")),
@@ -91446,7 +91446,7 @@ var require_LegacyCard = __commonJS({
       }))));
       let footerMarkup = primaryFooterActionMarkup || secondaryFooterActionsMarkup ? /* @__PURE__ */ React17.createElement("div", {
         className: css.classNames(LegacyCard_module.default.Footer, footerActionAlignment === "left" && LegacyCard_module.default.LeftJustified)
-      }, footerActionAlignment === "right" ? /* @__PURE__ */ React17.createElement(ButtonGroup2.ButtonGroup, null, secondaryFooterActionsMarkup, primaryFooterActionMarkup) : /* @__PURE__ */ React17.createElement(ButtonGroup2.ButtonGroup, null, primaryFooterActionMarkup, secondaryFooterActionsMarkup)) : null;
+      }, footerActionAlignment === "right" ? /* @__PURE__ */ React17.createElement(ButtonGroup3.ButtonGroup, null, secondaryFooterActionsMarkup, primaryFooterActionMarkup) : /* @__PURE__ */ React17.createElement(ButtonGroup3.ButtonGroup, null, primaryFooterActionMarkup, secondaryFooterActionsMarkup)) : null;
       return /* @__PURE__ */ React17.createElement(withinContentContext.WithinContentContext.Provider, {
         value: !0
       }, /* @__PURE__ */ React17.createElement("div", {
@@ -91505,7 +91505,7 @@ var require_LegacyCard = __commonJS({
 var require_CalloutCard = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/CalloutCard/CalloutCard.js"(exports) {
     "use strict";
-    var React17 = require_react(), polarisIcons = require_dist11(), css = require_css(), CalloutCard_module = require_CalloutCard_css(), LegacyCard = require_LegacyCard(), utils = require_utils11(), Button3 = require_Button(), Text3 = require_Text(), BlockStack = require_BlockStack(), Image = require_Image(), ButtonGroup2 = require_ButtonGroup();
+    var React17 = require_react(), polarisIcons = require_dist11(), css = require_css(), CalloutCard_module = require_CalloutCard_css(), LegacyCard = require_LegacyCard(), utils = require_utils11(), Button4 = require_Button(), Text4 = require_Text(), BlockStack = require_BlockStack(), Image = require_Image(), ButtonGroup3 = require_ButtonGroup();
     function CalloutCard({
       title,
       children,
@@ -91516,9 +91516,9 @@ var require_CalloutCard = __commonJS({
     }) {
       let primaryActionMarkup = utils.buttonFrom(primaryAction), secondaryActionMarkup = secondaryAction ? utils.buttonFrom(secondaryAction, {
         variant: secondaryAction.variant ?? "tertiary"
-      }) : null, buttonMarkup = secondaryActionMarkup ? /* @__PURE__ */ React17.createElement(ButtonGroup2.ButtonGroup, null, primaryActionMarkup, secondaryActionMarkup) : primaryActionMarkup, dismissButton = onDismiss ? /* @__PURE__ */ React17.createElement("div", {
+      }) : null, buttonMarkup = secondaryActionMarkup ? /* @__PURE__ */ React17.createElement(ButtonGroup3.ButtonGroup, null, primaryActionMarkup, secondaryActionMarkup) : primaryActionMarkup, dismissButton = onDismiss ? /* @__PURE__ */ React17.createElement("div", {
         className: CalloutCard_module.default.Dismiss
-      }, /* @__PURE__ */ React17.createElement(Button3.Button, {
+      }, /* @__PURE__ */ React17.createElement(Button4.Button, {
         variant: "plain",
         icon: polarisIcons.XSmallIcon,
         onClick: onDismiss,
@@ -91532,10 +91532,10 @@ var require_CalloutCard = __commonJS({
         className: CalloutCard_module.default.Content
       }, /* @__PURE__ */ React17.createElement("div", {
         className: CalloutCard_module.default.Title
-      }, /* @__PURE__ */ React17.createElement(Text3.Text, {
+      }, /* @__PURE__ */ React17.createElement(Text4.Text, {
         variant: "headingSm",
         as: "h2"
-      }, title)), /* @__PURE__ */ React17.createElement(Text3.Text, {
+      }, title)), /* @__PURE__ */ React17.createElement(Text4.Text, {
         as: "span",
         variant: "bodyMd"
       }, /* @__PURE__ */ React17.createElement(BlockStack.BlockStack, null, children)), /* @__PURE__ */ React17.createElement("div", {
@@ -91658,7 +91658,7 @@ var require_RadioButton = __commonJS({
 var require_ChoiceList = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/ChoiceList/ChoiceList.js"(exports) {
     "use strict";
-    var React17 = require_react(), ChoiceList_module = require_ChoiceList_css(), Bleed = require_Bleed(), RadioButton = require_RadioButton(), Box = require_Box(), InlineError = require_InlineError(), BlockStack = require_BlockStack(), Checkbox = require_Checkbox(), Text3 = require_Text();
+    var React17 = require_react(), ChoiceList_module = require_ChoiceList_css(), Bleed = require_Bleed(), RadioButton = require_RadioButton(), Box = require_Box(), InlineError = require_InlineError(), BlockStack = require_BlockStack(), Checkbox = require_Checkbox(), Text4 = require_Text();
     function ChoiceList({
       title,
       titleHidden,
@@ -91677,7 +91677,7 @@ var require_ChoiceList = __commonJS({
           xs: "0",
           md: "100"
         }
-      }, /* @__PURE__ */ React17.createElement(Text3.Text, {
+      }, /* @__PURE__ */ React17.createElement(Text4.Text, {
         as: "span",
         variant: "bodyMd",
         visuallyHidden: titleHidden
@@ -92702,7 +92702,7 @@ var require_Pagination_css = __commonJS({
 var require_Pagination = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Pagination/Pagination.js"(exports) {
     "use strict";
-    var polarisIcons = require_dist11(), React17 = require_react(), isInputFocused = require_is_input_focused(), css = require_css(), Pagination_module = require_Pagination_css(), hooks = require_hooks2(), KeypressListener = require_KeypressListener(), Box = require_Box(), InlineStack = require_InlineStack(), ButtonGroup2 = require_ButtonGroup(), Tooltip3 = require_Tooltip(), Text3 = require_Text(), Button3 = require_Button();
+    var polarisIcons = require_dist11(), React17 = require_react(), isInputFocused = require_is_input_focused(), css = require_css(), Pagination_module = require_Pagination_css(), hooks = require_hooks2(), KeypressListener = require_KeypressListener(), Box = require_Box(), InlineStack = require_InlineStack(), ButtonGroup3 = require_ButtonGroup(), Tooltip3 = require_Tooltip(), Text4 = require_Text(), Button4 = require_Button();
     function Pagination({
       hasNext,
       hasPrevious,
@@ -92719,7 +92719,7 @@ var require_Pagination = __commonJS({
       label,
       type = "page"
     }) {
-      let i18n = hooks.useI18n(), node = /* @__PURE__ */ React17.createRef(), navLabel = accessibilityLabel || i18n.translate("Polaris.Pagination.pagination"), previousLabel = accessibilityLabels?.previous || i18n.translate("Polaris.Pagination.previous"), nextLabel = accessibilityLabels?.next || i18n.translate("Polaris.Pagination.next"), prev = /* @__PURE__ */ React17.createElement(Button3.Button, {
+      let i18n = hooks.useI18n(), node = /* @__PURE__ */ React17.createRef(), navLabel = accessibilityLabel || i18n.translate("Polaris.Pagination.pagination"), previousLabel = accessibilityLabels?.previous || i18n.translate("Polaris.Pagination.previous"), nextLabel = accessibilityLabels?.next || i18n.translate("Polaris.Pagination.next"), prev = /* @__PURE__ */ React17.createElement(Button4.Button, {
         icon: polarisIcons.ChevronLeftIcon,
         accessibilityLabel: previousLabel,
         url: previousURL,
@@ -92730,7 +92730,7 @@ var require_Pagination = __commonJS({
         activatorWrapper: "span",
         content: previousTooltip,
         preferredPosition: "below"
-      }, prev) : prev, next = /* @__PURE__ */ React17.createElement(Button3.Button, {
+      }, prev) : prev, next = /* @__PURE__ */ React17.createElement(Button4.Button, {
         icon: polarisIcons.ChevronRightIcon,
         accessibilityLabel: nextLabel,
         url: nextURL,
@@ -92755,7 +92755,7 @@ var require_Pagination = __commonJS({
           padding: "300",
           paddingBlockStart: "0",
           paddingBlockEnd: "0"
-        }, /* @__PURE__ */ React17.createElement(Text3.Text, {
+        }, /* @__PURE__ */ React17.createElement(Text4.Text, {
           as: "span",
           variant: "bodySm",
           fontWeight: "medium"
@@ -92778,7 +92778,7 @@ var require_Pagination = __commonJS({
           "data-buttongroup-variant": "segmented"
         }, /* @__PURE__ */ React17.createElement("div", null, constructedPrevious), labelMarkup2, /* @__PURE__ */ React17.createElement("div", null, constructedNext)))));
       }
-      let labelTextMarkup = hasNext && hasPrevious ? /* @__PURE__ */ React17.createElement("span", null, label) : /* @__PURE__ */ React17.createElement(Text3.Text, {
+      let labelTextMarkup = hasNext && hasPrevious ? /* @__PURE__ */ React17.createElement("span", null, label) : /* @__PURE__ */ React17.createElement(Text4.Text, {
         tone: "subdued",
         as: "span"
       }, label), labelMarkup = label ? /* @__PURE__ */ React17.createElement(Box.Box, {
@@ -92792,7 +92792,7 @@ var require_Pagination = __commonJS({
         "aria-label": navLabel,
         ref: node,
         className: Pagination_module.default.Pagination
-      }, previousButtonEvents, nextButtonEvents, /* @__PURE__ */ React17.createElement(ButtonGroup2.ButtonGroup, {
+      }, previousButtonEvents, nextButtonEvents, /* @__PURE__ */ React17.createElement(ButtonGroup3.ButtonGroup, {
         variant: "segmented"
       }, constructedPrevious, labelMarkup, constructedNext));
     }
@@ -92940,7 +92940,7 @@ var require_Sticky = __commonJS({
 var require_Navigation = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/DataTable/components/Navigation/Navigation.js"(exports) {
     "use strict";
-    var React17 = require_react(), polarisIcons = require_dist11(), css = require_css(), DataTable_module = require_DataTable_css(), hooks = require_hooks2(), Button3 = require_Button();
+    var React17 = require_react(), polarisIcons = require_dist11(), css = require_css(), DataTable_module = require_DataTable_css(), hooks = require_hooks2(), Button4 = require_Button();
     function Navigation({
       columnVisibilityData,
       isScrolledFarthestLeft,
@@ -92967,13 +92967,13 @@ var require_Navigation = __commonJS({
       return /* @__PURE__ */ React17.createElement("div", {
         className: DataTable_module.default.Navigation,
         ref: setRef
-      }, /* @__PURE__ */ React17.createElement(Button3.Button, {
+      }, /* @__PURE__ */ React17.createElement(Button4.Button, {
         variant: "tertiary",
         icon: polarisIcons.ChevronLeftIcon,
         disabled: isScrolledFarthestLeft,
         accessibilityLabel: leftA11yLabel,
         onClick: navigateTableLeft
-      }), pipMarkup, /* @__PURE__ */ React17.createElement(Button3.Button, {
+      }), pipMarkup, /* @__PURE__ */ React17.createElement(Button4.Button, {
         variant: "tertiary",
         icon: polarisIcons.ChevronRightIcon,
         disabled: isScrolledFarthestRight,
@@ -93453,13 +93453,13 @@ var require_DataTable = __commonJS({
       // eslint-disable-next-line @shopify/react-no-multiple-render-methods
       // eslint-disable-next-line @shopify/react-no-multiple-render-methods
     };
-    function DataTable(props) {
+    function DataTable2(props) {
       let i18n = hooks.useI18n();
       return /* @__PURE__ */ React17.createElement(DataTableInner, Object.assign({}, props, {
         i18n
       }));
     }
-    exports.DataTable = DataTable;
+    exports.DataTable = DataTable2;
   }
 });
 
@@ -93659,7 +93659,7 @@ var require_DatePicker_css = __commonJS({
 var require_Weekday = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/DatePicker/components/Weekday/Weekday.js"(exports) {
     "use strict";
-    var React17 = require_react(), DatePicker_module = require_DatePicker_css(), Text3 = require_Text(), Weekday = /* @__PURE__ */ React17.memo(function({
+    var React17 = require_react(), DatePicker_module = require_DatePicker_css(), Text4 = require_Text(), Weekday = /* @__PURE__ */ React17.memo(function({
       label,
       title,
       current
@@ -93668,7 +93668,7 @@ var require_Weekday = __commonJS({
         "aria-label": label,
         scope: "col",
         className: DatePicker_module.default.Weekday
-      }, /* @__PURE__ */ React17.createElement(Text3.Text, {
+      }, /* @__PURE__ */ React17.createElement(Text4.Text, {
         as: "span",
         variant: "bodySm",
         alignment: "center",
@@ -93684,7 +93684,7 @@ var require_Weekday = __commonJS({
 var require_Day = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/DatePicker/components/Day/Day.js"(exports) {
     "use strict";
-    var React17 = require_react(), css = require_css(), dates = require_dates(), utilities = require_utilities8(), DatePicker_module = require_DatePicker_css(), hooks = require_hooks2(), Text3 = require_Text(), Day = /* @__PURE__ */ React17.memo(function({
+    var React17 = require_react(), css = require_css(), dates = require_dates(), utilities = require_utilities8(), DatePicker_module = require_DatePicker_css(), hooks = require_hooks2(), Text4 = require_Text(), Day = /* @__PURE__ */ React17.memo(function({
       day,
       focused,
       onClick,
@@ -93724,7 +93724,7 @@ var require_Day = __commonJS({
         "aria-label": ariaLabel,
         "aria-disabled": disabled,
         "aria-pressed": selected
-      }, /* @__PURE__ */ React17.createElement(Text3.Text, {
+      }, /* @__PURE__ */ React17.createElement(Text4.Text, {
         as: "span",
         variant: "bodySm",
         alignment: "center",
@@ -93741,7 +93741,7 @@ var require_Day = __commonJS({
 var require_Month = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/DatePicker/components/Month/Month.js"(exports) {
     "use strict";
-    var React17 = require_react(), dates = require_dates(), DatePicker_module = require_DatePicker_css(), utilities = require_utilities8(), Weekday = require_Weekday(), Day = require_Day(), hooks = require_hooks2(), Text3 = require_Text();
+    var React17 = require_react(), dates = require_dates(), DatePicker_module = require_DatePicker_css(), utilities = require_utilities8(), Weekday = require_Weekday(), Day = require_Day(), hooks = require_hooks2(), Text4 = require_Text();
     function Month({
       focusedDate,
       selected,
@@ -93804,7 +93804,7 @@ var require_Month = __commonJS({
         className: DatePicker_module.default.Month
       }, /* @__PURE__ */ React17.createElement("caption", {
         className: DatePicker_module.default.Title
-      }, /* @__PURE__ */ React17.createElement(Text3.Text, {
+      }, /* @__PURE__ */ React17.createElement(Text4.Text, {
         as: "span",
         variant: "bodyMd",
         alignment: "center",
@@ -93851,7 +93851,7 @@ var require_Month = __commonJS({
 var require_DatePicker = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/DatePicker/DatePicker.js"(exports) {
     "use strict";
-    var React17 = require_react(), polarisIcons = require_dist11(), css = require_css(), dates = require_dates(), utilities = require_utilities8(), DatePicker_module = require_DatePicker_css(), Month = require_Month(), hooks = require_hooks2(), Button3 = require_Button();
+    var React17 = require_react(), polarisIcons = require_dist11(), css = require_css(), dates = require_dates(), utilities = require_utilities8(), DatePicker_module = require_DatePicker_css(), Month = require_Month(), hooks = require_hooks2(), Button4 = require_Button();
     function DatePicker({
       id,
       selected,
@@ -93929,7 +93929,7 @@ var require_DatePicker = __commonJS({
         onKeyUp: handleKeyUp
       }, /* @__PURE__ */ React17.createElement("div", {
         className: DatePicker_module.default.Header
-      }, /* @__PURE__ */ React17.createElement(Button3.Button, {
+      }, /* @__PURE__ */ React17.createElement(Button4.Button, {
         variant: "tertiary",
         icon: polarisIcons.ArrowLeftIcon,
         accessibilityLabel: i18n.translate("Polaris.DatePicker.previousMonth", {
@@ -93937,7 +93937,7 @@ var require_DatePicker = __commonJS({
           showPreviousYear
         }),
         onClick: () => handleMonthChangeClick(showPreviousMonth, showPreviousYear)
-      }), /* @__PURE__ */ React17.createElement(Button3.Button, {
+      }), /* @__PURE__ */ React17.createElement(Button4.Button, {
         variant: "tertiary",
         icon: polarisIcons.ArrowRightIcon,
         accessibilityLabel: i18n.translate("Polaris.DatePicker.nextMonth", {
@@ -94001,7 +94001,7 @@ var require_DescriptionList_css = __commonJS({
 var require_DescriptionList = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/DescriptionList/DescriptionList.js"(exports) {
     "use strict";
-    var React17 = require_react(), css = require_css(), DescriptionList_module = require_DescriptionList_css(), Text3 = require_Text();
+    var React17 = require_react(), css = require_css(), DescriptionList_module = require_DescriptionList_css(), Text4 = require_Text();
     function DescriptionList({
       items,
       gap = "loose"
@@ -94012,7 +94012,7 @@ var require_DescriptionList = __commonJS({
       }, index) => [...allTerms, /* @__PURE__ */ React17.createElement("dt", {
         key: `dt${index}`,
         className: DescriptionList_module.default.Term
-      }, /* @__PURE__ */ React17.createElement(Text3.Text, {
+      }, /* @__PURE__ */ React17.createElement(Text4.Text, {
         as: "span",
         variant: "headingSm"
       }, term)), /* @__PURE__ */ React17.createElement("dd", {
@@ -94180,7 +94180,7 @@ var require_FileUpload_css = __commonJS({
 var require_FileUpload = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/DropZone/components/FileUpload/FileUpload.js"(exports) {
     "use strict";
-    var React17 = require_react(), polarisIcons = require_dist11(), css = require_css(), capitalize = require_capitalize(), context = require_context16(), index = require_utils13(), FileUpload_module = require_FileUpload_css(), hooks = require_hooks2(), Icon = require_Icon(), BlockStack = require_BlockStack(), Button3 = require_Button(), Text3 = require_Text();
+    var React17 = require_react(), polarisIcons = require_dist11(), css = require_css(), capitalize = require_capitalize(), context = require_context16(), index = require_utils13(), FileUpload_module = require_FileUpload_css(), hooks = require_hooks2(), Icon = require_Icon(), BlockStack = require_BlockStack(), Button4 = require_Button(), Text4 = require_Text();
     function FileUpload(props) {
       let i18n = hooks.useI18n(), {
         size,
@@ -94191,9 +94191,9 @@ var require_FileUpload = __commonJS({
       } = React17.useContext(context.DropZoneContext), typeSuffix = capitalize.capitalize(type), allowMultipleKey = index.createAllowMultipleKey(allowMultiple), {
         actionTitle = i18n.translate(`Polaris.DropZone.${allowMultipleKey}.actionTitle${typeSuffix}`),
         actionHint
-      } = props, actionMarkup = /* @__PURE__ */ React17.createElement(Button3.Button, {
+      } = props, actionMarkup = /* @__PURE__ */ React17.createElement(Button4.Button, {
         disabled
-      }, actionTitle), fileUploadClassName = css.classNames(FileUpload_module.default.FileUpload, measuring && FileUpload_module.default.measuring, size === "large" && FileUpload_module.default.large, size === "small" && FileUpload_module.default.small), actionHintMarkup = actionHint && /* @__PURE__ */ React17.createElement(Text3.Text, {
+      }, actionTitle), fileUploadClassName = css.classNames(FileUpload_module.default.FileUpload, measuring && FileUpload_module.default.measuring, size === "large" && FileUpload_module.default.large, size === "small" && FileUpload_module.default.small), actionHintMarkup = actionHint && /* @__PURE__ */ React17.createElement(Text4.Text, {
         variant: "bodySm",
         as: "p",
         tone: "subdued"
@@ -94226,7 +94226,7 @@ var require_FileUpload = __commonJS({
 var require_DropZone = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/DropZone/DropZone.js"(exports) {
     "use strict";
-    var React17 = require_react(), polarisIcons = require_dist11(), debounce = require_debounce(), css = require_css(), capitalize = require_capitalize(), target = require_target(), useComponentDidMount = require_use_component_did_mount(), useToggle = require_use_toggle(), useEventListener = require_use_event_listener(), context = require_context16(), index = require_utils13(), DropZone_module = require_DropZone_css(), FileUpload = require_FileUpload(), hooks = require_hooks2(), BlockStack = require_BlockStack(), Icon = require_Icon(), Text3 = require_Text(), Labelled = require_Labelled(), DropZone = function({
+    var React17 = require_react(), polarisIcons = require_dist11(), debounce = require_debounce(), css = require_css(), capitalize = require_capitalize(), target = require_target(), useComponentDidMount = require_use_component_did_mount(), useToggle = require_use_toggle(), useEventListener = require_use_event_listener(), context = require_context16(), index = require_utils13(), DropZone_module = require_DropZone_css(), FileUpload = require_FileUpload(), hooks = require_hooks2(), BlockStack = require_BlockStack(), Icon = require_Icon(), Text4 = require_Text(), Labelled = require_Labelled(), DropZone = function({
       dropOnPage,
       label,
       labelAction,
@@ -94330,7 +94330,7 @@ var require_DropZone = __commonJS({
         }, size === "small" && /* @__PURE__ */ React17.createElement(Icon.Icon, {
           source: icon,
           tone: color
-        }), (size === "medium" || size === "large") && /* @__PURE__ */ React17.createElement(Text3.Text, {
+        }), (size === "medium" || size === "large") && /* @__PURE__ */ React17.createElement(Text4.Text, {
           variant: "bodySm",
           as: "p",
           fontWeight: "bold"
@@ -94355,7 +94355,7 @@ var require_DropZone = __commonJS({
         "aria-disabled": disabled,
         onClick: handleClick,
         onDragStart: stopEvent
-      }, dragOverlay, dragErrorOverlay, /* @__PURE__ */ React17.createElement(Text3.Text, {
+      }, dragOverlay, dragErrorOverlay, /* @__PURE__ */ React17.createElement(Text4.Text, {
         variant: "bodySm",
         as: "span",
         visuallyHidden: !0
@@ -94396,7 +94396,7 @@ var require_empty_search_svg = __commonJS({
 var require_EmptySearchResult = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/EmptySearchResult/EmptySearchResult.js"(exports) {
     "use strict";
-    var React17 = require_react(), emptySearch = require_empty_search_svg(), hooks = require_hooks2(), LegacyStack = require_LegacyStack(), Text3 = require_Text(), Image = require_Image();
+    var React17 = require_react(), emptySearch = require_empty_search_svg(), hooks = require_hooks2(), LegacyStack = require_LegacyStack(), Text4 = require_Text(), Image = require_Image();
     function EmptySearchResult({
       title,
       description,
@@ -94410,10 +94410,10 @@ var require_EmptySearchResult = __commonJS({
       return /* @__PURE__ */ React17.createElement(LegacyStack.LegacyStack, {
         alignment: "center",
         vertical: !0
-      }, illustrationMarkup, /* @__PURE__ */ React17.createElement(Text3.Text, {
+      }, illustrationMarkup, /* @__PURE__ */ React17.createElement(Text4.Text, {
         variant: "headingLg",
         as: "p"
-      }, title), /* @__PURE__ */ React17.createElement(Text3.Text, {
+      }, title), /* @__PURE__ */ React17.createElement(Text4.Text, {
         tone: "subdued",
         as: "span"
       }, descriptionMarkup));
@@ -94443,15 +94443,15 @@ var require_EmptyState_css = __commonJS({
 var require_EmptyState = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/EmptyState/EmptyState.js"(exports) {
     "use strict";
-    var React17 = require_react(), css = require_css(), EmptyState_module = require_EmptyState_css(), utils = require_utils11(), Box = require_Box(), BlockStack = require_BlockStack(), Image = require_Image(), Text3 = require_Text(), InlineStack = require_InlineStack();
-    function EmptyState2({
+    var React17 = require_react(), css = require_css(), EmptyState_module = require_EmptyState_css(), utils = require_utils11(), Box = require_Box(), BlockStack = require_BlockStack(), Image = require_Image(), Text4 = require_Text(), InlineStack = require_InlineStack();
+    function EmptyState3({
       children,
       heading,
       image,
       largeImage,
       imageContained,
       fullWidth = !1,
-      action: action9,
+      action: action10,
       secondaryAction,
       footerContent
     }) {
@@ -94483,20 +94483,20 @@ var require_EmptyState = __commonJS({
         className: skeletonImageClassNames
       })), secondaryActionMarkup = secondaryAction ? utils.buttonFrom(secondaryAction, {}) : null, footerContentMarkup = footerContent ? /* @__PURE__ */ React17.createElement(Box.Box, {
         paddingBlockStart: "400"
-      }, /* @__PURE__ */ React17.createElement(Text3.Text, {
+      }, /* @__PURE__ */ React17.createElement(Text4.Text, {
         as: "span",
         alignment: "center",
         variant: "bodySm"
-      }, footerContent)) : null, primaryActionMarkup = action9 ? utils.buttonFrom(action9, {
+      }, footerContent)) : null, primaryActionMarkup = action10 ? utils.buttonFrom(action10, {
         variant: "primary",
         size: "medium"
       }) : null, headingMarkup = heading ? /* @__PURE__ */ React17.createElement(Box.Box, {
         paddingBlockEnd: "150"
-      }, /* @__PURE__ */ React17.createElement(Text3.Text, {
+      }, /* @__PURE__ */ React17.createElement(Text4.Text, {
         variant: "headingMd",
         as: "p",
         alignment: "center"
-      }, heading)) : null, childrenMarkup = children ? /* @__PURE__ */ React17.createElement(Text3.Text, {
+      }, heading)) : null, childrenMarkup = children ? /* @__PURE__ */ React17.createElement(Text4.Text, {
         as: "span",
         alignment: "center",
         variant: "bodySm"
@@ -94519,7 +94519,7 @@ var require_EmptyState = __commonJS({
         inlineAlign: "center"
       }, imageMarkup, detailsMarkup));
     }
-    exports.EmptyState = EmptyState2;
+    exports.EmptyState = EmptyState3;
   }
 });
 
@@ -94635,7 +94635,7 @@ var require_Filters_css = __commonJS({
 var require_SearchField = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Filters/components/SearchField/SearchField.js"(exports) {
     "use strict";
-    var React17 = require_react(), polarisIcons = require_dist11(), breakpoints = require_breakpoints2(), hooks = require_hooks2(), Text3 = require_Text(), TextField2 = require_TextField(), Icon = require_Icon();
+    var React17 = require_react(), polarisIcons = require_dist11(), breakpoints = require_breakpoints2(), hooks = require_hooks2(), Text4 = require_Text(), TextField3 = require_TextField(), Icon = require_Icon();
     function SearchField({
       onChange,
       onClear,
@@ -94651,7 +94651,7 @@ var require_SearchField = __commonJS({
     }) {
       let i18n = hooks.useI18n(), id = React17.useId(), {
         mdUp
-      } = breakpoints.useBreakpoints(), suffix = value && selectedViewName && mdUp ? /* @__PURE__ */ React17.createElement(Text3.Text, {
+      } = breakpoints.useBreakpoints(), suffix = value && selectedViewName && mdUp ? /* @__PURE__ */ React17.createElement(Text4.Text, {
         as: "span",
         variant: "bodyMd",
         tone: "subdued"
@@ -94664,7 +94664,7 @@ var require_SearchField = __commonJS({
       function handleClear() {
         onClear ? onClear() : onChange("");
       }
-      return /* @__PURE__ */ React17.createElement(TextField2.TextField, {
+      return /* @__PURE__ */ React17.createElement(TextField3.TextField, {
         id,
         value,
         onChange: handleChange,
@@ -94732,7 +94732,7 @@ var require_FilterPill_css = __commonJS({
 var require_FilterPill = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Filters/components/FilterPill/FilterPill.js"(exports) {
     "use strict";
-    var React17 = require_react(), polarisIcons = require_dist11(), useToggle = require_use_toggle(), css = require_css(), FilterPill_module = require_FilterPill_css(), hooks = require_hooks2(), Icon = require_Icon(), UnstyledButton = require_UnstyledButton(), InlineStack = require_InlineStack(), Button3 = require_Button(), Popover2 = require_Popover(), BlockStack = require_BlockStack(), Box = require_Box(), Text3 = require_Text();
+    var React17 = require_react(), polarisIcons = require_dist11(), useToggle = require_use_toggle(), css = require_css(), FilterPill_module = require_FilterPill_css(), hooks = require_hooks2(), Icon = require_Icon(), UnstyledButton = require_UnstyledButton(), InlineStack = require_InlineStack(), Button4 = require_Button(), Popover2 = require_Popover(), BlockStack = require_BlockStack(), Box = require_Box(), Text4 = require_Text();
     function FilterPill({
       unsavedChanges = !1,
       filterKey,
@@ -94773,7 +94773,7 @@ var require_FilterPill = __commonJS({
         tone: "base"
       })), labelMarkup = /* @__PURE__ */ React17.createElement(Box.Box, {
         paddingInlineStart: unsavedChanges ? "0" : "050"
-      }, /* @__PURE__ */ React17.createElement(InlineStack.InlineStack, null, /* @__PURE__ */ React17.createElement(Text3.Text, {
+      }, /* @__PURE__ */ React17.createElement(InlineStack.InlineStack, null, /* @__PURE__ */ React17.createElement(Text4.Text, {
         variant: "bodySm",
         as: "span"
       }, label))), unsavedPip = unsavedChanges ? /* @__PURE__ */ React17.createElement(Box.Box, {
@@ -94814,7 +94814,7 @@ var require_FilterPill = __commonJS({
         gap: "0"
       }, unsavedPip, labelMarkup, disclosureMarkup)), removeFilterButtonMarkup)), clearButtonMarkup = !hideClearButton && /* @__PURE__ */ React17.createElement("div", {
         className: FilterPill_module.default.ClearButtonWrapper
-      }, /* @__PURE__ */ React17.createElement(Button3.Button, {
+      }, /* @__PURE__ */ React17.createElement(Button4.Button, {
         onClick: handleClear,
         variant: "plain",
         disabled: !selected,
@@ -94843,7 +94843,7 @@ var require_FilterPill = __commonJS({
 var require_FiltersBar = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Filters/components/FiltersBar/FiltersBar.js"(exports) {
     "use strict";
-    var React17 = require_react(), polarisIcons = require_dist11(), useOnValueChange = require_use_on_value_change(), css = require_css(), Filters_module = require_Filters_css(), FilterPill = require_FilterPill(), hooks = require_hooks2(), UnstyledButton = require_UnstyledButton(), Text3 = require_Text(), Popover2 = require_Popover(), ActionList2 = require_ActionList(), Button3 = require_Button(), Box = require_Box(), InlineStack = require_InlineStack();
+    var React17 = require_react(), polarisIcons = require_dist11(), useOnValueChange = require_use_on_value_change(), css = require_css(), Filters_module = require_Filters_css(), FilterPill = require_FilterPill(), hooks = require_hooks2(), UnstyledButton = require_UnstyledButton(), Text4 = require_Text(), Popover2 = require_Popover(), ActionList2 = require_ActionList(), Button4 = require_Button(), Box = require_Box(), InlineStack = require_InlineStack();
     function FiltersBar({
       filters,
       appliedFilters,
@@ -94904,7 +94904,7 @@ var require_FiltersBar = __commonJS({
         onClick: handleAddFilterClick,
         "aria-label": i18n.translate("Polaris.Filters.addFilter"),
         disabled: disabled || unsectionedFilters.length === 0 && sectionedFilters.length === 0 || disableFilters
-      }, /* @__PURE__ */ React17.createElement(Text3.Text, {
+      }, /* @__PURE__ */ React17.createElement(Text4.Text, {
         as: "span",
         variant: "bodySm",
         tone: disabled ? "disabled" : "base"
@@ -94946,7 +94946,7 @@ var require_FiltersBar = __commonJS({
         sections: sectionedFilters
       }))) : null, clearAllMarkup = appliedFilters?.length ? /* @__PURE__ */ React17.createElement("div", {
         className: css.classNames(Filters_module.default.ClearAll, hasOneOrMorePinnedFilters && shouldShowAddButton && Filters_module.default.MultiplePinnedFilterClearAll)
-      }, /* @__PURE__ */ React17.createElement(Button3.Button, {
+      }, /* @__PURE__ */ React17.createElement(Button4.Button, {
         size: "micro",
         onClick: handleClearAllFilters,
         variant: "monochromePlain"
@@ -95139,7 +95139,7 @@ var require_FooterHelp_css = __commonJS({
 var require_FooterHelp = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/FooterHelp/FooterHelp.js"(exports) {
     "use strict";
-    var React17 = require_react(), FooterHelp_module = require_FooterHelp_css(), Text3 = require_Text();
+    var React17 = require_react(), FooterHelp_module = require_FooterHelp_css(), Text4 = require_Text();
     function FooterHelp({
       children,
       align = "center"
@@ -95150,7 +95150,7 @@ var require_FooterHelp = __commonJS({
       return /* @__PURE__ */ React17.createElement("div", {
         className: FooterHelp_module.default.FooterHelp,
         style
-      }, /* @__PURE__ */ React17.createElement(Text3.Text, {
+      }, /* @__PURE__ */ React17.createElement(Text4.Text, {
         as: "p",
         variant: "bodyLg"
       }, children));
@@ -95163,10 +95163,10 @@ var require_FooterHelp = __commonJS({
 var require_Form = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Form/Form.js"(exports) {
     "use strict";
-    var React17 = require_react(), hooks = require_hooks2(), Text3 = require_Text();
-    function Form6({
+    var React17 = require_react(), hooks = require_hooks2(), Text4 = require_Text();
+    function Form7({
       acceptCharset,
-      action: action9,
+      action: action10,
       autoComplete,
       children,
       encType,
@@ -95180,7 +95180,7 @@ var require_Form = __commonJS({
     }) {
       let i18n = hooks.useI18n(), handleSubmit = React17.useCallback((event) => {
         preventDefault && (event.preventDefault(), onSubmit(event));
-      }, [onSubmit, preventDefault]), autoCompleteInputs = normalizeAutoComplete(autoComplete), submitMarkup = implicitSubmit ? /* @__PURE__ */ React17.createElement(Text3.Text, {
+      }, [onSubmit, preventDefault]), autoCompleteInputs = normalizeAutoComplete(autoComplete), submitMarkup = implicitSubmit ? /* @__PURE__ */ React17.createElement(Text4.Text, {
         as: "span",
         visuallyHidden: !0
       }, /* @__PURE__ */ React17.createElement("button", {
@@ -95190,7 +95190,7 @@ var require_Form = __commonJS({
       }, i18n.translate("Polaris.Common.submit"))) : null;
       return /* @__PURE__ */ React17.createElement("form", {
         acceptCharset,
-        action: action9,
+        action: action10,
         autoComplete: autoCompleteInputs,
         encType,
         method,
@@ -95203,7 +95203,7 @@ var require_Form = __commonJS({
     function normalizeAutoComplete(autoComplete) {
       return autoComplete == null ? autoComplete : autoComplete ? "on" : "off";
     }
-    exports.Form = Form6;
+    exports.Form = Form7;
   }
 });
 
@@ -95243,7 +95243,7 @@ var require_Item5 = __commonJS({
 var require_Group = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/FormLayout/components/Group/Group.js"(exports) {
     "use strict";
-    var React17 = require_react(), components = require_components2(), Item = require_Item5(), BlockStack = require_BlockStack(), InlineStack = require_InlineStack(), Box = require_Box(), Text3 = require_Text();
+    var React17 = require_react(), components = require_components2(), Item = require_Item5(), BlockStack = require_BlockStack(), InlineStack = require_InlineStack(), Box = require_Box(), Text4 = require_Text();
     function Group({
       children,
       condensed,
@@ -95254,7 +95254,7 @@ var require_Group = __commonJS({
       helpText && (helpTextId = `${id}HelpText`, helpTextElement = /* @__PURE__ */ React17.createElement(Box.Box, {
         id: helpTextId,
         color: "text-secondary"
-      }, helpText)), title && (titleId = `${id}Title`, titleElement = /* @__PURE__ */ React17.createElement(Text3.Text, {
+      }, helpText)), title && (titleId = `${id}Title`, titleElement = /* @__PURE__ */ React17.createElement(Text4.Text, {
         id: titleId,
         as: "p"
       }, title));
@@ -96570,7 +96570,7 @@ var require_TrapFocus = __commonJS({
 var require_Dialog = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Modal/components/Dialog/Dialog.js"(exports) {
     "use strict";
-    var React17 = require_react(), reactTransitionGroup = require_cjs5(), css = require_css(), focus = require_focus(), types4 = require_types16(), useTheme = require_use_theme(), Dialog_module = require_Dialog_css(), context = require_context15(), TrapFocus = require_TrapFocus(), Text3 = require_Text(), KeypressListener = require_KeypressListener();
+    var React17 = require_react(), reactTransitionGroup = require_cjs5(), css = require_css(), focus = require_focus(), types4 = require_types16(), useTheme = require_use_theme(), Dialog_module = require_Dialog_css(), context = require_context15(), TrapFocus = require_TrapFocus(), Text4 = require_Text(), KeypressListener = require_KeypressListener();
     function Dialog({
       instant,
       labelledBy,
@@ -96596,7 +96596,7 @@ var require_Dialog = __commonJS({
         setClosing && setClosing(!1), onClose();
       }, ariaLiveAnnouncements = /* @__PURE__ */ React17.createElement("div", {
         "aria-live": "assertive"
-      }, toastMessages ? toastMessages.map((toastMessage) => /* @__PURE__ */ React17.createElement(Text3.Text, {
+      }, toastMessages ? toastMessages.map((toastMessage) => /* @__PURE__ */ React17.createElement(Text4.Text, {
         visuallyHidden: !0,
         as: "p",
         key: toastMessage.id
@@ -96655,13 +96655,13 @@ var require_Dialog = __commonJS({
 var require_CloseButton = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Modal/components/CloseButton/CloseButton.js"(exports) {
     "use strict";
-    var React17 = require_react(), polarisIcons = require_dist11(), hooks = require_hooks2(), Button3 = require_Button();
+    var React17 = require_react(), polarisIcons = require_dist11(), hooks = require_hooks2(), Button4 = require_Button();
     function CloseButton({
       pressed,
       onClick
     }) {
       let i18n = hooks.useI18n();
-      return /* @__PURE__ */ React17.createElement(Button3.Button, {
+      return /* @__PURE__ */ React17.createElement(Button4.Button, {
         variant: "tertiary",
         pressed,
         icon: polarisIcons.XIcon,
@@ -96677,7 +96677,7 @@ var require_CloseButton = __commonJS({
 var require_Header3 = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Modal/components/Header/Header.js"(exports) {
     "use strict";
-    var React17 = require_react(), CloseButton = require_CloseButton(), InlineGrid = require_InlineGrid(), Box = require_Box(), InlineStack = require_InlineStack(), Text3 = require_Text();
+    var React17 = require_react(), CloseButton = require_CloseButton(), InlineGrid = require_InlineGrid(), Box = require_Box(), InlineStack = require_InlineStack(), Text4 = require_Text();
     function Header2({
       id,
       children,
@@ -96709,7 +96709,7 @@ var require_Header3 = __commonJS({
       }, /* @__PURE__ */ React17.createElement(InlineStack.InlineStack, {
         gap: "400",
         blockAlign: "center"
-      }, /* @__PURE__ */ React17.createElement(Text3.Text, {
+      }, /* @__PURE__ */ React17.createElement(Text4.Text, {
         id,
         as: "h2",
         variant: "headingMd",
@@ -96760,7 +96760,7 @@ var require_Footer = __commonJS({
 var require_Modal = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Modal/Modal.js"(exports) {
     "use strict";
-    var React17 = require_react(), reactTransitionGroup = require_cjs5(), focus = require_focus(), withinContentContext = require_within_content_context(), components = require_components2(), Modal_module = require_Modal_css(), Section = require_Section5(), Dialog = require_Dialog(), Header2 = require_Header3(), Backdrop = require_Backdrop(), Footer = require_Footer(), hooks = require_hooks2(), Box = require_Box(), Scrollable = require_Scrollable(), Portal = require_Portal(), InlineStack = require_InlineStack(), Spinner3 = require_Spinner(), IFRAME_LOADING_HEIGHT = 200, DEFAULT_IFRAME_CONTENT_HEIGHT = 400, Modal2 = function({
+    var React17 = require_react(), reactTransitionGroup = require_cjs5(), focus = require_focus(), withinContentContext = require_within_content_context(), components = require_components2(), Modal_module = require_Modal_css(), Section = require_Section5(), Dialog = require_Dialog(), Header2 = require_Header3(), Backdrop = require_Backdrop(), Footer = require_Footer(), hooks = require_hooks2(), Box = require_Box(), Scrollable = require_Scrollable(), Portal = require_Portal(), InlineStack = require_InlineStack(), Spinner4 = require_Spinner(), IFRAME_LOADING_HEIGHT = 200, DEFAULT_IFRAME_CONTENT_HEIGHT = 400, Modal3 = function({
       children,
       title,
       titleHidden = !1,
@@ -96811,7 +96811,7 @@ var require_Modal = __commonJS({
           gap: "400",
           align: "center",
           blockAlign: "center"
-        }, /* @__PURE__ */ React17.createElement(Spinner3.Spinner, null))) : content, scrollContainerMarkup = noScroll ? /* @__PURE__ */ React17.createElement("div", {
+        }, /* @__PURE__ */ React17.createElement(Spinner4.Spinner, null))) : content, scrollContainerMarkup = noScroll ? /* @__PURE__ */ React17.createElement("div", {
           className: Modal_module.default.NoScrollBody
         }, /* @__PURE__ */ React17.createElement(Box.Box, {
           width: "100%",
@@ -96867,8 +96867,8 @@ var require_Modal = __commonJS({
     function isRef(ref) {
       return Object.prototype.hasOwnProperty.call(ref, "current");
     }
-    Modal2.Section = Section.Section;
-    exports.Modal = Modal2;
+    Modal3.Section = Section.Section;
+    exports.Modal = Modal3;
   }
 });
 
@@ -96876,14 +96876,14 @@ var require_Modal = __commonJS({
 var require_DiscardConfirmationModal = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Frame/components/ContextualSaveBar/components/DiscardConfirmationModal/DiscardConfirmationModal.js"(exports) {
     "use strict";
-    var React17 = require_react(), Modal2 = require_Modal(), hooks = require_hooks2();
+    var React17 = require_react(), Modal3 = require_Modal(), hooks = require_hooks2();
     function DiscardConfirmationModal({
       open,
       onDiscard,
       onCancel
     }) {
       let i18n = hooks.useI18n();
-      return /* @__PURE__ */ React17.createElement(Modal2.Modal, {
+      return /* @__PURE__ */ React17.createElement(Modal3.Modal, {
         title: i18n.translate("Polaris.DiscardConfirmationModal.title"),
         open,
         onClose: onCancel,
@@ -96907,7 +96907,7 @@ var require_DiscardConfirmationModal = __commonJS({
 var require_ContextualSaveBar2 = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Frame/components/ContextualSaveBar/ContextualSaveBar.js"(exports) {
     "use strict";
-    var React17 = require_react(), polarisIcons = require_dist11(), css = require_css(), getWidth = require_get_width(), useToggle = require_use_toggle(), ContextualSaveBar_module = require_ContextualSaveBar_css(), DiscardConfirmationModal = require_DiscardConfirmationModal(), hooks = require_hooks2(), hooks$1 = require_hooks9(), Button3 = require_Button(), Image = require_Image(), Icon = require_Icon(), Text3 = require_Text(), LegacyStack = require_LegacyStack();
+    var React17 = require_react(), polarisIcons = require_dist11(), css = require_css(), getWidth = require_get_width(), useToggle = require_use_toggle(), ContextualSaveBar_module = require_ContextualSaveBar_css(), DiscardConfirmationModal = require_DiscardConfirmationModal(), hooks = require_hooks2(), hooks$1 = require_hooks9(), Button4 = require_Button(), Image = require_Image(), Icon = require_Icon(), Text4 = require_Text(), LegacyStack = require_LegacyStack();
     function ContextualSaveBar({
       alignContentFlush,
       message: message2,
@@ -96931,7 +96931,7 @@ var require_ContextualSaveBar2 = __commonJS({
         open: discardConfirmationModalVisible,
         onCancel: toggleDiscardConfirmationModal,
         onDiscard: handleDiscardAction
-      }), discardActionMarkup = discardAction && /* @__PURE__ */ React17.createElement(Button3.Button, {
+      }), discardActionMarkup = discardAction && /* @__PURE__ */ React17.createElement(Button4.Button, {
         variant: "tertiary",
         size: "large",
         url: discardAction.url,
@@ -96939,7 +96939,7 @@ var require_ContextualSaveBar2 = __commonJS({
         loading: discardAction.loading,
         disabled: discardAction.disabled,
         accessibilityLabel: discardAction.content
-      }, discardActionContent), saveActionContent = saveAction && saveAction.content ? saveAction.content : i18n.translate("Polaris.ContextualSaveBar.save"), saveActionMarkup = saveAction && /* @__PURE__ */ React17.createElement(Button3.Button, {
+      }, discardActionContent), saveActionContent = saveAction && saveAction.content ? saveAction.content : i18n.translate("Polaris.ContextualSaveBar.save"), saveActionMarkup = saveAction && /* @__PURE__ */ React17.createElement(Button4.Button, {
         variant: "primary",
         tone: "success",
         size: "large",
@@ -96970,7 +96970,7 @@ var require_ContextualSaveBar2 = __commonJS({
         className: ContextualSaveBar_module.default.MessageContainer
       }, /* @__PURE__ */ React17.createElement(Icon.Icon, {
         source: polarisIcons.AlertTriangleIcon
-      }), message2 && /* @__PURE__ */ React17.createElement(Text3.Text, {
+      }), message2 && /* @__PURE__ */ React17.createElement(Text4.Text, {
         as: "h2",
         variant: "headingMd",
         tone: "text-inverse",
@@ -97062,19 +97062,19 @@ var require_Toast_css = __commonJS({
 var require_Toast = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Frame/components/Toast/Toast.js"(exports) {
     "use strict";
-    var React17 = require_react(), polarisIcons = require_dist11(), css = require_css(), types4 = require_types16(), Toast_module = require_Toast_css(), Icon = require_Icon(), Button3 = require_Button(), KeypressListener = require_KeypressListener(), InlineStack = require_InlineStack(), Text3 = require_Text(), DEFAULT_TOAST_DURATION = 5e3, DEFAULT_TOAST_DURATION_WITH_ACTION = 1e4;
+    var React17 = require_react(), polarisIcons = require_dist11(), css = require_css(), types4 = require_types16(), Toast_module = require_Toast_css(), Icon = require_Icon(), Button4 = require_Button(), KeypressListener = require_KeypressListener(), InlineStack = require_InlineStack(), Text4 = require_Text(), DEFAULT_TOAST_DURATION = 5e3, DEFAULT_TOAST_DURATION_WITH_ACTION = 1e4;
     function Toast2({
       content,
       onDismiss,
       duration,
       error,
-      action: action9,
+      action: action10,
       tone,
       onClick,
       icon,
       isHovered
     }) {
-      let defaultDuration = action9 && !duration ? DEFAULT_TOAST_DURATION_WITH_ACTION : duration || DEFAULT_TOAST_DURATION, durationRemaining = React17.useRef(defaultDuration), timeoutStart = React17.useRef(null), timer = React17.useRef(null);
+      let defaultDuration = action10 && !duration ? DEFAULT_TOAST_DURATION_WITH_ACTION : duration || DEFAULT_TOAST_DURATION, durationRemaining = React17.useRef(defaultDuration), timeoutStart = React17.useRef(null), timer = React17.useRef(null);
       React17.useEffect(() => {
         function resume() {
           timeoutStart.current = Date.now(), timer.current = setTimeout(() => {
@@ -97088,8 +97088,8 @@ var require_Toast = __commonJS({
           timer.current && clearTimeout(timer.current);
         };
       }, [isHovered, onDismiss]), React17.useEffect(() => {
-        action9 && duration && duration < DEFAULT_TOAST_DURATION_WITH_ACTION && console.log("Toast with action should persist for at least 10,000 milliseconds to give the merchant enough time to act on it.");
-      }, [action9, duration]);
+        action10 && duration && duration < DEFAULT_TOAST_DURATION_WITH_ACTION && console.log("Toast with action should persist for at least 10,000 milliseconds to give the merchant enough time to act on it.");
+      }, [action10, duration]);
       let dismissMarkup = /* @__PURE__ */ React17.createElement("button", {
         type: "button",
         className: Toast_module.default.CloseButton,
@@ -97097,14 +97097,14 @@ var require_Toast = __commonJS({
       }, /* @__PURE__ */ React17.createElement(Icon.Icon, {
         source: polarisIcons.XSmallIcon,
         tone: "inherit"
-      })), actionMarkup = action9 ? /* @__PURE__ */ React17.createElement("div", {
+      })), actionMarkup = action10 ? /* @__PURE__ */ React17.createElement("div", {
         className: Toast_module.default.Action
-      }, /* @__PURE__ */ React17.createElement(Button3.Button, {
+      }, /* @__PURE__ */ React17.createElement(Button4.Button, {
         variant: "monochromePlain",
         removeUnderline: !0,
         size: "slim",
-        onClick: action9.onAction
-      }, action9.content)) : null, leadingIconMarkup = null;
+        onClick: action10.onAction
+      }, action10.content)) : null, leadingIconMarkup = null;
       error ? leadingIconMarkup = /* @__PURE__ */ React17.createElement("div", {
         className: Toast_module.default.LeadingIcon
       }, /* @__PURE__ */ React17.createElement(Icon.Icon, {
@@ -97117,7 +97117,7 @@ var require_Toast = __commonJS({
         tone: "inherit"
       })));
       let className = css.classNames(Toast_module.default.Toast, error && Toast_module.default.error, tone && Toast_module.default[css.variationName("tone", tone)]);
-      return !action9 && onClick ? /* @__PURE__ */ React17.createElement("button", {
+      return !action10 && onClick ? /* @__PURE__ */ React17.createElement("button", {
         "aria-live": "assertive",
         className: css.classNames(className, Toast_module.default.WithActionOnComponent),
         type: "button",
@@ -97128,7 +97128,7 @@ var require_Toast = __commonJS({
       }), leadingIconMarkup, /* @__PURE__ */ React17.createElement(InlineStack.InlineStack, {
         gap: "400",
         blockAlign: "center"
-      }, /* @__PURE__ */ React17.createElement(Text3.Text, Object.assign({
+      }, /* @__PURE__ */ React17.createElement(Text4.Text, Object.assign({
         as: "span",
         variant: "bodyMd",
         fontWeight: "medium"
@@ -97143,7 +97143,7 @@ var require_Toast = __commonJS({
       }), leadingIconMarkup, /* @__PURE__ */ React17.createElement(InlineStack.InlineStack, {
         gap: "400",
         blockAlign: "center"
-      }, /* @__PURE__ */ React17.createElement(Text3.Text, Object.assign({
+      }, /* @__PURE__ */ React17.createElement(Text4.Text, Object.assign({
         as: "span",
         variant: "bodyMd",
         fontWeight: "medium"
@@ -97241,7 +97241,7 @@ var require_ToastManager = __commonJS({
 var require_Frame = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Frame/Frame.js"(exports) {
     "use strict";
-    var React17 = require_react(), polarisIcons = require_dist11(), reactTransitionGroup = require_cjs5(), css = require_css(), shared = require_shared(), setRootProperty = require_set_root_property(), useTheme = require_use_theme(), Frame_module = require_Frame_css(), hooks$1 = require_hooks11(), Loading = require_Loading2(), CSSAnimation = require_CSSAnimation(), ContextualSaveBar = require_ContextualSaveBar2(), ToastManager = require_ToastManager(), hooks = require_hooks2(), Text3 = require_Text(), Backdrop = require_Backdrop(), context = require_context15(), EventListener = require_EventListener(), TrapFocus = require_TrapFocus(), Icon = require_Icon(), APP_FRAME_MAIN = "AppFrameMain", APP_FRAME_NAV = "AppFrameNav", APP_FRAME_TOP_BAR = "AppFrameTopBar", APP_FRAME_LOADING_BAR = "AppFrameLoadingBar", FrameInner = class extends React17.PureComponent {
+    var React17 = require_react(), polarisIcons = require_dist11(), reactTransitionGroup = require_cjs5(), css = require_css(), shared = require_shared(), setRootProperty = require_set_root_property(), useTheme = require_use_theme(), Frame_module = require_Frame_css(), hooks$1 = require_hooks11(), Loading = require_Loading2(), CSSAnimation = require_CSSAnimation(), ContextualSaveBar = require_ContextualSaveBar2(), ToastManager = require_ToastManager(), hooks = require_hooks2(), Text4 = require_Text(), Backdrop = require_Backdrop(), context = require_context15(), EventListener = require_EventListener(), TrapFocus = require_TrapFocus(), Icon = require_Icon(), APP_FRAME_MAIN = "AppFrameMain", APP_FRAME_NAV = "AppFrameNav", APP_FRAME_TOP_BAR = "AppFrameTopBar", APP_FRAME_LOADING_BAR = "AppFrameLoadingBar", FrameInner = class extends React17.PureComponent {
       constructor(...args) {
         super(...args), this.state = {
           skipFocused: !1,
@@ -97417,7 +97417,7 @@ var require_Frame = __commonJS({
           onFocus: this.handleFocus,
           onBlur: this.handleBlur,
           onClick: this.handleClick
-        }, /* @__PURE__ */ React17.createElement(Text3.Text, {
+        }, /* @__PURE__ */ React17.createElement(Text4.Text, {
           as: "span",
           variant: "bodyLg",
           fontWeight: "medium"
@@ -97493,12 +97493,12 @@ var require_FullscreenBar_css = __commonJS({
 var require_FullscreenBar = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/FullscreenBar/FullscreenBar.js"(exports) {
     "use strict";
-    var React17 = require_react(), polarisIcons = require_dist11(), FullscreenBar_module = require_FullscreenBar_css(), hooks = require_hooks2(), Text3 = require_Text(), Icon = require_Icon();
+    var React17 = require_react(), polarisIcons = require_dist11(), FullscreenBar_module = require_FullscreenBar_css(), hooks = require_hooks2(), Text4 = require_Text(), Icon = require_Icon();
     function FullscreenBar({
       onAction,
       children
     }) {
-      let i18n = hooks.useI18n(), backButtonMarkup = /* @__PURE__ */ React17.createElement(Text3.Text, {
+      let i18n = hooks.useI18n(), backButtonMarkup = /* @__PURE__ */ React17.createElement(Text4.Text, {
         as: "span",
         variant: "bodyLg"
       }, i18n.translate("Polaris.FullscreenBar.back"));
@@ -97758,7 +97758,7 @@ var require_use_is_touch_device = __commonJS({
 var require_UpdateButtons = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/IndexFilters/components/UpdateButtons/UpdateButtons.js"(exports) {
     "use strict";
-    var React17 = require_react(), focus = require_focus(), useIsTouchDevice = require_use_is_touch_device(), hooks = require_hooks2(), Button3 = require_Button(), InlineStack = require_InlineStack(), Modal2 = require_Modal(), Form6 = require_Form(), FormLayout = require_FormLayout(), TextField2 = require_TextField(), MAX_VIEW_NAME_LENGTH = 40;
+    var React17 = require_react(), focus = require_focus(), useIsTouchDevice = require_use_is_touch_device(), hooks = require_hooks2(), Button4 = require_Button(), InlineStack = require_InlineStack(), Modal3 = require_Modal(), Form7 = require_Form(), FormLayout = require_FormLayout(), TextField3 = require_TextField(), MAX_VIEW_NAME_LENGTH = 40;
     function UpdateButtons({
       primaryAction,
       cancelAction,
@@ -97792,11 +97792,11 @@ var require_UpdateButtons = __commonJS({
           default:
             return i18n.translate("Polaris.IndexFilters.UpdateButtons.saveAs");
         }
-      }, [primaryAction?.type, i18n]), saveButton = /* @__PURE__ */ React17.createElement(Button3.Button, {
+      }, [primaryAction?.type, i18n]), saveButton = /* @__PURE__ */ React17.createElement(Button4.Button, {
         size: "micro",
         onClick: handleClickSaveButton,
         disabled: primaryAction?.disabled || disabled
-      }, buttonText), hasSameNameError = viewNames.some((name) => name.trim().toLowerCase() === savedViewName.trim().toLowerCase()), isPrimaryActionDisabled = hasSameNameError || !savedViewName || primaryAction?.loading || savedViewName.length > MAX_VIEW_NAME_LENGTH, cancelButtonMarkup = cancelAction ? /* @__PURE__ */ React17.createElement(Button3.Button, {
+      }, buttonText), hasSameNameError = viewNames.some((name) => name.trim().toLowerCase() === savedViewName.trim().toLowerCase()), isPrimaryActionDisabled = hasSameNameError || !savedViewName || primaryAction?.loading || savedViewName.length > MAX_VIEW_NAME_LENGTH, cancelButtonMarkup = cancelAction ? /* @__PURE__ */ React17.createElement(Button4.Button, {
         variant: "tertiary",
         size: "micro",
         onClick: cancelAction.onAction,
@@ -97806,7 +97806,7 @@ var require_UpdateButtons = __commonJS({
         align: "start",
         blockAlign: "center",
         gap: "100"
-      }, cancelButtonMarkup, primaryAction.type === "save-as" ? /* @__PURE__ */ React17.createElement(Modal2.Modal, {
+      }, cancelButtonMarkup, primaryAction.type === "save-as" ? /* @__PURE__ */ React17.createElement(Modal3.Modal, {
         activator: /* @__PURE__ */ React17.createElement(InlineStack.InlineStack, null, saveButton),
         open: savedViewModalOpen,
         title: i18n.translate("Polaris.IndexFilters.UpdateButtons.modal.title"),
@@ -97820,11 +97820,11 @@ var require_UpdateButtons = __commonJS({
           onAction: handleCloseModal,
           content: i18n.translate("Polaris.IndexFilters.UpdateButtons.modal.cancel")
         }]
-      }, /* @__PURE__ */ React17.createElement(Modal2.Modal.Section, null, /* @__PURE__ */ React17.createElement(Form6.Form, {
+      }, /* @__PURE__ */ React17.createElement(Modal3.Modal.Section, null, /* @__PURE__ */ React17.createElement(Form7.Form, {
         onSubmit: handlePrimaryAction
       }, /* @__PURE__ */ React17.createElement(FormLayout.FormLayout, null, /* @__PURE__ */ React17.createElement("div", {
         ref: container
-      }, /* @__PURE__ */ React17.createElement(TextField2.TextField, {
+      }, /* @__PURE__ */ React17.createElement(TextField3.TextField, {
         label: i18n.translate("Polaris.IndexFilters.UpdateButtons.modal.label"),
         value: savedViewName,
         onChange: handleChange,
@@ -97857,7 +97857,7 @@ var require_DirectionButton_css = __commonJS({
 var require_DirectionButton = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/IndexFilters/components/SortButton/components/DirectionButton/DirectionButton.js"(exports) {
     "use strict";
-    var React17 = require_react(), polarisIcons = require_dist11(), css = require_css(), DirectionButton_module = require_DirectionButton_css(), UnstyledButton = require_UnstyledButton(), Icon = require_Icon(), Text3 = require_Text();
+    var React17 = require_react(), polarisIcons = require_dist11(), css = require_css(), DirectionButton_module = require_DirectionButton_css(), UnstyledButton = require_UnstyledButton(), Icon = require_Icon(), Text4 = require_Text();
     function DirectionButton({
       onClick,
       active,
@@ -97875,7 +97875,7 @@ var require_DirectionButton = __commonJS({
       }, /* @__PURE__ */ React17.createElement(Icon.Icon, {
         source: direction === "asc" ? polarisIcons.ArrowUpIcon : polarisIcons.ArrowDownIcon,
         tone: "base"
-      }), /* @__PURE__ */ React17.createElement(Text3.Text, {
+      }), /* @__PURE__ */ React17.createElement(Text4.Text, {
         as: "span",
         variant: "bodySm",
         fontWeight: "medium"
@@ -97889,7 +97889,7 @@ var require_DirectionButton = __commonJS({
 var require_SortButton = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/IndexFilters/components/SortButton/SortButton.js"(exports) {
     "use strict";
-    var React17 = require_react(), polarisIcons = require_dist11(), ChoiceList = require_ChoiceList(), DirectionButton = require_DirectionButton(), hooks = require_hooks2(), Tooltip3 = require_Tooltip(), Button3 = require_Button(), Popover2 = require_Popover(), Box = require_Box();
+    var React17 = require_react(), polarisIcons = require_dist11(), ChoiceList = require_ChoiceList(), DirectionButton = require_DirectionButton(), hooks = require_hooks2(), Tooltip3 = require_Tooltip(), Button4 = require_Button(), Popover2 = require_Popover(), Box = require_Box();
     exports.SortButtonDirection = void 0;
     (function(SortButtonDirection) {
       SortButtonDirection.Asc = "asc", SortButtonDirection.Desc = "desc";
@@ -97933,7 +97933,7 @@ var require_SortButton = __commonJS({
         content: i18n.translate("Polaris.IndexFilters.SortButton.tooltip"),
         preferredPosition: "above",
         hoverDelay: 400
-      }, /* @__PURE__ */ React17.createElement(Button3.Button, {
+      }, /* @__PURE__ */ React17.createElement(Button4.Button, {
         size: "slim",
         icon: polarisIcons.SortIcon,
         onClick: handleClick,
@@ -98090,7 +98090,7 @@ var require_Tabs_css = __commonJS({
 var require_DuplicateModal = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Tabs/components/Tab/components/DuplicateModal/DuplicateModal.js"(exports) {
     "use strict";
-    var React17 = require_react(), focus = require_focus(), hooks = require_hooks2(), Modal2 = require_Modal(), Form6 = require_Form(), FormLayout = require_FormLayout(), TextField2 = require_TextField(), MAX_VIEW_NAME_LENGTH = 40;
+    var React17 = require_react(), focus = require_focus(), hooks = require_hooks2(), Modal3 = require_Modal(), Form7 = require_Form(), FormLayout = require_FormLayout(), TextField3 = require_TextField(), MAX_VIEW_NAME_LENGTH = 40;
     function DuplicateModal({
       open,
       isModalLoading,
@@ -98116,7 +98116,7 @@ var require_DuplicateModal = __commonJS({
       function handleSecondaryAction() {
         onClickSecondaryAction?.(), setValue(name), onClose();
       }
-      return /* @__PURE__ */ React17.createElement(Modal2.Modal, {
+      return /* @__PURE__ */ React17.createElement(Modal3.Modal, {
         open,
         onClose,
         title: i18n.translate("Polaris.Tabs.DuplicateModal.title"),
@@ -98130,11 +98130,11 @@ var require_DuplicateModal = __commonJS({
           onAction: handleSecondaryAction
         }],
         instant: !0
-      }, /* @__PURE__ */ React17.createElement(Modal2.Modal.Section, null, /* @__PURE__ */ React17.createElement(Form6.Form, {
+      }, /* @__PURE__ */ React17.createElement(Modal3.Modal.Section, null, /* @__PURE__ */ React17.createElement(Form7.Form, {
         onSubmit: handlePrimaryAction
       }, /* @__PURE__ */ React17.createElement(FormLayout.FormLayout, null, /* @__PURE__ */ React17.createElement("div", {
         ref: container
-      }, /* @__PURE__ */ React17.createElement(TextField2.TextField, {
+      }, /* @__PURE__ */ React17.createElement(TextField3.TextField, {
         label: i18n.translate("Polaris.Tabs.DuplicateModal.label"),
         value,
         onChange: handleChange,
@@ -98155,7 +98155,7 @@ var require_DuplicateModal = __commonJS({
 var require_RenameModal = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Tabs/components/Tab/components/RenameModal/RenameModal.js"(exports) {
     "use strict";
-    var React17 = require_react(), focus = require_focus(), Form6 = require_Form(), FormLayout = require_FormLayout(), hooks = require_hooks2(), Modal2 = require_Modal(), TextField2 = require_TextField();
+    var React17 = require_react(), focus = require_focus(), Form7 = require_Form(), FormLayout = require_FormLayout(), hooks = require_hooks2(), Modal3 = require_Modal(), TextField3 = require_TextField();
     function RenameModal({
       open,
       isModalLoading,
@@ -98181,7 +98181,7 @@ var require_RenameModal = __commonJS({
       function handleSecondaryAction() {
         onClickSecondaryAction?.(), setValue(name), onClose();
       }
-      return /* @__PURE__ */ React17.createElement(Modal2.Modal, {
+      return /* @__PURE__ */ React17.createElement(Modal3.Modal, {
         open,
         onClose,
         title: i18n.translate("Polaris.Tabs.RenameModal.title"),
@@ -98195,11 +98195,11 @@ var require_RenameModal = __commonJS({
           onAction: handleSecondaryAction
         }],
         instant: !0
-      }, /* @__PURE__ */ React17.createElement(Modal2.Modal.Section, null, /* @__PURE__ */ React17.createElement(Form6.Form, {
+      }, /* @__PURE__ */ React17.createElement(Modal3.Modal.Section, null, /* @__PURE__ */ React17.createElement(Form7.Form, {
         onSubmit: handlePrimaryAction
       }, /* @__PURE__ */ React17.createElement(FormLayout.FormLayout, null, /* @__PURE__ */ React17.createElement("div", {
         ref: container
-      }, /* @__PURE__ */ React17.createElement(TextField2.TextField, {
+      }, /* @__PURE__ */ React17.createElement(TextField3.TextField, {
         label: i18n.translate("Polaris.Tabs.RenameModal.label"),
         value,
         onChange: handleChange,
@@ -98220,7 +98220,7 @@ var require_RenameModal = __commonJS({
 var require_Tab = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Tabs/components/Tab/Tab.js"(exports) {
     "use strict";
-    var React17 = require_react(), polarisIcons = require_dist11(), css = require_css(), focus = require_focus(), Tabs_module = require_Tabs_css(), DuplicateModal = require_DuplicateModal(), RenameModal = require_RenameModal(), hooks = require_hooks2(), Icon = require_Icon(), Modal2 = require_Modal(), Popover2 = require_Popover(), ActionList2 = require_ActionList(), InlineStack = require_InlineStack(), Text3 = require_Text(), UnstyledLink = require_UnstyledLink(), UnstyledButton = require_UnstyledButton(), Badge3 = require_Badge(), Tab = /* @__PURE__ */ React17.forwardRef(({
+    var React17 = require_react(), polarisIcons = require_dist11(), css = require_css(), focus = require_focus(), Tabs_module = require_Tabs_css(), DuplicateModal = require_DuplicateModal(), RenameModal = require_RenameModal(), hooks = require_hooks2(), Icon = require_Icon(), Modal3 = require_Modal(), Popover2 = require_Popover(), ActionList2 = require_ActionList(), InlineStack = require_InlineStack(), Text4 = require_Text(), UnstyledLink = require_UnstyledLink(), UnstyledButton = require_UnstyledButton(), Badge4 = require_Badge(), Tab = /* @__PURE__ */ React17.forwardRef(({
       content,
       accessibilityLabel,
       badge,
@@ -98256,7 +98256,7 @@ var require_Tab = __commonJS({
       }, [focused, id, content, measuring, panelID, selected, activeModalType, disabled]);
       let tabIndex;
       selected && !siblingTabHasFocus && !measuring || focused && !measuring ? tabIndex = 0 : tabIndex = -1, tabIndexOverride != null && (tabIndex = tabIndexOverride);
-      let renameAction = actions?.find((action9) => action9.type === "rename"), duplicateAction = actions?.find((action9) => action9.type === "duplicate"), deleteAction = actions?.find((action9) => action9.type === "delete"), togglePopoverActive = React17.useCallback(() => {
+      let renameAction = actions?.find((action10) => action10.type === "rename"), duplicateAction = actions?.find((action10) => action10.type === "duplicate"), deleteAction = actions?.find((action10) => action10.type === "delete"), togglePopoverActive = React17.useCallback(() => {
         actions?.length && setPopoverActive((popoverActive2) => !popoverActive2);
       }, [actions]), handleClick = React17.useCallback(() => {
         disabled || (selected ? togglePopoverActive() : onAction?.());
@@ -98310,7 +98310,7 @@ var require_Tab = __commonJS({
         };
       }), handleKeyDown = React17.useCallback((event) => {
         event.key === " " && (event.preventDefault(), handleClick());
-      }, [handleClick]), tabContainerClassNames = css.classNames(Tabs_module.default.TabContainer, selected && Tabs_module.default.Underline), urlIfNotDisabledOrSelected = disabled || selected ? void 0 : url, BaseComponent = urlIfNotDisabledOrSelected ? UnstyledLink.UnstyledLink : UnstyledButton.UnstyledButton, tabClassName = css.classNames(Tabs_module.default.Tab, icon && Tabs_module.default["Tab-iconOnly"], popoverActive && Tabs_module.default["Tab-popoverActive"], selected && Tabs_module.default["Tab-active"], selected && actions?.length && Tabs_module.default["Tab-hasActions"]), badgeMarkup = badge ? /* @__PURE__ */ React17.createElement(Badge3.Badge, {
+      }, [handleClick]), tabContainerClassNames = css.classNames(Tabs_module.default.TabContainer, selected && Tabs_module.default.Underline), urlIfNotDisabledOrSelected = disabled || selected ? void 0 : url, BaseComponent = urlIfNotDisabledOrSelected ? UnstyledLink.UnstyledLink : UnstyledButton.UnstyledButton, tabClassName = css.classNames(Tabs_module.default.Tab, icon && Tabs_module.default["Tab-iconOnly"], popoverActive && Tabs_module.default["Tab-popoverActive"], selected && Tabs_module.default["Tab-active"], selected && actions?.length && Tabs_module.default["Tab-hasActions"]), badgeMarkup = badge ? /* @__PURE__ */ React17.createElement(Badge4.Badge, {
         tone: selected ? void 0 : "new"
       }, badge) : null, disclosureMarkup = selected && actions?.length ? /* @__PURE__ */ React17.createElement("div", {
         className: css.classNames(Tabs_module.default.IconWrap)
@@ -98335,7 +98335,7 @@ var require_Tab = __commonJS({
         align: "center",
         blockAlign: "center",
         wrap: !1
-      }, /* @__PURE__ */ React17.createElement(Text3.Text, {
+      }, /* @__PURE__ */ React17.createElement(Text4.Text, {
         as: "span",
         variant: "bodySm",
         fontWeight: "medium"
@@ -98355,7 +98355,7 @@ var require_Tab = __commonJS({
         onClickPrimaryAction: handleSaveDuplicateModal,
         isModalLoading,
         viewNames: viewNames || []
-      }) : null, deleteModal = deleteAction ? /* @__PURE__ */ React17.createElement(Modal2.Modal, {
+      }) : null, deleteModal = deleteAction ? /* @__PURE__ */ React17.createElement(Modal3.Modal, {
         open: activeModalType === "delete",
         onClose: handleModalClose,
         primaryAction: {
@@ -98370,7 +98370,7 @@ var require_Tab = __commonJS({
         }],
         title: i18n.translate("Polaris.Tabs.Tab.deleteModal.title"),
         instant: !0
-      }, /* @__PURE__ */ React17.createElement(Modal2.Modal.Section, null, i18n.translate("Polaris.Tabs.Tab.deleteModal.description", {
+      }, /* @__PURE__ */ React17.createElement(Modal3.Modal.Section, null, i18n.translate("Polaris.Tabs.Tab.deleteModal.description", {
         viewName: content
       }))) : null, markup = isPlainButton || disabled ? activator : /* @__PURE__ */ React17.createElement(React17.Fragment, null, /* @__PURE__ */ React17.createElement(Popover2.Popover, {
         active: popoverActive,
@@ -98562,7 +98562,7 @@ var require_List = __commonJS({
 var require_CreateViewModal = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Tabs/components/CreateViewModal/CreateViewModal.js"(exports) {
     "use strict";
-    var React17 = require_react(), useIsTouchDevice = require_use_is_touch_device(), focus = require_focus(), hooks = require_hooks2(), Modal2 = require_Modal(), Form6 = require_Form(), FormLayout = require_FormLayout(), TextField2 = require_TextField(), MAX_VIEW_NAME_LENGTH = 40;
+    var React17 = require_react(), useIsTouchDevice = require_use_is_touch_device(), focus = require_focus(), hooks = require_hooks2(), Modal3 = require_Modal(), Form7 = require_Form(), FormLayout = require_FormLayout(), TextField3 = require_TextField(), MAX_VIEW_NAME_LENGTH = 40;
     function CreateViewModal({
       activator,
       open,
@@ -98590,7 +98590,7 @@ var require_CreateViewModal = __commonJS({
       function handleSecondaryAction() {
         onClickSecondaryAction?.(), setValue(""), onClose();
       }
-      return /* @__PURE__ */ React17.createElement(Modal2.Modal, {
+      return /* @__PURE__ */ React17.createElement(Modal3.Modal, {
         activator,
         open,
         onClose,
@@ -98604,11 +98604,11 @@ var require_CreateViewModal = __commonJS({
           content: i18n.translate("Polaris.Tabs.CreateViewModal.cancel"),
           onAction: handleSecondaryAction
         }]
-      }, /* @__PURE__ */ React17.createElement(Modal2.Modal.Section, null, /* @__PURE__ */ React17.createElement(Form6.Form, {
+      }, /* @__PURE__ */ React17.createElement(Modal3.Modal.Section, null, /* @__PURE__ */ React17.createElement(Form7.Form, {
         onSubmit: handlePrimaryAction
       }, /* @__PURE__ */ React17.createElement(FormLayout.FormLayout, null, /* @__PURE__ */ React17.createElement("div", {
         ref: container
-      }, /* @__PURE__ */ React17.createElement(TextField2.TextField, {
+      }, /* @__PURE__ */ React17.createElement(TextField3.TextField, {
         label: i18n.translate("Polaris.Tabs.CreateViewModal.label"),
         value,
         onChange: handleChange,
@@ -98628,7 +98628,7 @@ var require_CreateViewModal = __commonJS({
 var require_Tabs = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Tabs/Tabs.js"(exports) {
     "use strict";
-    var React17 = require_react(), polarisIcons = require_dist11(), css = require_css(), breakpoints = require_breakpoints2(), usePrevious = require_use_previous(), utilities = require_utilities9(), Tabs_module = require_Tabs_css(), Tab = require_Tab(), TabMeasurer = require_TabMeasurer(), Panel = require_Panel(), List = require_List(), CreateViewModal = require_CreateViewModal(), hooks = require_hooks2(), Text3 = require_Text(), Icon = require_Icon(), UnstyledButton = require_UnstyledButton(), Box = require_Box(), Popover2 = require_Popover(), Tooltip3 = require_Tooltip(), CREATE_NEW_VIEW_ID = "create-new-view", Tabs = ({
+    var React17 = require_react(), polarisIcons = require_dist11(), css = require_css(), breakpoints = require_breakpoints2(), usePrevious = require_use_previous(), utilities = require_utilities9(), Tabs_module = require_Tabs_css(), Tab = require_Tab(), TabMeasurer = require_TabMeasurer(), Panel = require_Panel(), List = require_List(), CreateViewModal = require_CreateViewModal(), hooks = require_hooks2(), Text4 = require_Text(), Icon = require_Icon(), UnstyledButton = require_UnstyledButton(), Box = require_Box(), Popover2 = require_Popover(), Tooltip3 = require_Tooltip(), CREATE_NEW_VIEW_ID = "create-new-view", Tabs = ({
       tabs,
       children,
       selected,
@@ -98834,7 +98834,7 @@ var require_Tabs = __commonJS({
             });
           }
         }, 0);
-      }, createViewA11yLabel = newViewAccessibilityLabel || i18n.translate("Polaris.Tabs.newViewAccessibilityLabel"), tabsToShow = mdDown ? [...visibleTabs, ...hiddenTabs] : visibleTabs, tabsMarkup = tabsToShow.sort((tabA, tabB) => tabA - tabB).filter((tabIndex) => tabs[tabIndex]).map((tabIndex) => renderTabMarkup(tabs[tabIndex], tabIndex)), disclosureActivatorVisible = visibleTabs.length < tabs.length && !mdDown, classname = css.classNames(Tabs_module.default.Tabs, fitted && Tabs_module.default.fitted, disclosureActivatorVisible && Tabs_module.default.fillSpace), wrapperClassNames = css.classNames(Tabs_module.default.Wrapper, canCreateNewView && Tabs_module.default.WrapperWithNewButton), disclosureTabClassName = css.classNames(Tabs_module.default.DisclosureTab, disclosureActivatorVisible && Tabs_module.default["DisclosureTab-visible"]), disclosureButtonClassName = css.classNames(Tabs_module.default.DisclosureActivator), disclosureButtonContent = /* @__PURE__ */ React17.createElement(React17.Fragment, null, /* @__PURE__ */ React17.createElement(Text3.Text, {
+      }, createViewA11yLabel = newViewAccessibilityLabel || i18n.translate("Polaris.Tabs.newViewAccessibilityLabel"), tabsToShow = mdDown ? [...visibleTabs, ...hiddenTabs] : visibleTabs, tabsMarkup = tabsToShow.sort((tabA, tabB) => tabA - tabB).filter((tabIndex) => tabs[tabIndex]).map((tabIndex) => renderTabMarkup(tabs[tabIndex], tabIndex)), disclosureActivatorVisible = visibleTabs.length < tabs.length && !mdDown, classname = css.classNames(Tabs_module.default.Tabs, fitted && Tabs_module.default.fitted, disclosureActivatorVisible && Tabs_module.default.fillSpace), wrapperClassNames = css.classNames(Tabs_module.default.Wrapper, canCreateNewView && Tabs_module.default.WrapperWithNewButton), disclosureTabClassName = css.classNames(Tabs_module.default.DisclosureTab, disclosureActivatorVisible && Tabs_module.default["DisclosureTab-visible"]), disclosureButtonClassName = css.classNames(Tabs_module.default.DisclosureActivator), disclosureButtonContent = /* @__PURE__ */ React17.createElement(React17.Fragment, null, /* @__PURE__ */ React17.createElement(Text4.Text, {
         as: "span",
         variant: "bodySm",
         fontWeight: "medium"
@@ -98944,7 +98944,7 @@ var require_Tabs = __commonJS({
 var require_SearchFilterButton = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/IndexFilters/components/SearchFilterButton/SearchFilterButton.js"(exports) {
     "use strict";
-    var React17 = require_react(), polarisIcons = require_dist11(), Tooltip3 = require_Tooltip(), Button3 = require_Button(), Text3 = require_Text(), InlineStack = require_InlineStack(), Icon = require_Icon();
+    var React17 = require_react(), polarisIcons = require_dist11(), Tooltip3 = require_Tooltip(), Button4 = require_Button(), Text4 = require_Text(), InlineStack = require_InlineStack(), Icon = require_Icon();
     function SearchFilterButton({
       onClick,
       label,
@@ -98964,13 +98964,13 @@ var require_SearchFilterButton = __commonJS({
         tone: "base"
       })), activator = /* @__PURE__ */ React17.createElement("div", {
         style
-      }, /* @__PURE__ */ React17.createElement(Button3.Button, {
+      }, /* @__PURE__ */ React17.createElement(Button4.Button, {
         size: "slim",
         onClick,
         disabled,
         icon: iconMarkup,
         accessibilityLabel: label
-      })), content = /* @__PURE__ */ React17.createElement(Text3.Text, {
+      })), content = /* @__PURE__ */ React17.createElement(Text4.Text, {
         as: "span",
         variant: "bodyMd",
         alignment: "center"
@@ -98989,12 +98989,12 @@ var require_SearchFilterButton = __commonJS({
 var require_EditColumnsButton = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/IndexFilters/components/EditColumnsButton/EditColumnsButton.js"(exports) {
     "use strict";
-    var React17 = require_react(), polarisIcons = require_dist11(), hooks = require_hooks2(), Text3 = require_Text(), Tooltip3 = require_Tooltip(), Button3 = require_Button();
+    var React17 = require_react(), polarisIcons = require_dist11(), hooks = require_hooks2(), Text4 = require_Text(), Tooltip3 = require_Tooltip(), Button4 = require_Button();
     function EditColumnsButton({
       onClick,
       disabled
     }) {
-      let i18n = hooks.useI18n(), tooltipContent = /* @__PURE__ */ React17.createElement(Text3.Text, {
+      let i18n = hooks.useI18n(), tooltipContent = /* @__PURE__ */ React17.createElement(Text4.Text, {
         as: "span",
         variant: "bodyMd",
         alignment: "center"
@@ -99003,7 +99003,7 @@ var require_EditColumnsButton = __commonJS({
         content: tooltipContent,
         preferredPosition: "above",
         hoverDelay: 400
-      }, /* @__PURE__ */ React17.createElement(Button3.Button, {
+      }, /* @__PURE__ */ React17.createElement(Button4.Button, {
         size: "slim",
         onClick,
         disabled,
@@ -99019,7 +99019,7 @@ var require_EditColumnsButton = __commonJS({
 var require_IndexFilters = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/IndexFilters/IndexFilters.js"(exports) {
     "use strict";
-    var React17 = require_react(), reactTransitionGroup = require_cjs5(), css = require_css(), useEventListener = require_use_event_listener(), useToggle = require_use_toggle(), useOnValueChange = require_use_on_value_change(), breakpoints = require_breakpoints2(), types4 = require_types18(), IndexFilters_module = require_IndexFilters_css(), useIsSticky = require_useIsSticky(), UpdateButtons = require_UpdateButtons(), SortButton = require_SortButton(), Container = require_Container(), Tabs = require_Tabs(), SearchFilterButton = require_SearchFilterButton(), Filters = require_Filters(), EditColumnsButton = require_EditColumnsButton(), hooks = require_hooks2(), InlineStack = require_InlineStack(), Spinner3 = require_Spinner(), DEFAULT_IGNORED_TAGS = ["INPUT", "SELECT", "TEXTAREA"], TRANSITION_DURATION = 150, defaultStyle = {
+    var React17 = require_react(), reactTransitionGroup = require_cjs5(), css = require_css(), useEventListener = require_use_event_listener(), useToggle = require_use_toggle(), useOnValueChange = require_use_on_value_change(), breakpoints = require_breakpoints2(), types4 = require_types18(), IndexFilters_module = require_IndexFilters_css(), useIsSticky = require_useIsSticky(), UpdateButtons = require_UpdateButtons(), SortButton = require_SortButton(), Container = require_Container(), Tabs = require_Tabs(), SearchFilterButton = require_SearchFilterButton(), Filters = require_Filters(), EditColumnsButton = require_EditColumnsButton(), hooks = require_hooks2(), InlineStack = require_InlineStack(), Spinner4 = require_Spinner(), DEFAULT_IGNORED_TAGS = ["INPUT", "SELECT", "TEXTAREA"], TRANSITION_DURATION = 150, defaultStyle = {
       transition: `opacity ${TRANSITION_DURATION}ms var(--p-motion-ease)`,
       opacity: 0
     }, transitionStyles = {
@@ -99110,9 +99110,9 @@ var require_IndexFilters = __commonJS({
         onSort?.(value);
       }, [onSort]), handleChangeSearch = React17.useCallback((value) => {
         onQueryChange(value);
-      }, [onQueryChange]), onExecutedPrimaryAction = ((action9, afterEffect) => React17.useCallback(async (name) => {
-        await action9?.(name) && (setMode(types4.IndexFiltersMode.Default), afterEffect?.());
-      }, [action9, afterEffect]))(primaryAction?.onAction), onExecutedCancelAction = React17.useCallback(() => {
+      }, [onQueryChange]), onExecutedPrimaryAction = ((action10, afterEffect) => React17.useCallback(async (name) => {
+        await action10?.(name) && (setMode(types4.IndexFiltersMode.Default), afterEffect?.());
+      }, [action10, afterEffect]))(primaryAction?.onAction), onExecutedCancelAction = React17.useCallback(() => {
         cancelAction?.onAction?.(), setMode(types4.IndexFiltersMode.Default);
       }, [cancelAction, setMode]), enhancedPrimaryAction = React17.useMemo(() => primaryAction ? {
         ...primaryAction,
@@ -99202,13 +99202,13 @@ var require_IndexFilters = __commonJS({
         onCreateNewView
       })), isLoading && mdDown && /* @__PURE__ */ React17.createElement("div", {
         className: IndexFilters_module.default.TabsLoading
-      }, /* @__PURE__ */ React17.createElement(Spinner3.Spinner, {
+      }, /* @__PURE__ */ React17.createElement(Spinner4.Spinner, {
         size: "small"
       }))), /* @__PURE__ */ React17.createElement("div", {
         className: IndexFilters_module.default.ActionWrap
       }, isLoading && !mdDown && /* @__PURE__ */ React17.createElement("div", {
         className: IndexFilters_module.default.DesktopLoading
-      }, isLoading ? /* @__PURE__ */ React17.createElement(Spinner3.Spinner, {
+      }, isLoading ? /* @__PURE__ */ React17.createElement(Spinner4.Spinner, {
         size: "small"
       }) : null), mode2 === types4.IndexFiltersMode.Default ? /* @__PURE__ */ React17.createElement(React17.Fragment, null, hideFilters && hideQueryField ? null : /* @__PURE__ */ React17.createElement(SearchFilterButton.SearchFilterButton, {
         onClick: handleClickFilterButton,
@@ -99840,7 +99840,7 @@ var require_ScrollContainer = __commonJS({
 var require_IndexTable = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/IndexTable/IndexTable.js"(exports) {
     "use strict";
-    var React17 = require_react(), polarisIcons = require_dist11(), reactTransitionGroup = require_cjs5(), debounce = require_debounce(), useToggle = require_use_toggle(), css = require_css(), useTheme = require_use_theme(), IndexTable_module = require_IndexTable_css(), IndexProvider = require_IndexProvider(), Cell = require_Cell3(), Row = require_Row(), types4 = require_types19(), utilities = require_utilities10(), EmptySearchResult = require_EmptySearchResult(), ScrollContainer = require_ScrollContainer(), BulkActions = require_BulkActions(), hooks = require_hooks13(), hooks$1 = require_hooks2(), Spinner3 = require_Spinner(), AfterInitialMount = require_AfterInitialMount(), EventListener = require_EventListener(), Pagination = require_Pagination(), Checkbox = require_Checkbox(), Text3 = require_Text(), LegacyStack = require_LegacyStack(), Badge3 = require_Badge(), UnstyledButton = require_UnstyledButton(), Tooltip3 = require_Tooltip(), Sticky = require_Sticky(), SCROLL_BAR_PADDING = 16, SCROLL_BAR_DEBOUNCE_PERIOD = 300;
+    var React17 = require_react(), polarisIcons = require_dist11(), reactTransitionGroup = require_cjs5(), debounce = require_debounce(), useToggle = require_use_toggle(), css = require_css(), useTheme = require_use_theme(), IndexTable_module = require_IndexTable_css(), IndexProvider = require_IndexProvider(), Cell = require_Cell3(), Row = require_Row(), types4 = require_types19(), utilities = require_utilities10(), EmptySearchResult = require_EmptySearchResult(), ScrollContainer = require_ScrollContainer(), BulkActions = require_BulkActions(), hooks = require_hooks13(), hooks$1 = require_hooks2(), Spinner4 = require_Spinner(), AfterInitialMount = require_AfterInitialMount(), EventListener = require_EventListener(), Pagination = require_Pagination(), Checkbox = require_Checkbox(), Text4 = require_Text(), LegacyStack = require_LegacyStack(), Badge4 = require_Badge(), UnstyledButton = require_UnstyledButton(), Tooltip3 = require_Tooltip(), Sticky = require_Sticky(), SCROLL_BAR_PADDING = 16, SCROLL_BAR_DEBOUNCE_PERIOD = 300;
     function IndexTableBase({
       headings,
       bulkActions = [],
@@ -99963,7 +99963,7 @@ var require_IndexTable = __commonJS({
         ref: loadingElement
       }, /* @__PURE__ */ React17.createElement("div", {
         className: IndexTable_module.default.LoadingPanelRow
-      }, /* @__PURE__ */ React17.createElement(Spinner3.Spinner, {
+      }, /* @__PURE__ */ React17.createElement(Spinner4.Spinner, {
         size: "small"
       }), /* @__PURE__ */ React17.createElement("span", {
         className: IndexTable_module.default.LoadingPanelText
@@ -100100,7 +100100,7 @@ var require_IndexTable = __commonJS({
           borderRadius: "200",
           content: heading.tooltipContent,
           preferredPosition: "above"
-        }, headingTitle = /* @__PURE__ */ React17.createElement(Text3.Text, {
+        }, headingTitle = /* @__PURE__ */ React17.createElement(Text4.Text, {
           as: "span",
           variant: "bodySm",
           fontWeight: "medium",
@@ -100109,7 +100109,7 @@ var require_IndexTable = __commonJS({
         heading.new ? headingContent = /* @__PURE__ */ React17.createElement(LegacyStack.LegacyStack, {
           wrap: !1,
           alignment: "center"
-        }, headingTitle, /* @__PURE__ */ React17.createElement(Badge3.Badge, {
+        }, headingTitle, /* @__PURE__ */ React17.createElement(Badge4.Badge, {
           tone: "new"
         }, i18n.translate("Polaris.IndexTable.onboardingBadgeText"))) : headingContent = headingTitle;
         let style = {
@@ -100341,14 +100341,14 @@ var require_TextContainer = __commonJS({
 var require_AnnotatedSection = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Layout/components/AnnotatedSection/AnnotatedSection.js"(exports) {
     "use strict";
-    var React17 = require_react(), Layout_module = require_Layout_css(), TextContainer = require_TextContainer(), Text3 = require_Text(), Box = require_Box();
+    var React17 = require_react(), Layout_module = require_Layout_css(), TextContainer = require_TextContainer(), Text4 = require_Text(), Box = require_Box();
     function AnnotatedSection({
       children,
       title,
       description,
       id
     }) {
-      let descriptionMarkup = typeof description == "string" ? /* @__PURE__ */ React17.createElement(Text3.Text, {
+      let descriptionMarkup = typeof description == "string" ? /* @__PURE__ */ React17.createElement(Text4.Text, {
         as: "p",
         variant: "bodyMd"
       }, description) : description;
@@ -100360,7 +100360,7 @@ var require_AnnotatedSection = __commonJS({
         className: Layout_module.default.Annotation
       }, /* @__PURE__ */ React17.createElement(TextContainer.TextContainer, {
         spacing: "tight"
-      }, /* @__PURE__ */ React17.createElement(Text3.Text, {
+      }, /* @__PURE__ */ React17.createElement(Text4.Text, {
         id,
         variant: "headingMd",
         as: "h2"
@@ -100396,7 +100396,7 @@ var require_Section6 = __commonJS({
 var require_Layout = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Layout/Layout.js"(exports) {
     "use strict";
-    var React17 = require_react(), Layout_module = require_Layout_css(), AnnotatedSection = require_AnnotatedSection(), Section = require_Section6(), Layout3 = function({
+    var React17 = require_react(), Layout_module = require_Layout_css(), AnnotatedSection = require_AnnotatedSection(), Section = require_Section6(), Layout4 = function({
       sectioned,
       children
     }) {
@@ -100405,9 +100405,9 @@ var require_Layout = __commonJS({
         className: Layout_module.default.Layout
       }, content);
     };
-    Layout3.AnnotatedSection = AnnotatedSection.AnnotatedSection;
-    Layout3.Section = Section.Section;
-    exports.Layout = Layout3;
+    Layout4.AnnotatedSection = AnnotatedSection.AnnotatedSection;
+    Layout4.Section = Section.Section;
+    exports.Layout = Layout4;
   }
 });
 
@@ -100503,7 +100503,7 @@ var require_Item7 = __commonJS({
 var require_ConnectedFilterControl = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/LegacyFilters/components/ConnectedFilterControl/ConnectedFilterControl.js"(exports) {
     "use strict";
-    var React17 = require_react(), debounce = require_debounce(), css = require_css(), ConnectedFilterControl_module = require_ConnectedFilterControl_css(), Item = require_Item7(), EventListener = require_EventListener(), Button3 = require_Button(), Popover2 = require_Popover(), FILTER_FIELD_MIN_WIDTH = 150, ConnectedFilterControl = class extends React17.Component {
+    var React17 = require_react(), debounce = require_debounce(), css = require_css(), ConnectedFilterControl_module = require_ConnectedFilterControl_css(), Item = require_Item7(), EventListener = require_EventListener(), Button4 = require_Button(), Popover2 = require_Popover(), FILTER_FIELD_MIN_WIDTH = 150, ConnectedFilterControl = class extends React17.Component {
       constructor(...args) {
         super(...args), this.state = {
           availableWidth: 0,
@@ -100536,10 +100536,10 @@ var require_ConnectedFilterControl = __commonJS({
           className: ConnectedFilterControl_module.default.ProxyButtonContainer,
           ref: this.proxyButtonContainer,
           "aria-hidden": !0
-        }, rightPopoverableActions.map((action9) => /* @__PURE__ */ React17.createElement("div", {
-          key: action9.key,
-          "data-key": action9.key
-        }, this.activatorButtonFrom(action9, {
+        }, rightPopoverableActions.map((action10) => /* @__PURE__ */ React17.createElement("div", {
+          key: action10.key,
+          "data-key": action10.key
+        }, this.activatorButtonFrom(action10, {
           proxy: !0
         })))) : null, auxMarkup = auxiliary ? /* @__PURE__ */ React17.createElement("div", {
           className: ConnectedFilterControl_module.default.AuxiliaryContainer
@@ -100578,34 +100578,34 @@ var require_ConnectedFilterControl = __commonJS({
       getActionsToRender(actions) {
         let remainingWidth = this.state.availableWidth, actionsToReturn = [];
         for (let i = 0; remainingWidth > 0 && i < actions.length; i++) {
-          let action9 = actions[i], actionWidth = this.state.proxyButtonsWidth[action9.key];
+          let action10 = actions[i], actionWidth = this.state.proxyButtonsWidth[action10.key];
           if (actionWidth <= remainingWidth)
-            actionsToReturn.push(action9), remainingWidth -= actionWidth;
+            actionsToReturn.push(action10), remainingWidth -= actionWidth;
           else
             break;
         }
         return actionsToReturn;
       }
-      activatorButtonFrom(action9, options) {
-        let id = options?.proxy ? void 0 : `Activator-${action9.key}`;
-        return /* @__PURE__ */ React17.createElement(Button3.Button, {
-          onClick: action9.onAction,
+      activatorButtonFrom(action10, options) {
+        let id = options?.proxy ? void 0 : `Activator-${action10.key}`;
+        return /* @__PURE__ */ React17.createElement(Button4.Button, {
+          onClick: action10.onAction,
           disclosure: !0,
-          disabled: this.props.disabled || action9.disabled,
+          disabled: this.props.disabled || action10.disabled,
           id,
           size: "large"
-        }, action9.content);
+        }, action10.content);
       }
       popoverFrom(actions) {
-        return actions.map((action9) => /* @__PURE__ */ React17.createElement(Item.Item, {
-          key: action9.key
+        return actions.map((action10) => /* @__PURE__ */ React17.createElement(Item.Item, {
+          key: action10.key
         }, /* @__PURE__ */ React17.createElement(Popover2.Popover, {
-          active: action9.popoverOpen,
-          activator: this.activatorButtonFrom(action9),
-          onClose: action9.onAction,
+          active: action10.popoverOpen,
+          activator: this.activatorButtonFrom(action10),
+          onClose: action10.onAction,
           preferredAlignment: "left",
           sectioned: !0
-        }, action9.popoverContent)));
+        }, action10.popoverContent)));
       }
     };
     exports.ConnectedFilterControl = ConnectedFilterControl;
@@ -100616,12 +100616,12 @@ var require_ConnectedFilterControl = __commonJS({
 var require_TagsWrapper = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/LegacyFilters/components/TagsWrapper/TagsWrapper.js"(exports) {
     "use strict";
-    var React17 = require_react(), Text3 = require_Text();
+    var React17 = require_react(), Text4 = require_Text();
     function TagsWrapper({
       children,
       hidden
     }) {
-      return hidden ? /* @__PURE__ */ React17.createElement(Text3.Text, {
+      return hidden ? /* @__PURE__ */ React17.createElement(Text4.Text, {
         as: "span",
         visuallyHidden: !0
       }, children) : /* @__PURE__ */ React17.createElement(React17.Fragment, null, children);
@@ -100656,7 +100656,7 @@ var require_Tag_css = __commonJS({
 var require_Tag = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Tag/Tag.js"(exports) {
     "use strict";
-    var React17 = require_react(), polarisIcons = require_dist11(), css = require_css(), focus = require_focus(), Tag_module = require_Tag_css(), hooks = require_hooks2(), Text3 = require_Text(), Icon = require_Icon();
+    var React17 = require_react(), polarisIcons = require_dist11(), css = require_css(), focus = require_focus(), Tag_module = require_Tag_css(), hooks = require_hooks2(), Text4 = require_Text(), Icon = require_Icon();
     function Tag({
       children,
       disabled = !1,
@@ -100668,7 +100668,7 @@ var require_Tag = __commonJS({
     }) {
       let i18n = hooks.useI18n(), segmented = onRemove && url, className = css.classNames(Tag_module.default.Tag, disabled && Tag_module.default.disabled, onClick && Tag_module.default.clickable, onRemove && Tag_module.default.removable, url && !disabled && Tag_module.default.linkable, segmented && Tag_module.default.segmented, size && Tag_module.default[css.variationName("size", size)]), tagTitle = accessibilityLabel;
       tagTitle || (tagTitle = typeof children == "string" ? children : void 0);
-      let tagText = /* @__PURE__ */ React17.createElement(Text3.Text, {
+      let tagText = /* @__PURE__ */ React17.createElement(Text4.Text, {
         as: "span",
         variant: "bodySm",
         truncate: !0
@@ -100810,7 +100810,7 @@ var require_Sheet = __commonJS({
 var require_LegacyFilters = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/LegacyFilters/LegacyFilters.js"(exports) {
     "use strict";
-    var React17 = require_react(), polarisIcons = require_dist11(), css = require_css(), focus = require_focus(), withinFilterContext = require_within_filter_context(), types4 = require_types16(), LegacyFilters_module = require_LegacyFilters_css(), context = require_context19(), Collapsible = require_Collapsible(), ConnectedFilterControl = require_ConnectedFilterControl(), TagsWrapper = require_TagsWrapper(), Tag = require_Tag(), Sheet = require_Sheet(), hooks = require_hooks2(), hooks$1 = require_hooks11(), ScrollLock = require_ScrollLock(), Badge3 = require_Badge(), Text3 = require_Text(), Icon = require_Icon(), Focus = require_Focus(), Button3 = require_Button(), TextField2 = require_TextField(), Scrollable = require_Scrollable(), KeypressListener = require_KeypressListener(), LegacyStack = require_LegacyStack(), Suffix;
+    var React17 = require_react(), polarisIcons = require_dist11(), css = require_css(), focus = require_focus(), withinFilterContext = require_within_filter_context(), types4 = require_types16(), LegacyFilters_module = require_LegacyFilters_css(), context = require_context19(), Collapsible = require_Collapsible(), ConnectedFilterControl = require_ConnectedFilterControl(), TagsWrapper = require_TagsWrapper(), Tag = require_Tag(), Sheet = require_Sheet(), hooks = require_hooks2(), hooks$1 = require_hooks11(), ScrollLock = require_ScrollLock(), Badge4 = require_Badge(), Text4 = require_Text(), Icon = require_Icon(), Focus = require_Focus(), Button4 = require_Button(), TextField3 = require_TextField(), Scrollable = require_Scrollable(), KeypressListener = require_KeypressListener(), LegacyStack = require_LegacyStack(), Suffix;
     (function(Suffix2) {
       Suffix2.Filter = "Filter", Suffix2.Shortcut = "Shortcut";
     })(Suffix || (Suffix = {}));
@@ -100868,7 +100868,7 @@ var require_LegacyFilters = __commonJS({
         })) : null, filtersContentMarkup = filters.map((filter, index) => {
           let filterIsOpen = this.state[`${filter.key}${Suffix.Filter}`] === !0, icon = filterIsOpen ? polarisIcons.ChevronUpIcon : polarisIcons.ChevronDownIcon, className = css.classNames(LegacyFilters_module.default.FilterTriggerContainer, filterIsOpen && LegacyFilters_module.default.open, index === 0 && LegacyFilters_module.default.first, filters.length !== 1 && index === filters.length - 1 && LegacyFilters_module.default.last), appliedFilterContent = this.getAppliedFilterContent(filter.key), appliedFilterBadgeMarkup = appliedFilterContent ? /* @__PURE__ */ React17.createElement("div", {
             className: LegacyFilters_module.default.AppliedFilterBadgeContainer
-          }, /* @__PURE__ */ React17.createElement(Badge3.Badge, {
+          }, /* @__PURE__ */ React17.createElement(Badge4.Badge, {
             tone: "new"
           }, appliedFilterContent)) : null, collapsibleID = `${filter.key}Collapsible`, buttonClassName = css.classNames(LegacyFilters_module.default.FilterTrigger);
           return /* @__PURE__ */ React17.createElement("div", {
@@ -100885,7 +100885,7 @@ var require_LegacyFilters = __commonJS({
             className: LegacyFilters_module.default.FilterTriggerLabelContainer
           }, /* @__PURE__ */ React17.createElement("h3", {
             className: LegacyFilters_module.default.FilterTriggerTitle
-          }, /* @__PURE__ */ React17.createElement(Text3.Text, {
+          }, /* @__PURE__ */ React17.createElement(Text4.Text, {
             as: "span",
             tone: this.props.disabled || filter.disabled ? "subdued" : void 0
           }, filter.label)), /* @__PURE__ */ React17.createElement("span", {
@@ -100907,7 +100907,7 @@ var require_LegacyFilters = __commonJS({
           count: appliedFiltersCount
         }) : i18n.translate("Polaris.Filters.moreFilters"), rightActionMarkup = filters.length ? /* @__PURE__ */ React17.createElement("div", {
           ref: this.moreFiltersButtonContainer
-        }, /* @__PURE__ */ React17.createElement(Button3.Button, {
+        }, /* @__PURE__ */ React17.createElement(Button4.Button, {
           onClick: this.toggleFilters,
           disabled,
           size: "large"
@@ -100921,7 +100921,7 @@ var require_LegacyFilters = __commonJS({
           disabled,
           forceShowMorefiltersButton: filters.length > transformedFilters.length,
           queryFieldHidden: hideQueryField
-        }, hideQueryField ? null : /* @__PURE__ */ React17.createElement(TextField2.TextField, {
+        }, hideQueryField ? null : /* @__PURE__ */ React17.createElement(TextField3.TextField, {
           placeholder: queryPlaceholder || i18n.translate("Polaris.Filters.filter", {
             resourceName: filterResourceName.plural
           }),
@@ -100945,45 +100945,45 @@ var require_LegacyFilters = __commonJS({
           autoComplete: "off"
         })), filtersContainerHeaderClassname = css.classNames(LegacyFilters_module.default.LegacyFiltersContainerHeader), filtersDesktopHeaderMarkup = /* @__PURE__ */ React17.createElement("div", {
           className: filtersContainerHeaderClassname
-        }, /* @__PURE__ */ React17.createElement(Text3.Text, {
+        }, /* @__PURE__ */ React17.createElement(Text4.Text, {
           variant: "headingLg",
           as: "h3"
-        }, moreFiltersLabel), /* @__PURE__ */ React17.createElement(Button3.Button, {
+        }, moreFiltersLabel), /* @__PURE__ */ React17.createElement(Button4.Button, {
           icon: polarisIcons.XSmallIcon,
           variant: "plain",
           accessibilityLabel: i18n.translate("Polaris.Filters.cancel"),
           onClick: this.closeFilters
         })), filtersMobileHeaderMarkup = /* @__PURE__ */ React17.createElement("div", {
           className: filtersContainerHeaderClassname
-        }, /* @__PURE__ */ React17.createElement(Button3.Button, {
+        }, /* @__PURE__ */ React17.createElement(Button4.Button, {
           icon: polarisIcons.XSmallIcon,
           variant: "plain",
           accessibilityLabel: i18n.translate("Polaris.Filters.cancel"),
           onClick: this.closeFilters
-        }), /* @__PURE__ */ React17.createElement(Text3.Text, {
+        }), /* @__PURE__ */ React17.createElement(Text4.Text, {
           variant: "headingLg",
           as: "h3"
-        }, moreFiltersLabel), /* @__PURE__ */ React17.createElement(Button3.Button, {
+        }, moreFiltersLabel), /* @__PURE__ */ React17.createElement(Button4.Button, {
           onClick: this.closeFilters,
           variant: "primary"
         }, i18n.translate("Polaris.Filters.done"))), filtersDesktopFooterClassname = css.classNames(LegacyFilters_module.default.LegacyFiltersContainerFooter), filtersDesktopFooterMarkup = /* @__PURE__ */ React17.createElement("div", {
           className: filtersDesktopFooterClassname
-        }, /* @__PURE__ */ React17.createElement(Button3.Button, {
+        }, /* @__PURE__ */ React17.createElement(Button4.Button, {
           onClick: this.handleClearAll,
           disabled: !this.hasAppliedFilters()
         }, i18n.translate("Polaris.Filters.clearAllFilters")), /* @__PURE__ */ React17.createElement("div", {
           ref: this.moreFiltersDoneButtonContainer
-        }, /* @__PURE__ */ React17.createElement(Button3.Button, {
+        }, /* @__PURE__ */ React17.createElement(Button4.Button, {
           onClick: this.closeFilters,
           variant: "primary"
         }, i18n.translate("Polaris.Filters.done")))), filtersMobileFooterMarkup = /* @__PURE__ */ React17.createElement("div", {
           className: LegacyFilters_module.default.LegacyFiltersMobileContainerFooter
-        }, this.hasAppliedFilters() ? /* @__PURE__ */ React17.createElement(Button3.Button, {
+        }, this.hasAppliedFilters() ? /* @__PURE__ */ React17.createElement(Button4.Button, {
           onClick: onClearAll,
           fullWidth: !0
         }, i18n.translate("Polaris.Filters.clearAllFilters")) : /* @__PURE__ */ React17.createElement("div", {
           className: LegacyFilters_module.default.EmptyFooterState
-        }, /* @__PURE__ */ React17.createElement(Text3.Text, {
+        }, /* @__PURE__ */ React17.createElement(Text4.Text, {
           tone: "subdued",
           as: "span"
         }, /* @__PURE__ */ React17.createElement("p", null, i18n.translate("Polaris.Filters.noFiltersApplied"))))), shouldHideTagsContainer = !appliedFilters || appliedFilters.length < 1, tagsMarkup = hideTags ? null : /* @__PURE__ */ React17.createElement(TagsWrapper.TagsWrapper, {
@@ -101020,7 +101020,7 @@ var require_LegacyFilters = __commonJS({
         }, filtersContentMarkup), filtersDesktopFooterMarkup)), helpTextMarkup = helpText ? /* @__PURE__ */ React17.createElement("div", {
           id: "FiltersHelpText",
           className: LegacyFilters_module.default.HelpText
-        }, /* @__PURE__ */ React17.createElement(Text3.Text, {
+        }, /* @__PURE__ */ React17.createElement(Text4.Text, {
           tone: "subdued",
           as: "span"
         }, helpText)) : null;
@@ -101106,7 +101106,7 @@ var require_LegacyFilters = __commonJS({
       generateFilterMarkup(filter) {
         let i18n = this.props.i18n, removeCallback = this.getAppliedFilterRemoveHandler(filter.key), removeHandler = removeCallback == null ? void 0 : () => {
           removeCallback(filter.key);
-        }, clearButtonMarkup = !filter.hideClearButton && /* @__PURE__ */ React17.createElement(Button3.Button, {
+        }, clearButtonMarkup = !filter.hideClearButton && /* @__PURE__ */ React17.createElement(Button4.Button, {
           variant: "plain",
           disabled: removeHandler == null,
           onClick: removeHandler,
@@ -101222,7 +101222,7 @@ var require_Panel2 = __commonJS({
 var require_Tab2 = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/LegacyTabs/components/Tab/Tab.js"(exports) {
     "use strict";
-    var React17 = require_react(), css = require_css(), focus = require_focus(), LegacyTabs_module = require_LegacyTabs_css(), UnstyledLink = require_UnstyledLink(), Text3 = require_Text();
+    var React17 = require_react(), css = require_css(), focus = require_focus(), LegacyTabs_module = require_LegacyTabs_css(), UnstyledLink = require_UnstyledLink(), Text4 = require_Text();
     function Tab({
       id,
       focused,
@@ -101256,7 +101256,7 @@ var require_Tab2 = __commonJS({
         onMouseUp: focus.handleMouseUpByBlurring
       }, /* @__PURE__ */ React17.createElement("span", {
         className: LegacyTabs_module.default.Title
-      }, /* @__PURE__ */ React17.createElement(Text3.Text, {
+      }, /* @__PURE__ */ React17.createElement(Text4.Text, {
         as: "span",
         variant: "bodyMd",
         fontWeight: "semibold"
@@ -101273,7 +101273,7 @@ var require_Tab2 = __commonJS({
         onMouseUp: focus.handleMouseUpByBlurring
       }, /* @__PURE__ */ React17.createElement("span", {
         className: LegacyTabs_module.default.Title
-      }, /* @__PURE__ */ React17.createElement(Text3.Text, {
+      }, /* @__PURE__ */ React17.createElement(Text4.Text, {
         as: "span",
         variant: "bodyMd",
         fontWeight: "semibold"
@@ -101817,7 +101817,7 @@ var require_MediaCard_css = __commonJS({
 var require_MediaCard = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/MediaCard/MediaCard.js"(exports) {
     "use strict";
-    var React17 = require_react(), polarisIcons = require_dist11(), useToggle = require_use_toggle(), css = require_css(), MediaCard_module = require_MediaCard_css(), hooks = require_hooks2(), Button3 = require_Button(), InlineStack = require_InlineStack(), Popover2 = require_Popover(), ActionList2 = require_ActionList(), utils = require_utils11(), LegacyCard = require_LegacyCard(), Box = require_Box(), BlockStack = require_BlockStack(), Text3 = require_Text(), ButtonGroup2 = require_ButtonGroup();
+    var React17 = require_react(), polarisIcons = require_dist11(), useToggle = require_use_toggle(), css = require_css(), MediaCard_module = require_MediaCard_css(), hooks = require_hooks2(), Button4 = require_Button(), InlineStack = require_InlineStack(), Popover2 = require_Popover(), ActionList2 = require_ActionList(), utils = require_utils11(), LegacyCard = require_LegacyCard(), Box = require_Box(), BlockStack = require_BlockStack(), Text4 = require_Text(), ButtonGroup3 = require_ButtonGroup();
     function MediaCard({
       title,
       children,
@@ -101834,13 +101834,13 @@ var require_MediaCard = __commonJS({
         toggle: togglePopoverActive
       } = useToggle.useToggle(!1), headerMarkup = null;
       if (title) {
-        let headerContent = typeof title == "string" ? /* @__PURE__ */ React17.createElement(Text3.Text, {
+        let headerContent = typeof title == "string" ? /* @__PURE__ */ React17.createElement(Text4.Text, {
           variant: "headingSm",
           as: "h2"
         }, title) : title;
         headerMarkup = /* @__PURE__ */ React17.createElement("div", null, headerContent);
       }
-      let dismissButtonMarkup = onDismiss ? /* @__PURE__ */ React17.createElement(Button3.Button, {
+      let dismissButtonMarkup = onDismiss ? /* @__PURE__ */ React17.createElement(Button4.Button, {
         icon: polarisIcons.XIcon,
         onClick: onDismiss,
         size: "slim",
@@ -101848,7 +101848,7 @@ var require_MediaCard = __commonJS({
         variant: "tertiary"
       }) : null, popoverActivator = /* @__PURE__ */ React17.createElement(InlineStack.InlineStack, {
         blockAlign: "center"
-      }, /* @__PURE__ */ React17.createElement(Button3.Button, {
+      }, /* @__PURE__ */ React17.createElement(Button4.Button, {
         icon: polarisIcons.MenuHorizontalIcon,
         onClick: togglePopoverActive,
         size: "slim",
@@ -101865,7 +101865,7 @@ var require_MediaCard = __commonJS({
         onActionAnyItem: togglePopoverActive
       })) : null, primaryActionMarkup = primaryAction ? /* @__PURE__ */ React17.createElement("div", null, utils.buttonFrom(primaryAction)) : null, secondaryActionMarkup = secondaryAction ? /* @__PURE__ */ React17.createElement("div", null, utils.buttonFrom(secondaryAction)) : null, actionClassName = css.classNames(MediaCard_module.default.ActionContainer, portrait && MediaCard_module.default.portrait), actionMarkup = primaryActionMarkup || secondaryActionMarkup ? /* @__PURE__ */ React17.createElement("div", {
         className: actionClassName
-      }, /* @__PURE__ */ React17.createElement(ButtonGroup2.ButtonGroup, null, primaryActionMarkup, secondaryActionMarkup)) : null, mediaCardClassName = css.classNames(MediaCard_module.default.MediaCard, portrait && MediaCard_module.default.portrait), mediaContainerClassName = css.classNames(MediaCard_module.default.MediaContainer, portrait && MediaCard_module.default.portrait, size === "small" && MediaCard_module.default.sizeSmall), infoContainerClassName = css.classNames(MediaCard_module.default.InfoContainer, portrait && MediaCard_module.default.portrait, size === "small" && MediaCard_module.default.sizeSmall), popoverOrDismissMarkup = popoverActionsMarkup || dismissButtonMarkup ? /* @__PURE__ */ React17.createElement(Box.Box, {
+      }, /* @__PURE__ */ React17.createElement(ButtonGroup3.ButtonGroup, null, primaryActionMarkup, secondaryActionMarkup)) : null, mediaCardClassName = css.classNames(MediaCard_module.default.MediaCard, portrait && MediaCard_module.default.portrait), mediaContainerClassName = css.classNames(MediaCard_module.default.MediaContainer, portrait && MediaCard_module.default.portrait, size === "small" && MediaCard_module.default.sizeSmall), infoContainerClassName = css.classNames(MediaCard_module.default.InfoContainer, portrait && MediaCard_module.default.portrait, size === "small" && MediaCard_module.default.sizeSmall), popoverOrDismissMarkup = popoverActionsMarkup || dismissButtonMarkup ? /* @__PURE__ */ React17.createElement(Box.Box, {
         position: "absolute",
         insetInlineEnd: "500",
         zIndex: "var(--p-z-index-2)"
@@ -101887,7 +101887,7 @@ var require_MediaCard = __commonJS({
         wrap: !1,
         align: "space-between",
         gap: "200"
-      }, headerMarkup, popoverOrDismissMarkup), /* @__PURE__ */ React17.createElement(Text3.Text, {
+      }, headerMarkup, popoverOrDismissMarkup), /* @__PURE__ */ React17.createElement(Text4.Text, {
         as: "p",
         variant: "bodySm"
       }, description), actionMarkup)))));
@@ -102030,7 +102030,7 @@ var require_SecondaryNavigation = __commonJS({
 var require_Item10 = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Navigation/components/Item/Item.js"(exports) {
     "use strict";
-    var React17 = require_react(), useIsomorphicLayoutEffect = require_use_isomorphic_layout_effect(), css = require_css(), context = require_context20(), Navigation_module = require_Navigation_css(), types4 = require_types20(), SecondaryNavigation = require_SecondaryNavigation(), hooks = require_hooks2(), hooks$1 = require_hooks11(), Indicator = require_Indicator(), Icon = require_Icon(), Badge3 = require_Badge(), Text3 = require_Text(), UnstyledLink = require_UnstyledLink(), UnstyledButton = require_UnstyledButton(), Tooltip3 = require_Tooltip(), MAX_SECONDARY_ACTIONS = 2, TOOLTIP_HOVER_DELAY = 1e3;
+    var React17 = require_react(), useIsomorphicLayoutEffect = require_use_isomorphic_layout_effect(), css = require_css(), context = require_context20(), Navigation_module = require_Navigation_css(), types4 = require_types20(), SecondaryNavigation = require_SecondaryNavigation(), hooks = require_hooks2(), hooks$1 = require_hooks11(), Indicator = require_Indicator(), Icon = require_Icon(), Badge4 = require_Badge(), Text4 = require_Text(), UnstyledLink = require_UnstyledLink(), UnstyledButton = require_UnstyledButton(), Tooltip3 = require_Tooltip(), MAX_SECONDARY_ACTIONS = 2, TOOLTIP_HOVER_DELAY = 1e3;
     function Item({
       url,
       icon: baseIcon,
@@ -102091,9 +102091,9 @@ var require_Item10 = __commonJS({
       }, /* @__PURE__ */ React17.createElement(Icon.Icon, {
         source: icon
       })) : null, badgeMarkup = null;
-      isNew ? badgeMarkup = /* @__PURE__ */ React17.createElement(Badge3.Badge, {
+      isNew ? badgeMarkup = /* @__PURE__ */ React17.createElement(Badge4.Badge, {
         tone: "new"
-      }, i18n.translate("Polaris.Badge.TONE_LABELS.new")) : typeof badge == "string" ? badgeMarkup = /* @__PURE__ */ React17.createElement(Badge3.Badge, {
+      }, i18n.translate("Polaris.Badge.TONE_LABELS.new")) : typeof badge == "string" ? badgeMarkup = /* @__PURE__ */ React17.createElement(Badge4.Badge, {
         tone: "new"
       }, badge) : badgeMarkup = badge;
       let wrappedBadgeMarkup = badgeMarkup == null ? null : /* @__PURE__ */ React17.createElement("div", {
@@ -102103,7 +102103,7 @@ var require_Item10 = __commonJS({
       let itemLabelMarkup = /* @__PURE__ */ React17.createElement("span", {
         className: css.classNames(Navigation_module.default.Text, truncateText && Navigation_module.default["Text-truncated"]),
         ref: navTextRef
-      }, /* @__PURE__ */ React17.createElement(Text3.Text, {
+      }, /* @__PURE__ */ React17.createElement(Text4.Text, {
         as: "span",
         variant: "bodyMd",
         tone,
@@ -102130,9 +102130,9 @@ var require_Item10 = __commonJS({
       actions && actions.length > MAX_SECONDARY_ACTIONS && (actions.length = MAX_SECONDARY_ACTIONS);
       let secondaryActionMarkup = actions?.length ? /* @__PURE__ */ React17.createElement("span", {
         className: Navigation_module.default.SecondaryActions
-      }, actions.map((action9) => /* @__PURE__ */ React17.createElement(ItemSecondaryAction, Object.assign({
-        key: action9.accessibilityLabel
-      }, action9, {
+      }, actions.map((action10) => /* @__PURE__ */ React17.createElement(ItemSecondaryAction, Object.assign({
+        key: action10.accessibilityLabel
+      }, action10, {
         tabIndex,
         disabled
       })))) : null, itemContentMarkup = /* @__PURE__ */ React17.createElement(React17.Fragment, null, iconMarkup, itemLabelMarkup, secondaryActionMarkup ? null : wrappedBadgeMarkup), outerContentMarkup = /* @__PURE__ */ React17.createElement(React17.Fragment, null, secondaryActionMarkup ? wrappedBadgeMarkup : null), showExpanded = selected || expanded || childIsActive, itemClassName = css.classNames(Navigation_module.default.Item, disabled && Navigation_module.default["Item-disabled"], (selected || childIsActive) && Navigation_module.default["Item-selected"], showExpanded && Navigation_module.default.subNavigationActive, childIsActive && Navigation_module.default["Item-child-active"], showVerticalLine && Navigation_module.default["Item-line"], matches && Navigation_module.default["Item-line-pointer"], showVerticalHoverPointer && Navigation_module.default["Item-hover-pointer"]), secondaryNavigationMarkup = null;
@@ -102269,11 +102269,11 @@ var require_Item10 = __commonJS({
 var require_Section7 = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Navigation/components/Section/Section.js"(exports) {
     "use strict";
-    var React17 = require_react(), polarisIcons = require_dist11(), css = require_css(), useToggle = require_use_toggle(), Navigation_module = require_Navigation_css(), Item = require_Item10(), hooks = require_hooks11(), Icon = require_Icon(), Tooltip3 = require_Tooltip(), Text3 = require_Text(), Collapsible = require_Collapsible();
+    var React17 = require_react(), polarisIcons = require_dist11(), css = require_css(), useToggle = require_use_toggle(), Navigation_module = require_Navigation_css(), Item = require_Item10(), hooks = require_hooks11(), Icon = require_Icon(), Tooltip3 = require_Tooltip(), Text4 = require_Text(), Collapsible = require_Collapsible();
     function Section({
       title,
       fill,
-      action: action9,
+      action: action10,
       items,
       rollup,
       separator
@@ -102290,16 +102290,16 @@ var require_Section7 = __commonJS({
       React17.useEffect(() => () => {
         animationFrame.current && cancelAnimationFrame(animationFrame.current);
       });
-      let className = css.classNames(Navigation_module.default.Section, separator && Navigation_module.default["Section-withSeparator"], fill && Navigation_module.default["Section-fill"]), buttonMarkup = action9 && /* @__PURE__ */ React17.createElement("button", {
+      let className = css.classNames(Navigation_module.default.Section, separator && Navigation_module.default["Section-withSeparator"], fill && Navigation_module.default["Section-fill"]), buttonMarkup = action10 && /* @__PURE__ */ React17.createElement("button", {
         type: "button",
         className: Navigation_module.default.Action,
-        "aria-label": action9.accessibilityLabel,
-        onClick: action9.onClick
+        "aria-label": action10.accessibilityLabel,
+        onClick: action10.onClick
       }, /* @__PURE__ */ React17.createElement(Icon.Icon, {
-        source: action9.icon
-      })), actionMarkup = action9 && (action9.tooltip ? /* @__PURE__ */ React17.createElement(Tooltip3.Tooltip, action9.tooltip, buttonMarkup) : buttonMarkup), sectionHeadingMarkup = title && /* @__PURE__ */ React17.createElement("li", {
+        source: action10.icon
+      })), actionMarkup = action10 && (action10.tooltip ? /* @__PURE__ */ React17.createElement(Tooltip3.Tooltip, action10.tooltip, buttonMarkup) : buttonMarkup), sectionHeadingMarkup = title && /* @__PURE__ */ React17.createElement("li", {
         className: Navigation_module.default.SectionHeading
-      }, /* @__PURE__ */ React17.createElement(Text3.Text, {
+      }, /* @__PURE__ */ React17.createElement(Text4.Text, {
         as: "span",
         variant: "bodySm",
         fontWeight: "medium",
@@ -102541,7 +102541,7 @@ var require_Option2 = __commonJS({
 var require_OptionList = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/OptionList/OptionList.js"(exports) {
     "use strict";
-    var React17 = require_react(), options = require_options(), arrays = require_arrays(), useDeepEffect = require_use_deep_effect(), Option = require_Option2(), Box = require_Box(), BlockStack = require_BlockStack(), Text3 = require_Text();
+    var React17 = require_react(), options = require_options(), arrays = require_arrays(), useDeepEffect = require_use_deep_effect(), Option = require_Option2(), Box = require_Box(), BlockStack = require_BlockStack(), Text4 = require_Text();
     function OptionList({
       options: options2,
       sections,
@@ -102587,7 +102587,7 @@ var require_OptionList = __commonJS({
           paddingBlockEnd: "100",
           paddingInlineEnd: "150",
           borderColor: "border-secondary"
-        }, /* @__PURE__ */ React17.createElement(Text3.Text, {
+        }, /* @__PURE__ */ React17.createElement(Text4.Text, {
           as: titleLevel,
           variant: "headingSm"
         }, title2)) : null, optionsMarkup2 = options3 && options3.map((option2, optionIndex) => {
@@ -102740,7 +102740,7 @@ var require_Title_css = __commonJS({
 var require_Title = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Page/components/Header/components/Title/Title.js"(exports) {
     "use strict";
-    var React17 = require_react(), css = require_css(), Title_module = require_Title_css(), Text3 = require_Text(), Bleed = require_Bleed();
+    var React17 = require_react(), css = require_css(), Title_module = require_Title_css(), Text4 = require_Text(), Bleed = require_Bleed();
     function Title({
       title,
       subtitle,
@@ -102750,7 +102750,7 @@ var require_Title = __commonJS({
     }) {
       let className = css.classNames(Title_module.default.Title, subtitle && Title_module.default.TitleWithSubtitle), titleMarkup = title ? /* @__PURE__ */ React17.createElement("h1", {
         className
-      }, /* @__PURE__ */ React17.createElement(Text3.Text, {
+      }, /* @__PURE__ */ React17.createElement(Text4.Text, {
         as: "span",
         variant: "headingLg",
         fontWeight: "bold"
@@ -102760,7 +102760,7 @@ var require_Title = __commonJS({
         className: Title_module.default.TitleWrapper
       }, titleMarkup, titleMetadataMarkup), subtitleMarkup = subtitle ? /* @__PURE__ */ React17.createElement("div", {
         className: css.classNames(Title_module.default.SubTitle, compactTitle && Title_module.default.SubtitleCompact, hasSubtitleMaxWidth && Title_module.default.SubtitleMaxWidth)
-      }, /* @__PURE__ */ React17.createElement(Text3.Text, {
+      }, /* @__PURE__ */ React17.createElement(Text4.Text, {
         as: "p",
         variant: "bodySm",
         tone: "subdued"
@@ -102775,7 +102775,7 @@ var require_Title = __commonJS({
 var require_Header4 = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Page/components/Header/Header.js"(exports) {
     "use strict";
-    var React17 = require_react(), css = require_css(), components = require_components2(), isInterface = require_is_interface(), isReactElement = require_is_react_element(), Header_module = require_Header_css(), Breadcrumbs = require_Breadcrumbs(), Title = require_Title(), ActionMenu = require_ActionMenu(), FilterActionsProvider = require_FilterActionsProvider(), hooks = require_hooks2(), hooks$1 = require_hooks11(), Box = require_Box(), Pagination = require_Pagination(), Text3 = require_Text(), InlineStack = require_InlineStack(), utils = require_utils11(), Tooltip3 = require_Tooltip(), SHORT_TITLE = 20, REALLY_SHORT_TITLE = 8, LONG_TITLE = 34;
+    var React17 = require_react(), css = require_css(), components = require_components2(), isInterface = require_is_interface(), isReactElement = require_is_react_element(), Header_module = require_Header_css(), Breadcrumbs = require_Breadcrumbs(), Title = require_Title(), ActionMenu = require_ActionMenu(), FilterActionsProvider = require_FilterActionsProvider(), hooks = require_hooks2(), hooks$1 = require_hooks11(), Box = require_Box(), Pagination = require_Pagination(), Text4 = require_Text(), InlineStack = require_InlineStack(), utils = require_utils11(), Tooltip3 = require_Tooltip(), SHORT_TITLE = 20, REALLY_SHORT_TITLE = 8, LONG_TITLE = 34;
     function Header2({
       title,
       subtitle,
@@ -102819,7 +102819,7 @@ var require_Header4 = __commonJS({
         hasSubtitleMaxWidth: hasActionGroupsOrSecondaryActions
       })), labelForPageReadyAccessibilityLabel = pageReadyAccessibilityLabel || title, pageReadyAccessibilityLabelMarkup = labelForPageReadyAccessibilityLabel ? /* @__PURE__ */ React17.createElement("div", {
         role: "status"
-      }, /* @__PURE__ */ React17.createElement(Text3.Text, {
+      }, /* @__PURE__ */ React17.createElement(Text4.Text, {
         visuallyHidden: !0,
         as: "p"
       }, i18n.translate("Polaris.Page.Header.pageReadyAccessibilityLabel", {
@@ -102846,7 +102846,7 @@ var require_Header4 = __commonJS({
         blockAlign: "center"
       }, breadcrumbMarkup, paginationMarkup)) : null, additionalMetadataMarkup = additionalMetadata ? /* @__PURE__ */ React17.createElement("div", {
         className: Header_module.default.AdditionalMetaData
-      }, /* @__PURE__ */ React17.createElement(Text3.Text, {
+      }, /* @__PURE__ */ React17.createElement(Text4.Text, {
         tone: "subdued",
         as: "span",
         variant: "bodySm"
@@ -102934,18 +102934,18 @@ var require_Header4 = __commonJS({
         printHidden: !0
       }, actionMarkup));
     }
-    function shouldShowIconOnly(isMobile, action9) {
+    function shouldShowIconOnly(isMobile, action10) {
       let {
         content,
         accessibilityLabel
-      } = action9, {
+      } = action10, {
         icon
-      } = action9;
+      } = action10;
       return icon == null ? {
-        ...action9,
+        ...action10,
         icon: void 0
       } : (isMobile && (accessibilityLabel = accessibilityLabel || content, content = void 0), {
-        ...action9,
+        ...action10,
         content,
         accessibilityLabel,
         icon
@@ -103017,7 +103017,7 @@ var require_Page = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Page/Page.js"(exports) {
     "use strict";
     var React17 = require_react(), css = require_css(), isInterface = require_is_interface(), isReactElement = require_is_react_element(), Page_module = require_Page_css(), Header2 = require_Header4();
-    function Page2({
+    function Page3({
       children,
       fullWidth,
       narrowWidth,
@@ -103032,7 +103032,7 @@ var require_Page = __commonJS({
         className: contentClassName
       }, children));
     }
-    exports.Page = Page2;
+    exports.Page = Page3;
   }
 });
 
@@ -103052,7 +103052,7 @@ var require_PageActions_css = __commonJS({
 var require_PageActions = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/PageActions/PageActions.js"(exports) {
     "use strict";
-    var React17 = require_react(), isInterface = require_is_interface(), isReactElement = require_is_react_element(), PageActions_module = require_PageActions_css(), utils = require_utils11(), ButtonGroup2 = require_ButtonGroup(), LegacyStack = require_LegacyStack();
+    var React17 = require_react(), isInterface = require_is_interface(), isReactElement = require_is_react_element(), PageActions_module = require_PageActions_css(), utils = require_utils11(), ButtonGroup3 = require_ButtonGroup(), LegacyStack = require_LegacyStack();
     function PageActions({
       primaryAction,
       secondaryActions
@@ -103062,7 +103062,7 @@ var require_PageActions = __commonJS({
         variant: "primary"
       }));
       let secondaryActionsMarkup = null;
-      return isInterface.isInterface(secondaryActions) && secondaryActions.length > 0 ? secondaryActionsMarkup = /* @__PURE__ */ React17.createElement(ButtonGroup2.ButtonGroup, null, utils.buttonsFrom(secondaryActions)) : isReactElement.isReactElement(secondaryActions) && (secondaryActionsMarkup = /* @__PURE__ */ React17.createElement(React17.Fragment, null, secondaryActions)), /* @__PURE__ */ React17.createElement("div", {
+      return isInterface.isInterface(secondaryActions) && secondaryActions.length > 0 ? secondaryActionsMarkup = /* @__PURE__ */ React17.createElement(ButtonGroup3.ButtonGroup, null, utils.buttonsFrom(secondaryActions)) : isReactElement.isReactElement(secondaryActions) && (secondaryActionsMarkup = /* @__PURE__ */ React17.createElement(React17.Fragment, null, secondaryActions)), /* @__PURE__ */ React17.createElement("div", {
         className: PageActions_module.default.PageActions
       }, /* @__PURE__ */ React17.createElement(LegacyStack.LegacyStack, {
         distribution: "trailing",
@@ -103101,7 +103101,7 @@ var require_Activator_css = __commonJS({
 var require_Activator = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Picker/components/Activator/Activator.js"(exports) {
     "use strict";
-    var polarisIcons = require_dist11(), React17 = require_react(), css = require_css(), Activator_module = require_Activator_css(), BlockStack = require_BlockStack(), Text3 = require_Text(), Icon = require_Icon(), Activator = /* @__PURE__ */ React17.forwardRef(({
+    var polarisIcons = require_dist11(), React17 = require_react(), css = require_css(), Activator_module = require_Activator_css(), BlockStack = require_BlockStack(), Text4 = require_Text(), Icon = require_Icon(), Activator = /* @__PURE__ */ React17.forwardRef(({
       disabled,
       label,
       placeholder,
@@ -103115,12 +103115,12 @@ var require_Activator = __commonJS({
     }, /* @__PURE__ */ React17.createElement(BlockStack.BlockStack, {
       as: "span",
       gap: "100"
-    }, label && /* @__PURE__ */ React17.createElement(Text3.Text, {
+    }, label && /* @__PURE__ */ React17.createElement(Text4.Text, {
       as: "span",
       variant: "bodySm",
       alignment: "start",
       tone: "subdued"
-    }, label), (selected !== "" || placeholder) && /* @__PURE__ */ React17.createElement(Text3.Text, {
+    }, label), (selected !== "" || placeholder) && /* @__PURE__ */ React17.createElement(Text4.Text, {
       as: "span",
       variant: "bodyMd",
       alignment: "start",
@@ -103150,7 +103150,7 @@ var require_SearchField_css = __commonJS({
 var require_SearchField2 = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Picker/components/SearchField/SearchField.js"(exports) {
     "use strict";
-    var React17 = require_react(), SearchField_module = require_SearchField_css(), hooks = require_hooks5(), Label = require_Label(), InlineStack = require_InlineStack(), Text3 = require_Text();
+    var React17 = require_react(), SearchField_module = require_SearchField_css(), hooks = require_hooks5(), Label = require_Label(), InlineStack = require_InlineStack(), Text4 = require_Text();
     function SearchField({
       value,
       id: idProp,
@@ -103187,7 +103187,7 @@ var require_SearchField2 = __commonJS({
         blockAlign: "center"
       }, /* @__PURE__ */ React17.createElement(Label.Label, {
         id: textFieldId
-      }, /* @__PURE__ */ React17.createElement(Text3.Text, {
+      }, /* @__PURE__ */ React17.createElement(Text4.Text, {
         as: "span",
         visuallyHidden: !0
       }, label), /* @__PURE__ */ React17.createElement("span", null, prefix)), /* @__PURE__ */ React17.createElement("input", {
@@ -103507,7 +103507,7 @@ var require_DualThumb_css = __commonJS({
 var require_DualThumb = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/RangeSlider/components/DualThumb/DualThumb.js"(exports) {
     "use strict";
-    var React17 = require_react(), debounce = require_debounce(), css = require_css(), types4 = require_types16(), RangeSlider_module = require_RangeSlider_css(), DualThumb_module = require_DualThumb_css(), Text3 = require_Text(), Labelled = require_Labelled(), Label = require_Label(), EventListener = require_EventListener(), context = require_context(), Control;
+    var React17 = require_react(), debounce = require_debounce(), css = require_css(), types4 = require_types16(), RangeSlider_module = require_RangeSlider_css(), DualThumb_module = require_DualThumb_css(), Text4 = require_Text(), Labelled = require_Labelled(), Label = require_Label(), EventListener = require_EventListener(), context = require_context(), Control;
     (function(Control2) {
       Control2[Control2.Lower = 0] = "Lower", Control2[Control2.Upper = 1] = "Upper";
     })(Control || (Control = {}));
@@ -103695,7 +103695,7 @@ var require_DualThumb = __commonJS({
           }
         }, /* @__PURE__ */ React17.createElement("div", {
           className: DualThumb_module.default.OutputBubble
-        }, /* @__PURE__ */ React17.createElement(Text3.Text, {
+        }, /* @__PURE__ */ React17.createElement(Text4.Text, {
           as: "span",
           variant: "headingSm",
           alignment: "center"
@@ -103707,7 +103707,7 @@ var require_DualThumb = __commonJS({
           }
         }, /* @__PURE__ */ React17.createElement("div", {
           className: DualThumb_module.default.OutputBubble
-        }, /* @__PURE__ */ React17.createElement(Text3.Text, {
+        }, /* @__PURE__ */ React17.createElement(Text4.Text, {
           as: "span",
           variant: "headingSm",
           alignment: "center"
@@ -103863,7 +103863,7 @@ var require_invertNumber = __commonJS({
 var require_SingleThumb = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/RangeSlider/components/SingleThumb/SingleThumb.js"(exports) {
     "use strict";
-    var React17 = require_react(), css = require_css(), clamp = require_clamp(), RangeSlider_module = require_RangeSlider_css(), SingleThumb_module = require_SingleThumb_css(), invertNumber = require_invertNumber(), Text3 = require_Text(), Labelled = require_Labelled();
+    var React17 = require_react(), css = require_css(), clamp = require_clamp(), RangeSlider_module = require_RangeSlider_css(), SingleThumb_module = require_SingleThumb_css(), invertNumber = require_invertNumber(), Text4 = require_Text(), Labelled = require_Labelled();
     function SingleThumb(props) {
       let {
         id,
@@ -103895,7 +103895,7 @@ var require_SingleThumb = __commonJS({
         className: SingleThumb_module.default.Output
       }, /* @__PURE__ */ React17.createElement("div", {
         className: SingleThumb_module.default.OutputBubble
-      }, /* @__PURE__ */ React17.createElement(Text3.Text, {
+      }, /* @__PURE__ */ React17.createElement(Text4.Text, {
         as: "span",
         variant: "headingSm",
         alignment: "center"
@@ -104015,7 +104015,7 @@ var require_types21 = __commonJS({
 var require_ResourceItem = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/ResourceItem/ResourceItem.js"(exports) {
     "use strict";
-    var React17 = require_react(), polarisIcons = require_dist11(), isEqual = require_react_fast_compare(), breakpoints = require_breakpoints2(), css = require_css(), ResourceItem_module = require_ResourceItem_css(), types4 = require_types21(), context = require_context19(), hooks = require_hooks2(), Checkbox = require_Checkbox(), ButtonGroup2 = require_ButtonGroup(), utils = require_utils11(), Popover2 = require_Popover(), Button3 = require_Button(), ActionList2 = require_ActionList(), Box = require_Box(), InlineGrid = require_InlineGrid(), InlineStack = require_InlineStack(), UnstyledLink = require_UnstyledLink(), BaseResourceItem = class extends React17.Component {
+    var React17 = require_react(), polarisIcons = require_dist11(), isEqual = require_react_fast_compare(), breakpoints = require_breakpoints2(), css = require_css(), ResourceItem_module = require_ResourceItem_css(), types4 = require_types21(), context = require_context19(), hooks = require_hooks2(), Checkbox = require_Checkbox(), ButtonGroup3 = require_ButtonGroup(), utils = require_utils11(), Popover2 = require_Popover(), Button4 = require_Button(), ActionList2 = require_ActionList(), Box = require_Box(), InlineGrid = require_InlineGrid(), InlineStack = require_InlineStack(), UnstyledLink = require_UnstyledLink(), BaseResourceItem = class extends React17.Component {
       constructor(...args) {
         super(...args), this.state = {
           actionsMenuVisible: !1,
@@ -104190,7 +104190,7 @@ var require_ResourceItem = __commonJS({
             actionsMarkup = breakpoints2?.lgUp ? /* @__PURE__ */ React17.createElement("div", {
               className: ResourceItem_module.default.Actions,
               onClick: stopPropagation
-            }, /* @__PURE__ */ React17.createElement(ButtonGroup2.ButtonGroup, null, utils.buttonsFrom(shortcutActions, {
+            }, /* @__PURE__ */ React17.createElement(ButtonGroup3.ButtonGroup, null, utils.buttonsFrom(shortcutActions, {
               variant: "tertiary"
             }))) : null;
             let disclosureAccessibilityLabel = name ? i18n.translate("Polaris.ResourceList.Item.actionsDropdownLabel", {
@@ -104199,7 +104199,7 @@ var require_ResourceItem = __commonJS({
             disclosureMarkup = !selectMode && breakpoints2?.lgDown ? /* @__PURE__ */ React17.createElement("div", {
               onClick: stopPropagation
             }, /* @__PURE__ */ React17.createElement(Popover2.Popover, {
-              activator: /* @__PURE__ */ React17.createElement(Button3.Button, {
+              activator: /* @__PURE__ */ React17.createElement(Button4.Button, {
                 accessibilityLabel: disclosureAccessibilityLabel,
                 onClick: this.handleActionsClick,
                 variant: "tertiary",
@@ -104218,7 +104218,7 @@ var require_ResourceItem = __commonJS({
               position: "absolute",
               insetBlockStart: "400",
               insetInlineEnd: "500"
-            }, /* @__PURE__ */ React17.createElement(ButtonGroup2.ButtonGroup, {
+            }, /* @__PURE__ */ React17.createElement(ButtonGroup3.ButtonGroup, {
               variant: "segmented"
             }, utils.buttonsFrom(shortcutActions, {
               size: "slim"
@@ -104395,8 +104395,8 @@ var require_Select_css = __commonJS({
 var require_Select = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Select/Select.js"(exports) {
     "use strict";
-    var React17 = require_react(), polarisIcons = require_dist11(), css = require_css(), useToggle = require_use_toggle(), Select_module = require_Select_css(), Icon = require_Icon(), Labelled = require_Labelled(), Box = require_Box(), Text3 = require_Text(), PLACEHOLDER_VALUE = "";
-    function Select2({
+    var React17 = require_react(), polarisIcons = require_dist11(), css = require_css(), useToggle = require_use_toggle(), Select_module = require_Select_css(), Icon = require_Icon(), Labelled = require_Labelled(), Box = require_Box(), Text4 = require_Text(), PLACEHOLDER_VALUE = "";
+    function Select3({
       options: optionsProp,
       label,
       labelAction,
@@ -104432,7 +104432,7 @@ var require_Select = __commonJS({
       }, ...normalizedOptions]);
       let inlineLabelMarkup = labelInline && /* @__PURE__ */ React17.createElement(Box.Box, {
         paddingInlineEnd: "100"
-      }, /* @__PURE__ */ React17.createElement(Text3.Text, {
+      }, /* @__PURE__ */ React17.createElement(Text4.Text, {
         as: "span",
         variant: "bodyMd",
         tone: tone && tone === "magic" && !focused ? "magic-subdued" : "subdued",
@@ -104543,7 +104543,7 @@ var require_Select = __commonJS({
       }
       return renderSingleOption(optionOrGroup);
     }
-    exports.Select = Select2;
+    exports.Select = Select3;
   }
 });
 
@@ -104551,7 +104551,7 @@ var require_Select = __commonJS({
 var require_ResourceList = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/ResourceList/ResourceList.js"(exports) {
     "use strict";
-    var React17 = require_react(), polarisIcons = require_dist11(), polarisTokens = require_build(), debounce = require_debounce(), css = require_css(), components = require_components2(), useLazyRef = require_use_lazy_ref(), useEventListener = require_use_event_listener(), ResourceList_module = require_ResourceList_css(), types4 = require_types21(), Select2 = require_Select(), ResourceItem2 = require_ResourceItem(), hooks = require_hooks2(), Text3 = require_Text(), Button3 = require_Button(), CheckableButton = require_CheckableButton(), Sticky = require_Sticky(), EmptySearchResult = require_EmptySearchResult(), Spinner3 = require_Spinner(), Pagination = require_Pagination(), context = require_context19(), BulkActions = require_BulkActions(), SMALL_SPINNER_HEIGHT = 28, LARGE_SPINNER_HEIGHT = 45;
+    var React17 = require_react(), polarisIcons = require_dist11(), polarisTokens = require_build(), debounce = require_debounce(), css = require_css(), components = require_components2(), useLazyRef = require_use_lazy_ref(), useEventListener = require_use_event_listener(), ResourceList_module = require_ResourceList_css(), types4 = require_types21(), Select3 = require_Select(), ResourceItem2 = require_ResourceItem(), hooks = require_hooks2(), Text4 = require_Text(), Button4 = require_Button(), CheckableButton = require_CheckableButton(), Sticky = require_Sticky(), EmptySearchResult = require_EmptySearchResult(), Spinner4 = require_Spinner(), Pagination = require_Pagination(), context = require_context19(), BulkActions = require_BulkActions(), SMALL_SPINNER_HEIGHT = 28, LARGE_SPINNER_HEIGHT = 45;
     function getAllItemsOnPage(items, idForItem) {
       return items.map((item, index) => idForItem(item, index));
     }
@@ -104710,7 +104710,7 @@ var require_ResourceList = __commonJS({
         className: css.classNames(!flushFilters && ResourceList_module.default.FiltersWrapper)
       }, filterControl) : null, sortingSelectMarkup = sortOptions && sortOptions.length > 0 && !alternateTool ? /* @__PURE__ */ React17.createElement("div", {
         className: ResourceList_module.default.SortWrapper
-      }, /* @__PURE__ */ React17.createElement(Select2.Select, {
+      }, /* @__PURE__ */ React17.createElement(Select3.Select, {
         label: i18n.translate("Polaris.ResourceList.sortingLabel"),
         labelInline: !smallScreen,
         labelHidden: smallScreen,
@@ -104722,12 +104722,12 @@ var require_ResourceList = __commonJS({
         className: ResourceList_module.default.AlternateToolWrapper
       }, alternateTool) : null, headerTitleMarkup = /* @__PURE__ */ React17.createElement("div", {
         className: ResourceList_module.default.HeaderTitleWrapper
-      }, /* @__PURE__ */ React17.createElement(Text3.Text, {
+      }, /* @__PURE__ */ React17.createElement(Text4.Text, {
         as: "span",
         variant: "bodyMd"
       }, headerTitle())), selectButtonMarkup = isSelectable ? /* @__PURE__ */ React17.createElement("div", {
         className: ResourceList_module.default.SelectButtonWrapper
-      }, /* @__PURE__ */ React17.createElement(Button3.Button, {
+      }, /* @__PURE__ */ React17.createElement(Button4.Button, {
         disabled: selectMode,
         icon: polarisIcons.CheckboxIcon,
         onClick: () => handleSelectMode(!0)
@@ -104762,7 +104762,7 @@ var require_ResourceList = __commonJS({
       }, spinnerSize = items.length < 2 ? "small" : "large", loadingOverlay = loading ? /* @__PURE__ */ React17.createElement(React17.Fragment, null, /* @__PURE__ */ React17.createElement("li", {
         className: ResourceList_module.default.SpinnerContainer,
         style: spinnerStyle
-      }, /* @__PURE__ */ React17.createElement(Spinner3.Spinner, {
+      }, /* @__PURE__ */ React17.createElement(Spinner4.Spinner, {
         size: spinnerSize,
         accessibilityLabel: "Items are loading"
       })), /* @__PURE__ */ React17.createElement("li", {
@@ -104822,7 +104822,7 @@ var require_SelectAllActions_css = __commonJS({
 var require_SelectAllActions = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/SelectAllActions/SelectAllActions.js"(exports) {
     "use strict";
-    var React17 = require_react(), reactTransitionGroup = require_cjs5(), css = require_css(), SelectAllActions_module = require_SelectAllActions_css(), UnstyledButton = require_UnstyledButton(), Text3 = require_Text(), CheckableButton = require_CheckableButton(), Box = require_Box(), InlineStack = require_InlineStack(), SelectAllActions = /* @__PURE__ */ React17.forwardRef(function({
+    var React17 = require_react(), reactTransitionGroup = require_cjs5(), css = require_css(), SelectAllActions_module = require_SelectAllActions_css(), UnstyledButton = require_UnstyledButton(), Text4 = require_Text(), CheckableButton = require_CheckableButton(), Box = require_Box(), InlineStack = require_InlineStack(), SelectAllActions = /* @__PURE__ */ React17.forwardRef(function({
       label,
       selectMode,
       paginatedSelectAllText,
@@ -104839,7 +104839,7 @@ var require_SelectAllActions = __commonJS({
         onClick: paginatedSelectAllAction.onAction,
         size: "slim",
         disabled
-      }, /* @__PURE__ */ React17.createElement(Text3.Text, {
+      }, /* @__PURE__ */ React17.createElement(Text4.Text, {
         as: "span",
         variant: "bodySm",
         fontWeight: "medium"
@@ -104875,7 +104875,7 @@ var require_SelectAllActions = __commonJS({
           gap: "200",
           align: "start",
           blockAlign: "center"
-        }, checkableButtonMarkup, /* @__PURE__ */ React17.createElement(Text3.Text, {
+        }, checkableButtonMarkup, /* @__PURE__ */ React17.createElement(Text4.Text, {
           as: "span",
           variant: "bodySm",
           fontWeight: "medium"
@@ -104893,10 +104893,10 @@ var require_SettingToggle = __commonJS({
     var React17 = require_react(), utils = require_utils11(), LegacyCard = require_LegacyCard(), SettingAction = require_SettingAction();
     function SettingToggle({
       enabled,
-      action: action9,
+      action: action10,
       children
     }) {
-      let id = React17.useId(), actionMarkup = action9 ? utils.buttonFrom(action9, {
+      let id = React17.useId(), actionMarkup = action10 ? utils.buttonFrom(action10, {
         role: "switch",
         ariaChecked: enabled ? "true" : "false",
         size: "slim"
@@ -105001,7 +105001,7 @@ var require_SkeletonPage_css = __commonJS({
 var require_SkeletonPage = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/SkeletonPage/SkeletonPage.js"(exports) {
     "use strict";
-    var React17 = require_react(), SkeletonPage_module = require_SkeletonPage_css(), hooks = require_hooks2(), Text3 = require_Text(), Box = require_Box(), BlockStack = require_BlockStack(), InlineStack = require_InlineStack();
+    var React17 = require_react(), SkeletonPage_module = require_SkeletonPage_css(), hooks = require_hooks2(), Text4 = require_Text(), Box = require_Box(), BlockStack = require_BlockStack(), InlineStack = require_InlineStack();
     function SkeletonPage({
       children,
       fullWidth,
@@ -105010,7 +105010,7 @@ var require_SkeletonPage = __commonJS({
       title = "",
       backAction
     }) {
-      let i18n = hooks.useI18n(), titleContent = title ? /* @__PURE__ */ React17.createElement(Text3.Text, {
+      let i18n = hooks.useI18n(), titleContent = title ? /* @__PURE__ */ React17.createElement(Text4.Text, {
         as: "h1",
         variant: "headingLg",
         fontWeight: "bold"
@@ -105354,7 +105354,7 @@ var require_SearchField_css2 = __commonJS({
 var require_SearchField3 = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/TopBar/components/SearchField/SearchField.js"(exports) {
     "use strict";
-    var React17 = require_react(), polarisIcons = require_dist11(), css = require_css(), SearchField_module = require_SearchField_css2(), hooks = require_hooks2(), Icon = require_Icon(), Text3 = require_Text();
+    var React17 = require_react(), polarisIcons = require_dist11(), css = require_css(), SearchField_module = require_SearchField_css2(), hooks = require_hooks2(), Icon = require_Icon(), Text4 = require_Text();
     function SearchField({
       value,
       focused,
@@ -105394,7 +105394,7 @@ var require_SearchField3 = __commonJS({
         className,
         onFocus: handleFocus,
         onBlur: handleBlur
-      }, /* @__PURE__ */ React17.createElement(Text3.Text, {
+      }, /* @__PURE__ */ React17.createElement(Text4.Text, {
         as: "span",
         visuallyHidden: !0
       }, /* @__PURE__ */ React17.createElement("label", {
@@ -105502,15 +105502,15 @@ var require_Message_css = __commonJS({
 var require_Message = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/TopBar/components/Menu/components/Message/Message.js"(exports) {
     "use strict";
-    var React17 = require_react(), Message_module = require_Message_css(), Link5 = require_Link(), Badge3 = require_Badge(), Popover2 = require_Popover(), LegacyStack = require_LegacyStack(), TextContainer = require_TextContainer(), Text3 = require_Text(), Button3 = require_Button();
+    var React17 = require_react(), Message_module = require_Message_css(), Link5 = require_Link(), Badge4 = require_Badge(), Popover2 = require_Popover(), LegacyStack = require_LegacyStack(), TextContainer = require_TextContainer(), Text4 = require_Text(), Button4 = require_Button();
     function Message({
       title,
       description,
-      action: action9,
+      action: action10,
       link,
       badge
     }) {
-      let badgeMarkup = badge && /* @__PURE__ */ React17.createElement(Badge3.Badge, {
+      let badgeMarkup = badge && /* @__PURE__ */ React17.createElement(Badge4.Badge, {
         tone: badge.tone
       }, badge.content), {
         to,
@@ -105518,18 +105518,18 @@ var require_Message = __commonJS({
       } = link, {
         onClick,
         content: actionContent
-      } = action9;
+      } = action10;
       return /* @__PURE__ */ React17.createElement("div", {
         className: Message_module.default.Section
       }, /* @__PURE__ */ React17.createElement(Popover2.Popover.Section, null, /* @__PURE__ */ React17.createElement(LegacyStack.LegacyStack, {
         vertical: !0,
         spacing: "tight"
-      }, /* @__PURE__ */ React17.createElement(TextContainer.TextContainer, null, /* @__PURE__ */ React17.createElement(Text3.Text, {
+      }, /* @__PURE__ */ React17.createElement(TextContainer.TextContainer, null, /* @__PURE__ */ React17.createElement(Text4.Text, {
         variant: "headingMd",
         as: "h2"
       }, title, badgeMarkup), /* @__PURE__ */ React17.createElement("p", null, description)), /* @__PURE__ */ React17.createElement(Link5.Link, {
         url: to
-      }, linkContent), /* @__PURE__ */ React17.createElement(Button3.Button, {
+      }, linkContent), /* @__PURE__ */ React17.createElement(Button4.Button, {
         variant: "plain",
         onClick
       }, actionContent))));
@@ -105602,7 +105602,7 @@ var require_Menu = __commonJS({
 var require_UserMenu = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/TopBar/components/UserMenu/UserMenu.js"(exports) {
     "use strict";
-    var React17 = require_react(), UserMenu_module = require_UserMenu_css(), MessageIndicator = require_MessageIndicator(), Menu = require_Menu(), Text3 = require_Text(), Avatar2 = require_Avatar();
+    var React17 = require_react(), UserMenu_module = require_UserMenu_css(), MessageIndicator = require_MessageIndicator(), Menu = require_Menu(), Text4 = require_Text(), Avatar2 = require_Avatar();
     function UserMenu({
       name,
       detail,
@@ -105618,7 +105618,7 @@ var require_UserMenu = __commonJS({
     }) {
       let showIndicator = Boolean(message2), activatorContentMarkup = customActivator || /* @__PURE__ */ React17.createElement(React17.Fragment, null, /* @__PURE__ */ React17.createElement("span", {
         className: UserMenu_module.default.Details
-      }, /* @__PURE__ */ React17.createElement(Text3.Text, {
+      }, /* @__PURE__ */ React17.createElement(Text4.Text, {
         as: "p",
         variant: "bodySm",
         alignment: "start",
@@ -105626,7 +105626,7 @@ var require_UserMenu = __commonJS({
         truncate: !0
       }, name), /* @__PURE__ */ React17.createElement("span", {
         className: UserMenu_module.default.Message
-      }, /* @__PURE__ */ React17.createElement(Text3.Text, {
+      }, /* @__PURE__ */ React17.createElement(Text4.Text, {
         as: "p",
         variant: "bodyXs",
         alignment: "start",
@@ -105748,12 +105748,12 @@ var require_utils14 = __commonJS({
     function unstyledButtonFrom({
       content,
       onAction,
-      ...action9
+      ...action10
     }, overrides, key) {
       return /* @__PURE__ */ React17.createElement(UnstyledButton.UnstyledButton, Object.assign({
         key,
         onClick: onAction
-      }, action9, overrides), content);
+      }, action10, overrides), content);
     }
     exports.unstyledButtonFrom = unstyledButtonFrom;
   }
@@ -105820,7 +105820,7 @@ var require_VideoThumbnail_css = __commonJS({
 var require_VideoThumbnail = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/VideoThumbnail/VideoThumbnail.js"(exports) {
     "use strict";
-    var React17 = require_react(), polarisIcons = require_dist11(), duration = require_duration(), VideoThumbnail_module = require_VideoThumbnail_css(), hooks = require_hooks2(), hooks$1 = require_hooks11(), LegacyStack = require_LegacyStack(), Icon = require_Icon(), Text3 = require_Text();
+    var React17 = require_react(), polarisIcons = require_dist11(), duration = require_duration(), VideoThumbnail_module = require_VideoThumbnail_css(), hooks = require_hooks2(), hooks$1 = require_hooks11(), LegacyStack = require_LegacyStack(), Icon = require_Icon(), Text4 = require_Text();
     function VideoThumbnail({
       thumbnailUrl,
       videoLength = 0,
@@ -105859,7 +105859,7 @@ var require_VideoThumbnail = __commonJS({
         className: VideoThumbnail_module.default.PlayIcon
       }, /* @__PURE__ */ React17.createElement(Icon.Icon, {
         source: polarisIcons.PlayIcon
-      })), /* @__PURE__ */ React17.createElement(Text3.Text, {
+      })), /* @__PURE__ */ React17.createElement(Text4.Text, {
         variant: isNavigationCollapsed ? "bodyLg" : "bodyMd",
         as: "p",
         fontWeight: "semibold"
@@ -105936,7 +105936,7 @@ var require_hooks14 = __commonJS({
 var require_cjs6 = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/index.js"(exports) {
     "use strict";
-    var configure = require_configure(), types4 = require_types16(), shared = require_shared(), ThemeProvider = require_ThemeProvider(), colorTransformers = require_color_transformers(), withinContentContext = require_within_content_context(), useCopyToClipboard = require_use_copy_to_clipboard(), useEventListener = require_use_event_listener(), useFocus = require_use_focus(), useHover = require_use_hover(), useMediaQuery = require_use_media_query(), useTheme = require_use_theme(), useIndexResourceState = require_use_index_resource_state(), breakpoints = require_breakpoints2(), AppProvider2 = require_AppProvider(), AccountConnection = require_AccountConnection(), ActionList2 = require_ActionList(), ActionMenu = require_ActionMenu(), Autocomplete = require_Autocomplete(), Avatar2 = require_Avatar(), Backdrop = require_Backdrop(), Badge3 = require_Badge(), types$1 = require_types17(), Banner3 = require_Banner(), Bleed = require_Bleed(), Box = require_Box(), Breadcrumbs = require_Breadcrumbs(), BulkActions = require_BulkActions(), Button3 = require_Button(), utils = require_utils11(), ButtonGroup2 = require_ButtonGroup(), CalloutCard = require_CalloutCard(), Card4 = require_Card(), Checkbox = require_Checkbox(), ChoiceList = require_ChoiceList(), Collapsible = require_Collapsible(), ColorPicker = require_ColorPicker(), InlineGrid = require_InlineGrid(), Combobox = require_Combobox(), Connected = require_Connected(), ContextualSaveBar = require_ContextualSaveBar(), DataTable = require_DataTable(), DatePicker = require_DatePicker(), DescriptionList = require_DescriptionList(), Divider = require_Divider(), DropZone = require_DropZone(), EmptySearchResult = require_EmptySearchResult(), EmptyState2 = require_EmptyState(), EventListener = require_EventListener(), ExceptionList = require_ExceptionList(), Filters = require_Filters(), Focus = require_Focus(), FooterHelp = require_FooterHelp(), Form6 = require_Form(), FormLayout = require_FormLayout(), Frame = require_Frame(), Toast2 = require_Toast(), FullscreenBar = require_FullscreenBar(), Grid2 = require_Grid(), Icon = require_Icon(), Image = require_Image(), IndexFilters = require_IndexFilters(), useSetIndexFiltersMode = require_useSetIndexFiltersMode(), types$2 = require_types18(), IndexTable = require_IndexTable(), Indicator = require_Indicator(), InlineStack = require_InlineStack(), InlineCode = require_InlineCode(), InlineError = require_InlineError(), KeyboardKey = require_KeyboardKey(), KeypressListener = require_KeypressListener(), Label = require_Label(), Labelled = require_Labelled(), Layout3 = require_Layout(), LegacyCard = require_LegacyCard(), LegacyFilters = require_LegacyFilters(), LegacyStack = require_LegacyStack(), LegacyTabs = require_LegacyTabs(), Link5 = require_Link(), List = require_List3(), Listbox = require_Listbox(), Loading = require_Loading3(), MediaCard = require_MediaCard(), Modal2 = require_Modal(), Navigation = require_Navigation2(), Item = require_Item10(), OptionList = require_OptionList(), Page2 = require_Page(), PageActions = require_PageActions(), Pagination = require_Pagination(), Picker = require_Picker(), PolarisTestProvider = require_PolarisTestProvider(), Popover2 = require_Popover(), PopoverOverlay = require_PopoverOverlay(), Portal = require_Portal(), PortalsManager = require_PortalsManager(), PositionedOverlay = require_PositionedOverlay(), ProgressBar3 = require_ProgressBar(), RadioButton = require_RadioButton(), RangeSlider = require_RangeSlider(), ResourceItem2 = require_ResourceItem(), ResourceList2 = require_ResourceList(), Scrollable = require_Scrollable(), ScrollLock = require_ScrollLock(), Select2 = require_Select(), SelectAllActions = require_SelectAllActions(), SettingToggle = require_SettingToggle(), Sheet = require_Sheet(), SkeletonBodyText = require_SkeletonBodyText(), SkeletonDisplayText = require_SkeletonDisplayText(), SkeletonPage = require_SkeletonPage(), SkeletonTabs = require_SkeletonTabs(), SkeletonThumbnail = require_SkeletonThumbnail(), Spinner3 = require_Spinner(), Sticky = require_Sticky(), Tabs = require_Tabs(), Tag = require_Tag(), Text3 = require_Text(), TextContainer = require_TextContainer(), TextField2 = require_TextField(), Thumbnail = require_Thumbnail(), Toast$1 = require_Toast2(), Tooltip3 = require_Tooltip(), TopBar = require_TopBar(), TrapFocus = require_TrapFocus(), Truncate = require_Truncate(), UnstyledButton = require_UnstyledButton(), utils$1 = require_utils14(), UnstyledLink = require_UnstyledLink(), BlockStack = require_BlockStack(), VideoThumbnail = require_VideoThumbnail(), hooks = require_hooks9(), context = require_context15(), context$1 = require_context3(), hooks$1 = require_hooks14(), types$3 = require_types19(), hooks$2 = require_hooks3();
+    var configure = require_configure(), types4 = require_types16(), shared = require_shared(), ThemeProvider = require_ThemeProvider(), colorTransformers = require_color_transformers(), withinContentContext = require_within_content_context(), useCopyToClipboard = require_use_copy_to_clipboard(), useEventListener = require_use_event_listener(), useFocus = require_use_focus(), useHover = require_use_hover(), useMediaQuery = require_use_media_query(), useTheme = require_use_theme(), useIndexResourceState = require_use_index_resource_state(), breakpoints = require_breakpoints2(), AppProvider2 = require_AppProvider(), AccountConnection = require_AccountConnection(), ActionList2 = require_ActionList(), ActionMenu = require_ActionMenu(), Autocomplete = require_Autocomplete(), Avatar2 = require_Avatar(), Backdrop = require_Backdrop(), Badge4 = require_Badge(), types$1 = require_types17(), Banner4 = require_Banner(), Bleed = require_Bleed(), Box = require_Box(), Breadcrumbs = require_Breadcrumbs(), BulkActions = require_BulkActions(), Button4 = require_Button(), utils = require_utils11(), ButtonGroup3 = require_ButtonGroup(), CalloutCard = require_CalloutCard(), Card5 = require_Card(), Checkbox = require_Checkbox(), ChoiceList = require_ChoiceList(), Collapsible = require_Collapsible(), ColorPicker = require_ColorPicker(), InlineGrid = require_InlineGrid(), Combobox = require_Combobox(), Connected = require_Connected(), ContextualSaveBar = require_ContextualSaveBar(), DataTable2 = require_DataTable(), DatePicker = require_DatePicker(), DescriptionList = require_DescriptionList(), Divider = require_Divider(), DropZone = require_DropZone(), EmptySearchResult = require_EmptySearchResult(), EmptyState3 = require_EmptyState(), EventListener = require_EventListener(), ExceptionList = require_ExceptionList(), Filters = require_Filters(), Focus = require_Focus(), FooterHelp = require_FooterHelp(), Form7 = require_Form(), FormLayout = require_FormLayout(), Frame = require_Frame(), Toast2 = require_Toast(), FullscreenBar = require_FullscreenBar(), Grid2 = require_Grid(), Icon = require_Icon(), Image = require_Image(), IndexFilters = require_IndexFilters(), useSetIndexFiltersMode = require_useSetIndexFiltersMode(), types$2 = require_types18(), IndexTable = require_IndexTable(), Indicator = require_Indicator(), InlineStack = require_InlineStack(), InlineCode = require_InlineCode(), InlineError = require_InlineError(), KeyboardKey = require_KeyboardKey(), KeypressListener = require_KeypressListener(), Label = require_Label(), Labelled = require_Labelled(), Layout4 = require_Layout(), LegacyCard = require_LegacyCard(), LegacyFilters = require_LegacyFilters(), LegacyStack = require_LegacyStack(), LegacyTabs = require_LegacyTabs(), Link5 = require_Link(), List = require_List3(), Listbox = require_Listbox(), Loading = require_Loading3(), MediaCard = require_MediaCard(), Modal3 = require_Modal(), Navigation = require_Navigation2(), Item = require_Item10(), OptionList = require_OptionList(), Page3 = require_Page(), PageActions = require_PageActions(), Pagination = require_Pagination(), Picker = require_Picker(), PolarisTestProvider = require_PolarisTestProvider(), Popover2 = require_Popover(), PopoverOverlay = require_PopoverOverlay(), Portal = require_Portal(), PortalsManager = require_PortalsManager(), PositionedOverlay = require_PositionedOverlay(), ProgressBar3 = require_ProgressBar(), RadioButton = require_RadioButton(), RangeSlider = require_RangeSlider(), ResourceItem2 = require_ResourceItem(), ResourceList2 = require_ResourceList(), Scrollable = require_Scrollable(), ScrollLock = require_ScrollLock(), Select3 = require_Select(), SelectAllActions = require_SelectAllActions(), SettingToggle = require_SettingToggle(), Sheet = require_Sheet(), SkeletonBodyText = require_SkeletonBodyText(), SkeletonDisplayText = require_SkeletonDisplayText(), SkeletonPage = require_SkeletonPage(), SkeletonTabs = require_SkeletonTabs(), SkeletonThumbnail = require_SkeletonThumbnail(), Spinner4 = require_Spinner(), Sticky = require_Sticky(), Tabs = require_Tabs(), Tag = require_Tag(), Text4 = require_Text(), TextContainer = require_TextContainer(), TextField3 = require_TextField(), Thumbnail = require_Thumbnail(), Toast$1 = require_Toast2(), Tooltip3 = require_Tooltip(), TopBar = require_TopBar(), TrapFocus = require_TrapFocus(), Truncate = require_Truncate(), UnstyledButton = require_UnstyledButton(), utils$1 = require_utils14(), UnstyledLink = require_UnstyledLink(), BlockStack = require_BlockStack(), VideoThumbnail = require_VideoThumbnail(), hooks = require_hooks9(), context = require_context15(), context$1 = require_context3(), hooks$1 = require_hooks14(), types$3 = require_types19(), hooks$2 = require_hooks3();
     exports.DEFAULT_LOCALE = configure.DEFAULT_LOCALE;
     exports.SUPPORTED_LOCALES = configure.SUPPORTED_LOCALES;
     Object.defineProperty(exports, "Key", {
@@ -105973,7 +105973,7 @@ var require_cjs6 = __commonJS({
     exports.Autocomplete = Autocomplete.Autocomplete;
     exports.Avatar = Avatar2.Avatar;
     exports.Backdrop = Backdrop.Backdrop;
-    exports.Badge = Badge3.Badge;
+    exports.Badge = Badge4.Badge;
     Object.defineProperty(exports, "BadgeProgressValue", {
       enumerable: !0,
       get: function() {
@@ -105986,17 +105986,17 @@ var require_cjs6 = __commonJS({
         return types$1.ToneValue;
       }
     });
-    exports.Banner = Banner3.Banner;
+    exports.Banner = Banner4.Banner;
     exports.Bleed = Bleed.Bleed;
     exports.Box = Box.Box;
     exports.Breadcrumbs = Breadcrumbs.Breadcrumbs;
     exports.UnstableBulkActions = BulkActions.BulkActions;
-    exports.Button = Button3.Button;
+    exports.Button = Button4.Button;
     exports.buttonFrom = utils.buttonFrom;
     exports.buttonsFrom = utils.buttonsFrom;
-    exports.ButtonGroup = ButtonGroup2.ButtonGroup;
+    exports.ButtonGroup = ButtonGroup3.ButtonGroup;
     exports.CalloutCard = CalloutCard.CalloutCard;
-    exports.Card = Card4.Card;
+    exports.Card = Card5.Card;
     exports.Checkbox = Checkbox.Checkbox;
     exports.ChoiceList = ChoiceList.ChoiceList;
     exports.Collapsible = Collapsible.Collapsible;
@@ -106005,19 +106005,19 @@ var require_cjs6 = __commonJS({
     exports.Combobox = Combobox.Combobox;
     exports.Connected = Connected.Connected;
     exports.ContextualSaveBar = ContextualSaveBar.ContextualSaveBar;
-    exports.DataTable = DataTable.DataTable;
+    exports.DataTable = DataTable2.DataTable;
     exports.DatePicker = DatePicker.DatePicker;
     exports.DescriptionList = DescriptionList.DescriptionList;
     exports.Divider = Divider.Divider;
     exports.DropZone = DropZone.DropZone;
     exports.EmptySearchResult = EmptySearchResult.EmptySearchResult;
-    exports.EmptyState = EmptyState2.EmptyState;
+    exports.EmptyState = EmptyState3.EmptyState;
     exports.EventListener = EventListener.EventListener;
     exports.ExceptionList = ExceptionList.ExceptionList;
     exports.Filters = Filters.Filters;
     exports.Focus = Focus.Focus;
     exports.FooterHelp = FooterHelp.FooterHelp;
-    exports.Form = Form6.Form;
+    exports.Form = Form7.Form;
     exports.FormLayout = FormLayout.FormLayout;
     exports.Frame = Frame.Frame;
     exports.DEFAULT_TOAST_DURATION = Toast2.DEFAULT_TOAST_DURATION;
@@ -106045,7 +106045,7 @@ var require_cjs6 = __commonJS({
     exports.Label = Label.Label;
     exports.labelID = Label.labelID;
     exports.Labelled = Labelled.Labelled;
-    exports.Layout = Layout3.Layout;
+    exports.Layout = Layout4.Layout;
     exports.LegacyCard = LegacyCard.LegacyCard;
     exports.LegacyFilters = LegacyFilters.LegacyFilters;
     exports.LegacyStack = LegacyStack.LegacyStack;
@@ -106061,11 +106061,11 @@ var require_cjs6 = __commonJS({
     exports.Listbox = Listbox.Listbox;
     exports.Loading = Loading.Loading;
     exports.MediaCard = MediaCard.MediaCard;
-    exports.Modal = Modal2.Modal;
+    exports.Modal = Modal3.Modal;
     exports.Navigation = Navigation.Navigation;
     exports.isNavigationItemActive = Item.isNavigationItemActive;
     exports.OptionList = OptionList.OptionList;
-    exports.Page = Page2.Page;
+    exports.Page = Page3.Page;
     exports.PageActions = PageActions.PageActions;
     exports.Pagination = Pagination.Pagination;
     exports.AlphaPicker = Picker.Picker;
@@ -106087,7 +106087,7 @@ var require_cjs6 = __commonJS({
     exports.ResourceList = ResourceList2.ResourceList;
     exports.Scrollable = Scrollable.Scrollable;
     exports.ScrollLock = ScrollLock.ScrollLock;
-    exports.Select = Select2.Select;
+    exports.Select = Select3.Select;
     exports.SelectAllActions = SelectAllActions.SelectAllActions;
     exports.SettingToggle = SettingToggle.SettingToggle;
     exports.Sheet = Sheet.Sheet;
@@ -106096,13 +106096,13 @@ var require_cjs6 = __commonJS({
     exports.SkeletonPage = SkeletonPage.SkeletonPage;
     exports.SkeletonTabs = SkeletonTabs.SkeletonTabs;
     exports.SkeletonThumbnail = SkeletonThumbnail.SkeletonThumbnail;
-    exports.Spinner = Spinner3.Spinner;
+    exports.Spinner = Spinner4.Spinner;
     exports.Sticky = Sticky.Sticky;
     exports.Tabs = Tabs.Tabs;
     exports.Tag = Tag.Tag;
-    exports.Text = Text3.Text;
+    exports.Text = Text4.Text;
     exports.TextContainer = TextContainer.TextContainer;
-    exports.TextField = TextField2.TextField;
+    exports.TextField = TextField3.TextField;
     exports.Thumbnail = Thumbnail.Thumbnail;
     exports.Toast = Toast$1.Toast;
     exports.Tooltip = Tooltip3.Tooltip;
@@ -106836,14 +106836,14 @@ var import_jsx_runtime5 = __toESM(require_jsx_runtime()), loader5 = async ({ req
   }
 }, action3 = async ({ request: request2 }) => {
   try {
-    let { session } = await authenticate.admin(request2), shopName = session?.shop?.replace(".myshopify.com", ""), formData = await request2.formData(), action9 = formData.get("action");
+    let { session } = await authenticate.admin(request2), shopName = session?.shop?.replace(".myshopify.com", ""), formData = await request2.formData(), action10 = formData.get("action");
     if (!shopName)
       throw new Error("Unable to determine shop name");
     let backendUrl = process.env.BACKEND_URL || "http://localhost:3001", headers2 = {
       "Content-Type": "application/json",
       "x-tenant-id": shopName
     };
-    switch (action9) {
+    switch (action10) {
       case "create_dashboard": {
         let name = formData.get("dashboard_name"), description = formData.get("description"), response = await fetch(`${backendUrl}/api/dashboards`, {
           method: "POST",
@@ -107561,8 +107561,8 @@ function Autopilot() {
     try {
       let storedScript = localStorage.getItem("proofkit_generated_script"), storedMeta = localStorage.getItem("proofkit_script_meta");
       if (storedScript && storedMeta) {
-        let meta4 = JSON.parse(storedMeta), hourAgo = Date.now() - 60 * 60 * 1e3;
-        meta4.timestamp > hourAgo ? (setScriptCode(storedScript), setShowScript(!0), setToast(`Loaded ${meta4.size}KB script`)) : (localStorage.removeItem("proofkit_generated_script"), localStorage.removeItem("proofkit_script_meta"));
+        let meta5 = JSON.parse(storedMeta), hourAgo = Date.now() - 60 * 60 * 1e3;
+        meta5.timestamp > hourAgo ? (setScriptCode(storedScript), setShowScript(!0), setToast(`Loaded ${meta5.size}KB script`)) : (localStorage.removeItem("proofkit_generated_script"), localStorage.removeItem("proofkit_script_meta"));
       }
     } catch (e) {
       console.warn("localStorage error:", e);
@@ -110278,14 +110278,14 @@ function InsightsContent() {
     setRealTimeEnabled(tierStatus?.features?.realTimeAnalytics || !1);
   }, [tierStatus]);
   let handleApplyAction = React10.useCallback(
-    async (action9, target) => {
+    async (action10, target) => {
       if (!isApplying) {
         setIsApplying(!0);
         try {
           let { backendFetch: backendFetch2 } = await Promise.resolve().then(() => (init_hmac_server(), hmac_server_exports)), body = { nonce: Date.now(), actions: [] };
-          if (action9 === "add_exact_negative" && target)
+          if (action10 === "add_exact_negative" && target)
             body.actions.push({ type: "add_exact_negative", target });
-          else if (action9 === "lower_cpc_ceiling") {
+          else if (action10 === "lower_cpc_ceiling") {
             let cur = Number(k?.cpc || 0), newCpc = Math.max(
               0,
               isFinite(cur) && cur > 0 ? cur * 0.8 : 0.15
@@ -111152,9 +111152,9 @@ var import_jsx_runtime11 = __toESM(require_jsx_runtime()), loader10 = async ({ r
     });
   }
 }, action7 = async ({ request: request2 }) => {
-  let { session } = await authenticate.admin(request2), shop = session.shop.replace(".myshopify.com", ""), formData = await request2.formData(), action9 = formData.get("action");
+  let { session } = await authenticate.admin(request2), shop = session.shop.replace(".myshopify.com", ""), formData = await request2.formData(), action10 = formData.get("action");
   try {
-    switch (action9) {
+    switch (action10) {
       case "generate": {
         let reportType = formData.get("reportType") || "insights", email = formData.get("email"), format = formData.get("format") || "email", params = new URLSearchParams({
           tenant: shop,
@@ -111648,19 +111648,448 @@ function ErrorBoundary2({ error }) {
   ] });
 }
 
+// app/routes/app.support.tsx
+var app_support_exports = {};
+__export(app_support_exports, {
+  action: () => action8,
+  default: () => AppSupport,
+  loader: () => loader11,
+  meta: () => meta
+});
+var import_node11 = __toESM(require_dist3()), import_react19 = __toESM(require_dist2()), import_react20 = __toESM(require_react()), import_polaris3 = __toESM(require_cjs6()), import_jsx_runtime12 = __toESM(require_jsx_runtime()), meta = () => [
+  { title: "Support - Ads Autopilot AI" },
+  { name: "description", content: "In-app support center with tier-based assistance" }
+], loader11 = async ({ request: request2 }) => {
+  let mockTier = "professional", mockContactMethods = {
+    subscription_tier: mockTier,
+    email_support: !0,
+    phone_support: mockTier === "enterprise",
+    priority_routing: ["professional", "enterprise"].includes(mockTier),
+    dedicated_manager: mockTier === "enterprise",
+    support_email: "support@proofkit.com",
+    support_phone: mockTier === "enterprise" ? "+1-800-PROOFKIT" : null,
+    guaranteed_response_hours: mockTier === "enterprise" ? 6 : mockTier === "professional" ? 12 : 24,
+    guaranteed_resolution_hours: mockTier === "enterprise" ? 24 : mockTier === "professional" ? 48 : null
+  };
+  return (0, import_node11.json)({
+    tier: mockTier,
+    contactMethods: mockContactMethods,
+    tickets: [
+      {
+        id: 1,
+        ticket_number: "SUP-20241201-0001",
+        subject: "Campaign optimization not working",
+        status: "in_progress",
+        priority: "high",
+        category: "technical",
+        created_at: "2024-12-01T10:00:00Z",
+        first_response_at: "2024-12-01T11:30:00Z",
+        sla_response_breached: !1,
+        sla_resolution_breached: !1
+      },
+      {
+        id: 2,
+        ticket_number: "SUP-20241130-0003",
+        subject: "Billing question about upgrade",
+        status: "resolved",
+        priority: "normal",
+        category: "billing",
+        created_at: "2024-11-30T14:00:00Z",
+        resolved_at: "2024-11-30T16:45:00Z",
+        sla_response_breached: !1,
+        sla_resolution_breached: !1
+      }
+    ],
+    tenant: "demo-tenant-123"
+    // In production, get from session
+  });
+}, action8 = async ({ request: request2 }) => {
+  let formData = await request2.formData();
+  if (formData.get("intent") === "create_ticket") {
+    let ticketData = {
+      subject: formData.get("subject"),
+      description: formData.get("description"),
+      category: formData.get("category"),
+      priority: formData.get("priority"),
+      customer_name: formData.get("customer_name"),
+      customer_email: formData.get("customer_email"),
+      customer_phone: formData.get("customer_phone")
+    };
+    return console.log("Creating ticket:", ticketData), await new Promise((resolve) => setTimeout(resolve, 1e3)), (0, import_node11.json)({
+      success: !0,
+      message: "Support ticket created successfully!",
+      ticket_number: "SUP-20241201-0005"
+    });
+  }
+  return (0, import_node11.json)({ success: !1, message: "Unknown action" });
+};
+function AppSupport() {
+  let { tier, contactMethods, tickets, tenant } = (0, import_react19.useLoaderData)(), actionData = (0, import_react19.useActionData)(), navigation = (0, import_react19.useNavigation)(), [showCreateForm, setShowCreateForm] = (0, import_react20.useState)(!1), [selectedTicket, setSelectedTicket] = (0, import_react20.useState)(null), [formData, setFormData] = (0, import_react20.useState)({
+    subject: "",
+    description: "",
+    category: "general",
+    priority: "normal",
+    customer_name: "",
+    customer_email: "",
+    customer_phone: ""
+  }), isSubmitting = navigation.state === "submitting";
+  (0, import_react20.useEffect)(() => {
+    actionData?.success && (setShowCreateForm(!1), setFormData({
+      subject: "",
+      description: "",
+      category: "general",
+      priority: "normal",
+      customer_name: "",
+      customer_email: "",
+      customer_phone: ""
+    }));
+  }, [actionData]);
+  let getTierDisplayName = (tier2) => ({
+    starter: "Starter Plan",
+    professional: "Professional Plan",
+    enterprise: "Enterprise Plan"
+  })[tier2] || "Unknown Plan", getTierBadgeStatus = (tier2) => tier2 === "enterprise" ? "warning" : tier2 === "professional" ? "info" : "default", getStatusBadge = (status) => ({
+    open: { status: "default", label: "Open" },
+    in_progress: { status: "info", label: "In Progress" },
+    pending_customer: { status: "attention", label: "Pending Customer" },
+    resolved: { status: "success", label: "Resolved" },
+    closed: { status: "default", label: "Closed" }
+  })[status] || { status: "default", label: status }, getPriorityBadge = (priority) => ({
+    low: { status: "default", label: "Low" },
+    normal: { status: "info", label: "Normal" },
+    high: { status: "attention", label: "High" },
+    urgent: { status: "critical", label: "Urgent" }
+  })[priority] || { status: "default", label: priority }, formatDate = (dateString) => new Date(dateString).toLocaleDateString("en-US", {
+    year: "numeric",
+    month: "short",
+    day: "numeric",
+    hour: "2-digit",
+    minute: "2-digit"
+  }), ticketRows = tickets.map((ticket) => [
+    ticket.ticket_number,
+    ticket.subject,
+    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris3.Badge, { ...getStatusBadge(ticket.status), children: getStatusBadge(ticket.status).label }, ticket.id),
+    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris3.Badge, { ...getPriorityBadge(ticket.priority), children: getPriorityBadge(ticket.priority).label }, `priority-${ticket.id}`),
+    ticket.category,
+    formatDate(ticket.created_at),
+    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
+      import_polaris3.Button,
+      {
+        size: "slim",
+        onClick: () => setSelectedTicket(ticket.id),
+        children: "View"
+      },
+      `view-${ticket.id}`
+    )
+  ]);
+  return /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(
+    import_polaris3.Page,
+    {
+      title: "Support Center",
+      subtitle: `${getTierDisplayName(tier)} - Get help when you need it`,
+      children: [
+        actionData?.success && /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(
+          import_polaris3.Banner,
+          {
+            title: "Success",
+            status: "success",
+            onDismiss: () => {
+            },
+            children: [
+              /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("p", { children: actionData.message }),
+              actionData.ticket_number && /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("p", { children: [
+                "Ticket number: ",
+                /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: actionData.ticket_number })
+              ] })
+            ]
+          }
+        ),
+        actionData?.success === !1 && /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
+          import_polaris3.Banner,
+          {
+            title: "Error",
+            status: "critical",
+            onDismiss: () => {
+            },
+            children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("p", { children: actionData.message })
+          }
+        ),
+        /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(import_polaris3.Layout, { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris3.Layout.Section, { children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris3.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("div", { style: { padding: "1.5rem" }, children: /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(Stack, { vertical: !0, spacing: "loose", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(Stack, { alignment: "center", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(Stack.Item, { fill: !0, children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris3.Text, { variant: "headingLg", as: "h2", children: "Your Support Level" }) }),
+              /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris3.Badge, { status: getTierBadgeStatus(tier), children: getTierDisplayName(tier) })
+            ] }),
+            /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(Stack, { distribution: "fillEvenly", spacing: "loose", children: [
+              contactMethods.email_support && /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(Stack, { vertical: !0, spacing: "tight", children: [
+                /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(EmailMajor, {}),
+                /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris3.Text, { variant: "bodyMd", fontWeight: "semibold", children: "Email Support" }),
+                /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(import_polaris3.Text, { variant: "bodySm", color: "subdued", children: [
+                  "Response within ",
+                  contactMethods.guaranteed_response_hours,
+                  "h"
+                ] })
+              ] }),
+              contactMethods.phone_support && /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(Stack, { vertical: !0, spacing: "tight", children: [
+                /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(PhoneMajor, {}),
+                /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris3.Text, { variant: "bodyMd", fontWeight: "semibold", children: "Phone Support" }),
+                /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris3.Text, { variant: "bodySm", color: "subdued", children: contactMethods.support_phone })
+              ] }),
+              contactMethods.priority_routing && /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(Stack, { vertical: !0, spacing: "tight", children: [
+                /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(AlertMajor, {}),
+                /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris3.Text, { variant: "bodyMd", fontWeight: "semibold", children: "Priority Routing" }),
+                /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris3.Text, { variant: "bodySm", color: "subdued", children: "Fast-tracked support" })
+              ] }),
+              contactMethods.dedicated_manager && /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(Stack, { vertical: !0, spacing: "tight", children: [
+                /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(CustomersMajor, {}),
+                /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris3.Text, { variant: "bodyMd", fontWeight: "semibold", children: "Account Manager" }),
+                /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris3.Text, { variant: "bodySm", color: "subdued", children: "Dedicated support contact" })
+              ] })
+            ] }),
+            /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(import_polaris3.ButtonGroup, { children: [
+              /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
+                import_polaris3.Button,
+                {
+                  primary: !0,
+                  icon: TicketMajor,
+                  onClick: () => setShowCreateForm(!0),
+                  children: "Create Support Ticket"
+                }
+              ),
+              /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
+                import_polaris3.Button,
+                {
+                  url: `mailto:${contactMethods.support_email}`,
+                  external: !0,
+                  icon: EmailMajor,
+                  children: "Email Support"
+                }
+              ),
+              contactMethods.phone_support && /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
+                import_polaris3.Button,
+                {
+                  url: `tel:${contactMethods.support_phone}`,
+                  external: !0,
+                  icon: PhoneMajor,
+                  children: "Call Support"
+                }
+              )
+            ] })
+          ] }) }) }) }),
+          /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris3.Layout.Section, { children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris3.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("div", { style: { padding: "1.5rem" }, children: /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(Stack, { vertical: !0, spacing: "loose", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris3.Text, { variant: "headingLg", as: "h2", children: "Your Support Tickets" }),
+            tickets.length > 0 ? /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
+              import_polaris3.DataTable,
+              {
+                columnContentTypes: [
+                  "text",
+                  "text",
+                  "text",
+                  "text",
+                  "text",
+                  "text",
+                  "text"
+                ],
+                headings: [
+                  "Ticket #",
+                  "Subject",
+                  "Status",
+                  "Priority",
+                  "Category",
+                  "Created",
+                  "Action"
+                ],
+                rows: ticketRows,
+                footerContent: `Showing ${tickets.length} of ${tickets.length} tickets`
+              }
+            ) : /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(
+              import_polaris3.EmptyState,
+              {
+                heading: "No support tickets yet",
+                image: "https://cdn.shopify.com/s/files/1/0262/4071/2726/files/emptystate-files.png",
+                children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("p", { children: "When you create support tickets, they'll appear here." }),
+                  /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
+                    import_polaris3.Button,
+                    {
+                      primary: !0,
+                      onClick: () => setShowCreateForm(!0),
+                      children: "Create Your First Ticket"
+                    }
+                  )
+                ]
+              }
+            )
+          ] }) }) }) }),
+          /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris3.Layout.Section, { secondary: !0, children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris3.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("div", { style: { padding: "1.5rem" }, children: /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(Stack, { vertical: !0, spacing: "loose", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris3.Text, { variant: "headingMd", as: "h3", children: "Service Level Agreement" }),
+            /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(Stack, { vertical: !0, spacing: "tight", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(Stack, { alignment: "center", children: [
+                /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(ClockMajor, {}),
+                /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(import_polaris3.Text, { variant: "bodyMd", children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "Response Time:" }),
+                  " ",
+                  contactMethods.guaranteed_response_hours,
+                  " hours"
+                ] })
+              ] }),
+              contactMethods.guaranteed_resolution_hours && /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(Stack, { alignment: "center", children: [
+                /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(ClockMajor, {}),
+                /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(import_polaris3.Text, { variant: "bodyMd", children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "Resolution Time:" }),
+                  " ",
+                  contactMethods.guaranteed_resolution_hours,
+                  " hours"
+                ] })
+              ] })
+            ] }),
+            /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(import_polaris3.Text, { variant: "bodySm", color: "subdued", children: [
+              "All times are calculated during business hours (Monday-Friday, 9 AM - 6 PM EST).",
+              tier !== "starter" && " Priority routing ensures your tickets are handled by senior support staff."
+            ] }),
+            tier === "starter" && /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris3.Banner, { status: "info", children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("p", { children: "Upgrade to Professional or Enterprise for faster response times and additional support channels." }) })
+          ] }) }) }) })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
+          import_polaris3.Modal,
+          {
+            open: showCreateForm,
+            onClose: () => setShowCreateForm(!1),
+            title: "Create Support Ticket",
+            primaryAction: {
+              content: isSubmitting ? "Creating..." : "Create Ticket",
+              loading: isSubmitting,
+              onAction: () => {
+                let form = document.getElementById("support-ticket-form");
+                form && form.requestSubmit();
+              }
+            },
+            secondaryActions: [
+              {
+                content: "Cancel",
+                onAction: () => setShowCreateForm(!1)
+              }
+            ],
+            large: !0,
+            children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris3.Modal.Section, { children: /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(import_react19.Form, { method: "post", id: "support-ticket-form", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("input", { type: "hidden", name: "intent", value: "create_ticket" }),
+              /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("input", { type: "hidden", name: "tenant", value: tenant }),
+              /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(Stack, { vertical: !0, spacing: "loose", children: [
+                /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
+                  import_polaris3.TextField,
+                  {
+                    label: "Your Name",
+                    value: formData.customer_name,
+                    onChange: (value) => setFormData((prev) => ({ ...prev, customer_name: value })),
+                    name: "customer_name",
+                    autoComplete: "name",
+                    required: !0
+                  }
+                ),
+                /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
+                  import_polaris3.TextField,
+                  {
+                    label: "Email Address",
+                    type: "email",
+                    value: formData.customer_email,
+                    onChange: (value) => setFormData((prev) => ({ ...prev, customer_email: value })),
+                    name: "customer_email",
+                    autoComplete: "email",
+                    required: !0
+                  }
+                ),
+                tier === "enterprise" && /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
+                  import_polaris3.TextField,
+                  {
+                    label: "Phone Number (for phone support callback)",
+                    type: "tel",
+                    value: formData.customer_phone,
+                    onChange: (value) => setFormData((prev) => ({ ...prev, customer_phone: value })),
+                    name: "customer_phone",
+                    autoComplete: "tel",
+                    helpText: "Enterprise customers can request a phone callback for urgent issues"
+                  }
+                ),
+                /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(Stack, { distribution: "fillEvenly", children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(Stack.Item, { fill: !0, children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
+                    import_polaris3.Select,
+                    {
+                      label: "Category",
+                      options: [
+                        { label: "General", value: "general" },
+                        { label: "Technical", value: "technical" },
+                        { label: "Billing", value: "billing" },
+                        ...tier === "enterprise" ? [{ label: "Urgent", value: "urgent" }] : []
+                      ],
+                      value: formData.category,
+                      onChange: (value) => setFormData((prev) => ({ ...prev, category: value })),
+                      name: "category"
+                    }
+                  ) }),
+                  /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(Stack.Item, { fill: !0, children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
+                    import_polaris3.Select,
+                    {
+                      label: "Priority",
+                      options: [
+                        { label: "Low", value: "low" },
+                        { label: "Normal", value: "normal" },
+                        ...["professional", "enterprise"].includes(tier) ? [{ label: "High", value: "high" }] : [],
+                        ...tier === "enterprise" ? [{ label: "Urgent", value: "urgent" }] : []
+                      ],
+                      value: formData.priority,
+                      onChange: (value) => setFormData((prev) => ({ ...prev, priority: value })),
+                      name: "priority"
+                    }
+                  ) })
+                ] }),
+                /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
+                  import_polaris3.TextField,
+                  {
+                    label: "Subject",
+                    value: formData.subject,
+                    onChange: (value) => setFormData((prev) => ({ ...prev, subject: value })),
+                    name: "subject",
+                    placeholder: "Brief description of your issue",
+                    required: !0
+                  }
+                ),
+                /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
+                  import_polaris3.TextField,
+                  {
+                    label: "Description",
+                    value: formData.description,
+                    onChange: (value) => setFormData((prev) => ({ ...prev, description: value })),
+                    name: "description",
+                    multiline: 6,
+                    placeholder: "Please provide detailed information about your issue, including any error messages, steps to reproduce, and what you expected to happen...",
+                    helpText: "The more details you provide, the faster we can help resolve your issue.",
+                    required: !0
+                  }
+                ),
+                tier === "starter" && (formData.priority === "high" || formData.priority === "urgent") && /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris3.Banner, { status: "info", children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("p", { children: "High and Urgent priorities are available for Professional and Enterprise customers. Your ticket will be processed as Normal priority." }) }),
+                tier !== "enterprise" && formData.category === "urgent" && /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris3.Banner, { status: "info", children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("p", { children: "Urgent category is available for Enterprise customers only. Your ticket will be processed as Technical category." }) })
+              ] })
+            ] }) })
+          }
+        )
+      ]
+    }
+  );
+}
+
 // app/routes/app._index.tsx
 var app_index_exports = {};
 __export(app_index_exports, {
   default: () => AppIndex,
-  loader: () => loader11
+  loader: () => loader12
 });
-var import_react21 = __toESM(require_react()), import_node11 = __toESM(require_dist3()), import_react22 = __toESM(require_dist2());
+var import_react23 = __toESM(require_react()), import_node12 = __toESM(require_dist3()), import_react24 = __toESM(require_dist2());
 init_shopify_server();
 
 // app/utils/navigation.tsx
-var import_react19 = __toESM(require_dist2());
+var import_react21 = __toESM(require_dist2());
 function useShopContext() {
-  let location = (0, import_react19.useLocation)(), searchParams = new URLSearchParams(location.search), urlShop = searchParams.get("shop"), urlHost = searchParams.get("host"), fallbackShop = null;
+  let location = (0, import_react21.useLocation)(), searchParams = new URLSearchParams(location.search), urlShop = searchParams.get("shop"), urlHost = searchParams.get("host"), fallbackShop = null;
   return typeof window < "u" && (fallbackShop = document.getElementById("__shop")?.getAttribute("data-shop-name")), {
     shop: urlShop || (fallbackShop ? `${fallbackShop}.myshopify.com` : null),
     host: urlHost,
@@ -111685,13 +112114,13 @@ function buildAppUrl(path, shopContext) {
 }
 
 // app/components/LoadingStates.tsx
-var import_react20 = __toESM(require_react()), import_jsx_runtime12 = __toESM(require_jsx_runtime());
+var import_react22 = __toESM(require_react()), import_jsx_runtime13 = __toESM(require_jsx_runtime());
 function SkeletonText({
   lines = 1,
   width = "100%",
   height = "16px"
 }) {
-  let skeletonItems = Array.from({ length: lines }, (_, i) => /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
+  let skeletonItems = Array.from({ length: lines }, (_, i) => /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
     "div",
     {
       style: {
@@ -111706,9 +112135,9 @@ function SkeletonText({
     },
     i
   ));
-  return /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { children: [
+  return /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { children: [
     skeletonItems,
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("style", { dangerouslySetInnerHTML: {
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("style", { dangerouslySetInnerHTML: {
       __html: `
           @keyframes shimmer {
             0% { background-position: -200% 0; }
@@ -111719,15 +112148,15 @@ function SkeletonText({
   ] });
 }
 function SkeletonCard() {
-  return /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { style: {
+  return /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: {
     border: "1px solid #ddd",
     borderRadius: "8px",
     padding: "1.5rem",
     background: "#f8f9fa"
   }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(SkeletonText, { width: "60%", height: "20px" }),
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("div", { style: { marginTop: "12px", marginBottom: "16px" }, children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(SkeletonText, { lines: 2, width: "90%", height: "14px" }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("div", { style: {
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(SkeletonText, { width: "60%", height: "20px" }),
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { style: { marginTop: "12px", marginBottom: "16px" }, children: /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(SkeletonText, { lines: 2, width: "90%", height: "14px" }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { style: {
       width: "120px",
       height: "40px",
       background: "linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%)",
@@ -111735,7 +112164,7 @@ function SkeletonCard() {
       animation: "shimmer 2s infinite",
       borderRadius: "6px"
     } }),
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("style", { dangerouslySetInnerHTML: {
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("style", { dangerouslySetInnerHTML: {
       __html: `
           @keyframes shimmer {
             0% { background-position: -200% 0; }
@@ -111752,7 +112181,7 @@ function Toast({
   onClose,
   duration = 4e3
 }) {
-  if (import_react20.default.useEffect(() => {
+  if (import_react22.default.useEffect(() => {
     if (isVisible && duration > 0) {
       let timer = setTimeout(() => {
         onClose();
@@ -111767,7 +112196,7 @@ function Toast({
     warning: { bg: "#fff3cd", border: "#ffc107", text: "#856404" },
     info: { bg: "#e7f3ff", border: "#007bff", text: "#004085" }
   }[type];
-  return /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { style: {
+  return /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: {
     position: "fixed",
     top: "20px",
     right: "20px",
@@ -111787,8 +112216,8 @@ function Toast({
     gap: "12px",
     animation: "slideIn 0.3s ease-out"
   }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("span", { children: message2 }),
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { children: message2 }),
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
       "button",
       {
         onClick: onClose,
@@ -111806,7 +112235,7 @@ function Toast({
         children: "\u2715"
       }
     ),
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("style", { dangerouslySetInnerHTML: {
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("style", { dangerouslySetInnerHTML: {
       __html: `
           @keyframes slideIn {
             from {
@@ -111824,7 +112253,7 @@ function Toast({
 }
 
 // app/routes/app._index.tsx
-var import_jsx_runtime13 = __toESM(require_jsx_runtime()), loader11 = async ({ request: request2 }) => {
+var import_jsx_runtime14 = __toESM(require_jsx_runtime()), loader12 = async ({ request: request2 }) => {
   try {
     let { session, admin } = await authenticate.admin(request2), shopName = session?.shop?.replace(".myshopify.com", "");
     if (!shopName)
@@ -111854,7 +112283,7 @@ var import_jsx_runtime13 = __toESM(require_jsx_runtime()), loader11 = async ({ r
       console.error("Subscription check failed, allowing app access:", subscriptionError);
     }
     let appHandle = process.env.SHOPIFY_APP_HANDLE || "ads-autopilot-ai", planSelectionUrl = `https://admin.shopify.com/store/${shopName}/charges/${appHandle}/pricing_plans`;
-    return (0, import_node11.json)({
+    return (0, import_node12.json)({
       message: "AI-powered Google Ads optimization on autopilot",
       timestamp: (/* @__PURE__ */ new Date()).toISOString(),
       shopName,
@@ -111871,12 +112300,12 @@ var import_jsx_runtime13 = __toESM(require_jsx_runtime()), loader11 = async ({ r
   }
 };
 function AppIndex() {
-  let { message: message2, timestamp, shopName, subscriptionInfo, planSelectionUrl } = (0, import_react22.useLoaderData)(), shopContext = useShopContext(), [isInitialLoad, setIsInitialLoad] = (0, import_react21.useState)(!0), [toast, setToast] = (0, import_react21.useState)({
+  let { message: message2, timestamp, shopName, subscriptionInfo, planSelectionUrl } = (0, import_react24.useLoaderData)(), shopContext = useShopContext(), [isInitialLoad, setIsInitialLoad] = (0, import_react23.useState)(!0), [toast, setToast] = (0, import_react23.useState)({
     message: "",
     type: "success",
     visible: !1
   });
-  import_react21.default.useEffect(() => {
+  import_react23.default.useEffect(() => {
     let timer = setTimeout(() => {
       setIsInitialLoad(!1), (subscriptionInfo?.hasActivePayment || subscriptionInfo?.isInTrial) && setToast({
         message: `Welcome back! Your ${subscriptionInfo.subscriptionTier?.toUpperCase()} plan is active.`,
@@ -111885,7 +112314,7 @@ function AppIndex() {
       });
     }, 800);
     return () => clearTimeout(timer);
-  }, [subscriptionInfo]), import_react21.default.useEffect(() => {
+  }, [subscriptionInfo]), import_react23.default.useEffect(() => {
     let chargeId = new URLSearchParams(window.location.search).get("charge_id"), isPostSubscription = !!chargeId;
     if (subscriptionInfo?.needsSubscription && planSelectionUrl && !isPostSubscription) {
       console.log("Client-side redirect to plan selection:", planSelectionUrl);
@@ -111901,39 +112330,39 @@ function AppIndex() {
     } else
       isPostSubscription && console.log(`Post-subscription detected, staying on dashboard (charge_id: ${chargeId})`);
   }, [subscriptionInfo, planSelectionUrl]);
-  let renderSubscriptionBanner = () => subscriptionInfo ? subscriptionInfo.isInTrial ? /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: {
+  let renderSubscriptionBanner = () => subscriptionInfo ? subscriptionInfo.isInTrial ? /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { style: {
     background: "#fff3cd",
     border: "1px solid #ffc107",
     borderRadius: "8px",
     padding: "16px",
     marginBottom: "24px"
   }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("h3", { style: { margin: "0 0 8px 0", fontSize: "16px", color: "#856404" }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("h3", { style: { margin: "0 0 8px 0", fontSize: "16px", color: "#856404" }, children: [
       "Free Trial Active - ",
       subscriptionInfo.subscriptionTier?.toUpperCase(),
       " Plan"
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("p", { style: { margin: "0", fontSize: "14px", color: "#856404" }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("p", { style: { margin: "0", fontSize: "14px", color: "#856404" }, children: [
       subscriptionInfo.trialDaysRemaining,
       " days remaining in your trial"
     ] })
-  ] }) : subscriptionInfo.hasActivePayment ? /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: {
+  ] }) : subscriptionInfo.hasActivePayment ? /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { style: {
     background: "#d1eddd",
     border: "1px solid #28a745",
     borderRadius: "8px",
     padding: "16px",
     marginBottom: "24px"
   }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("h3", { style: { margin: "0 0 8px 0", fontSize: "16px", color: "#155724" }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("h3", { style: { margin: "0 0 8px 0", fontSize: "16px", color: "#155724" }, children: [
       subscriptionInfo.subscriptionTier?.toUpperCase(),
       " Plan Active"
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { style: { margin: "0", fontSize: "14px", color: "#155724" }, children: "Full access to all features" })
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { style: { margin: "0", fontSize: "14px", color: "#155724" }, children: "Full access to all features" })
   ] }) : null : null, renderDataRetentionInfo = () => {
     if (!subscriptionInfo?.subscriptionTier)
       return null;
     let tier = subscriptionInfo.subscriptionTier.toLowerCase(), retentionDays = tier === "starter" ? 7 : tier === "professional" ? 30 : 90, upgradeMessage = tier === "starter" ? "Upgrade to Professional for 30-day retention" : tier === "professional" ? "Upgrade to Enterprise for 90-day retention" : null;
-    return /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: {
+    return /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { style: {
       background: tier === "starter" ? "#fff3cd" : tier === "professional" ? "#e7f3ff" : "#f8f9fa",
       border: tier === "starter" ? "1px solid #ffc107" : tier === "professional" ? "1px solid #007bff" : "1px solid #dee2e6",
       borderRadius: "8px",
@@ -111943,13 +112372,13 @@ function AppIndex() {
       justifyContent: "space-between",
       alignItems: "center"
     }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("h4", { style: { margin: "0 0 4px 0", fontSize: "16px", color: tier === "starter" ? "#856404" : tier === "professional" ? "#004085" : "#495057" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("h4", { style: { margin: "0 0 4px 0", fontSize: "16px", color: tier === "starter" ? "#856404" : tier === "professional" ? "#004085" : "#495057" }, children: [
           "Data Retention: ",
           retentionDays,
           " days"
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("p", { style: { margin: "0", fontSize: "14px", color: tier === "starter" ? "#856404" : tier === "professional" ? "#004085" : "#6c757d" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("p", { style: { margin: "0", fontSize: "14px", color: tier === "starter" ? "#856404" : tier === "professional" ? "#004085" : "#6c757d" }, children: [
           "Your ",
           tier.toUpperCase(),
           " plan shows data from the last ",
@@ -111957,8 +112386,8 @@ function AppIndex() {
           " days. Older data is automatically filtered."
         ] })
       ] }),
-      upgradeMessage && /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
-        import_react22.Link,
+      upgradeMessage && /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
+        import_react24.Link,
         {
           to: planSelectionUrl,
           style: {
@@ -111976,10 +112405,10 @@ function AppIndex() {
       )
     ] });
   };
-  return /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { padding: "2rem" }, children: [
+  return /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { style: { padding: "2rem" }, children: [
     renderSubscriptionBanner(),
     renderDataRetentionInfo(),
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(
       "div",
       {
         style: {
@@ -111993,7 +112422,7 @@ function AppIndex() {
           gap: "12px"
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { style: {
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("div", { style: {
             width: "24px",
             height: "24px",
             background: "#007bff",
@@ -112005,20 +112434,20 @@ function AppIndex() {
             fontSize: "12px",
             fontWeight: "bold"
           }, children: "\u2713" }),
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("h3", { style: { margin: "0", fontSize: "16px", color: "#0066cc" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("h3", { style: { margin: "0", fontSize: "16px", color: "#0066cc" }, children: [
               "Connected to ",
               shopName,
               ".myshopify.com"
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { style: { margin: "4px 0 0 0", fontSize: "14px", color: "#666" }, children: "Your shop is automatically detected and configured" })
+            /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { style: { margin: "4px 0 0 0", fontSize: "14px", color: "#666" }, children: "Your shop is automatically detected and configured" })
           ] })
         ]
       }
     ),
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h1", { children: "Ads Autopilot AI Dashboard" }),
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { children: message2 }),
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("h1", { children: "Ads Autopilot AI Dashboard" }),
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { children: message2 }),
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
       "div",
       {
         style: {
@@ -112029,17 +112458,17 @@ function AppIndex() {
         },
         children: isInitialLoad ? (
           // Show skeleton loading states
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(import_jsx_runtime13.Fragment, { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(SkeletonCard, {}),
-            /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(SkeletonCard, {}),
-            /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(SkeletonCard, {}),
-            /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(SkeletonCard, {}),
-            /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(SkeletonCard, {})
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(import_jsx_runtime14.Fragment, { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(SkeletonCard, {}),
+            /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(SkeletonCard, {}),
+            /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(SkeletonCard, {}),
+            /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(SkeletonCard, {}),
+            /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(SkeletonCard, {})
           ] })
         ) : (
           // Show actual content
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(import_jsx_runtime13.Fragment, { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(import_jsx_runtime14.Fragment, { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(
               "div",
               {
                 style: {
@@ -112056,10 +112485,10 @@ function AppIndex() {
                   e.currentTarget.style.transform = "translateY(0)", e.currentTarget.style.boxShadow = "none";
                 },
                 children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h3", { children: "Autopilot" }),
-                  /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { children: "Automated campaign management and optimization" }),
-                  /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
-                    import_react22.Link,
+                  /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("h3", { children: "Autopilot" }),
+                  /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { children: "Automated campaign management and optimization" }),
+                  /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
+                    import_react24.Link,
                     {
                       to: buildAppUrl("/app/autopilot", shopContext),
                       style: {
@@ -112086,7 +112515,7 @@ function AppIndex() {
                 ]
               }
             ),
-            /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(
+            /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(
               "div",
               {
                 style: {
@@ -112096,10 +112525,10 @@ function AppIndex() {
                   background: "#f8f9fa"
                 },
                 children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h3", { children: "Insights" }),
-                  /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { children: "Performance analytics and campaign insights" }),
-                  /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
-                    import_react22.Link,
+                  /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("h3", { children: "Insights" }),
+                  /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { children: "Performance analytics and campaign insights" }),
+                  /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
+                    import_react24.Link,
                     {
                       to: "/app/insights",
                       style: {
@@ -112120,7 +112549,7 @@ function AppIndex() {
                 ]
               }
             ),
-            /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(
+            /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(
               "div",
               {
                 style: {
@@ -112131,9 +112560,9 @@ function AppIndex() {
                   position: "relative"
                 },
                 children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h3", { children: "Custom Dashboards" }),
-                  /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { children: "Enterprise-exclusive custom analytics dashboards" }),
-                  /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
+                  /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("h3", { children: "Custom Dashboards" }),
+                  /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { children: "Enterprise-exclusive custom analytics dashboards" }),
+                  /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
                     "div",
                     {
                       style: {
@@ -112150,8 +112579,8 @@ function AppIndex() {
                       children: "ENTERPRISE"
                     }
                   ),
-                  /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
-                    import_react22.Link,
+                  /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
+                    import_react24.Link,
                     {
                       to: "/app/dashboards",
                       style: {
@@ -112172,7 +112601,7 @@ function AppIndex() {
                 ]
               }
             ),
-            /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(
+            /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(
               "div",
               {
                 style: {
@@ -112184,9 +112613,9 @@ function AppIndex() {
                   position: "relative"
                 },
                 children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h3", { children: "Smart Website Features" }),
-                  /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { children: "Advanced conversion optimization tools" }),
-                  /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
+                  /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("h3", { children: "Smart Website Features" }),
+                  /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { children: "Advanced conversion optimization tools" }),
+                  /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
                     "div",
                     {
                       style: {
@@ -112203,8 +112632,8 @@ function AppIndex() {
                       children: "Coming Q1 2026"
                     }
                   ),
-                  /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
-                    import_react22.Link,
+                  /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
+                    import_react24.Link,
                     {
                       to: "/app/intent-os",
                       style: {
@@ -112225,7 +112654,7 @@ function AppIndex() {
                 ]
               }
             ),
-            /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(
+            /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(
               "div",
               {
                 style: {
@@ -112235,10 +112664,10 @@ function AppIndex() {
                   background: "#f8f9fa"
                 },
                 children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h3", { children: "Advanced" }),
-                  /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { children: "Advanced settings and configuration" }),
-                  /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
-                    import_react22.Link,
+                  /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("h3", { children: "Advanced" }),
+                  /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { children: "Advanced settings and configuration" }),
+                  /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
+                    import_react24.Link,
                     {
                       to: "/app/advanced",
                       style: {
@@ -112263,7 +112692,7 @@ function AppIndex() {
         )
       }
     ),
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(
       "div",
       {
         style: {
@@ -112275,14 +112704,14 @@ function AppIndex() {
           color: "#666"
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "Status:" }),
+          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Status:" }),
           " Connected to backend \u2022 Last updated:",
           " ",
           new Date(timestamp).toLocaleString()
         ]
       }
     ),
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
       Toast,
       {
         message: toast.message,
@@ -112297,11 +112726,11 @@ function AppIndex() {
 // app/routes/app.setup.tsx
 var app_setup_exports = {};
 __export(app_setup_exports, {
-  action: () => action8,
+  action: () => action9,
   default: () => Setup,
-  loader: () => loader12
+  loader: () => loader13
 });
-var import_node12 = __toESM(require_dist3()), import_react23 = __toESM(require_dist2());
+var import_node13 = __toESM(require_dist3()), import_react25 = __toESM(require_dist2());
 init_shopify_server();
 
 // app/utils/database.server.ts
@@ -112392,13 +112821,13 @@ async function markSetupCompleted(tenantId) {
 }
 
 // app/routes/app.setup.tsx
-var import_jsx_runtime14 = __toESM(require_jsx_runtime());
-async function loader12({ request: request2 }) {
+var import_jsx_runtime15 = __toESM(require_jsx_runtime());
+async function loader13({ request: request2 }) {
   try {
     let { session } = await authenticate.admin(request2), shopName = session?.shop?.replace(".myshopify.com", "") || "";
     if (!shopName)
       throw new Error("Unable to determine shop name from Shopify session");
-    return (0, import_node12.json)({
+    return (0, import_node13.json)({
       shopName,
       shopDomain: session?.shop || `${shopName}.myshopify.com`
     });
@@ -112406,20 +112835,20 @@ async function loader12({ request: request2 }) {
     throw console.error("Setup loader error:", error), error;
   }
 }
-async function action8({ request: request2 }) {
+async function action9({ request: request2 }) {
   try {
     let { session } = await authenticate.admin(request2), shopName = session?.shop?.replace(".myshopify.com", "") || "";
     if (!shopName)
       throw new Error("Unable to determine shop name from Shopify session");
-    return await markSetupCompleted(shopName), console.log(`Setup completed for tenant: ${shopName}`), (0, import_node12.redirect)("/app");
+    return await markSetupCompleted(shopName), console.log(`Setup completed for tenant: ${shopName}`), (0, import_node13.redirect)("/app");
   } catch (error) {
-    return console.error("Setup action error:", error), (0, import_node12.json)({ error: error.message }, { status: 500 });
+    return console.error("Setup action error:", error), (0, import_node13.json)({ error: error.message }, { status: 500 });
   }
 }
 function Setup() {
-  let data = (0, import_react23.useLoaderData)(), actionData = (0, import_react23.useActionData)(), isSubmitting = (0, import_react23.useNavigation)().state !== "idle";
-  return /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { style: { maxWidth: 600, margin: "0 auto", padding: 20 }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(
+  let data = (0, import_react25.useLoaderData)(), actionData = (0, import_react25.useActionData)(), isSubmitting = (0, import_react25.useNavigation)().state !== "idle";
+  return /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("div", { style: { maxWidth: 600, margin: "0 auto", padding: 20 }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(
       "div",
       {
         style: {
@@ -112431,16 +112860,16 @@ function Setup() {
           textAlign: "center"
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("h1", { style: { margin: "0 0 16px 0", fontSize: "28px", color: "#333" }, children: "Welcome to ProofKit!" }),
-          /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("p", { style: { margin: "0 0 8px 0", fontSize: "18px", color: "#666" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("h1", { style: { margin: "0 0 16px 0", fontSize: "28px", color: "#333" }, children: "Welcome to ProofKit!" }),
+          /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("p", { style: { margin: "0 0 8px 0", fontSize: "18px", color: "#666" }, children: [
             "Setting up for: ",
-            /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: data.shopDomain })
+            /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("strong", { children: data.shopDomain })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { style: { margin: "0", fontSize: "14px", color: "#888" }, children: "This quick setup will only take 2 minutes" })
+          /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("p", { style: { margin: "0", fontSize: "14px", color: "#888" }, children: "This quick setup will only take 2 minutes" })
         ]
       }
     ),
-    actionData?.error && /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(
+    actionData?.error && /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(
       "div",
       {
         style: {
@@ -112452,13 +112881,13 @@ function Setup() {
           color: "#c53030"
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("h4", { style: { margin: "0 0 8px 0" }, children: "Setup Error" }),
-          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { style: { margin: 0 }, children: actionData.error })
+          /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("h4", { style: { margin: "0 0 8px 0" }, children: "Setup Error" }),
+          /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("p", { style: { margin: 0 }, children: actionData.error })
         ]
       }
     ),
-    /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(
-      import_react23.Form,
+    /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(
+      import_react25.Form,
       {
         method: "post",
         style: {
@@ -112467,7 +112896,7 @@ function Setup() {
           alignItems: "center"
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(
+          /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(
             "div",
             {
               style: {
@@ -112480,7 +112909,7 @@ function Setup() {
                 marginBottom: "32px"
               },
               children: [
-                /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("div", { style: {
+                /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("div", { style: {
                   width: "64px",
                   height: "64px",
                   background: "linear-gradient(135deg, #007bff, #0056b3)",
@@ -112492,8 +112921,8 @@ function Setup() {
                   fontSize: "24px",
                   color: "white"
                 }, children: "\u2713" }),
-                /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("h2", { style: { margin: "0 0 16px 0", fontSize: "24px", color: "#333" }, children: "You're All Set!" }),
-                /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(
+                /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("h2", { style: { margin: "0 0 16px 0", fontSize: "24px", color: "#333" }, children: "You're All Set!" }),
+                /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(
                   "p",
                   {
                     style: {
@@ -112504,15 +112933,15 @@ function Setup() {
                     },
                     children: [
                       "ProofKit is now connected to your ",
-                      /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: data.shopDomain }),
+                      /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("strong", { children: data.shopDomain }),
                       " ",
                       "store.",
-                      /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("br", {}),
+                      /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("br", {}),
                       "Your AI-powered Google Ads optimization is ready to begin!"
                     ]
                   }
                 ),
-                /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(
+                /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(
                   "div",
                   {
                     style: {
@@ -112524,12 +112953,12 @@ function Setup() {
                       color: "#495057"
                     },
                     children: [
-                      /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "Next steps:" }),
-                      /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("br", {}),
+                      /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("strong", { children: "Next steps:" }),
+                      /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("br", {}),
                       "\u2022 Configure your campaign settings in Advanced Settings",
-                      /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("br", {}),
+                      /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("br", {}),
                       "\u2022 Set up your automation schedule",
-                      /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("br", {}),
+                      /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("br", {}),
                       "\u2022 Review performance insights as data flows in"
                     ]
                   }
@@ -112537,7 +112966,7 @@ function Setup() {
               ]
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(
             "button",
             {
               type: "submit",
@@ -112567,21 +112996,21 @@ function Setup() {
 var health_exports = {};
 __export(health_exports, {
   default: () => Health,
-  loader: () => loader13
+  loader: () => loader14
 });
-var import_node13 = __toESM(require_dist3()), import_jsx_runtime15 = __toESM(require_jsx_runtime()), loader13 = () => (0, import_node13.json)({ ok: !0 });
+var import_node14 = __toESM(require_dist3()), import_jsx_runtime16 = __toESM(require_jsx_runtime()), loader14 = () => (0, import_node14.json)({ ok: !0 });
 function Health() {
-  return /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("pre", { children: "OK" });
+  return /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("pre", { children: "OK" });
 }
 
 // app/routes/install.tsx
 var install_exports = {};
 __export(install_exports, {
   default: () => Install,
-  loader: () => loader14
+  loader: () => loader15
 });
-var import_node14 = __toESM(require_dist3());
-async function loader14({ request: request2 }) {
+var import_node15 = __toESM(require_dist3());
+async function loader15({ request: request2 }) {
   let shop = new URL(request2.url).searchParams.get("shop");
   if (!shop)
     return new Response(
@@ -112628,7 +113057,7 @@ async function loader14({ request: request2 }) {
     redirect_uri: redirectUri,
     state: crypto.randomUUID()
   }), authUrl = `https://${shopDomain}/admin/oauth/authorize?${params.toString()}`;
-  return console.log(`\u{1F517} Redirecting to Shopify OAuth for shop: ${shop}`), console.log(`\u{1F517} Auth URL: ${authUrl}`), (0, import_node14.redirect)(authUrl);
+  return console.log(`\u{1F517} Redirecting to Shopify OAuth for shop: ${shop}`), console.log(`\u{1F517} Auth URL: ${authUrl}`), (0, import_node15.redirect)(authUrl);
 }
 function Install() {
   return null;
@@ -112638,290 +113067,290 @@ function Install() {
 var privacy_exports = {};
 __export(privacy_exports, {
   default: () => Privacy,
-  meta: () => meta
+  meta: () => meta2
 });
-var import_jsx_runtime16 = __toESM(require_jsx_runtime()), meta = () => [
+var import_jsx_runtime17 = __toESM(require_jsx_runtime()), meta2 = () => [
   { title: "Privacy Policy - Ads Autopilot AI" },
   { name: "description", content: "Ads Autopilot AI Privacy Policy - Privacy-first conversion optimization for Shopify stores" }
 ];
 function Privacy() {
-  return /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { style: { fontFamily: "system-ui, sans-serif", lineHeight: "1.8", maxWidth: "800px", margin: "0 auto", padding: "2rem" }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("h1", { children: "Ads Autopilot AI Privacy Policy" }),
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("p", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("strong", { children: "Effective Date:" }),
+  return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { style: { fontFamily: "system-ui, sans-serif", lineHeight: "1.8", maxWidth: "800px", margin: "0 auto", padding: "2rem" }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h1", { children: "Ads Autopilot AI Privacy Policy" }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("p", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Effective Date:" }),
       " August 25, 2025",
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("strong", { children: "Last Updated:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Last Updated:" }),
       " August 25, 2025",
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("strong", { children: "Version:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Version:" }),
       " 1.0"
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("h2", { children: "Executive Summary" }),
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("p", { children: "Ads Autopilot AI is committed to protecting your privacy and maintaining the highest standards of data protection. This Privacy Policy explains our privacy-by-design approach, minimal data collection practices, and your rights regarding any information we process." }),
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("h3", { children: "Key Privacy Principles:" }),
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("strong", { children: "Data Minimization:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h2", { children: "Executive Summary" }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { children: "Ads Autopilot AI is committed to protecting your privacy and maintaining the highest standards of data protection. This Privacy Policy explains our privacy-by-design approach, minimal data collection practices, and your rights regarding any information we process." }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h3", { children: "Key Privacy Principles:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Data Minimization:" }),
         " We collect only what's absolutely necessary"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("strong", { children: "No Customer PII:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "No Customer PII:" }),
         " We don't collect personal information from your customers"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("strong", { children: "Merchant Control:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Merchant Control:" }),
         " You maintain full control over your data"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("strong", { children: "Transparency:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Transparency:" }),
         " Clear documentation of all data handling practices"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("strong", { children: "Compliance:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Compliance:" }),
         " GDPR, CCPA, and global privacy regulation compliance"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("h2", { children: "Information We Collect" }),
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("h3", { children: "Merchant Account Information" }),
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("strong", { children: "When You Install Ads Autopilot AI:" }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("strong", { children: "Store Information:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h2", { children: "Information We Collect" }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h3", { children: "Merchant Account Information" }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "When You Install Ads Autopilot AI:" }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Store Information:" }),
         " Store name, domain, Shopify store ID"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("strong", { children: "Contact Details:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Contact Details:" }),
         " Email address for support and notifications"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("strong", { children: "Authentication Data:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Authentication Data:" }),
         " OAuth tokens for secure API access"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("strong", { children: "App Configuration:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "App Configuration:" }),
         " Settings and preferences you configure in Ads Autopilot AI"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("p", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("strong", { children: "Purpose:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("p", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Purpose:" }),
       " To provide app functionality and support services",
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("strong", { children: "Legal Basis:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Legal Basis:" }),
       " Legitimate business interest and contractual necessity",
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("strong", { children: "Retention:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Retention:" }),
       " Duration of your Ads Autopilot AI subscription plus 30 days"
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("h3", { children: "Product Catalog Data (Read-Only)" }),
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("strong", { children: "What We Access:" }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("strong", { children: "Product Information:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h3", { children: "Product Catalog Data (Read-Only)" }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "What We Access:" }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Product Information:" }),
         " Product titles, descriptions, categories, and variants"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("strong", { children: "Collection Data:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Collection Data:" }),
         " Product collection organization and structure"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("strong", { children: "Metafield Data:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Metafield Data:" }),
         " Custom product attributes (when used for optimization)"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("strong", { children: "How We Use It:" }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("li", { children: "Display products in Ads Autopilot AI configuration interface" }),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("li", { children: "Generate conversion optimization recommendations" }),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("li", { children: "Configure product-specific advertising campaigns" })
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "How We Use It:" }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Display products in Ads Autopilot AI configuration interface" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Generate conversion optimization recommendations" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Configure product-specific advertising campaigns" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("strong", { children: "What We DON'T Do:" }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("li", { children: "Store product data outside of your store" }),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("li", { children: "Share product information with third parties" }),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("li", { children: "Modify or update your product information" }),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("li", { children: "Use product data for competitive analysis" })
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "What We DON'T Do:" }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Store product data outside of your store" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Share product information with third parties" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Modify or update your product information" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Use product data for competitive analysis" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("h2", { children: "Information We DON'T Collect" }),
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("h3", { children: "Customer Personal Information" }),
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("strong", { children: "We Explicitly Do NOT Collect:" }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("li", { children: "Customer names, emails, or contact information" }),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("li", { children: "Customer addresses or shipping information" }),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("li", { children: "Phone numbers or personal identifiers" }),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("li", { children: "Payment or credit card information" }),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("li", { children: "Purchase history or order details" }),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("li", { children: "Customer browsing behavior or preferences" }),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("li", { children: "Individual customer demographic data" })
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h2", { children: "Information We DON'T Collect" }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h3", { children: "Customer Personal Information" }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "We Explicitly Do NOT Collect:" }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Customer names, emails, or contact information" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Customer addresses or shipping information" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Phone numbers or personal identifiers" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Payment or credit card information" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Purchase history or order details" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Customer browsing behavior or preferences" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Individual customer demographic data" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("h2", { children: "How We Protect Your Information" }),
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("h3", { children: "Technical Security Measures" }),
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("strong", { children: "Encryption & Transport Security:" }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("strong", { children: "HTTPS Everywhere:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h2", { children: "How We Protect Your Information" }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h3", { children: "Technical Security Measures" }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Encryption & Transport Security:" }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "HTTPS Everywhere:" }),
         " All data transmission encrypted with TLS 1.3"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("strong", { children: "API Security:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "API Security:" }),
         " HMAC validation for all requests"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("strong", { children: "Token Security:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Token Security:" }),
         " OAuth tokens encrypted and securely stored"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("strong", { children: "Database Encryption:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Database Encryption:" }),
         " All stored data encrypted at rest"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("h2", { children: "Your Privacy Rights" }),
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("h3", { children: "Data Access & Control" }),
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("strong", { children: "Right to Access:" }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("li", { children: "Request a copy of all data we have about your store" }),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("li", { children: "Understand how your data is being used" }),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("li", { children: "Receive data in a portable format (JSON/CSV)" }),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("li", { children: "Access detailed data processing logs" })
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h2", { children: "Your Privacy Rights" }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h3", { children: "Data Access & Control" }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Right to Access:" }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Request a copy of all data we have about your store" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Understand how your data is being used" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Receive data in a portable format (JSON/CSV)" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Access detailed data processing logs" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("strong", { children: "Right to Deletion:" }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("li", { children: "Request deletion of all your data when uninstalling the app" }),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("li", { children: "Selective deletion of specific data categories" }),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("li", { children: "Immediate deletion upon request (no retention period)" }),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("li", { children: "Confirmation of deletion completion" })
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Right to Deletion:" }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Request deletion of all your data when uninstalling the app" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Selective deletion of specific data categories" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Immediate deletion upon request (no retention period)" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Confirmation of deletion completion" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("h2", { children: "Third-Party Integrations" }),
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("h3", { children: "Google Services Integration" }),
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("strong", { children: "Google Sheets API:" }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("strong", { children: "Purpose:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h2", { children: "Third-Party Integrations" }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h3", { children: "Google Services Integration" }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Google Sheets API:" }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Purpose:" }),
         " Store campaign configurations and export data"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("strong", { children: "Data Shared:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Data Shared:" }),
         " Campaign settings, audience configurations"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("strong", { children: "Merchant Control:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Merchant Control:" }),
         " You control access and can revoke permissions anytime"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("strong", { children: "Data Location:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Data Location:" }),
         " Stored in your Google Sheets (your Google account)"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("strong", { children: "Google Ads API:" }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("strong", { children: "Purpose:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Google Ads API:" }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Purpose:" }),
         " Optimize advertising campaigns based on Ads Autopilot AI insights"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("strong", { children: "Data Shared:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Data Shared:" }),
         " Campaign optimization scripts and audience segments"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("strong", { children: "Merchant Control:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Merchant Control:" }),
         " You control Google Ads account access"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("strong", { children: "Data Processing:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Data Processing:" }),
         " Scripts run in your Google Ads account"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("h2", { children: "International Data Transfers" }),
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("h3", { children: "Regional Compliance" }),
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("strong", { children: "GDPR Compliance (EU/UK):" }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("strong", { children: "Legal Basis:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h2", { children: "International Data Transfers" }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h3", { children: "Regional Compliance" }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "GDPR Compliance (EU/UK):" }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Legal Basis:" }),
         " Legitimate interest and contractual necessity"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("strong", { children: "Data Subject Rights:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Data Subject Rights:" }),
         " Full implementation of all GDPR rights"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("strong", { children: "Data Protection Officer:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Data Protection Officer:" }),
         " Available for privacy-related inquiries"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("strong", { children: "Supervisory Authority:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Supervisory Authority:" }),
         " Cooperation with relevant data protection authorities"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("strong", { children: "CCPA Compliance (California):" }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("strong", { children: "Consumer Rights:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "CCPA Compliance (California):" }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Consumer Rights:" }),
         " Full implementation of CCPA rights"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("strong", { children: "Do Not Sell:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Do Not Sell:" }),
         " We do not sell personal information"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("strong", { children: "Opt-Out Rights:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Opt-Out Rights:" }),
         " Comprehensive opt-out mechanisms"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("strong", { children: "Data Categories:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Data Categories:" }),
         " Clear disclosure of all data categories collected"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("h2", { children: "Children's Privacy" }),
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("p", { children: "Ads Autopilot AI is not intended for use by individuals under 13 years of age. We do not knowingly collect personal information from children. If you believe we have inadvertently collected such information, please contact us immediately." }),
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("h2", { children: "Privacy Policy Updates" }),
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("p", { children: "We may update this Privacy Policy from time to time. We will notify you of any material changes by email and through the Ads Autopilot AI app. Your continued use of Ads Autopilot AI after such modifications constitutes your acceptance of the updated Privacy Policy." }),
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("h2", { children: "Contact Information" }),
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("p", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("strong", { children: "Privacy Questions:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h2", { children: "Children's Privacy" }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { children: "Ads Autopilot AI is not intended for use by individuals under 13 years of age. We do not knowingly collect personal information from children. If you believe we have inadvertently collected such information, please contact us immediately." }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h2", { children: "Privacy Policy Updates" }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { children: "We may update this Privacy Policy from time to time. We will notify you of any material changes by email and through the Ads Autopilot AI app. Your continued use of Ads Autopilot AI after such modifications constitutes your acceptance of the updated Privacy Policy." }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h2", { children: "Contact Information" }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("p", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Privacy Questions:" }),
       " atanrikulu@e-listele.com",
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("strong", { children: "Data Subject Requests:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Data Subject Requests:" }),
       " atanrikulu@e-listele.com",
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("strong", { children: "Security Incidents:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Security Incidents:" }),
       " atanrikulu@e-listele.com",
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("strong", { children: "General Support:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "General Support:" }),
       " atanrikulu@e-listele.com"
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("h3", { children: "Data Subject Request Timeline:" }),
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("strong", { children: "Acknowledgment:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h3", { children: "Data Subject Request Timeline:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Acknowledgment:" }),
         " Within 48 hours"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("strong", { children: "Processing:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Processing:" }),
         " Within 30 days (GDPR) or 45 days (CCPA)"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("strong", { children: "Complex Requests:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Complex Requests:" }),
         " Up to 60-90 days with regular updates"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("strong", { children: "Verification:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Verification:" }),
         " Identity verification required for sensitive requests"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("hr", { style: { margin: "3rem 0" } }),
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("p", { style: { textAlign: "center", color: "#666" }, children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("strong", { children: "This Privacy Policy is effective as of August 25, 2025, and will remain in effect except with respect to any changes in its provisions in the future, which will be in effect immediately after being posted on this page." }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("p", { style: { textAlign: "center", marginTop: "2rem" }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("strong", { children: "Contact Information:" }),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("strong", { children: "Email:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("hr", { style: { margin: "3rem 0" } }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { style: { textAlign: "center", color: "#666" }, children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "This Privacy Policy is effective as of August 25, 2025, and will remain in effect except with respect to any changes in its provisions in the future, which will be in effect immediately after being posted on this page." }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("p", { style: { textAlign: "center", marginTop: "2rem" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Contact Information:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Email:" }),
       " atanrikulu@e-listele.com",
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("strong", { children: "Support:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Support:" }),
       " atanrikulu@e-listele.com",
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("strong", { children: "Website:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Website:" }),
       " ",
-      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("a", { href: "https://proofkit-saas.vercel.app/privacy", children: "https://proofkit-saas.vercel.app/privacy" })
+      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("a", { href: "https://proofkit-saas.vercel.app/privacy", children: "https://proofkit-saas.vercel.app/privacy" })
     ] })
   ] });
 }
@@ -112930,16 +113359,16 @@ function Privacy() {
 var support_exports = {};
 __export(support_exports, {
   default: () => Support,
-  loader: () => loader15,
-  meta: () => meta2
+  loader: () => loader16,
+  meta: () => meta3
 });
-var import_node15 = __toESM(require_dist3()), import_react24 = __toESM(require_dist2()), import_react25 = __toESM(require_react()), import_jsx_runtime17 = __toESM(require_jsx_runtime()), meta2 = () => [
+var import_node16 = __toESM(require_dist3()), import_react26 = __toESM(require_dist2()), import_react27 = __toESM(require_react()), import_jsx_runtime18 = __toESM(require_jsx_runtime()), meta3 = () => [
   { title: "Support - Ads Autopilot AI" },
   { name: "description", content: "Get tier-based support for Ads Autopilot AI - Email, priority, and phone support options" }
-], loader15 = async ({ request: request2 }) => {
+], loader16 = async ({ request: request2 }) => {
   try {
     if (!new URL(request2.url).searchParams.get("tenant"))
-      return (0, import_node15.json)({
+      return (0, import_node16.json)({
         tier: "starter",
         contactMethods: {
           email_support: !0,
@@ -112963,12 +113392,12 @@ var import_node15 = __toESM(require_dist3()), import_react24 = __toESM(require_d
       support_email: "enterprise@proofkit.com",
       support_phone: "(307) 395-9830",
       guaranteed_response_hours: 6
-    }), (0, import_node15.json)({
+    }), (0, import_node16.json)({
       tier,
       contactMethods
     });
   } catch (error) {
-    return console.error("Error loading support data:", error), (0, import_node15.json)({
+    return console.error("Error loading support data:", error), (0, import_node16.json)({
       tier: "starter",
       contactMethods: {
         email_support: !0,
@@ -112981,7 +113410,7 @@ var import_node15 = __toESM(require_dist3()), import_react24 = __toESM(require_d
   }
 };
 function Support() {
-  let { tier, contactMethods } = (0, import_react24.useLoaderData)(), [showContactForm, setShowContactForm] = (0, import_react25.useState)(!1), [formData, setFormData] = (0, import_react25.useState)({
+  let { tier, contactMethods } = (0, import_react26.useLoaderData)(), [showContactForm, setShowContactForm] = (0, import_react27.useState)(!1), [formData, setFormData] = (0, import_react27.useState)({
     subject: "",
     description: "",
     category: "general",
@@ -112989,7 +113418,7 @@ function Support() {
     customer_name: "",
     customer_email: "",
     customer_phone: ""
-  }), [isSubmitting, setIsSubmitting] = (0, import_react25.useState)(!1), [submitResult, setSubmitResult] = (0, import_react25.useState)(null), handleInputChange = (e) => {
+  }), [isSubmitting, setIsSubmitting] = (0, import_react27.useState)(!1), [submitResult, setSubmitResult] = (0, import_react27.useState)(null), handleInputChange = (e) => {
     let { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   }, handleSubmit = async (e) => {
@@ -113042,50 +113471,50 @@ function Support() {
     };
     return supportLevels[tier2] || supportLevels.starter;
   })(tier);
-  return /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { style: { fontFamily: "system-ui, sans-serif", lineHeight: "1.8", maxWidth: "800px", margin: "0 auto", padding: "2rem" }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h1", { children: "Ads Autopilot AI Support" }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { children: "Get help with Ads Autopilot AI - your AI-powered Google Ads optimization tool for Shopify stores." }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { style: {
+  return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { style: { fontFamily: "system-ui, sans-serif", lineHeight: "1.8", maxWidth: "800px", margin: "0 auto", padding: "2rem" }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h1", { children: "Ads Autopilot AI Support" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { children: "Get help with Ads Autopilot AI - your AI-powered Google Ads optimization tool for Shopify stores." }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { style: {
       padding: "1.5rem",
       background: tier === "enterprise" ? "#fef3e3" : tier === "professional" ? "#f0f9ff" : "#f8fafc",
       border: `2px solid ${tier === "enterprise" ? "#f59e0b" : tier === "professional" ? "#3b82f6" : "#64748b"}`,
       borderRadius: "8px",
       marginBottom: "2rem"
     }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("h2", { style: {
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("h2", { style: {
         margin: "0 0 1rem 0",
         color: tier === "enterprise" ? "#92400e" : tier === "professional" ? "#1e40af" : "#475569"
       }, children: [
         "Your Support Level: ",
         getTierDisplayName(tier)
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { style: { display: "grid", gridTemplateColumns: "1fr 2fr", gap: "1rem", alignItems: "start" }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { style: { margin: "0 0 0.5rem 0", fontWeight: "bold", fontSize: "1.1rem" }, children: supportLevel.type }),
-          /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("p", { style: { margin: "0 0 0.5rem 0", color: "#6b7280" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { style: { display: "grid", gridTemplateColumns: "1fr 2fr", gap: "1rem", alignItems: "start" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { style: { margin: "0 0 0.5rem 0", fontWeight: "bold", fontSize: "1.1rem" }, children: supportLevel.type }),
+          /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("p", { style: { margin: "0 0 0.5rem 0", color: "#6b7280" }, children: [
             "Response within ",
             supportLevel.response
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { style: { margin: "0", color: "#6b7280", fontSize: "0.9rem" }, children: supportLevel.description })
+          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { style: { margin: "0", color: "#6b7280", fontSize: "0.9rem" }, children: supportLevel.description })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { style: { margin: "0 0 0.5rem 0", fontWeight: "bold" }, children: "Included Features:" }),
-          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("ul", { style: { margin: "0", paddingLeft: "1.5rem" }, children: supportLevel.features.map((feature, index) => /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { style: { color: "#374151", marginBottom: "0.25rem" }, children: feature }, index)) })
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { style: { margin: "0 0 0.5rem 0", fontWeight: "bold" }, children: "Included Features:" }),
+          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("ul", { style: { margin: "0", paddingLeft: "1.5rem" }, children: supportLevel.features.map((feature, index) => /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("li", { style: { color: "#374151", marginBottom: "0.25rem" }, children: feature }, index)) })
         ] })
       ] })
     ] }),
-    showContactForm ? /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { style: {
+    showContactForm ? /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { style: {
       padding: "1.5rem",
       border: "1px solid #e5e7eb",
       borderRadius: "8px",
       marginBottom: "2rem",
       backgroundColor: "#fafafa"
     }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h3", { children: "Create Support Ticket" }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("form", { onSubmit: handleSubmit, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { style: { marginBottom: "1rem" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("label", { style: { display: "block", marginBottom: "0.5rem", fontWeight: "bold" }, children: "Your Name *" }),
-          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h3", { children: "Create Support Ticket" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("form", { onSubmit: handleSubmit, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { style: { marginBottom: "1rem" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("label", { style: { display: "block", marginBottom: "0.5rem", fontWeight: "bold" }, children: "Your Name *" }),
+          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
             "input",
             {
               type: "text",
@@ -113097,9 +113526,9 @@ function Support() {
             }
           )
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { style: { marginBottom: "1rem" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("label", { style: { display: "block", marginBottom: "0.5rem", fontWeight: "bold" }, children: "Email Address *" }),
-          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { style: { marginBottom: "1rem" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("label", { style: { display: "block", marginBottom: "0.5rem", fontWeight: "bold" }, children: "Email Address *" }),
+          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
             "input",
             {
               type: "email",
@@ -113111,9 +113540,9 @@ function Support() {
             }
           )
         ] }),
-        tier === "enterprise" && /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { style: { marginBottom: "1rem" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("label", { style: { display: "block", marginBottom: "0.5rem", fontWeight: "bold" }, children: "Phone Number (for phone support)" }),
-          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
+        tier === "enterprise" && /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { style: { marginBottom: "1rem" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("label", { style: { display: "block", marginBottom: "0.5rem", fontWeight: "bold" }, children: "Phone Number (for phone support)" }),
+          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
             "input",
             {
               type: "tel",
@@ -113124,10 +113553,10 @@ function Support() {
             }
           )
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem", marginBottom: "1rem" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("label", { style: { display: "block", marginBottom: "0.5rem", fontWeight: "bold" }, children: "Category *" }),
-            /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem", marginBottom: "1rem" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("label", { style: { display: "block", marginBottom: "0.5rem", fontWeight: "bold" }, children: "Category *" }),
+            /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(
               "select",
               {
                 name: "category",
@@ -113136,17 +113565,17 @@ function Support() {
                 required: !0,
                 style: { width: "100%", padding: "0.75rem", border: "1px solid #d1d5db", borderRadius: "4px" },
                 children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("option", { value: "general", children: "General" }),
-                  /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("option", { value: "technical", children: "Technical" }),
-                  /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("option", { value: "billing", children: "Billing" }),
-                  tier === "enterprise" && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("option", { value: "urgent", children: "Urgent" })
+                  /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("option", { value: "general", children: "General" }),
+                  /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("option", { value: "technical", children: "Technical" }),
+                  /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("option", { value: "billing", children: "Billing" }),
+                  tier === "enterprise" && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("option", { value: "urgent", children: "Urgent" })
                 ]
               }
             )
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("label", { style: { display: "block", marginBottom: "0.5rem", fontWeight: "bold" }, children: "Priority *" }),
-            /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(
+          /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("label", { style: { display: "block", marginBottom: "0.5rem", fontWeight: "bold" }, children: "Priority *" }),
+            /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(
               "select",
               {
                 name: "priority",
@@ -113155,18 +113584,18 @@ function Support() {
                 required: !0,
                 style: { width: "100%", padding: "0.75rem", border: "1px solid #d1d5db", borderRadius: "4px" },
                 children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("option", { value: "low", children: "Low" }),
-                  /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("option", { value: "normal", children: "Normal" }),
-                  ["professional", "enterprise"].includes(tier) && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("option", { value: "high", children: "High" }),
-                  tier === "enterprise" && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("option", { value: "urgent", children: "Urgent" })
+                  /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("option", { value: "low", children: "Low" }),
+                  /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("option", { value: "normal", children: "Normal" }),
+                  ["professional", "enterprise"].includes(tier) && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("option", { value: "high", children: "High" }),
+                  tier === "enterprise" && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("option", { value: "urgent", children: "Urgent" })
                 ]
               }
             )
           ] })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { style: { marginBottom: "1rem" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("label", { style: { display: "block", marginBottom: "0.5rem", fontWeight: "bold" }, children: "Subject *" }),
-          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { style: { marginBottom: "1rem" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("label", { style: { display: "block", marginBottom: "0.5rem", fontWeight: "bold" }, children: "Subject *" }),
+          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
             "input",
             {
               type: "text",
@@ -113179,9 +113608,9 @@ function Support() {
             }
           )
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { style: { marginBottom: "1rem" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("label", { style: { display: "block", marginBottom: "0.5rem", fontWeight: "bold" }, children: "Description *" }),
-          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { style: { marginBottom: "1rem" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("label", { style: { display: "block", marginBottom: "0.5rem", fontWeight: "bold" }, children: "Description *" }),
+          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
             "textarea",
             {
               name: "description",
@@ -113194,8 +113623,8 @@ function Support() {
             }
           )
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { style: { display: "flex", gap: "1rem" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { style: { display: "flex", gap: "1rem" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
             "button",
             {
               type: "submit",
@@ -113214,7 +113643,7 @@ function Support() {
               children: isSubmitting ? "Creating Ticket..." : "Create Ticket"
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
             "button",
             {
               type: "button",
@@ -113233,8 +113662,8 @@ function Support() {
           )
         ] })
       ] })
-    ] }) : /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { style: { textAlign: "center", margin: "2rem 0" }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
+    ] }) : /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { style: { textAlign: "center", margin: "2rem 0" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
         "button",
         {
           onClick: () => setShowContactForm(!0),
@@ -113251,418 +113680,418 @@ function Support() {
           children: "Create Support Ticket"
         }
       ),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { style: { marginTop: "1rem", color: "#6b7280" }, children: "Get help with technical issues, billing questions, or general support" })
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { style: { marginTop: "1rem", color: "#6b7280" }, children: "Get help with technical issues, billing questions, or general support" })
     ] }),
-    submitResult && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("div", { style: {
+    submitResult && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { style: {
       padding: "1rem",
       backgroundColor: submitResult.success ? "#dcfce7" : "#fee2e2",
       border: `1px solid ${submitResult.success ? "#16a34a" : "#dc2626"}`,
       borderRadius: "4px",
       marginBottom: "2rem"
-    }, children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { style: {
+    }, children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { style: {
       margin: "0",
       color: submitResult.success ? "#166534" : "#991b1b",
       fontWeight: "bold"
     }, children: submitResult.message }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h2", { children: "Direct Contact Information" }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { style: { display: "grid", gridTemplateColumns: tier === "enterprise" ? "1fr 1fr 1fr" : "1fr 1fr", gap: "2rem", margin: "2rem 0" }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { style: { padding: "1.5rem", border: "1px solid #e5e7eb", borderRadius: "8px" }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h3", { children: "Email Support" }),
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("p", { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Email:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h2", { children: "Direct Contact Information" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { style: { display: "grid", gridTemplateColumns: tier === "enterprise" ? "1fr 1fr 1fr" : "1fr 1fr", gap: "2rem", margin: "2rem 0" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { style: { padding: "1.5rem", border: "1px solid #e5e7eb", borderRadius: "8px" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h3", { children: "Email Support" }),
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("p", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Email:" }),
           " ",
           contactMethods.support_email,
-          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("br", {}),
-          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Response Time:" }),
+          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("br", {}),
+          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Response Time:" }),
           " ",
           contactMethods.guaranteed_response_hours,
           " hours",
-          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("br", {}),
-          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Hours:" }),
+          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("br", {}),
+          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Hours:" }),
           " Monday-Friday, 9 AM - 6 PM EST"
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { children: "For all general inquiries, technical support, and account questions." })
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { children: "For all general inquiries, technical support, and account questions." })
       ] }),
-      tier === "enterprise" && /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { style: { padding: "1.5rem", border: "2px solid #f59e0b", borderRadius: "8px", backgroundColor: "#fef3e3" }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h3", { children: "Phone Support" }),
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("p", { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Phone:" }),
+      tier === "enterprise" && /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { style: { padding: "1.5rem", border: "2px solid #f59e0b", borderRadius: "8px", backgroundColor: "#fef3e3" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h3", { children: "Phone Support" }),
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("p", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Phone:" }),
           " (307) 395-9830",
-          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("br", {}),
-          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Response Time:" }),
+          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("br", {}),
+          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Response Time:" }),
           " Immediate",
-          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("br", {}),
-          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Hours:" }),
+          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("br", {}),
+          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Hours:" }),
           " Monday-Friday, 9 AM - 6 PM EST"
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { children: "Priority phone support for urgent issues and dedicated account management." })
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { children: "Priority phone support for urgent issues and dedicated account management." })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { style: { padding: "1.5rem", border: "1px solid #e5e7eb", borderRadius: "8px" }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h3", { children: "Billing & Accounts" }),
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("p", { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Email:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { style: { padding: "1.5rem", border: "1px solid #e5e7eb", borderRadius: "8px" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h3", { children: "Billing & Accounts" }),
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("p", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Email:" }),
           " billing@proofkit.com",
-          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("br", {}),
-          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Response Time:" }),
+          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("br", {}),
+          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Response Time:" }),
           " ",
           tier === "enterprise" ? "4" : tier === "professional" ? "6" : "24",
           " hours",
-          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("br", {}),
-          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Hours:" }),
+          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("br", {}),
+          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Hours:" }),
           " Monday-Friday, 9 AM - 6 PM EST"
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { children: "For subscription issues, billing questions, refund requests, and plan changes." })
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { children: "For subscription issues, billing questions, refund requests, and plan changes." })
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h2", { children: "Getting Started" }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h3", { children: "Quick Setup Guide (5 Minutes)" }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("ol", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Install the App:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h2", { children: "Getting Started" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h3", { children: "Quick Setup Guide (5 Minutes)" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("ol", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Install the App:" }),
         " Install Ads Autopilot AI from the Shopify App Store"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Connect Google Ads:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Connect Google Ads:" }),
         " Authorize your Google Ads account integration"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Configure Audiences:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Configure Audiences:" }),
         " Set up your customer segmentation preferences"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Enable Autopilot:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Enable Autopilot:" }),
         " Turn on automated campaign optimization"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Monitor Results:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Monitor Results:" }),
         " Track your conversion rate improvements"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h3", { children: "Key Features" }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "AI-Powered Optimization:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h3", { children: "Key Features" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "AI-Powered Optimization:" }),
         " Automated Google Ads campaign management"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Smart Audience Targeting:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Smart Audience Targeting:" }),
         " Anonymous customer segmentation without PII"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Performance Analytics:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Performance Analytics:" }),
         " Real-time conversion tracking and insights"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Google Sheets Integration:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Google Sheets Integration:" }),
         " Export data and manage campaigns"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Privacy-First:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Privacy-First:" }),
         " GDPR & CCPA compliant, no customer data collection"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h2", { children: "Documentation & Resources" }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h3", { children: "Setup Guides" }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Initial Setup:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h2", { children: "Documentation & Resources" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h3", { children: "Setup Guides" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Initial Setup:" }),
         " Complete walkthrough of app installation and configuration"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Google Ads Integration:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Google Ads Integration:" }),
         " Step-by-step guide to connect your Google Ads account"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Audience Configuration:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Audience Configuration:" }),
         " How to set up customer segmentation and targeting"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Campaign Optimization:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Campaign Optimization:" }),
         " Best practices for automated campaign management"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h3", { children: "Troubleshooting" }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Connection Issues:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h3", { children: "Troubleshooting" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Connection Issues:" }),
         " Resolving Google Ads and Shopify integration problems"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Performance Questions:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Performance Questions:" }),
         " Understanding campaign optimization metrics"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Billing Issues:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Billing Issues:" }),
         " Common subscription and payment questions"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Account Problems:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Account Problems:" }),
         " Login, access, and configuration troubleshooting"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h2", { children: "Pricing & Plans" }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "1rem", margin: "2rem 0" }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { style: { padding: "1.5rem", border: "1px solid #e5e7eb", borderRadius: "8px", textAlign: "center" }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h3", { children: "Free Plan" }),
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { style: { fontSize: "2rem", fontWeight: "bold", color: "#10b981" }, children: "$0" }),
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { children: "per month" }),
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("ul", { style: { textAlign: "left", marginTop: "1rem" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Up to 1,000 monthly sessions" }),
-          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Basic campaign optimization" }),
-          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Email support" }),
-          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Standard analytics" })
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h2", { children: "Pricing & Plans" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "1rem", margin: "2rem 0" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { style: { padding: "1.5rem", border: "1px solid #e5e7eb", borderRadius: "8px", textAlign: "center" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h3", { children: "Free Plan" }),
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { style: { fontSize: "2rem", fontWeight: "bold", color: "#10b981" }, children: "$0" }),
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { children: "per month" }),
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("ul", { style: { textAlign: "left", marginTop: "1rem" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("li", { children: "Up to 1,000 monthly sessions" }),
+          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("li", { children: "Basic campaign optimization" }),
+          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("li", { children: "Email support" }),
+          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("li", { children: "Standard analytics" })
         ] })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { style: { padding: "1.5rem", border: "2px solid #3b82f6", borderRadius: "8px", textAlign: "center", position: "relative" }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("div", { style: { position: "absolute", top: "-10px", left: "50%", transform: "translateX(-50%)", backgroundColor: "#3b82f6", color: "white", padding: "0.25rem 1rem", borderRadius: "12px", fontSize: "0.875rem" }, children: "Popular" }),
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h3", { children: "Pro Plan" }),
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { style: { fontSize: "2rem", fontWeight: "bold", color: "#3b82f6" }, children: "$29" }),
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { children: "per month" }),
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("ul", { style: { textAlign: "left", marginTop: "1rem" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Unlimited sessions" }),
-          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Advanced AI optimization" }),
-          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Priority support" }),
-          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Advanced analytics" }),
-          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Google Sheets integration" })
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { style: { padding: "1.5rem", border: "2px solid #3b82f6", borderRadius: "8px", textAlign: "center", position: "relative" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("div", { style: { position: "absolute", top: "-10px", left: "50%", transform: "translateX(-50%)", backgroundColor: "#3b82f6", color: "white", padding: "0.25rem 1rem", borderRadius: "12px", fontSize: "0.875rem" }, children: "Popular" }),
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h3", { children: "Pro Plan" }),
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { style: { fontSize: "2rem", fontWeight: "bold", color: "#3b82f6" }, children: "$29" }),
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { children: "per month" }),
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("ul", { style: { textAlign: "left", marginTop: "1rem" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("li", { children: "Unlimited sessions" }),
+          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("li", { children: "Advanced AI optimization" }),
+          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("li", { children: "Priority support" }),
+          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("li", { children: "Advanced analytics" }),
+          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("li", { children: "Google Sheets integration" })
         ] })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { style: { padding: "1.5rem", border: "1px solid #e5e7eb", borderRadius: "8px", textAlign: "center" }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h3", { children: "Enterprise" }),
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { style: { fontSize: "2rem", fontWeight: "bold", color: "#8b5cf6" }, children: "$99" }),
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { children: "per month" }),
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("ul", { style: { textAlign: "left", marginTop: "1rem" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Everything in Pro" }),
-          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Multiple store management" }),
-          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Dedicated account manager" }),
-          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Custom integrations" }),
-          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "SLA guarantees" })
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { style: { padding: "1.5rem", border: "1px solid #e5e7eb", borderRadius: "8px", textAlign: "center" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h3", { children: "Enterprise" }),
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { style: { fontSize: "2rem", fontWeight: "bold", color: "#8b5cf6" }, children: "$99" }),
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { children: "per month" }),
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("ul", { style: { textAlign: "left", marginTop: "1rem" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("li", { children: "Everything in Pro" }),
+          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("li", { children: "Multiple store management" }),
+          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("li", { children: "Dedicated account manager" }),
+          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("li", { children: "Custom integrations" }),
+          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("li", { children: "SLA guarantees" })
         ] })
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h2", { children: "Technical Support" }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h3", { children: "System Requirements" }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Shopify Plan:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h2", { children: "Technical Support" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h3", { children: "System Requirements" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Shopify Plan:" }),
         " Any Shopify plan (Basic, Shopify, Advanced, Plus)"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Google Ads Account:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Google Ads Account:" }),
         " Active Google Ads account with API access"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Browser:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Browser:" }),
         " Modern browser (Chrome, Firefox, Safari, Edge)"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Permissions:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Permissions:" }),
         " Shopify admin access to install apps"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h3", { children: "Common Integration Questions" }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Google Ads API:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h3", { children: "Common Integration Questions" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Google Ads API:" }),
         " We use read/write access to optimize your campaigns"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Google Sheets:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Google Sheets:" }),
         " Optional integration for data export and management"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Shopify Data:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Shopify Data:" }),
         " We only read product catalog data (no customer PII)"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Privacy Compliance:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Privacy Compliance:" }),
         " Fully GDPR and CCPA compliant by design"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h2", { children: "Privacy & Security" }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h3", { children: "Data Protection" }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "No Customer PII:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h2", { children: "Privacy & Security" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h3", { children: "Data Protection" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "No Customer PII:" }),
         " We never collect personal information from your customers"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Minimal Data Collection:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Minimal Data Collection:" }),
         " Only store configuration and campaign settings"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Your Data Control:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Your Data Control:" }),
         " You own and control all your optimization data"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Secure Infrastructure:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Secure Infrastructure:" }),
         " Enterprise-grade security with encryption"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h3", { children: "Compliance" }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "GDPR Compliant:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h3", { children: "Compliance" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "GDPR Compliant:" }),
         " Full compliance with EU privacy regulations"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "CCPA Compliant:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "CCPA Compliant:" }),
         " California privacy law compliance"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "SOC 2 Type II:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "SOC 2 Type II:" }),
         " Audited security and privacy controls"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Data Processing Agreements:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Data Processing Agreements:" }),
         " Available for enterprise customers"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h2", { children: "Performance & Optimization" }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h3", { children: "Expected Results" }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Conversion Rate:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h2", { children: "Performance & Optimization" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h3", { children: "Expected Results" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Conversion Rate:" }),
         " Average 15-25% improvement in first 30 days"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Setup Time:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Setup Time:" }),
         " Complete setup in under 5 minutes"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Time to Value:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Time to Value:" }),
         " See optimization results within 24 hours"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Campaign Management:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Campaign Management:" }),
         " Automated optimization saves 5-10 hours/week"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h3", { children: "Best Practices" }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Audience Segmentation:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h3", { children: "Best Practices" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Audience Segmentation:" }),
         " Set up detailed customer segments for better targeting"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Campaign Budgets:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Campaign Budgets:" }),
         " Start with conservative budgets and scale based on performance"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Regular Monitoring:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Regular Monitoring:" }),
         " Review optimization reports weekly"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "A/B Testing:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "A/B Testing:" }),
         " Use built-in testing features to optimize campaigns"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h2", { children: "Training & Onboarding" }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h3", { children: "Available Resources" }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Video Tutorials:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h2", { children: "Training & Onboarding" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h3", { children: "Available Resources" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Video Tutorials:" }),
         " Step-by-step setup and optimization guides"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Webinar Series:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Webinar Series:" }),
         " Monthly training sessions with Q&A"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Best Practices Guide:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Best Practices Guide:" }),
         " Comprehensive optimization strategies"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Case Studies:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Case Studies:" }),
         " Real customer success stories and results"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h3", { children: "Enterprise Support" }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { children: "Enterprise customers receive:" }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Dedicated Account Manager:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h3", { children: "Enterprise Support" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { children: "Enterprise customers receive:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Dedicated Account Manager:" }),
         " Personal support and optimization guidance"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Custom Training:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Custom Training:" }),
         " Tailored training sessions for your team"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Implementation Support:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Implementation Support:" }),
         " Hands-on help with complex setups"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Performance Reviews:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Performance Reviews:" }),
         " Regular optimization strategy sessions"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h2", { children: "Updates & Maintenance" }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h3", { children: "Service Updates" }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Automatic Updates:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h2", { children: "Updates & Maintenance" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h3", { children: "Service Updates" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Automatic Updates:" }),
         " New features and improvements deployed continuously"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Maintenance Windows:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Maintenance Windows:" }),
         " Scheduled maintenance with advance notice"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Security Patches:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Security Patches:" }),
         " Immediate deployment of critical updates"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Feature Announcements:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Feature Announcements:" }),
         " Email notifications for major new features"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h3", { children: "Service Status" }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Uptime Target:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h3", { children: "Service Status" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Uptime Target:" }),
         " 99.9% service availability"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Status Page:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Status Page:" }),
         " Real-time service status and incident reports"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Performance Monitoring:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Performance Monitoring:" }),
         " 24/7 monitoring of all systems"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Incident Response:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Incident Response:" }),
         " Rapid response to any service issues"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("hr", { style: { margin: "3rem 0" } }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { style: { textAlign: "center", backgroundColor: "#f3f4f6", padding: "2rem", borderRadius: "8px" }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h3", { children: "Need Help Right Now?" }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { style: { marginBottom: "1rem" }, children: "Contact our support team for immediate assistance" }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("p", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Email:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("hr", { style: { margin: "3rem 0" } }),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { style: { textAlign: "center", backgroundColor: "#f3f4f6", padding: "2rem", borderRadius: "8px" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h3", { children: "Need Help Right Now?" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { style: { marginBottom: "1rem" }, children: "Contact our support team for immediate assistance" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("p", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Email:" }),
         " ",
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("a", { href: "mailto:atanrikulu@e-listele.com", children: "atanrikulu@e-listele.com" }),
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("br", {}),
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Response Time:" }),
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("a", { href: "mailto:atanrikulu@e-listele.com", children: "atanrikulu@e-listele.com" }),
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("br", {}),
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Response Time:" }),
         " 24 hours",
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("br", {}),
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Available:" }),
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("br", {}),
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Available:" }),
         " Monday-Friday, 9 AM - 6 PM EST"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { style: { marginTop: "2rem" }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("h4", { children: "Emergency Support" }),
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { children: "For critical issues affecting your campaigns:" }),
-        /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("p", { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Priority Email:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("div", { style: { marginTop: "2rem" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h4", { children: "Emergency Support" }),
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { children: "For critical issues affecting your campaigns:" }),
+        /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("p", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Priority Email:" }),
           " ",
-          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("a", { href: "mailto:atanrikulu@e-listele.com", children: "atanrikulu@e-listele.com" })
+          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("a", { href: "mailto:atanrikulu@e-listele.com", children: "atanrikulu@e-listele.com" })
         ] })
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("p", { style: { textAlign: "center", marginTop: "2rem", color: "#666" }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("strong", { children: "Ads Autopilot AI Support Team" }),
-      /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("br", {}),
+    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("p", { style: { textAlign: "center", marginTop: "2rem", color: "#666" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("strong", { children: "Ads Autopilot AI Support Team" }),
+      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("br", {}),
       "Helping you optimize your Google Ads campaigns with AI-powered automation"
     ] })
   ] });
@@ -113672,20 +114101,20 @@ function Support() {
 var index_exports = {};
 __export(index_exports, {
   default: () => Index,
-  loader: () => loader16
+  loader: () => loader17
 });
-var import_node16 = __toESM(require_dist3()), import_jsx_runtime18 = __toESM(require_jsx_runtime());
-async function loader16({ request: request2 }) {
+var import_node17 = __toESM(require_dist3()), import_jsx_runtime19 = __toESM(require_jsx_runtime());
+async function loader17({ request: request2 }) {
   let url = new URL(request2.url), isEmbedded = url.searchParams.get("embedded") === "1", hasHmac = url.searchParams.has("hmac"), hasHost = url.searchParams.has("host");
-  return isEmbedded && hasHmac && hasHost ? (0, import_node16.redirect)(`/app/${url.search}`) : null;
+  return isEmbedded && hasHmac && hasHost ? (0, import_node17.redirect)(`/app/${url.search}`) : null;
 }
 function Index() {
-  return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("html", { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("head", { children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("title", { children: "ProofKit - Shopify App" }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)("body", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("h1", { children: "ProofKit Shopify App" }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { children: "This app should be accessed through the Shopify Admin panel." }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { children: "If you're seeing this page, please install the app through Shopify." })
+  return /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("html", { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("head", { children: /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("title", { children: "ProofKit - Shopify App" }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("body", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("h1", { children: "ProofKit Shopify App" }),
+      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("p", { children: "This app should be accessed through the Shopify Admin panel." }),
+      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("p", { children: "If you're seeing this page, please install the app through Shopify." })
     ] })
   ] });
 }
@@ -113693,11 +114122,11 @@ function Index() {
 // app/routes/auth.$.tsx
 var auth_exports = {};
 __export(auth_exports, {
-  loader: () => loader17
+  loader: () => loader18
 });
-var import_node17 = __toESM(require_dist3());
+var import_node18 = __toESM(require_dist3());
 init_shopify_server();
-var loader17 = async ({ request: request2 }) => {
+var loader18 = async ({ request: request2 }) => {
   try {
     let url = new URL(request2.url), host = url.searchParams.get("host") || void 0, shopName = extractShopFromRequest(request2);
     if (!shopName && host && (shopName = extractShopFromHost(host) || null), !shopName) {
@@ -113719,7 +114148,7 @@ var loader17 = async ({ request: request2 }) => {
     let auth = await authenticate.admin(request2);
     return auth instanceof Response ? auth : null;
   } catch (error) {
-    return console.error("\u{1F6A8} Auth route error:", error), console.error("Request URL:", request2.url), console.error("Request headers:", Object.fromEntries(request2.headers.entries())), (0, import_node17.redirect)(`/auth/login?error=auth_failed&shop=${extractShopFromRequest(request2) || "unknown"}`);
+    return console.error("\u{1F6A8} Auth route error:", error), console.error("Request URL:", request2.url), console.error("Request headers:", Object.fromEntries(request2.headers.entries())), (0, import_node18.redirect)(`/auth/login?error=auth_failed&shop=${extractShopFromRequest(request2) || "unknown"}`);
   }
 };
 
@@ -113727,22 +114156,22 @@ var loader17 = async ({ request: request2 }) => {
 var health_exports2 = {};
 __export(health_exports2, {
   default: () => Health2,
-  loader: () => loader18
+  loader: () => loader19
 });
-var import_node18 = __toESM(require_dist3()), import_jsx_runtime19 = __toESM(require_jsx_runtime()), loader18 = () => (0, import_node18.json)({ ok: !0 });
+var import_node19 = __toESM(require_dist3()), import_jsx_runtime20 = __toESM(require_jsx_runtime()), loader19 = () => (0, import_node19.json)({ ok: !0 });
 function Health2() {
-  return /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("pre", { children: "OK" });
+  return /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("pre", { children: "OK" });
 }
 
 // app/routes/debug.tsx
 var debug_exports = {};
 __export(debug_exports, {
   default: () => Debug,
-  loader: () => loader19
+  loader: () => loader20
 });
-var import_node19 = __toESM(require_dist3()), import_jsx_runtime20 = __toESM(require_jsx_runtime());
-async function loader19() {
-  return (0, import_node19.json)({
+var import_node20 = __toESM(require_dist3()), import_jsx_runtime21 = __toESM(require_jsx_runtime());
+async function loader20() {
+  return (0, import_node20.json)({
     env: {
       SHOPIFY_API_KEY: process.env.SHOPIFY_API_KEY ? "SET" : "MISSING",
       SHOPIFY_API_SECRET: process.env.SHOPIFY_API_SECRET ? "SET" : "MISSING",
@@ -113754,395 +114183,395 @@ async function loader19() {
   });
 }
 function Debug() {
-  return /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("div", { children: "Debug route - check logs for environment info" });
+  return /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("div", { children: "Debug route - check logs for environment info" });
 }
 
 // app/routes/terms.tsx
 var terms_exports = {};
 __export(terms_exports, {
   default: () => Terms,
-  meta: () => meta3
+  meta: () => meta4
 });
-var import_jsx_runtime21 = __toESM(require_jsx_runtime()), meta3 = () => [
+var import_jsx_runtime22 = __toESM(require_jsx_runtime()), meta4 = () => [
   { title: "Terms of Service - Ads Autopilot AI" },
   { name: "description", content: "Ads Autopilot AI Terms of Service - Legal terms for our Shopify conversion optimization app" }
 ];
 function Terms() {
-  return /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("div", { style: { fontFamily: "system-ui, sans-serif", lineHeight: "1.8", maxWidth: "800px", margin: "0 auto", padding: "2rem" }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h1", { children: "Ads Autopilot AI Terms of Service" }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("p", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Effective Date:" }),
+  return /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("div", { style: { fontFamily: "system-ui, sans-serif", lineHeight: "1.8", maxWidth: "800px", margin: "0 auto", padding: "2rem" }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("h1", { children: "Ads Autopilot AI Terms of Service" }),
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("p", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("strong", { children: "Effective Date:" }),
       " August 25, 2025",
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Last Updated:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("strong", { children: "Last Updated:" }),
       " August 25, 2025",
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Version:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("strong", { children: "Version:" }),
       " 1.0"
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h2", { children: "Agreement Overview" }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("p", { children: 'These Terms of Service ("Terms") govern your use of Ads Autopilot AI ("the App", "the Service") provided by the Ads Autopilot AI team ("we", "us", "our"). By installing, accessing, or using Ads Autopilot AI, you ("Merchant", "you", "your") agree to be bound by these Terms.' }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h2", { children: "Service Description" }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h3", { children: "What Ads Autopilot AI Does" }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("p", { children: "Ads Autopilot AI is a Shopify app that provides:" }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "AI-Powered Campaign Optimization:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("h2", { children: "Agreement Overview" }),
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("p", { children: 'These Terms of Service ("Terms") govern your use of Ads Autopilot AI ("the App", "the Service") provided by the Ads Autopilot AI team ("we", "us", "our"). By installing, accessing, or using Ads Autopilot AI, you ("Merchant", "you", "your") agree to be bound by these Terms.' }),
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("h2", { children: "Service Description" }),
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("h3", { children: "What Ads Autopilot AI Does" }),
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("p", { children: "Ads Autopilot AI is a Shopify app that provides:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("strong", { children: "AI-Powered Campaign Optimization:" }),
         " Automated Google Ads campaign management and optimization"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Audience Management:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("strong", { children: "Audience Management:" }),
         " Anonymous customer segmentation and targeting"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Performance Analytics:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("strong", { children: "Performance Analytics:" }),
         " Conversion rate tracking and optimization insights"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Google Sheets Integration:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("strong", { children: "Google Sheets Integration:" }),
         " Data export and campaign configuration management"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h3", { children: "Service Availability" }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Uptime Target:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("h3", { children: "Service Availability" }),
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("strong", { children: "Uptime Target:" }),
         " 99.9% service availability"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Maintenance Windows:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("strong", { children: "Maintenance Windows:" }),
         " Scheduled maintenance with advance notice"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Support Hours:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("strong", { children: "Support Hours:" }),
         " Business hours EST with 24-hour response SLA"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Geographic Availability:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("strong", { children: "Geographic Availability:" }),
         " Global service with regional data compliance"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h2", { children: "Account Terms" }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h3", { children: "Eligibility" }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("p", { children: "To use Ads Autopilot AI, you must:" }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("li", { children: "Be at least 18 years old or the age of majority in your jurisdiction" }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("li", { children: "Have a valid Shopify store and merchant account" }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("li", { children: "Provide accurate and complete registration information" }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("li", { children: "Comply with all applicable laws and regulations" })
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("h2", { children: "Account Terms" }),
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("h3", { children: "Eligibility" }),
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("p", { children: "To use Ads Autopilot AI, you must:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("li", { children: "Be at least 18 years old or the age of majority in your jurisdiction" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("li", { children: "Have a valid Shopify store and merchant account" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("li", { children: "Provide accurate and complete registration information" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("li", { children: "Comply with all applicable laws and regulations" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h3", { children: "Account Responsibilities" }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("p", { children: "You are responsible for:" }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("li", { children: "Maintaining the security of your account credentials" }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("li", { children: "All activities that occur under your account" }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("li", { children: "Promptly notifying us of any unauthorized use" }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("li", { children: "Keeping your contact information current and accurate" })
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("h3", { children: "Account Responsibilities" }),
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("p", { children: "You are responsible for:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("li", { children: "Maintaining the security of your account credentials" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("li", { children: "All activities that occur under your account" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("li", { children: "Promptly notifying us of any unauthorized use" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("li", { children: "Keeping your contact information current and accurate" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h2", { children: "Pricing and Billing" }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h3", { children: "Subscription Plans" }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Free Plan:" }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("li", { children: "Basic features and limited usage" }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("li", { children: "Up to 1,000 monthly sessions" }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("li", { children: "Community support" })
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("h2", { children: "Pricing and Billing" }),
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("h3", { children: "Subscription Plans" }),
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("strong", { children: "Free Plan:" }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("li", { children: "Basic features and limited usage" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("li", { children: "Up to 1,000 monthly sessions" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("li", { children: "Community support" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Pro Plan ($29/month):" }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("li", { children: "Full feature access" }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("li", { children: "Unlimited sessions" }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("li", { children: "Priority support" }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("li", { children: "Advanced analytics" })
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("strong", { children: "Pro Plan ($29/month):" }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("li", { children: "Full feature access" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("li", { children: "Unlimited sessions" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("li", { children: "Priority support" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("li", { children: "Advanced analytics" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Enterprise Plan ($99/month):" }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("li", { children: "Everything in Pro" }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("li", { children: "Multiple store management" }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("li", { children: "Dedicated account manager" }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("li", { children: "Custom integrations" })
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("strong", { children: "Enterprise Plan ($99/month):" }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("li", { children: "Everything in Pro" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("li", { children: "Multiple store management" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("li", { children: "Dedicated account manager" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("li", { children: "Custom integrations" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h3", { children: "Billing Terms" }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Billing Cycle:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("h3", { children: "Billing Terms" }),
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("strong", { children: "Billing Cycle:" }),
         " Monthly subscription billing through Shopify"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Payment Method:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("strong", { children: "Payment Method:" }),
         " Charged to your Shopify account"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Auto-Renewal:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("strong", { children: "Auto-Renewal:" }),
         " Subscriptions automatically renew unless cancelled"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Price Changes:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("strong", { children: "Price Changes:" }),
         " 30-day advance notice for any price changes"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h2", { children: "Data and Privacy" }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h3", { children: "Data Handling" }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("p", { children: "Ads Autopilot AI follows strict data minimization principles:" }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "No Customer PII:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("h2", { children: "Data and Privacy" }),
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("h3", { children: "Data Handling" }),
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("p", { children: "Ads Autopilot AI follows strict data minimization principles:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("strong", { children: "No Customer PII:" }),
         " We do not collect personal information from your customers"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Merchant Data Only:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("strong", { children: "Merchant Data Only:" }),
         " We only access store configuration and product catalog data"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Your Control:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("strong", { children: "Your Control:" }),
         " You control all integrations and can revoke access anytime"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Secure Storage:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("strong", { children: "Secure Storage:" }),
         " All data encrypted in transit and at rest"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h3", { children: "Third-Party Integrations" }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("p", { children: "By using Ads Autopilot AI, you authorize us to:" }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("li", { children: "Access your Google Sheets (when you connect them)" }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("li", { children: "Integrate with Google Ads (when you authorize it)" }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("li", { children: "Read your Shopify product catalog" }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("li", { children: "Process campaign optimization data" })
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("h3", { children: "Third-Party Integrations" }),
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("p", { children: "By using Ads Autopilot AI, you authorize us to:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("li", { children: "Access your Google Sheets (when you connect them)" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("li", { children: "Integrate with Google Ads (when you authorize it)" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("li", { children: "Read your Shopify product catalog" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("li", { children: "Process campaign optimization data" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h2", { children: "Acceptable Use" }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h3", { children: "Permitted Uses" }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("p", { children: "You may use Ads Autopilot AI to:" }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("li", { children: "Optimize your Google Ads campaigns" }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("li", { children: "Manage audience segmentation for your store" }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("li", { children: "Analyze conversion performance" }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("li", { children: "Export campaign data to Google Sheets" })
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("h2", { children: "Acceptable Use" }),
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("h3", { children: "Permitted Uses" }),
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("p", { children: "You may use Ads Autopilot AI to:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("li", { children: "Optimize your Google Ads campaigns" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("li", { children: "Manage audience segmentation for your store" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("li", { children: "Analyze conversion performance" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("li", { children: "Export campaign data to Google Sheets" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h3", { children: "Prohibited Uses" }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("p", { children: "You may not use Ads Autopilot AI to:" }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("li", { children: "Violate any applicable laws or regulations" }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("li", { children: "Infringe on intellectual property rights" }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("li", { children: "Attempt to reverse engineer the service" }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("li", { children: "Use the service for malicious or fraudulent purposes" }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("li", { children: "Interfere with service operations or security" }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("li", { children: "Share access credentials with unauthorized parties" })
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("h3", { children: "Prohibited Uses" }),
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("p", { children: "You may not use Ads Autopilot AI to:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("li", { children: "Violate any applicable laws or regulations" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("li", { children: "Infringe on intellectual property rights" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("li", { children: "Attempt to reverse engineer the service" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("li", { children: "Use the service for malicious or fraudulent purposes" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("li", { children: "Interfere with service operations or security" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("li", { children: "Share access credentials with unauthorized parties" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h2", { children: "Service Limitations" }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h3", { children: "Technical Limitations" }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Google API Quotas:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("h2", { children: "Service Limitations" }),
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("h3", { children: "Technical Limitations" }),
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("strong", { children: "Google API Quotas:" }),
         " Subject to Google Ads and Sheets API rate limits"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Shopify Limits:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("strong", { children: "Shopify Limits:" }),
         " Bound by Shopify platform limitations"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Data Processing:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("strong", { children: "Data Processing:" }),
         " Processing times may vary based on data volume"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Feature Availability:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("strong", { children: "Feature Availability:" }),
         " Some features may require specific plan tiers"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h3", { children: "Service Dependencies" }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("p", { children: "Ads Autopilot AI depends on third-party services:" }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Shopify Platform:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("h3", { children: "Service Dependencies" }),
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("p", { children: "Ads Autopilot AI depends on third-party services:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("strong", { children: "Shopify Platform:" }),
         " Core functionality requires active Shopify store"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Google Services:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("strong", { children: "Google Services:" }),
         " Integrations subject to Google service availability"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Internet Connectivity:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("strong", { children: "Internet Connectivity:" }),
         " Reliable internet connection required"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h2", { children: "Support and Maintenance" }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h3", { children: "Support Services" }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Response Time:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("h2", { children: "Support and Maintenance" }),
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("h3", { children: "Support Services" }),
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("strong", { children: "Response Time:" }),
         " 24-hour response for all support requests"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Support Channels:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("strong", { children: "Support Channels:" }),
         " Email support and help documentation"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Business Hours:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("strong", { children: "Business Hours:" }),
         " Monday-Friday, 9 AM - 6 PM EST"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Languages:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("strong", { children: "Languages:" }),
         " English (primary), Spanish, French"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h3", { children: "Maintenance and Updates" }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Regular Updates:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("h3", { children: "Maintenance and Updates" }),
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("strong", { children: "Regular Updates:" }),
         " Continuous service improvements and bug fixes"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Scheduled Maintenance:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("strong", { children: "Scheduled Maintenance:" }),
         " Advance notice for planned downtime"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Security Updates:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("strong", { children: "Security Updates:" }),
         " Immediate deployment of critical security patches"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Feature Updates:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("strong", { children: "Feature Updates:" }),
         " New features rolled out with documentation"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h2", { children: "Liability and Disclaimers" }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h3", { children: "Service Warranty" }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("p", { children: 'Ads Autopilot AI is provided "as is" with the following disclaimers:' }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "No Revenue Guarantees:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("h2", { children: "Liability and Disclaimers" }),
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("h3", { children: "Service Warranty" }),
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("p", { children: 'Ads Autopilot AI is provided "as is" with the following disclaimers:' }),
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("strong", { children: "No Revenue Guarantees:" }),
         " We do not guarantee specific conversion rate improvements"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Third-Party Dependencies:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("strong", { children: "Third-Party Dependencies:" }),
         " Performance may be affected by external services"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Compliance Responsibility:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("strong", { children: "Compliance Responsibility:" }),
         " You are responsible for compliance with advertising regulations"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h3", { children: "Limitation of Liability" }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("p", { children: "Our liability is limited to:" }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Direct Damages:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("h3", { children: "Limitation of Liability" }),
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("p", { children: "Our liability is limited to:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("strong", { children: "Direct Damages:" }),
         " Maximum liability limited to subscription fees paid"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Indirect Damages:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("strong", { children: "Indirect Damages:" }),
         " Not liable for lost profits or consequential damages"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Service Interruptions:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("strong", { children: "Service Interruptions:" }),
         " Service credits for extended downtime"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h2", { children: "Termination" }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h3", { children: "Termination by You" }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("p", { children: "You may terminate your subscription at any time by:" }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("li", { children: "Uninstalling the app from your Shopify admin" }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("li", { children: "Contacting support to cancel your subscription" }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("li", { children: "Cancelling through your Shopify billing settings" })
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("h2", { children: "Termination" }),
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("h3", { children: "Termination by You" }),
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("p", { children: "You may terminate your subscription at any time by:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("li", { children: "Uninstalling the app from your Shopify admin" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("li", { children: "Contacting support to cancel your subscription" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("li", { children: "Cancelling through your Shopify billing settings" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h3", { children: "Termination by Us" }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("p", { children: "We may terminate or suspend your access if:" }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("li", { children: "You violate these Terms of Service" }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("li", { children: "You fail to pay subscription fees" }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("li", { children: "We detect fraudulent or malicious activity" }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("li", { children: "Required by law or legal process" })
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("h3", { children: "Termination by Us" }),
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("p", { children: "We may terminate or suspend your access if:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("li", { children: "You violate these Terms of Service" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("li", { children: "You fail to pay subscription fees" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("li", { children: "We detect fraudulent or malicious activity" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("li", { children: "Required by law or legal process" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h3", { children: "Effect of Termination" }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("p", { children: "Upon termination:" }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("li", { children: "Your access to the service will be immediately suspended" }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("li", { children: "Your data will be deleted within 30 days" }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("li", { children: "You can export your data before termination" }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("li", { children: "No refunds for partial billing periods" })
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("h3", { children: "Effect of Termination" }),
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("p", { children: "Upon termination:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("li", { children: "Your access to the service will be immediately suspended" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("li", { children: "Your data will be deleted within 30 days" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("li", { children: "You can export your data before termination" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("li", { children: "No refunds for partial billing periods" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h2", { children: "Legal Terms" }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h3", { children: "Intellectual Property" }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Our Rights:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("h2", { children: "Legal Terms" }),
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("h3", { children: "Intellectual Property" }),
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("strong", { children: "Our Rights:" }),
         " We retain all rights to Ads Autopilot AI software and content"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Your Rights:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("strong", { children: "Your Rights:" }),
         " You retain all rights to your store data and content"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "License:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("strong", { children: "License:" }),
         " We grant you a limited license to use the service"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Restrictions:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("strong", { children: "Restrictions:" }),
         " You may not copy, modify, or distribute our software"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h3", { children: "Governing Law" }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Jurisdiction:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("h3", { children: "Governing Law" }),
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("strong", { children: "Jurisdiction:" }),
         " These terms are governed by Delaware law"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Disputes:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("strong", { children: "Disputes:" }),
         " Disputes resolved through binding arbitration"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Class Action Waiver:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("strong", { children: "Class Action Waiver:" }),
         " No class action lawsuits permitted"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h2", { children: "Changes to Terms" }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("p", { children: "We may update these Terms of Service from time to time. We will:" }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("li", { children: "Provide 30-day advance notice of material changes" }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("li", { children: "Email notification to all active users" }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("li", { children: "Post updates prominently in the app" }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("li", { children: "Maintain version history of all changes" })
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("h2", { children: "Changes to Terms" }),
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("p", { children: "We may update these Terms of Service from time to time. We will:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("li", { children: "Provide 30-day advance notice of material changes" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("li", { children: "Email notification to all active users" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("li", { children: "Post updates prominently in the app" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("li", { children: "Maintain version history of all changes" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h2", { children: "Contact Information" }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("p", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "General Support:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("h2", { children: "Contact Information" }),
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("p", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("strong", { children: "General Support:" }),
       " atanrikulu@e-listele.com",
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Legal Questions:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("strong", { children: "Legal Questions:" }),
       " atanrikulu@e-listele.com",
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Billing Issues:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("strong", { children: "Billing Issues:" }),
       " atanrikulu@e-listele.com",
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Privacy Concerns:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("strong", { children: "Privacy Concerns:" }),
       " atanrikulu@e-listele.com"
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h3", { children: "Business Information" }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("p", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Company:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("h3", { children: "Business Information" }),
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("p", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("strong", { children: "Company:" }),
       " Ads Autopilot AI LLC",
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Support Hours:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("strong", { children: "Support Hours:" }),
       " Monday-Friday, 9 AM - 6 PM EST",
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Response Time:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("strong", { children: "Response Time:" }),
       " 24 hours for all inquiries"
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("hr", { style: { margin: "3rem 0" } }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("p", { style: { textAlign: "center", color: "#666" }, children: /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "These Terms of Service are effective as of August 25, 2025, and will remain in effect except with respect to any changes in their provisions in the future, which will be in effect immediately after being posted on this page." }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("p", { style: { textAlign: "center", marginTop: "2rem" }, children: /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "By installing or using Ads Autopilot AI, you acknowledge that you have read, understood, and agree to be bound by these Terms of Service." }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("p", { style: { textAlign: "center", marginTop: "2rem" }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Contact Information:" }),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Email:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("hr", { style: { margin: "3rem 0" } }),
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("p", { style: { textAlign: "center", color: "#666" }, children: /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("strong", { children: "These Terms of Service are effective as of August 25, 2025, and will remain in effect except with respect to any changes in their provisions in the future, which will be in effect immediately after being posted on this page." }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("p", { style: { textAlign: "center", marginTop: "2rem" }, children: /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("strong", { children: "By installing or using Ads Autopilot AI, you acknowledge that you have read, understood, and agree to be bound by these Terms of Service." }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("p", { style: { textAlign: "center", marginTop: "2rem" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("strong", { children: "Contact Information:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("strong", { children: "Email:" }),
       " atanrikulu@e-listele.com",
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Support:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("strong", { children: "Support:" }),
       " atanrikulu@e-listele.com",
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Website:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("strong", { children: "Website:" }),
       " ",
-      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("a", { href: "https://proofkit-saas.vercel.app/terms", children: "https://proofkit-saas.vercel.app/terms" })
+      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("a", { href: "https://proofkit-saas.vercel.app/terms", children: "https://proofkit-saas.vercel.app/terms" })
     ] })
   ] });
 }
@@ -114154,13 +114583,13 @@ __export(app_exports, {
   default: () => App2,
   headers: () => headers,
   links: () => links2,
-  loader: () => loader20
+  loader: () => loader21
 });
-var import_node20 = __toESM(require_dist3()), import_react32 = __toESM(require_dist2());
+var import_node21 = __toESM(require_dist3()), import_react34 = __toESM(require_dist2());
 init_server();
 
 // node_modules/@shopify/shopify-app-remix/dist/esm/react/components/AppProvider/AppProvider.mjs
-var import_jsx_runtime23 = __toESM(require_jsx_runtime(), 1), import_polaris3 = __toESM(require_cjs6(), 1);
+var import_jsx_runtime24 = __toESM(require_jsx_runtime(), 1), import_polaris4 = __toESM(require_cjs6(), 1);
 
 // ../node_modules/@shopify/polaris/locales/en.json
 var en_default = {
@@ -114576,22 +115005,22 @@ var en_default = {
 var APP_BRIDGE_URL2 = "https://cdn.shopify.com/shopifycloud/app-bridge.js";
 
 // node_modules/@shopify/shopify-app-remix/dist/esm/react/components/RemixPolarisLink.mjs
-var import_jsx_runtime22 = __toESM(require_jsx_runtime(), 1), import_react26 = __toESM(require_react(), 1), import_react27 = __toESM(require_dist2(), 1), RemixPolarisLink = import_react26.default.forwardRef((props, ref) => (0, import_jsx_runtime22.jsx)(import_react27.Link, { ...props, to: props.url ?? props.to, ref }));
+var import_jsx_runtime23 = __toESM(require_jsx_runtime(), 1), import_react28 = __toESM(require_react(), 1), import_react29 = __toESM(require_dist2(), 1), RemixPolarisLink = import_react28.default.forwardRef((props, ref) => (0, import_jsx_runtime23.jsx)(import_react29.Link, { ...props, to: props.url ?? props.to, ref }));
 
 // node_modules/@shopify/shopify-app-remix/dist/esm/react/components/AppProvider/AppProvider.mjs
 function AppProvider(props) {
   let { children, apiKey, i18n, isEmbeddedApp = !0, __APP_BRIDGE_URL = APP_BRIDGE_URL2, ...polarisProps } = props;
-  return (0, import_jsx_runtime23.jsxs)(import_jsx_runtime23.Fragment, { children: [isEmbeddedApp && (0, import_jsx_runtime23.jsx)("script", { src: __APP_BRIDGE_URL, "data-api-key": apiKey }), (0, import_jsx_runtime23.jsx)(import_polaris3.AppProvider, { ...polarisProps, linkComponent: RemixPolarisLink, i18n: i18n || en_default, children })] });
+  return (0, import_jsx_runtime24.jsxs)(import_jsx_runtime24.Fragment, { children: [isEmbeddedApp && (0, import_jsx_runtime24.jsx)("script", { src: __APP_BRIDGE_URL, "data-api-key": apiKey }), (0, import_jsx_runtime24.jsx)(import_polaris4.AppProvider, { ...polarisProps, linkComponent: RemixPolarisLink, i18n: i18n || en_default, children })] });
 }
 
 // node_modules/@shopify/shopify-app-remix/dist/esm/react/components/AppProxyProvider/AppProxyProvider.mjs
-var import_jsx_runtime24 = __toESM(require_jsx_runtime(), 1), import_react28 = __toESM(require_react(), 1), AppProxyProviderContext = (0, import_react28.createContext)(null);
+var import_jsx_runtime25 = __toESM(require_jsx_runtime(), 1), import_react30 = __toESM(require_react(), 1), AppProxyProviderContext = (0, import_react30.createContext)(null);
 
 // node_modules/@shopify/shopify-app-remix/dist/esm/react/components/AppProxyForm/AppProxyForm.mjs
-var import_jsx_runtime25 = __toESM(require_jsx_runtime(), 1), import_react29 = __toESM(require_react(), 1);
+var import_jsx_runtime26 = __toESM(require_jsx_runtime(), 1), import_react31 = __toESM(require_react(), 1);
 
 // node_modules/@shopify/shopify-app-remix/dist/esm/react/components/AppProxyLink/AppProxyLink.mjs
-var import_jsx_runtime26 = __toESM(require_jsx_runtime(), 1), import_react30 = __toESM(require_react(), 1);
+var import_jsx_runtime27 = __toESM(require_jsx_runtime(), 1), import_react32 = __toESM(require_react(), 1);
 
 // ../node_modules/@shopify/polaris/build/esm/styles.css
 var styles_default = "/assets/_assets/styles-62I325MT.css";
@@ -114600,7 +115029,7 @@ var styles_default = "/assets/_assets/styles-62I325MT.css";
 init_shopify_server();
 
 // app/components/ErrorBoundary.tsx
-var import_react31 = __toESM(require_react()), import_jsx_runtime27 = __toESM(require_jsx_runtime()), ErrorBoundary3 = class extends import_react31.default.Component {
+var import_react33 = __toESM(require_react()), import_jsx_runtime28 = __toESM(require_jsx_runtime()), ErrorBoundary3 = class extends import_react33.default.Component {
   constructor(props) {
     super(props);
     this.reset = () => {
@@ -114618,9 +115047,9 @@ var import_react31 = __toESM(require_react()), import_jsx_runtime27 = __toESM(re
     if (this.state.hasError) {
       if (this.props.fallback) {
         let FallbackComponent = this.props.fallback;
-        return /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(FallbackComponent, { error: this.state.error, reset: this.reset });
+        return /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(FallbackComponent, { error: this.state.error, reset: this.reset });
       }
-      return /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)(
+      return /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)(
         "div",
         {
           style: {
@@ -114631,13 +115060,13 @@ var import_react31 = __toESM(require_react()), import_jsx_runtime27 = __toESM(re
             margin: "1rem"
           },
           children: [
-            /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("h2", { children: "Application Error" }),
-            /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("p", { children: "We're sorry, but something went wrong while loading this page. Please try refreshing the page or contact support if the problem persists." }),
-            /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("details", { style: { marginTop: "1rem" }, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("summary", { children: "Error Details" }),
-              /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("pre", { style: { fontSize: "12px", overflow: "auto" }, children: this.state.error?.message || "Unknown error" })
+            /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("h2", { children: "Application Error" }),
+            /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("p", { children: "We're sorry, but something went wrong while loading this page. Please try refreshing the page or contact support if the problem persists." }),
+            /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("details", { style: { marginTop: "1rem" }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("summary", { children: "Error Details" }),
+              /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("pre", { style: { fontSize: "12px", overflow: "auto" }, children: this.state.error?.message || "Unknown error" })
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(
+            /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(
               "button",
               {
                 onClick: this.reset,
@@ -114653,7 +115082,7 @@ var import_react31 = __toESM(require_react()), import_jsx_runtime27 = __toESM(re
                 children: "Try Again"
               }
             ),
-            /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(
+            /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(
               "button",
               {
                 onClick: () => window.location.href = "/app",
@@ -114679,13 +115108,13 @@ var import_react31 = __toESM(require_react()), import_jsx_runtime27 = __toESM(re
 };
 
 // app/routes/app.tsx
-var import_jsx_runtime28 = __toESM(require_jsx_runtime()), links2 = () => [{ rel: "stylesheet", href: styles_default }], loader20 = async ({ request: request2 }) => {
+var import_jsx_runtime29 = __toESM(require_jsx_runtime()), links2 = () => [{ rel: "stylesheet", href: styles_default }], loader21 = async ({ request: request2 }) => {
   try {
     console.log(`\u{1F3EA} Dashboard loaded for shop: ${new URL(request2.url).searchParams.get("shop") || "unknown"}`);
     let { session } = await authenticate.admin(request2), shopName = session?.shop?.replace(".myshopify.com", "");
     if (!shopName)
       throw console.error("No shop name found in session:", session), new Error("Unable to determine shop name from Shopify session");
-    return console.log(`\u{1F3EA} Shopify app authenticated for shop: ${shopName}`), (0, import_node20.json)({
+    return console.log(`\u{1F3EA} Shopify app authenticated for shop: ${shopName}`), (0, import_node21.json)({
       apiKey: process.env.SHOPIFY_API_KEY || "",
       shopName
     });
@@ -114699,8 +115128,8 @@ var import_jsx_runtime28 = __toESM(require_jsx_runtime()), links2 = () => [{ rel
   }
 };
 function App2() {
-  let { apiKey, shopName } = (0, import_react32.useLoaderData)();
-  return /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(AppProvider, { isEmbeddedApp: !0, apiKey, children: /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(ErrorBoundary3, { children: /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)(
+  let { apiKey, shopName } = (0, import_react34.useLoaderData)();
+  return /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(AppProvider, { isEmbeddedApp: !0, apiKey, children: /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(ErrorBoundary3, { children: /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)(
     "div",
     {
       style: {
@@ -114709,7 +115138,7 @@ function App2() {
         padding: "0"
       },
       children: [
-        /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(
           "div",
           {
             id: "__shop",
@@ -114717,7 +115146,7 @@ function App2() {
             style: { display: "none" }
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(import_react32.Outlet, {})
+        /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(import_react34.Outlet, {})
       ]
     }
   ) }) });
@@ -114725,7 +115154,7 @@ function App2() {
 var ErrorBoundary4 = boundary.error, headers = (headersArgs) => boundary.headers(headersArgs);
 
 // server-assets-manifest:@remix-run/dev/assets-manifest
-var assets_manifest_default = { entry: { module: "/assets/entry.client-YFVOIIXN.js", imports: ["/assets/_shared/chunk-HBSXC4PT.js", "/assets/_shared/chunk-6U5IYNIC.js", "/assets/_shared/chunk-FN6342HM.js", "/assets/_shared/chunk-P23QBOGJ.js"] }, routes: { root: { id: "root", parentId: void 0, path: "", index: void 0, caseSensitive: void 0, module: "/assets/root-OLUJA2QJ.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/_health": { id: "routes/_health", parentId: "root", path: void 0, index: void 0, caseSensitive: void 0, module: "/assets/routes/_health-4HY4KIMX.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/_index": { id: "routes/_index", parentId: "root", path: void 0, index: !0, caseSensitive: void 0, module: "/assets/routes/_index-ZZUWPXAO.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/api.generate-script": { id: "routes/api.generate-script", parentId: "root", path: "api/generate-script", index: void 0, caseSensitive: void 0, module: "/assets/routes/api.generate-script-3DUZY66Z.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/api.script-proxy": { id: "routes/api.script-proxy", parentId: "root", path: "api/script-proxy", index: void 0, caseSensitive: void 0, module: "/assets/routes/api.script-proxy-D7CGEASX.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app": { id: "routes/app", parentId: "root", path: "app", index: void 0, caseSensitive: void 0, module: "/assets/routes/app-IPRUOM4G.js", imports: ["/assets/_shared/chunk-CNXNCETZ.js", "/assets/_shared/chunk-NAVXS3X4.js", "/assets/_shared/chunk-X5HD2HZ6.js", "/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/app._index": { id: "routes/app._index", parentId: "routes/app", path: void 0, index: !0, caseSensitive: void 0, module: "/assets/routes/app._index-KEQP37WN.js", imports: ["/assets/_shared/chunk-XGZ5RCNR.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.advanced": { id: "routes/app.advanced", parentId: "routes/app", path: "advanced", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.advanced-42TKQHWW.js", imports: ["/assets/_shared/chunk-XGZ5RCNR.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.autopilot": { id: "routes/app.autopilot", parentId: "routes/app", path: "autopilot", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.autopilot-6L3EBWMJ.js", imports: ["/assets/_shared/chunk-XGZ5RCNR.js", "/assets/_shared/chunk-YO2XKRKB.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.billing": { id: "routes/app.billing", parentId: "routes/app", path: "billing", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.billing-6TEY62GI.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/app.dashboards": { id: "routes/app.dashboards", parentId: "routes/app", path: "dashboards", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.dashboards-W6GKQGE7.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.insights": { id: "routes/app.insights", parentId: "routes/app", path: "insights", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.insights-PAAJEF2U.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.reports": { id: "routes/app.reports", parentId: "routes/app", path: "reports", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.reports-TA3NWH6L.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/app.setup": { id: "routes/app.setup", parentId: "routes/app", path: "setup", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.setup-FOAHCYRZ.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/auth.$": { id: "routes/auth.$", parentId: "root", path: "auth/*", index: void 0, caseSensitive: void 0, module: "/assets/routes/auth.$-D4HZOJGU.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/auth.session-token": { id: "routes/auth.session-token", parentId: "root", path: "auth/session-token", index: void 0, caseSensitive: void 0, module: "/assets/routes/auth.session-token-T2WMLCN4.js", imports: ["/assets/_shared/chunk-X5HD2HZ6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/debug": { id: "routes/debug", parentId: "root", path: "debug", index: void 0, caseSensitive: void 0, module: "/assets/routes/debug-NPQ5YZI3.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/health": { id: "routes/health", parentId: "root", path: "health", index: void 0, caseSensitive: void 0, module: "/assets/routes/health-GI3SP7O7.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/install": { id: "routes/install", parentId: "root", path: "install", index: void 0, caseSensitive: void 0, module: "/assets/routes/install-YL2XNGMC.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/local.autopilot": { id: "routes/local.autopilot", parentId: "root", path: "local/autopilot", index: void 0, caseSensitive: void 0, module: "/assets/routes/local.autopilot-EEPNYAYD.js", imports: ["/assets/_shared/chunk-YO2XKRKB.js", "/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/privacy": { id: "routes/privacy", parentId: "root", path: "privacy", index: void 0, caseSensitive: void 0, module: "/assets/routes/privacy-II7HDWDA.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/support": { id: "routes/support", parentId: "root", path: "support", index: void 0, caseSensitive: void 0, module: "/assets/routes/support-JDNIQTFH.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/terms": { id: "routes/terms", parentId: "root", path: "terms", index: void 0, caseSensitive: void 0, module: "/assets/routes/terms-PKGZYJCD.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 } }, version: "caded67e", hmr: void 0, url: "/assets/manifest-CADED67E.js" };
+var assets_manifest_default = { entry: { module: "/assets/entry.client-YFVOIIXN.js", imports: ["/assets/_shared/chunk-HBSXC4PT.js", "/assets/_shared/chunk-6U5IYNIC.js", "/assets/_shared/chunk-FN6342HM.js", "/assets/_shared/chunk-P23QBOGJ.js"] }, routes: { root: { id: "root", parentId: void 0, path: "", index: void 0, caseSensitive: void 0, module: "/assets/root-OLUJA2QJ.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/_health": { id: "routes/_health", parentId: "root", path: void 0, index: void 0, caseSensitive: void 0, module: "/assets/routes/_health-4HY4KIMX.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/_index": { id: "routes/_index", parentId: "root", path: void 0, index: !0, caseSensitive: void 0, module: "/assets/routes/_index-ZZUWPXAO.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/api.generate-script": { id: "routes/api.generate-script", parentId: "root", path: "api/generate-script", index: void 0, caseSensitive: void 0, module: "/assets/routes/api.generate-script-3DUZY66Z.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/api.script-proxy": { id: "routes/api.script-proxy", parentId: "root", path: "api/script-proxy", index: void 0, caseSensitive: void 0, module: "/assets/routes/api.script-proxy-D7CGEASX.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app": { id: "routes/app", parentId: "root", path: "app", index: void 0, caseSensitive: void 0, module: "/assets/routes/app-Y7NLZYR4.js", imports: ["/assets/_shared/chunk-R64XGKNV.js", "/assets/_shared/chunk-NAVXS3X4.js", "/assets/_shared/chunk-X5HD2HZ6.js", "/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/app._index": { id: "routes/app._index", parentId: "routes/app", path: void 0, index: !0, caseSensitive: void 0, module: "/assets/routes/app._index-KEQP37WN.js", imports: ["/assets/_shared/chunk-XGZ5RCNR.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.advanced": { id: "routes/app.advanced", parentId: "routes/app", path: "advanced", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.advanced-42TKQHWW.js", imports: ["/assets/_shared/chunk-XGZ5RCNR.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.autopilot": { id: "routes/app.autopilot", parentId: "routes/app", path: "autopilot", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.autopilot-6L3EBWMJ.js", imports: ["/assets/_shared/chunk-XGZ5RCNR.js", "/assets/_shared/chunk-YO2XKRKB.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.billing": { id: "routes/app.billing", parentId: "routes/app", path: "billing", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.billing-6TEY62GI.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/app.dashboards": { id: "routes/app.dashboards", parentId: "routes/app", path: "dashboards", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.dashboards-FC2HQXXL.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.insights": { id: "routes/app.insights", parentId: "routes/app", path: "insights", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.insights-U3HP6WFR.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.reports": { id: "routes/app.reports", parentId: "routes/app", path: "reports", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.reports-TA3NWH6L.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/app.setup": { id: "routes/app.setup", parentId: "routes/app", path: "setup", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.setup-FOAHCYRZ.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.support": { id: "routes/app.support", parentId: "routes/app", path: "support", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.support-KKRI5UMK.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/auth.$": { id: "routes/auth.$", parentId: "root", path: "auth/*", index: void 0, caseSensitive: void 0, module: "/assets/routes/auth.$-D4HZOJGU.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/auth.session-token": { id: "routes/auth.session-token", parentId: "root", path: "auth/session-token", index: void 0, caseSensitive: void 0, module: "/assets/routes/auth.session-token-T2WMLCN4.js", imports: ["/assets/_shared/chunk-X5HD2HZ6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/debug": { id: "routes/debug", parentId: "root", path: "debug", index: void 0, caseSensitive: void 0, module: "/assets/routes/debug-NPQ5YZI3.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/health": { id: "routes/health", parentId: "root", path: "health", index: void 0, caseSensitive: void 0, module: "/assets/routes/health-GI3SP7O7.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/install": { id: "routes/install", parentId: "root", path: "install", index: void 0, caseSensitive: void 0, module: "/assets/routes/install-YL2XNGMC.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/local.autopilot": { id: "routes/local.autopilot", parentId: "root", path: "local/autopilot", index: void 0, caseSensitive: void 0, module: "/assets/routes/local.autopilot-EEPNYAYD.js", imports: ["/assets/_shared/chunk-YO2XKRKB.js", "/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/privacy": { id: "routes/privacy", parentId: "root", path: "privacy", index: void 0, caseSensitive: void 0, module: "/assets/routes/privacy-II7HDWDA.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/support": { id: "routes/support", parentId: "root", path: "support", index: void 0, caseSensitive: void 0, module: "/assets/routes/support-JDNIQTFH.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/terms": { id: "routes/terms", parentId: "root", path: "terms", index: void 0, caseSensitive: void 0, module: "/assets/routes/terms-PKGZYJCD.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 } }, version: "50669416", hmr: void 0, url: "/assets/manifest-50669416.js" };
 
 // server-entry-module:@remix-run/dev/server-build
 var mode = "production", assetsBuildDirectory = "public/assets", future = { v3_fetcherPersist: !1, v3_relativeSplatPath: !1, v3_throwAbortReason: !1, v3_routeConfig: !1, v3_singleFetch: !1, v3_lazyRouteDiscovery: !1, unstable_optimizeDeps: !1 }, publicPath = "/assets/", entry = { module: entry_server_exports }, routes = {
@@ -114816,6 +115245,14 @@ var mode = "production", assetsBuildDirectory = "public/assets", future = { v3_f
     index: void 0,
     caseSensitive: void 0,
     module: app_reports_exports
+  },
+  "routes/app.support": {
+    id: "routes/app.support",
+    parentId: "routes/app",
+    path: "support",
+    index: void 0,
+    caseSensitive: void 0,
+    module: app_support_exports
   },
   "routes/app._index": {
     id: "routes/app._index",
