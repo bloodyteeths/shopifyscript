@@ -143,14 +143,16 @@ export async function loader(args: LoaderFunctionArgs) {
       logs: [],
     };
     const merged = r?.json?.ok
-      ? { 
-          ...r.json, 
+      ? {
+          ...r.json,
           logs: logs.json?.rows || [],
-          tierStatus: tierStatus?.json || { tier: 'starter', features: {} }
+          tierStatus: tierStatus?.json || { tier: 'starter', features: {} },
+          shopName
         }
-      : { 
-          ...base, 
-          tierStatus: tierStatus?.json || { tier: 'starter', features: {} }
+      : {
+          ...base,
+          tierStatus: tierStatus?.json || { tier: 'starter', features: {} },
+          shopName
         };
     return json(merged);
   } catch (error) {
@@ -266,10 +268,9 @@ function InsightsContent() {
   );
 
   const shopName = React.useMemo(() => {
-    // Extract shop name from URL or data
-    const url = new URL(window.location.href);
-    return url.pathname.split('/')[1] || 'demo-shop';
-  }, []);
+    // Extract shop name from data (server-safe)
+    return data?.shopName || 'demo-shop';
+  }, [data]);
 
   // Check if real-time updates are available
   React.useEffect(() => {
