@@ -1497,4 +1497,4 @@ window.$RefreshSig$ = prevRefreshSig;
 export {
   Insights as default
 };
-//# sourceMappingURL=/assets/routes/app.insights-HOYUCIR4.js.map
+//# sourceMappingURL=/assets/routes/app.insights-B7RVEXFP.js.map
