@@ -66,24 +66,18 @@ function SimpleChart({ data }: { data: any[] }) {
 
 export async function loader(args: LoaderFunctionArgs) {
   try {
-    // Get shop name from Shopify authentication
-    const { authenticate, extractShopFromRequest } = await import(
-      "../shopify.server"
-    );
-    let shopName = extractShopFromRequest(args.request) || "";
-    if (!shopName) {
-      const auth = await authenticate.admin(args.request);
-      if (auth instanceof Response) {
-        return auth;
-      }
-      const { session } = auth as any;
-      shopName = session?.shop?.replace(".myshopify.com", "") || "";
-    }
+    // Standard Shopify authentication following best practices
+    const { authenticate } = await import("../shopify.server");
+    const { session, admin } = await authenticate.admin(args.request);
+
+    const shopName = session?.shop?.replace(".myshopify.com", "");
 
     if (!shopName) {
-      console.error("Loader error: No valid shop name found - setup required");
-      throw new Error("No valid shop name found - setup required");
+      console.error("Insights loader error: Unable to determine shop name from Shopify session");
+      throw new Error("Unable to determine shop name from Shopify session");
     }
+
+    console.log(`Insights page loaded for shop: ${shopName}`);
 
     // Skip setup check for now to avoid redirect loops in serverless
     // TODO: Re-enable setup flow once serverless storage is working properly
