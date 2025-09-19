@@ -136,173 +136,148 @@ export function AnalyticsTier({
 
   const renderBasicKPIs = () => {
     const { kpi } = data;
-    
+
     return (
       <div style={{
         display: "grid",
-        gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))",
-        gap: 16,
-        marginBottom: 24,
+        gridTemplateColumns: "repeat(auto-fill, minmax(120px, 1fr))",
+        gap: 12,
+        marginBottom: 20,
       }}>
         <div style={{
           background: "white",
           border: "1px solid #e3e3e3",
           borderRadius: 8,
-          padding: 16,
+          padding: "12px 14px",
           boxShadow: "0 1px 0 rgba(0, 0, 0, 0.05)",
         }}>
-          <div style={{ color: "#616161", fontSize: 12, marginBottom: 4, fontWeight: "500" }}>
+          <div style={{ color: "#616161", fontSize: 11, marginBottom: 4, fontWeight: "500", textTransform: "uppercase", letterSpacing: "0.5px" }}>
             Clicks
           </div>
           <div style={{
-            fontSize: 24,
+            fontSize: 20,
             fontWeight: "600",
             color: "#202223",
-            marginBottom: 4
+            marginBottom: 2
           }}>
             {formatNumber(kpi.clicks)}
           </div>
-          <div style={{ color: "#616161", fontSize: 11 }}>
+          <div style={{ color: "#8a8a8a", fontSize: 10 }}>
             Total clicks
           </div>
         </div>
 
         <div style={{
-          background: "rgba(255, 255, 255, 0.95)",
-          backdropFilter: "blur(10px)",
-          border: "1px solid rgba(255, 255, 255, 0.2)",
-          borderRadius: 20,
-          padding: 24,
-          boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
-          transition: "all 0.3s ease"
+          background: "white",
+          border: "1px solid #e3e3e3",
+          borderRadius: 8,
+          padding: "12px 14px",
+          boxShadow: "0 1px 0 rgba(0, 0, 0, 0.05)",
         }}>
-          <div style={{ color: "#6b7280", fontSize: 14, marginBottom: 8, fontWeight: "500" }}>
+          <div style={{ color: "#616161", fontSize: 11, marginBottom: 4, fontWeight: "500", textTransform: "uppercase", letterSpacing: "0.5px" }}>
             Cost
           </div>
-          <div style={{ 
-            fontSize: 32, 
-            fontWeight: "700", 
-            color: "#1f2937", 
-            background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)", 
-            WebkitBackgroundClip: "text", 
-            WebkitTextFillColor: "transparent",
-            marginBottom: 4
+          <div style={{
+            fontSize: 20,
+            fontWeight: "600",
+            color: "#5c6ac4",
+            marginBottom: 2
           }}>
             {formatCurrency(kpi.cost)}
           </div>
-          <div style={{ color: "#6b7280", fontSize: 12 }}>
+          <div style={{ color: "#8a8a8a", fontSize: 10 }}>
             Total spend
           </div>
         </div>
 
         <div style={{
-          background: "rgba(255, 255, 255, 0.95)",
-          backdropFilter: "blur(10px)",
-          border: "1px solid rgba(255, 255, 255, 0.2)",
-          borderRadius: 20,
-          padding: 24,
-          boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
-          transition: "all 0.3s ease"
+          background: "white",
+          border: "1px solid #e3e3e3",
+          borderRadius: 8,
+          padding: "12px 14px",
+          boxShadow: "0 1px 0 rgba(0, 0, 0, 0.05)",
         }}>
-          <div style={{ color: "#6b7280", fontSize: 14, marginBottom: 8, fontWeight: "500" }}>
+          <div style={{ color: "#616161", fontSize: 11, marginBottom: 4, fontWeight: "500", textTransform: "uppercase", letterSpacing: "0.5px" }}>
             Conversions
           </div>
-          <div style={{ 
-            fontSize: 32, 
-            fontWeight: "700", 
-            color: "#1f2937", 
-            background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)", 
-            WebkitBackgroundClip: "text", 
-            WebkitTextFillColor: "transparent",
-            marginBottom: 4
+          <div style={{
+            fontSize: 20,
+            fontWeight: "600",
+            color: "#202223",
+            marginBottom: 2
           }}>
             {formatNumber(kpi.conversions)}
           </div>
-          <div style={{ color: "#6b7280", fontSize: 12 }}>
+          <div style={{ color: "#8a8a8a", fontSize: 10 }}>
             Total conversions
           </div>
         </div>
 
         <div style={{
-          background: "rgba(255, 255, 255, 0.95)",
-          backdropFilter: "blur(10px)",
-          border: "1px solid rgba(255, 255, 255, 0.2)",
-          borderRadius: 20,
-          padding: 24,
-          boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
-          transition: "all 0.3s ease"
+          background: "white",
+          border: "1px solid #e3e3e3",
+          borderRadius: 8,
+          padding: "12px 14px",
+          boxShadow: "0 1px 0 rgba(0, 0, 0, 0.05)",
         }}>
-          <div style={{ color: "#6b7280", fontSize: 14, marginBottom: 8, fontWeight: "500" }}>
+          <div style={{ color: "#616161", fontSize: 11, marginBottom: 4, fontWeight: "500", textTransform: "uppercase", letterSpacing: "0.5px" }}>
             CTR
           </div>
-          <div style={{ 
-            fontSize: 32, 
-            fontWeight: "700", 
-            color: "#1f2937", 
-            background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)", 
-            WebkitBackgroundClip: "text", 
-            WebkitTextFillColor: "transparent",
-            marginBottom: 4
+          <div style={{
+            fontSize: 20,
+            fontWeight: "600",
+            color: "#202223",
+            marginBottom: 2
           }}>
             {(kpi.ctr * 100).toFixed(2)}%
           </div>
-          <div style={{ color: "#6b7280", fontSize: 12 }}>
+          <div style={{ color: "#8a8a8a", fontSize: 10 }}>
             Click-through rate
           </div>
         </div>
 
         <div style={{
-          background: "rgba(255, 255, 255, 0.95)",
-          backdropFilter: "blur(10px)",
-          border: "1px solid rgba(255, 255, 255, 0.2)",
-          borderRadius: 20,
-          padding: 24,
-          boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
-          transition: "all 0.3s ease"
+          background: "white",
+          border: "1px solid #e3e3e3",
+          borderRadius: 8,
+          padding: "12px 14px",
+          boxShadow: "0 1px 0 rgba(0, 0, 0, 0.05)",
         }}>
-          <div style={{ color: "#6b7280", fontSize: 14, marginBottom: 8, fontWeight: "500" }}>
+          <div style={{ color: "#616161", fontSize: 11, marginBottom: 4, fontWeight: "500", textTransform: "uppercase", letterSpacing: "0.5px" }}>
             CPC
           </div>
-          <div style={{ 
-            fontSize: 32, 
-            fontWeight: "700", 
-            color: "#1f2937", 
-            background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)", 
-            WebkitBackgroundClip: "text", 
-            WebkitTextFillColor: "transparent",
-            marginBottom: 4
+          <div style={{
+            fontSize: 20,
+            fontWeight: "600",
+            color: "#5c6ac4",
+            marginBottom: 2
           }}>
             {formatCurrency(kpi.cpc)}
           </div>
-          <div style={{ color: "#6b7280", fontSize: 12 }}>
+          <div style={{ color: "#8a8a8a", fontSize: 10 }}>
             Cost per click
           </div>
         </div>
 
         <div style={{
-          background: "rgba(255, 255, 255, 0.95)",
-          backdropFilter: "blur(10px)",
-          border: "1px solid rgba(255, 255, 255, 0.2)",
-          borderRadius: 20,
-          padding: 24,
-          boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)",
-          transition: "all 0.3s ease"
+          background: "white",
+          border: "1px solid #e3e3e3",
+          borderRadius: 8,
+          padding: "12px 14px",
+          boxShadow: "0 1px 0 rgba(0, 0, 0, 0.05)",
         }}>
-          <div style={{ color: "#6b7280", fontSize: 14, marginBottom: 8, fontWeight: "500" }}>
+          <div style={{ color: "#616161", fontSize: 11, marginBottom: 4, fontWeight: "500", textTransform: "uppercase", letterSpacing: "0.5px" }}>
             CPA
           </div>
-          <div style={{ 
-            fontSize: 32, 
-            fontWeight: "700", 
-            color: "#1f2937", 
-            background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)", 
-            WebkitBackgroundClip: "text", 
-            WebkitTextFillColor: "transparent",
-            marginBottom: 4
+          <div style={{
+            fontSize: 20,
+            fontWeight: "600",
+            color: "#5c6ac4",
+            marginBottom: 2
           }}>
             {formatCurrency(kpi.cpa)}
           </div>
-          <div style={{ color: "#6b7280", fontSize: 12 }}>
+          <div style={{ color: "#8a8a8a", fontSize: 10 }}>
             Cost per acquisition
           </div>
         </div>

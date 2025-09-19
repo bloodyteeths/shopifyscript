@@ -79,13 +79,34 @@ export async function checkSubscriptionStatus(admin: AdminApiContext): Promise<S
 
     const subscription = subscriptions[0]; // Get the first (primary) subscription
     
-    // Determine subscription tier based on price
+    // Determine subscription tier based on subscription name or price
+    const subscriptionName = subscription.name?.toLowerCase() || '';
     const priceAmount = parseFloat(subscription.lineItems[0]?.plan?.pricingDetails?.price?.amount || 0);
     let tier: 'starter' | 'professional' | 'enterprise' | null = null;
-    
-    if (priceAmount === 29) tier = 'starter';
-    else if (priceAmount === 79) tier = 'professional';  
-    else if (priceAmount === 199) tier = 'enterprise';
+
+    // First try to determine tier from subscription name
+    if (subscriptionName.includes('enterprise')) {
+      tier = 'enterprise';
+    } else if (subscriptionName.includes('professional') || subscriptionName.includes('pro')) {
+      tier = 'professional';
+    } else if (subscriptionName.includes('starter') || subscriptionName.includes('basic')) {
+      tier = 'starter';
+    }
+    // Fallback to price-based detection
+    else if (priceAmount === 29) {
+      tier = 'starter';
+    } else if (priceAmount === 79) {
+      tier = 'professional';
+    } else if (priceAmount === 199 || priceAmount >= 150) { // Enterprise if $199 or more
+      tier = 'enterprise';
+    } else if (priceAmount > 0) {
+      // Default tier mapping for other prices
+      if (priceAmount < 50) tier = 'starter';
+      else if (priceAmount < 100) tier = 'professional';
+      else tier = 'enterprise';
+    }
+
+    console.log(`Subscription tier detection for ${subscriptionName}: price=$${priceAmount}, detected tier=${tier}`);
 
     // Calculate trial status
     let isInTrial = false;

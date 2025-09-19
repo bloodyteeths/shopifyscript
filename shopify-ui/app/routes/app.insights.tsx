@@ -66,29 +66,49 @@ function SimpleChart({ data }: { data: any[] }) {
 
 export async function loader(args: LoaderFunctionArgs) {
   try {
-    // Get shop name from URL or session context
-    // The parent app.tsx route already handles authentication
-    const url = new URL(args.request.url);
+    // Get shop name and subscription info from Shopify session
+    const { authenticate } = await import("../shopify.server");
+    const { checkSubscriptionStatus } = await import("../utils/subscription.server");
 
-    // Try to get shop from various sources
     let shopName = "";
+    let subscriptionInfo = {
+      hasActivePayment: false,
+      isInTrial: false,
+      trialDaysRemaining: null,
+      subscriptionTier: null,
+      subscriptionStatus: 'checking',
+      subscriptionId: null,
+      currentPeriodEnd: null,
+      needsSubscription: true
+    };
 
-    // Check URL params first
-    const shopParam = url.searchParams.get('shop');
-    if (shopParam) {
-      shopName = shopParam.replace(".myshopify.com", "");
+    try {
+      const { session, admin } = await authenticate.admin(args.request);
+      shopName = session?.shop?.replace(".myshopify.com", "") || "";
+
+      // Get subscription info the same way as dashboard
+      subscriptionInfo = await checkSubscriptionStatus(admin);
+
+      console.log(`Insights subscription check for ${shopName}:`, {
+        hasActivePayment: subscriptionInfo.hasActivePayment,
+        isInTrial: subscriptionInfo.isInTrial,
+        tier: subscriptionInfo.subscriptionTier,
+        fullInfo: JSON.stringify(subscriptionInfo)
+      });
+
+    } catch (error) {
+      console.error("Could not get session or subscription:", error);
+      // Use fallback shop name from environment if available
+      shopName = process.env.DEFAULT_SHOP_NAME || "mybabybymerry";
     }
 
-    // If no shop in URL, use the authenticate function to get session
+    const url = new URL(args.request.url);
+
+    // Check URL params as fallback
     if (!shopName) {
-      const { authenticate } = await import("../shopify.server");
-      try {
-        const { session } = await authenticate.admin(args.request);
-        shopName = session?.shop?.replace(".myshopify.com", "") || "";
-      } catch (error) {
-        console.error("Could not get session:", error);
-        // Use fallback shop name from environment if available
-        shopName = process.env.DEFAULT_SHOP_NAME || "mybabybymerry";
+      const shopParam = url.searchParams.get('shop');
+      if (shopParam) {
+        shopName = shopParam.replace(".myshopify.com", "");
       }
     }
 
@@ -113,14 +133,6 @@ export async function loader(args: LoaderFunctionArgs) {
     );
     const logs = await backendFetch(
       `/run-logs?limit=10`,
-      "GET",
-      undefined,
-      shopName,
-    );
-    
-    // Get tier status for analytics differentiation
-    const tierStatus = await backendFetch(
-      `/insights/tier-status`,
       "GET",
       undefined,
       shopName,
@@ -154,12 +166,30 @@ export async function loader(args: LoaderFunctionArgs) {
       ? {
           ...r.json,
           logs: logs.json?.rows || [],
-          tierStatus: tierStatus?.json || { tier: 'starter', features: {} },
+          tierStatus: {
+            tier: subscriptionInfo.subscriptionTier || 'starter',
+            features: {
+              realTimeAnalytics: subscriptionInfo.subscriptionTier === 'enterprise',
+              advancedReporting: subscriptionInfo.subscriptionTier !== 'starter',
+              dataRetention: subscriptionInfo.subscriptionTier === 'starter' ? 7 :
+                             subscriptionInfo.subscriptionTier === 'professional' ? 30 : 90
+            },
+            subscriptionInfo // Pass full subscription info for UI display
+          },
           shopName
         }
       : {
           ...base,
-          tierStatus: tierStatus?.json || { tier: 'starter', features: {} },
+          tierStatus: {
+            tier: subscriptionInfo.subscriptionTier || 'starter',
+            features: {
+              realTimeAnalytics: subscriptionInfo.subscriptionTier === 'enterprise',
+              advancedReporting: subscriptionInfo.subscriptionTier !== 'starter',
+              dataRetention: subscriptionInfo.subscriptionTier === 'starter' ? 7 :
+                             subscriptionInfo.subscriptionTier === 'professional' ? 30 : 90
+            },
+            subscriptionInfo // Pass full subscription info for UI display
+          },
           shopName
         };
     return json(merged);
@@ -363,23 +393,40 @@ function InsightsContent() {
           maxWidth: '1200px',
           margin: '0 auto'
         }}>
-          <div>
-            <h1 style={{
-              fontSize: '24px',
-              fontWeight: '600',
-              color: '#202223',
-              margin: '0',
-            }}>
-              Analytics Dashboard
-            </h1>
-            <p style={{
-              margin: '4px 0 0 0',
-              color: '#616161',
-              fontSize: '14px',
-              fontWeight: '400'
-            }}>
-              Real-time insights and performance metrics
-            </p>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+            <div>
+              <h1 style={{
+                fontSize: '24px',
+                fontWeight: '600',
+                color: '#202223',
+                margin: '0',
+              }}>
+                Analytics Dashboard
+              </h1>
+              <p style={{
+                margin: '4px 0 0 0',
+                color: '#616161',
+                fontSize: '14px',
+                fontWeight: '400'
+              }}>
+                Real-time insights and performance metrics
+              </p>
+            </div>
+            {tierStatus?.tier && (
+              <div style={{
+                background: tierStatus.tier === 'enterprise' ? '#6f42c1' :
+                           tierStatus.tier === 'professional' ? '#007bff' : '#28a745',
+                color: 'white',
+                padding: '6px 12px',
+                borderRadius: '16px',
+                fontSize: '12px',
+                fontWeight: 'bold',
+                textTransform: 'uppercase',
+                letterSpacing: '0.5px'
+              }}>
+                {tierStatus.tier} TIER
+              </div>
+            )}
           </div>
           
           <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
@@ -450,6 +497,58 @@ function InsightsContent() {
           </div>
         </div>
       </div>
+
+      {/* Subscription Status Banner */}
+      {tierStatus?.subscriptionInfo && (
+        <div style={{
+          padding: '0 24px',
+          maxWidth: '1200px',
+          margin: '16px auto 0 auto'
+        }}>
+          {tierStatus.subscriptionInfo.isInTrial && (
+            <div style={{
+              background: "#fff3cd",
+              border: "1px solid #ffc107",
+              borderRadius: "8px",
+              padding: "12px 16px",
+              marginBottom: "16px",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center"
+            }}>
+              <div>
+                <h3 style={{ margin: "0", fontSize: "14px", color: "#856404", fontWeight: "600" }}>
+                  Free Trial Active - {tierStatus.tier?.toUpperCase()} Plan
+                </h3>
+                <p style={{ margin: "4px 0 0 0", fontSize: "13px", color: "#856404" }}>
+                  {tierStatus.subscriptionInfo.trialDaysRemaining} days remaining • Full access to all features
+                </p>
+              </div>
+            </div>
+          )}
+          {tierStatus.subscriptionInfo.hasActivePayment && !tierStatus.subscriptionInfo.isInTrial && (
+            <div style={{
+              background: "#d1eddd",
+              border: "1px solid #28a745",
+              borderRadius: "8px",
+              padding: "12px 16px",
+              marginBottom: "16px",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center"
+            }}>
+              <div>
+                <h3 style={{ margin: "0", fontSize: "14px", color: "#155724", fontWeight: "600" }}>
+                  {tierStatus.tier?.toUpperCase()} Plan Active
+                </h3>
+                <p style={{ margin: "4px 0 0 0", fontSize: "13px", color: "#155724" }}>
+                  Full access to all {tierStatus.tier} features • Data retention: {tierStatus.features?.dataRetention || 30} days
+                </p>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
 
       {/* Main Content Container */}
       <div style={{

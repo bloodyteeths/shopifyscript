@@ -4,7 +4,7 @@ import {
 } from "/assets/_shared/chunk-D4CGQN4H.js";
 import {
   require_subscription
-} from "/assets/_shared/chunk-QFXH3GZH.js";
+} from "/assets/_shared/chunk-VZJ6BN4E.js";
 import {
   require_shopify
 } from "/assets/_shared/chunk-7OUBBUAS.js";
@@ -1059,4 +1059,4 @@ window.$RefreshSig$ = prevRefreshSig;
 export {
   AppIndex as default
 };
-//# sourceMappingURL=/assets/routes/app._index-AFNX6G4W.js.map
+//# sourceMappingURL=/assets/routes/app._index-JIYINHUH.js.map
