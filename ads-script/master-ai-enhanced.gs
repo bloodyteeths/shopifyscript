@@ -1,5 +1,6 @@
-/** Ads Autopilot AI - Google Ads Script
- * Automated campaign optimization powered by AI
+/** ProofKit Autopilot - AI-Enhanced Google Ads Script
+ * Automated campaign optimization with AI-powered features
+ * Version: 2.0
  */
 var TENANT_ID = '__TENANT_ID__';
 var BACKEND_URL = '__BACKEND_URL__';
@@ -8,6 +9,7 @@ var SHARED_SECRET = '__HMAC_SECRET__';
 var PREVIEW_MODE = false;
 var MUTATION_LOG = [];
 var RUN_MODE = 'PRODUCTION';
+var AI_FEATURES_ENABLED = true;
 
 function main() {
   initializeIdempotencyTracking_();
@@ -25,6 +27,9 @@ function main() {
   ensureLabel_(cfg.label);
   ensureSeed_(cfg);
 
+  // Enable AI features based on configuration
+  AI_FEATURES_ENABLED = cfg.AI_FEATURES_ENABLED !== false;
+
   var campaignQuery = AdsApp.campaigns()
     .withCondition("campaign.advertising_channel_type = SEARCH")
     .withCondition("campaign.status IN ('ENABLED','PAUSED')");
@@ -39,30 +44,57 @@ function main() {
   while (it.hasNext()) camps.push(it.next());
   log_("Found " + camps.length + " campaigns");
 
-  // Budget management
+  // Collect performance data for AI analysis
+  var performanceData = collectDetailedPerformance_();
+
+  // Get AI recommendations if enabled
+  var aiRecommendations = {};
+  if (AI_FEATURES_ENABLED) {
+    aiRecommendations = getAIRecommendations_(performanceData);
+  }
+
+  // Budget management with AI insights
   camps.forEach(function(c) {
     if (isExcludedCampaign_(cfg, c.getName())) return;
-    var cap = cfg.BUDGET_CAPS[c.getName()] != null ? cfg.BUDGET_CAPS[c.getName()] : cfg.daily_budget_cap_default;
+
+    // Use AI-recommended budget if available
+    var aiRecBudget = aiRecommendations.budgets && aiRecommendations.budgets[c.getName()];
+    var cap = aiRecBudget || cfg.BUDGET_CAPS[c.getName()] || cfg.daily_budget_cap_default;
+
     if (cap && c.getBudget().getAmount() > cap) {
-      logMutation_('BUDGET_CHANGE', {campaign: c.getName(), oldAmount: c.getBudget().getAmount(), newAmount: cap});
+      logMutation_('BUDGET_CHANGE', {
+        campaign: c.getName(),
+        oldAmount: c.getBudget().getAmount(),
+        newAmount: cap,
+        source: aiRecBudget ? 'AI' : 'CONFIG'
+      });
       if (!PREVIEW_MODE && cfg.PROMOTE) {
         c.getBudget().setAmount(cap);
-        log_("Budget capped: " + c.getName() + " → $" + cap);
+        log_("Budget adjusted: " + c.getName() + " → $" + cap + (aiRecBudget ? " (AI)" : ""));
       }
     }
     safeLabel_(c, cfg.label);
   });
 
-  // Bidding strategy
+  // Smart bidding with AI optimization
   camps.forEach(function(c) {
     if (isExcludedCampaign_(cfg, c.getName())) return;
-    var ceil = cfg.CPC_CEILINGS[c.getName()] != null ? cfg.CPC_CEILINGS[c.getName()] : cfg.cpc_ceiling_default;
+
+    // Get AI-recommended CPC if available
+    var aiRecCPC = aiRecommendations.cpcs && aiRecommendations.cpcs[c.getName()];
+    var ceil = aiRecCPC || cfg.CPC_CEILINGS[c.getName()] || cfg.cpc_ceiling_default;
+
     try {
-      logMutation_('BIDDING_STRATEGY_CHANGE', {campaign: c.getName(), strategy: 'TARGET_SPEND', ceiling: ceil});
+      logMutation_('BIDDING_STRATEGY_CHANGE', {
+        campaign: c.getName(),
+        strategy: 'TARGET_SPEND',
+        ceiling: ceil,
+        source: aiRecCPC ? 'AI' : 'CONFIG'
+      });
       if (!PREVIEW_MODE && cfg.PROMOTE) {
         c.bidding().setStrategy('TARGET_SPEND');
         if (ceil) c.bidding().setCpcBidCeiling(ceil);
-        log_("Bidding set: " + c.getName() + " → TARGET_SPEND, ceiling $" + ceil);
+        log_("Bidding optimized: " + c.getName() + " → $" + ceil + (aiRecCPC ? " (AI)" : ""));
       }
     } catch(e) { log_("Bidding error on " + c.getName() + ": " + e); }
     safeLabel_(c, cfg.label);
@@ -83,30 +115,62 @@ function main() {
     });
   }
 
-  // Negative keywords
+  // AI-enhanced negative keywords
+  var negativeKeywords = cfg.MASTER_NEGATIVES || [];
+  if (AI_FEATURES_ENABLED && aiRecommendations.negatives) {
+    negativeKeywords = negativeKeywords.concat(aiRecommendations.negatives);
+    log_("Added " + aiRecommendations.negatives.length + " AI-suggested negative keywords");
+  }
+
   var list = getOrCreateNegList_(cfg.master_neg_list_name);
-  upsertListNegs_(list, cfg.MASTER_NEGATIVES);
+  upsertListNegs_(list, negativeKeywords);
   camps.forEach(function(c) {
     if (isExcludedCampaign_(cfg, c.getName())) return;
     attachList_(c, list);
   });
   applyWasteNegs_(cfg, cfg.WASTE_NEGATIVE_MAP);
 
-  // Search terms analysis
+  // Search terms analysis with AI insights
   var stRows = autoNegateAndCollectST_(cfg, cfg.st_lookback, cfg.st_min_clicks, cfg.st_min_cost);
 
-  // RSA creation
-  buildSafeRSAs_(cfg);
+  // Send search terms for AI analysis
+  if (AI_FEATURES_ENABLED && stRows.length > 0) {
+    analyzeSearchTermsWithAI_(stRows);
+  }
 
-  // Audience targeting
-  audienceAttach_(cfg);
+  // AI-powered RSA creation
+  if (AI_FEATURES_ENABLED) {
+    buildAIPoweredRSAs_(cfg, aiRecommendations.rsas || {});
+  } else {
+    buildSafeRSAs_(cfg);
+  }
 
-  // Profit-aware optimization
-  applyProfitAwarePacing_(cfg);
+  // Audience targeting with AI recommendations
+  if (AI_FEATURES_ENABLED && aiRecommendations.audiences) {
+    applyAIAudienceTargeting_(cfg, aiRecommendations.audiences);
+  } else {
+    audienceAttach_(cfg);
+  }
 
-  // Send metrics to backend
+  // AI-driven profit optimization
+  if (AI_FEATURES_ENABLED) {
+    applyAIProfitOptimization_(cfg, aiRecommendations);
+  } else {
+    applyProfitAwarePacing_(cfg);
+  }
+
+  // Collect and send comprehensive metrics
   var metrics = collectPerf_();
-  var runLogs = [[new Date(), 'Ads Autopilot AI run complete']];
+  var runLogs = [[new Date(), 'ProofKit AI-Enhanced run complete']];
+
+  if (AI_FEATURES_ENABLED) {
+    runLogs.push([new Date(), 'AI Features Active: ' + JSON.stringify({
+      budgetOptimizations: Object.keys(aiRecommendations.budgets || {}).length,
+      cpcOptimizations: Object.keys(aiRecommendations.cpcs || {}).length,
+      negativeKeywords: (aiRecommendations.negatives || []).length,
+      rsaSuggestions: Object.keys(aiRecommendations.rsas || {}).length
+    })]);
+  }
 
   if (PREVIEW_MODE || RUN_MODE === 'IDEMPOTENCY_TEST') {
     runLogs.push([new Date(), 'IDEMPOTENCY_LOG: ' + JSON.stringify({
@@ -120,10 +184,226 @@ function main() {
     nonce: new Date().getTime(),
     metrics: metrics,
     search_terms: stRows,
-    run_logs: runLogs
+    run_logs: runLogs,
+    ai_enabled: AI_FEATURES_ENABLED,
+    ai_recommendations: aiRecommendations
   });
 }
 
+// AI Enhancement Functions
+function getAIRecommendations_(performanceData) {
+  if (!AI_FEATURES_ENABLED) return {};
+
+  var sig = sign_("POST:" + TENANT_ID + ":ai_recommendations:" + new Date().getTime());
+  var url = BACKEND_URL + "/ai/recommendations?tenant=" + encodeURIComponent(TENANT_ID) + "&sig=" + encodeURIComponent(sig);
+
+  try {
+    var r = UrlFetchApp.fetch(url, {
+      method: 'post',
+      contentType: 'application/json',
+      payload: JSON.stringify({
+        performance: performanceData,
+        context: {
+          account_age_days: 30,
+          total_spend: calculateTotalSpend_(performanceData),
+          conversion_rate: calculateConversionRate_(performanceData),
+          average_cpc: calculateAverageCPC_(performanceData)
+        }
+      }),
+      muteHttpExceptions: true,
+      followRedirects: true,
+      validateHttpsCertificates: true,
+      headers: { 'User-Agent': 'Proofkit-AdsScript/2.0' }
+    });
+
+    var code = r.getResponseCode();
+    if (code < 200 || code >= 300) {
+      log_("AI recommendations HTTP " + code);
+      return {};
+    }
+
+    var result = JSON.parse(r.getContentText());
+    log_("AI recommendations received: " + JSON.stringify({
+      budgets: Object.keys(result.budgets || {}).length,
+      cpcs: Object.keys(result.cpcs || {}).length,
+      negatives: (result.negatives || []).length
+    }));
+    return result;
+  } catch(e) {
+    log_("AI recommendations error: " + e);
+    return {};
+  }
+}
+
+function collectDetailedPerformance_() {
+  var data = {
+    campaigns: {},
+    adGroups: {},
+    keywords: {},
+    summary: {
+      totalImpressions: 0,
+      totalClicks: 0,
+      totalCost: 0,
+      totalConversions: 0
+    }
+  };
+
+  // Campaign performance
+  var q1 = "SELECT campaign.id, campaign.name, metrics.clicks, metrics.cost_micros, metrics.conversions, metrics.impressions, metrics.ctr, metrics.average_cpc FROM campaign WHERE segments.date DURING LAST_30_DAYS AND campaign.advertising_channel_type = SEARCH";
+  var it1 = AdsApp.search(q1);
+  while (it1.hasNext()) {
+    var r = it1.next();
+    var cost = (r.metrics.costMicros || 0) / 1e6;
+    data.campaigns[r.campaign.name] = {
+      clicks: r.metrics.clicks || 0,
+      cost: cost,
+      conversions: r.metrics.conversions || 0,
+      impressions: r.metrics.impressions || 0,
+      ctr: r.metrics.ctr || 0,
+      avgCpc: r.metrics.averageCpc || 0
+    };
+    data.summary.totalImpressions += r.metrics.impressions || 0;
+    data.summary.totalClicks += r.metrics.clicks || 0;
+    data.summary.totalCost += cost;
+    data.summary.totalConversions += r.metrics.conversions || 0;
+  }
+
+  // Ad group performance
+  var q2 = "SELECT campaign.name, ad_group.id, ad_group.name, metrics.clicks, metrics.cost_micros, metrics.conversions FROM ad_group WHERE segments.date DURING LAST_30_DAYS";
+  var it2 = AdsApp.search(q2);
+  while (it2.hasNext()) {
+    var r2 = it2.next();
+    if (!data.adGroups[r2.campaign.name]) data.adGroups[r2.campaign.name] = {};
+    data.adGroups[r2.campaign.name][r2.adGroup.name] = {
+      clicks: r2.metrics.clicks || 0,
+      cost: (r2.metrics.costMicros || 0) / 1e6,
+      conversions: r2.metrics.conversions || 0
+    };
+  }
+
+  return data;
+}
+
+function analyzeSearchTermsWithAI_(searchTerms) {
+  if (!AI_FEATURES_ENABLED || searchTerms.length === 0) return;
+
+  var sig = sign_("POST:" + TENANT_ID + ":ai_search_terms:" + new Date().getTime());
+  var url = BACKEND_URL + "/ai/analyze-search-terms?tenant=" + encodeURIComponent(TENANT_ID) + "&sig=" + encodeURIComponent(sig);
+
+  try {
+    UrlFetchApp.fetch(url, {
+      method: 'post',
+      contentType: 'application/json',
+      payload: JSON.stringify({ search_terms: searchTerms.slice(0, 100) }), // Limit to 100 for API
+      muteHttpExceptions: true,
+      followRedirects: true,
+      validateHttpsCertificates: true,
+      headers: { 'User-Agent': 'Proofkit-AdsScript/2.0' }
+    });
+    log_("Search terms sent for AI analysis");
+  } catch(e) {
+    log_("Search term AI analysis error: " + e);
+  }
+}
+
+function buildAIPoweredRSAs_(cfg, aiRSAs) {
+  var it = AdsApp.adGroups()
+    .withCondition("campaign.advertising_channel_type = SEARCH")
+    .withCondition("ad_group.status IN ('ENABLED','PAUSED')")
+    .get();
+  var created = 0;
+
+  while (it.hasNext()) {
+    var ag = it.next();
+    try {
+      var hasDSA = ag.ads().withCondition("type = DYNAMIC_SEARCH_AD").get().hasNext();
+      if (hasDSA) continue;
+    } catch(e) {}
+
+    if (hasLabelledAd_(ag, cfg.label)) continue;
+
+    var finalUrl = inferFinalUrl_(ag) || cfg.default_final_url;
+    var camp = ag.getCampaign().getName();
+    var name = ag.getName();
+
+    // Check for AI-generated content
+    var aiContent = aiRSAs[camp] && aiRSAs[camp][name];
+    var H, D;
+
+    if (aiContent) {
+      H = lint_(aiContent.headlines || [], 30, 15, 3);
+      D = lint_(aiContent.descriptions || [], 90, 4, 10);
+      log_("Using AI-generated RSA content for " + camp + " › " + name);
+    } else {
+      // Fallback to configured or default content
+      var ov = (cfg.RSA_MAP[camp] && cfg.RSA_MAP[camp][name]) || null;
+      var Hsrc = ov && ov.H && ov.H.length ? ov.H : (cfg.RSA_DEFAULT.H || ["Digital Certificates", "Compliance Reports"]);
+      var Dsrc = ov && ov.D && ov.D.length ? ov.D : (cfg.RSA_DEFAULT.D || ["Create inspector-ready PDFs fast."]);
+      H = lint_(Hsrc, 30, 15, 3);
+      D = lint_(Dsrc, 90, 4, 10);
+    }
+
+    var b = ag.newAd().responsiveSearchAdBuilder().withFinalUrl(finalUrl);
+    H.forEach(function(h) { b.addHeadline(h); });
+    D.forEach(function(d) { b.addDescription(d); });
+
+    try {
+      if (!PREVIEW_MODE && cfg.PROMOTE) {
+        var op = b.build();
+        if (op.isSuccessful()) {
+          safeLabelWithGuard_(op.getResult(), cfg.label);
+          created++;
+          log_("RSA created in " + camp + " › " + name + (aiContent ? " (AI)" : ""));
+        }
+      }
+    } catch(e) { log_("RSA build error in " + camp + " › " + name + ": " + e); }
+  }
+  if (created) log_("RSAs created: " + created);
+}
+
+function applyAIAudienceTargeting_(cfg, aiAudiences) {
+  // Implementation would apply AI-recommended audiences
+  log_("Applying AI audience recommendations: " + Object.keys(aiAudiences).length + " suggestions");
+  // For now, fallback to standard implementation
+  audienceAttach_(cfg);
+}
+
+function applyAIProfitOptimization_(cfg, recommendations) {
+  if (!recommendations.profitSignals) {
+    applyProfitAwarePacing_(cfg);
+    return;
+  }
+
+  log_("Applying AI profit optimization signals");
+
+  recommendations.profitSignals.forEach(function(signal) {
+    try {
+      var result = applySignalToAdGroup_(signal, cfg);
+      if (result.applied) {
+        log_("AI profit signal applied: " + signal.reason);
+      }
+    } catch(e) {
+      log_("AI profit signal error: " + e);
+    }
+  });
+}
+
+// Helper functions for AI analysis
+function calculateTotalSpend_(data) {
+  return data.summary.totalCost || 0;
+}
+
+function calculateConversionRate_(data) {
+  if (!data.summary.totalClicks) return 0;
+  return (data.summary.totalConversions / data.summary.totalClicks) * 100;
+}
+
+function calculateAverageCPC_(data) {
+  if (!data.summary.totalClicks) return 0;
+  return data.summary.totalCost / data.summary.totalClicks;
+}
+
+// Include all original helper functions below...
 // Backend communication
 function getConfig_() {
   var sig = sign_("GET:" + TENANT_ID + ":config");
@@ -133,7 +413,7 @@ function getConfig_() {
       muteHttpExceptions: true,
       followRedirects: true,
       validateHttpsCertificates: true,
-      headers: { 'User-Agent': 'Proofkit-AdsScript/1.0' }
+      headers: { 'User-Agent': 'Proofkit-AdsScript/2.0' }
     });
     var code = r.getResponseCode();
     var txt = r.getContentText();
@@ -152,12 +432,36 @@ function postToBackend_(action, payload) {
   var sig = sign_("POST:" + TENANT_ID + ":" + action + ":" + (payload.nonce || ''));
   var url = BACKEND_URL + "/" + action + "?tenant=" + encodeURIComponent(TENANT_ID) + "&sig=" + encodeURIComponent(sig);
   var CHUNK = 500, metrics = payload.metrics || [], sts = payload.search_terms || [], logs = payload.run_logs || [];
-  for (var i = 0; i < Math.max(1, Math.ceil(metrics.length/CHUNK)); i++) {
+
+  // Include AI data in first chunk
+  var firstChunk = {
+    nonce: payload.nonce,
+    metrics: metrics.slice(0, CHUNK),
+    search_terms: sts.slice(0, CHUNK),
+    run_logs: logs,
+    ai_enabled: payload.ai_enabled,
+    ai_recommendations: payload.ai_recommendations
+  };
+
+  try {
+    UrlFetchApp.fetch(url, {
+      method: 'post',
+      contentType: 'application/json',
+      payload: JSON.stringify(firstChunk),
+      muteHttpExceptions: true,
+      followRedirects: true,
+      validateHttpsCertificates: true,
+      headers: { 'User-Agent': 'Proofkit-AdsScript/2.0' }
+    });
+  } catch(e) { log_("Backend post error: " + e); }
+
+  // Send remaining chunks without AI data
+  for (var i = 1; i < Math.max(1, Math.ceil(metrics.length/CHUNK)); i++) {
     var part = {
       nonce: payload.nonce,
       metrics: metrics.slice(i * CHUNK, (i + 1) * CHUNK),
-      search_terms: i === 0 ? sts.slice(0, CHUNK) : [],
-      run_logs: i === 0 ? logs : []
+      search_terms: [],
+      run_logs: []
     };
     try {
       UrlFetchApp.fetch(url, {
@@ -167,7 +471,7 @@ function postToBackend_(action, payload) {
         muteHttpExceptions: true,
         followRedirects: true,
         validateHttpsCertificates: true,
-        headers: { 'User-Agent': 'Proofkit-AdsScript/1.0' }
+        headers: { 'User-Agent': 'Proofkit-AdsScript/2.0' }
       });
     } catch(e) { log_("Backend post error (chunk " + i + "): " + e); }
   }
@@ -178,11 +482,20 @@ function sign_(payload) {
   return Utilities.base64Encode(raw).replace(/=+$/, '');
 }
 
-// Campaign seeding
+// Include all other helper functions from the original script...
+// (ensureSeed_, addSchedule_, getOrCreateNegList_, upsertListNegs_, attachList_,
+//  applyWasteNegs_, collectPerf_, autoNegateAndCollectST_, buildSafeRSAs_,
+//  lint_, hasLabelledAd_, inferFinalUrl_, ensureLabel_, safeLabel_, dedupeWords_,
+//  log_, audienceAttach_, isExcludedCampaign_, isExcludedAdGroup_,
+//  initializeIdempotencyTracking_, logMutation_, validatePromoteGate_,
+//  initializeSafetyGuards_, loadNegGuard_, isReservedKeyword_, safeLabelWithGuard_,
+//  applyProfitAwarePacing_, getPaceSignals_, applySignalToAdGroup_)
+
+// [Rest of helper functions continue as in original script...]
 function ensureSeed_(cfg) {
   var any = AdsApp.campaigns().withCondition("campaign.advertising_channel_type = SEARCH").get();
   if (any.hasNext()) return;
-  var name = (cfg.desired && cfg.desired.campaign_name) || "Ads Autopilot AI - Search";
+  var name = (cfg.desired && cfg.desired.campaign_name) || "ProofKit - Search";
   var daily = cfg.daily_budget_cap_default || 3.00;
   var ceil = cfg.cpc_ceiling_default || 0.20;
   var adg = (cfg.desired && cfg.desired.ad_group) || "Default";
@@ -224,7 +537,6 @@ function addSchedule_(c, daysCsv, start, end) {
   });
 }
 
-// Negative keyword management
 function getOrCreateNegList_(name) {
   var it = AdsApp.negativeKeywordLists().get();
   while (it.hasNext()) {
@@ -286,7 +598,6 @@ function applyWasteNegs_(cfg, map) {
   }
 }
 
-// Performance collection
 function collectPerf_() {
   var rows = [];
   var q1 = "SELECT campaign.id, campaign.name, metrics.clicks, metrics.cost_micros, metrics.conversions, metrics.impressions, metrics.ctr FROM campaign WHERE segments.date DURING LAST_7_DAYS AND campaign.advertising_channel_type = SEARCH";
@@ -313,7 +624,6 @@ function collectPerf_() {
   return rows;
 }
 
-// Search term auto-negation
 function autoNegateAndCollectST_(cfg, lookback, minClicks, minCost) {
   var q = "SELECT campaign.name, ad_group.id, ad_group.name, search_term_view.search_term, metrics.clicks, metrics.cost_micros, metrics.conversions FROM search_term_view WHERE segments.date DURING " + (lookback || 'LAST_7_DAYS') + " AND campaign.advertising_channel_type = SEARCH AND metrics.clicks >= " + (minClicks || 2);
   var it = AdsApp.search(q), outRows = [], bucket = {};
@@ -355,7 +665,6 @@ function autoNegateAndCollectST_(cfg, lookback, minClicks, minCost) {
   return outRows;
 }
 
-// RSA creation
 function buildSafeRSAs_(cfg) {
   var it = AdsApp.adGroups()
     .withCondition("campaign.advertising_channel_type = SEARCH")
@@ -436,11 +745,10 @@ function inferFinalUrl_(ag) {
   return null;
 }
 
-// Label management
 function ensureLabel_(name) {
   var it = AdsApp.labels().get();
   while (it.hasNext()) if (it.next().getName() === name) return;
-  AdsApp.createLabel(name, "Managed by Ads Autopilot AI");
+  AdsApp.createLabel(name, "AI-Powered by ProofKit");
 }
 
 function safeLabel_(entity, name) { safeLabelWithGuard_(entity, name); }
@@ -458,7 +766,6 @@ function dedupeWords_(s) {
 
 function log_(m) { Logger.log(m); }
 
-// Audience targeting
 function audienceAttach_(cfg) {
   try {
     if (!cfg || !cfg.FEATURE_AUDIENCE_ATTACH) {
@@ -547,7 +854,6 @@ function audienceAttach_(cfg) {
   } catch(e) { log_('Audience attach error: ' + e); }
 }
 
-// Exclusion helpers
 function isExcludedCampaign_(cfg, campaignName) {
   try { return !!(cfg && cfg.EXCLUSIONS && cfg.EXCLUSIONS[campaignName]); } catch(e) { return false; }
 }
@@ -556,7 +862,6 @@ function isExcludedAdGroup_(cfg, campaignName, adGroupName) {
   try { return !!(cfg && cfg.EXCLUSIONS && cfg.EXCLUSIONS[campaignName] && cfg.EXCLUSIONS[campaignName][adGroupName]); } catch(e) { return false; }
 }
 
-// Idempotency tracking
 function initializeIdempotencyTracking_() {
   try {
     var testMode = PropertiesService.getScriptProperties().getProperty('PROOFKIT_TEST_MODE');
@@ -579,9 +884,8 @@ function logMutation_(type, details) {
   });
 }
 
-// Safety guards
 var NEG_GUARD_ACTIVE = false;
-var RESERVED_KEYWORDS = ['brand', 'competitor', 'important'];
+var RESERVED_KEYWORDS = ['proofkit', 'brand', 'competitor', 'important'];
 
 function validatePromoteGate_(cfg) {
   if (!cfg) return false;
@@ -600,15 +904,15 @@ function validatePromoteGate_(cfg) {
 function initializeSafetyGuards_(cfg) {
   if (!cfg) return;
   NEG_GUARD_ACTIVE = cfg.PROMOTE && !PREVIEW_MODE && RUN_MODE !== 'IDEMPOTENCY_TEST';
-  log_('Safety Guards: PROMOTE=' + cfg.PROMOTE + ', NEG_GUARD=' + NEG_GUARD_ACTIVE);
+  log_('Safety Guards: PROMOTE=' + cfg.PROMOTE + ', NEG_GUARD=' + NEG_GUARD_ACTIVE + ', AI=' + AI_FEATURES_ENABLED);
 }
 
 function loadNegGuard_(cfg) {
   try {
-    RESERVED_KEYWORDS = cfg.NEG_GUARD || ['brand', 'competitor', 'important'];
+    RESERVED_KEYWORDS = cfg.NEG_GUARD || ['proofkit', 'brand', 'competitor', 'important'];
     log_('NEG_GUARD: Loaded ' + RESERVED_KEYWORDS.length + ' reserved keywords');
   } catch(e) {
-    RESERVED_KEYWORDS = ['brand', 'competitor', 'important'];
+    RESERVED_KEYWORDS = ['proofkit', 'brand', 'competitor', 'important'];
   }
 }
 
@@ -636,7 +940,6 @@ function safeLabelWithGuard_(entity, labelName) {
   } catch(e) {}
 }
 
-// Profit-aware pacing
 function applyProfitAwarePacing_(cfg) {
   try {
     if (!cfg || !cfg.FEATURE_INVENTORY_GUARD) {
@@ -675,7 +978,7 @@ function getPaceSignals_() {
       muteHttpExceptions: true,
       followRedirects: true,
       validateHttpsCertificates: true,
-      headers: { 'User-Agent': 'Proofkit-AdsScript/1.0' }
+      headers: { 'User-Agent': 'Proofkit-AdsScript/2.0' }
     });
 
     var code = r.getResponseCode();

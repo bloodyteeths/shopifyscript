@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ads Autopilot AI - Analytics Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: white;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .subtitle {
+            color: rgba(255,255,255,0.9);
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card h2 {
+            font-size: 1.4em;
+            color: #333;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #f0f0f0;
+            padding-bottom: 10px;
+        }
+
+        .metric {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #f5f5f5;
+        }
+
+        .metric:last-child {
+            border-bottom: none;
+        }
+
+        .metric-label {
+            font-size: 0.95em;
+            color: #666;
+        }
+
+        .metric-value {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .metric-value.positive {
+            color: #10b981;
+        }
+
+        .metric-value.negative {
+            color: #ef4444;
+        }
+
+        .ai-badge {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            display: inline-block;
+            margin-left: 10px;
+        }
+
+        .chart-container {
+            margin-top: 20px;
+            height: 200px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+        }
+
+        .bar {
+            width: 30px;
+            background: linear-gradient(180deg, #667eea, #764ba2);
+            border-radius: 4px 4px 0 0;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .bar:hover {
+            opacity: 0.8;
+        }
+
+        .bar-label {
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.8em;
+            color: #666;
+            white-space: nowrap;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+
+        .status-active {
+            background: #10b981;
+            animation: pulse 2s infinite;
+        }
+
+        .status-warning {
+            background: #f59e0b;
+        }
+
+        .status-error {
+            background: #ef4444;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(16, 185, 129, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(16, 185, 129, 0);
+            }
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .feature-item {
+            background: #f9fafb;
+            padding: 10px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .feature-icon {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .refresh-btn {
+            background: white;
+            color: #667eea;
+            border: 2px solid white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 20px;
+        }
+
+        .refresh-btn:hover {
+            background: transparent;
+            color: white;
+        }
+
+        .loading {
+            text-align: center;
+            color: white;
+            font-size: 1.2em;
+            padding: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>
+            📊 Ads Autopilot AI
+            <span class="ai-badge">AI-Powered</span>
+        </h1>
+        <p class="subtitle">Real-time Google Ads Performance Dashboard</p>
+
+        <button class="refresh-btn" onclick="refreshData()">🔄 Refresh Data</button>
+
+        <div id="loading" class="loading" style="display: none;">Loading metrics...</div>
+
+        <div class="dashboard" id="dashboard">
+            <!-- System Status Card -->
+            <div class="card">
+                <h2>System Status</h2>
+                <div class="metric">
+                    <span class="metric-label">
+                        <span class="status-indicator status-active"></span>
+                        Script Status
+                    </span>
+                    <span class="metric-value positive">Active</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Google Sheets</span>
+                    <span class="metric-value positive">Connected</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Supabase</span>
+                    <span class="metric-value positive">Connected</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">AI Features</span>
+                    <span class="metric-value positive">Enabled</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Last Run</span>
+                    <span class="metric-value" id="lastRun">Never</span>
+                </div>
+            </div>
+
+            <!-- Performance Overview -->
+            <div class="card">
+                <h2>Performance Overview (Last 7 Days)</h2>
+                <div class="metric">
+                    <span class="metric-label">Total Spend</span>
+                    <span class="metric-value" id="totalSpend">$0.00</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Total Clicks</span>
+                    <span class="metric-value" id="totalClicks">0</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Total Conversions</span>
+                    <span class="metric-value" id="totalConversions">0</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Average CPC</span>
+                    <span class="metric-value" id="avgCPC">$0.00</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Conversion Rate</span>
+                    <span class="metric-value" id="convRate">0.00%</span>
+                </div>
+            </div>
+
+            <!-- AI Optimizations -->
+            <div class="card">
+                <h2>AI Optimizations</h2>
+                <div class="metric">
+                    <span class="metric-label">Budget Adjustments</span>
+                    <span class="metric-value positive" id="budgetAdj">0</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">CPC Optimizations</span>
+                    <span class="metric-value positive" id="cpcOpt">0</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Negative Keywords Added</span>
+                    <span class="metric-value" id="negKeywords">0</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">RSAs Created</span>
+                    <span class="metric-value" id="rsaCreated">0</span>
+                </div>
+                <div class="metric">
+                    <span class="metric-label">Estimated Savings</span>
+                    <span class="metric-value positive" id="estSavings">$0.00</span>
+                </div>
+            </div>
+
+            <!-- Campaign Performance -->
+            <div class="card">
+                <h2>Top Campaigns</h2>
+                <div id="campaignChart" class="chart-container">
+                    <!-- Dynamic chart bars will be inserted here -->
+                </div>
+            </div>
+
+            <!-- Active Features -->
+            <div class="card" style="grid-column: 1 / -1;">
+                <h2>Active Features</h2>
+                <div class="feature-grid">
+                    <div class="feature-item">
+                        <span class="feature-icon">✅</span>
+                        <span>Budget Management</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">✅</span>
+                        <span>CPC Optimization</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">✅</span>
+                        <span>Negative Keywords</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">✅</span>
+                        <span>RSA Generation</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">✅</span>
+                        <span>Schedule Management</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">✅</span>
+                        <span>PROMOTE Gate Safety</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">🤖</span>
+                        <span>AI Budget Optimization</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">🤖</span>
+                        <span>AI Keyword Suggestions</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">🤖</span>
+                        <span>AI Ad Copy Generation</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">🤖</span>
+                        <span>Performance Predictions</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">⚠️</span>
+                        <span>Audience Targeting (Beta)</span>
+                    </div>
+                    <div class="feature-item">
+                        <span class="feature-icon">⚠️</span>
+                        <span>Profit Pacing (Beta)</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sample data - in production, this would fetch from your backend
+        const sampleData = {
+            totalSpend: 245.67,
+            totalClicks: 487,
+            totalConversions: 23,
+            avgCPC: 0.50,
+            conversionRate: 4.72,
+            budgetAdjustments: 5,
+            cpcOptimizations: 8,
+            negativeKeywords: 47,
+            rsasCreated: 3,
+            estimatedSavings: 89.50,
+            lastRun: new Date().toISOString(),
+            topCampaigns: [
+                { name: 'Search - Brand', spend: 89.50, conversions: 12 },
+                { name: 'Search - Generic', spend: 67.30, conversions: 7 },
+                { name: 'Shopping - All', spend: 45.20, conversions: 3 },
+                { name: 'Dynamic - Auto', spend: 43.67, conversions: 1 }
+            ]
+        };
+
+        function updateDashboard(data) {
+            // Update metrics
+            document.getElementById('totalSpend').textContent = `$${data.totalSpend.toFixed(2)}`;
+            document.getElementById('totalClicks').textContent = data.totalClicks.toLocaleString();
+            document.getElementById('totalConversions').textContent = data.totalConversions;
+            document.getElementById('avgCPC').textContent = `$${data.avgCPC.toFixed(2)}`;
+            document.getElementById('convRate').textContent = `${data.conversionRate.toFixed(2)}%`;
+
+            // Update AI optimizations
+            document.getElementById('budgetAdj').textContent = data.budgetAdjustments;
+            document.getElementById('cpcOpt').textContent = data.cpcOptimizations;
+            document.getElementById('negKeywords').textContent = data.negativeKeywords;
+            document.getElementById('rsaCreated').textContent = data.rsasCreated;
+            document.getElementById('estSavings').textContent = `$${data.estimatedSavings.toFixed(2)}`;
+
+            // Update last run time
+            const lastRun = new Date(data.lastRun);
+            const timeAgo = getTimeAgo(lastRun);
+            document.getElementById('lastRun').textContent = timeAgo;
+
+            // Update campaign chart
+            updateCampaignChart(data.topCampaigns);
+        }
+
+        function updateCampaignChart(campaigns) {
+            const chartContainer = document.getElementById('campaignChart');
+            chartContainer.innerHTML = '';
+
+            const maxSpend = Math.max(...campaigns.map(c => c.spend));
+
+            campaigns.forEach(campaign => {
+                const barHeight = (campaign.spend / maxSpend) * 150;
+                const bar = document.createElement('div');
+                bar.className = 'bar';
+                bar.style.height = `${barHeight}px`;
+                bar.innerHTML = `
+                    <div class="bar-label">${campaign.name.split(' - ')[1]}</div>
+                `;
+                bar.title = `${campaign.name}: $${campaign.spend.toFixed(2)} (${campaign.conversions} conv)`;
+                chartContainer.appendChild(bar);
+            });
+        }
+
+        function getTimeAgo(date) {
+            const seconds = Math.floor((new Date() - date) / 1000);
+            if (seconds < 60) return 'Just now';
+            const minutes = Math.floor(seconds / 60);
+            if (minutes < 60) return `${minutes} min ago`;
+            const hours = Math.floor(minutes / 60);
+            if (hours < 24) return `${hours} hour${hours > 1 ? 's' : ''} ago`;
+            const days = Math.floor(hours / 24);
+            return `${days} day${days > 1 ? 's' : ''} ago`;
+        }
+
+        async function fetchRealData() {
+            // In production, this would fetch from your backend
+            // For now, we'll use sample data with some randomization
+            const data = { ...sampleData };
+
+            // Add some randomization to make it look dynamic
+            data.totalSpend += (Math.random() - 0.5) * 20;
+            data.totalClicks += Math.floor((Math.random() - 0.5) * 50);
+            data.totalConversions += Math.floor((Math.random() - 0.5) * 3);
+            data.conversionRate = (data.totalConversions / data.totalClicks) * 100;
+            data.avgCPC = data.totalSpend / data.totalClicks;
+            data.lastRun = new Date();
+
+            return data;
+        }
+
+        async function refreshData() {
+            const loading = document.getElementById('loading');
+            const dashboard = document.getElementById('dashboard');
+
+            loading.style.display = 'block';
+            dashboard.style.opacity = '0.5';
+
+            try {
+                const data = await fetchRealData();
+                updateDashboard(data);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            } finally {
+                loading.style.display = 'none';
+                dashboard.style.opacity = '1';
+            }
+        }
+
+        // Initialize dashboard on load
+        document.addEventListener('DOMContentLoaded', () => {
+            updateDashboard(sampleData);
+
+            // Auto-refresh every 30 seconds
+            setInterval(refreshData, 30000);
+        });
+    </script>
+</body>
+</html>

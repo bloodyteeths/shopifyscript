@@ -133,7 +133,7 @@ function getConfig_() {
       muteHttpExceptions: true,
       followRedirects: true,
       validateHttpsCertificates: true,
-      headers: { 'User-Agent': 'Proofkit-AdsScript/1.0' }
+      headers: { 'User-Agent': 'AdsAutopilotAI/1.0' }
     });
     var code = r.getResponseCode();
     var txt = r.getContentText();
@@ -167,7 +167,7 @@ function postToBackend_(action, payload) {
         muteHttpExceptions: true,
         followRedirects: true,
         validateHttpsCertificates: true,
-        headers: { 'User-Agent': 'Proofkit-AdsScript/1.0' }
+        headers: { 'User-Agent': 'AdsAutopilotAI/1.0' }
       });
     } catch(e) { log_("Backend post error (chunk " + i + "): " + e); }
   }
@@ -675,7 +675,7 @@ function getPaceSignals_() {
       muteHttpExceptions: true,
       followRedirects: true,
       validateHttpsCertificates: true,
-      headers: { 'User-Agent': 'Proofkit-AdsScript/1.0' }
+      headers: { 'User-Agent': 'AdsAutopilotAI/1.0' }
     });
 
     var code = r.getResponseCode();
