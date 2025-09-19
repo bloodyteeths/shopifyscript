@@ -243,6 +243,7 @@ function opKey(method: string, pathname: string): string {
   if (pathname.includes("/connect/sheets/test")) return "sheets_test";
   if (pathname.includes("/connect/sheets/save")) return "sheets_save";
   if (pathname.includes("/promote/status")) return "promote_status";
+  if (pathname.includes("/insights/tier-status")) return "tier_status";
   if (pathname.includes("/insights/terms")) return "insights_terms";
   if (pathname.includes("/run-logs")) return "run_logs";
   if (pathname.includes("/insights/actions/apply")) return "insights_actions";
