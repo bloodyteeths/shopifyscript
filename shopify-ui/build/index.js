@@ -131535,7 +131535,7 @@ async function loader11(args) {
       shopParam && (shopName = shopParam.replace(".myshopify.com", ""));
     }
     shopName || (console.error("Insights loader error: Unable to determine shop name"), shopName = "mybabybymerry"), console.log(`Insights page loaded for shop: ${shopName}`);
-    let w = url.searchParams.get("w") === "24h" ? "24h" : "7d", { backendFetch: backendFetch2 } = await Promise.resolve().then(() => (init_hmac_server(), hmac_server_exports)), r = await backendFetch2(
+    let wParam = url.searchParams.get("w"), w = ["24h", "7d", "30d", "90d"].includes(wParam) ? wParam : "7d", { backendFetch: backendFetch2 } = await Promise.resolve().then(() => (init_hmac_server(), hmac_server_exports)), r = await backendFetch2(
       `/insights?w=${w}`,
       "GET",
       void 0,
@@ -131625,12 +131625,12 @@ var InsightsErrorBoundary = class extends React14.Component {
         children: [
           /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("h2", { children: "Something went wrong" }, void 0, !1, {
             fileName: "app/routes/app.insights.tsx",
-            lineNumber: 231,
+            lineNumber: 234,
             columnNumber: 11
           }, this),
           /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("p", { children: "The insights page encountered an error. Please refresh the page." }, void 0, !1, {
             fileName: "app/routes/app.insights.tsx",
-            lineNumber: 232,
+            lineNumber: 235,
             columnNumber: 11
           }, this),
           /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(
@@ -131644,7 +131644,7 @@ var InsightsErrorBoundary = class extends React14.Component {
             !1,
             {
               fileName: "app/routes/app.insights.tsx",
-              lineNumber: 235,
+              lineNumber: 238,
               columnNumber: 11
             },
             this
@@ -131655,7 +131655,7 @@ var InsightsErrorBoundary = class extends React14.Component {
       !0,
       {
         fileName: "app/routes/app.insights.tsx",
-        lineNumber: 223,
+        lineNumber: 226,
         columnNumber: 9
       },
       this
@@ -131663,9 +131663,10 @@ var InsightsErrorBoundary = class extends React14.Component {
   }
 };
 function InsightsContent() {
-  let data = (0, import_react20.useLoaderData)(), [sp] = (0, import_react20.useSearchParams)(), nav = (0, import_react20.useNavigation)(), fetcher = (0, import_react20.useFetcher)(), revalidator = (0, import_react20.useRevalidator)(), [toast, setToast] = React14.useState(""), [isApplying, setIsApplying] = React14.useState(!1), [showTierAnalytics, setShowTierAnalytics] = React14.useState(!0), [realTimeEnabled, setRealTimeEnabled] = React14.useState(!1), w = React14.useMemo(() => {
+  let data = (0, import_react20.useLoaderData)(), [sp] = (0, import_react20.useSearchParams)(), nav = (0, import_react20.useNavigation)(), fetcher = (0, import_react20.useFetcher)(), revalidator = (0, import_react20.useRevalidator)(), [toast, setToast] = React14.useState(""), [isApplying, setIsApplying] = React14.useState(!1), [realTimeEnabled, setRealTimeEnabled] = React14.useState(!1), w = React14.useMemo(() => {
     try {
-      return sp.get("w") === "24h" ? "24h" : data?.w || "7d";
+      let param = sp.get("w");
+      return ["24h", "7d", "30d", "90d"].includes(param) ? param : data?.w || "7d";
     } catch {
       return "7d";
     }
@@ -131771,7 +131772,7 @@ function InsightsContent() {
             margin: "0"
           }, children: "Analytics Dashboard" }, void 0, !1, {
             fileName: "app/routes/app.insights.tsx",
-            lineNumber: 398,
+            lineNumber: 403,
             columnNumber: 15
           }, this),
           /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("p", { style: {
@@ -131781,12 +131782,12 @@ function InsightsContent() {
             fontWeight: "400"
           }, children: "Real-time insights and performance metrics" }, void 0, !1, {
             fileName: "app/routes/app.insights.tsx",
-            lineNumber: 406,
+            lineNumber: 411,
             columnNumber: 15
           }, this)
         ] }, void 0, !0, {
           fileName: "app/routes/app.insights.tsx",
-          lineNumber: 397,
+          lineNumber: 402,
           columnNumber: 13
         }, this),
         tierStatus?.tier && /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("div", { style: {
@@ -131803,128 +131804,162 @@ function InsightsContent() {
           " TIER"
         ] }, void 0, !0, {
           fileName: "app/routes/app.insights.tsx",
-          lineNumber: 416,
+          lineNumber: 421,
           columnNumber: 15
         }, this)
       ] }, void 0, !0, {
         fileName: "app/routes/app.insights.tsx",
-        lineNumber: 396,
+        lineNumber: 401,
         columnNumber: 11
       }, this),
-      /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("div", { style: { display: "flex", gap: "12px", alignItems: "center" }, children: [
-        /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(
+      /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("div", { style: { display: "flex", gap: "12px", alignItems: "center" }, children: /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("div", { style: {
+        display: "flex",
+        gap: "4px",
+        background: "white",
+        border: "1px solid #c9cccf",
+        borderRadius: "6px",
+        padding: "2px"
+      }, children: [
+        /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(import_react20.Link, { to: "/app/insights?w=24h", style: { textDecoration: "none" }, children: /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(
           "button",
           {
-            onClick: () => setShowTierAnalytics(!showTierAnalytics),
+            disabled: w === "24h" || nav.state !== "idle",
             style: {
-              padding: "8px 16px",
+              padding: "6px 12px",
               fontSize: "13px",
               fontWeight: "500",
-              border: "1px solid #c9cccf",
-              borderRadius: "6px",
-              backgroundColor: showTierAnalytics ? "#f1f2f3" : "white",
-              color: "#202223",
-              cursor: "pointer",
-              transition: "all 0.2s ease"
+              border: "none",
+              borderRadius: "4px",
+              backgroundColor: w === "24h" ? "#008060" : "transparent",
+              color: w === "24h" ? "white" : "#202223",
+              cursor: w === "24h" || nav.state !== "idle" ? "not-allowed" : "pointer",
+              transition: "all 0.2s ease",
+              opacity: w === "24h" || nav.state !== "idle" ? 0.6 : 1
             },
-            children: showTierAnalytics ? "Tier View" : "Basic View"
+            children: "24h"
           },
           void 0,
           !1,
           {
             fileName: "app/routes/app.insights.tsx",
-            lineNumber: 433,
-            columnNumber: 13
+            lineNumber: 447,
+            columnNumber: 17
           },
           this
-        ),
-        /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("div", { style: {
-          display: "flex",
-          gap: "4px",
-          background: "white",
-          border: "1px solid #c9cccf",
-          borderRadius: "6px",
-          padding: "2px"
-        }, children: [
-          /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(import_react20.Link, { to: "/app/insights?w=7d", style: { textDecoration: "none" }, children: /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(
-            "button",
-            {
-              disabled: w === "7d" || nav.state !== "idle",
-              style: {
-                padding: "6px 12px",
-                fontSize: "13px",
-                fontWeight: "500",
-                border: "none",
-                borderRadius: "4px",
-                backgroundColor: w === "7d" ? "#008060" : "transparent",
-                color: w === "7d" ? "white" : "#202223",
-                cursor: w === "7d" || nav.state !== "idle" ? "not-allowed" : "pointer",
-                transition: "all 0.2s ease",
-                opacity: w === "7d" || nav.state !== "idle" ? 0.6 : 1
-              },
-              children: "7d"
-            },
-            void 0,
-            !1,
-            {
-              fileName: "app/routes/app.insights.tsx",
-              lineNumber: 459,
-              columnNumber: 17
-            },
-            this
-          ) }, void 0, !1, {
-            fileName: "app/routes/app.insights.tsx",
-            lineNumber: 458,
-            columnNumber: 15
-          }, this),
-          /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(import_react20.Link, { to: "/app/insights?w=24h", style: { textDecoration: "none" }, children: /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(
-            "button",
-            {
-              disabled: w === "24h" || nav.state !== "idle",
-              style: {
-                padding: "6px 12px",
-                fontSize: "13px",
-                fontWeight: "500",
-                border: "none",
-                borderRadius: "4px",
-                backgroundColor: w === "24h" ? "#008060" : "transparent",
-                color: w === "24h" ? "white" : "#202223",
-                cursor: w === "24h" || nav.state !== "idle" ? "not-allowed" : "pointer",
-                transition: "all 0.2s ease",
-                opacity: w === "24h" || nav.state !== "idle" ? 0.6 : 1
-              },
-              children: "24h"
-            },
-            void 0,
-            !1,
-            {
-              fileName: "app/routes/app.insights.tsx",
-              lineNumber: 478,
-              columnNumber: 17
-            },
-            this
-          ) }, void 0, !1, {
-            fileName: "app/routes/app.insights.tsx",
-            lineNumber: 477,
-            columnNumber: 15
-          }, this)
-        ] }, void 0, !0, {
+        ) }, void 0, !1, {
           fileName: "app/routes/app.insights.tsx",
-          lineNumber: 450,
-          columnNumber: 13
+          lineNumber: 446,
+          columnNumber: 15
+        }, this),
+        /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(import_react20.Link, { to: "/app/insights?w=7d", style: { textDecoration: "none" }, children: /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(
+          "button",
+          {
+            disabled: w === "7d" || nav.state !== "idle",
+            style: {
+              padding: "6px 12px",
+              fontSize: "13px",
+              fontWeight: "500",
+              border: "none",
+              borderRadius: "4px",
+              backgroundColor: w === "7d" ? "#008060" : "transparent",
+              color: w === "7d" ? "white" : "#202223",
+              cursor: w === "7d" || nav.state !== "idle" ? "not-allowed" : "pointer",
+              transition: "all 0.2s ease",
+              opacity: w === "7d" || nav.state !== "idle" ? 0.6 : 1
+            },
+            children: "7d"
+          },
+          void 0,
+          !1,
+          {
+            fileName: "app/routes/app.insights.tsx",
+            lineNumber: 466,
+            columnNumber: 17
+          },
+          this
+        ) }, void 0, !1, {
+          fileName: "app/routes/app.insights.tsx",
+          lineNumber: 465,
+          columnNumber: 15
+        }, this),
+        (tierStatus?.tier === "professional" || tierStatus?.tier === "enterprise") && /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(import_react20.Link, { to: "/app/insights?w=30d", style: { textDecoration: "none" }, children: /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(
+          "button",
+          {
+            disabled: w === "30d" || nav.state !== "idle",
+            style: {
+              padding: "6px 12px",
+              fontSize: "13px",
+              fontWeight: "500",
+              border: "none",
+              borderRadius: "4px",
+              backgroundColor: w === "30d" ? "#008060" : "transparent",
+              color: w === "30d" ? "white" : "#202223",
+              cursor: w === "30d" || nav.state !== "idle" ? "not-allowed" : "pointer",
+              transition: "all 0.2s ease",
+              opacity: w === "30d" || nav.state !== "idle" ? 0.6 : 1
+            },
+            children: "30d"
+          },
+          void 0,
+          !1,
+          {
+            fileName: "app/routes/app.insights.tsx",
+            lineNumber: 486,
+            columnNumber: 19
+          },
+          this
+        ) }, void 0, !1, {
+          fileName: "app/routes/app.insights.tsx",
+          lineNumber: 485,
+          columnNumber: 17
+        }, this),
+        tierStatus?.tier === "enterprise" && /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(import_react20.Link, { to: "/app/insights?w=90d", style: { textDecoration: "none" }, children: /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(
+          "button",
+          {
+            disabled: w === "90d" || nav.state !== "idle",
+            style: {
+              padding: "6px 12px",
+              fontSize: "13px",
+              fontWeight: "500",
+              border: "none",
+              borderRadius: "4px",
+              backgroundColor: w === "90d" ? "#008060" : "transparent",
+              color: w === "90d" ? "white" : "#202223",
+              cursor: w === "90d" || nav.state !== "idle" ? "not-allowed" : "pointer",
+              transition: "all 0.2s ease",
+              opacity: w === "90d" || nav.state !== "idle" ? 0.6 : 1
+            },
+            children: "90d"
+          },
+          void 0,
+          !1,
+          {
+            fileName: "app/routes/app.insights.tsx",
+            lineNumber: 507,
+            columnNumber: 19
+          },
+          this
+        ) }, void 0, !1, {
+          fileName: "app/routes/app.insights.tsx",
+          lineNumber: 506,
+          columnNumber: 17
         }, this)
       ] }, void 0, !0, {
         fileName: "app/routes/app.insights.tsx",
-        lineNumber: 432,
+        lineNumber: 438,
+        columnNumber: 13
+      }, this) }, void 0, !1, {
+        fileName: "app/routes/app.insights.tsx",
+        lineNumber: 437,
         columnNumber: 11
       }, this)
     ] }, void 0, !0, {
       fileName: "app/routes/app.insights.tsx",
-      lineNumber: 389,
+      lineNumber: 394,
       columnNumber: 9
     }, this) }, void 0, !1, {
       fileName: "app/routes/app.insights.tsx",
-      lineNumber: 384,
+      lineNumber: 389,
       columnNumber: 7
     }, this),
     tierStatus?.subscriptionInfo && /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("div", { style: {
@@ -131948,7 +131983,7 @@ function InsightsContent() {
           " Plan"
         ] }, void 0, !0, {
           fileName: "app/routes/app.insights.tsx",
-          lineNumber: 520,
+          lineNumber: 550,
           columnNumber: 17
         }, this),
         /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("p", { style: { margin: "4px 0 0 0", fontSize: "13px", color: "#856404" }, children: [
@@ -131956,16 +131991,16 @@ function InsightsContent() {
           " days remaining \u2022 Full access to all features"
         ] }, void 0, !0, {
           fileName: "app/routes/app.insights.tsx",
-          lineNumber: 523,
+          lineNumber: 553,
           columnNumber: 17
         }, this)
       ] }, void 0, !0, {
         fileName: "app/routes/app.insights.tsx",
-        lineNumber: 519,
+        lineNumber: 549,
         columnNumber: 15
       }, this) }, void 0, !1, {
         fileName: "app/routes/app.insights.tsx",
-        lineNumber: 509,
+        lineNumber: 539,
         columnNumber: 13
       }, this),
       tierStatus.subscriptionInfo.hasActivePayment && !tierStatus.subscriptionInfo.isInTrial && /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("div", { style: {
@@ -131983,7 +132018,7 @@ function InsightsContent() {
           " Plan Active"
         ] }, void 0, !0, {
           fileName: "app/routes/app.insights.tsx",
-          lineNumber: 541,
+          lineNumber: 571,
           columnNumber: 17
         }, this),
         /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("p", { style: { margin: "4px 0 0 0", fontSize: "13px", color: "#155724" }, children: [
@@ -131994,21 +132029,21 @@ function InsightsContent() {
           " days"
         ] }, void 0, !0, {
           fileName: "app/routes/app.insights.tsx",
-          lineNumber: 544,
+          lineNumber: 574,
           columnNumber: 17
         }, this)
       ] }, void 0, !0, {
         fileName: "app/routes/app.insights.tsx",
-        lineNumber: 540,
+        lineNumber: 570,
         columnNumber: 15
       }, this) }, void 0, !1, {
         fileName: "app/routes/app.insights.tsx",
-        lineNumber: 530,
+        lineNumber: 560,
         columnNumber: 13
       }, this)
     ] }, void 0, !0, {
       fileName: "app/routes/app.insights.tsx",
-      lineNumber: 503,
+      lineNumber: 533,
       columnNumber: 9
     }, this),
     /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("div", { style: {
@@ -132016,7 +132051,7 @@ function InsightsContent() {
       margin: "0 auto",
       padding: "20px"
     }, children: [
-      showTierAnalytics && /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("div", { style: { marginBottom: "32px" }, children: /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(
+      /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("div", { style: { marginBottom: "32px" }, children: /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(
         AnalyticsTier,
         {
           tenant: shopName,
@@ -132038,14 +132073,14 @@ function InsightsContent() {
         !1,
         {
           fileName: "app/routes/app.insights.tsx",
-          lineNumber: 562,
-          columnNumber: 13
+          lineNumber: 591,
+          columnNumber: 11
         },
         this
       ) }, void 0, !1, {
         fileName: "app/routes/app.insights.tsx",
-        lineNumber: 561,
-        columnNumber: 11
+        lineNumber: 590,
+        columnNumber: 9
       }, this),
       retention && /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(
         "div",
@@ -132068,7 +132103,7 @@ function InsightsContent() {
               " plan)"
             ] }, void 0, !0, {
               fileName: "app/routes/app.insights.tsx",
-              lineNumber: 591,
+              lineNumber: 619,
               columnNumber: 13
             }, this),
             /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("div", { style: { color: "#6b7280", fontSize: 14, marginBottom: 16 }, children: [
@@ -132077,7 +132112,7 @@ function InsightsContent() {
               " is not shown"
             ] }, void 0, !0, {
               fileName: "app/routes/app.insights.tsx",
-              lineNumber: 594,
+              lineNumber: 622,
               columnNumber: 13
             }, this),
             retention.upgradeMessage && /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(
@@ -132108,7 +132143,7 @@ function InsightsContent() {
               !1,
               {
                 fileName: "app/routes/app.insights.tsx",
-                lineNumber: 598,
+                lineNumber: 626,
                 columnNumber: 15
               },
               this
@@ -132119,63 +132154,7 @@ function InsightsContent() {
         !0,
         {
           fileName: "app/routes/app.insights.tsx",
-          lineNumber: 581,
-          columnNumber: 11
-        },
-        this
-      ),
-      !showTierAnalytics && /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(
-        "div",
-        {
-          style: {
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))",
-            gap: 16,
-            marginBottom: 24
-          },
-          children: [
-            /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(ModernCard, { label: "Clicks", value: k.clicks }, void 0, !1, {
-              fileName: "app/routes/app.insights.tsx",
-              lineNumber: 637,
-              columnNumber: 13
-            }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(ModernCard, { label: "Cost", value: fmt(k.cost) }, void 0, !1, {
-              fileName: "app/routes/app.insights.tsx",
-              lineNumber: 638,
-              columnNumber: 13
-            }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(ModernCard, { label: "Conv.", value: k.conversions }, void 0, !1, {
-              fileName: "app/routes/app.insights.tsx",
-              lineNumber: 639,
-              columnNumber: 13
-            }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(ModernCard, { label: "Impr.", value: k.impressions }, void 0, !1, {
-              fileName: "app/routes/app.insights.tsx",
-              lineNumber: 640,
-              columnNumber: 13
-            }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(ModernCard, { label: "CTR", value: pct(k.ctr) }, void 0, !1, {
-              fileName: "app/routes/app.insights.tsx",
-              lineNumber: 641,
-              columnNumber: 13
-            }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(ModernCard, { label: "CPC", value: fmt(k.cpc) }, void 0, !1, {
-              fileName: "app/routes/app.insights.tsx",
-              lineNumber: 642,
-              columnNumber: 13
-            }, this),
-            /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(ModernCard, { label: "CPA", value: fmt(k.cpa) }, void 0, !1, {
-              fileName: "app/routes/app.insights.tsx",
-              lineNumber: 643,
-              columnNumber: 13
-            }, this)
-          ]
-        },
-        void 0,
-        !0,
-        {
-          fileName: "app/routes/app.insights.tsx",
-          lineNumber: 629,
+          lineNumber: 609,
           columnNumber: 11
         },
         this
@@ -132208,12 +132187,12 @@ function InsightsContent() {
                     retention ? ` - ${retention.description}` : ""
                   ] }, void 0, !0, {
                     fileName: "app/routes/app.insights.tsx",
-                    lineNumber: 663,
+                    lineNumber: 672,
                     columnNumber: 13
                   }, this),
                   /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(SimpleChart, { data: series }, void 0, !1, {
                     fileName: "app/routes/app.insights.tsx",
-                    lineNumber: 666,
+                    lineNumber: 675,
                     columnNumber: 13
                   }, this)
                 ]
@@ -132222,7 +132201,7 @@ function InsightsContent() {
               !0,
               {
                 fileName: "app/routes/app.insights.tsx",
-                lineNumber: 654,
+                lineNumber: 663,
                 columnNumber: 11
               },
               this
@@ -132254,7 +132233,7 @@ function InsightsContent() {
                           ")"
                         ] }, void 0, !0, {
                           fileName: "app/routes/app.insights.tsx",
-                          lineNumber: 685,
+                          lineNumber: 694,
                           columnNumber: 15
                         }, this),
                         /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(import_react20.Link, { to: `/app/insights/terms?w=${w}`, style: { textDecoration: "none" }, children: /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(
@@ -132277,13 +132256,13 @@ function InsightsContent() {
                           !1,
                           {
                             fileName: "app/routes/app.insights.tsx",
-                            lineNumber: 689,
+                            lineNumber: 698,
                             columnNumber: 17
                           },
                           this
                         ) }, void 0, !1, {
                           fileName: "app/routes/app.insights.tsx",
-                          lineNumber: 688,
+                          lineNumber: 697,
                           columnNumber: 15
                         }, this)
                       ]
@@ -132292,7 +132271,7 @@ function InsightsContent() {
                     !0,
                     {
                       fileName: "app/routes/app.insights.tsx",
-                      lineNumber: 677,
+                      lineNumber: 686,
                       columnNumber: 13
                     },
                     this
@@ -132310,7 +132289,7 @@ function InsightsContent() {
                       children: [
                         /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("span", { style: { fontWeight: "600", color: "#1f2937" }, children: term.term }, void 0, !1, {
                           fileName: "app/routes/app.insights.tsx",
-                          lineNumber: 722,
+                          lineNumber: 731,
                           columnNumber: 21
                         }, this),
                         /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("div", { style: { display: "flex", gap: 16, fontSize: 14 }, children: [
@@ -132319,7 +132298,7 @@ function InsightsContent() {
                             " clicks"
                           ] }, void 0, !0, {
                             fileName: "app/routes/app.insights.tsx",
-                            lineNumber: 724,
+                            lineNumber: 733,
                             columnNumber: 23
                           }, this),
                           /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("span", { style: { color: "#6b7280" }, children: [
@@ -132327,7 +132306,7 @@ function InsightsContent() {
                             term.cost?.toFixed(2)
                           ] }, void 0, !0, {
                             fileName: "app/routes/app.insights.tsx",
-                            lineNumber: 725,
+                            lineNumber: 734,
                             columnNumber: 23
                           }, this),
                           /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("span", { style: { color: "#6b7280" }, children: [
@@ -132335,12 +132314,12 @@ function InsightsContent() {
                             " conv."
                           ] }, void 0, !0, {
                             fileName: "app/routes/app.insights.tsx",
-                            lineNumber: 728,
+                            lineNumber: 737,
                             columnNumber: 23
                           }, this)
                         ] }, void 0, !0, {
                           fileName: "app/routes/app.insights.tsx",
-                          lineNumber: 723,
+                          lineNumber: 732,
                           columnNumber: 21
                         }, this)
                       ]
@@ -132349,17 +132328,17 @@ function InsightsContent() {
                     !0,
                     {
                       fileName: "app/routes/app.insights.tsx",
-                      lineNumber: 709,
+                      lineNumber: 718,
                       columnNumber: 19
                     },
                     this
                   )) : /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("div", { style: { color: "#6b7280", textAlign: "center", padding: 20 }, children: "No search terms data available" }, void 0, !1, {
                     fileName: "app/routes/app.insights.tsx",
-                    lineNumber: 733,
+                    lineNumber: 742,
                     columnNumber: 17
                   }, this) }, void 0, !1, {
                     fileName: "app/routes/app.insights.tsx",
-                    lineNumber: 706,
+                    lineNumber: 715,
                     columnNumber: 13
                   }, this)
                 ]
@@ -132368,7 +132347,7 @@ function InsightsContent() {
               !0,
               {
                 fileName: "app/routes/app.insights.tsx",
-                lineNumber: 668,
+                lineNumber: 677,
                 columnNumber: 11
               },
               this
@@ -132379,7 +132358,7 @@ function InsightsContent() {
         !0,
         {
           fileName: "app/routes/app.insights.tsx",
-          lineNumber: 646,
+          lineNumber: 655,
           columnNumber: 9
         },
         this
@@ -132407,7 +132386,7 @@ function InsightsContent() {
                 children: [
                   /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("h3", { style: { margin: "0 0 16px 0", fontSize: 16, fontWeight: "600", color: "#202223" }, children: "Activity (last 10)" }, void 0, !1, {
                     fileName: "app/routes/app.insights.tsx",
-                    lineNumber: 758,
+                    lineNumber: 767,
                     columnNumber: 13
                   }, this),
                   /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("div", { style: { maxHeight: 200, overflowY: "auto" }, children: logs.length > 0 ? logs.map((l, i) => !l || typeof l != "object" ? null : /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(
@@ -132421,14 +132400,14 @@ function InsightsContent() {
                       children: [
                         /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("span", { style: { color: "#6b7280" }, children: l.timestamp || "No timestamp" }, void 0, !1, {
                           fileName: "app/routes/app.insights.tsx",
-                          lineNumber: 774,
+                          lineNumber: 783,
                           columnNumber: 23
                         }, this),
                         " ",
                         "\u2014 ",
                         /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("span", { style: { color: "#1f2937" }, children: l.message || "No message" }, void 0, !1, {
                           fileName: "app/routes/app.insights.tsx",
-                          lineNumber: 777,
+                          lineNumber: 786,
                           columnNumber: 25
                         }, this)
                       ]
@@ -132437,17 +132416,17 @@ function InsightsContent() {
                     !0,
                     {
                       fileName: "app/routes/app.insights.tsx",
-                      lineNumber: 766,
+                      lineNumber: 775,
                       columnNumber: 21
                     },
                     this
                   )) : /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("div", { style: { color: "#6b7280", textAlign: "center", padding: 20 }, children: "No recent activity." }, void 0, !1, {
                     fileName: "app/routes/app.insights.tsx",
-                    lineNumber: 782,
+                    lineNumber: 791,
                     columnNumber: 17
                   }, this) }, void 0, !1, {
                     fileName: "app/routes/app.insights.tsx",
-                    lineNumber: 761,
+                    lineNumber: 770,
                     columnNumber: 13
                   }, this)
                 ]
@@ -132456,7 +132435,7 @@ function InsightsContent() {
               !0,
               {
                 fileName: "app/routes/app.insights.tsx",
-                lineNumber: 749,
+                lineNumber: 758,
                 columnNumber: 11
               },
               this
@@ -132474,7 +132453,7 @@ function InsightsContent() {
                 children: [
                   /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("h3", { style: { margin: "0 0 16px 0", fontSize: 16, fontWeight: "600", color: "#202223" }, children: "Term Details" }, void 0, !1, {
                     fileName: "app/routes/app.insights.tsx",
-                    lineNumber: 797,
+                    lineNumber: 806,
                     columnNumber: 13
                   }, this),
                   terms.length > 0 ? /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("div", { children: [
@@ -132490,7 +132469,7 @@ function InsightsContent() {
                         },
                         children: /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("span", { style: { fontWeight: "700", fontSize: 18, color: "#1f2937" }, children: terms[0].term }, void 0, !1, {
                           fileName: "app/routes/app.insights.tsx",
-                          lineNumber: 811,
+                          lineNumber: 820,
                           columnNumber: 19
                         }, this)
                       },
@@ -132498,7 +132477,7 @@ function InsightsContent() {
                       !1,
                       {
                         fileName: "app/routes/app.insights.tsx",
-                        lineNumber: 802,
+                        lineNumber: 811,
                         columnNumber: 17
                       },
                       this
@@ -132507,23 +132486,23 @@ function InsightsContent() {
                       /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("div", { children: [
                         /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("div", { style: { color: "#6b7280", fontSize: 12, marginBottom: 8, fontWeight: "500" }, children: "Clicks" }, void 0, !1, {
                           fileName: "app/routes/app.insights.tsx",
-                          lineNumber: 817,
+                          lineNumber: 826,
                           columnNumber: 21
                         }, this),
                         /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("div", { style: { fontSize: 24, fontWeight: "700", color: "#1f2937" }, children: terms[0].clicks }, void 0, !1, {
                           fileName: "app/routes/app.insights.tsx",
-                          lineNumber: 820,
+                          lineNumber: 829,
                           columnNumber: 21
                         }, this)
                       ] }, void 0, !0, {
                         fileName: "app/routes/app.insights.tsx",
-                        lineNumber: 816,
+                        lineNumber: 825,
                         columnNumber: 19
                       }, this),
                       /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("div", { children: [
                         /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("div", { style: { color: "#6b7280", fontSize: 12, marginBottom: 8, fontWeight: "500" }, children: "Cost" }, void 0, !1, {
                           fileName: "app/routes/app.insights.tsx",
-                          lineNumber: 825,
+                          lineNumber: 834,
                           columnNumber: 21
                         }, this),
                         /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("div", { style: { fontSize: 24, fontWeight: "700", color: "#1f2937" }, children: [
@@ -132531,42 +132510,42 @@ function InsightsContent() {
                           terms[0].cost?.toFixed(2)
                         ] }, void 0, !0, {
                           fileName: "app/routes/app.insights.tsx",
-                          lineNumber: 828,
+                          lineNumber: 837,
                           columnNumber: 21
                         }, this)
                       ] }, void 0, !0, {
                         fileName: "app/routes/app.insights.tsx",
-                        lineNumber: 824,
+                        lineNumber: 833,
                         columnNumber: 19
                       }, this),
                       /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("div", { children: [
                         /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("div", { style: { color: "#6b7280", fontSize: 12, marginBottom: 8, fontWeight: "500" }, children: "Conv." }, void 0, !1, {
                           fileName: "app/routes/app.insights.tsx",
-                          lineNumber: 833,
+                          lineNumber: 842,
                           columnNumber: 21
                         }, this),
                         /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("div", { style: { fontSize: 24, fontWeight: "700", color: "#1f2937" }, children: terms[0].conversions || 0 }, void 0, !1, {
                           fileName: "app/routes/app.insights.tsx",
-                          lineNumber: 836,
+                          lineNumber: 845,
                           columnNumber: 21
                         }, this)
                       ] }, void 0, !0, {
                         fileName: "app/routes/app.insights.tsx",
-                        lineNumber: 832,
+                        lineNumber: 841,
                         columnNumber: 19
                       }, this)
                     ] }, void 0, !0, {
                       fileName: "app/routes/app.insights.tsx",
-                      lineNumber: 815,
+                      lineNumber: 824,
                       columnNumber: 17
                     }, this)
                   ] }, void 0, !0, {
                     fileName: "app/routes/app.insights.tsx",
-                    lineNumber: 801,
+                    lineNumber: 810,
                     columnNumber: 15
                   }, this) : /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("div", { style: { color: "#6b7280", textAlign: "center", padding: 20 }, children: "Not enough data yet." }, void 0, !1, {
                     fileName: "app/routes/app.insights.tsx",
-                    lineNumber: 843,
+                    lineNumber: 852,
                     columnNumber: 15
                   }, this)
                 ]
@@ -132575,7 +132554,7 @@ function InsightsContent() {
               !0,
               {
                 fileName: "app/routes/app.insights.tsx",
-                lineNumber: 788,
+                lineNumber: 797,
                 columnNumber: 11
               },
               this
@@ -132586,7 +132565,7 @@ function InsightsContent() {
         !0,
         {
           fileName: "app/routes/app.insights.tsx",
-          lineNumber: 741,
+          lineNumber: 750,
           columnNumber: 9
         },
         this
@@ -132605,7 +132584,7 @@ function InsightsContent() {
           children: [
             /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("h3", { style: { margin: "0 0 16px 0", fontSize: 16, fontWeight: "600", color: "#202223" }, children: "Explain my spend" }, void 0, !1, {
               fileName: "app/routes/app.insights.tsx",
-              lineNumber: 860,
+              lineNumber: 869,
               columnNumber: 13
             }, this),
             explain.map((e, i) => {
@@ -132626,7 +132605,7 @@ function InsightsContent() {
                     /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("div", { children: [
                       /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("div", { style: { fontWeight: "600", marginBottom: 8, fontSize: 16, color: "#1f2937" }, children: e.label || "Unknown" }, void 0, !1, {
                         fileName: "app/routes/app.insights.tsx",
-                        lineNumber: 880,
+                        lineNumber: 889,
                         columnNumber: 21
                       }, this),
                       /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("div", { style: { color: "#6b7280", fontSize: 14 }, children: [
@@ -132634,18 +132613,18 @@ function InsightsContent() {
                         ". Suggest: ",
                         /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("code", { style: { background: "#f3f4f6", padding: "2px 6px", borderRadius: 4 }, children: e.action || "none" }, void 0, !1, {
                           fileName: "app/routes/app.insights.tsx",
-                          lineNumber: 884,
+                          lineNumber: 893,
                           columnNumber: 68
                         }, this),
                         e.target ? ` (${e.target})` : ""
                       ] }, void 0, !0, {
                         fileName: "app/routes/app.insights.tsx",
-                        lineNumber: 883,
+                        lineNumber: 892,
                         columnNumber: 21
                       }, this)
                     ] }, void 0, !0, {
                       fileName: "app/routes/app.insights.tsx",
-                      lineNumber: 879,
+                      lineNumber: 888,
                       columnNumber: 19
                     }, this),
                     /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(
@@ -132671,7 +132650,7 @@ function InsightsContent() {
                       !1,
                       {
                         fileName: "app/routes/app.insights.tsx",
-                        lineNumber: 888,
+                        lineNumber: 897,
                         columnNumber: 19
                       },
                       this
@@ -132682,7 +132661,7 @@ function InsightsContent() {
                 !0,
                 {
                   fileName: "app/routes/app.insights.tsx",
-                  lineNumber: 869,
+                  lineNumber: 878,
                   columnNumber: 17
                 },
                 this
@@ -132694,7 +132673,7 @@ function InsightsContent() {
         !0,
         {
           fileName: "app/routes/app.insights.tsx",
-          lineNumber: 850,
+          lineNumber: 859,
           columnNumber: 11
         },
         this
@@ -132721,76 +132700,32 @@ function InsightsContent() {
         !1,
         {
           fileName: "app/routes/app.insights.tsx",
-          lineNumber: 912,
+          lineNumber: 921,
           columnNumber: 11
         },
         this
       )
     ] }, void 0, !0, {
       fileName: "app/routes/app.insights.tsx",
-      lineNumber: 554,
+      lineNumber: 584,
       columnNumber: 7
     }, this)
   ] }, void 0, !0, {
     fileName: "app/routes/app.insights.tsx",
-    lineNumber: 378,
+    lineNumber: 383,
     columnNumber: 5
   }, this);
 }
 function Insights() {
   return /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(InsightsErrorBoundary, { children: /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(InsightsContent, {}, void 0, !1, {
     fileName: "app/routes/app.insights.tsx",
-    lineNumber: 938,
+    lineNumber: 947,
     columnNumber: 7
   }, this) }, void 0, !1, {
     fileName: "app/routes/app.insights.tsx",
-    lineNumber: 937,
+    lineNumber: 946,
     columnNumber: 5
   }, this);
-}
-function ModernCard({ label, value }) {
-  return /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)(
-    "div",
-    {
-      style: {
-        background: "white",
-        border: "1px solid #e3e3e3",
-        borderRadius: 8,
-        padding: 16,
-        boxShadow: "0 1px 0 rgba(0, 0, 0, 0.05)"
-      },
-      children: [
-        /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("div", { style: { color: "#616161", fontSize: 12, marginBottom: 4, fontWeight: "500" }, children: label }, void 0, !1, {
-          fileName: "app/routes/app.insights.tsx",
-          lineNumber: 963,
-          columnNumber: 7
-        }, this),
-        /* @__PURE__ */ (0, import_jsx_dev_runtime11.jsxDEV)("div", { style: {
-          fontSize: 24,
-          fontWeight: "600",
-          color: "#202223"
-        }, children: value ?? "\u2014" }, void 0, !1, {
-          fileName: "app/routes/app.insights.tsx",
-          lineNumber: 966,
-          columnNumber: 7
-        }, this)
-      ]
-    },
-    void 0,
-    !0,
-    {
-      fileName: "app/routes/app.insights.tsx",
-      lineNumber: 954,
-      columnNumber: 5
-    },
-    this
-  );
-}
-function fmt(n) {
-  return typeof n == "number" ? `$${n.toFixed(2)}` : "\u2014";
-}
-function pct(n) {
-  return typeof n == "number" ? `${(n * 100).toFixed(2)}%` : "\u2014";
 }
 
 // app/routes/app.billing.tsx
@@ -142076,7 +142011,7 @@ function App2() {
 var ErrorBoundary5 = boundary.error, headers = (headersArgs) => boundary.headers(headersArgs);
 
 // server-assets-manifest:@remix-run/dev/assets-manifest
-var assets_manifest_default = { entry: { module: "/assets/entry.client-TT34XQ4E.js", imports: ["/assets/_shared/chunk-55IC5345.js", "/assets/_shared/chunk-APMZZZMT.js", "/assets/_shared/chunk-Z7LCWUX7.js", "/assets/_shared/chunk-IFEKMGEG.js", "/assets/_shared/chunk-HGNQ3YCE.js", "/assets/_shared/chunk-GN6N4SDD.js", "/assets/_shared/chunk-FK5MLNU6.js", "/assets/_shared/chunk-R6OA4XCD.js"] }, routes: { root: { id: "root", parentId: void 0, path: "", index: void 0, caseSensitive: void 0, module: "/assets/root-VBYWFF6O.js", imports: ["/assets/_shared/chunk-Y5NHUDNW.js", "/assets/_shared/chunk-5CSWVI4C.js", "/assets/_shared/chunk-QDIWRKG7.js"], hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/_health": { id: "routes/_health", parentId: "root", path: void 0, index: void 0, caseSensitive: void 0, module: "/assets/routes/_health-J4V7PXIA.js", imports: ["/assets/_shared/chunk-5LF5TODQ.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/_index": { id: "routes/_index", parentId: "root", path: void 0, index: !0, caseSensitive: void 0, module: "/assets/routes/_index-SXWPV4KT.js", imports: ["/assets/_shared/chunk-5LF5TODQ.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/api.generate-script": { id: "routes/api.generate-script", parentId: "root", path: "api/generate-script", index: void 0, caseSensitive: void 0, module: "/assets/routes/api.generate-script-LY7A7LFF.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/api.script-proxy": { id: "routes/api.script-proxy", parentId: "root", path: "api/script-proxy", index: void 0, caseSensitive: void 0, module: "/assets/routes/api.script-proxy-H5ANR6MW.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app": { id: "routes/app", parentId: "root", path: "app", index: void 0, caseSensitive: void 0, module: "/assets/routes/app-U2PTHTKH.js", imports: ["/assets/_shared/chunk-I7NKL5T4.js", "/assets/_shared/chunk-7OUBBUAS.js", "/assets/_shared/chunk-5LF5TODQ.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/app._index": { id: "routes/app._index", parentId: "routes/app", path: void 0, index: !0, caseSensitive: void 0, module: "/assets/routes/app._index-HD5NLLXK.js", imports: ["/assets/_shared/chunk-BFD47CJF.js", "/assets/_shared/chunk-VZJ6BN4E.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.additional": { id: "routes/app.additional", parentId: "routes/app", path: "additional", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.additional-24NIFFNP.js", imports: ["/assets/_shared/chunk-5CSWVI4C.js", "/assets/_shared/chunk-QDIWRKG7.js"], hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.advanced": { id: "routes/app.advanced", parentId: "routes/app", path: "advanced", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.advanced-TPKA2NTG.js", imports: ["/assets/_shared/chunk-VZJ6BN4E.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.autopilot": { id: "routes/app.autopilot", parentId: "routes/app", path: "autopilot", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.autopilot-NJNS5CSJ.js", imports: ["/assets/_shared/chunk-VZJ6BN4E.js", "/assets/_shared/chunk-7OQ7YQAO.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.billing": { id: "routes/app.billing", parentId: "routes/app", path: "billing", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.billing-TWNST5FK.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/app.dashboards": { id: "routes/app.dashboards", parentId: "routes/app", path: "dashboards", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.dashboards-53FL56RC.js", imports: ["/assets/_shared/chunk-5CSWVI4C.js", "/assets/_shared/chunk-QDIWRKG7.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.insights": { id: "routes/app.insights", parentId: "routes/app", path: "insights", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.insights-GUKKB3XG.js", imports: ["/assets/_shared/chunk-5CSWVI4C.js", "/assets/_shared/chunk-QDIWRKG7.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.insights.terms": { id: "routes/app.insights.terms", parentId: "routes/app.insights", path: "terms", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.insights.terms-THDG6XKD.js", imports: ["/assets/_shared/chunk-5LF5TODQ.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.insights.terms.csv": { id: "routes/app.insights.terms.csv", parentId: "routes/app.insights.terms", path: "csv", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.insights.terms.csv-EVLMQWKE.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.intent-os": { id: "routes/app.intent-os", parentId: "routes/app", path: "intent-os", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.intent-os-WHSGRYJT.js", imports: ["/assets/_shared/chunk-BFD47CJF.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.reports": { id: "routes/app.reports", parentId: "routes/app", path: "reports", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.reports-NT4RIV3P.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/app.setup": { id: "routes/app.setup", parentId: "routes/app", path: "setup", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.setup-JVJDNVKG.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.support": { id: "routes/app.support", parentId: "routes/app", path: "support", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.support-BD2CAFPF.js", imports: ["/assets/_shared/chunk-5CSWVI4C.js", "/assets/_shared/chunk-QDIWRKG7.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/auth.$": { id: "routes/auth.$", parentId: "root", path: "auth/*", index: void 0, caseSensitive: void 0, module: "/assets/routes/auth.$-I5QX7GQX.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/auth.session-token": { id: "routes/auth.session-token", parentId: "root", path: "auth/session-token", index: void 0, caseSensitive: void 0, module: "/assets/routes/auth.session-token-IZHEWWKY.js", imports: ["/assets/_shared/chunk-7OUBBUAS.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/debug": { id: "routes/debug", parentId: "root", path: "debug", index: void 0, caseSensitive: void 0, module: "/assets/routes/debug-JBO5S6XJ.js", imports: ["/assets/_shared/chunk-5LF5TODQ.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/health": { id: "routes/health", parentId: "root", path: "health", index: void 0, caseSensitive: void 0, module: "/assets/routes/health-SLSXGJZ7.js", imports: ["/assets/_shared/chunk-5LF5TODQ.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/install": { id: "routes/install", parentId: "root", path: "install", index: void 0, caseSensitive: void 0, module: "/assets/routes/install-2U6QOOOU.js", imports: ["/assets/_shared/chunk-5LF5TODQ.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/local.autopilot": { id: "routes/local.autopilot", parentId: "root", path: "local/autopilot", index: void 0, caseSensitive: void 0, module: "/assets/routes/local.autopilot-NP3AFLQG.js", imports: ["/assets/_shared/chunk-7OQ7YQAO.js", "/assets/_shared/chunk-5LF5TODQ.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/privacy": { id: "routes/privacy", parentId: "root", path: "privacy", index: void 0, caseSensitive: void 0, module: "/assets/routes/privacy-32VVYI5O.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/support": { id: "routes/support", parentId: "root", path: "support", index: void 0, caseSensitive: void 0, module: "/assets/routes/support-Q72NATWT.js", imports: ["/assets/_shared/chunk-5LF5TODQ.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/terms": { id: "routes/terms", parentId: "root", path: "terms", index: void 0, caseSensitive: void 0, module: "/assets/routes/terms-APZQDPDX.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 } }, version: "429d5d4c", hmr: { runtime: "/assets/_shared/chunk-GN6N4SDD.js", timestamp: 1758320937828 }, url: "/assets/manifest-429D5D4C.js" };
+var assets_manifest_default = { entry: { module: "/assets/entry.client-TT34XQ4E.js", imports: ["/assets/_shared/chunk-55IC5345.js", "/assets/_shared/chunk-APMZZZMT.js", "/assets/_shared/chunk-Z7LCWUX7.js", "/assets/_shared/chunk-IFEKMGEG.js", "/assets/_shared/chunk-HGNQ3YCE.js", "/assets/_shared/chunk-GN6N4SDD.js", "/assets/_shared/chunk-FK5MLNU6.js", "/assets/_shared/chunk-R6OA4XCD.js"] }, routes: { root: { id: "root", parentId: void 0, path: "", index: void 0, caseSensitive: void 0, module: "/assets/root-VBYWFF6O.js", imports: ["/assets/_shared/chunk-Y5NHUDNW.js", "/assets/_shared/chunk-5CSWVI4C.js", "/assets/_shared/chunk-QDIWRKG7.js"], hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/_health": { id: "routes/_health", parentId: "root", path: void 0, index: void 0, caseSensitive: void 0, module: "/assets/routes/_health-J4V7PXIA.js", imports: ["/assets/_shared/chunk-5LF5TODQ.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/_index": { id: "routes/_index", parentId: "root", path: void 0, index: !0, caseSensitive: void 0, module: "/assets/routes/_index-SXWPV4KT.js", imports: ["/assets/_shared/chunk-5LF5TODQ.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/api.generate-script": { id: "routes/api.generate-script", parentId: "root", path: "api/generate-script", index: void 0, caseSensitive: void 0, module: "/assets/routes/api.generate-script-LY7A7LFF.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/api.script-proxy": { id: "routes/api.script-proxy", parentId: "root", path: "api/script-proxy", index: void 0, caseSensitive: void 0, module: "/assets/routes/api.script-proxy-H5ANR6MW.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app": { id: "routes/app", parentId: "root", path: "app", index: void 0, caseSensitive: void 0, module: "/assets/routes/app-U2PTHTKH.js", imports: ["/assets/_shared/chunk-I7NKL5T4.js", "/assets/_shared/chunk-7OUBBUAS.js", "/assets/_shared/chunk-5LF5TODQ.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/app._index": { id: "routes/app._index", parentId: "routes/app", path: void 0, index: !0, caseSensitive: void 0, module: "/assets/routes/app._index-HD5NLLXK.js", imports: ["/assets/_shared/chunk-BFD47CJF.js", "/assets/_shared/chunk-VZJ6BN4E.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.additional": { id: "routes/app.additional", parentId: "routes/app", path: "additional", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.additional-24NIFFNP.js", imports: ["/assets/_shared/chunk-5CSWVI4C.js", "/assets/_shared/chunk-QDIWRKG7.js"], hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.advanced": { id: "routes/app.advanced", parentId: "routes/app", path: "advanced", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.advanced-TPKA2NTG.js", imports: ["/assets/_shared/chunk-VZJ6BN4E.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.autopilot": { id: "routes/app.autopilot", parentId: "routes/app", path: "autopilot", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.autopilot-NJNS5CSJ.js", imports: ["/assets/_shared/chunk-VZJ6BN4E.js", "/assets/_shared/chunk-7OQ7YQAO.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.billing": { id: "routes/app.billing", parentId: "routes/app", path: "billing", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.billing-TWNST5FK.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/app.dashboards": { id: "routes/app.dashboards", parentId: "routes/app", path: "dashboards", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.dashboards-53FL56RC.js", imports: ["/assets/_shared/chunk-5CSWVI4C.js", "/assets/_shared/chunk-QDIWRKG7.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.insights": { id: "routes/app.insights", parentId: "routes/app", path: "insights", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.insights-SM5E4OAG.js", imports: ["/assets/_shared/chunk-5CSWVI4C.js", "/assets/_shared/chunk-QDIWRKG7.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.insights.terms": { id: "routes/app.insights.terms", parentId: "routes/app.insights", path: "terms", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.insights.terms-THDG6XKD.js", imports: ["/assets/_shared/chunk-5LF5TODQ.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.insights.terms.csv": { id: "routes/app.insights.terms.csv", parentId: "routes/app.insights.terms", path: "csv", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.insights.terms.csv-EVLMQWKE.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.intent-os": { id: "routes/app.intent-os", parentId: "routes/app", path: "intent-os", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.intent-os-WHSGRYJT.js", imports: ["/assets/_shared/chunk-BFD47CJF.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.reports": { id: "routes/app.reports", parentId: "routes/app", path: "reports", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.reports-NT4RIV3P.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/app.setup": { id: "routes/app.setup", parentId: "routes/app", path: "setup", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.setup-JVJDNVKG.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.support": { id: "routes/app.support", parentId: "routes/app", path: "support", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.support-BD2CAFPF.js", imports: ["/assets/_shared/chunk-5CSWVI4C.js", "/assets/_shared/chunk-QDIWRKG7.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/auth.$": { id: "routes/auth.$", parentId: "root", path: "auth/*", index: void 0, caseSensitive: void 0, module: "/assets/routes/auth.$-I5QX7GQX.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/auth.session-token": { id: "routes/auth.session-token", parentId: "root", path: "auth/session-token", index: void 0, caseSensitive: void 0, module: "/assets/routes/auth.session-token-IZHEWWKY.js", imports: ["/assets/_shared/chunk-7OUBBUAS.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/debug": { id: "routes/debug", parentId: "root", path: "debug", index: void 0, caseSensitive: void 0, module: "/assets/routes/debug-JBO5S6XJ.js", imports: ["/assets/_shared/chunk-5LF5TODQ.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/health": { id: "routes/health", parentId: "root", path: "health", index: void 0, caseSensitive: void 0, module: "/assets/routes/health-SLSXGJZ7.js", imports: ["/assets/_shared/chunk-5LF5TODQ.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/install": { id: "routes/install", parentId: "root", path: "install", index: void 0, caseSensitive: void 0, module: "/assets/routes/install-2U6QOOOU.js", imports: ["/assets/_shared/chunk-5LF5TODQ.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/local.autopilot": { id: "routes/local.autopilot", parentId: "root", path: "local/autopilot", index: void 0, caseSensitive: void 0, module: "/assets/routes/local.autopilot-NP3AFLQG.js", imports: ["/assets/_shared/chunk-7OQ7YQAO.js", "/assets/_shared/chunk-5LF5TODQ.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/privacy": { id: "routes/privacy", parentId: "root", path: "privacy", index: void 0, caseSensitive: void 0, module: "/assets/routes/privacy-32VVYI5O.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/support": { id: "routes/support", parentId: "root", path: "support", index: void 0, caseSensitive: void 0, module: "/assets/routes/support-Q72NATWT.js", imports: ["/assets/_shared/chunk-5LF5TODQ.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/terms": { id: "routes/terms", parentId: "root", path: "terms", index: void 0, caseSensitive: void 0, module: "/assets/routes/terms-APZQDPDX.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 } }, version: "33c5964b", hmr: { runtime: "/assets/_shared/chunk-GN6N4SDD.js", timestamp: 1758322016950 }, url: "/assets/manifest-33C5964B.js" };
 
 // server-entry-module:@remix-run/dev/server-build
 var mode = "development", assetsBuildDirectory = "public/assets", future = { v3_fetcherPersist: !1, v3_relativeSplatPath: !1, v3_throwAbortReason: !1, v3_routeConfig: !1, v3_singleFetch: !1, v3_lazyRouteDiscovery: !1, unstable_optimizeDeps: !1 }, publicPath = "/assets/", entry = { module: entry_server_exports }, routes = {

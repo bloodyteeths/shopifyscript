@@ -123,7 +123,10 @@ export async function loader(args: LoaderFunctionArgs) {
     // Skip setup check for now to avoid redirect loops in serverless
     // TODO: Re-enable setup flow once serverless storage is working properly
 
-    const w = url.searchParams.get("w") === "24h" ? "24h" : "7d";
+    // Support 24h, 7d, 30d, 90d based on tier
+    const wParam = url.searchParams.get("w");
+    const validDurations = ["24h", "7d", "30d", "90d"];
+    const w = validDurations.includes(wParam) ? wParam : "7d";
     const { backendFetch } = await import("../server/hmac.server");
     const r = await backendFetch(
       `/insights?w=${w}`,
@@ -253,13 +256,15 @@ function InsightsContent() {
   const revalidator = useRevalidator();
   const [toast, setToast] = React.useState<string>("");
   const [isApplying, setIsApplying] = React.useState<boolean>(false);
-  const [showTierAnalytics, setShowTierAnalytics] = React.useState(true);
+  // Removed confusing tier view toggle - always show tier-aware analytics
   const [realTimeEnabled, setRealTimeEnabled] = React.useState(false);
 
-  // Safe data extraction with proper null checks
+  // Safe data extraction with proper null checks - support all durations
   const w = React.useMemo(() => {
     try {
-      return sp.get("w") === "24h" ? "24h" : data?.w || "7d";
+      const param = sp.get("w");
+      const validDurations = ["24h", "7d", "30d", "90d"];
+      return validDurations.includes(param) ? param : data?.w || "7d";
     } catch {
       return "7d";
     }
@@ -430,23 +435,6 @@ function InsightsContent() {
           </div>
           
           <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
-            <button
-              onClick={() => setShowTierAnalytics(!showTierAnalytics)}
-              style={{
-                padding: "8px 16px",
-                fontSize: "13px",
-                fontWeight: "500",
-                border: "1px solid #c9cccf",
-                borderRadius: "6px",
-                backgroundColor: showTierAnalytics ? "#f1f2f3" : "white",
-                color: "#202223",
-                cursor: "pointer",
-                transition: "all 0.2s ease",
-              }}
-            >
-              {showTierAnalytics ? "Tier View" : "Basic View"}
-            </button>
-            
             <div style={{
               display: "flex",
               gap: "4px",
@@ -455,27 +443,8 @@ function InsightsContent() {
               borderRadius: "6px",
               padding: "2px",
             }}>
-              <Link to="/app/insights?w=7d" style={{ textDecoration: 'none' }}>
-                <button 
-                  disabled={w === "7d" || nav.state !== "idle"}
-                  style={{
-                    padding: "6px 12px",
-                    fontSize: "13px",
-                    fontWeight: "500",
-                    border: "none",
-                    borderRadius: "4px",
-                    backgroundColor: w === "7d" ? "#008060" : "transparent",
-                    color: w === "7d" ? "white" : "#202223",
-                    cursor: w === "7d" || nav.state !== "idle" ? "not-allowed" : "pointer",
-                    transition: "all 0.2s ease",
-                    opacity: w === "7d" || nav.state !== "idle" ? 0.6 : 1
-                  }}
-                >
-                  7d
-                </button>
-              </Link>
               <Link to="/app/insights?w=24h" style={{ textDecoration: 'none' }}>
-                <button 
+                <button
                   disabled={w === "24h" || nav.state !== "idle"}
                   style={{
                     padding: "6px 12px",
@@ -493,6 +462,67 @@ function InsightsContent() {
                   24h
                 </button>
               </Link>
+              <Link to="/app/insights?w=7d" style={{ textDecoration: 'none' }}>
+                <button
+                  disabled={w === "7d" || nav.state !== "idle"}
+                  style={{
+                    padding: "6px 12px",
+                    fontSize: "13px",
+                    fontWeight: "500",
+                    border: "none",
+                    borderRadius: "4px",
+                    backgroundColor: w === "7d" ? "#008060" : "transparent",
+                    color: w === "7d" ? "white" : "#202223",
+                    cursor: w === "7d" || nav.state !== "idle" ? "not-allowed" : "pointer",
+                    transition: "all 0.2s ease",
+                    opacity: w === "7d" || nav.state !== "idle" ? 0.6 : 1
+                  }}
+                >
+                  7d
+                </button>
+              </Link>
+              {(tierStatus?.tier === 'professional' || tierStatus?.tier === 'enterprise') && (
+                <Link to="/app/insights?w=30d" style={{ textDecoration: 'none' }}>
+                  <button
+                    disabled={w === "30d" || nav.state !== "idle"}
+                    style={{
+                      padding: "6px 12px",
+                      fontSize: "13px",
+                      fontWeight: "500",
+                      border: "none",
+                      borderRadius: "4px",
+                      backgroundColor: w === "30d" ? "#008060" : "transparent",
+                      color: w === "30d" ? "white" : "#202223",
+                      cursor: w === "30d" || nav.state !== "idle" ? "not-allowed" : "pointer",
+                      transition: "all 0.2s ease",
+                      opacity: w === "30d" || nav.state !== "idle" ? 0.6 : 1
+                    }}
+                  >
+                    30d
+                  </button>
+                </Link>
+              )}
+              {tierStatus?.tier === 'enterprise' && (
+                <Link to="/app/insights?w=90d" style={{ textDecoration: 'none' }}>
+                  <button
+                    disabled={w === "90d" || nav.state !== "idle"}
+                    style={{
+                      padding: "6px 12px",
+                      fontSize: "13px",
+                      fontWeight: "500",
+                      border: "none",
+                      borderRadius: "4px",
+                      backgroundColor: w === "90d" ? "#008060" : "transparent",
+                      color: w === "90d" ? "white" : "#202223",
+                      cursor: w === "90d" || nav.state !== "idle" ? "not-allowed" : "pointer",
+                      transition: "all 0.2s ease",
+                      opacity: w === "90d" || nav.state !== "idle" ? 0.6 : 1
+                    }}
+                  >
+                    90d
+                  </button>
+                </Link>
+              )}
             </div>
           </div>
         </div>
@@ -556,10 +586,9 @@ function InsightsContent() {
         margin: '0 auto',
         padding: '20px',
       }}>
-        {/* Tier-aware analytics view */}
-        {showTierAnalytics && (
-          <div style={{ marginBottom: '32px' }}>
-            <AnalyticsTier
+        {/* Analytics view */}
+        <div style={{ marginBottom: '32px' }}>
+          <AnalyticsTier
               tenant={shopName}
               data={{
                 kpi: k,
@@ -574,9 +603,8 @@ function InsightsContent() {
               }}
               onDataRefresh={handleDataRefresh}
               onUpgrade={handleUpgrade}
-            />
-          </div>
-        )}
+          />
+        </div>
         {retention && (
           <div
             style={{
@@ -624,25 +652,6 @@ function InsightsContent() {
           </div>
         )}
 
-        {/* Basic analytics view (original) */}
-        {!showTierAnalytics && (
-          <div
-            style={{
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))",
-              gap: 16,
-              marginBottom: 24,
-            }}
-          >
-            <ModernCard label="Clicks" value={k.clicks} />
-            <ModernCard label="Cost" value={fmt(k.cost)} />
-            <ModernCard label="Conv." value={k.conversions} />
-            <ModernCard label="Impr." value={k.impressions} />
-            <ModernCard label="CTR" value={pct(k.ctr)} />
-            <ModernCard label="CPC" value={fmt(k.cpc)} />
-            <ModernCard label="CPA" value={fmt(k.cpa)} />
-          </div>
-        )}
         <div
           style={{
             display: "grid",
