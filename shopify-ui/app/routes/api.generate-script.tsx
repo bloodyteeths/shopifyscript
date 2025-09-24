@@ -60,7 +60,7 @@ export async function action({ request }: ActionFunctionArgs) {
       realScript.length > 20000 &&
       !realScript.includes("<html")
     ) {
-      const personalizedScript = `/** Ads Autopilot AI - Google Ads Script (${mode} mode)
+      const header = `/** Ads Autopilot AI - Google Ads Script (${mode} mode)
  * Shop: ${currentShopName}
  * Generated: ${new Date().toISOString()}
  * Budget Cap: $${budget}/day
@@ -69,13 +69,17 @@ export async function action({ request }: ActionFunctionArgs) {
  * Script Size: 26KB (optimized)
  */
 
-${realScript}
+`;
+
+      const footer = `
 
 // Script personalized with your settings:
 // - Mode: ${mode}
-// - Budget: $${budget}/day  
+// - Budget: $${budget}/day
 // - CPC: $${cpc}
 // - URL: ${url || "default"}`;
+
+      const personalizedScript = header + realScript + footer;
 
       return json({
         success: true,
@@ -112,6 +116,7 @@ export async function loader() {
     error: "This endpoint requires POST method for script generation"
   });
 }
+
 
 
 
