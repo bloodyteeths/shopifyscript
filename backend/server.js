@@ -3673,6 +3673,7 @@ app.post("/api/connect/sheets/save", async (req, res) => {
 import MASTER_SCRIPT_CONTENT from "./embedded-script.js";
 
 // ----- Ads Script delivery (HMAC) -----
+// Force rebuild: 2025-09-25 - Fixed dollar sign issue in embedded script
 app.get("/api/ads-script/raw", async (req, res) => {
   console.log("🚀 /api/ads-script/raw endpoint hit", req.query);
   const { tenant, sig } = req.query;
