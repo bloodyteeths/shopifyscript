@@ -735,7 +735,7 @@ function applySignalToAdGroup_(signal, cfg) {
         if (!PREVIEW_MODE && cfg.PROMOTE) {
           try {
             campaign.getBudget().setAmount(newBudget);
-            log_('Budget ' + action.toLowerCase() + ': ' + campaignName + ' \$' + currentBudget.toFixed(2) + ' → \$' + newBudget.toFixed(2));
+            log_('Budget ' + action.toLowerCase() + ': ' + campaignName + ' ' + '\$' + currentBudget.toFixed(2) + ' → ' + '\$' + newBudget.toFixed(2));
             result.applied = true;
           } catch(e) {}
         }
