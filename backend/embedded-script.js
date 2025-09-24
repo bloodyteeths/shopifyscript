@@ -1,6 +1,6 @@
 // Full Google Ads Script Content (for embedding in server.js)
 // Updated with optimized 26KB version
-export default `/** Ads Autopilot AI - Google Ads Script
+export default String.raw`/** Ads Autopilot AI - Google Ads Script
  * Automated campaign optimization powered by AI
  */
 var TENANT_ID = '__TENANT_ID__';
