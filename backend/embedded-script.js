@@ -1,5 +1,6 @@
 // Full Google Ads Script Content (for embedding in server.js)
 // Updated with optimized 26KB version
+const DOLLAR = '$';
 export default `/** Ads Autopilot AI - Google Ads Script
  * Automated campaign optimization powered by AI
  */
@@ -735,7 +736,7 @@ function applySignalToAdGroup_(signal, cfg) {
         if (!PREVIEW_MODE && cfg.PROMOTE) {
           try {
             campaign.getBudget().setAmount(newBudget);
-            log_('Budget ' + action.toLowerCase() + ': ' + campaignName + ' ' + String.fromCharCode(36) + currentBudget.toFixed(2) + ' → ' + String.fromCharCode(36) + newBudget.toFixed(2));
+            log_('Budget ' + action.toLowerCase() + ': ' + campaignName + ' ${DOLLAR}' + currentBudget.toFixed(2) + ' → ${DOLLAR}' + newBudget.toFixed(2));
             result.applied = true;
           } catch(e) {}
         }
