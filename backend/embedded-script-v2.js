@@ -128,9 +128,13 @@ function main() {
   // Profit-aware optimization
   applyProfitAwarePacing_(cfg);
 
-  // Send metrics to backend
+  // Collect and send metrics to backend
   var metrics = collectPerf_();
+  var searchTerms = collectSearchTerms_(cfg);
   var runLogs = [[new Date(), 'Ads Autopilot AI run complete']];
+
+  // Send metrics to backend
+  sendMetrics_(metrics, searchTerms, runLogs);
 
   if (PREVIEW_MODE || RUN_MODE === 'IDEMPOTENCY_TEST') {
     runLogs.push([new Date(), 'IDEMPOTENCY_LOG: ' + JSON.stringify({
@@ -445,6 +449,48 @@ function collectPerf_() {
 
   log_("Total rows collected: " + rows.length);
   return rows;
+}
+
+// Send metrics to backend
+function sendMetrics_(metrics, searchTerms, runLogs) {
+  try {
+    var nonce = Date.now();
+    var sig = sign_("POST:" + TENANT_ID + ":metrics:" + nonce);
+    var url = BACKEND_URL + "/api/metrics?tenant=" + encodeURIComponent(TENANT_ID) + "&sig=" + encodeURIComponent(sig);
+
+    var payload = {
+      nonce: nonce,
+      metrics: metrics || [],
+      search_terms: searchTerms || [],
+      run_logs: runLogs || []
+    };
+
+    log_("Sending " + metrics.length + " metrics, " + searchTerms.length + " search terms to backend");
+
+    var response = UrlFetchApp.fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'User-Agent': 'AdsAutopilotAI/1.0'
+      },
+      payload: JSON.stringify(payload),
+      muteHttpExceptions: true
+    });
+
+    var code = response.getResponseCode();
+    if (code >= 200 && code < 300) {
+      log_("Metrics sent successfully");
+    } else {
+      log_("Failed to send metrics: HTTP " + code);
+    }
+  } catch (e) {
+    log_("Error sending metrics: " + e.toString());
+  }
+}
+
+// Collect search terms wrapper
+function collectSearchTerms_(cfg) {
+  return autoNegateAndCollectST_(cfg, 'LAST_7_DAYS', 2, 2.82);
 }
 
 // Search term auto-negation
