@@ -7,11 +7,11 @@ var TENANT_ID = '__TENANT_ID__';
 var BACKEND_URL = '__BACKEND_URL__';
 var SHARED_SECRET = '__HMAC_SECRET__';
 
-// User-configured fallback values
-var USER_BUDGET = __USER_BUDGET__;
-var USER_CPC = __USER_CPC__;
-var USER_URL = '__USER_URL__';
-var USER_LABEL = '__USER_LABEL__';
+// User-configured fallback values (will be replaced during generation)
+var USER_BUDGET = parseFloat('__USER_BUDGET__') || 20.00;
+var USER_CPC = parseFloat('__USER_CPC__') || 0.50;
+var USER_URL = '__USER_URL__' || '';
+var USER_LABEL = '__USER_LABEL__' || '__TENANT_ID__ • Managed';
 
 var PREVIEW_MODE = false;
 var MUTATION_LOG = [];
@@ -23,19 +23,13 @@ function main() {
   var cfg = getConfig_();
   if (!cfg || !cfg.enabled) { log_("Config disabled or not found."); return; }
 
-  // Apply user values as overrides if backend config has defaults
-  if (typeof USER_BUDGET !== 'undefined' && (!cfg.daily_budget_cap_default || parseFloat(cfg.daily_budget_cap_default) <= 3.00)) {
-    cfg.daily_budget_cap_default = USER_BUDGET;
-  }
-  if (typeof USER_CPC !== 'undefined' && (!cfg.cpc_ceiling_default || parseFloat(cfg.cpc_ceiling_default) <= 0.20)) {
-    cfg.cpc_ceiling_default = USER_CPC;
-  }
-  if (typeof USER_URL !== 'undefined' && USER_URL && (!cfg.default_final_url || cfg.default_final_url === '')) {
+  // Force user values to override backend config
+  cfg.daily_budget_cap_default = USER_BUDGET;
+  cfg.cpc_ceiling_default = USER_CPC;
+  if (USER_URL && USER_URL !== '__USER_URL__') {
     cfg.default_final_url = USER_URL;
   }
-  if (typeof USER_LABEL !== 'undefined' && USER_LABEL && (!cfg.label || cfg.label.indexOf('Proofkit') !== -1)) {
-    cfg.label = USER_LABEL;
-  }
+  cfg.label = USER_LABEL;
 
   // Log loaded configuration values
   log_("Config loaded - Budget: $" + cfg.daily_budget_cap_default +
@@ -404,9 +398,15 @@ function buildSafeRSAs_(cfg) {
     var camp = ag.getCampaign().getName();
     var name = ag.getName();
     var ov = (cfg.RSA_MAP[camp] && cfg.RSA_MAP[camp][name]) || null;
-    var Hsrc = ov && ov.H && ov.H.length ? ov.H : (cfg.RSA_DEFAULT.H || ["Digital Certificates", "Compliance Reports"]);
-    var Dsrc = ov && ov.D && ov.D.length ? ov.D : (cfg.RSA_DEFAULT.D || ["Create inspector-ready PDFs fast."]);
+    var Hsrc = ov && ov.H && ov.H.length ? ov.H : (cfg.RSA_DEFAULT && cfg.RSA_DEFAULT.H ? cfg.RSA_DEFAULT.H : []);
+    var Dsrc = ov && ov.D && ov.D.length ? ov.D : (cfg.RSA_DEFAULT && cfg.RSA_DEFAULT.D ? cfg.RSA_DEFAULT.D : []);
     var H = lint_(Hsrc, 30, 15, 3), D = lint_(Dsrc, 90, 4, 10);
+
+    // Skip RSA creation if we don't have enough content
+    if (H.length < 3 || D.length < 2) {
+      log_("Skipping RSA in " + camp + " › " + name + " (need 3+ headlines, 2+ descriptions)");
+      continue;
+    }
 
     var b = ag.newAd().responsiveSearchAdBuilder().withFinalUrl(finalUrl);
     H.forEach(function(h) { b.addHeadline(h); });
