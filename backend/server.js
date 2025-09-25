@@ -3861,7 +3861,8 @@ app.post("/api/connect/sheets/save", async (req, res) => {
 });
 
 // Import embedded Google Ads Script Content (for Vercel compatibility)
-import MASTER_SCRIPT_CONTENT from "./embedded-script.js";
+// Version 2.1 - with user value injection
+import MASTER_SCRIPT_CONTENT from "./embedded-script-v2.js";
 
 // ----- Ads Script delivery (HMAC) -----
 // Force rebuild: 2025-09-25 - Fixed dollar sign issue in embedded script
