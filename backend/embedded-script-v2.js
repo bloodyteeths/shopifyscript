@@ -318,7 +318,7 @@ function collectPerf_() {
     // Use the legacy API which is more reliable
     var campaigns = AdsApp.campaigns()
       .withCondition("AdvertisingChannelType = SEARCH")
-      .withCondition("Status IN ['ENABLED', 'PAUSED']")
+      .withCondition("Status IN ['ENABLED', 'PAUSED', 'REMOVED']")
       .get();
 
     while (campaigns.hasNext()) {
@@ -326,34 +326,30 @@ function collectPerf_() {
       var campaignId = campaign.getId();
       var campaignName = campaign.getName();
 
-      // Get stats for different periods
-      var periods = ["LAST_30_DAYS", "LAST_7_DAYS", "TODAY", "YESTERDAY"];
+      // Get stats for different periods including ALL_TIME to capture historical data
+      var periods = ["ALL_TIME", "LAST_30_DAYS", "LAST_7_DAYS", "TODAY", "YESTERDAY"];
 
       for (var i = 0; i < periods.length; i++) {
         try {
           var stats = campaign.getStatsFor(periods[i]);
 
-          // Only record if there's activity
-          if (stats.getImpressions() > 0) {
-            rows.push([
-              new Date(), 'campaign', campaignName, '', campaignId, campaignName,
-              stats.getClicks(), stats.getCost(), stats.getConversions(),
-              stats.getImpressions(), stats.getCtr()
-            ]);
+          // Always record data, even if 0 (to show campaigns exist even without activity)
+          rows.push([
+            new Date(), 'campaign', campaignName, '', campaignId, campaignName,
+            stats.getClicks(), stats.getCost(), stats.getConversions(),
+            stats.getImpressions(), stats.getCtr()
+          ]);
 
-            // Log for debugging
-            if (periods[i] === "LAST_7_DAYS") {
-              log_("Campaign " + campaignName + " - Clicks: " + stats.getClicks() + ", Cost: $" + stats.getCost() + ", Conv: " + stats.getConversions());
-            }
-          }
+          // Log for debugging - show all periods
+          log_("Campaign " + campaignName + " [" + periods[i] + "] - Impressions: " + stats.getImpressions() + ", Clicks: " + stats.getClicks() + ", Cost: $" + stats.getCost() + ", Conv: " + stats.getConversions());
         } catch (e) {
-          log_("Error getting stats for " + campaignName + ": " + e);
+          log_("Error getting stats for " + campaignName + " [" + periods[i] + "]: " + e);
         }
       }
 
       // Get ad groups for this campaign
       var adGroups = campaign.adGroups()
-        .withCondition("Status IN ['ENABLED', 'PAUSED']")
+        .withCondition("Status IN ['ENABLED', 'PAUSED', 'REMOVED']")
         .get();
 
       while (adGroups.hasNext()) {
@@ -361,36 +357,75 @@ function collectPerf_() {
         var adGroupId = adGroup.getId();
         var adGroupName = adGroup.getName();
 
-        try {
-          var agStats = adGroup.getStatsFor("LAST_7_DAYS");
+        // Try multiple periods for ad groups too
+        var agPeriods = ["ALL_TIME", "LAST_30_DAYS", "LAST_7_DAYS"];
+        for (var j = 0; j < agPeriods.length; j++) {
+          try {
+            var agStats = adGroup.getStatsFor(agPeriods[j]);
 
-          if (agStats.getImpressions() > 0) {
+            // Always record, even with 0 metrics
             rows.push([
               new Date(), 'ad_group', campaignName, adGroupName, adGroupId, adGroupName,
               agStats.getClicks(), agStats.getCost(), agStats.getConversions(),
               agStats.getImpressions(), agStats.getCtr()
             ]);
+
+            // Log first period that has data
+            if (agStats.getImpressions() > 0 && j === 0) {
+              log_("Ad Group " + adGroupName + " [" + agPeriods[j] + "] has data - Impressions: " + agStats.getImpressions());
+            }
+          } catch (e) {
+            log_("Error getting ad group stats for " + adGroupName + " [" + agPeriods[j] + "]: " + e);
           }
-        } catch (e) {
-          log_("Error getting ad group stats: " + e);
         }
       }
     }
 
     log_("Collected metrics for " + rows.length + " entities");
 
+    // If no rows collected, try Report API as well
+    if (rows.length === 0) {
+      log_("No data from Legacy API, trying Report API...");
+      try {
+        var report = AdsApp.report(
+          "SELECT CampaignName, CampaignId, Clicks, Cost, Conversions, Impressions, Ctr " +
+          "FROM CAMPAIGN_PERFORMANCE_REPORT " +
+          "WHERE CampaignStatus IN ['ENABLED', 'PAUSED'] " +
+          "DURING LAST_30_DAYS"
+        );
+
+        var reportRows = report.rows();
+        while (reportRows.hasNext()) {
+          var row = reportRows.next();
+          rows.push([
+            new Date(), 'campaign', row['CampaignName'], '', row['CampaignId'], row['CampaignName'],
+            parseInt(row['Clicks']) || 0,
+            parseFloat(row['Cost']) || 0,
+            parseFloat(row['Conversions']) || 0,
+            parseInt(row['Impressions']) || 0,
+            parseFloat(row['Ctr']) || 0
+          ]);
+
+          log_("Report API - Campaign: " + row['CampaignName'] + ", Impressions: " + row['Impressions'] + ", Cost: " + row['Cost']);
+        }
+      } catch (reportError) {
+        log_("Report API also failed: " + reportError);
+      }
+    }
+
   } catch (e) {
     log_("Performance collection error: " + e);
 
     // Fallback to GAQL if legacy fails
     try {
-      var q1 = "SELECT campaign.id, campaign.name, metrics.clicks, metrics.cost_micros, metrics.conversions, metrics.impressions, metrics.ctr FROM campaign WHERE segments.date DURING LAST_7_DAYS AND campaign.advertising_channel_type = SEARCH";
+      log_("Trying GAQL fallback...");
+      var q1 = "SELECT campaign.id, campaign.name, metrics.clicks, metrics.cost_micros, metrics.conversions, metrics.impressions, metrics.ctr FROM campaign WHERE segments.date DURING LAST_30_DAYS";
       var it1 = AdsApp.search(q1);
 
       while (it1.hasNext()) {
         var r = it1.next();
         // Note: GAQL returns cost_micros in micros (1 million micros = $1)
-        var costInDollars = (r.metrics && r.metrics.costMicros) ? r.metrics.costMicros / 1000000 : 0;
+        var costInDollars = (r.metrics && r.metrics.cost_micros) ? r.metrics.cost_micros / 1000000 : 0;
 
         rows.push([
           new Date(), 'campaign', r.campaign.name, '', r.campaign.id, r.campaign.name,
@@ -400,12 +435,15 @@ function collectPerf_() {
           (r.metrics && r.metrics.impressions) || 0,
           (r.metrics && r.metrics.ctr) || 0
         ]);
+
+        log_("GAQL - Campaign: " + r.campaign.name + ", Impressions: " + ((r.metrics && r.metrics.impressions) || 0));
       }
     } catch (gaqlError) {
       log_("GAQL fallback also failed: " + gaqlError);
     }
   }
 
+  log_("Total rows collected: " + rows.length);
   return rows;
 }
 
