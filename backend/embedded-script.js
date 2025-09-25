@@ -377,6 +377,104 @@ function autoNegateAndCollectST_(cfg, lookback, minClicks, minCost) {
   return outRows;
 }
 
+// Extract existing ad content for reuse
+function extractExistingAdContent_(campaign) {
+  var headlines = [];
+  var descriptions = [];
+  var seenH = {};
+  var seenD = {};
+
+  try {
+    // Get all ad groups in this campaign
+    var agIt = campaign.adGroups()
+      .withCondition("ad_group.status IN ('ENABLED','PAUSED')")
+      .get();
+
+    while (agIt.hasNext()) {
+      var ag = agIt.next();
+      var adsIt = ag.ads()
+        .withCondition("ad_group_ad.status IN ('ENABLED','PAUSED')")
+        .withCondition("ad.type = RESPONSIVE_SEARCH_AD")
+        .get();
+
+      while (adsIt.hasNext()) {
+        var ad = adsIt.next();
+        try {
+          // Get RSA assets
+          var rsaAd = ad.asType().responsiveSearchAd();
+
+          // Extract headlines
+          var adHeadlines = rsaAd.getHeadlines();
+          for (var i = 0; i < adHeadlines.length; i++) {
+            var h = adHeadlines[i].text;
+            var hKey = h.toLowerCase();
+            if (!seenH[hKey] && h.length >= 3 && h.length <= 30) {
+              seenH[hKey] = true;
+              headlines.push(h);
+            }
+          }
+
+          // Extract descriptions
+          var adDescriptions = rsaAd.getDescriptions();
+          for (var j = 0; j < adDescriptions.length; j++) {
+            var d = adDescriptions[j].text;
+            var dKey = d.toLowerCase();
+            if (!seenD[dKey] && d.length >= 10 && d.length <= 90) {
+              seenD[dKey] = true;
+              descriptions.push(d);
+            }
+          }
+        } catch(rsaError) {
+          // Not an RSA - try expanded text ad as fallback
+          try {
+            var expandedAd = ad.asType().expandedTextAd();
+
+            // Get headlines from ETA
+            var h1 = expandedAd.getHeadlinePart1();
+            var h2 = expandedAd.getHeadlinePart2();
+            var h3 = expandedAd.getHeadlinePart3 ? expandedAd.getHeadlinePart3() : null;
+
+            if (h1 && !seenH[h1.toLowerCase()]) {
+              seenH[h1.toLowerCase()] = true;
+              headlines.push(h1);
+            }
+            if (h2 && !seenH[h2.toLowerCase()]) {
+              seenH[h2.toLowerCase()] = true;
+              headlines.push(h2);
+            }
+            if (h3 && !seenH[h3.toLowerCase()]) {
+              seenH[h3.toLowerCase()] = true;
+              headlines.push(h3);
+            }
+
+            // Get descriptions from ETA
+            var d1 = expandedAd.getDescription1();
+            var d2 = expandedAd.getDescription2 ? expandedAd.getDescription2() : null;
+
+            if (d1 && !seenD[d1.toLowerCase()]) {
+              seenD[d1.toLowerCase()] = true;
+              descriptions.push(d1);
+            }
+            if (d2 && !seenD[d2.toLowerCase()]) {
+              seenD[d2.toLowerCase()] = true;
+              descriptions.push(d2);
+            }
+          } catch(etaError) {
+            // Not an ETA either - continue
+          }
+        }
+      }
+    }
+  } catch(e) {
+    log_("Error extracting ad content: " + e);
+  }
+
+  return {
+    headlines: headlines.slice(0, 15), // Max 15 headlines
+    descriptions: descriptions.slice(0, 4) // Max 4 descriptions
+  };
+}
+
 // RSA creation
 function buildSafeRSAs_(cfg) {
   var it = AdsApp.adGroups()
@@ -400,9 +498,25 @@ function buildSafeRSAs_(cfg) {
     var ov = (cfg.RSA_MAP[camp] && cfg.RSA_MAP[camp][name]) || null;
     var Hsrc = ov && ov.H && ov.H.length ? ov.H : (cfg.RSA_DEFAULT && cfg.RSA_DEFAULT.H ? cfg.RSA_DEFAULT.H : []);
     var Dsrc = ov && ov.D && ov.D.length ? ov.D : (cfg.RSA_DEFAULT && cfg.RSA_DEFAULT.D ? cfg.RSA_DEFAULT.D : []);
+
+    // If no configured content, try to extract from existing ads in the campaign
+    if ((!Hsrc || Hsrc.length < 3) || (!Dsrc || Dsrc.length < 2)) {
+      var campaign = ag.getCampaign();
+      var extracted = extractExistingAdContent_(campaign);
+
+      if (extracted.headlines.length >= 3) {
+        Hsrc = extracted.headlines;
+        log_("Using " + extracted.headlines.length + " existing headlines from " + camp);
+      }
+      if (extracted.descriptions.length >= 2) {
+        Dsrc = extracted.descriptions;
+        log_("Using " + extracted.descriptions.length + " existing descriptions from " + camp);
+      }
+    }
+
     var H = lint_(Hsrc, 30, 15, 3), D = lint_(Dsrc, 90, 4, 10);
 
-    // Skip RSA creation if we don't have enough content
+    // Skip RSA creation if we still don't have enough content
     if (H.length < 3 || D.length < 2) {
       log_("Skipping RSA in " + camp + " › " + name + " (need 3+ headlines, 2+ descriptions)");
       continue;
