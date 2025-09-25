@@ -33,10 +33,11 @@ function main() {
   cfg.label = USER_LABEL;
 
   // Log loaded configuration values
+  var displayUrl = cfg.default_final_url || USER_URL || 'not set';
   log_("Config loaded - Budget: $" + cfg.daily_budget_cap_default +
        ", CPC: $" + cfg.cpc_ceiling_default +
        ", Label: " + cfg.label +
-       ", URL: " + cfg.default_final_url);
+       ", URL: " + displayUrl);
 
   if (!validatePromoteGate_(cfg)) {
     log_("Script execution blocked - PROMOTE gate failed");
