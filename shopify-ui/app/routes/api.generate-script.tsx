@@ -52,8 +52,12 @@ export async function action({ request }: ActionFunctionArgs) {
       }, currentShopName);
       console.log(`✅ User settings saved for ${currentShopName}:`, saveResult.json);
 
+      // Wait a moment for config to propagate
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
       // Force config refresh by triggering bootstrap with new values
-      await backendFetch("/config", "GET", undefined, currentShopName);
+      const configResult = await backendFetch("/config", "GET", undefined, currentShopName);
+      console.log(`🔄 Config refreshed for ${currentShopName}:`, configResult.json?.config);
     } catch (saveError) {
       console.warn(`Failed to save user settings:`, saveError.message);
       // Continue with script generation even if save fails

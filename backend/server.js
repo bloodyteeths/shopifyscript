@@ -1275,6 +1275,16 @@ app.get("/api/config", async (req, res) => {
         error: "bootstrap_failed",
       });
     }
+    // Log config values being sent to script
+    console.log(`📊 Sending config to ${tenant}:`, {
+      daily_budget_cap_default: cfg.daily_budget_cap_default,
+      cpc_ceiling_default: cfg.cpc_ceiling_default,
+      label: cfg.label,
+      default_final_url: cfg.default_final_url,
+      USER_BUDGET_CAP: cfg.USER_BUDGET_CAP,
+      USER_CPC_CEILING: cfg.USER_CPC_CEILING,
+      USER_LANDING_URL: cfg.USER_LANDING_URL
+    });
     await logAccess(req, 200, "config ok");
     return json(res, 200, { ok: true, config: cfg });
   } catch (e) {
@@ -3908,10 +3918,28 @@ app.get("/api/ads-script/raw", async (req, res) => {
       ? normalizedHost
       : `${normalizedHost}/api`;
 
+    // Get user settings to inject directly into script
+    const userSettings = await getUserSettings(tenantId);
+    const userBudget = userSettings?.budget || "20.00";
+    const userCpc = userSettings?.cpc || "0.50";
+    const userUrl = userSettings?.landing_url || "";
+    const userLabel = `${tenantId} • Managed`;
+
+    console.log(`🎯 Injecting user values into script for ${tenantId}:`, {
+      budget: userBudget,
+      cpc: userCpc,
+      url: userUrl,
+      label: userLabel
+    });
+
     const out = scriptBody
       .replace(/__BACKEND_URL__/g, backendBase)
       .replace(/__TENANT_ID__/g, tenantId)
-      .replace(/__HMAC_SECRET__/g, process.env.HMAC_SECRET || "");
+      .replace(/__HMAC_SECRET__/g, process.env.HMAC_SECRET || "")
+      .replace(/__USER_BUDGET__/g, userBudget)
+      .replace(/__USER_CPC__/g, userCpc)
+      .replace(/__USER_URL__/g, userUrl || "https://example.com")
+      .replace(/__USER_LABEL__/g, userLabel);
 
     res.set("content-type", "text/plain; charset=utf-8");
     console.log(

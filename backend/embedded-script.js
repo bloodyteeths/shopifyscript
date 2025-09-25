@@ -7,6 +7,12 @@ var TENANT_ID = '__TENANT_ID__';
 var BACKEND_URL = '__BACKEND_URL__';
 var SHARED_SECRET = '__HMAC_SECRET__';
 
+// User-configured fallback values
+var USER_BUDGET = __USER_BUDGET__;
+var USER_CPC = __USER_CPC__;
+var USER_URL = '__USER_URL__';
+var USER_LABEL = '__USER_LABEL__';
+
 var PREVIEW_MODE = false;
 var MUTATION_LOG = [];
 var RUN_MODE = 'PRODUCTION';
@@ -17,11 +23,25 @@ function main() {
   var cfg = getConfig_();
   if (!cfg || !cfg.enabled) { log_("Config disabled or not found."); return; }
 
+  // Apply user values as overrides if backend config has defaults
+  if (typeof USER_BUDGET !== 'undefined' && (!cfg.daily_budget_cap_default || parseFloat(cfg.daily_budget_cap_default) <= 3.00)) {
+    cfg.daily_budget_cap_default = USER_BUDGET;
+  }
+  if (typeof USER_CPC !== 'undefined' && (!cfg.cpc_ceiling_default || parseFloat(cfg.cpc_ceiling_default) <= 0.20)) {
+    cfg.cpc_ceiling_default = USER_CPC;
+  }
+  if (typeof USER_URL !== 'undefined' && USER_URL && (!cfg.default_final_url || cfg.default_final_url === '')) {
+    cfg.default_final_url = USER_URL;
+  }
+  if (typeof USER_LABEL !== 'undefined' && USER_LABEL && (!cfg.label || cfg.label.indexOf('Proofkit') !== -1)) {
+    cfg.label = USER_LABEL;
+  }
+
   // Log loaded configuration values
-  log_("Config loaded - Budget: $" + (cfg.daily_budget_cap_default || cfg.USER_BUDGET_CAP || "3.00") +
-       ", CPC: $" + (cfg.cpc_ceiling_default || cfg.USER_CPC_CEILING || "0.20") +
-       ", Label: " + (cfg.label || "unknown") +
-       ", URL: " + (cfg.default_final_url || cfg.USER_LANDING_URL || "not set"));
+  log_("Config loaded - Budget: $" + cfg.daily_budget_cap_default +
+       ", CPC: $" + cfg.cpc_ceiling_default +
+       ", Label: " + cfg.label +
+       ", URL: " + cfg.default_final_url);
 
   if (!validatePromoteGate_(cfg)) {
     log_("Script execution blocked - PROMOTE gate failed");
