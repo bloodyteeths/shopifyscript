@@ -1094,6 +1094,10 @@ app.use("/api/dashboards", dashboardRoutes);
 // ==== AUTOMATION ROUTES ====
 app.use("/api/automation", automationRoutes);
 
+// ==== ANALYTICS ROUTES ====
+import analyticsRoutes from "./routes/analytics.js";
+app.use("/api/analytics", analyticsRoutes);
+
 // ==== ANALYTICS TIER ENDPOINT ====
 app.get("/api/analytics/tier-features", async (req, res) => {
   try {

@@ -128,19 +128,50 @@ export async function loader(args: LoaderFunctionArgs) {
     const validDurations = ["24h", "7d", "30d", "90d"];
     const w = validDurations.includes(wParam) ? wParam : "7d";
     const { backendFetch } = await import("../server/hmac.server");
+
+    // Fetch real metrics data from our new endpoint
+    console.log(`📊 Fetching real metrics for ${shopName}, period: ${w}`);
+    let metricsData = null;
+    let insightsData = null;
+
+    try {
+      // Fetch real metrics from Supabase/Sheets
+      const metricsResponse = await fetch(
+        `${process.env.BACKEND_PUBLIC_URL || 'https://ads-autopilot-backend.vercel.app/api'}/analytics/metrics/${shopName}?period=${w}&type=all`,
+        {
+          headers: {
+            'X-Tenant-Id': shopName
+          }
+        }
+      );
+
+      if (metricsResponse.ok) {
+        const metricsResult = await metricsResponse.json();
+        metricsData = metricsResult.data;
+        console.log(`✅ Fetched real metrics: ${metricsData?.campaigns?.length || 0} campaigns`);
+      }
+    } catch (metricsError) {
+      console.error("Failed to fetch real metrics:", metricsError);
+    }
+
+    // Try to fetch insights data (may still have old format)
     const r = await backendFetch(
       `/insights?w=${w}`,
       "GET",
       undefined,
       shopName,
     );
+    insightsData = r?.json;
+
     const logs = await backendFetch(
       `/run-logs?limit=10`,
       "GET",
       undefined,
       shopName,
     );
-    const base = {
+
+    // Process real metrics data if available
+    let processedData = {
       ok: false,
       w,
       kpi: {
@@ -153,18 +184,76 @@ export async function loader(args: LoaderFunctionArgs) {
         cpa: 0,
       },
       top_terms: [],
-      series: [
-        { t: "2024-01-01", clicks: 5, cost: 2.50, conv: 1 },
-        { t: "2024-01-02", clicks: 8, cost: 4.00, conv: 2 },
-        { t: "2024-01-03", clicks: 12, cost: 6.00, conv: 3 },
-        { t: "2024-01-04", clicks: 10, cost: 5.00, conv: 2 },
-        { t: "2024-01-05", clicks: 15, cost: 7.50, conv: 4 },
-        { t: "2024-01-06", clicks: 20, cost: 10.00, conv: 5 },
-        { t: "2024-01-07", clicks: 18, cost: 9.00, conv: 4 },
-      ],
+      series: [],
+      campaigns: [],
       explain: [],
-      logs: [],
+      logs: logs?.json?.rows || [],
     };
+
+    if (metricsData && metricsData.campaigns && metricsData.campaigns.length > 0) {
+      // Calculate KPIs from real data
+      const summary = metricsData.summary || {};
+      processedData.kpi = {
+        clicks: summary.totalClicks || 0,
+        cost: summary.totalCost || 0,
+        conversions: summary.totalConversions || 0,
+        impressions: summary.totalImpressions || 0,
+        ctr: summary.avgCtr || 0,
+        cpc: summary.avgCpc || 0,
+        cpa: summary.totalConversions > 0 ? (summary.totalCost / summary.totalConversions) : 0,
+      };
+
+      // Group campaigns by date for time series
+      const dateMap = new Map();
+      metricsData.campaigns.forEach(campaign => {
+        const date = campaign.date?.split('T')[0] || new Date().toISOString().split('T')[0];
+        if (!dateMap.has(date)) {
+          dateMap.set(date, {
+            t: date,
+            clicks: 0,
+            cost: 0,
+            conv: 0,
+            impressions: 0
+          });
+        }
+        const dayData = dateMap.get(date);
+        dayData.clicks += campaign.clicks || 0;
+        dayData.cost += campaign.cost || 0;
+        dayData.conv += campaign.conversions || 0;
+        dayData.impressions += campaign.impressions || 0;
+      });
+
+      // Convert to array and sort by date
+      processedData.series = Array.from(dateMap.values()).sort((a, b) => a.t.localeCompare(b.t));
+
+      // Add campaigns list
+      processedData.campaigns = metricsData.campaigns;
+
+      // Process search terms
+      if (metricsData.searchTerms && metricsData.searchTerms.length > 0) {
+        processedData.top_terms = metricsData.searchTerms.slice(0, 10).map(term => ({
+          term: term.search_term,
+          clicks: term.clicks,
+          cost: term.cost,
+          conversions: term.conversions,
+          campaign: term.campaign_name,
+          ad_group: term.ad_group_name
+        }));
+      }
+
+      processedData.ok = true;
+      processedData.dataSource = metricsData.source;
+      console.log(`📊 Processed ${processedData.series.length} days of data from ${metricsData.source}`);
+    } else if (insightsData?.ok) {
+      // Fallback to old insights data if available
+      processedData = {
+        ...insightsData,
+        logs: logs?.json?.rows || [],
+        dataSource: 'legacy'
+      };
+    }
+
+    const base = processedData;
     const merged = r?.json?.ok
       ? {
           ...r.json,
@@ -269,6 +358,13 @@ function InsightsContent() {
       return "7d";
     }
   }, [sp, data]);
+
+  // Data source indicator
+  const dataSource = React.useMemo(() => data?.dataSource || "none", [data]);
+  const hasRealData = React.useMemo(() =>
+    data?.ok && data?.series && data.series.length > 0 && dataSource !== "none",
+    [data, dataSource]
+  );
 
   const k = React.useMemo(
     () =>
@@ -432,8 +528,31 @@ function InsightsContent() {
                 {tierStatus.tier} TIER
               </div>
             )}
+            {/* Data Source Indicator */}
+            {dataSource !== "none" && (
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                padding: '6px 12px',
+                background: dataSource === 'supabase' ? '#e3f2fd' : '#fff3cd',
+                border: `1px solid ${dataSource === 'supabase' ? '#90caf9' : '#ffc107'}`,
+                borderRadius: '16px',
+                fontSize: '12px',
+                color: dataSource === 'supabase' ? '#1976d2' : '#856404'
+              }}>
+                <span style={{
+                  width: '8px',
+                  height: '8px',
+                  borderRadius: '50%',
+                  background: dataSource === 'supabase' ? '#4caf50' : '#ff9800',
+                  display: 'inline-block'
+                }}></span>
+                Data: {dataSource === 'supabase' ? 'Supabase' : dataSource === 'sheets' ? 'Google Sheets' : 'Legacy'}
+              </div>
+            )}
           </div>
-          
+
           <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
             <div style={{
               display: "flex",
@@ -586,25 +705,61 @@ function InsightsContent() {
         margin: '0 auto',
         padding: '20px',
       }}>
+        {/* Empty State or No Data Message */}
+        {!hasRealData && dataSource === "none" && (
+          <div style={{
+            background: 'white',
+            borderRadius: '8px',
+            padding: '48px',
+            textAlign: 'center',
+            marginBottom: '32px',
+            border: '1px solid #e3e3e3'
+          }}>
+            <h2 style={{ color: '#202223', marginBottom: '16px' }}>No Analytics Data Available</h2>
+            <p style={{ color: '#616161', marginBottom: '24px' }}>
+              Run the Google Ads script to start collecting campaign metrics.
+              Data will appear here after the first successful script execution.
+            </p>
+            <div style={{
+              display: 'inline-block',
+              padding: '12px 24px',
+              background: '#f6f6f7',
+              borderRadius: '6px',
+              fontSize: '14px',
+              color: '#202223'
+            }}>
+              <strong>Next steps:</strong>
+              <ol style={{ textAlign: 'left', margin: '12px 0 0 0', paddingLeft: '20px' }}>
+                <li>Copy the Google Ads script from the Setup page</li>
+                <li>Add it to your Google Ads account</li>
+                <li>Run the script or schedule it to run daily</li>
+                <li>Check back here in 5-10 minutes</li>
+              </ol>
+            </div>
+          </div>
+        )}
+
         {/* Analytics view */}
-        <div style={{ marginBottom: '32px' }}>
-          <AnalyticsTier
-              tenant={shopName}
-              data={{
-                kpi: k,
-                roas: data?.roas,
-                series,
-                tierInfo: {
-                  tier: tierStatus.tier,
-                  refreshInterval: tierStatus.config?.refreshInterval || 300000,
-                  realTimeEnabled: realTimeEnabled
-                },
-                upgradePrompts: data?.upgradePrompts
-              }}
-              onDataRefresh={handleDataRefresh}
-              onUpgrade={handleUpgrade}
-          />
-        </div>
+        {(hasRealData || dataSource !== "none") && (
+          <div style={{ marginBottom: '32px' }}>
+            <AnalyticsTier
+                tenant={shopName}
+                data={{
+                  kpi: k,
+                  roas: data?.roas,
+                  series,
+                  tierInfo: {
+                    tier: tierStatus.tier,
+                    refreshInterval: tierStatus.config?.refreshInterval || 300000,
+                    realTimeEnabled: realTimeEnabled
+                  },
+                  upgradePrompts: data?.upgradePrompts
+                }}
+                onDataRefresh={handleDataRefresh}
+                onUpgrade={handleUpgrade}
+            />
+          </div>
+        )}
         {retention && (
           <div
             style={{
