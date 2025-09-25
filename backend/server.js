@@ -1475,6 +1475,118 @@ app.post("/api/metrics", async (req, res) => {
     let insM = 0,
       insS = 0,
       insL = 0;
+
+    // Try to write to Supabase first if enabled
+    const { supabase, isSupabaseEnabled } = await import('./services/supabase-client.js');
+
+    if (isSupabaseEnabled()) {
+      try {
+        console.log(`🔄 Writing metrics to Supabase for ${tenant}`);
+
+        // Set tenant context for RLS
+        await supabase.rpc('set_config', {
+          parameter: 'app.current_tenant_id',
+          value: String(tenant)
+        });
+
+        // Write campaign metrics to Supabase
+        if (mRows.length) {
+          const campaignMetrics = mRows
+            .filter(row => row[1] === 'campaign')
+            .map(row => ({
+              tenant_id: String(tenant),
+              date: new Date(row[0]).toISOString(),
+              campaign_id: String(row[4]),
+              campaign_name: String(row[2]),
+              clicks: parseInt(row[6]) || 0,
+              cost: parseFloat(row[7]) || 0,
+              conversions: parseFloat(row[8]) || 0,
+              impressions: parseInt(row[9]) || 0,
+              ctr: parseFloat(row[10]) || 0,
+              created_at: new Date().toISOString()
+            }));
+
+          if (campaignMetrics.length > 0) {
+            const { error: campaignError } = await supabase
+              .from('campaign_metrics')
+              .upsert(campaignMetrics, {
+                onConflict: 'tenant_id,campaign_id,date',
+                ignoreDuplicates: false
+              });
+
+            if (campaignError) {
+              console.error('Failed to insert campaign metrics to Supabase:', campaignError);
+            } else {
+              console.log(`✅ Inserted ${campaignMetrics.length} campaign metrics to Supabase`);
+            }
+          }
+
+          // Write ad group metrics to Supabase
+          const adGroupMetrics = mRows
+            .filter(row => row[1] === 'ad_group')
+            .map(row => ({
+              tenant_id: String(tenant),
+              date: new Date(row[0]).toISOString(),
+              campaign_name: String(row[2]),
+              ad_group_id: String(row[4]),
+              ad_group_name: String(row[3]),
+              clicks: parseInt(row[6]) || 0,
+              cost: parseFloat(row[7]) || 0,
+              conversions: parseFloat(row[8]) || 0,
+              impressions: parseInt(row[9]) || 0,
+              ctr: parseFloat(row[10]) || 0,
+              created_at: new Date().toISOString()
+            }));
+
+          if (adGroupMetrics.length > 0) {
+            const { error: adGroupError } = await supabase
+              .from('ad_group_metrics')
+              .upsert(adGroupMetrics, {
+                onConflict: 'tenant_id,ad_group_id,date',
+                ignoreDuplicates: false
+              });
+
+            if (adGroupError) {
+              console.error('Failed to insert ad group metrics to Supabase:', adGroupError);
+            } else {
+              console.log(`✅ Inserted ${adGroupMetrics.length} ad group metrics to Supabase`);
+            }
+          }
+        }
+
+        // Write search terms to Supabase
+        if (stRows.length) {
+          const searchTerms = stRows.map(row => ({
+            tenant_id: String(tenant),
+            date: new Date(row[0]).toISOString(),
+            campaign_name: String(row[1]),
+            ad_group_name: String(row[2]),
+            search_term: String(row[3]),
+            clicks: parseInt(row[4]) || 0,
+            cost: parseFloat(row[5]) || 0,
+            conversions: parseFloat(row[6]) || 0,
+            created_at: new Date().toISOString()
+          }));
+
+          const { error: termsError } = await supabase
+            .from('search_terms')
+            .upsert(searchTerms, {
+              onConflict: 'tenant_id,campaign_name,ad_group_name,search_term,date',
+              ignoreDuplicates: false
+            });
+
+          if (termsError) {
+            console.error('Failed to insert search terms to Supabase:', termsError);
+          } else {
+            console.log(`✅ Inserted ${searchTerms.length} search terms to Supabase`);
+          }
+        }
+      } catch (supabaseError) {
+        console.error('Supabase write error (will fallback to Sheets):', supabaseError);
+      }
+    }
+
+    // Always write to Google Sheets as backup
     if (mRows.length) {
       await appendRows(String(tenant), "METRICS", MET_HEADERS, mRows);
       insM = mRows.length;
