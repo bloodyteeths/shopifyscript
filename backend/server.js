@@ -3921,7 +3921,7 @@ app.get("/api/ads-script/raw", async (req, res) => {
       .replace(/__HMAC_SECRET__/g, process.env.HMAC_SECRET || "")
       .replace(/__USER_BUDGET__/g, userBudget)
       .replace(/__USER_CPC__/g, userCpc)
-      .replace(/__USER_URL__/g, userUrl || "https://example.com")
+      .replace(/__USER_URL__/g, userUrl || "")
       .replace(/__USER_LABEL__/g, userLabel);
 
     res.set("content-type", "text/plain; charset=utf-8");
@@ -3989,7 +3989,7 @@ app.get("/api/ads-script/v2", async (req, res) => {
       .replace(/__HMAC_SECRET__/g, process.env.HMAC_SECRET || "")
       .replace(/__USER_BUDGET__/g, userBudget)
       .replace(/__USER_CPC__/g, userCpc)
-      .replace(/__USER_URL__/g, userUrl || "https://example.com")
+      .replace(/__USER_URL__/g, userUrl || "")
       .replace(/__USER_LABEL__/g, userLabel);
 
     res.set("content-type", "text/plain; charset=utf-8");

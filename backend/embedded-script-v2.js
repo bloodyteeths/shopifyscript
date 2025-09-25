@@ -11,7 +11,7 @@ var SHARED_SECRET = '__HMAC_SECRET__';
 // User-configured fallback values (will be replaced during generation)
 var USER_BUDGET = parseFloat('__USER_BUDGET__') || 20.00;
 var USER_CPC = parseFloat('__USER_CPC__') || 0.50;
-var USER_URL = '__USER_URL__' || '';
+var USER_URL = '__USER_URL__';
 var USER_LABEL = '__USER_LABEL__' || '__TENANT_ID__ • Managed';
 
 var PREVIEW_MODE = false;
@@ -27,7 +27,7 @@ function main() {
   // Force user values to override backend config
   cfg.daily_budget_cap_default = USER_BUDGET;
   cfg.cpc_ceiling_default = USER_CPC;
-  if (USER_URL && USER_URL !== '__USER_URL__') {
+  if (USER_URL && USER_URL !== '__USER_URL__' && USER_URL !== '') {
     cfg.default_final_url = USER_URL;
   }
   cfg.label = USER_LABEL;
@@ -388,14 +388,13 @@ function extractExistingAdContent_(campaign) {
   try {
     // Get all ad groups in this campaign
     var agIt = campaign.adGroups()
-      .withCondition("ad_group.status IN ('ENABLED','PAUSED')")
+      .withCondition("Status IN ['ENABLED','PAUSED']")
       .get();
 
     while (agIt.hasNext()) {
       var ag = agIt.next();
       var adsIt = ag.ads()
-        .withCondition("ad_group_ad.status IN ('ENABLED','PAUSED')")
-        .withCondition("ad.type = RESPONSIVE_SEARCH_AD")
+        .withCondition("Status IN ['ENABLED','PAUSED']")
         .get();
 
       while (adsIt.hasNext()) {
