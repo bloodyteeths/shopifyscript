@@ -3942,6 +3942,8 @@ app.get("/api/ads-script/raw", async (req, res) => {
       .replace(/__USER_LABEL__/g, userLabel);
 
     res.set("content-type", "text/plain; charset=utf-8");
+    res.set("cache-control", "no-cache, no-store, must-revalidate");
+    res.set("x-script-version", "2.1");
     console.log(
       `✅ Script generated successfully: ${out.length} bytes for ${tenantId}`,
     );

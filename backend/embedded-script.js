@@ -1,7 +1,8 @@
 // Full Google Ads Script Content (for embedding in server.js)
 // Updated with optimized 26KB version
-export default String.raw`/** Ads Autopilot AI - Google Ads Script
+export default String.raw`/** Ads Autopilot AI - Google Ads Script v2.1
  * Automated campaign optimization powered by AI
+ * Version: 2.1 - User value injection and RSA extraction
  */
 var TENANT_ID = '__TENANT_ID__';
 var BACKEND_URL = '__BACKEND_URL__';
@@ -891,3 +892,4 @@ function applySignalToAdGroup_(signal, cfg) {
 
   return result;
 }`;
+// Cache bust: 1758762098
