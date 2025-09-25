@@ -460,6 +460,69 @@ async function upsertConfigToSheets(tenant, settings) {
   );
 }
 
+// Helper function to get tier-based defaults
+function getTierDefaults(plan) {
+  const tiers = {
+    starter: {
+      lookbackPeriod: "LAST_7_DAYS",
+      dataRetentionDays: 7,
+      campaignLimit: 5,
+      defaultBudget: "3.00",
+      defaultCPC: "0.20"
+    },
+    professional: {
+      lookbackPeriod: "LAST_30_DAYS",
+      dataRetentionDays: 30,
+      campaignLimit: 25,
+      defaultBudget: "10.00",
+      defaultCPC: "0.35"
+    },
+    enterprise: {
+      lookbackPeriod: "LAST_90_DAYS",
+      dataRetentionDays: 90,
+      campaignLimit: -1, // unlimited
+      defaultBudget: "50.00",
+      defaultCPC: "0.50"
+    }
+  };
+
+  return tiers[plan?.toLowerCase()] || tiers.starter;
+}
+
+// Helper to get user settings from storage
+async function getUserSettings(tenant) {
+  try {
+    // Try to get from Redis cache first
+    const cacheKey = `user_settings:${tenant}`;
+    const cached = await redis.get(cacheKey);
+    if (cached) {
+      return JSON.parse(cached);
+    }
+
+    // Try to get from Google Sheets CONFIG table
+    const sheet = await ensureSheet(doc, `CONFIG_${tenant}`, ["key", "value"]);
+    const rows = await sheet.getRows();
+    const settings = {};
+    rows.forEach(r => {
+      if (r.key === "USER_BUDGET_CAP") settings.budget = r.value;
+      if (r.key === "USER_CPC_CEILING") settings.cpc = r.value;
+      if (r.key === "USER_LANDING_URL") settings.landing_url = r.value;
+      if (r.key === "PLAN") settings.plan = r.value;
+    });
+
+    if (Object.keys(settings).length > 0) {
+      // Cache for next time
+      await redis.set(cacheKey, JSON.stringify(settings), 'EX', 3600);
+      return settings;
+    }
+
+    return null;
+  } catch (e) {
+    console.log(`Error getting user settings for ${tenant}:`, e.message);
+    return null;
+  }
+}
+
 async function readConfigFromSheets(tenant) {
   const doc = await getDoc();
   if (!doc) return memory.configs[tenant] || null;
@@ -469,21 +532,30 @@ async function readConfigFromSheets(tenant) {
   rows.forEach((r) => {
     if (r.key) map[String(r.key).trim()] = String(r.value || "").trim();
   });
-  // Build config object with defaults + table blobs:
+
+  // Get tier-based defaults
+  const tierDefaults = getTierDefaults(map.PLAN || "starter");
+
+  // Get user settings if available
+  const userSettings = await getUserSettings(tenant);
+
+  // Build config object with defaults + user settings + tier defaults
   const cfg = {
     enabled: (map.enabled || "TRUE").toLowerCase() !== "false",
-    label: map.label || "PROOFKIT_AUTOMATED",
-    default_final_url: map.default_final_url || "https://www.proofkit.net",
+    label: map.label || `${tenant} • Managed`,
+    default_final_url: map.default_final_url || userSettings?.landing_url || map.USER_LANDING_URL || "",
     PROMOTE: (map.PROMOTE || "TRUE").toLowerCase() === "true",
-    daily_budget_cap_default: Number(map.daily_budget_cap_default || "3.00"),
-    cpc_ceiling_default: Number(map.cpc_ceiling_default || "0.20"),
+    daily_budget_cap_default: Number(map.daily_budget_cap_default || userSettings?.budget || map.USER_BUDGET_CAP || tierDefaults.defaultBudget),
+    cpc_ceiling_default: Number(map.cpc_ceiling_default || userSettings?.cpc || map.USER_CPC_CEILING || tierDefaults.defaultCPC),
     add_business_hours_if_none:
       (map.add_business_hours_if_none || "TRUE").toLowerCase() !== "false",
     business_days_csv:
       map.business_days_csv || "MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY",
     business_start: map.business_start || "09:00",
     business_end: map.business_end || "18:00",
-    st_lookback: map.st_lookback || "LAST_7_DAYS",
+    st_lookback: map.st_lookback || tierDefaults.lookbackPeriod,
+    campaign_lookback_days: tierDefaults.dataRetentionDays,
+    tier_campaign_limit: tierDefaults.campaignLimit,
     st_min_clicks: Number(map.st_min_clicks || "2"),
     st_min_cost: Number(map.st_min_cost || "2.82"),
     master_neg_list_name:
@@ -1195,6 +1267,55 @@ app.get("/api/config", async (req, res) => {
 });
 
 // HMAC-gated echo endpoint for diagnostics
+// Save user settings from UI
+app.post("/api/config/save-settings", async (req, res) => {
+  const tenant = String(req.query.tenant || "");
+  const sig = String(req.query.sig || "");
+  const { nonce = Date.now(), settings = {} } = req.body || {};
+  const payload = `POST:${tenant}:save_settings:${nonce}`;
+
+  if (!tenant || !verify(sig, payload)) {
+    await logAccess(req, 403, "save_settings auth_fail");
+    return json(res, 403, {
+      ok: false,
+      code: "AUTH",
+      error: "invalid signature",
+    });
+  }
+
+  try {
+    // Validate and save settings
+    const validSettings = {
+      USER_BUDGET_CAP: String(settings.budget || ""),
+      USER_CPC_CEILING: String(settings.cpc || ""),
+      USER_LANDING_URL: String(settings.landing_url || ""),
+      PLAN: String(settings.plan || "starter"),
+    };
+
+    // Save to Google Sheets CONFIG table
+    await upsertConfigKeys(tenant, validSettings);
+
+    // Also cache in Redis
+    const cacheKey = `user_settings:${tenant}`;
+    await redis.set(cacheKey, JSON.stringify({
+      budget: validSettings.USER_BUDGET_CAP,
+      cpc: validSettings.USER_CPC_CEILING,
+      landing_url: validSettings.USER_LANDING_URL,
+      plan: validSettings.PLAN,
+    }), 'EX', 3600);
+
+    await logAccess(req, 200, "save_settings ok");
+    return json(res, 200, { ok: true, saved: validSettings });
+  } catch (e) {
+    console.error(`Failed to save settings for ${tenant}:`, e);
+    await logAccess(req, 500, "save_settings error");
+    return json(res, 500, {
+      ok: false,
+      error: "Failed to save settings",
+    });
+  }
+});
+
 app.get("/api/config/echo", async (req, res) => {
   const tenant = String(req.query.tenant || "");
   const sig = String(req.query.sig || "");

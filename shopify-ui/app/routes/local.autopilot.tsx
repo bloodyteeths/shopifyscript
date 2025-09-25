@@ -13,6 +13,8 @@ export async function loader() {
     backendUrl:
       process.env.BACKEND_PUBLIC_URL ||
       "https://ads-autopilot-backend.vercel.app/api",
+    // For local testing, use enterprise tier by default
+    tier: "enterprise",
   };
 
   return { diag: diag.json || {}, status: status.json || {}, tenantInfo };
@@ -132,6 +134,7 @@ Tenant: proofkit`;
         budget,
         cpc,
         url,
+        tier: tenantInfo?.tier || "enterprise", // Use tier from loader
       }),
     })
       .then((response) => response.json())

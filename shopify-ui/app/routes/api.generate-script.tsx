@@ -5,11 +5,11 @@ import { getServerShopName } from "../utils/shop-config";
 export async function action({ request }: ActionFunctionArgs) {
   try {
     console.log(`Script generation API called - Method: ${request.method}, URL: ${request.url}`);
-    
+
     const body = await request.json();
-    const { mode, budget, cpc, url, shopName } = body;
-    
-    console.log(`Request body parsed:`, { mode, budget, cpc, url, shopName });
+    const { mode, budget, cpc, url, shopName, tier } = body;
+
+    console.log(`Request body parsed:`, { mode, budget, cpc, url, shopName, tier });
 
     // Use shop name from request body or determine from server context
     const currentShopName =
@@ -21,6 +21,41 @@ export async function action({ request }: ActionFunctionArgs) {
     const { backendFetchText, backendFetch } = await import(
       "../server/hmac.server"
     );
+
+    // Get subscription tier if not provided
+    let actualTier = tier;
+    if (!actualTier) {
+      try {
+        // Try to get subscription info from Shopify
+        const { authenticate } = await import("../shopify.server");
+        const { checkSubscriptionStatus } = await import("../utils/subscription.server");
+        const { admin } = await authenticate.admin(request);
+        const subscriptionInfo = await checkSubscriptionStatus(admin);
+        actualTier = subscriptionInfo?.subscriptionTier || "starter";
+        console.log(`Detected subscription tier: ${actualTier} for ${currentShopName}`);
+      } catch (tierError) {
+        console.warn(`Failed to detect tier, using starter:`, tierError.message);
+        actualTier = "starter";
+      }
+    }
+
+    // Save user settings to backend before generating script
+    try {
+      console.log(`💾 Saving user settings for ${currentShopName} (tier: ${actualTier})`);
+      await backendFetch("/config/save-settings", "POST", {
+        settings: {
+          budget: budget,
+          cpc: cpc,
+          landing_url: url,
+          plan: actualTier
+        }
+      }, currentShopName);
+      console.log(`✅ User settings saved for ${currentShopName}`);
+    } catch (saveError) {
+      console.warn(`Failed to save user settings:`, saveError.message);
+      // Continue with script generation even if save fails
+    }
+
     console.log(`🔗 Fetching script from backend for shop: ${currentShopName}`);
 
     let realScript;
