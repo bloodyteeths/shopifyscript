@@ -135,20 +135,30 @@ export async function loader(args: LoaderFunctionArgs) {
     let insightsData = null;
 
     try {
-      // Fetch real metrics from Supabase/Sheets
+      // Fetch real metrics from Supabase/Sheets - use server-side fetch
+      const backendUrl = process.env.BACKEND_PUBLIC_URL || 'https://ads-autopilot-backend.vercel.app/api';
+      console.log(`📊 Fetching metrics from: ${backendUrl}/analytics/metrics/${shopName}`);
+
       const metricsResponse = await fetch(
-        `${process.env.BACKEND_PUBLIC_URL || 'https://ads-autopilot-backend.vercel.app/api'}/analytics/metrics/${shopName}?period=${w}&type=all`,
+        `${backendUrl}/analytics/metrics/${shopName}?period=${w}&type=all`,
         {
+          method: 'GET',
           headers: {
-            'X-Tenant-Id': shopName
+            'X-Tenant-Id': shopName,
+            'Accept': 'application/json'
           }
         }
       );
 
+      console.log(`📊 Metrics response status: ${metricsResponse.status}`);
+
       if (metricsResponse.ok) {
         const metricsResult = await metricsResponse.json();
         metricsData = metricsResult.data;
-        console.log(`✅ Fetched real metrics: ${metricsData?.campaigns?.length || 0} campaigns`);
+        console.log(`✅ Fetched real metrics: ${metricsData?.campaigns?.length || 0} campaigns, source: ${metricsData?.source}`);
+      } else {
+        const errorText = await metricsResponse.text();
+        console.error(`Failed to fetch metrics: ${metricsResponse.status} - ${errorText}`);
       }
     } catch (metricsError) {
       console.error("Failed to fetch real metrics:", metricsError);

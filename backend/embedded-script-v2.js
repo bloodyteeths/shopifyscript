@@ -313,24 +313,24 @@ function applyWasteNegs_(cfg, map) {
 // Performance collection
 function collectPerf_() {
   var rows = [];
-  var q1 = "SELECT campaign.id, campaign.name, metrics.clicks, metrics.cost_micros, metrics.conversions, metrics.impressions, metrics.ctr FROM campaign WHERE segments.date DURING LAST_7_DAYS AND campaign.advertising_channel_type = SEARCH";
+  var q1 = "SELECT campaign.id, campaign.name, metrics.clicks, metrics.cost_micros, metrics.conversions, metrics.impressions, metrics.ctr, segments.date FROM campaign WHERE segments.date DURING LAST_90_DAYS AND campaign.advertising_channel_type = SEARCH";
   var it1 = AdsApp.search(q1);
   while (it1.hasNext()) {
     var r = it1.next();
     rows.push([
-      new Date(), 'campaign', r.campaign.name, '', r.campaign.id, r.campaign.name,
-      (r.metrics.clicks || 0), ((r.metrics.costMicros || 0) / 1e6),
+      new Date(r.segments.date), 'campaign', r.campaign.name, '', r.campaign.id, r.campaign.name,
+      (r.metrics.clicks || 0), ((r.metrics.cost_micros || 0) / 1e6),
       (r.metrics.conversions || 0), (r.metrics.impressions || 0), (r.metrics.ctr || 0)
     ]);
   }
 
-  var q2 = "SELECT campaign.name, ad_group.id, ad_group.name, metrics.clicks, metrics.cost_micros, metrics.conversions, metrics.impressions, metrics.ctr FROM ad_group WHERE segments.date DURING LAST_7_DAYS AND campaign.advertising_channel_type = SEARCH";
+  var q2 = "SELECT campaign.name, ad_group.id, ad_group.name, metrics.clicks, metrics.cost_micros, metrics.conversions, metrics.impressions, metrics.ctr, segments.date FROM ad_group WHERE segments.date DURING LAST_90_DAYS AND campaign.advertising_channel_type = SEARCH";
   var it2 = AdsApp.search(q2);
   while (it2.hasNext()) {
     var r2 = it2.next();
     rows.push([
-      new Date(), 'ad_group', r2.campaign.name, r2.adGroup.name, r2.adGroup.id, r2.adGroup.name,
-      (r2.metrics.clicks || 0), ((r2.metrics.costMicros || 0) / 1e6),
+      new Date(r2.segments.date), 'ad_group', r2.campaign.name, r2.ad_group.name, r2.ad_group.id, r2.ad_group.name,
+      (r2.metrics.clicks || 0), ((r2.metrics.cost_micros || 0) / 1e6),
       (r2.metrics.conversions || 0), (r2.metrics.impressions || 0), (r2.metrics.ctr || 0)
     ]);
   }
@@ -343,16 +343,16 @@ function autoNegateAndCollectST_(cfg, lookback, minClicks, minCost) {
   var it = AdsApp.search(q), outRows = [], bucket = {};
   while (it.hasNext()) {
     var r = it.next();
-    var cost = (r.metrics.costMicros || 0) / 1e6;
+    var cost = (r.metrics.cost_micros || 0) / 1e6;
     var conv = r.metrics.conversions || 0;
     if (conv === 0 && cost >= (minCost || 2.82)) {
-      var t = (r.searchTermView.searchTerm || "").toLowerCase();
-      var id = String(r.adGroup.id);
+      var t = (r.search_term_view.search_term || "").toLowerCase();
+      var id = String(r.ad_group.id);
       (bucket[id] = bucket[id] || []).push(t);
     }
     outRows.push([
-      new Date(), r.campaign.name, r.adGroup.name,
-      (r.searchTermView.searchTerm || ""), (r.metrics.clicks || 0), cost, conv
+      new Date(), r.campaign.name, r.ad_group.name,
+      (r.search_term_view.search_term || ""), (r.metrics.clicks || 0), cost, conv
     ]);
   }
 
