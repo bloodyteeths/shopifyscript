@@ -67,12 +67,24 @@ export async function action({ request }: ActionFunctionArgs) {
 
     let realScript;
     try {
-      realScript = await backendFetchText(
-        "/ads-script/raw",
-        "GET",
-        undefined,
-        currentShopName,
-      );
+      // Try v2 endpoint first, fallback to raw endpoint
+      try {
+        console.log(`🔗 Attempting to fetch from /ads-script/v2 endpoint`);
+        realScript = await backendFetchText(
+          "/ads-script/v2",
+          "GET",
+          undefined,
+          currentShopName,
+        );
+      } catch (v2Error) {
+        console.log(`⚠️ V2 endpoint failed, falling back to /ads-script/raw: ${v2Error.message}`);
+        realScript = await backendFetchText(
+          "/ads-script/raw",
+          "GET",
+          undefined,
+          currentShopName,
+        );
+      }
       console.log(
         `Backend fetch completed for ${currentShopName}, script length: ${realScript?.length || 0}`,
       );

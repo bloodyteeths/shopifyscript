@@ -3882,30 +3882,11 @@ app.get("/api/ads-script/raw", async (req, res) => {
     const tenantId = String(tenant || "default");
     console.log(`📜 Generating script for shop: ${tenantId}`);
 
-    // Prefer real master.gs if available; fallback to embedded content
+    // FORCE v2.1 embedded script - bypass file system completely
     let scriptBody = MASTER_SCRIPT_CONTENT;
-    try {
-      const primary = path.resolve(process.cwd(), "ads-script", "master.gs");
-      const fallback = path.resolve(
-        process.cwd(),
-        "backend",
-        "ads-script",
-        "master.gs",
-      );
-      const filePath = fs.existsSync(primary)
-        ? primary
-        : fs.existsSync(fallback)
-          ? fallback
-          : null;
-      if (filePath) {
-        scriptBody = await fs.promises.readFile(filePath, "utf8");
-      }
-    } catch (readErr) {
-      console.log(
-        "ℹ️ Using embedded script content (file read fallback):",
-        String(readErr.message || readErr),
-      );
-    }
+    console.log(`📝 Using embedded script v2.1, length: ${scriptBody.length}, starts with: ${scriptBody.substring(0, 100)}`);
+
+    // Removed file reading to ensure v2.1 script is always used
 
     // Normalize backend base away from Vercel preview protection and ensure /api suffix
     const rawBase = (
@@ -3952,6 +3933,76 @@ app.get("/api/ads-script/raw", async (req, res) => {
     return res.status(200).send(out);
   } catch (e) {
     console.error("❌ Script generation error:", e);
+    return res.status(500).json({ ok: false, error: String(e) });
+  }
+});
+
+// ----- NEW V2 Script endpoint to bypass CDN cache -----
+app.get("/api/ads-script/v2", async (req, res) => {
+  console.log("🚀 /api/ads-script/v2 endpoint hit", req.query);
+  const { tenant, sig } = req.query;
+  const payload = `GET:${tenant}:script_raw`;
+  console.log("🔐 HMAC verification:", { tenant, sig, payload });
+  if (!tenant || !verify(sig, payload)) {
+    console.log("🔐 Auth failed - returning 403");
+    return res.status(403).json({ ok: false, error: "auth" });
+  }
+
+  try {
+    const tenantId = String(tenant || "default");
+    console.log(`📜 Generating v2 script for shop: ${tenantId}`);
+
+    // FORCE v2.1 embedded script
+    let scriptBody = MASTER_SCRIPT_CONTENT;
+    console.log(`📝 Using embedded script v2.1, length: ${scriptBody.length}`);
+
+    // Normalize backend base
+    const rawBase = (
+      process.env.BACKEND_PUBLIC_URL ||
+      "https://ads-autopilot-backend.vercel.app/api"
+    ).replace(/\/$/, "");
+    const normalizedHost = rawBase.replace(
+      /-git-[a-zA-Z0-9]+-atillas-projects-3562cb36\.vercel\.app/,
+      ".vercel.app",
+    );
+    const backendBase = /\/api$/.test(normalizedHost)
+      ? normalizedHost
+      : `${normalizedHost}/api`;
+
+    // Get user settings to inject directly into script
+    const userSettings = await getUserSettings(tenantId);
+    const userBudget = userSettings?.budget || "20.00";
+    const userCpc = userSettings?.cpc || "0.50";
+    const userUrl = userSettings?.landing_url || "";
+    const userLabel = `${tenantId} • Managed`;
+
+    console.log(`🎯 Injecting user values into v2 script for ${tenantId}:`, {
+      budget: userBudget,
+      cpc: userCpc,
+      url: userUrl,
+      label: userLabel
+    });
+
+    const out = scriptBody
+      .replace(/__BACKEND_URL__/g, backendBase)
+      .replace(/__TENANT_ID__/g, tenantId)
+      .replace(/__HMAC_SECRET__/g, process.env.HMAC_SECRET || "")
+      .replace(/__USER_BUDGET__/g, userBudget)
+      .replace(/__USER_CPC__/g, userCpc)
+      .replace(/__USER_URL__/g, userUrl || "https://example.com")
+      .replace(/__USER_LABEL__/g, userLabel);
+
+    res.set("content-type", "text/plain; charset=utf-8");
+    res.set("cache-control", "no-cache, no-store, must-revalidate, max-age=0");
+    res.set("pragma", "no-cache");
+    res.set("expires", "0");
+    res.set("x-script-version", "2.1-force");
+    console.log(
+      `✅ V2 Script generated successfully: ${out.length} bytes for ${tenantId}`,
+    );
+    return res.status(200).send(out);
+  } catch (e) {
+    console.error("❌ V2 Script generation error:", e);
     return res.status(500).json({ ok: false, error: String(e) });
   }
 });
