@@ -1245,10 +1245,27 @@ app.get("/api/config", async (req, res) => {
     });
   }
   try {
-    let cfg = await readConfigFromSheets(tenant);
+    // Import dual-write service for reading from Supabase first, then Sheets fallback
+    const { readFromPreferredSource } = await import('./services/dual-write.js');
+
+    let cfg = null;
+    try {
+      // Try to read from Supabase first, falls back to Sheets if needed
+      cfg = await readFromPreferredSource(tenant, 'config');
+    } catch (dualReadError) {
+      console.warn(`Dual read failed for ${tenant}, attempting direct Sheets read:`, dualReadError.message);
+      // Fallback to direct Sheets read
+      cfg = await readConfigFromSheets(tenant);
+    }
+
     if (!cfg) {
       await bootstrapTenant(tenant);
-      cfg = await readConfigFromSheets(tenant);
+      // Try dual read again after bootstrap
+      try {
+        cfg = await readFromPreferredSource(tenant, 'config');
+      } catch {
+        cfg = await readConfigFromSheets(tenant);
+      }
     }
     if (!cfg) {
       await logAccess(req, 500, "config bootstrap_fail");
@@ -1285,15 +1302,32 @@ app.post("/api/config/save-settings", async (req, res) => {
 
   try {
     // Validate and save settings
+    const tierDefaults = getTierDefaults(settings.plan || "starter");
     const validSettings = {
       USER_BUDGET_CAP: String(settings.budget || ""),
       USER_CPC_CEILING: String(settings.cpc || ""),
       USER_LANDING_URL: String(settings.landing_url || ""),
       PLAN: String(settings.plan || "starter"),
+      // Also update the actual config values used by the script
+      daily_budget_cap_default: String(settings.budget || tierDefaults.defaultBudget),
+      cpc_ceiling_default: String(settings.cpc || tierDefaults.defaultCPC),
+      default_final_url: String(settings.landing_url || ""),
+      st_lookback: tierDefaults.lookbackPeriod,
+      label: `${tenant} • Managed`,
     };
 
-    // Save to Google Sheets CONFIG table
-    await upsertConfigKeys(tenant, validSettings);
+    // Import dual-write service
+    const { dualWriteConfig } = await import('./services/dual-write.js');
+
+    // Use dual-write to save to both Supabase and Google Sheets
+    const dualWriteResults = await dualWriteConfig(tenant, validSettings);
+
+    console.log(`💾 Dual-write results for ${tenant}:`, dualWriteResults);
+
+    // If both fail, still try direct Sheets write as ultimate fallback
+    if (!dualWriteResults.sheets.success && !dualWriteResults.supabase.success) {
+      await upsertConfigKeys(tenant, validSettings);
+    }
 
     // Also cache in Redis
     const cacheKey = `user_settings:${tenant}`;
@@ -1787,25 +1821,44 @@ async function bootstrapTenant(tenant) {
   try {
     await ensureAudienceTabs(String(tenant));
   } catch {}
+
+  // Get user settings if available
+  const userSettings = await getUserSettings(tenant);
+  const tierDefaults = getTierDefaults(userSettings?.plan || "starter");
+
   const defaults = {
     enabled: "TRUE",
-    label: `${tenant} • Automated`,
-    plan: "starter",
-    default_final_url: "https://example.com",
-    daily_budget_cap_default: "3",
-    cpc_ceiling_default: "0.2",
+    PROMOTE: "FALSE",
+    label: `${tenant} • Managed`,
+    plan: userSettings?.plan || "starter",
+    default_final_url: userSettings?.landing_url || "",
+    daily_budget_cap_default: userSettings?.budget || tierDefaults.defaultBudget,
+    cpc_ceiling_default: userSettings?.cpc || tierDefaults.defaultCPC,
     add_business_hours_if_none: "TRUE",
     business_days_csv: "MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY",
     business_start: "09:00",
     business_end: "18:00",
     master_neg_list_name: `${tenant} • Master Negatives`,
-    st_lookback: "LAST_7_DAYS",
+    st_lookback: tierDefaults.lookbackPeriod,
     st_min_clicks: "2",
     st_min_cost: "2.82",
     AUDIENCE_MIN_SIZE: "1000",
+    // Store user settings for later retrieval
+    USER_BUDGET_CAP: userSettings?.budget || "",
+    USER_CPC_CEILING: userSettings?.cpc || "",
+    USER_LANDING_URL: userSettings?.landing_url || "",
   };
   try {
-    await upsertConfigKeys(String(tenant), defaults);
+    // Import dual-write service
+    const { dualWriteConfig, readFromPreferredSource } = await import('./services/dual-write.js');
+
+    // Use dual-write for bootstrap configuration
+    const dualWriteResults = await dualWriteConfig(String(tenant), defaults);
+
+    // If both fail, try direct Sheets write as fallback
+    if (!dualWriteResults.sheets.success && !dualWriteResults.supabase.success) {
+      await upsertConfigKeys(String(tenant), defaults);
+    }
   } catch {}
   try {
     await appendRows(
@@ -1816,9 +1869,16 @@ async function bootstrapTenant(tenant) {
     );
   } catch {}
   try {
-    return await readConfigFromSheets(String(tenant));
+    // Try to read from preferred source (Supabase first, then Sheets)
+    const { readFromPreferredSource } = await import('./services/dual-write.js');
+    return await readFromPreferredSource(String(tenant), 'config');
   } catch {
-    return null;
+    // Final fallback to direct Sheets read
+    try {
+      return await readConfigFromSheets(String(tenant));
+    } catch {
+      return null;
+    }
   }
 }
 

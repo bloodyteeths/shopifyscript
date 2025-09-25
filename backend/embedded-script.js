@@ -17,6 +17,12 @@ function main() {
   var cfg = getConfig_();
   if (!cfg || !cfg.enabled) { log_("Config disabled or not found."); return; }
 
+  // Log loaded configuration values
+  log_("Config loaded - Budget: $" + (cfg.daily_budget_cap_default || cfg.USER_BUDGET_CAP || "3.00") +
+       ", CPC: $" + (cfg.cpc_ceiling_default || cfg.USER_CPC_CEILING || "0.20") +
+       ", Label: " + (cfg.label || "unknown") +
+       ", URL: " + (cfg.default_final_url || cfg.USER_LANDING_URL || "not set"));
+
   if (!validatePromoteGate_(cfg)) {
     log_("Script execution blocked - PROMOTE gate failed");
     return;
@@ -44,7 +50,7 @@ function main() {
   // Budget management
   camps.forEach(function(c) {
     if (isExcludedCampaign_(cfg, c.getName())) return;
-    var cap = cfg.BUDGET_CAPS[c.getName()] != null ? cfg.BUDGET_CAPS[c.getName()] : cfg.daily_budget_cap_default;
+    var cap = cfg.BUDGET_CAPS[c.getName()] != null ? cfg.BUDGET_CAPS[c.getName()] : (parseFloat(cfg.daily_budget_cap_default) || parseFloat(cfg.USER_BUDGET_CAP) || 3.00);
     if (cap && c.getBudget().getAmount() > cap) {
       logMutation_('BUDGET_CHANGE', {campaign: c.getName(), oldAmount: c.getBudget().getAmount(), newAmount: cap});
       if (!PREVIEW_MODE && cfg.PROMOTE) {
@@ -58,7 +64,7 @@ function main() {
   // Bidding strategy
   camps.forEach(function(c) {
     if (isExcludedCampaign_(cfg, c.getName())) return;
-    var ceil = cfg.CPC_CEILINGS[c.getName()] != null ? cfg.CPC_CEILINGS[c.getName()] : cfg.cpc_ceiling_default;
+    var ceil = cfg.CPC_CEILINGS[c.getName()] != null ? cfg.CPC_CEILINGS[c.getName()] : (parseFloat(cfg.cpc_ceiling_default) || parseFloat(cfg.USER_CPC_CEILING) || 0.20);
     try {
       logMutation_('BIDDING_STRATEGY_CHANGE', {campaign: c.getName(), strategy: 'TARGET_SPEND', ceiling: ceil});
       if (!PREVIEW_MODE && cfg.PROMOTE) {
@@ -185,8 +191,8 @@ function ensureSeed_(cfg) {
   var any = AdsApp.campaigns().withCondition("campaign.advertising_channel_type = SEARCH").get();
   if (any.hasNext()) return;
   var name = (cfg.desired && cfg.desired.campaign_name) || "Ads Autopilot AI - Search";
-  var daily = cfg.daily_budget_cap_default || 3.00;
-  var ceil = cfg.cpc_ceiling_default || 0.20;
+  var daily = parseFloat(cfg.daily_budget_cap_default) || parseFloat(cfg.USER_BUDGET_CAP) || 3.00;
+  var ceil = parseFloat(cfg.cpc_ceiling_default) || parseFloat(cfg.USER_CPC_CEILING) || 0.20;
   var adg = (cfg.desired && cfg.desired.ad_group) || "Default";
   var kw = (cfg.desired && cfg.desired.keyword) || '"digital certificates"';
   log_("Seeding zero-state campaign: " + name);
@@ -210,7 +216,7 @@ function ensureSeed_(cfg) {
 
   var H = ["Digital Certificates", "Compliance Reports", "Export Clean PDFs", "Generate Certs Fast", "Audit-Ready Reports", "Start Free Today"];
   var D = ["Create inspector-ready PDFs fast.", "Replace spreadsheets with an auditable system.", "Templates enforce SOPs. Audit trail included.", "Setup in under 10 minutes."];
-  var b = ag.newAd().responsiveSearchAdBuilder().withFinalUrl(cfg.default_final_url || "https://www.proofkit.net");
+  var b = ag.newAd().responsiveSearchAdBuilder().withFinalUrl(cfg.default_final_url || cfg.USER_LANDING_URL || "https://www.proofkit.net");
   H.slice(0, 15).forEach(function(h) { b.addHeadline(h.length > 30 ? h.slice(0, 30) : h); });
   D.slice(0, 4).forEach(function(d) { b.addDescription(d.length > 90 ? d.slice(0, 90) : d); });
   try { b.build(); } catch(e) { log_("Seed RSA failed: " + e); }
@@ -374,7 +380,7 @@ function buildSafeRSAs_(cfg) {
 
     if (hasLabelledAd_(ag, cfg.label)) continue;
 
-    var finalUrl = inferFinalUrl_(ag) || cfg.default_final_url;
+    var finalUrl = inferFinalUrl_(ag) || cfg.default_final_url || cfg.USER_LANDING_URL;
     var camp = ag.getCampaign().getName();
     var name = ag.getName();
     var ov = (cfg.RSA_MAP[camp] && cfg.RSA_MAP[camp][name]) || null;

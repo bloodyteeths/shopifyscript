@@ -42,15 +42,18 @@ export async function action({ request }: ActionFunctionArgs) {
     // Save user settings to backend before generating script
     try {
       console.log(`💾 Saving user settings for ${currentShopName} (tier: ${actualTier})`);
-      await backendFetch("/config/save-settings", "POST", {
+      const saveResult = await backendFetch("/config/save-settings", "POST", {
         settings: {
-          budget: budget,
-          cpc: cpc,
-          landing_url: url,
+          budget: String(budget),
+          cpc: String(cpc),
+          landing_url: String(url || ""),
           plan: actualTier
         }
       }, currentShopName);
-      console.log(`✅ User settings saved for ${currentShopName}`);
+      console.log(`✅ User settings saved for ${currentShopName}:`, saveResult.json);
+
+      // Force config refresh by triggering bootstrap with new values
+      await backendFetch("/config", "GET", undefined, currentShopName);
     } catch (saveError) {
       console.warn(`Failed to save user settings:`, saveError.message);
       // Continue with script generation even if save fails
