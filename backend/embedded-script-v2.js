@@ -310,50 +310,145 @@ function applyWasteNegs_(cfg, map) {
   }
 }
 
-// Performance collection
+// Performance collection - Using Legacy API for reliability
 function collectPerf_() {
   var rows = [];
-  var q1 = "SELECT campaign.id, campaign.name, metrics.clicks, metrics.cost_micros, metrics.conversions, metrics.impressions, metrics.ctr, segments.date FROM campaign WHERE segments.date DURING LAST_90_DAYS AND campaign.advertising_channel_type = SEARCH";
-  var it1 = AdsApp.search(q1);
-  while (it1.hasNext()) {
-    var r = it1.next();
-    rows.push([
-      new Date(r.segments.date), 'campaign', r.campaign.name, '', r.campaign.id, r.campaign.name,
-      (r.metrics.clicks || 0), ((r.metrics.cost_micros || 0) / 1e6),
-      (r.metrics.conversions || 0), (r.metrics.impressions || 0), (r.metrics.ctr || 0)
-    ]);
+
+  try {
+    // Use the legacy API which is more reliable
+    var campaigns = AdsApp.campaigns()
+      .withCondition("AdvertisingChannelType = SEARCH")
+      .withCondition("Status IN ['ENABLED', 'PAUSED']")
+      .get();
+
+    while (campaigns.hasNext()) {
+      var campaign = campaigns.next();
+      var campaignId = campaign.getId();
+      var campaignName = campaign.getName();
+
+      // Get stats for different periods
+      var periods = ["LAST_30_DAYS", "LAST_7_DAYS", "TODAY", "YESTERDAY"];
+
+      for (var i = 0; i < periods.length; i++) {
+        try {
+          var stats = campaign.getStatsFor(periods[i]);
+
+          // Only record if there's activity
+          if (stats.getImpressions() > 0) {
+            rows.push([
+              new Date(), 'campaign', campaignName, '', campaignId, campaignName,
+              stats.getClicks(), stats.getCost(), stats.getConversions(),
+              stats.getImpressions(), stats.getCtr()
+            ]);
+
+            // Log for debugging
+            if (periods[i] === "LAST_7_DAYS") {
+              log_("Campaign " + campaignName + " - Clicks: " + stats.getClicks() + ", Cost: $" + stats.getCost() + ", Conv: " + stats.getConversions());
+            }
+          }
+        } catch (e) {
+          log_("Error getting stats for " + campaignName + ": " + e);
+        }
+      }
+
+      // Get ad groups for this campaign
+      var adGroups = campaign.adGroups()
+        .withCondition("Status IN ['ENABLED', 'PAUSED']")
+        .get();
+
+      while (adGroups.hasNext()) {
+        var adGroup = adGroups.next();
+        var adGroupId = adGroup.getId();
+        var adGroupName = adGroup.getName();
+
+        try {
+          var agStats = adGroup.getStatsFor("LAST_7_DAYS");
+
+          if (agStats.getImpressions() > 0) {
+            rows.push([
+              new Date(), 'ad_group', campaignName, adGroupName, adGroupId, adGroupName,
+              agStats.getClicks(), agStats.getCost(), agStats.getConversions(),
+              agStats.getImpressions(), agStats.getCtr()
+            ]);
+          }
+        } catch (e) {
+          log_("Error getting ad group stats: " + e);
+        }
+      }
+    }
+
+    log_("Collected metrics for " + rows.length + " entities");
+
+  } catch (e) {
+    log_("Performance collection error: " + e);
+
+    // Fallback to GAQL if legacy fails
+    try {
+      var q1 = "SELECT campaign.id, campaign.name, metrics.clicks, metrics.cost_micros, metrics.conversions, metrics.impressions, metrics.ctr FROM campaign WHERE segments.date DURING LAST_7_DAYS AND campaign.advertising_channel_type = SEARCH";
+      var it1 = AdsApp.search(q1);
+
+      while (it1.hasNext()) {
+        var r = it1.next();
+        // Note: GAQL returns cost_micros in micros (1 million micros = $1)
+        var costInDollars = (r.metrics && r.metrics.costMicros) ? r.metrics.costMicros / 1000000 : 0;
+
+        rows.push([
+          new Date(), 'campaign', r.campaign.name, '', r.campaign.id, r.campaign.name,
+          (r.metrics && r.metrics.clicks) || 0,
+          costInDollars,
+          (r.metrics && r.metrics.conversions) || 0,
+          (r.metrics && r.metrics.impressions) || 0,
+          (r.metrics && r.metrics.ctr) || 0
+        ]);
+      }
+    } catch (gaqlError) {
+      log_("GAQL fallback also failed: " + gaqlError);
+    }
   }
 
-  var q2 = "SELECT campaign.name, ad_group.id, ad_group.name, metrics.clicks, metrics.cost_micros, metrics.conversions, metrics.impressions, metrics.ctr, segments.date FROM ad_group WHERE segments.date DURING LAST_90_DAYS AND campaign.advertising_channel_type = SEARCH";
-  var it2 = AdsApp.search(q2);
-  while (it2.hasNext()) {
-    var r2 = it2.next();
-    rows.push([
-      new Date(r2.segments.date), 'ad_group', r2.campaign.name, r2.ad_group.name, r2.ad_group.id, r2.ad_group.name,
-      (r2.metrics.clicks || 0), ((r2.metrics.cost_micros || 0) / 1e6),
-      (r2.metrics.conversions || 0), (r2.metrics.impressions || 0), (r2.metrics.ctr || 0)
-    ]);
-  }
   return rows;
 }
 
 // Search term auto-negation
 function autoNegateAndCollectST_(cfg, lookback, minClicks, minCost) {
-  var q = "SELECT campaign.name, ad_group.id, ad_group.name, search_term_view.search_term, metrics.clicks, metrics.cost_micros, metrics.conversions FROM search_term_view WHERE segments.date DURING " + (lookback || 'LAST_7_DAYS') + " AND campaign.advertising_channel_type = SEARCH AND metrics.clicks >= " + (minClicks || 2);
-  var it = AdsApp.search(q), outRows = [], bucket = {};
-  while (it.hasNext()) {
-    var r = it.next();
-    var cost = (r.metrics.cost_micros || 0) / 1e6;
-    var conv = r.metrics.conversions || 0;
-    if (conv === 0 && cost >= (minCost || 2.82)) {
-      var t = (r.search_term_view.search_term || "").toLowerCase();
-      var id = String(r.ad_group.id);
-      (bucket[id] = bucket[id] || []).push(t);
+  var outRows = [], bucket = {};
+
+  try {
+    // Try GAQL approach with proper property access
+    var q = "SELECT campaign.name, ad_group.id, ad_group.name, search_term_view.search_term, metrics.clicks, metrics.cost_micros, metrics.conversions FROM search_term_view WHERE segments.date DURING " + (lookback || 'LAST_7_DAYS') + " AND campaign.advertising_channel_type = SEARCH AND metrics.clicks >= " + (minClicks || 2);
+    var it = AdsApp.search(q);
+
+    while (it.hasNext()) {
+      var r = it.next();
+
+      // Safely access nested properties
+      var campaignName = (r.campaign && r.campaign.name) || "";
+      var adGroupId = (r.adGroup && r.adGroup.id) || (r.ad_group && r.ad_group.id) || "";
+      var adGroupName = (r.adGroup && r.adGroup.name) || (r.ad_group && r.ad_group.name) || "";
+      var searchTerm = (r.searchTermView && r.searchTermView.searchTerm) || (r.search_term_view && r.search_term_view.search_term) || "";
+      var clicks = (r.metrics && r.metrics.clicks) || 0;
+      var costMicros = (r.metrics && (r.metrics.costMicros || r.metrics.cost_micros)) || 0;
+      var conversions = (r.metrics && r.metrics.conversions) || 0;
+
+      // Convert cost from micros to dollars
+      var cost = costMicros / 1000000;
+
+      if (conversions === 0 && cost >= (minCost || 2.82)) {
+        var t = searchTerm.toLowerCase();
+        var id = String(adGroupId);
+        (bucket[id] = bucket[id] || []).push(t);
+      }
+
+      outRows.push([
+        new Date(), campaignName, adGroupName,
+        searchTerm, clicks, cost, conversions
+      ]);
     }
-    outRows.push([
-      new Date(), r.campaign.name, r.ad_group.name,
-      (r.search_term_view.search_term || ""), (r.metrics.clicks || 0), cost, conv
-    ]);
+
+    log_("Collected " + outRows.length + " search terms");
+
+  } catch (e) {
+    log_("Search term collection error: " + e);
   }
 
   for (var id in bucket) {
