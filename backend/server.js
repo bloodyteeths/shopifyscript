@@ -27,6 +27,7 @@ import logger from "./services/logger.js";
 import { createEnvironment } from "../deployment/environment.js";
 import { JobScheduler } from "./jobs/scheduler.js";
 import { pingRedis, getJson, setJson } from "./services/redis.js";
+import * as redis from "./services/redis.js";
 // Profit & Inventory Services
 import profitPacer from "./services/profit-pacer.js";
 // Note: materialize/listSegments are stubs, not imported to avoid TS runtime issues
@@ -494,9 +495,9 @@ async function getUserSettings(tenant) {
   try {
     // Try to get from Redis cache first
     const cacheKey = `user_settings:${tenant}`;
-    const cached = await redis.get(cacheKey);
+    const cached = await getJson(cacheKey);
     if (cached) {
-      return JSON.parse(cached);
+      return cached;
     }
 
     // Try to get from Google Sheets CONFIG table
@@ -512,7 +513,7 @@ async function getUserSettings(tenant) {
 
     if (Object.keys(settings).length > 0) {
       // Cache for next time
-      await redis.set(cacheKey, JSON.stringify(settings), 'EX', 3600);
+      await setJson(cacheKey, settings, 3600);
       return settings;
     }
 
