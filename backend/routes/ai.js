@@ -20,7 +20,22 @@ router.get("/drafts", async (req, res) => {
   const { tenant, sig } = req.query;
   const payload = `GET:${tenant}:ai_drafts`;
 
+  // Debug logging
+  console.log('AI Drafts Request:', {
+    tenant,
+    sig,
+    payload,
+    url: req.url,
+    headers: req.headers
+  });
+
   if (!tenant || !verify(sig, payload)) {
+    console.error('AI Drafts Auth Failed:', {
+      tenant,
+      receivedSig: sig,
+      expectedPayload: payload,
+      verifyResult: sig ? verify(sig, payload) : 'no sig'
+    });
     return res.status(403).json({ ok: false, error: "auth" });
   }
 
@@ -2023,6 +2038,24 @@ router.post("/test", async (req, res) => {
   } catch (e) {
     res.status(500).json({ ok: false, error: String(e) });
   }
+});
+
+// DEBUG: Test endpoint to verify HMAC generation
+router.get("/test-hmac", async (req, res) => {
+  const { tenant } = req.query;
+  const payload = `GET:${tenant}:ai_drafts`;
+
+  // Generate the expected signature
+  const { sign } = await import("../utils/hmac.js");
+  const expectedSig = sign(payload);
+
+  res.json({
+    ok: true,
+    tenant,
+    payload,
+    expectedSignature: expectedSig,
+    help: "Use this signature in your request as ?sig=" + encodeURIComponent(expectedSig)
+  });
 });
 
 export default router;
