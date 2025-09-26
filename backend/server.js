@@ -5107,6 +5107,14 @@ if (process.env.NODE_ENV === "production" && !process.env.VERCEL) {
   }
 }
 
+// ==== AI INSIGHTS ROUTES ====
+import aiInsightsRoutes from "./routes/ai-insights.js";
+app.use("/api/ai", aiInsightsRoutes);
+
+// ==== AI DASHBOARD ROUTES ====
+import aiDashboardRoutes from "./routes/ai-routes.js";
+app.use("/api/ai", aiDashboardRoutes);
+
 // Start the server (works for both local and Vercel)
 app.listen(PORT, () => {
   logger.info("ProofKit backend server started", {
@@ -5715,10 +5723,4 @@ app.use("/api", async (req, res) => {
 });
 // Force rebuild: Thu Sep 25 02:39:26 CEST 2025
 
-// ==== AI INSIGHTS ROUTES ====
-import aiInsightsRoutes from "./routes/ai-insights.js";
-app.use("/api/ai", aiInsightsRoutes);
-
-// ==== AI DASHBOARD ROUTES ====
-import aiDashboardRoutes from "./routes/ai-routes.js";
-app.use("/api/ai", aiDashboardRoutes);
+// Routes moved before app.listen()
