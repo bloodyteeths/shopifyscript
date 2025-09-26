@@ -5718,3 +5718,7 @@ app.use("/api", async (req, res) => {
 // ==== AI INSIGHTS ROUTES ====
 import aiInsightsRoutes from "./routes/ai-insights.js";
 app.use("/api/ai", aiInsightsRoutes);
+
+// ==== AI DASHBOARD ROUTES ====
+import aiDashboardRoutes from "./routes/ai-routes.js";
+app.use("/api/ai", aiDashboardRoutes);

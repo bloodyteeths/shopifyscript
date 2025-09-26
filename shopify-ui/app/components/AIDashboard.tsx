@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { authenticatedFetch } from "../utils/ai-client";
 
 interface AIDraft {
   theme: string;
@@ -59,8 +60,7 @@ export function AIDashboard({ shopName, subscriptionTier = "starter", hasFeature
   // Fetch AI drafts
   const fetchDrafts = async () => {
     try {
-      const { backendFetch } = await import("../server/hmac.server");
-      const response = await backendFetch("/ai/drafts", "GET", undefined, shopName);
+      const response = await authenticatedFetch("/ai/drafts", "GET", undefined, shopName);
 
       if (response.ok) {
         const data = await response.json();
@@ -80,8 +80,7 @@ export function AIDashboard({ shopName, subscriptionTier = "starter", hasFeature
   // Fetch AI provider status
   const fetchProviderStatus = async () => {
     try {
-      const { backendFetch } = await import("../server/hmac.server");
-      const response = await backendFetch("/ai/provider/status", "GET", undefined, shopName);
+      const response = await authenticatedFetch("/ai/provider/status", "GET", undefined, shopName);
 
       if (response.ok) {
         const data = await response.json();
@@ -97,8 +96,7 @@ export function AIDashboard({ shopName, subscriptionTier = "starter", hasFeature
   // Fetch token usage
   const fetchTokenUsage = async () => {
     try {
-      const { backendFetch } = await import("../server/hmac.server");
-      const response = await backendFetch("/ai/tokens/usage", "GET", undefined, shopName);
+      const response = await authenticatedFetch("/ai/tokens/usage", "GET", undefined, shopName);
 
       if (response.ok) {
         const data = await response.json();
@@ -114,8 +112,7 @@ export function AIDashboard({ shopName, subscriptionTier = "starter", hasFeature
   // Fetch AI activity logs
   const fetchActivities = async () => {
     try {
-      const { backendFetch } = await import("../server/hmac.server");
-      const response = await backendFetch("/ai/logs?limit=10", "GET", undefined, shopName);
+      const response = await authenticatedFetch("/ai/logs?limit=10", "GET", undefined, shopName);
 
       if (response.ok) {
         const data = await response.json();
@@ -133,8 +130,7 @@ export function AIDashboard({ shopName, subscriptionTier = "starter", hasFeature
     const selectedDraftsList = Array.from(selectedDrafts).map(index => drafts[index]);
 
     try {
-      const { backendFetch } = await import("../server/hmac.server");
-      const response = await backendFetch("/ai/accept", "POST", {
+      const response = await authenticatedFetch("/ai/accept", "POST", {
         items: selectedDraftsList.map(draft => ({
           theme: draft.theme,
           headlines_pipe: draft.headlines.join("|"),
@@ -172,8 +168,7 @@ export function AIDashboard({ shopName, subscriptionTier = "starter", hasFeature
     }
 
     try {
-      const { backendFetch } = await import("../server/hmac.server");
-      const response = await backendFetch("/jobs/ai_writer", "POST", {
+      const response = await authenticatedFetch("/jobs/ai_writer", "POST", {
         dryRun: false,
         limit: 5
       }, shopName);
