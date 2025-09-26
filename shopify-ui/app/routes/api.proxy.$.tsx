@@ -70,13 +70,40 @@ async function handleProxyRequest(
       .digest("base64")
       .replace(/=+$/, ""); // Remove trailing equals like backend does
 
-    // Build backend URL
-    const url = `${backendUrl}/${proxyPath}`;
+    // Get request body early for ai_writer special handling
+    let body: string | undefined;
+    let parsedBody: any = {};
+    if (method !== "GET" && method !== "HEAD") {
+      try {
+        body = await request.text();
+        if (body) {
+          parsedBody = JSON.parse(body);
+        }
+      } catch (e) {
+        // No body or unable to read/parse body
+      }
+    }
 
-    // Copy query parameters if any
-    const requestUrl = new URL(request.url);
-    const queryString = requestUrl.search;
-    const fullUrl = url + queryString;
+    // Special handling for ai_writer endpoint which needs sig in query params
+    let fullUrl;
+    if (proxyPath === "jobs/ai_writer") {
+      // For ai_writer, we need to pass sig and tenant as query params
+      const nonce = parsedBody.nonce || Date.now();
+      const aiPayload = `POST:${tenant}:ai_writer:${nonce}`;
+      const sig = crypto.createHmac("sha256", hmacSecret)
+        .update(aiPayload)
+        .digest("base64")
+        .replace(/=+$/, "");
+
+      fullUrl = `${backendUrl}/${proxyPath}?tenant=${tenant}&sig=${encodeURIComponent(sig)}`;
+    } else {
+      // Build backend URL normally
+      const url = `${backendUrl}/${proxyPath}`;
+      // Copy query parameters if any
+      const requestUrl = new URL(request.url);
+      const queryString = requestUrl.search;
+      fullUrl = url + queryString;
+    }
 
     // Prepare headers for backend request
     const headers: HeadersInit = {
@@ -86,21 +113,14 @@ async function handleProxyRequest(
       "Content-Type": "application/json"
     };
 
-    // Get request body if it's not a GET request
-    let body: string | undefined;
-    if (method !== "GET" && method !== "HEAD") {
-      try {
-        body = await request.text();
-      } catch (e) {
-        // No body or unable to read body
-      }
-    }
+    // Body was already read above for ai_writer handling
+    // No need to read it again
 
     // Make the request to backend
     const backendResponse = await fetch(fullUrl, {
       method,
       headers,
-      ...(body ? { body } : {})
+      ...(body ? { body: JSON.stringify(parsedBody) } : {})
     });
 
     // Get response from backend
