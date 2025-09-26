@@ -1,6 +1,6 @@
 import express from "express";
 import { json, logAccess } from "../utils/response.js";
-import { verify } from "../utils/hmac.js";
+import { verify, sign } from "../utils/hmac.js";
 import { requireFeature, getCurrentSubscription } from "../middleware/subscription-check.js";
 import { canCreateCampaign, recordCampaignCreation } from "../services/campaign-counter.js";
 
@@ -20,21 +20,34 @@ router.get("/drafts", async (req, res) => {
   const { tenant, sig } = req.query;
   const payload = `GET:${tenant}:ai_drafts`;
 
-  // Debug logging
+  // Generate expected signature for comparison
+  const expectedSig = sign(payload);
+
+  // Debug logging - detailed comparison
   console.log('AI Drafts Request:', {
     tenant,
-    sig,
+    receivedSig: sig,
+    expectedSig: expectedSig,
     payload,
-    url: req.url,
-    headers: req.headers
+    sigMatch: sig === expectedSig,
+    url: req.url
   });
 
   if (!tenant || !verify(sig, payload)) {
-    console.error('AI Drafts Auth Failed:', {
+    console.error('AI Drafts Auth Failed - Signature Mismatch:', {
       tenant,
       receivedSig: sig,
-      expectedPayload: payload,
-      verifyResult: sig ? verify(sig, payload) : 'no sig'
+      expectedSig: expectedSig,
+      payload,
+      receivedLength: sig ? sig.length : 0,
+      expectedLength: expectedSig.length,
+      charComparison: sig && expectedSig ?
+        [...sig].map((c, i) => ({
+          pos: i,
+          received: c,
+          expected: expectedSig[i],
+          match: c === expectedSig[i]
+        })).filter(x => !x.match) : null
     });
     return res.status(403).json({ ok: false, error: "auth" });
   }
