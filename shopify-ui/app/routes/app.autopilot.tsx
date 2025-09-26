@@ -185,22 +185,178 @@ export async function action({ request }: ActionFunctionArgs) {
           !realScript.includes("<html")
         ) {
           console.log(`Script validation passed for ${currentShopName}`);
-          const personalizedScript = `/** Ads Autopilot AI - Google Ads Script (${mode} mode)
+
+          // If we have advanced config, inject the customized values into the script
+          let customizedScript = realScript;
+
+          if (advancedConfig) {
+            // Generate campaign elements based on user config
+            const generateKeywords = (config) => {
+              const { mainProducts, businessType, keywordStrategy, customKeywords, businessName } = config;
+              if (keywordStrategy === 'custom' && customKeywords) {
+                return customKeywords.split(',').map(k => k.trim());
+              }
+
+              const keywords = [];
+              const products = mainProducts.toLowerCase().split(',').map(p => p.trim());
+
+              switch (keywordStrategy) {
+                case 'brand':
+                  keywords.push(businessName.toLowerCase());
+                  keywords.push(`${businessName.toLowerCase()} store`);
+                  keywords.push(`${businessName.toLowerCase()} online`);
+                  break;
+                case 'competitor':
+                  products.forEach(product => {
+                    keywords.push(`best ${product}`);
+                    keywords.push(`${product} reviews`);
+                    keywords.push(`${product} comparison`);
+                  });
+                  break;
+                default: // 'auto'
+                  products.forEach(product => {
+                    keywords.push(product);
+                    keywords.push(`buy ${product}`);
+                    keywords.push(`${product} online`);
+                    keywords.push(`${product} sale`);
+                  });
+              }
+              return keywords;
+            };
+
+            const generateHeadlines = (config) => {
+              const { businessName, mainProducts, adTone, hasOffer, offerText, goal } = config;
+              const headlines = [];
+              const products = mainProducts.split(',')[0].trim();
+
+              headlines.push(`${businessName} Official Site`);
+              headlines.push(`Shop ${businessName} Today`);
+
+              switch (adTone) {
+                case 'professional':
+                  headlines.push('Trusted Quality Since 2020');
+                  headlines.push('Professional Solutions');
+                  headlines.push('Expert Recommended');
+                  break;
+                case 'urgent':
+                  headlines.push('Limited Time Offer!');
+                  headlines.push('Sale Ends Soon');
+                  headlines.push(`Don't Miss Out!`);
+                  break;
+                case 'luxury':
+                  headlines.push('Exclusive Collection');
+                  headlines.push('Premium Quality');
+                  headlines.push('Luxury Experience');
+                  break;
+                default: // 'friendly'
+                  headlines.push('Free Shipping Available');
+                  headlines.push('Loved by Customers');
+                  headlines.push('Join Our Community');
+              }
+
+              if (hasOffer && offerText) {
+                headlines.push(offerText.substring(0, 30));
+              }
+
+              headlines.push(`Best ${products} Online`);
+              headlines.push(`Shop ${products} Now`);
+
+              return headlines.map(h => h.substring(0, 30)).slice(0, 15);
+            };
+
+            const generateDescriptions = (config) => {
+              const { targetAudience, mainProducts, adTone, hasOffer, offerText, businessType } = config;
+              const descriptions = [];
+
+              switch (adTone) {
+                case 'professional':
+                  descriptions.push(`Professional service for ${targetAudience}. Quality guaranteed.`);
+                  descriptions.push('Industry expertise you can trust. Contact our specialists today.');
+                  break;
+                case 'urgent':
+                  descriptions.push(`Limited time offers for ${targetAudience}. Shop now before it's too late!`);
+                  descriptions.push(`Sale ends soon! Don't miss these incredible deals. Order today!`);
+                  break;
+                case 'luxury':
+                  descriptions.push(`Exclusive ${mainProducts} for discerning ${targetAudience}.`);
+                  descriptions.push('Experience luxury shopping. Premium quality, exceptional service.');
+                  break;
+                default: // 'friendly'
+                  descriptions.push(`Perfect ${mainProducts} for ${targetAudience}. Shop with confidence!`);
+                  descriptions.push('Join thousands of happy customers. Fast shipping & easy returns!');
+              }
+
+              if (hasOffer && offerText) {
+                descriptions.push(`Special offer: ${offerText}. Limited time only!`);
+              }
+
+              return descriptions.map(d => d.substring(0, 90)).slice(0, 4);
+            };
+
+            // Generate customized campaign elements
+            const keywords = generateKeywords(advancedConfig);
+            const headlines = generateHeadlines(advancedConfig);
+            const descriptions = generateDescriptions(advancedConfig);
+
+            // Inject the generated content into the script
+            // Simply prepend the configuration to the script
+            const configData = {
+              businessName: advancedConfig.businessName,
+              businessType: advancedConfig.businessType,
+              mainProducts: advancedConfig.mainProducts,
+              targetAudience: advancedConfig.targetAudience,
+              goal: advancedConfig.goal,
+              alwaysOn: advancedConfig.alwaysOn,
+              businessHours: advancedConfig.businessHours,
+              keywordStrategy: advancedConfig.keywordStrategy,
+              adTone: advancedConfig.adTone,
+              hasOffer: advancedConfig.hasOffer,
+              offerText: advancedConfig.offerText,
+              dailyBudget: advancedConfig.dailyBudget,
+              targetCPC: advancedConfig.targetCPC,
+              generatedKeywords: keywords,
+              generatedHeadlines: headlines,
+              generatedDescriptions: descriptions
+            };
+
+            const configScript = `// ========= USER CAMPAIGN CONFIGURATION =========
+// This configuration was generated from your Advanced Setup Form
+var USER_CONFIG = ${JSON.stringify(configData, null, 2)};
+
+// Use these values in campaign creation
+var USER_BUDGET = ${advancedConfig.dailyBudget};
+var USER_CPC = ${advancedConfig.targetCPC};
+var USER_KEYWORDS = ${JSON.stringify(keywords)};
+var USER_HEADLINES = ${JSON.stringify(headlines)};
+var USER_DESCRIPTIONS = ${JSON.stringify(descriptions)};
+// ================================================\n\n`;
+
+            customizedScript = configScript + realScript;
+          }
+
+          const personalizedScript = `/** Ads Autopilot AI - Google Ads Script (${advancedConfig ? 'Advanced' : mode} mode)
  * Shop: ${currentShopName}
  * Generated: ${new Date().toISOString()}
- * Budget Cap: $${budget}/day
- * CPC Ceiling: $${cpc}
+ * Budget Cap: $${advancedConfig ? advancedConfig.dailyBudget : budget}/day
+ * CPC Ceiling: $${advancedConfig ? advancedConfig.targetCPC.toFixed(2) : cpc}
  * Landing URL: ${url || "Not specified"}
- * Script Size: 26KB (optimized)
+ * Script Size: ${Math.round(customizedScript.length / 1024)}KB
+${advancedConfig ? ` * Business Type: ${advancedConfig.businessType}
+ * Target: ${advancedConfig.targetAudience}
+ * Products: ${advancedConfig.mainProducts}` : ''}
  */
 
-${realScript}
+${customizedScript}
 
 // Script personalized with your settings:
-// - Mode: ${mode}
-// - Budget: $${budget}/day  
-// - CPC: $${cpc}
-// - URL: ${url || "default"}`;
+// - Mode: ${advancedConfig ? 'Advanced' : mode}
+// - Budget: $${advancedConfig ? advancedConfig.dailyBudget : budget}/day
+// - CPC: $${advancedConfig ? advancedConfig.targetCPC.toFixed(2) : cpc}
+// - URL: ${url || "default"}${
+  advancedConfig ? `\n// - Business: ${advancedConfig.businessName}
+// - Products: ${advancedConfig.mainProducts}
+// - Goal: ${advancedConfig.goal}` : ''
+}`;
 
           const response = {
             success: true,
