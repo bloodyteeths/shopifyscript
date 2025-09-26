@@ -23,7 +23,7 @@ router.get('/provider/status', async (req, res) => {
         status: status.initialized ? 'healthy' : 'offline',
         initialized: status.initialized,
         provider: status.provider,
-        model: process.env.AI_MODEL || 'gemini-1.5-pro-latest',
+        model: process.env.AI_MODEL || 'gemini-2.5-flash',
         metrics: status.metrics
       }
     });
