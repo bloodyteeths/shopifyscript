@@ -1250,46 +1250,72 @@ app.get("/api/config", async (req, res) => {
     });
   }
   try {
-    // Import dual-write service for reading from Supabase first, then Sheets fallback
-    const { readFromPreferredSource } = await import('./services/dual-write.js');
-
     let cfg = null;
-    try {
-      // Try to read from Supabase first, falls back to Sheets if needed
-      cfg = await readFromPreferredSource(tenant, 'config');
-    } catch (dualReadError) {
-      console.warn(`Dual read failed for ${tenant}, attempting direct Sheets read:`, dualReadError.message);
-      // Fallback to direct Sheets read
-      cfg = await readConfigFromSheets(tenant);
-    }
 
-    if (!cfg) {
-      await bootstrapTenant(tenant);
-      // Try dual read again after bootstrap
+    // Try multiple fallback methods to get config
+    try {
+      // Method 1: Try direct Sheets read first
+      cfg = await readConfigFromSheets(tenant);
+    } catch (sheetsError) {
+      console.warn(`Direct Sheets read failed for ${tenant}:`, sheetsError.message);
+
       try {
+        // Method 2: Try dual-write service
+        const { readFromPreferredSource } = await import('./services/dual-write.js');
         cfg = await readFromPreferredSource(tenant, 'config');
-      } catch {
-        cfg = await readConfigFromSheets(tenant);
+      } catch (dualReadError) {
+        console.warn(`Dual read also failed for ${tenant}:`, dualReadError.message);
       }
     }
+
     if (!cfg) {
-      await logAccess(req, 500, "config bootstrap_fail");
-      return json(res, 500, {
-        ok: false,
-        code: "BOOTSTRAP",
-        error: "bootstrap_failed",
-      });
+      // Method 3: Return minimal default config for script to run
+      console.log(`⚠️ Using default config for ${tenant} due to read failures`);
+      cfg = {
+        enabled: true,
+        PROMOTE: false, // Safety first - don't make changes without proper config
+        daily_budget_cap_default: 20.00,
+        cpc_ceiling_default: 0.50,
+        label: `${tenant} • Managed`,
+        default_final_url: '',
+        business_days_csv: 'MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY',
+        business_start: '09:00',
+        business_end: '20:00',
+        add_business_hours_if_none: true,
+        master_neg_list_name: 'Master Negative Keywords',
+        MASTER_NEGATIVES: [],
+        WASTE_NEGATIVE_MAP: {},
+        RSA_DEFAULT: { H: [], D: [] },
+        RSA_MAP: {},
+        BUDGET_CAPS: {},
+        CPC_CEILINGS: {},
+        EXCLUSIONS: {},
+        AUDIENCE_MAP: {},
+        FEATURE_AUDIENCE_ATTACH: false,
+        FEATURE_INVENTORY_GUARD: false,
+        st_lookback: 'LAST_7_DAYS',
+        st_min_clicks: 2,
+        st_min_cost: 2.82
+      };
+
+      // Try to bootstrap for next run
+      try {
+        await bootstrapTenant(tenant);
+      } catch (bootstrapError) {
+        console.error(`Bootstrap failed for ${tenant}:`, bootstrapError.message);
+      }
     }
+
     // Log config values being sent to script
     console.log(`📊 Sending config to ${tenant}:`, {
+      enabled: cfg.enabled,
+      PROMOTE: cfg.PROMOTE,
       daily_budget_cap_default: cfg.daily_budget_cap_default,
       cpc_ceiling_default: cfg.cpc_ceiling_default,
       label: cfg.label,
-      default_final_url: cfg.default_final_url,
-      USER_BUDGET_CAP: cfg.USER_BUDGET_CAP,
-      USER_CPC_CEILING: cfg.USER_CPC_CEILING,
-      USER_LANDING_URL: cfg.USER_LANDING_URL
+      default_final_url: cfg.default_final_url
     });
+
     await logAccess(req, 200, "config ok");
     return json(res, 200, { ok: true, config: cfg });
   } catch (e) {

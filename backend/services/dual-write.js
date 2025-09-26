@@ -16,9 +16,17 @@ export async function dualWriteConfig(tenant, configData) {
 
   // Always write to Google Sheets (primary source during migration)
   try {
-    const { TenantConfigService } = await import('../services/tenant-config.js');
-    const configManager = new TenantConfigService();
-    await configManager.updateTenantConfig(tenant, configData);
+    // Use direct sheets write to avoid TenantRegistry dependency issues
+    const { sheets } = await import('../sheets.js');
+
+    // Convert config object to rows format for sheets
+    const configRows = Object.entries(configData).map(([key, value]) => [
+      key,
+      typeof value === 'object' ? JSON.stringify(value) : String(value)
+    ]);
+
+    // Write config directly to sheets
+    await sheets.setRows(tenant, 'CONFIG', ['config_key', 'config_value'], configRows);
     results.sheets.success = true;
     console.log(`✅ Sheets write successful for tenant: ${tenant}`);
   } catch (error) {
