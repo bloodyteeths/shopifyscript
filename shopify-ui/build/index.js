@@ -114684,15 +114684,13 @@ async function handleProxyRequest(request2, params, method) {
       } catch {
       }
     let fullUrl, headers2;
-    if (proxyPath === "jobs/ai_writer" || proxyPath === "ai/drafts") {
+    if (proxyPath.startsWith("ai/") || proxyPath.startsWith("jobs/")) {
       let aiPayload, sig;
       if (proxyPath === "jobs/ai_writer") {
         let nonce2 = parsedBody.nonce || Date.now();
         aiPayload = `POST:${tenant}:ai_writer:${nonce2}`, parsedBody.nonce || (parsedBody.nonce = nonce2);
-      } else if (proxyPath === "ai/drafts")
-        aiPayload = `GET:${tenant}:ai_drafts`;
-      else {
-        let pathParts = proxyPath.split("/"), endpoint = pathParts[pathParts.length - 1];
+      } else {
+        let endpoint = proxyPath.replace(/\//g, "_");
         aiPayload = `${method}:${tenant}:${endpoint}`;
       }
       sig = import_crypto23.default.createHmac("sha256", hmacSecret).update(aiPayload).digest("base64").replace(/=+$/, "");

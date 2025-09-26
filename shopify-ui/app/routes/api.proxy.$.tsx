@@ -100,9 +100,9 @@ async function handleProxyRequest(
     let fullUrl;
     let headers: HeadersInit;
 
-    // Only specific AI endpoints need query param authentication
-    // Most endpoints use header-based HMAC auth
-    const needsQueryAuth = proxyPath === "jobs/ai_writer" || proxyPath === "ai/drafts";
+    // ALL AI endpoints use query param authentication
+    // Other backend routes use header-based HMAC auth
+    const needsQueryAuth = proxyPath.startsWith("ai/") || proxyPath.startsWith("jobs/");
 
     if (needsQueryAuth) {
       let aiPayload;
@@ -117,13 +117,10 @@ async function handleProxyRequest(
         if (!parsedBody.nonce) {
           parsedBody.nonce = nonce;
         }
-      } else if (proxyPath === "ai/drafts") {
-        // ai/drafts uses simple payload format
-        aiPayload = `GET:${tenant}:ai_drafts`;
       } else {
-        // Other AI endpoints - construct payload based on path
-        const pathParts = proxyPath.split('/');
-        const endpoint = pathParts[pathParts.length - 1];
+        // All other AI endpoints use: METHOD:tenant:endpoint_with_underscores
+        // Convert path like "ai/provider/status" to "ai_provider_status"
+        const endpoint = proxyPath.replace(/\//g, '_');
         aiPayload = `${method}:${tenant}:${endpoint}`;
       }
 
