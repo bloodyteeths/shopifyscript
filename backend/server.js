@@ -5112,8 +5112,13 @@ import aiInsightsRoutes from "./routes/ai-insights.js";
 app.use("/api/ai", aiInsightsRoutes);
 
 // ==== AI DASHBOARD ROUTES ====
-import aiDashboardRoutes from "./routes/ai-routes.js";
-app.use("/api/ai", aiDashboardRoutes);
+// COMMENTED OUT: Conflicts with main ai.js routes that have proper HMAC authentication
+// import aiDashboardRoutes from "./routes/ai-routes.js";
+// app.use("/api/ai", aiDashboardRoutes);
+
+// ==== MAIN AI ROUTES (with HMAC authentication) ====
+import aiRoutes from "./routes/ai.js";
+app.use("/api", aiRoutes);  // Note: ai.js routes already include /ai prefix
 
 // Start the server (works for both local and Vercel)
 app.listen(PORT, () => {
