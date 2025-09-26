@@ -33,7 +33,10 @@ router.get("/drafts", async (req, res) => {
     url: req.url
   });
 
-  if (!tenant || !verify(sig, payload)) {
+  const verifyResult = verify(sig, payload);
+  console.log('Verify function result:', verifyResult, 'tenant check:', !!tenant);
+
+  if (!tenant || !verifyResult) {
     console.error('AI Drafts Auth Failed - Signature Mismatch:', {
       tenant,
       receivedSig: sig,
