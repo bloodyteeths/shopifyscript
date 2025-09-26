@@ -232,8 +232,8 @@ router.post("/accept", async (req, res) => {
   }
 });
 
-// POST /api/jobs/ai_writer - Trigger AI writer job (Professional+ feature)
-router.post("/jobs/ai_writer", requireFeature("advanced_ai_optimization"), async (req, res) => {
+// POST /api/jobs/ai_writer - Trigger AI writer job
+router.post("/jobs/ai_writer", async (req, res) => {
   const { tenant, sig } = req.query;
   const { nonce = Date.now(), dryRun = true, limit = 5 } = req.body || {};
   const payload = `POST:${tenant}:ai_writer:${nonce}`;
