@@ -62,10 +62,13 @@ async function handleProxyRequest(
       console.warn("HMAC_SECRET not set in production, using default (NOT RECOMMENDED)");
     }
 
-    // Generate HMAC for authentication
+    // Generate HMAC for authentication (matching backend's base64 format)
     const timestamp = Date.now();
     const payload = JSON.stringify({ tenant, timestamp });
-    const hmac = crypto.createHmac("sha256", hmacSecret).update(payload).digest("hex");
+    const hmac = crypto.createHmac("sha256", hmacSecret)
+      .update(payload)
+      .digest("base64")
+      .replace(/=+$/, ""); // Remove trailing equals like backend does
 
     // Build backend URL
     const url = `${backendUrl}/${proxyPath}`;
@@ -102,6 +105,11 @@ async function handleProxyRequest(
 
     // Get response from backend
     const responseData = await backendResponse.text();
+
+    // Log response for debugging
+    if (!backendResponse.ok) {
+      console.error(`Backend error (${backendResponse.status}):`, responseData);
+    }
 
     // Try to parse as JSON
     let jsonResponse;
