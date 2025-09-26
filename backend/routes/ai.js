@@ -3,6 +3,8 @@ import { json, logAccess } from "../utils/response.js";
 import { verify, sign } from "../utils/hmac.js";
 import { requireFeature, getCurrentSubscription } from "../middleware/subscription-check.js";
 import { canCreateCampaign, recordCampaignCreation } from "../services/campaign-counter.js";
+import { getRSADraftsFromSupabase } from "../services/rsa-supabase.js";
+import { logger } from "../services/logger.js";
 
 const router = express.Router();
 
@@ -56,6 +58,37 @@ router.get("/drafts", async (req, res) => {
   }
 
   try {
+    // Try Supabase first for RSA drafts (reduces Google Sheets API calls)
+    logger.info(`\ud83d\udd0d Fetching RSA drafts`, { tenant, source: 'attempting_supabase' });
+    const supabaseDrafts = await getRSADraftsFromSupabase(tenant);
+
+    if (supabaseDrafts) {
+      logger.info(`\u2705 RSA drafts fetched from Supabase`, {
+        tenant,
+        defaultCount: supabaseDrafts.rsa_default?.length || 0,
+        libraryCount: supabaseDrafts.library?.length || 0
+      });
+
+      // Add validation to drafts
+      const { validateRSA } = await getValidators();
+      for (const draft of [...supabaseDrafts.rsa_default, ...supabaseDrafts.library]) {
+        draft.lint = validateRSA(draft.headlines, draft.descriptions);
+      }
+
+      return res.json({
+        ok: true,
+        rsa_default: supabaseDrafts.rsa_default,
+        library: supabaseDrafts.library,
+        sitelinks: [], // TODO: Add Supabase support for these
+        callouts: [],
+        snippets: [],
+        source: 'supabase'
+      });
+    }
+
+    // Fallback to Google Sheets if Supabase fails
+    logger.info(`\u26a0\ufe0f Falling back to Google Sheets for RSA drafts`, { tenant });
+
     const { getDoc } = await getSheetOperations();
     const doc = await getDoc();
 
@@ -67,6 +100,7 @@ router.get("/drafts", async (req, res) => {
         sitelinks: [],
         callouts: [],
         snippets: [],
+        source: 'none'
       });
     }
 
@@ -165,8 +199,15 @@ router.get("/drafts", async (req, res) => {
       }));
     }
 
-    res.json({ ok: true, ...out });
+    logger.info(`\u2705 RSA drafts fetched from Google Sheets`, {
+      tenant,
+      defaultCount: out.rsa_default.length,
+      libraryCount: out.library.length
+    });
+
+    res.json({ ok: true, ...out, source: 'sheets' });
   } catch (e) {
+    logger.error(`\u274c Error fetching RSA drafts`, { tenant, error: e.message });
     res.status(500).json({ ok: false, error: String(e) });
   }
 });

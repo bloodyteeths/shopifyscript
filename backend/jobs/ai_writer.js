@@ -6,6 +6,12 @@ import {
   getApprovalWorkflow,
   CONTENT_TYPES,
 } from "../services/content-approval.js";
+import {
+  getBusinessContextFromSupabase,
+  dualWriteRSAContent,
+  getRSADraftsFromSupabase
+} from "../services/rsa-supabase.js";
+import { logger } from "../services/logger.js";
 
 function failFast(msg) {
   console.error(msg);
@@ -13,6 +19,21 @@ function failFast(msg) {
 }
 
 async function writeDrafts(tenant, themes) {
+  // Try to get business context from Supabase first (reduces Sheets API calls)
+  logger.info(`🔍 Fetching business context for AI generation`, { tenant });
+  const businessContext = await getBusinessContextFromSupabase(tenant);
+
+  if (businessContext) {
+    logger.info(`✅ Using Supabase for business context`, {
+      tenant,
+      hasConfig: !!businessContext.config,
+      campaignCount: businessContext.topCampaigns?.length || 0,
+      searchTermCount: businessContext.topSearchTerms?.length || 0
+    });
+  } else {
+    logger.info(`⚠️ Supabase unavailable, will use Google Sheets`, { tenant });
+  }
+
   const doc = await getDoc();
   if (!doc) return 0;
   const rsa = await ensureSheet(doc, `RSA_ASSETS_DEFAULT_${tenant}`, [
@@ -104,15 +125,49 @@ async function writeDrafts(tenant, themes) {
           ? "approved"
           : "pending";
 
-      // Write to sheets with approval status
-      await rsa.addRow({
-        headlines_pipe: v.clipped.h.join("|"),
-        descriptions_pipe: v.clipped.d.join("|"),
-        theme: t,
-        rationale: "ai_generated",
-        source_url: "",
-        approval_status: approvalStatus,
-      });
+      // Write to Google Sheets
+      const sheetsWrite = { success: false };
+      try {
+        await rsa.addRow({
+          headlines_pipe: v.clipped.h.join("|"),
+          descriptions_pipe: v.clipped.d.join("|"),
+          theme: t,
+          rationale: "ai_generated",
+          source_url: "",
+          approval_status: approvalStatus,
+        });
+        sheetsWrite.success = true;
+        logger.info(`✅ RSA content written to Google Sheets`, { tenant, theme: t });
+      } catch (sheetError) {
+        sheetsWrite.error = sheetError.message;
+        logger.error(`❌ Failed to write to Google Sheets`, { tenant, theme: t, error: sheetError.message });
+      }
+
+      // Dual write to Supabase
+      const dualWriteResult = await dualWriteRSAContent(
+        tenant,
+        {
+          headlines: v.clipped.h,
+          descriptions: v.clipped.d,
+          source: 'ai_writer'
+        },
+        t,
+        sheetsWrite
+      );
+
+      if (dualWriteResult.supabase.success) {
+        logger.info(`✅ RSA content written to Supabase`, {
+          tenant,
+          theme: t,
+          count: dualWriteResult.supabase.count
+        });
+      } else if (dualWriteResult.supabase.error !== 'Supabase not enabled') {
+        logger.warn(`⚠️ Supabase write failed but Sheets succeeded`, {
+          tenant,
+          theme: t,
+          error: dualWriteResult.supabase.error
+        });
+      }
 
       for (const h of v.clipped.h) {
         await lib.addRow({
