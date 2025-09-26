@@ -14,8 +14,9 @@ export async function authenticatedFetch(
   shopName?: string
 ): Promise<Response> {
   const timestamp = Date.now();
-  const tenant = shopName || process.env.TENANT_ID || "proofkit";
-  const backendUrl = process.env.BACKEND_PUBLIC_URL || "http://localhost:3005/api";
+  // Use the actual shop name for multi-tenant support
+  // This should be provided by the Shopify app context
+  const tenant = shopName || (window as any).__SHOPIFY_SHOP__ || "proofkit";
 
   // For client-side, we need to use a different approach
   // Since we can't expose the HMAC secret to the client,
@@ -42,6 +43,7 @@ export async function authenticatedFetch(
 /**
  * Direct backend fetch (for server-side rendering only)
  * This should only be used in server components or API routes
+ * The server environment must provide BACKEND_PUBLIC_URL and HMAC_SECRET
  */
 export async function directBackendFetch(
   path: string,
@@ -49,15 +51,23 @@ export async function directBackendFetch(
   body?: any,
   shopName?: string
 ): Promise<Response> {
-  const timestamp = Date.now();
-  const tenant = shopName || process.env.TENANT_ID || "proofkit";
-  const backendUrl = process.env.BACKEND_PUBLIC_URL || "http://localhost:3005/api";
-  const hmacSecret = process.env.HMAC_SECRET || "f3a1c9d8b2e47a65c0fb19d7e3a9428c6de5b1a7c4f08923ab56d7e1c2f3a4b5";
-
-  // Note: This won't work in browser - needs server-side crypto
+  // This function should only be called from server-side code
+  // where environment variables are available
   if (typeof window !== "undefined") {
     throw new Error("directBackendFetch can only be used server-side");
   }
+
+  // Server-side code should have access to process.env
+  // These will be provided by the server environment (Vercel, etc)
+  const backendUrl = process.env.BACKEND_PUBLIC_URL || "http://localhost:3005/api";
+  const hmacSecret = process.env.HMAC_SECRET;
+
+  if (!hmacSecret) {
+    throw new Error("HMAC_SECRET environment variable is required for server-side fetch");
+  }
+
+  const timestamp = Date.now();
+  const tenant = shopName || "proofkit";
 
   const crypto = require("crypto");
   const payload = JSON.stringify({ tenant, timestamp });

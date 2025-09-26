@@ -1,6 +1,7 @@
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import crypto from "crypto";
+import { authenticate } from "../shopify.server";
 
 /**
  * Generic API proxy route for backend calls
@@ -25,12 +26,34 @@ async function handleProxyRequest(
     // Get the path from the wildcard parameter
     const proxyPath = params["*"] || "";
 
-    // Get tenant from headers or use default
-    const tenant = request.headers.get("X-Tenant-ID") || process.env.TENANT_ID || "proofkit";
+    // Try to get shop name from Shopify session first
+    let tenant = request.headers.get("X-Tenant-ID");
 
-    // Backend configuration
+    if (!tenant) {
+      try {
+        // Attempt to get shop from Shopify session
+        const { session } = await authenticate.admin(request);
+        if (session?.shop) {
+          tenant = session.shop.replace(".myshopify.com", "");
+        }
+      } catch (e) {
+        // Not authenticated or no session, fall back to header/env
+      }
+    }
+
+    // Fall back to environment variable or default
+    if (!tenant) {
+      tenant = process.env.TENANT_ID || "proofkit";
+    }
+
+    // Backend configuration from environment (required for multi-tenant)
     const backendUrl = process.env.BACKEND_PUBLIC_URL || "http://localhost:3005/api";
-    const hmacSecret = process.env.HMAC_SECRET || "f3a1c9d8b2e47a65c0fb19d7e3a9428c6de5b1a7c4f08923ab56d7e1c2f3a4b5";
+    const hmacSecret = process.env.HMAC_SECRET || "f3a1c9d8b2e47a65c0fb19d7e3a9428c6de5b1a7c4f08923ab56d7e1c2f3a4b5";  // Default for local dev only
+
+    // In production, HMAC_SECRET must be set via environment variable
+    if (!process.env.HMAC_SECRET && process.env.NODE_ENV === "production") {
+      throw new Error("HMAC_SECRET environment variable is required in production");
+    }
 
     // Generate HMAC for authentication
     const timestamp = Date.now();
