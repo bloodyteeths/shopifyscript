@@ -197,12 +197,12 @@ export function AIDashboard({ shopName, subscriptionTier = "starter", hasFeature
         setError(null);
         // Show success message
         console.log("AI Writer triggered successfully:", data);
-        // Refresh data after triggering
+        // Refresh data after triggering (10 seconds to allow AI generation to complete)
         setTimeout(() => {
           fetchDrafts();
           fetchActivities();
           fetchProviderStatus();
-        }, 2000);
+        }, 10000);
       } else {
         setError(data.error || data.message || "Failed to trigger AI writer");
       }
