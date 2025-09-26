@@ -479,43 +479,50 @@ function collectPerf_() {
       var campaignName = campaign.getName();
       var campaignStatus = campaign.isEnabled() ? "ENABLED" : "PAUSED";
 
-      // Get stats focusing on recent data first, then historical
+      // Get stats - only record the most comprehensive data period to avoid duplicates
       var periods = ["TODAY", "YESTERDAY", "LAST_7_DAYS", "LAST_30_DAYS", "ALL_TIME"];
-      var hasRecentData = false;
+      var bestStats = null;
+      var bestPeriod = null;
+      var maxImpressions = 0;
 
+      // Find the period with the most data
       for (var i = 0; i < periods.length; i++) {
         try {
           var stats = campaign.getStatsFor(periods[i]);
           var impressions = stats.getImpressions();
-          var clicks = stats.getClicks();
-          var cost = stats.getCost();
-          var conversions = stats.getConversions();
-          var ctr = stats.getCtr();
 
-          // Only record if we have data or it's the first period to show campaign exists
-          if (impressions > 0 || clicks > 0 || cost > 0 || !hasRecentData) {
-            rows.push([
-              new Date(), 'campaign', campaignName, '', campaignId, campaignName,
-              clicks, cost, conversions, impressions, ctr
-            ]);
-
-            if (impressions > 0 || clicks > 0) {
-              hasRecentData = true;
-            }
-          }
-
-          // Log for debugging - focus on periods with data
-          if (impressions > 0 || cost > 0) {
-            log_("Campaign " + campaignName + " [" + periods[i] + "] - Status: " + campaignStatus + ", Impressions: " + impressions + ", Clicks: " + clicks + ", Cost: $" + cost + ", Conv: " + conversions);
+          if (impressions > maxImpressions) {
+            maxImpressions = impressions;
+            bestStats = stats;
+            bestPeriod = periods[i];
           }
         } catch (e) {
           log_("Error getting stats for " + campaignName + " [" + periods[i] + "]: " + e);
         }
       }
 
+      // Record only the best data point for this campaign
+      if (bestStats) {
+        rows.push([
+          new Date(), 'campaign', campaignName, '', campaignId, campaignName,
+          bestStats.getClicks(), bestStats.getCost(), bestStats.getConversions(),
+          bestStats.getImpressions(), bestStats.getCtr()
+        ]);
+
+        if (bestStats.getImpressions() > 0 || bestStats.getCost() > 0) {
+          log_("Campaign " + campaignName + " [" + bestPeriod + "] - Status: " + campaignStatus + ", Impressions: " + bestStats.getImpressions() + ", Clicks: " + bestStats.getClicks() + ", Cost: $" + bestStats.getCost() + ", Conv: " + bestStats.getConversions());
+        }
+      } else {
+        // Still record campaign existence even with no data
+        rows.push([
+          new Date(), 'campaign', campaignName, '', campaignId, campaignName,
+          0, 0, 0, 0, 0
+        ]);
+      }
+
       // Get ad groups for this campaign
       var adGroups = campaign.adGroups()
-        .withCondition("Status IN ['ENABLED', 'PAUSED', 'REMOVED']")
+        .withCondition("Status IN ['ENABLED', 'PAUSED']")
         .get();
 
       while (adGroups.hasNext()) {
@@ -523,26 +530,42 @@ function collectPerf_() {
         var adGroupId = adGroup.getId();
         var adGroupName = adGroup.getName();
 
-        // Try multiple periods for ad groups too
-        var agPeriods = ["ALL_TIME", "LAST_30_DAYS", "LAST_7_DAYS"];
+        // Get only the best data period for each ad group
+        var agPeriods = ["TODAY", "YESTERDAY", "LAST_7_DAYS", "LAST_30_DAYS", "ALL_TIME"];
+        var bestAgStats = null;
+        var bestAgPeriod = null;
+        var maxAgImpressions = 0;
+
         for (var j = 0; j < agPeriods.length; j++) {
           try {
             var agStats = adGroup.getStatsFor(agPeriods[j]);
-
-            // Always record, even with 0 metrics
-            rows.push([
-              new Date(), 'ad_group', campaignName, adGroupName, adGroupId, adGroupName,
-              agStats.getClicks(), agStats.getCost(), agStats.getConversions(),
-              agStats.getImpressions(), agStats.getCtr()
-            ]);
-
-            // Log first period that has data
-            if (agStats.getImpressions() > 0 && j === 0) {
-              log_("Ad Group " + adGroupName + " [" + agPeriods[j] + "] has data - Impressions: " + agStats.getImpressions());
+            if (agStats.getImpressions() > maxAgImpressions) {
+              maxAgImpressions = agStats.getImpressions();
+              bestAgStats = agStats;
+              bestAgPeriod = agPeriods[j];
             }
           } catch (e) {
-            log_("Error getting ad group stats for " + adGroupName + " [" + agPeriods[j] + "]: " + e);
+            // Continue to next period
           }
+        }
+
+        // Record only the best data point for this ad group
+        if (bestAgStats) {
+          rows.push([
+            new Date(), 'ad_group', campaignName, adGroupName, adGroupId, adGroupName,
+            bestAgStats.getClicks(), bestAgStats.getCost(), bestAgStats.getConversions(),
+            bestAgStats.getImpressions(), bestAgStats.getCtr()
+          ]);
+
+          if (bestAgStats.getImpressions() > 0) {
+            log_("Ad Group " + adGroupName + " [" + bestAgPeriod + "] - Impressions: " + bestAgStats.getImpressions());
+          }
+        } else {
+          // Record existence even with no data
+          rows.push([
+            new Date(), 'ad_group', campaignName, adGroupName, adGroupId, adGroupName,
+            0, 0, 0, 0, 0
+          ]);
         }
       }
     }
@@ -827,9 +850,25 @@ function buildSafeRSAs_(cfg) {
 
   while (it.hasNext()) {
     var ag = it.next();
+
+    // Skip dynamic search ad groups and shopping campaigns
     try {
+      // Check if it's a dynamic ad group
+      var campaignName = ag.getCampaign().getName().toLowerCase();
+      var adGroupName = ag.getName().toLowerCase();
+
+      if (campaignName.indexOf('dynamic') >= 0 || campaignName.indexOf('shopping') >= 0 ||
+          adGroupName.indexOf('dynamic') >= 0 || adGroupName.indexOf('retarget') >= 0) {
+        log_("Skipping incompatible ad group type: " + ag.getCampaign().getName() + " › " + ag.getName());
+        continue;
+      }
+
+      // Check if it has DSA ads
       var hasDSA = ag.ads().withCondition("type = DYNAMIC_SEARCH_AD").get().hasNext();
-      if (hasDSA) continue;
+      if (hasDSA) {
+        log_("Skipping DSA ad group: " + ag.getCampaign().getName() + " › " + ag.getName());
+        continue;
+      }
     } catch(e) {}
 
     if (hasLabelledAd_(ag, cfg.label)) continue;

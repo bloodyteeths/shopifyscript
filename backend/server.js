@@ -1515,22 +1515,34 @@ app.post("/api/metrics", async (req, res) => {
           value: String(tenant)
         });
 
-        // Write campaign metrics to Supabase
+        // Write campaign metrics to Supabase - deduplicate by campaign_id and date
         if (mRows.length) {
-          const campaignMetrics = mRows
+          const campaignMetricsMap = new Map();
+          mRows
             .filter(row => row[1] === 'campaign')
-            .map(row => ({
-              tenant_id: String(tenant),
-              date: new Date(row[0]).toISOString(),
-              campaign_id: String(row[4]),
-              campaign_name: String(row[2]),
-              clicks: parseInt(row[6]) || 0,
-              cost: parseFloat(row[7]) || 0,
-              conversions: parseFloat(row[8]) || 0,
-              impressions: parseInt(row[9]) || 0,
-              ctr: parseFloat(row[10]) || 0,
-              created_at: new Date().toISOString()
-            }));
+            .forEach(row => {
+              const dateStr = new Date(row[0]).toISOString();
+              const campaignId = String(row[4]);
+              const key = `${campaignId}_${dateStr}`;
+
+              // Only keep the first occurrence or the one with more data
+              if (!campaignMetricsMap.has(key) ||
+                  (parseInt(row[9]) || 0) > (campaignMetricsMap.get(key).impressions || 0)) {
+                campaignMetricsMap.set(key, {
+                  tenant_id: String(tenant),
+                  date: dateStr,
+                  campaign_id: campaignId,
+                  campaign_name: String(row[2]),
+                  clicks: parseInt(row[6]) || 0,
+                  cost: parseFloat(row[7]) || 0,
+                  conversions: parseFloat(row[8]) || 0,
+                  impressions: parseInt(row[9]) || 0,
+                  ctr: parseFloat(row[10]) || 0,
+                  created_at: new Date().toISOString()
+                });
+              }
+            });
+          const campaignMetrics = Array.from(campaignMetricsMap.values());
 
           if (campaignMetrics.length > 0) {
             const { error: campaignError } = await supabase
