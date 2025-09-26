@@ -49,18 +49,22 @@ async function handleProxyRequest(
     // Backend configuration from environment (required for multi-tenant)
     // In production, use the actual backend URL
     const backendUrl = process.env.BACKEND_PUBLIC_URL ||
-                      (process.env.NODE_ENV === "production" ? "https://ads-autopilot-api.vercel.app/api" : "http://localhost:3005/api");
-    const hmacSecret = process.env.HMAC_SECRET || "f3a1c9d8b2e47a65c0fb19d7e3a9428c6de5b1a7c4f08923ab56d7e1c2f3a4b5";  // Default for local dev only
+                      (process.env.NODE_ENV === "production" ? "https://ads-autopilot-backend.vercel.app/api" : "http://localhost:3005/api");
+
+    // HMAC secret must be set in production
+    const hmacSecret = process.env.HMAC_SECRET ||
+                      (process.env.NODE_ENV === "production" ? "" : "f3a1c9d8b2e47a65c0fb19d7e3a9428c6de5b1a7c4f08923ab56d7e1c2f3a4b5");
+
+    if (!hmacSecret && process.env.NODE_ENV === "production") {
+      console.error("HMAC_SECRET not set in production!");
+      return json({ ok: false, error: "Configuration error" }, { status: 500 });
+    }
 
     // Log configuration in development
     if (process.env.NODE_ENV !== "production") {
       console.log("Proxy config:", { tenant, backendUrl, proxyPath });
     }
 
-    // In production, HMAC_SECRET must be set via environment variable
-    if (!process.env.HMAC_SECRET && process.env.NODE_ENV === "production") {
-      console.warn("HMAC_SECRET not set in production, using default (NOT RECOMMENDED)");
-    }
 
     // Generate HMAC for authentication (matching backend's base64 format)
     const timestamp = Date.now();
