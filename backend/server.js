@@ -5118,7 +5118,7 @@ app.use("/api/ai", aiInsightsRoutes);
 
 // ==== MAIN AI ROUTES (with HMAC authentication) ====
 import aiRoutes from "./routes/ai.js";
-app.use("/api", aiRoutes);  // Note: ai.js routes already include /ai prefix
+app.use("/api/ai", aiRoutes);  // Mount AI routes at /api/ai
 
 // Start the server (works for both local and Vercel)
 app.listen(PORT, () => {
