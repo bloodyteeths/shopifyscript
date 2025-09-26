@@ -86,6 +86,8 @@ async function handleProxyRequest(
 
     // Special handling for ai_writer endpoint which needs sig in query params
     let fullUrl;
+    let headers: HeadersInit;
+
     if (proxyPath === "jobs/ai_writer") {
       // For ai_writer, we need to pass sig and tenant as query params
       const nonce = parsedBody.nonce || Date.now();
@@ -96,6 +98,25 @@ async function handleProxyRequest(
         .replace(/=+$/, "");
 
       fullUrl = `${backendUrl}/${proxyPath}?tenant=${tenant}&sig=${encodeURIComponent(sig)}`;
+
+      // ai_writer endpoint only uses query param auth, no headers needed
+      headers = {
+        "Content-Type": "application/json"
+      };
+
+      // Include the nonce in the body if not already present
+      if (!parsedBody.nonce) {
+        parsedBody.nonce = nonce;
+      }
+
+      // Log for debugging
+      console.log("AI Writer request:", {
+        url: fullUrl,
+        tenant,
+        nonce,
+        payload: aiPayload,
+        sig
+      });
     } else {
       // Build backend URL normally
       const url = `${backendUrl}/${proxyPath}`;
@@ -103,18 +124,15 @@ async function handleProxyRequest(
       const requestUrl = new URL(request.url);
       const queryString = requestUrl.search;
       fullUrl = url + queryString;
+
+      // Prepare headers for backend request (normal HMAC auth)
+      headers = {
+        "X-HMAC-Signature": hmac,
+        "X-Tenant-ID": tenant,
+        "X-Timestamp": timestamp.toString(),
+        "Content-Type": "application/json"
+      };
     }
-
-    // Prepare headers for backend request
-    const headers: HeadersInit = {
-      "X-HMAC-Signature": hmac,
-      "X-Tenant-ID": tenant,
-      "X-Timestamp": timestamp.toString(),
-      "Content-Type": "application/json"
-    };
-
-    // Body was already read above for ai_writer handling
-    // No need to read it again
 
     // Make the request to backend
     const backendResponse = await fetch(fullUrl, {
