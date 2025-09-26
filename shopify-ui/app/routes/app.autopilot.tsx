@@ -18,6 +18,7 @@ import {
 import { ShopSetupBanner } from "../components/ShopSetupBanner";
 import { ClientOnly } from "../components/ClientOnly";
 import { checkSubscriptionStatus, hasFeatureAccess } from "../utils/subscription.server";
+import { CampaignSetupForm } from "../components/CampaignSetupForm";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   try {
@@ -244,9 +245,10 @@ export default function Autopilot() {
   const actionData = useActionData<typeof action>();
   const navigation = useNavigation();
   const [mode, setMode] = React.useState("protect");
-  const [budget, setBudget] = React.useState("3.00");
-  const [cpc, setCpc] = React.useState("0.20");
+  const [budget, setBudget] = React.useState("20.00");
+  const [cpc, setCpc] = React.useState("0.50");
   const [url, setUrl] = React.useState("");
+  const [showAdvancedForm, setShowAdvancedForm] = React.useState(false);
   // Shop setup banner removed - using Shopify authenticated shop name
 
   const [toast, setToast] = React.useState("");
@@ -405,71 +407,126 @@ Shop: ${shopName || "unknown"}`;
 
       {/* Shop automatically detected from Shopify authentication */}
 
-      {/* Shop Configuration removed - shop name is now automatically detected */}
+      {/* Toggle between simple and advanced forms */}
+      {toast && <p style={{ color: "#28a745", padding: "8px", background: "#d4edda", borderRadius: "4px" }}>{toast}</p>}
 
-      {/* Connect Sheets section removed - using automated multi-tenant Google Sheets */}
-      {toast && <p>{toast}</p>}
-      <section style={{ border: "1px solid #eee", padding: 12 }}>
-        <h3>Goal</h3>
-        <label>
-          <input
-            type="radio"
-            name="goal"
-            value="protect"
-            checked={mode === "protect"}
-            onChange={() => setMode("protect")}
-          />{" "}
-          Protect
-        </label>
-        <br />
-        <label>
-          <input
-            type="radio"
-            name="goal"
-            value="grow"
-            checked={mode === "grow"}
-            onChange={() => setMode("grow")}
-          />{" "}
-          Grow
-        </label>
-        <br />
-        <label>
-          <input
-            type="radio"
-            name="goal"
-            value="scale"
-            checked={mode === "scale"}
-            onChange={() => setMode("scale")}
-          />{" "}
-          Scale
-        </label>
-      </section>
-      <section style={{ border: "1px solid #eee", padding: 12 }}>
-        <h3>Budget & CPC</h3>
-        <input
-          type="number"
-          step="0.01"
-          value={budget}
-          onChange={(e) => setBudget(e.target.value)}
-          placeholder="$ per day"
+      <div style={{ marginBottom: 16 }}>
+        <button
+          onClick={() => setShowAdvancedForm(!showAdvancedForm)}
+          style={{
+            background: showAdvancedForm ? "#28a745" : "#007bff",
+            color: "white",
+            padding: "8px 16px",
+            border: "none",
+            borderRadius: "4px",
+            cursor: "pointer",
+            fontSize: "14px",
+          }}
+        >
+          {showAdvancedForm ? "Switch to Simple Mode" : "Switch to Advanced Setup"}
+        </button>
+      </div>
+
+      {showAdvancedForm ? (
+        <CampaignSetupForm
+          shopName={shopName || serverShopName || ""}
+          onGenerate={(config) => {
+            // Convert advanced config to simple form values
+            setBudget(config.dailyBudget.toString());
+            setCpc(config.targetCPC.toString());
+            setUrl(config.businessName); // Or use a custom URL field
+
+            // Submit the form with enhanced data
+            const formData = new FormData();
+            formData.append("actionType", "generateScript");
+            formData.append("mode", config.goal === "sales" ? "scale" : "protect");
+            formData.append("budget", config.dailyBudget.toString());
+            formData.append("cpc", config.targetCPC.toString());
+            formData.append("url", url);
+            formData.append("advancedConfig", JSON.stringify(config));
+
+            // Submit via fetch or form submission
+            fetch("", {
+              method: "POST",
+              body: formData,
+            });
+          }}
         />
-        <input
-          type="number"
-          step="0.01"
-          value={cpc}
-          onChange={(e) => setCpc(e.target.value)}
-          placeholder="Max CPC"
-        />
-      </section>
-      <section style={{ border: "1px solid #eee", padding: 12 }}>
-        <h3>Landing URL</h3>
-        <input
-          value={url}
-          onChange={(e) => setUrl(e.target.value)}
-          placeholder="https://example.com"
-          style={{ width: "100%" }}
-        />
-      </section>
+      ) : (
+        <>
+          <section style={{ border: "1px solid #eee", padding: 12 }}>
+            <h3>Goal</h3>
+            <label>
+              <input
+                type="radio"
+                name="goal"
+                value="protect"
+                checked={mode === "protect"}
+                onChange={() => setMode("protect")}
+              />{" "}
+              Protect (Conservative)
+            </label>
+            <br />
+            <label>
+              <input
+                type="radio"
+                name="goal"
+                value="grow"
+                checked={mode === "grow"}
+                onChange={() => setMode("grow")}
+              />{" "}
+              Grow (Balanced)
+            </label>
+            <br />
+            <label>
+              <input
+                type="radio"
+                name="goal"
+                value="scale"
+                checked={mode === "scale"}
+                onChange={() => setMode("scale")}
+              />{" "}
+              Scale (Aggressive)
+            </label>
+          </section>
+          <section style={{ border: "1px solid #eee", padding: 12 }}>
+            <h3>Budget & CPC</h3>
+            <div style={{ display: "flex", gap: "12px" }}>
+              <div style={{ flex: 1 }}>
+                <label style={{ fontSize: "14px", color: "#666" }}>Daily Budget</label>
+                <input
+                  type="number"
+                  step="0.01"
+                  value={budget}
+                  onChange={(e) => setBudget(e.target.value)}
+                  placeholder="$ per day"
+                  style={{ width: "100%", padding: "6px" }}
+                />
+              </div>
+              <div style={{ flex: 1 }}>
+                <label style={{ fontSize: "14px", color: "#666" }}>Max CPC</label>
+                <input
+                  type="number"
+                  step="0.01"
+                  value={cpc}
+                  onChange={(e) => setCpc(e.target.value)}
+                  placeholder="Max CPC"
+                  style={{ width: "100%", padding: "6px" }}
+                />
+              </div>
+            </div>
+          </section>
+          <section style={{ border: "1px solid #eee", padding: 12 }}>
+            <h3>Landing URL</h3>
+            <input
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
+              placeholder="https://example.com"
+              style={{ width: "100%", padding: "6px" }}
+            />
+          </section>
+        </>
+      )}
       <div
         style={{
           marginTop: 8,
@@ -516,33 +573,35 @@ Shop: ${shopName || "unknown"}`;
         </div>
       </div>
 
-      <div style={{ marginTop: 8 }}>
-        <Form method="post">
-          <input type="hidden" name="actionType" value="generateScript" />
-          <input type="hidden" name="mode" value={mode} />
-          <input type="hidden" name="budget" value={budget} />
-          <input type="hidden" name="cpc" value={cpc} />
-          <input type="hidden" name="url" value={url} />
-          <button
-            type="submit"
-            disabled={isGeneratingScript || (campaignLimits && !campaignLimits.canCreate)}
-            style={{
-              background: (isGeneratingScript || (campaignLimits && !campaignLimits.canCreate)) ? "#6c757d" : "#007bff",
-              color: "white",
-              padding: "12px 24px",
-              border: "none",
-              borderRadius: "4px",
-              cursor: (isGeneratingScript || (campaignLimits && !campaignLimits.canCreate)) ? "not-allowed" : "pointer",
-              fontSize: "16px",
-            }}
-            title={campaignLimits && !campaignLimits.canCreate ? `Campaign limit reached. Upgrade your ${campaignLimits.tier} plan to create more campaigns.` : undefined}
-          >
-            {isGeneratingScript ? "Generating..." : 
-             (campaignLimits && !campaignLimits.canCreate) ? "Campaign Limit Reached" : 
-             "Generate Current Script"}
-          </button>
-        </Form>
-      </div>
+      {!showAdvancedForm && (
+        <div style={{ marginTop: 8 }}>
+          <Form method="post">
+            <input type="hidden" name="actionType" value="generateScript" />
+            <input type="hidden" name="mode" value={mode} />
+            <input type="hidden" name="budget" value={budget} />
+            <input type="hidden" name="cpc" value={cpc} />
+            <input type="hidden" name="url" value={url} />
+            <button
+              type="submit"
+              disabled={isGeneratingScript || (campaignLimits && !campaignLimits.canCreate)}
+              style={{
+                background: (isGeneratingScript || (campaignLimits && !campaignLimits.canCreate)) ? "#6c757d" : "#007bff",
+                color: "white",
+                padding: "12px 24px",
+                border: "none",
+                borderRadius: "4px",
+                cursor: (isGeneratingScript || (campaignLimits && !campaignLimits.canCreate)) ? "not-allowed" : "pointer",
+                fontSize: "16px",
+              }}
+              title={campaignLimits && !campaignLimits.canCreate ? `Campaign limit reached. Upgrade your ${campaignLimits.tier} plan to create more campaigns.` : undefined}
+            >
+              {isGeneratingScript ? "Generating..." :
+               (campaignLimits && !campaignLimits.canCreate) ? "Campaign Limit Reached" :
+               "Generate Current Script"}
+            </button>
+          </Form>
+        </div>
+      )}
       {/* Temporarily show script directly from action data for testing */}
       {actionData?.success && (
         <div style={{ 
