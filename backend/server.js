@@ -1100,6 +1100,7 @@ app.use("/api/dashboards", dashboardRoutes);
 
 // ==== RSA TEST QUEUE ROUTES (PRO TIER) ====
 app.use("/api/ai", initializeRSATestQueueRoutes(verify));
+
 // ==== AUTOMATION ROUTES ====
 app.use("/api/automation", automationRoutes);
 
