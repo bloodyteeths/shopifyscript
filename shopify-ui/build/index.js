@@ -114677,7 +114677,7 @@ async function handleProxyRequest(request2, params, method) {
       } catch {
       }
     let fullUrl, headers2;
-    if (proxyPath === "jobs/ai_writer" || proxyPath.startsWith("ai/")) {
+    if (proxyPath === "jobs/ai_writer" || proxyPath === "ai/drafts") {
       let aiPayload, sig;
       if (proxyPath === "jobs/ai_writer") {
         let nonce2 = parsedBody.nonce || Date.now();

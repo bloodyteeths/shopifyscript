@@ -92,8 +92,9 @@ async function handleProxyRequest(
     let fullUrl;
     let headers: HeadersInit;
 
-    // Check if this is an AI endpoint that needs query param authentication
-    const needsQueryAuth = proxyPath === "jobs/ai_writer" || proxyPath.startsWith("ai/");
+    // Only specific AI endpoints need query param authentication
+    // Most endpoints use header-based HMAC auth
+    const needsQueryAuth = proxyPath === "jobs/ai_writer" || proxyPath === "ai/drafts";
 
     if (needsQueryAuth) {
       let aiPayload;
