@@ -259,6 +259,23 @@ export default function App() {
                     Advanced
                   </NavLink>
                 </li>
+                <li>
+                  <NavLink
+                    to="/app/ai-dashboard"
+                    style={{
+                      display: "block",
+                      padding: "8px 12px",
+                      borderRadius: "6px",
+                      textDecoration: "none",
+                      fontSize: "14px",
+                      fontWeight: "500",
+                      color: "#202223",
+                      transition: "all 0.2s ease",
+                    }}
+                  >
+                    🤖 AI Dashboard
+                  </NavLink>
+                </li>
                 <li
                   style={{
                     marginTop: 12,
@@ -412,6 +429,24 @@ export default function App() {
                       }}
                     >
                       Advanced
+                    </NavLink>
+                  </li>
+                  <li>
+                    <NavLink
+                      to="/app/ai-dashboard"
+                      onClick={() => setMobileMenuOpen(false)}
+                      style={{
+                        display: "block",
+                        padding: "12px 16px",
+                        borderRadius: "6px",
+                        textDecoration: "none",
+                        fontSize: "16px",
+                        fontWeight: "500",
+                        color: "#202223",
+                        transition: "all 0.2s ease",
+                      }}
+                    >
+                      🤖 AI Dashboard
                     </NavLink>
                   </li>
                   <li

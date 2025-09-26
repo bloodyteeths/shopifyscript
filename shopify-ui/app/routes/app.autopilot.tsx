@@ -19,6 +19,7 @@ import { ShopSetupBanner } from "../components/ShopSetupBanner";
 import { ClientOnly } from "../components/ClientOnly";
 import { checkSubscriptionStatus, hasFeatureAccess } from "../utils/subscription.server";
 import { CampaignSetupForm } from "../components/CampaignSetupForm";
+import { MLAutopilotDashboard } from "../components/MLAutopilotDashboard";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   try {
@@ -423,6 +424,11 @@ export default function Autopilot() {
   const [scriptCode, setScriptCode] = React.useState("");
   const [showScript, setShowScript] = React.useState(false);
   const [shopName, setShopName] = React.useState<string | null>(null);
+  const [generatedAds, setGeneratedAds] = React.useState<any>(null);
+  const [showGeneratedAds, setShowGeneratedAds] = React.useState(false);
+  const [isGeneratingAds, setIsGeneratingAds] = React.useState(false);
+  const [mlState, setMLState] = React.useState(null);
+  const [showMLDashboard, setShowMLDashboard] = React.useState(false);
   
   // Disable debug state changes that cause hydration issues
   // React.useEffect(() => {
@@ -434,8 +440,108 @@ export default function Autopilot() {
   //   });
   // }, [showScript, scriptCode, shopName, toast]);
   
-  const isGeneratingScript = navigation.state === "submitting" && 
+  const isGeneratingScript = navigation.state === "submitting" &&
     navigation.formData?.get("actionType") === "generateScript";
+
+  // Function to generate AI ads using the backend endpoint
+  const generateAIAds = async () => {
+    if (!shopName) {
+      setToast("Error: Shop name not available");
+      return;
+    }
+
+    setIsGeneratingAds(true);
+    setToast("Generating AI ads...");
+
+    try {
+      const { backendFetch } = await import("../server/hmac.server");
+      const response = await backendFetch("/ai/generate/rsa", "POST", {
+        theme: "Business",
+        industry: "ecommerce",
+        keywords: ["shop", "online", "store"],
+        tone: "professional",
+        headlineCount: 15,
+        descriptionCount: 4
+      }, shopName);
+
+      if (response.ok) {
+        const result = await response.json();
+        if (result.ok) {
+          setGeneratedAds(result);
+          setShowGeneratedAds(true);
+          setToast(`Generated ${result.headlines?.length || 0} headlines and ${result.descriptions?.length || 0} descriptions`);
+        } else {
+          setToast("Error: " + result.error);
+        }
+      } else {
+        setToast("Error: Failed to generate AI ads");
+      }
+    } catch (error) {
+      console.error("AI ads generation error:", error);
+      setToast("Error: " + error.message);
+    } finally {
+      setIsGeneratingAds(false);
+    }
+  };
+
+  // Function to fetch ML autopilot state
+  const fetchMLState = async () => {
+    if (!shopName) return;
+
+    try {
+      const { backendFetch } = await import("../server/hmac.server");
+      const response = await backendFetch("/jobs/autopilot_tick", "POST", {
+        nonce: Date.now()
+      }, shopName + "?dry=1"); // Dry run to get insights
+
+      if (response.ok) {
+        const result = await response.json();
+        if (result.ok && result.ml) {
+          setMLState(result.ml);
+          setToast("ML state updated");
+        }
+      }
+    } catch (error) {
+      console.error("Failed to fetch ML state:", error);
+      setToast("Error: Failed to fetch ML insights");
+    }
+  };
+
+  // Function to accept generated AI ads
+  const acceptAIAds = async () => {
+    if (!generatedAds || !shopName) {
+      setToast("Error: No ads to accept");
+      return;
+    }
+
+    try {
+      const { backendFetch } = await import("../server/hmac.server");
+      const response = await backendFetch("/ai/accept", "POST", {
+        items: [{
+          theme: "generated",
+          headlines_pipe: generatedAds.headlines?.join("|") || "",
+          descriptions_pipe: generatedAds.descriptions?.join("|") || "",
+          source: "ai_generated"
+        }]
+      }, shopName);
+
+      if (response.ok) {
+        const result = await response.json();
+        if (result.ok && result.accepted > 0) {
+          setToast(`Accepted ${result.accepted} AI-generated ad sets`);
+          setShowGeneratedAds(false);
+          setGeneratedAds(null);
+        } else {
+          setToast("Error: " + (result.error || "Failed to accept ads"));
+        }
+      } else {
+        setToast("Error: Failed to accept AI ads");
+      }
+    } catch (error) {
+      console.error("AI ads acceptance error:", error);
+      setToast("Error: " + error.message);
+    }
+  };
 
   // Use authenticated shop name from Shopify session
   React.useEffect(() => {
@@ -760,31 +866,69 @@ Shop: ${shopName || "unknown"}`;
 
       {!showAdvancedForm && (
         <div style={{ marginTop: 8 }}>
-          <Form method="post">
-            <input type="hidden" name="actionType" value="generateScript" />
-            <input type="hidden" name="mode" value={mode} />
-            <input type="hidden" name="budget" value={budget} />
-            <input type="hidden" name="cpc" value={cpc} />
-            <input type="hidden" name="url" value={url} />
+          <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
+            <Form method="post">
+              <input type="hidden" name="actionType" value="generateScript" />
+              <input type="hidden" name="mode" value={mode} />
+              <input type="hidden" name="budget" value={budget} />
+              <input type="hidden" name="cpc" value={cpc} />
+              <input type="hidden" name="url" value={url} />
+              <button
+                type="submit"
+                disabled={isGeneratingScript || (campaignLimits && !campaignLimits.canCreate)}
+                style={{
+                  background: (isGeneratingScript || (campaignLimits && !campaignLimits.canCreate)) ? "#6c757d" : "#007bff",
+                  color: "white",
+                  padding: "12px 24px",
+                  border: "none",
+                  borderRadius: "4px",
+                  cursor: (isGeneratingScript || (campaignLimits && !campaignLimits.canCreate)) ? "not-allowed" : "pointer",
+                  fontSize: "16px",
+                }}
+                title={campaignLimits && !campaignLimits.canCreate ? `Campaign limit reached. Upgrade your ${campaignLimits.tier} plan to create more campaigns.` : undefined}
+              >
+                {isGeneratingScript ? "Generating..." :
+                 (campaignLimits && !campaignLimits.canCreate) ? "Campaign Limit Reached" :
+                 "Generate Current Script"}
+              </button>
+            </Form>
             <button
-              type="submit"
-              disabled={isGeneratingScript || (campaignLimits && !campaignLimits.canCreate)}
+              onClick={generateAIAds}
+              disabled={isGeneratingAds || !shopName}
               style={{
-                background: (isGeneratingScript || (campaignLimits && !campaignLimits.canCreate)) ? "#6c757d" : "#007bff",
+                background: isGeneratingAds ? "#6c757d" : "#28a745",
                 color: "white",
                 padding: "12px 24px",
                 border: "none",
                 borderRadius: "4px",
-                cursor: (isGeneratingScript || (campaignLimits && !campaignLimits.canCreate)) ? "not-allowed" : "pointer",
+                cursor: (isGeneratingAds || !shopName) ? "not-allowed" : "pointer",
                 fontSize: "16px",
               }}
-              title={campaignLimits && !campaignLimits.canCreate ? `Campaign limit reached. Upgrade your ${campaignLimits.tier} plan to create more campaigns.` : undefined}
+              title={!shopName ? "Shop name not available" : "Generate AI-powered ad content"}
             >
-              {isGeneratingScript ? "Generating..." :
-               (campaignLimits && !campaignLimits.canCreate) ? "Campaign Limit Reached" :
-               "Generate Current Script"}
+              {isGeneratingAds ? "Generating AI Ads..." : "Generate AI Ads"}
             </button>
-          </Form>
+            <button
+              onClick={() => {
+                setShowMLDashboard(!showMLDashboard);
+                if (!showMLDashboard && !mlState) {
+                  fetchMLState();
+                }
+              }}
+              style={{
+                background: "#6f42c1",
+                color: "white",
+                padding: "12px 24px",
+                border: "none",
+                borderRadius: "4px",
+                cursor: "pointer",
+                fontSize: "16px",
+              }}
+              title="View ML Autopilot insights and controls"
+            >
+              {showMLDashboard ? "Hide ML Dashboard" : "Show ML Dashboard"}
+            </button>
+          </div>
         </div>
       )}
       {/* Temporarily show script directly from action data for testing */}
@@ -814,6 +958,120 @@ Shop: ${shopName || "unknown"}`;
           </details>
         </div>
       )}
+      {/* AI Generated Ads Display */}
+      {showGeneratedAds && generatedAds && (
+        <section style={{
+          border: "1px solid #28a745",
+          padding: 12,
+          marginTop: 12,
+          borderRadius: "4px",
+          background: "#f8fff9"
+        }}>
+          <div style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: 10,
+          }}>
+            <h3>AI Generated Ads</h3>
+            <div style={{ display: "flex", gap: "8px" }}>
+              <button
+                onClick={acceptAIAds}
+                style={{
+                  background: "#28a745",
+                  color: "white",
+                  padding: "8px 16px",
+                  border: "none",
+                  borderRadius: "4px",
+                  cursor: "pointer",
+                }}
+              >
+                Accept & Apply
+              </button>
+              <button
+                onClick={() => {
+                  setShowGeneratedAds(false);
+                  setGeneratedAds(null);
+                  setToast("AI ads cleared");
+                }}
+                style={{
+                  background: "#6c757d",
+                  color: "white",
+                  padding: "8px 16px",
+                  border: "none",
+                  borderRadius: "4px",
+                  cursor: "pointer",
+                }}
+              >
+                Reject
+              </button>
+            </div>
+          </div>
+
+          <div style={{ display: "grid", gap: "16px", gridTemplateColumns: "1fr 1fr" }}>
+            <div>
+              <h4 style={{ margin: "0 0 8px 0", color: "#28a745" }}>Headlines ({generatedAds.headlines?.length || 0})</h4>
+              <div style={{
+                maxHeight: 200,
+                overflowY: "auto",
+                background: "white",
+                border: "1px solid #ddd",
+                borderRadius: "4px",
+                padding: "8px"
+              }}>
+                {generatedAds.headlines?.map((headline, index) => (
+                  <div key={index} style={{
+                    padding: "4px 8px",
+                    borderBottom: index < (generatedAds.headlines?.length || 0) - 1 ? "1px solid #eee" : "none",
+                    fontSize: "14px"
+                  }}>
+                    {headline}
+                  </div>
+                )) || <p>No headlines generated</p>}
+              </div>
+            </div>
+
+            <div>
+              <h4 style={{ margin: "0 0 8px 0", color: "#28a745" }}>Descriptions ({generatedAds.descriptions?.length || 0})</h4>
+              <div style={{
+                maxHeight: 200,
+                overflowY: "auto",
+                background: "white",
+                border: "1px solid #ddd",
+                borderRadius: "4px",
+                padding: "8px"
+              }}>
+                {generatedAds.descriptions?.map((description, index) => (
+                  <div key={index} style={{
+                    padding: "4px 8px",
+                    borderBottom: index < (generatedAds.descriptions?.length || 0) - 1 ? "1px solid #eee" : "none",
+                    fontSize: "14px"
+                  }}>
+                    {description}
+                  </div>
+                )) || <p>No descriptions generated</p>}
+              </div>
+            </div>
+          </div>
+
+          <div style={{ marginTop: "12px", padding: "8px", background: "#e6f7ff", borderRadius: "4px", fontSize: "12px", color: "#0c5460" }}>
+            <strong>Preview:</strong> These AI-generated ads will be added to your asset library and can be used in your Google Ads campaigns.
+            Click "Accept & Apply" to save them or "Reject" to generate new ones.
+          </div>
+        </section>
+      )}
+
+      {/* ML Autopilot Dashboard */}
+      {showMLDashboard && (
+        <ClientOnly>
+          <MLAutopilotDashboard
+            shopName={shopName || serverShopName || ""}
+            mlState={mlState}
+            onRefresh={fetchMLState}
+          />
+        </ClientOnly>
+      )}
+
       {showScript && (
         <section
           style={{ border: "1px solid #eee", padding: 12, marginTop: 12 }}

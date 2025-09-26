@@ -1,17 +1,20 @@
 import { getDoc, ensureSheet } from "../sheets.js";
 import { AIProviderService } from "../services/ai-provider.js";
+import { getWeeklySummaryAI } from "../services/weekly-summary-ai.js";
 import logger from "../services/logger.js";
 
 const aiProvider = new AIProviderService();
+const weeklySummaryAI = getWeeklySummaryAI();
 
 /**
- * Enhanced Weekly Summary Job with AI Insights
- * Generates comprehensive weekly reports with plain-English insights,
- * trend analysis, and actionable recommendations for merchants
+ * Enhanced Weekly Summary Job with Advanced AI Insights
+ * Generates comprehensive weekly reports with AI-powered analysis,
+ * actionable recommendations, and tier-specific insights
+ * Part of STARTER tier ($29/mo) benefits
  */
 export async function runWeeklySummary(tenant, options = {}) {
   const startTime = Date.now();
-  logger.info("Starting weekly summary generation", { tenant });
+  logger.info("Starting enhanced weekly summary generation", { tenant });
 
   try {
     const doc = await getDoc();
@@ -20,35 +23,120 @@ export async function runWeeklySummary(tenant, options = {}) {
       return { ok: false, error: "no_sheets" };
     }
 
-    // Get data from sheets
-    const { weeklyData, previousWeekData, insights } = await extractWeeklyData(
-      doc,
-      tenant,
-    );
+    // Determine tier from options or default to starter
+    const tier = options.tier || 'starter';
+    const useEnhancedAI = options.generateAI !== false;
 
-    // Generate AI insights if available
-    let aiInsights = null;
-    if (options.generateAI !== false) {
+    let aiSummary = null;
+    let legacyInsights = null;
+
+    if (useEnhancedAI) {
       try {
-        aiInsights = await generateAIInsights(
-          weeklyData,
-          previousWeekData,
+        // Use new AI service for comprehensive analysis
+        aiSummary = await weeklySummaryAI.generateWeeklySummary(tenant, {
+          tier,
+          includePreviousWeek: true,
+          includeRecommendations: true,
+          customPrompt: options.customPrompt
+        });
+
+        logger.info("Enhanced AI summary generated", {
           tenant,
-        );
+          tier,
+          recommendationsCount: aiSummary.recommendations?.length || 0,
+          confidence: aiSummary.metadata?.confidence || 0
+        });
       } catch (error) {
-        logger.warn("Failed to generate AI insights", {
+        logger.warn("Enhanced AI analysis failed, falling back to legacy method", {
           error: error.message,
           tenant,
         });
+
+        // Fallback to legacy method
+        const { weeklyData, previousWeekData, insights } = await extractWeeklyData(doc, tenant);
+
+        try {
+          legacyInsights = await generateAIInsights(weeklyData, previousWeekData, tenant);
+        } catch (legacyError) {
+          logger.warn("Legacy AI insights also failed", {
+            error: legacyError.message,
+            tenant,
+          });
+        }
+
+        // Create fallback summary structure
+        aiSummary = {
+          tenant,
+          generatedAt: new Date().toISOString(),
+          period: {
+            start: new Date(Date.now() - 7 * 24 * 3600 * 1000).toISOString(),
+            end: new Date().toISOString(),
+            daysIncluded: 7
+          },
+          tier,
+          metrics: weeklyData.totals,
+          previousMetrics: previousWeekData?.totals || null,
+          insights: legacyInsights ? {
+            summary: legacyInsights.summary,
+            confidence: legacyInsights.confidence || 0.7,
+            analysisType: 'legacy',
+            generatedAt: new Date().toISOString()
+          } : null,
+          recommendations: [],
+          trends: insights.trends,
+          alerts: insights.alerts,
+          topPerformers: insights.topPerformers,
+          opportunities: insights.opportunities,
+          metadata: {
+            aiGenerated: !!legacyInsights,
+            analysisDepth: 'fallback',
+            dataQuality: { score: 75, quality: 'good', issues: [] },
+            confidence: legacyInsights?.confidence || 0.0,
+            fallbackUsed: true
+          }
+        };
       }
+    } else {
+      // Manual mode - extract data only
+      const { weeklyData, previousWeekData, insights } = await extractWeeklyData(doc, tenant);
+
+      aiSummary = {
+        tenant,
+        generatedAt: new Date().toISOString(),
+        period: {
+          start: new Date(Date.now() - 7 * 24 * 3600 * 1000).toISOString(),
+          end: new Date().toISOString(),
+          daysIncluded: 7
+        },
+        tier,
+        metrics: weeklyData.totals,
+        previousMetrics: previousWeekData?.totals || null,
+        insights: null,
+        recommendations: [],
+        trends: insights.trends,
+        alerts: insights.alerts,
+        topPerformers: insights.topPerformers,
+        opportunities: insights.opportunities,
+        metadata: {
+          aiGenerated: false,
+          analysisDepth: 'manual',
+          dataQuality: { score: 80, quality: 'good', issues: [] },
+          confidence: 0.0
+        }
+      };
     }
 
-    // Create comprehensive summary
-    const summary = createComprehensiveSummary(
-      weeklyData,
-      previousWeekData,
-      insights,
-      aiInsights,
+    // Create comprehensive summary for logging (maintain backward compatibility)
+    const legacySummary = createComprehensiveSummary(
+      { totals: aiSummary.metrics },
+      aiSummary.previousMetrics ? { totals: aiSummary.previousMetrics } : null,
+      {
+        trends: aiSummary.trends,
+        alerts: aiSummary.alerts,
+        topPerformers: aiSummary.topPerformers,
+        opportunities: aiSummary.opportunities
+      },
+      aiSummary.insights
     );
 
     // Log to run logs
@@ -60,27 +148,37 @@ export async function runWeeklySummary(tenant, options = {}) {
     ]);
     await runLogs.addRow({
       timestamp: new Date().toISOString(),
-      type: "weekly_summary",
-      message: summary.plainText,
-      data: JSON.stringify(summary.structured),
+      type: "weekly_summary_enhanced",
+      message: `Enhanced AI Summary (${tier}) - ${aiSummary.recommendations?.length || 0} recommendations`,
+      data: JSON.stringify({
+        ...aiSummary,
+        legacy: legacySummary.structured
+      }),
     });
 
     const duration = Date.now() - startTime;
-    logger.info("Weekly summary completed", {
+    logger.info("Enhanced weekly summary completed", {
       tenant,
+      tier,
       duration,
-      hasAI: !!aiInsights,
-      metrics: summary.structured.metrics,
+      aiGenerated: aiSummary.metadata.aiGenerated,
+      recommendationsCount: aiSummary.recommendations?.length || 0,
+      confidence: aiSummary.metadata.confidence,
+      fallbackUsed: aiSummary.metadata.fallbackUsed || false
     });
 
     return {
       ok: true,
-      summary: summary.structured,
-      insights: aiInsights,
+      summary: aiSummary,
+      insights: aiSummary.insights,
+      recommendations: aiSummary.recommendations,
       duration,
+      tier,
+      // Maintain backward compatibility
+      legacy: legacySummary.structured
     };
   } catch (error) {
-    logger.error("Weekly summary failed", {
+    logger.error("Enhanced weekly summary failed", {
       error: error.message,
       tenant,
       stack: error.stack,
@@ -516,4 +614,226 @@ function createComprehensiveSummary(current, previous, insights, aiInsights) {
       aiInsights: aiInsights,
     },
   };
+}
+
+/**
+ * Send weekly summary email with AI insights
+ * Enhanced version that uses the new AI service
+ */
+export async function sendWeeklySummaryEmail(tenant, userEmail, options = {}) {
+  logger.info("Sending enhanced weekly summary email", { tenant, userEmail });
+
+  try {
+    // Generate the summary
+    const summaryResult = await runWeeklySummary(tenant, options);
+
+    if (!summaryResult.ok) {
+      throw new Error(`Failed to generate summary: ${summaryResult.error}`);
+    }
+
+    // Send email using the AI service
+    const emailResult = await weeklySummaryAI.sendWeeklySummaryEmail(
+      tenant,
+      userEmail,
+      summaryResult.summary,
+      options
+    );
+
+    logger.info("Enhanced weekly summary email sent successfully", {
+      tenant,
+      userEmail,
+      tier: summaryResult.tier,
+      messageId: emailResult.messageId
+    });
+
+    return {
+      ok: true,
+      emailSent: true,
+      messageId: emailResult.messageId,
+      summary: summaryResult.summary,
+      tier: summaryResult.tier
+    };
+  } catch (error) {
+    logger.error("Failed to send enhanced weekly summary email", {
+      tenant,
+      userEmail,
+      error: error.message
+    });
+
+    return {
+      ok: false,
+      error: error.message,
+      emailSent: false
+    };
+  }
+}
+
+/**
+ * Generate weekly summary for Slack or other notifications
+ * Returns a formatted text summary suitable for messaging platforms
+ */
+export async function generateWeeklySummaryForSlack(tenant, options = {}) {
+  logger.info("Generating weekly summary for Slack", { tenant });
+
+  try {
+    const summaryResult = await runWeeklySummary(tenant, options);
+
+    if (!summaryResult.ok) {
+      throw new Error(`Failed to generate summary: ${summaryResult.error}`);
+    }
+
+    const summary = summaryResult.summary;
+    const formatCurrency = (amount) => amount ? `$${amount.toFixed(2)}` : 'N/A';
+    const formatPercent = (percent) => percent ? `${percent >= 0 ? '+' : ''}${percent.toFixed(1)}%` : 'N/A';
+
+    // Create Slack-formatted message
+    const slackBlocks = [
+      {
+        type: "header",
+        text: {
+          type: "plain_text",
+          text: `📊 Weekly Performance Summary (${summary.tier?.toUpperCase() || 'STARTER'})`
+        }
+      },
+      {
+        type: "section",
+        text: {
+          type: "mrkdwn",
+          text: `*Period:* ${new Date(summary.period.start).toLocaleDateString()} - ${new Date(summary.period.end).toLocaleDateString()}`
+        }
+      },
+      {
+        type: "section",
+        fields: [
+          {
+            type: "mrkdwn",
+            text: `*Clicks:* ${summary.metrics.clicks.toLocaleString()}`
+          },
+          {
+            type: "mrkdwn",
+            text: `*Cost:* ${formatCurrency(summary.metrics.cost)}`
+          },
+          {
+            type: "mrkdwn",
+            text: `*Conversions:* ${summary.metrics.conversions}`
+          },
+          {
+            type: "mrkdwn",
+            text: `*CPA:* ${formatCurrency(summary.metrics.cpa)}`
+          }
+        ]
+      }
+    ];
+
+    // Add trends if available
+    if (summary.previousMetrics && summary.trends) {
+      slackBlocks.push({
+        type: "section",
+        text: {
+          type: "mrkdwn",
+          text: `*Week-over-week changes:*\n• Clicks: ${formatPercent(summary.trends.clicks)}\n• Cost: ${formatPercent(summary.trends.cost)}\n• Conversions: ${formatPercent(summary.trends.conversions)}`
+        }
+      });
+    }
+
+    // Add AI insights if available
+    if (summary.insights && summary.insights.summary) {
+      slackBlocks.push({
+        type: "section",
+        text: {
+          type: "mrkdwn",
+          text: `*🤖 AI Insights:*\n${summary.insights.summary.substring(0, 500)}${summary.insights.summary.length > 500 ? '...' : ''}`
+        }
+      });
+    }
+
+    // Add top recommendations
+    if (summary.recommendations && summary.recommendations.length > 0) {
+      const topRecs = summary.recommendations.slice(0, 3).map((rec, i) =>
+        `${i + 1}. *${rec.title}*: ${rec.description}`
+      ).join('\n');
+
+      slackBlocks.push({
+        type: "section",
+        text: {
+          type: "mrkdwn",
+          text: `*📋 Top Recommendations:*\n${topRecs}`
+        }
+      });
+    }
+
+    // Add alerts if any
+    if (summary.alerts && summary.alerts.length > 0) {
+      const alertText = summary.alerts.map(alert => `• ${alert.message}`).join('\n');
+      slackBlocks.push({
+        type: "section",
+        text: {
+          type: "mrkdwn",
+          text: `*🚨 Alerts:*\n${alertText}`
+        }
+      });
+    }
+
+    // Simple text version for basic Slack integrations
+    const textSummary = [
+      `📊 Weekly Performance Summary (${summary.tier?.toUpperCase() || 'STARTER'})`,
+      `Period: ${new Date(summary.period.start).toLocaleDateString()} - ${new Date(summary.period.end).toLocaleDateString()}`,
+      '',
+      `📈 Key Metrics:`,
+      `• Clicks: ${summary.metrics.clicks.toLocaleString()}`,
+      `• Cost: ${formatCurrency(summary.metrics.cost)}`,
+      `• Conversions: ${summary.metrics.conversions}`,
+      `• CPA: ${formatCurrency(summary.metrics.cpa)}`,
+      ''
+    ];
+
+    if (summary.previousMetrics && summary.trends) {
+      textSummary.push(
+        `📊 Changes from last week:`,
+        `• Clicks: ${formatPercent(summary.trends.clicks)}`,
+        `• Cost: ${formatPercent(summary.trends.cost)}`,
+        `• Conversions: ${formatPercent(summary.trends.conversions)}`,
+        ''
+      );
+    }
+
+    if (summary.insights?.summary) {
+      textSummary.push(
+        `🤖 AI Insights:`,
+        summary.insights.summary,
+        ''
+      );
+    }
+
+    if (summary.recommendations?.length > 0) {
+      textSummary.push(`📋 Top Recommendations:`);
+      summary.recommendations.slice(0, 3).forEach((rec, i) => {
+        textSummary.push(`${i + 1}. ${rec.title}: ${rec.description}`);
+      });
+    }
+
+    return {
+      ok: true,
+      slackBlocks,
+      textSummary: textSummary.join('\n'),
+      summary: summaryResult.summary,
+      metadata: {
+        generatedAt: new Date().toISOString(),
+        tier: summary.tier,
+        hasAI: !!summary.insights,
+        recommendationsCount: summary.recommendations?.length || 0
+      }
+    };
+  } catch (error) {
+    logger.error("Failed to generate weekly summary for Slack", {
+      tenant,
+      error: error.message
+    });
+
+    return {
+      ok: false,
+      error: error.message,
+      textSummary: `❌ Failed to generate weekly summary: ${error.message}`
+    };
+  }
 }

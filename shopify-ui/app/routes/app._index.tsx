@@ -7,6 +7,7 @@ import { checkTenantSetup } from "../utils/tenant.server";
 import { useShopContext, buildAppUrl } from "../utils/navigation";
 import { checkSubscriptionStatus, shouldRedirectToPlans, getPlanSelectionUrl } from "../utils/subscription.server";
 import { SkeletonCard, Toast } from "../components/LoadingStates";
+import { AIStatusIndicator } from "../components/AIStatusIndicator";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   try {
@@ -500,6 +501,39 @@ export default function AppIndex() {
             }}
           >
             Advanced Settings
+          </Link>
+        </div>
+
+        <div
+          style={{
+            border: "1px solid #28a745",
+            borderRadius: "8px",
+            padding: "1.5rem",
+            background: "#f8fff9",
+            position: "relative",
+          }}
+        >
+          <div style={{ position: "absolute", top: "8px", right: "8px" }}>
+            <AIStatusIndicator shopName={shopName} compact={true} />
+          </div>
+          <h3>🤖 AI Dashboard</h3>
+          <p>Manage AI-generated content and monitor automation</p>
+          <Link
+            to="/app/ai-dashboard"
+            style={{
+              background: "#28a745",
+              color: "white",
+              padding: "12px 24px",
+              textDecoration: "none",
+              borderRadius: "6px",
+              display: "inline-block",
+              fontSize: "16px",
+              fontWeight: "bold",
+              boxShadow: "0 2px 8px rgba(40, 167, 69, 0.3)",
+              transition: "all 0.2s ease",
+            }}
+          >
+            Open AI Dashboard
           </Link>
         </div>
           </>

@@ -28,7 +28,9 @@ async function createOpenAIProvider() {
   let calls = 0;
 
   async function generateText(prompt, options = {}) {
-    if (calls >= maxCalls) return "";
+    if (calls >= maxCalls) {
+      throw new AIProviderError(`OpenAI call limit reached: ${calls}/${maxCalls}`, "openai");
+    }
     calls += 1;
 
     try {
@@ -50,14 +52,32 @@ async function createOpenAIProvider() {
       );
 
       if (!response.ok) {
-        throw new Error(`OpenAI API error: ${response.status}`);
+        let errorMessage = `OpenAI API error: ${response.status} ${response.statusText}`;
+        try {
+          const errorData = await response.json();
+          if (errorData.error) {
+            errorMessage += ` - ${errorData.error.message || errorData.error}`;
+          }
+        } catch (parseError) {
+          // Ignore JSON parsing errors for error responses
+        }
+        throw new AIProviderError(errorMessage, "openai");
       }
 
       const data = await response.json();
-      return data.choices?.[0]?.message?.content || "";
+      const content = data.choices?.[0]?.message?.content;
+
+      if (!content || content.trim().length === 0) {
+        throw new AIProviderError("OpenAI returned empty response", "openai");
+      }
+
+      return content;
     } catch (error) {
+      if (error instanceof AIProviderError) {
+        throw error;
+      }
       console.error("OpenAI generation error:", error);
-      return "";
+      throw new AIProviderError(`OpenAI request failed: ${error.message}`, "openai");
     }
   }
 
@@ -84,7 +104,9 @@ async function createAnthropicProvider() {
   let calls = 0;
 
   async function generateText(prompt, options = {}) {
-    if (calls >= maxCalls) return "";
+    if (calls >= maxCalls) {
+      throw new AIProviderError(`Anthropic call limit reached: ${calls}/${maxCalls}`, "anthropic");
+    }
     calls += 1;
 
     try {
@@ -104,14 +126,32 @@ async function createAnthropicProvider() {
       });
 
       if (!response.ok) {
-        throw new Error(`Anthropic API error: ${response.status}`);
+        let errorMessage = `Anthropic API error: ${response.status} ${response.statusText}`;
+        try {
+          const errorData = await response.json();
+          if (errorData.error) {
+            errorMessage += ` - ${errorData.error.message || errorData.error}`;
+          }
+        } catch (parseError) {
+          // Ignore JSON parsing errors for error responses
+        }
+        throw new AIProviderError(errorMessage, "anthropic");
       }
 
       const data = await response.json();
-      return data.content?.[0]?.text || "";
+      const content = data.content?.[0]?.text;
+
+      if (!content || content.trim().length === 0) {
+        throw new AIProviderError("Anthropic returned empty response", "anthropic");
+      }
+
+      return content;
     } catch (error) {
+      if (error instanceof AIProviderError) {
+        throw error;
+      }
       console.error("Anthropic generation error:", error);
-      return "";
+      throw new AIProviderError(`Anthropic request failed: ${error.message}`, "anthropic");
     }
   }
 
@@ -126,8 +166,8 @@ async function createAnthropicProvider() {
  * Google AI provider implementation (enhanced from existing)
  */
 async function createGoogleProvider() {
-  const key = process.env.GOOGLE_API_KEY;
-  if (!key) throw new AIProviderError("Google API key required", "google");
+  const key = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY;
+  if (!key) throw new AIProviderError("Gemini/Google API key required (GEMINI_API_KEY or GOOGLE_API_KEY)", "google");
 
   const modelName = process.env.AI_MODEL || "gemini-1.5-flash";
   const temperature = Number(process.env.AI_TEMPERATURE || 0.4);
@@ -139,7 +179,9 @@ async function createGoogleProvider() {
   let calls = 0;
 
   async function generateText(prompt, options = {}) {
-    if (calls >= maxCalls) return "";
+    if (calls >= maxCalls) {
+      throw new AIProviderError(`Google AI call limit reached: ${calls}/${maxCalls}`, "google");
+    }
     calls += 1;
 
     try {
@@ -150,10 +192,20 @@ async function createGoogleProvider() {
           maxOutputTokens: options.maxTokens ?? maxTokens,
         },
       });
-      return resp?.response?.text?.() || "";
+
+      const content = resp?.response?.text?.();
+
+      if (!content || content.trim().length === 0) {
+        throw new AIProviderError("Google AI returned empty response", "google");
+      }
+
+      return content;
     } catch (error) {
+      if (error instanceof AIProviderError) {
+        throw error;
+      }
       console.error("Google AI generation error:", error);
-      return "";
+      throw new AIProviderError(`Google AI request failed: ${error.message}`, "google");
     }
   }
 
@@ -221,13 +273,27 @@ export function getAIProviderSync() {
     let calls = 0;
 
     async function generateText(prompt) {
-      if (calls >= maxCalls) return "";
+      if (calls >= maxCalls) {
+        throw new Error(`Google AI call limit reached: ${calls}/${maxCalls}`);
+      }
       calls += 1;
-      const resp = await model.generateContent({
-        contents: [{ role: "user", parts: [{ text: prompt }] }],
-        generationConfig: { temperature, maxOutputTokens: 1024 },
-      });
-      return resp?.response?.text?.() || "";
+      try {
+        const resp = await model.generateContent({
+          contents: [{ role: "user", parts: [{ text: prompt }] }],
+          generationConfig: { temperature, maxOutputTokens: 1024 },
+        });
+
+        const content = resp?.response?.text?.();
+
+        if (!content || content.trim().length === 0) {
+          throw new Error("Google AI returned empty response");
+        }
+
+        return content;
+      } catch (error) {
+        console.error("Google AI generation error:", error);
+        throw new Error(`Google AI request failed: ${error.message}`);
+      }
     }
 
     return { provider: "google", generateText };

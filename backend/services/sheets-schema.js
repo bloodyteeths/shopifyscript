@@ -348,6 +348,135 @@ class SheetsSchemaService {
       ],
     });
 
+    // RSA Test Queue schema (PRO tier feature)
+    this.defineSchema("RSA_TEST_QUEUE", {
+      version: "1.0.0",
+      description: "RSA A/B testing queue for automated ad testing",
+      headers: [
+        {
+          name: "id",
+          type: "string",
+          required: true,
+          description: "Unique test identifier",
+        },
+        {
+          name: "tenant_id",
+          type: "string",
+          required: true,
+          description: "Tenant identifier",
+        },
+        {
+          name: "campaign_name",
+          type: "string",
+          required: true,
+          description: "Campaign name",
+        },
+        {
+          name: "ad_group_name",
+          type: "string",
+          required: true,
+          description: "Ad group name",
+        },
+        {
+          name: "control_headlines",
+          type: "json",
+          required: false,
+          description: "Control headlines (JSON array)",
+        },
+        {
+          name: "control_descriptions",
+          type: "json",
+          required: false,
+          description: "Control descriptions (JSON array)",
+        },
+        {
+          name: "variant_headlines",
+          type: "json",
+          required: true,
+          description: "Variant headlines (JSON array)",
+        },
+        {
+          name: "variant_descriptions",
+          type: "json",
+          required: true,
+          description: "Variant descriptions (JSON array)",
+        },
+        {
+          name: "start_date",
+          type: "datetime",
+          required: true,
+          description: "Test start date",
+        },
+        {
+          name: "end_date",
+          type: "datetime",
+          required: false,
+          description: "Test end date",
+        },
+        {
+          name: "status",
+          type: "string",
+          required: true,
+          description: "Test status (RUNNING, COMPLETED, etc.)",
+        },
+        {
+          name: "performance_metrics",
+          type: "json",
+          required: false,
+          description: "Performance metrics for control and variant",
+        },
+        {
+          name: "statistical_result",
+          type: "json",
+          required: false,
+          description: "Statistical significance results",
+        },
+        {
+          name: "winner",
+          type: "string",
+          required: false,
+          description: "Test winner (CONTROL, VARIANT, INCONCLUSIVE)",
+        },
+        {
+          name: "confidence_score",
+          type: "number",
+          required: false,
+          description: "Statistical confidence score (0-1)",
+        },
+        {
+          name: "test_configuration",
+          type: "json",
+          required: false,
+          description: "Test configuration settings",
+        },
+        {
+          name: "created_at",
+          type: "datetime",
+          required: true,
+          description: "Creation timestamp",
+        },
+        {
+          name: "updated_at",
+          type: "datetime",
+          required: true,
+          description: "Last update timestamp",
+        },
+      ],
+      indexes: ["id", "tenant_id", "status", "campaign_name"],
+      validations: [
+        { field: "id", rule: "notEmpty" },
+        { field: "tenant_id", rule: "notEmpty" },
+        { field: "campaign_name", rule: "notEmpty" },
+        { field: "ad_group_name", rule: "notEmpty" },
+        { field: "start_date", rule: "isDate" },
+        { field: "end_date", rule: "isDate", optional: true },
+        { field: "status", rule: "notEmpty" },
+        { field: "confidence_score", rule: "isFloat", options: { min: 0, max: 1 }, optional: true },
+        { field: "created_at", rule: "isDate" },
+        { field: "updated_at", rule: "isDate" },
+      ],
+    });
+
     // Analytics insights schema
     this.defineSchema("insights", {
       version: "1.0.0",
@@ -446,6 +575,166 @@ class SheetsSchemaService {
           options: { min: 0, max: 1 },
           optional: true,
         },
+      ],
+    });
+
+    // N-gram negatives schema (PRO tier feature)
+    this.defineSchema("NGRAM_NEGATIVES", {
+      version: "1.0.0",
+      description: "N-gram negative keywords for wasteful phrase detection",
+      headers: [
+        {
+          name: "id",
+          type: "string",
+          required: true,
+          description: "Unique identifier",
+        },
+        {
+          name: "tenant_id",
+          type: "string",
+          required: true,
+          description: "Tenant identifier",
+        },
+        {
+          name: "phrase",
+          type: "string",
+          required: true,
+          description: "N-gram phrase pattern",
+        },
+        {
+          name: "ngram_length",
+          type: "number",
+          required: true,
+          description: "Length of n-gram (2, 3, or 4)",
+        },
+        {
+          name: "waste_score",
+          type: "number",
+          required: true,
+          description: "Waste detection score (0-1)",
+        },
+        {
+          name: "confidence",
+          type: "number",
+          required: true,
+          description: "Confidence score (0-1)",
+        },
+        {
+          name: "occurrences",
+          type: "number",
+          required: true,
+          description: "Number of search term occurrences",
+        },
+        {
+          name: "total_cost",
+          type: "number",
+          required: true,
+          description: "Total cost associated with this pattern",
+        },
+        {
+          name: "total_clicks",
+          type: "number",
+          required: false,
+          description: "Total clicks for this pattern",
+        },
+        {
+          name: "total_conversions",
+          type: "number",
+          required: false,
+          description: "Total conversions for this pattern",
+        },
+        {
+          name: "conversion_rate",
+          type: "number",
+          required: false,
+          description: "Conversion rate for this pattern",
+        },
+        {
+          name: "pattern_type",
+          type: "string",
+          required: false,
+          description: "Pattern category (job_related, price_shopping, etc.)",
+        },
+        {
+          name: "match_type",
+          type: "string",
+          required: false,
+          description: "Recommended match type (phrase, exact, broad)",
+        },
+        {
+          name: "status",
+          type: "string",
+          required: true,
+          description: "Status (ACTIVE, PENDING, REJECTED)",
+        },
+        {
+          name: "approved_by",
+          type: "string",
+          required: false,
+          description: "User who approved/rejected",
+        },
+        {
+          name: "applied_campaigns",
+          type: "json",
+          required: false,
+          description: "Campaigns where this negative is applied",
+        },
+        {
+          name: "sample_search_terms",
+          type: "json",
+          required: false,
+          description: "Sample search terms containing this pattern",
+        },
+        {
+          name: "ai_reason",
+          type: "string",
+          required: false,
+          description: "AI-generated reason for waste detection",
+        },
+        {
+          name: "business_impact",
+          type: "string",
+          required: false,
+          description: "Estimated business impact (high, medium, low)",
+        },
+        {
+          name: "estimated_monthly_savings",
+          type: "number",
+          required: false,
+          description: "Estimated monthly cost savings",
+        },
+        {
+          name: "created_at",
+          type: "datetime",
+          required: true,
+          description: "Creation timestamp",
+        },
+        {
+          name: "updated_at",
+          type: "datetime",
+          required: true,
+          description: "Last update timestamp",
+        },
+        {
+          name: "last_analyzed",
+          type: "datetime",
+          required: false,
+          description: "Last analysis timestamp",
+        },
+      ],
+      indexes: ["id", "tenant_id", "phrase", "status", "waste_score"],
+      validations: [
+        { field: "id", rule: "notEmpty" },
+        { field: "tenant_id", rule: "notEmpty" },
+        { field: "phrase", rule: "notEmpty" },
+        { field: "ngram_length", rule: "isNumeric" },
+        { field: "waste_score", rule: "isFloat", options: { min: 0, max: 1 } },
+        { field: "confidence", rule: "isFloat", options: { min: 0, max: 1 } },
+        { field: "occurrences", rule: "isNumeric" },
+        { field: "total_cost", rule: "isNumeric" },
+        { field: "status", rule: "notEmpty" },
+        { field: "created_at", rule: "isDate" },
+        { field: "updated_at", rule: "isDate" },
       ],
     });
   }

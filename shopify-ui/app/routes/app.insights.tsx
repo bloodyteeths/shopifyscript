@@ -10,6 +10,8 @@ import {
 } from "@remix-run/react";
 import { checkTenantSetup } from "../utils/tenant.server";
 import { AnalyticsTier } from "../components/AnalyticsTier";
+import { AIStatusIndicator } from "../components/AIStatusIndicator";
+import { AIInsights } from "../components/AIInsights";
 
 // Real chart component using dynamic import to avoid SSR issues
 function SimpleChart({ data }: { data: any[] }) {
@@ -564,6 +566,56 @@ function InsightsContent() {
           </div>
 
           <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
+            {/* AI Status Indicator */}
+            <AIStatusIndicator shopName={k} compact={true} showTokenUsage={true} />
+
+            {/* AI Weekly Summary Button */}
+            <button
+              onClick={async () => {
+                try {
+                  const { backendFetch } = await import("../server/hmac.server");
+                  const response = await backendFetch("/ai/weekly-summary-preview", "GET", undefined, k);
+                  if (response.ok) {
+                    const data = await response.json();
+                    if (data.ok) {
+                      // Show AI summary in a modal or redirect to AI dashboard
+                      window.location.href = '/app/ai-dashboard';
+                    } else {
+                      setToast("Failed to generate AI summary");
+                    }
+                  } else {
+                    setToast("AI summary not available");
+                  }
+                } catch (error) {
+                  setToast("Error generating AI summary");
+                }
+              }}
+              style={{
+                padding: "8px 12px",
+                fontSize: "12px",
+                fontWeight: "500",
+                border: "1px solid #28a745",
+                borderRadius: "6px",
+                backgroundColor: "white",
+                color: "#28a745",
+                cursor: "pointer",
+                transition: "all 0.2s ease",
+                display: "flex",
+                alignItems: "center",
+                gap: "4px"
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = "#28a745";
+                e.currentTarget.style.color = "white";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = "white";
+                e.currentTarget.style.color = "#28a745";
+              }}
+            >
+              🤖 AI Summary
+            </button>
+
             <div style={{
               display: "flex",
               gap: "4px",
@@ -767,6 +819,13 @@ function InsightsContent() {
                 }}
                 onDataRefresh={handleDataRefresh}
                 onUpgrade={handleUpgrade}
+            />
+
+            {/* AI Insights Section */}
+            <AIInsights
+              shopName={shopName}
+              period={w}
+              onRefresh={handleDataRefresh}
             />
           </div>
         )}

@@ -291,21 +291,46 @@ AI operations may be throttled to prevent further overages.`;
    */
   canMakeRequest(tenant, estimatedTokens = 1000) {
     const usage = this.tokenUsage.get(tenant);
-    if (!usage) return true; // Allow if no tracking data yet
 
-    const estimatedCost = this.calculateCost('openai', 'gpt-3.5-turbo', estimatedTokens, estimatedTokens);
-    
+    // If no tracking data exists yet, allow the request (first-time use)
+    if (!usage) {
+      return {
+        allowed: true,
+        estimatedCost: 0,
+        reason: 'no_tracking_data',
+        message: 'First request - no budget limits applied yet'
+      };
+    }
+
+    // Use Gemini pricing for cost estimation since that's what's configured
+    const estimatedCost = this.calculateCost('google', 'gemini-flash', estimatedTokens, estimatedTokens);
+
     // Check daily limit
     if (usage.daily.cost + estimatedCost > usage.budget.daily) {
-      return { allowed: false, reason: 'daily_budget_exceeded', remaining: usage.budget.daily - usage.daily.cost };
+      return {
+        allowed: false,
+        reason: 'daily_budget_exceeded',
+        remaining: usage.budget.daily - usage.daily.cost,
+        limit: usage.budget.daily
+      };
     }
 
-    // Check monthly limit  
+    // Check monthly limit
     if (usage.monthly.cost + estimatedCost > usage.budget.monthly) {
-      return { allowed: false, reason: 'monthly_budget_exceeded', remaining: usage.budget.monthly - usage.monthly.cost };
+      return {
+        allowed: false,
+        reason: 'monthly_budget_exceeded',
+        remaining: usage.budget.monthly - usage.monthly.cost,
+        limit: usage.budget.monthly
+      };
     }
 
-    return { allowed: true, estimatedCost };
+    return {
+      allowed: true,
+      estimatedCost,
+      remaining_daily: usage.budget.daily - usage.daily.cost,
+      remaining_monthly: usage.budget.monthly - usage.monthly.cost
+    };
   }
 
   /**

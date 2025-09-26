@@ -151,6 +151,39 @@ export async function dualWriteRunLogs(tenant, runLogsData) {
 }
 
 /**
+ * Dual write n-gram negatives data
+ */
+export async function dualWriteNgramNegatives(tenant, ngramData) {
+  const results = {
+    sheets: { success: false, error: null },
+    supabase: { success: false, error: null }
+  };
+
+  // Always write to Google Sheets
+  try {
+    const { sheets } = await import('../sheets.js');
+    await sheets.addRows(tenant, "NGRAM_NEGATIVES", ngramData);
+    results.sheets.success = true;
+  } catch (error) {
+    results.sheets.error = error.message;
+    console.error(`❌ N-gram negatives sheets write failed for tenant: ${tenant}`, error);
+  }
+
+  // Conditionally write to Supabase
+  if (isSupabaseEnabled()) {
+    try {
+      await writeNgramNegativesToSupabase(tenant, ngramData);
+      results.supabase.success = true;
+    } catch (error) {
+      results.supabase.error = error.message;
+      console.error(`⚠️ N-gram negatives supabase write failed for tenant: ${tenant}`, error);
+    }
+  }
+
+  return results;
+}
+
+/**
  * Helper functions for writing to Supabase
  */
 
@@ -279,6 +312,50 @@ async function writeRunLogsToSupabase(tenant, runLogsData) {
   }
 }
 
+async function writeNgramNegativesToSupabase(tenant, ngramData) {
+  if (!supabase) {
+    throw new Error('Supabase client not initialized');
+  }
+
+  // Set tenant context for RLS
+  await supabase.rpc('set_config', {
+    parameter: 'app.current_tenant_id',
+    value: tenant
+  });
+
+  // Transform n-gram data to match Supabase schema
+  const ngramEntries = ngramData.map(row => ({
+    tenant_id: tenant,
+    phrase: row.phrase || '',
+    ngram_length: parseInt(row.ngram_length) || 2,
+    waste_score: parseFloat(row.waste_score) || 0,
+    confidence: parseFloat(row.confidence) || 0,
+    occurrences: parseInt(row.occurrences) || 0,
+    total_cost: parseFloat(row.total_cost) || 0,
+    total_clicks: parseInt(row.total_clicks) || 0,
+    total_conversions: parseInt(row.total_conversions) || 0,
+    conversion_rate: parseFloat(row.conversion_rate) || 0,
+    pattern_type: row.pattern_type || null,
+    match_type: row.match_type || 'phrase',
+    status: row.status || 'PENDING',
+    approved_by: row.approved_by || null,
+    applied_campaigns: row.applied_campaigns ? JSON.parse(row.applied_campaigns) : [],
+    sample_search_terms: row.sample_search_terms ? JSON.parse(row.sample_search_terms) : [],
+    ai_reason: row.ai_reason || null,
+    business_impact: row.business_impact || 'medium',
+    estimated_monthly_savings: parseFloat(row.estimated_monthly_savings) || 0,
+    last_analyzed: row.last_analyzed ? new Date(row.last_analyzed) : null
+  }));
+
+  const { error } = await supabase
+    .from('ngram_negatives')
+    .upsert(ngramEntries, { onConflict: 'tenant_id,phrase' });
+
+  if (error) {
+    throw new Error(`Supabase n-gram negatives write error: ${error.message}`);
+  }
+}
+
 /**
  * Read from preferred source (Supabase if available, otherwise Sheets)
  */
@@ -354,5 +431,6 @@ export default {
   dualWriteMetrics,
   dualWriteSearchTerms,
   dualWriteRunLogs,
+  dualWriteNgramNegatives,
   readFromPreferredSource
 };

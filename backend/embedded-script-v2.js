@@ -116,6 +116,9 @@ function main() {
   });
   applyWasteNegs_(cfg, cfg.WASTE_NEGATIVE_MAP);
 
+  // N-gram negative keywords (PRO tier feature)
+  applyNgramNegatives_(cfg);
+
   // Search terms analysis
   var stRows = autoNegateAndCollectST_(cfg, cfg.st_lookback, cfg.st_min_clicks, cfg.st_min_cost);
 
@@ -431,6 +434,111 @@ function applyWasteNegs_(cfg, map) {
         try { grp.createNegativeKeyword('[' + t + ']'); added++; } catch(e) {}
       });
       if (added) log_("Added " + added + " negatives in " + camp + " › " + ag);
+    }
+  }
+}
+
+// N-gram negative keywords application (PRO tier feature)
+function applyNgramNegatives_(cfg) {
+  if (!cfg || !cfg.NGRAM_NEGATIVES || !cfg.FEATURE_NGRAM_NEGATIVES) {
+    log_('N-gram negatives: Disabled or not configured');
+    return;
+  }
+
+  try {
+    var ngramList = getOrCreateNegList_(cfg.ngram_neg_list_name || 'N-gram Negatives');
+    var ngramNegs = cfg.NGRAM_NEGATIVES || [];
+
+    log_('Applying ' + ngramNegs.length + ' n-gram negative phrases');
+
+    // Apply n-gram negatives to the list
+    upsertListNegs_(ngramList, ngramNegs);
+
+    // Attach n-gram negative list to campaigns
+    var campaignQuery = AdsApp.campaigns()
+      .withCondition("campaign.advertising_channel_type = SEARCH")
+      .withCondition("campaign.status IN ('ENABLED','PAUSED')");
+
+    if (cfg.label_include) {
+      campaignQuery = campaignQuery.withCondition("campaign.labels CONTAINS ['" + cfg.label_include + "']");
+    }
+
+    var campaigns = campaignQuery.get();
+    var attachCount = 0;
+
+    while (campaigns.hasNext()) {
+      var campaign = campaigns.next();
+      if (isExcludedCampaign_(cfg, campaign.getName())) continue;
+
+      attachList_(campaign, ngramList);
+      attachCount++;
+    }
+
+    log_('N-gram negatives: Attached list to ' + attachCount + ' campaigns');
+
+    // Apply campaign-specific n-gram negatives if available
+    if (cfg.CAMPAIGN_NGRAM_NEGATIVES) {
+      applyPhraseNegativesToCampaigns_(cfg, cfg.CAMPAIGN_NGRAM_NEGATIVES);
+    }
+
+  } catch (error) {
+    log_('N-gram negatives error: ' + error);
+  }
+}
+
+// Apply phrase-level negatives directly to campaigns/ad groups
+function applyPhraseNegativesToCampaigns_(cfg, campaignNgramMap) {
+  if (!campaignNgramMap || typeof campaignNgramMap !== 'object') return;
+
+  for (var campaignName in campaignNgramMap) {
+    if (!campaignNgramMap.hasOwnProperty(campaignName)) continue;
+
+    var phrases = campaignNgramMap[campaignName];
+    if (!phrases || !Array.isArray(phrases) || phrases.length === 0) continue;
+
+    try {
+      var campaign = AdsApp.campaigns()
+        .withCondition("Name = '" + campaignName.replace(/'/g, "\\'") + "'")
+        .get();
+
+      if (!campaign.hasNext()) {
+        log_('N-gram negatives: Campaign not found - ' + campaignName);
+        continue;
+      }
+
+      var camp = campaign.next();
+      var adGroups = camp.adGroups().get();
+      var totalAdded = 0;
+
+      while (adGroups.hasNext()) {
+        var adGroup = adGroups.next();
+        var added = 0;
+
+        phrases.forEach(function(phrase) {
+          phrase = String(phrase || "").toLowerCase().trim();
+          if (!phrase) return;
+
+          try {
+            // Use phrase match for n-gram negatives
+            adGroup.createNegativeKeyword('"' + phrase + '"');
+            added++;
+          } catch (e) {
+            // Ignore duplicates or invalid phrases
+          }
+        });
+
+        if (added > 0) {
+          totalAdded += added;
+          log_('N-gram negatives: Added ' + added + ' phrases to ' + campaignName + ' › ' + adGroup.getName());
+        }
+      }
+
+      if (totalAdded > 0) {
+        log_('N-gram negatives: Total ' + totalAdded + ' phrase negatives added to ' + campaignName);
+      }
+
+    } catch (error) {
+      log_('N-gram negatives error for ' + campaignName + ': ' + error);
     }
   }
 }

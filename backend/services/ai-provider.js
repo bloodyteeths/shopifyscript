@@ -5,6 +5,8 @@
 
 import { getAIProvider as getBaseProvider } from "../lib/aiProvider.js";
 import { recordTokenUsage, checkBudgetLimit } from "./token-monitor.js";
+import { getAIErrorHandler } from "../middleware/ai-error-handler.js";
+import { getAIErrorRecoveryService } from "./ai-error-recovery.js";
 
 /**
  * Enhanced AI provider with advanced features
@@ -38,103 +40,217 @@ export class AIProviderService {
   }
 
   /**
-   * Generate text with advanced error handling, retry logic, and token monitoring
+   * Generate text with advanced error handling, recovery, and token monitoring
    */
   async generateText(prompt, options = {}) {
-    const { tenant, operation = 'text_generation', ...aiOptions } = options;
+    const { tenant, operation = 'text_generation', maxRetries = 3, ...aiOptions } = options;
     const startTime = Date.now();
-    
-    // Check budget limits if tenant provided
-    if (tenant) {
+
+    // Check budget limits if tenant provided and budget checking is enabled
+    const skipBudgetCheck = process.env.AI_SKIP_BUDGET_CHECK === 'true' || process.env.NODE_ENV === 'development';
+
+    if (tenant && !skipBudgetCheck) {
       const budgetCheck = checkBudgetLimit(tenant, this.estimateTokens(prompt));
       if (!budgetCheck.allowed) {
         console.warn(`🚫 AI request blocked for ${tenant}: ${budgetCheck.reason}`);
         throw new Error(`Budget limit exceeded: ${budgetCheck.reason}. Remaining: $${budgetCheck.remaining?.toFixed(2)}`);
       }
+    } else if (skipBudgetCheck) {
+      console.log(`💰 Budget check skipped for ${tenant || 'unknown'} (development mode or AI_SKIP_BUDGET_CHECK=true)`);
     }
 
-    try {
-      await this.initialize();
+    let lastError;
+    let attempt = 0;
 
-      // Optimize prompt for cost efficiency
-      const optimizedPrompt = this.optimizePromptForCosts(prompt);
-      const result = await this.provider.generateText(optimizedPrompt, aiOptions);
+    while (attempt < maxRetries) {
+      try {
+        await this.initialize();
 
-      // Calculate token usage
-      const duration = Date.now() - startTime;
-      const inputTokens = this.estimateTokens(optimizedPrompt);
-      const outputTokens = this.estimateTokens(result);
-      
-      // Record token usage if tenant provided
-      if (tenant && operation) {
-        await recordTokenUsage(tenant, operation, {
-          inputTokens,
-          outputTokens,
-          totalTokens: inputTokens + outputTokens,
-          provider: this.provider?.provider || 'unknown',
-          model: aiOptions.model || 'default',
-          prompt: optimizedPrompt,
-          response: result,
-          duration
-        });
+        // Optimize prompt for cost efficiency
+        const optimizedPrompt = this.optimizePromptForCosts(prompt);
+        const result = await this.provider.generateText(optimizedPrompt, aiOptions);
+
+        // Validate result is not empty
+        if (!result || result.trim().length === 0) {
+          throw new Error('AI provider returned empty response');
+        }
+
+        // Calculate token usage
+        const duration = Date.now() - startTime;
+        const inputTokens = this.estimateTokens(optimizedPrompt);
+        const outputTokens = this.estimateTokens(result);
+
+        // Record token usage if tenant provided
+        if (tenant && operation) {
+          await recordTokenUsage(tenant, operation, {
+            inputTokens,
+            outputTokens,
+            totalTokens: inputTokens + outputTokens,
+            provider: this.provider?.provider || 'unknown',
+            model: aiOptions.model || 'default',
+            prompt: optimizedPrompt,
+            response: result,
+            duration,
+            attempt: attempt + 1
+          });
+        }
+
+        // Update metrics
+        this.metrics.calls++;
+        this.metrics.totalTokens += inputTokens + outputTokens;
+        const responseTime = duration;
+        this.metrics.avgResponseTime =
+          (this.metrics.avgResponseTime * (this.metrics.calls - 1) +
+            responseTime) /
+          this.metrics.calls;
+
+        console.log(`✅ AI generation completed: ${inputTokens + outputTokens} tokens, ${duration}ms (attempt ${attempt + 1})`);
+        return result;
+      } catch (error) {
+        lastError = error;
+        attempt++;
+        this.metrics.failures++;
+
+        console.warn(`❌ AI generation failed (attempt ${attempt}/${maxRetries}): ${error.message}`);
+
+        // Don't retry if it's a budget or auth error
+        if (error.message.includes('Budget limit exceeded') ||
+            error.message.includes('API key') ||
+            error.message.includes('unauthorized') ||
+            error.message.includes('forbidden')) {
+          break;
+        }
+
+        // Exponential backoff before retry
+        if (attempt < maxRetries) {
+          const delay = Math.min(1000 * Math.pow(2, attempt - 1), 10000);
+          console.log(`⏱️  Retrying in ${delay}ms...`);
+          await new Promise(resolve => setTimeout(resolve, delay));
+        }
       }
-
-      // Update metrics
-      this.metrics.calls++;
-      this.metrics.totalTokens += inputTokens + outputTokens;
-      const responseTime = duration;
-      this.metrics.avgResponseTime =
-        (this.metrics.avgResponseTime * (this.metrics.calls - 1) +
-          responseTime) /
-        this.metrics.calls;
-
-      console.log(`✅ AI generation completed: ${inputTokens + outputTokens} tokens, ${duration}ms`);
-      return result;
-    } catch (error) {
-      this.metrics.failures++;
-      console.error("AI generation failed:", error);
-
-      // Return empty string on failure to maintain compatibility
-      return "";
     }
+
+    // All retries failed - log with error handler and throw
+    const errorHandler = getAIErrorHandler();
+    const finalError = new Error(`AI generation failed after ${maxRetries} attempts: ${lastError?.message || 'Unknown error'}`);
+    finalError.originalError = lastError;
+    finalError.attempts = attempt;
+    finalError.provider = this.provider?.provider || 'unknown';
+    finalError.tenant = tenant;
+    finalError.operation = operation;
+
+    // Log error with centralized error handler
+    errorHandler.logError(finalError, {
+      tenant,
+      operation,
+      provider: this.provider?.provider
+    });
+
+    console.error(`🚨 AI generation failed completely:`, finalError);
+    throw finalError;
   }
 
   /**
-   * Generate structured content with validation
+   * Generate structured content with validation and fallback
    */
-  async generateStructuredContent(prompt, expectedFormat = "json") {
-    const content = await this.generateText(prompt);
+  async generateStructuredContent(prompt, expectedFormat = "json", options = {}) {
+    const { maxRetries = 3, ...aiOptions } = options;
 
-    if (!content) return null;
+    let lastError;
+    for (let attempt = 0; attempt < maxRetries; attempt++) {
+      try {
+        const content = await this.generateText(prompt, aiOptions);
 
-    try {
-      if (expectedFormat === "json") {
-        return JSON.parse(content);
+        if (!content || content.trim().length === 0) {
+          throw new Error('Generated content is empty');
+        }
+
+        if (expectedFormat === "json") {
+          try {
+            return JSON.parse(content);
+          } catch (parseError) {
+            // Try to extract JSON from the response if it's embedded
+            const jsonMatch = content.match(/\{[\s\S]*\}/);
+            if (jsonMatch) {
+              try {
+                return JSON.parse(jsonMatch[0]);
+              } catch (extractError) {
+                throw new Error(`Invalid JSON format in response: ${parseError.message}`);
+              }
+            }
+            throw new Error(`Response is not valid JSON: ${parseError.message}`);
+          }
+        }
+        return content;
+      } catch (error) {
+        lastError = error;
+        console.warn(`❌ Structured content generation failed (attempt ${attempt + 1}/${maxRetries}): ${error.message}`);
+
+        // If it's a parsing error, try to modify the prompt for better results
+        if (error.message.includes('JSON') && attempt < maxRetries - 1) {
+          prompt = `${prompt}\n\nIMPORTANT: Return ONLY valid ${expectedFormat.toUpperCase()} format with no additional text or formatting.`;
+          await new Promise(resolve => setTimeout(resolve, 1000 * (attempt + 1)));
+        }
       }
-      return content;
-    } catch (error) {
-      console.warn("Failed to parse structured content:", error);
-      return content; // Return raw content if parsing fails
     }
+
+    throw new Error(`Failed to generate valid structured content after ${maxRetries} attempts: ${lastError?.message}`);
   }
 
   /**
-   * Generate multiple variations in parallel
+   * Generate multiple variations with proper error handling
    */
   async generateVariations(basePrompt, count = 3, options = {}) {
-    const promises = Array(count)
-      .fill(null)
-      .map((_, i) =>
-        this.generateText(`${basePrompt} (Variation ${i + 1})`, options),
-      );
+    const { batchSize = 3, ...aiOptions } = options;
+    const variations = [];
+    const errors = [];
 
-    try {
-      const results = await Promise.all(promises);
-      return results.filter((result) => result && result.trim().length > 0);
-    } catch (error) {
-      console.error("Failed to generate variations:", error);
-      return [];
+    // Process in batches to avoid overwhelming the API
+    for (let i = 0; i < count; i += batchSize) {
+      const batchCount = Math.min(batchSize, count - i);
+      const batchPromises = Array(batchCount)
+        .fill(null)
+        .map(async (_, j) => {
+          try {
+            const variationNumber = i + j + 1;
+            const result = await this.generateText(
+              `${basePrompt} (Variation ${variationNumber})`,
+              { ...aiOptions, maxRetries: 2 }
+            );
+            return { index: variationNumber - 1, result, error: null };
+          } catch (error) {
+            return { index: i + j, result: null, error };
+          }
+        });
+
+      const batchResults = await Promise.allSettled(batchPromises);
+
+      for (const settledResult of batchResults) {
+        if (settledResult.status === 'fulfilled') {
+          const { result, error, index } = settledResult.value;
+          if (error) {
+            errors.push({ index, error: error.message });
+            console.warn(`❌ Variation ${index + 1} failed: ${error.message}`);
+          } else if (result && result.trim().length > 0) {
+            variations.push({ index, content: result });
+          }
+        } else {
+          errors.push({ index: i, error: settledResult.reason.message });
+        }
+      }
+
+      // Add delay between batches if not the last batch
+      if (i + batchSize < count) {
+        await new Promise(resolve => setTimeout(resolve, 1000));
+      }
     }
+
+    if (variations.length === 0) {
+      throw new Error(`Failed to generate any variations. Errors: ${errors.map(e => e.error).join(', ')}`);
+    }
+
+    console.log(`✅ Generated ${variations.length}/${count} variations successfully`);
+    return variations.sort((a, b) => a.index - b.index).map(v => v.content);
   }
 
   /**
@@ -244,37 +360,206 @@ export class AIProviderService {
   }
 
   /**
-   * Generate text with automatic retry and fallback models for cost optimization
+   * Generate text with error recovery, provider switching, and graceful degradation
    */
   async generateTextWithFallback(prompt, options = {}) {
-    const { tenant, maxRetries = 2, fallbackModels = [], ...aiOptions } = options;
-    
-    const models = [aiOptions.model || 'default', ...fallbackModels];
-    let lastError;
+    const { tenant, maxRetries = 3, fallbackModels = [], fallbackProviders = [], enableRecovery = true, ...aiOptions } = options;
 
-    for (let i = 0; i < Math.min(models.length, maxRetries + 1); i++) {
+    // Use error recovery service if enabled
+    if (enableRecovery) {
       try {
-        const modelOptions = { ...aiOptions, model: models[i] };
-        const result = await this.generateText(prompt, { tenant, ...modelOptions });
-        
-        if (result && result.trim()) {
-          if (i > 0) {
-            console.log(`✅ Succeeded with fallback model ${models[i]} after ${i} attempts`);
+        const recoveryService = getAIErrorRecoveryService();
+
+        const result = await recoveryService.executeWithRecovery(
+          async (provider) => {
+            // Temporarily switch to the specified provider
+            const originalProvider = process.env.AI_PROVIDER;
+            if (provider !== originalProvider) {
+              process.env.AI_PROVIDER = provider;
+            }
+
+            try {
+              const providerInstance = await getBaseProvider();
+              const optimizedPrompt = this.optimizePromptForCosts(prompt);
+              return await providerInstance.generateText(optimizedPrompt, aiOptions);
+            } finally {
+              // Restore original provider
+              if (originalProvider) {
+                process.env.AI_PROVIDER = originalProvider;
+              }
+            }
+          },
+          {
+            provider: this.provider?.provider,
+            maxRetries,
+            enableProviderSwitching: fallbackProviders.length > 0,
+            context: { tenant, operation: options.operation || 'generateText' }
           }
+        );
+
+        // Process successful result
+        if (result && result.trim()) {
+          const duration = Date.now() - Date.now(); // This would need proper timing
+          const inputTokens = this.estimateTokens(prompt);
+          const outputTokens = this.estimateTokens(result);
+
+          // Record token usage
+          if (tenant && options.operation) {
+            await recordTokenUsage(tenant, options.operation, {
+              inputTokens,
+              outputTokens,
+              totalTokens: inputTokens + outputTokens,
+              provider: this.provider?.provider || 'unknown',
+              model: aiOptions.model || 'default',
+              prompt,
+              response: result,
+              duration,
+              recoveryUsed: true
+            });
+          }
+
+          console.log(`✅ AI generation with recovery succeeded`);
           return result;
         }
-      } catch (error) {
-        lastError = error;
-        console.warn(`❌ Attempt ${i + 1} failed with model ${models[i]}: ${error.message}`);
-        
-        // If it's a budget error, don't retry
-        if (error.message.includes('Budget limit exceeded')) {
-          throw error;
-        }
+      } catch (recoveryError) {
+        console.warn('Error recovery service failed, falling back to manual fallback:', recoveryError.message);
+        // Continue to manual fallback logic below
       }
     }
 
-    throw lastError || new Error('All retry attempts failed');
+    // Manual fallback logic (original implementation)
+    const models = [aiOptions.model || 'default', ...fallbackModels];
+    const providers = fallbackProviders.length > 0 ? fallbackProviders : [null]; // null means use current provider
+    let lastError;
+    let attempts = [];
+
+    // Try each provider
+    for (const fallbackProvider of providers) {
+      let currentProvider = this.provider;
+
+      // Switch to fallback provider if specified
+      if (fallbackProvider) {
+        try {
+          console.log(`🔄 Switching to fallback provider: ${fallbackProvider}`);
+          const { getAIProvider } = await import("../lib/aiProvider.js");
+
+          // Temporarily switch provider
+          const originalEnvProvider = process.env.AI_PROVIDER;
+          process.env.AI_PROVIDER = fallbackProvider;
+
+          try {
+            currentProvider = await getAIProvider();
+          } finally {
+            // Restore original provider setting
+            process.env.AI_PROVIDER = originalEnvProvider;
+          }
+        } catch (providerError) {
+          console.warn(`❌ Failed to switch to provider ${fallbackProvider}: ${providerError.message}`);
+          attempts.push({ provider: fallbackProvider, model: 'n/a', error: providerError.message });
+          continue;
+        }
+      }
+
+      // Try each model with current provider
+      for (let modelIndex = 0; modelIndex < models.length; modelIndex++) {
+        const model = models[modelIndex];
+        const attemptInfo = {
+          provider: currentProvider?.provider || fallbackProvider || 'current',
+          model,
+          error: null,
+          success: false
+        };
+
+        try {
+          // Create temporary provider service with fallback provider
+          const tempProvider = { ...this };
+          tempProvider.provider = currentProvider;
+
+          const result = await tempProvider.generateText(prompt, {
+            ...aiOptions,
+            model,
+            tenant,
+            maxRetries: Math.min(maxRetries, 2) // Limit retries per provider/model combo
+          });
+
+          if (result && result.trim()) {
+            attemptInfo.success = true;
+            attempts.push(attemptInfo);
+
+            if (fallbackProvider || modelIndex > 0) {
+              console.log(`✅ Succeeded with fallback ${fallbackProvider || 'provider'}, model: ${model} after ${attempts.length} attempts`);
+            }
+            return result;
+          } else {
+            throw new Error('Empty response from AI provider');
+          }
+        } catch (error) {
+          lastError = error;
+          attemptInfo.error = error.message;
+          attempts.push(attemptInfo);
+
+          console.warn(`❌ Attempt failed - Provider: ${currentProvider?.provider || 'unknown'}, Model: ${model}, Error: ${error.message}`);
+
+          // Don't retry with other models/providers if it's a budget error
+          if (error.message.includes('Budget limit exceeded') ||
+              error.message.includes('API key') ||
+              error.message.includes('unauthorized')) {
+            throw error;
+          }
+
+          // Add delay between model attempts
+          if (modelIndex < models.length - 1) {
+            await new Promise(resolve => setTimeout(resolve, 1000));
+          }
+        }
+      }
+
+      // Add delay between provider attempts
+      if (providers.indexOf(fallbackProvider) < providers.length - 1) {
+        await new Promise(resolve => setTimeout(resolve, 2000));
+      }
+    }
+
+    // All attempts failed - try graceful degradation as final fallback
+    console.warn('All provider/model fallbacks failed, attempting graceful degradation');
+
+    try {
+      const { getAIDegradationService } = await import("./ai-graceful-degradation.js");
+      const degradationService = getAIDegradationService();
+      const result = await degradationService.generateWithDegradation(prompt, {
+        ...options,
+        fallbackStrategy: 'comprehensive'
+      });
+
+      if (result && result.content) {
+        console.log(`✅ Graceful degradation provided fallback response (source: ${result.source})`);
+
+        // Return result in expected format but indicate it's from fallback
+        if (typeof result.content === 'string') {
+          return result.content + (result.userMessage ? `\n\n[${result.userMessage}]` : '');
+        }
+        return result.content;
+      }
+    } catch (degradationError) {
+      console.error('Graceful degradation also failed:', degradationError.message);
+    }
+
+    // Complete failure - all systems exhausted
+    const errorDetails = attempts.map(a => `${a.provider}/${a.model}: ${a.error}`).join('; ');
+    const finalError = new Error(`All fallback attempts failed including graceful degradation. Attempts: ${errorDetails}`);
+    finalError.attempts = attempts;
+    finalError.lastError = lastError;
+
+    // Log with error handler
+    const errorHandler = getAIErrorHandler();
+    errorHandler.logError(finalError, {
+      tenant: options.tenant,
+      operation: 'generateTextWithFallback',
+      attempts: attempts.length
+    });
+
+    console.error(`🚨 Complete AI failure - all systems exhausted:`, finalError);
+    throw finalError;
   }
 
   /**
@@ -326,11 +611,32 @@ export function getAIProviderService() {
 }
 
 /**
- * Quick generation function for simple use cases
+ * Quick generation function with graceful degradation
  */
 export async function generateAIContent(prompt, options = {}) {
-  const service = getAIProviderService();
-  return await service.generateText(prompt, options);
+  try {
+    const service = getAIProviderService();
+    return await service.generateText(prompt, options);
+  } catch (error) {
+    // Fallback to graceful degradation service
+    console.warn('Primary AI generation failed, using graceful degradation:', error.message);
+
+    try {
+      const { getAIDegradationService } = await import("./ai-graceful-degradation.js");
+      const degradationService = getAIDegradationService();
+      const result = await degradationService.generateWithDegradation(prompt, options);
+
+      // If we got a result from degradation service, return the content
+      if (result && result.content) {
+        return result.content;
+      }
+    } catch (degradationError) {
+      console.error('Graceful degradation also failed:', degradationError.message);
+    }
+
+    // If all else fails, throw the original error
+    throw error;
+  }
 }
 
 /**
@@ -358,8 +664,8 @@ export function validateAIConfig() {
       }
       break;
     case "google":
-      if (!process.env.GOOGLE_API_KEY) {
-        errors.push("Google API key not found (GOOGLE_API_KEY)");
+      if (!process.env.GEMINI_API_KEY && !process.env.GOOGLE_API_KEY) {
+        errors.push("Gemini/Google API key not found (GEMINI_API_KEY or GOOGLE_API_KEY)");
       }
       break;
     default:

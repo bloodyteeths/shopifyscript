@@ -10,12 +10,14 @@ import {
 } from "./utils/secret-validator.js";
 import { getDoc, ensureSheet, getDocById } from "./sheets.js";
 import { validateRSA } from "./lib/validators.js";
+import { getRSAGenerator } from "./services/rsa-generator.js";
 import {
   schedulePromoteWindow,
   tickPromoteWindow,
 } from "./jobs/promote_window.js";
 import { runWeeklySummary } from "./jobs/weekly_summary.js";
 import { buildSegments } from "./segments/materialize.js";
+import { initializeRSATestQueueRoutes } from "./routes/rsa-test-queue-routes.js";
 // Security & Privacy Services (disabled for Vercel compatibility)
 // import securityMiddleware from './middleware/security.js'; // Too aggressive for Vercel
 import privacyService from "./services/privacy.js";
@@ -47,6 +49,10 @@ import dashboardRoutes from "./routes/dashboards.js";
 import automationRoutes from "./routes/automation.js";
 // Scheduled Reports Service
 import scheduledReports from "./jobs/scheduled-reports.js";
+// ML Autopilot Service
+import mlAutopilot from "./services/ml-autopilot.js";
+// Landing Page AI Service
+import { getLandingPageAIService } from "./services/landing-page-ai.js";
 
 // Load env from root and backend/.env (resolve relative to this file)
 dotenv.config();
@@ -1091,11 +1097,15 @@ app.use("/api/reports", reportsRoutes);
 
 // ==== DASHBOARD ROUTES ====
 app.use("/api/dashboards", dashboardRoutes);
+
+// ==== RSA TEST QUEUE ROUTES (PRO TIER) ====
+app.use("/api/ai", initializeRSATestQueueRoutes(verify));
 // ==== AUTOMATION ROUTES ====
 app.use("/api/automation", automationRoutes);
 
 // ==== ANALYTICS ROUTES ====
 import analyticsRoutes from "./routes/analytics.js";
+import aiInsightsService from "./services/ai-insights.js";
 app.use("/api/analytics", analyticsRoutes);
 
 // ==== ANALYTICS TIER ENDPOINT ====
@@ -1763,36 +1773,109 @@ app.post(
       const rows = Array.from(bucket.values()).sort(
         (a, b) => b.cost - a.cost || b.clicks - a.clicks,
       );
-      // Build plan
-      const plan = [];
-      const targetCPA = Number(AP.target_cpa || 0) || 0;
-      const termCostThreshold = Math.max(targetCPA || 2, 2);
-      for (const r of rows) {
-        if (r.conv === 0 && r.cost >= termCostThreshold) {
-          plan.push({
-            type: "add_negative",
-            term: r.term,
-            match: "phrase",
-            scope: "account",
-          });
-          if (plan.length >= 10) break;
-        }
+      // Prepare metrics data for ML analysis
+      const metricsData = metAoA.map(r => ({
+        date: r[0],
+        level: r[1],
+        campaign: r[2],
+        ad_group: r[3],
+        id: r[4],
+        name: r[5],
+        clicks: Number(r[6] || 0),
+        cost: Number(r[7] || 0),
+        conversions: Number(r[8] || 0),
+        impressions: Number(r[9] || 0),
+        ctr: Number(r[10] || 0)
+      })).filter(d => {
+        const ts = Date.parse(String(d.date || ""));
+        return isFinite(ts) && ts >= horizon;
+      });
+
+      const searchTermsData = rows.map(r => ({
+        term: r.term,
+        clicks: r.clicks,
+        cost: r.cost,
+        conversions: r.conv,
+        frequency: 1
+      }));
+
+      // Current metrics summary
+      const currentMetrics = {
+        clicks,
+        cost,
+        conversions: conv,
+        cpa,
+        searchTerms: searchTermsData,
+        averageCPA: cpa,
+        averageTermCost: rows.length > 0 ? rows.reduce((sum, r) => sum + r.cost, 0) / rows.length : 0
+      };
+
+      // Generate ML-enhanced optimization plan
+      let mlPlan = null;
+      let mlInsights = null;
+      let confidence = 0;
+
+      try {
+        await mlAutopilot.initialize(String(tenant));
+        const mlResult = await mlAutopilot.generateOptimizationPlan(
+          String(tenant),
+          currentMetrics,
+          {
+            targetCPA: Number(AP.target_cpa || 0) || 0,
+            mode: AP.mode || "auto",
+            objective: AP.objective || "protect"
+          }
+        );
+
+        mlPlan = mlResult.plan || [];
+        mlInsights = mlResult.insights || {};
+        confidence = mlResult.confidence || 0;
+
+        console.log(`ML Autopilot: ${mlPlan.length} recommendations, ${(confidence * 100).toFixed(1)}% confidence`);
+      } catch (mlError) {
+        console.warn('ML Autopilot failed, using legacy logic:', mlError.message);
       }
-      if (targetCPA && clicks > 0) {
-        const tooHigh = conv > 0 && cpa > 1.3 * targetCPA;
-        const tooLow = conv > 0 && cpa < 0.7 * targetCPA;
-        if (tooHigh || tooLow) {
-          let currentStar =
-            Number((cfg?.CPC_CEILINGS || {})["*"] || 0) ||
-            (clicks ? cost / clicks : 0.2);
-          let next = currentStar * (tooHigh ? 0.9 : 1.1);
-          next = Math.max(0.05, Math.min(1.0, Number(next.toFixed(2))));
-          if (Math.abs(next - currentStar) >= 0.01)
+
+      // Build plan - use ML recommendations if available, otherwise fallback
+      const plan = [];
+      if (mlPlan && mlPlan.length > 0 && confidence > 0.5) {
+        // Use ML recommendations
+        plan.push(...mlPlan);
+      } else {
+        // Legacy logic fallback
+        const targetCPA = Number(AP.target_cpa || 0) || 0;
+        const termCostThreshold = Math.max(targetCPA || 2, 2);
+        for (const r of rows) {
+          if (r.conv === 0 && r.cost >= termCostThreshold) {
             plan.push({
-              type: "lower_cpc_ceiling",
-              campaign: "*",
-              amount: next,
+              type: "add_negative",
+              term: r.term,
+              match: "phrase",
+              scope: "account",
+              confidence: 0.6,
+              reasoning: "Legacy: No conversions above threshold"
             });
+            if (plan.length >= 10) break;
+          }
+        }
+        if (targetCPA && clicks > 0) {
+          const tooHigh = conv > 0 && cpa > 1.3 * targetCPA;
+          const tooLow = conv > 0 && cpa < 0.7 * targetCPA;
+          if (tooHigh || tooLow) {
+            let currentStar =
+              Number((cfg?.CPC_CEILINGS || {})["*"] || 0) ||
+              (clicks ? cost / clicks : 0.2);
+            let next = currentStar * (tooHigh ? 0.9 : 1.1);
+            next = Math.max(0.05, Math.min(1.0, Number(next.toFixed(2))));
+            if (Math.abs(next - currentStar) >= 0.01)
+              plan.push({
+                type: "lower_cpc_ceiling",
+                campaign: "*",
+                amount: next,
+                confidence: 0.7,
+                reasoning: `Legacy: CPA ${tooHigh ? 'too high' : 'too low'}`
+              });
+          }
         }
       }
       let applied = [],
@@ -1838,6 +1921,35 @@ app.post(
             AP_LAST_RUN_MS: String(now),
           });
         } catch {}
+
+        // Record optimization results for ML learning
+        try {
+          for (const action of applied) {
+            const result = {
+              success: true,
+              timestamp: now,
+              impact: {
+                type: action.type,
+                confidence: action.confidence || 0.5
+              }
+            };
+            await mlAutopilot.recordOptimizationResult(String(tenant), action, result);
+          }
+
+          // Record failed actions for learning
+          for (const error of errors) {
+            const result = {
+              success: false,
+              timestamp: now,
+              error: error.error
+            };
+            await mlAutopilot.recordOptimizationResult(String(tenant), error.action, result);
+          }
+
+          console.log(`ML learning recorded: ${applied.length} successes, ${errors.length} failures`);
+        } catch (mlLearningError) {
+          console.warn('Failed to record ML learning data:', mlLearningError.message);
+        }
       } else {
         try {
           await appendRows(
@@ -1860,6 +1972,15 @@ app.post(
         errors,
         kpi: { clicks, cost, conv, cpa },
         target_cpa: targetCPA,
+        ml: {
+          enabled: mlPlan && mlPlan.length > 0,
+          confidence,
+          insights: mlInsights,
+          learningState: mlPlan ? {
+            maturity: confidence > 0.8 ? "advanced" : confidence > 0.6 ? "intermediate" : "beginner",
+            dataPoints: metricsData.length + searchTermsData.length
+          } : null
+        }
       });
     } catch (e) {
       return json(res, 500, { ok: false, code: "AUTOPILOT", error: String(e) });
@@ -3883,6 +4004,156 @@ app.post("/api/shopify/tags/batch", async (req, res) => {
   }
 });
 
+// ----- AI RSA Generator (HMAC) -----
+app.post("/api/ai/generate-rsa", async (req, res) => {
+  const { tenant, sig } = req.query;
+  const {
+    nonce = Date.now(),
+    campaign_name = "",
+    business_info = {},
+    theme = "",
+    industry = "general",
+    keywords = [],
+    tone = "professional",
+    headlineCount = 15,
+    descriptionCount = 4,
+    includeOffers = true,
+    includeBranding = true,
+    playbookPrompt = "",
+    targetCPA = null,
+    targetROAS = null,
+    businessStrategy = "protect"
+  } = req.body || {};
+
+  const payload = `POST:${tenant}:ai_generate_rsa:${nonce}`;
+  if (!tenant || !verify(sig, payload))
+    return res.status(403).json({ ok: false, error: "auth" });
+
+  try {
+    const rsaGenerator = getRSAGenerator();
+
+    // Build options from request parameters
+    const generationOptions = {
+      theme: theme || campaign_name || "Business",
+      industry,
+      keywords: Array.isArray(keywords) ? keywords : [],
+      tone,
+      headlineCount: Math.min(Math.max(1, headlineCount || 15), 15),
+      descriptionCount: Math.min(Math.max(1, descriptionCount || 4), 4),
+      includeOffers,
+      includeBranding,
+      playbookPrompt,
+      targetCPA,
+      targetROAS,
+      businessStrategy,
+      tenant, // Pass tenant for AI provider usage tracking
+      operation: 'rsa_generation' // For token monitoring
+    };
+
+    console.log(`🚀 Generating RSA content for ${tenant}, theme: "${generationOptions.theme}"`);
+
+    const result = await rsaGenerator.generateRSAContent(generationOptions);
+
+    if (!result.success) {
+      console.warn(`⚠️  RSA generation failed for ${tenant}: ${result.error}`);
+      // Return fallback content instead of error to maintain UX
+      return res.json({
+        ok: true,
+        success: false,
+        fallback: true,
+        headlines: result.fallback?.headlines || [],
+        descriptions: result.fallback?.descriptions || [],
+        error: result.error,
+        stats: result.stats || {}
+      });
+    }
+
+    const { headlines, descriptions, validation, quality, suggestions } = result.content;
+
+    console.log(`✅ RSA generation successful for ${tenant}: ${headlines?.length || 0} headlines, ${descriptions?.length || 0} descriptions`);
+
+    // Log to sheets for audit trail
+    try {
+      const doc = await getDoc();
+      if (doc) {
+        const auditSheet = await ensureSheet(doc, `RSA_GENERATION_LOG_${tenant}`, [
+          "timestamp",
+          "theme",
+          "campaign_name",
+          "headlines_count",
+          "descriptions_count",
+          "quality_score",
+          "business_strategy"
+        ]);
+
+        await auditSheet.addRow({
+          timestamp: new Date().toISOString(),
+          theme: generationOptions.theme,
+          campaign_name: campaign_name || "",
+          headlines_count: headlines?.length || 0,
+          descriptions_count: descriptions?.length || 0,
+          quality_score: quality?.total || 0,
+          business_strategy: businessStrategy
+        });
+      }
+    } catch (auditError) {
+      console.warn("Failed to log RSA generation to audit sheet:", auditError);
+      // Don't fail the request if audit logging fails
+    }
+
+    return res.json({
+      ok: true,
+      success: true,
+      headlines: headlines || [],
+      descriptions: descriptions || [],
+      validation,
+      quality,
+      suggestions,
+      stats: result.stats || {},
+      generation_options: {
+        theme: generationOptions.theme,
+        industry,
+        tone,
+        headlineCount: headlines?.length || 0,
+        descriptionCount: descriptions?.length || 0,
+        businessStrategy
+      }
+    });
+
+  } catch (error) {
+    console.error(`❌ RSA generation error for ${tenant}:`, error);
+
+    // Generate basic fallback content on complete failure
+    const fallbackHeadlines = [
+      `${theme || campaign_name || "Business"} Solutions`,
+      `Best ${theme || campaign_name || "Business"} Service`,
+      `${theme || campaign_name || "Business"} Experts`,
+      `Quality ${theme || campaign_name || "Business"}`,
+      `${theme || campaign_name || "Business"} Today`
+    ].slice(0, headlineCount || 5);
+
+    const fallbackDescriptions = [
+      `Professional ${(theme || campaign_name || "business").toLowerCase()} services for your needs. Get started today.`,
+      `Quality ${(theme || campaign_name || "business").toLowerCase()} solutions with expert support. Contact us now.`
+    ].slice(0, descriptionCount || 2);
+
+    return res.status(500).json({
+      ok: false,
+      error: error.message,
+      fallback: {
+        headlines: fallbackHeadlines,
+        descriptions: fallbackDescriptions
+      },
+      debug: {
+        tenant,
+        theme: theme || campaign_name,
+        errorType: error.constructor.name,
+        provider: error.provider || "unknown"
+      }
+    });
+  }
+});
+
 // ----- AI drafts list (HMAC) -----
 app.get("/api/ai/drafts", async (req, res) => {
   const { tenant, sig } = req.query;
@@ -4245,6 +4516,349 @@ app.post("/api/ai/accept", async (req, res) => {
     res.json({ ok: true, accepted, errors });
   } catch (e) {
     res.status(500).json({ ok: false, error: String(e) });
+  }
+});
+
+// ----- Landing Page AI Analyzer (HMAC) -----
+app.post("/api/ai/analyze-landing-page", async (req, res) => {
+  const { tenant, sig } = req.query;
+  const { nonce = Date.now(), url, shopifySession } = req.body || {};
+
+  const payload = `POST:${tenant}:ai_analyze_landing_page:${nonce}`;
+  if (!tenant || !verify(sig, payload)) {
+    return res.status(403).json({ ok: false, error: "auth" });
+  }
+
+  if (!url) {
+    return res.status(400).json({ ok: false, error: "URL required" });
+  }
+
+  try {
+    const landingPageAI = getLandingPageAIService();
+    const result = await landingPageAI.analyzeLandingPage(url, {
+      tenant,
+      shopifySession
+    });
+
+    logger.info(`Landing page analysis completed for tenant ${tenant}, URL: ${url}`);
+
+    res.json({
+      ok: true,
+      analysis: result.analysis,
+      suggestions: result.suggestions,
+      url: result.url,
+      timestamp: result.timestamp
+    });
+  } catch (error) {
+    logger.error(`Landing page analysis failed for tenant ${tenant}:`, error);
+    res.status(500).json({
+      ok: false,
+      error: error.message || "Analysis failed",
+      code: "LANDING_ANALYSIS_FAILED"
+    });
+  }
+});
+
+// ----- Get Landing Page Suggestions (HMAC) -----
+app.get("/api/ai/landing-suggestions", async (req, res) => {
+  const { tenant, sig } = req.query;
+
+  const payload = `GET:${tenant}:ai_landing_suggestions`;
+  if (!tenant || !verify(sig, payload)) {
+    return res.status(403).json({ ok: false, error: "auth" });
+  }
+
+  try {
+    const landingPageAI = getLandingPageAIService();
+    const result = await landingPageAI.getLandingSuggestions(tenant);
+
+    res.json({
+      ok: true,
+      suggestions: result.suggestions,
+      status: result.status,
+      lastUpdated: result.lastUpdated,
+      message: result.message
+    });
+  } catch (error) {
+    logger.error(`Failed to get landing suggestions for tenant ${tenant}:`, error);
+    res.status(500).json({
+      ok: false,
+      error: error.message || "Failed to get suggestions",
+      code: "LANDING_SUGGESTIONS_FAILED"
+    });
+  }
+});
+
+// ----- Create Landing Page Draft (HMAC) -----
+app.post("/api/ai/create-landing-draft", async (req, res) => {
+  const { tenant, sig } = req.query;
+  const { nonce = Date.now(), pageId, suggestions, shopifySession } = req.body || {};
+
+  const payload = `POST:${tenant}:ai_create_landing_draft:${nonce}`;
+  if (!tenant || !verify(sig, payload)) {
+    return res.status(403).json({ ok: false, error: "auth" });
+  }
+
+  if (!pageId || !suggestions) {
+    return res.status(400).json({
+      ok: false,
+      error: "pageId and suggestions required"
+    });
+  }
+
+  try {
+    const landingPageAI = getLandingPageAIService();
+    const result = await landingPageAI.createDraftModifications(
+      tenant,
+      pageId,
+      suggestions,
+      { shopifySession }
+    );
+
+    logger.info(`Landing page draft created for tenant ${tenant}, page: ${pageId}`);
+
+    res.json({
+      ok: true,
+      draftId: result.draftId,
+      modifications: result.modifications,
+      status: result.status,
+      message: result.message
+    });
+  } catch (error) {
+    logger.error(`Failed to create landing page draft for tenant ${tenant}:`, error);
+    res.status(500).json({
+      ok: false,
+      error: error.message || "Draft creation failed",
+      code: "LANDING_DRAFT_FAILED"
+    });
+  }
+});
+
+// ----- AI N-gram Analysis (HMAC) - PRO tier feature -----
+app.get("/api/ai/ngram-analysis", async (req, res) => {
+  const { tenant, sig } = req.query;
+  const {
+    industry = 'general',
+    costThreshold = 10.0,
+    conversionThreshold = 0.02,
+    useStatisticalSignificance = true,
+    useAI = true,
+    businessContext = null
+  } = req.query;
+
+  const payload = `GET:${tenant}:ngram_analysis`;
+  if (!tenant || !verify(sig, payload))
+    return res.status(403).json({ ok: false, error: "auth" });
+
+  try {
+    // Check if tenant has PRO tier access
+    const analyticsService = getAnalyticsService();
+    const tierInfo = await analyticsService.getTierFeatures(tenant);
+
+    if (!tierInfo.features.includes('NGRAM_NEGATIVES')) {
+      return res.status(403).json({
+        ok: false,
+        error: "Feature requires PRO tier",
+        upgrade_required: true
+      });
+    }
+
+    const { getNgramAnalyzer } = await import('./services/ngram-analyzer.js');
+    const analyzer = getNgramAnalyzer();
+
+    // Get search terms from last 30 days
+    const doc = await getDoc();
+    if (!doc) throw new Error("Sheets connection failed");
+
+    const searchTermsSheet = doc.sheetsByTitle[`SEARCH_TERMS_${tenant}`];
+    if (!searchTermsSheet) {
+      return res.json({
+        ok: true,
+        success: false,
+        error: "No search terms data available for analysis",
+        analysis: null
+      });
+    }
+
+    const rows = await searchTermsSheet.getRows();
+    const searchTerms = rows.map(row => ({
+      search_term: row.search_term,
+      cost: parseFloat(row.cost || 0),
+      clicks: parseInt(row.clicks || 0),
+      conversions: parseInt(row.conversions || 0),
+      impressions: parseInt(row.impressions || 0)
+    }));
+
+    console.log(`🔍 N-gram analysis for ${tenant}: ${searchTerms.length} search terms`);
+
+    const analysisOptions = {
+      industry,
+      costThreshold: parseFloat(costThreshold),
+      conversionThreshold: parseFloat(conversionThreshold),
+      useStatisticalSignificance: useStatisticalSignificance === 'true',
+      useAI: useAI === 'true',
+      businessContext: businessContext ? JSON.parse(businessContext) : null
+    };
+
+    const result = await analyzer.analyzeNgramWaste(searchTerms, analysisOptions);
+
+    // Store analysis history in dual-write
+    if (result.success) {
+      const { dualWriteNgramNegatives } = await import('./services/dual-write.js');
+      const historyData = [{
+        tenant_id: tenant,
+        analysis_date: new Date().toISOString(),
+        search_terms_analyzed: result.analysis.totalTermsAnalyzed,
+        ngrams_extracted: result.analysis.totalNgramsExtracted,
+        significant_ngrams: result.analysis.significantNgrams,
+        ai_enhanced_ngrams: result.analysis.aiEnhancedNgrams,
+        total_potential_savings: result.analysis.estimatedCostSavings?.monthly || 0,
+        analysis_parameters: JSON.stringify(analysisOptions),
+        success: true
+      }];
+
+      // Store to analysis history (separate from negatives)
+      await dualWriteNgramNegatives(tenant, historyData);
+    }
+
+    res.json({
+      ok: true,
+      ...result,
+      tier_features: tierInfo.features
+    });
+
+  } catch (error) {
+    console.error(`❌ N-gram analysis error for ${tenant}:`, error);
+    res.status(500).json({
+      ok: false,
+      error: error.message
+    });
+  }
+});
+
+app.post("/api/ai/ngram-negatives", async (req, res) => {
+  const { tenant, sig } = req.query;
+  const {
+    nonce = Date.now(),
+    action = 'approve', // approve, reject, bulk_approve
+    ngram_ids = [],
+    phrases = [],
+    approved_by = 'user'
+  } = req.body || {};
+
+  const payload = `POST:${tenant}:ngram_negatives:${nonce}`;
+  if (!tenant || !verify(sig, payload))
+    return res.status(403).json({ ok: false, error: "auth" });
+
+  try {
+    // Check PRO tier access
+    const analyticsService = getAnalyticsService();
+    const tierInfo = await analyticsService.getTierFeatures(tenant);
+
+    if (!tierInfo.features.includes('NGRAM_NEGATIVES')) {
+      return res.status(403).json({
+        ok: false,
+        error: "Feature requires PRO tier",
+        upgrade_required: true
+      });
+    }
+
+    const { dualWriteNgramNegatives } = await import('./services/dual-write.js');
+    const doc = await getDoc();
+    if (!doc) throw new Error("Sheets connection failed");
+
+    let results = {
+      approved: 0,
+      rejected: 0,
+      errors: []
+    };
+
+    if (action === 'approve' || action === 'bulk_approve') {
+      // Get n-gram negatives data to approve
+      const ngramSheet = doc.sheetsByTitle[`NGRAM_NEGATIVES_${tenant}`];
+      if (!ngramSheet) {
+        return res.status(400).json({
+          ok: false,
+          error: "No n-gram negatives data found"
+        });
+      }
+
+      const rows = await ngramSheet.getRows();
+      const ngramsToApprove = rows.filter(row =>
+        ngram_ids.includes(row.id) || phrases.includes(row.phrase)
+      );
+
+      for (const ngram of ngramsToApprove) {
+        try {
+          // Update status to ACTIVE
+          ngram.status = 'ACTIVE';
+          ngram.approved_by = approved_by;
+          ngram.updated_at = new Date().toISOString();
+
+          await ngram.save();
+
+          // Dual-write the update
+          await dualWriteNgramNegatives(tenant, [ngram]);
+
+          results.approved++;
+          console.log(`✅ Approved n-gram negative: "${ngram.phrase}" for ${tenant}`);
+
+        } catch (error) {
+          results.errors.push({
+            phrase: ngram.phrase,
+            error: error.message
+          });
+        }
+      }
+
+    } else if (action === 'reject') {
+      // Similar logic for rejection
+      const ngramSheet = doc.sheetsByTitle[`NGRAM_NEGATIVES_${tenant}`];
+      if (!ngramSheet) {
+        return res.status(400).json({
+          ok: false,
+          error: "No n-gram negatives data found"
+        });
+      }
+
+      const rows = await ngramSheet.getRows();
+      const ngramsToReject = rows.filter(row =>
+        ngram_ids.includes(row.id) || phrases.includes(row.phrase)
+      );
+
+      for (const ngram of ngramsToReject) {
+        try {
+          ngram.status = 'REJECTED';
+          ngram.approved_by = approved_by;
+          ngram.updated_at = new Date().toISOString();
+
+          await ngram.save();
+          await dualWriteNgramNegatives(tenant, [ngram]);
+
+          results.rejected++;
+
+        } catch (error) {
+          results.errors.push({
+            phrase: ngram.phrase,
+            error: error.message
+          });
+        }
+      }
+    }
+
+    res.json({
+      ok: true,
+      success: true,
+      results,
+      message: `Processed ${results.approved + results.rejected} n-gram negatives`
+    });
+
+  } catch (error) {
+    console.error(`❌ N-gram negatives management error for ${tenant}:`, error);
+    res.status(500).json({
+      ok: false,
+      error: error.message
+    });
   }
 });
 
@@ -5100,3 +5714,7 @@ app.use("/api", async (req, res) => {
   return json(res, 404, { ok: false, code: "NOT_FOUND" });
 });
 // Force rebuild: Thu Sep 25 02:39:26 CEST 2025
+
+// ==== AI INSIGHTS ROUTES ====
+import aiInsightsRoutes from "./routes/ai-insights.js";
+app.use("/api/ai", aiInsightsRoutes);

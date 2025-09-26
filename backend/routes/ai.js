@@ -295,7 +295,7 @@ router.post("/jobs/ai_writer", requireFeature("advanced_ai_optimization"), async
 // POST /api/jobs/weekly_summary - Generate weekly summary report
 router.post("/jobs/weekly_summary", async (req, res) => {
   const { tenant, sig } = req.query;
-  const { nonce = Date.now() } = req.body || {};
+  const { nonce = Date.now(), tier = 'starter', generateAI = true } = req.body || {};
   const payload = `POST:${tenant}:weekly_summary:${nonce}`;
 
   if (!tenant || !verify(sig, payload)) {
@@ -304,8 +304,247 @@ router.post("/jobs/weekly_summary", async (req, res) => {
 
   try {
     const { runWeeklySummary } = await import("../jobs/weekly_summary.js");
-    const out = await runWeeklySummary(String(tenant));
+    const out = await runWeeklySummary(String(tenant), { tier, generateAI });
     res.json(out);
+  } catch (e) {
+    res.status(500).json({ ok: false, error: String(e) });
+  }
+});
+
+// GET /api/ai/weekly-summary-preview - Preview this week's AI summary (STARTER tier feature)
+router.get("/weekly-summary-preview", async (req, res) => {
+  const { tenant, sig } = req.query;
+  const payload = `GET:${tenant}:weekly_summary_preview`;
+
+  if (!tenant || !verify(sig, payload)) {
+    return res.status(403).json({ ok: false, error: "auth" });
+  }
+
+  try {
+    // Get subscription info to determine tier
+    const subscription = await getCurrentSubscription(tenant);
+    const tier = subscription?.tier || 'starter';
+
+    const { runWeeklySummary } = await import("../jobs/weekly_summary.js");
+
+    // Generate preview with AI insights
+    const summaryResult = await runWeeklySummary(String(tenant), {
+      tier,
+      generateAI: true,
+      preview: true
+    });
+
+    if (!summaryResult.ok) {
+      return res.status(500).json({
+        ok: false,
+        error: summaryResult.error || "Failed to generate summary"
+      });
+    }
+
+    const summary = summaryResult.summary;
+
+    // Format for preview display
+    const preview = {
+      ok: true,
+      tenant,
+      tier,
+      generatedAt: summary.generatedAt,
+      period: summary.period,
+
+      // Key metrics
+      metrics: {
+        clicks: summary.metrics.clicks,
+        cost: summary.metrics.cost,
+        conversions: summary.metrics.conversions,
+        cpa: summary.metrics.cpa,
+        ctr: summary.metrics.ctr,
+        conversionRate: summary.metrics.conversionRate
+      },
+
+      // Week-over-week changes
+      trends: summary.previousMetrics ? {
+        clicks: summary.trends?.clicks || 0,
+        cost: summary.trends?.cost || 0,
+        conversions: summary.trends?.conversions || 0,
+        cpa: summary.trends?.cpa || null,
+        ctr: summary.trends?.ctr || 0
+      } : null,
+
+      // AI insights
+      insights: summary.insights ? {
+        summary: summary.insights.summary,
+        confidence: summary.insights.confidence,
+        analysisType: summary.insights.analysisType
+      } : null,
+
+      // Top recommendations (limited for preview)
+      recommendations: (summary.recommendations || []).slice(0, 3).map(rec => ({
+        title: rec.title,
+        description: rec.description,
+        priority: rec.priority,
+        impact: rec.impact,
+        category: rec.category
+      })),
+
+      // Alerts
+      alerts: (summary.alerts || []).slice(0, 3).map(alert => ({
+        type: alert.type,
+        severity: alert.severity,
+        message: alert.message,
+        actionRequired: alert.actionRequired
+      })),
+
+      // Top performers
+      topPerformers: {
+        campaign: summary.topPerformers?.campaign ? {
+          name: summary.topPerformers.campaign.name,
+          conversions: summary.topPerformers.campaign.conversions,
+          cpa: summary.topPerformers.campaign.cpa
+        } : null,
+        searchTerms: (summary.topPerformers?.searchTerms || []).slice(0, 3).map(term => ({
+          term: term.term,
+          clicks: term.clicks,
+          conversions: term.conversions
+        }))
+      },
+
+      // Forecasting (for higher tiers)
+      forecast: summary.forecast ? {
+        text: summary.forecast.text,
+        confidence: summary.forecast.confidence,
+        predictedMetrics: summary.forecast.predictedMetrics
+      } : null,
+
+      // Metadata
+      metadata: {
+        aiGenerated: summary.metadata.aiGenerated,
+        analysisDepth: summary.metadata.analysisDepth,
+        dataQuality: summary.metadata.dataQuality,
+        confidence: summary.metadata.confidence,
+        recommendationsCount: summary.recommendations?.length || 0,
+        alertsCount: summary.alerts?.length || 0
+      }
+    };
+
+    logAccess(req, "weekly_summary_preview", {
+      tenant,
+      tier,
+      hasAI: preview.metadata.aiGenerated,
+      recommendationsCount: preview.metadata.recommendationsCount
+    });
+
+    res.json(preview);
+  } catch (e) {
+    res.status(500).json({ ok: false, error: String(e) });
+  }
+});
+
+// POST /api/ai/weekly-summary-email - Send weekly summary email (STARTER tier feature)
+router.post("/weekly-summary-email", async (req, res) => {
+  const { tenant, sig } = req.query;
+  const {
+    nonce = Date.now(),
+    userEmail,
+    tier = 'starter',
+    customPrompt = null
+  } = req.body || {};
+  const payload = `POST:${tenant}:weekly_summary_email:${nonce}`;
+
+  if (!tenant || !verify(sig, payload)) {
+    return res.status(403).json({ ok: false, error: "auth" });
+  }
+
+  if (!userEmail) {
+    return res.status(400).json({ ok: false, error: "userEmail required" });
+  }
+
+  try {
+    const { sendWeeklySummaryEmail } = await import("../jobs/weekly_summary.js");
+
+    const emailResult = await sendWeeklySummaryEmail(String(tenant), userEmail, {
+      tier,
+      generateAI: true,
+      customPrompt
+    });
+
+    if (!emailResult.ok) {
+      return res.status(500).json({
+        ok: false,
+        error: emailResult.error || "Failed to send email"
+      });
+    }
+
+    logAccess(req, "weekly_summary_email", {
+      tenant,
+      userEmail,
+      tier: emailResult.tier,
+      messageId: emailResult.messageId
+    });
+
+    res.json({
+      ok: true,
+      emailSent: true,
+      messageId: emailResult.messageId,
+      tier: emailResult.tier,
+      message: `Weekly AI summary email sent to ${userEmail}`
+    });
+  } catch (e) {
+    res.status(500).json({ ok: false, error: String(e) });
+  }
+});
+
+// GET /api/ai/weekly-summary-slack - Generate Slack-formatted summary
+router.get("/weekly-summary-slack", async (req, res) => {
+  const { tenant, sig, format = 'blocks' } = req.query;
+  const payload = `GET:${tenant}:weekly_summary_slack`;
+
+  if (!tenant || !verify(sig, payload)) {
+    return res.status(403).json({ ok: false, error: "auth" });
+  }
+
+  try {
+    // Get subscription info to determine tier
+    const subscription = await getCurrentSubscription(tenant);
+    const tier = subscription?.tier || 'starter';
+
+    const { generateWeeklySummaryForSlack } = await import("../jobs/weekly_summary.js");
+
+    const slackResult = await generateWeeklySummaryForSlack(String(tenant), {
+      tier,
+      generateAI: true
+    });
+
+    if (!slackResult.ok) {
+      return res.status(500).json({
+        ok: false,
+        error: slackResult.error || "Failed to generate Slack summary"
+      });
+    }
+
+    logAccess(req, "weekly_summary_slack", {
+      tenant,
+      tier,
+      format,
+      hasAI: slackResult.metadata.hasAI
+    });
+
+    // Return format based on request
+    if (format === 'text') {
+      res.json({
+        ok: true,
+        format: 'text',
+        content: slackResult.textSummary,
+        metadata: slackResult.metadata
+      });
+    } else {
+      res.json({
+        ok: true,
+        format: 'blocks',
+        blocks: slackResult.slackBlocks,
+        text: slackResult.textSummary, // Fallback text
+        metadata: slackResult.metadata
+      });
+    }
   } catch (e) {
     res.status(500).json({ ok: false, error: String(e) });
   }
@@ -1349,9 +1588,9 @@ router.get("/analytics", async (req, res) => {
   }
 });
 
-// GET /api/ai/health - Get AI system health status
+// GET /api/ai/health - Comprehensive AI system health monitoring
 router.get("/health", async (req, res) => {
-  const { tenant, sig } = req.query;
+  const { tenant, sig, detailed } = req.query;
   const payload = `GET:${tenant}:ai_health`;
 
   if (!tenant || !verify(sig, payload)) {
@@ -1359,53 +1598,373 @@ router.get("/health", async (req, res) => {
   }
 
   try {
-    const { getAILoggerService } = await import("../services/ai-logger.js");
-    const { getTokenMonitorService } = await import("../services/token-monitor.js");
-    const { getAIAutomationService } = await import("../services/ai-automation.js");
-    
-    const logService = getAILoggerService();
-    const tokenService = getTokenMonitorService();
-    const automationService = getAIAutomationService();
+    // Import health service and AI services
+    const { healthService } = await import("../services/health.js");
+    const { getAIProviderService, validateAIConfig } = await import("../services/ai-provider.js");
+    const { getAIErrorHandler } = await import("../middleware/ai-error-handler.js");
+
+    // Run AI-specific health checks
+    const aiChecks = await healthService.getHealth([
+      'aiProvider',
+      'aiErrorHandler',
+      'aiTokenMonitor',
+      'aiProviderFallback'
+    ]);
+
+    // Get comprehensive AI service status
+    const aiService = getAIProviderService();
+    const aiConfig = validateAIConfig();
+    const errorHandler = getAIErrorHandler();
 
     const health = {
-      overall: 'healthy',
+      overall: aiChecks.status,
       timestamp: new Date().toISOString(),
-      services: {
-        aiProvider: {
-          status: 'healthy',
-          initialized: true
-        },
-        tokenMonitor: {
-          status: tokenService.isTracking ? 'active' : 'inactive',
-          tenantsTracked: tokenService.tokenUsage?.size || 0
-        },
-        automation: {
-          status: automationService.isRunning ? 'active' : 'inactive',
-          totalTenants: automationService.tokenUsage?.size || 0
-        },
-        logging: {
-          status: logService.isLogging ? 'active' : 'inactive',
-          totalLogs: (logService.logs.get(tenant) || []).length
-        }
+      provider: {
+        name: aiConfig.provider,
+        configured: aiConfig.valid,
+        errors: aiConfig.errors,
+        initialized: aiService.initialized,
+        metrics: aiService.getStatus().metrics
       },
+      errorHandling: {
+        status: errorHandler.getHealthStatus(),
+        metrics: errorHandler.getMetrics(tenant),
+        recentErrors: errorHandler.metrics.recentErrors.slice(-5) // Last 5 errors
+      },
+      checks: aiChecks.checks,
       tenant: {
-        health: logService.getHealthStatus(tenant),
-        alerts: logService.getAlerts(tenant).filter(a => a.active),
-        metrics: logService.getMetrics(tenant)
+        metrics: errorHandler.getMetrics(tenant)?.tenant || {},
+        recommendations: []
+      }
+    };
+
+    // Add recommendations based on health status
+    if (health.overall !== 'healthy') {
+      if (!aiConfig.valid) {
+        health.tenant.recommendations.push({
+          type: 'configuration',
+          priority: 'high',
+          message: 'Fix AI provider configuration',
+          actions: ['Check API keys', 'Verify provider settings']
+        });
+      }
+
+      if (errorHandler.getHealthStatus() === 'unhealthy') {
+        health.tenant.recommendations.push({
+          type: 'errors',
+          priority: 'medium',
+          message: 'High AI error rate detected',
+          actions: ['Review recent errors', 'Check provider status', 'Consider fallback providers']
+        });
+      }
+    }
+
+    // Include detailed diagnostics if requested
+    if (detailed === '1') {
+      try {
+        const { getTokenMonitorService } = await import("../services/token-monitor.js");
+        const { getAIAutomationService } = await import("../services/ai-automation.js");
+
+        const tokenService = getTokenMonitorService();
+        const automationService = getAIAutomationService();
+
+        health.detailed = {
+          tokenMonitoring: {
+            active: tokenService.isTracking,
+            stats: tokenService.getUsageStats(tenant)
+          },
+          automation: {
+            active: automationService.isRunning,
+            tenantStatus: automationService.getTenantStatus(tenant)
+          },
+          systemChecks: await healthService.runAllChecks()
+        };
+      } catch (detailError) {
+        health.detailed = { error: 'Detailed diagnostics unavailable' };
+      }
+    }
+
+    // Set appropriate HTTP status based on health
+    const statusCode = health.overall === 'healthy' ? 200 :
+                      health.overall === 'degraded' ? 200 : 503;
+
+    res.status(statusCode).json({
+      ok: true,
+      health
+    });
+  } catch (e) {
+    console.error('AI health check failed:', e);
+    res.status(500).json({
+      ok: false,
+      error: 'Health check failed',
+      message: String(e),
+      health: {
+        overall: 'critical',
+        timestamp: new Date().toISOString(),
+        error: e.message
+      }
+    });
+  }
+});
+
+// GET /api/ai/health/provider - Get specific AI provider health
+router.get("/health/provider", async (req, res) => {
+  const { tenant, sig, provider } = req.query;
+  const payload = `GET:${tenant}:ai_health_provider`;
+
+  if (!tenant || !verify(sig, payload)) {
+    return res.status(403).json({ ok: false, error: "auth" });
+  }
+
+  try {
+    const { getAIProvider } = await import("../lib/aiProvider.js");
+    const { getAIErrorHandler } = await import("../middleware/ai-error-handler.js");
+
+    // Test specific provider if specified
+    const testProvider = provider || process.env.AI_PROVIDER;
+    const originalProvider = process.env.AI_PROVIDER;
+
+    if (testProvider && testProvider !== originalProvider) {
+      process.env.AI_PROVIDER = testProvider;
+    }
+
+    try {
+      const providerInstance = await getAIProvider();
+      const errorHandler = getAIErrorHandler();
+
+      // Test provider with a simple request
+      const testStart = Date.now();
+      const testResult = await providerInstance.generateText(
+        "Health check test. Please respond with 'Provider OK'."
+      );
+      const testDuration = Date.now() - testStart;
+
+      // Get provider-specific metrics
+      const providerMetrics = errorHandler.metrics.errorsByProvider.get(testProvider) || 0;
+
+      const health = {
+        provider: testProvider,
+        status: 'healthy',
+        timestamp: new Date().toISOString(),
+        test: {
+          successful: true,
+          duration: testDuration,
+          responseLength: testResult?.length || 0
+        },
+        metrics: {
+          remainingCalls: providerInstance.remainingCalls?.() || 0,
+          recentErrors: providerMetrics
+        }
+      };
+
+      res.json({ ok: true, health });
+    } finally {
+      // Restore original provider
+      if (originalProvider) {
+        process.env.AI_PROVIDER = originalProvider;
+      }
+    }
+  } catch (e) {
+    console.error(`AI provider ${provider} health check failed:`, e);
+
+    res.status(503).json({
+      ok: false,
+      health: {
+        provider: provider || process.env.AI_PROVIDER,
+        status: 'unhealthy',
+        timestamp: new Date().toISOString(),
+        error: e.message,
+        test: {
+          successful: false,
+          error: e.message
+        }
+      }
+    });
+  }
+});
+
+// GET /api/ai/recovery/status - Get AI error recovery status
+router.get("/recovery/status", async (req, res) => {
+  const { tenant, sig } = req.query;
+  const payload = `GET:${tenant}:ai_recovery_status`;
+
+  if (!tenant || !verify(sig, payload)) {
+    return res.status(403).json({ ok: false, error: "auth" });
+  }
+
+  try {
+    const { getAIErrorRecoveryService } = await import("../services/ai-error-recovery.js");
+    const { getAIDegradationService } = await import("../services/ai-graceful-degradation.js");
+    const { getAIErrorHandler } = await import("../middleware/ai-error-handler.js");
+
+    const recoveryService = getAIErrorRecoveryService();
+    const degradationService = getAIDegradationService();
+    const errorHandler = getAIErrorHandler();
+
+    const status = {
+      timestamp: new Date().toISOString(),
+      recovery: recoveryService.getStatus(),
+      degradation: degradationService.getStatus(),
+      errors: errorHandler.getMetrics(tenant),
+      overallHealth: {
+        status: 'healthy', // Will be determined below
+        issues: [],
+        recommendations: []
       }
     };
 
     // Determine overall health
-    const activeAlerts = health.tenant.alerts.length;
-    const metrics = health.tenant.metrics;
-    
-    if (activeAlerts > 0 || (metrics.errorRate && metrics.errorRate > 0.1)) {
-      health.overall = activeAlerts > 3 ? 'unhealthy' : 'degraded';
+    const unhealthyProviders = status.recovery.providers.filter(p => !p.available).length;
+    const errorRate = errorHandler.getHealthStatus();
+
+    if (unhealthyProviders > 0 || errorRate === 'unhealthy') {
+      status.overallHealth.status = 'degraded';
+
+      if (unhealthyProviders > 0) {
+        status.overallHealth.issues.push(`${unhealthyProviders} AI providers unavailable`);
+        status.overallHealth.recommendations.push('Monitor provider status and consider manual recovery');
+      }
+
+      if (errorRate === 'unhealthy') {
+        status.overallHealth.issues.push('High AI error rate detected');
+        status.overallHealth.recommendations.push('Review recent errors and check provider configurations');
+      }
     }
 
-    res.json({ 
-      ok: true, 
-      health
+    res.json({
+      ok: true,
+      status
+    });
+  } catch (e) {
+    res.status(500).json({ ok: false, error: String(e) });
+  }
+});
+
+// POST /api/ai/recovery/force - Force recovery attempt for all providers
+router.post("/recovery/force", async (req, res) => {
+  const { tenant, sig } = req.query;
+  const { nonce = Date.now() } = req.body || {};
+  const payload = `POST:${tenant}:ai_recovery_force:${nonce}`;
+
+  if (!tenant || !verify(sig, payload)) {
+    return res.status(403).json({ ok: false, error: "auth" });
+  }
+
+  try {
+    const { getAIErrorRecoveryService } = await import("../services/ai-error-recovery.js");
+
+    const recoveryService = getAIErrorRecoveryService();
+    const result = await recoveryService.forceRecovery();
+
+    res.json({
+      ok: true,
+      message: 'Recovery attempt completed',
+      result
+    });
+  } catch (e) {
+    res.status(500).json({ ok: false, error: String(e) });
+  }
+});
+
+// POST /api/ai/recovery/reset-circuits - Reset all circuit breakers (emergency)
+router.post("/recovery/reset-circuits", async (req, res) => {
+  const { tenant, sig } = req.query;
+  const { nonce = Date.now() } = req.body || {};
+  const payload = `POST:${tenant}:ai_recovery_reset:${nonce}`;
+
+  if (!tenant || !verify(sig, payload)) {
+    return res.status(403).json({ ok: false, error: "auth" });
+  }
+
+  try {
+    const { getAIErrorRecoveryService } = await import("../services/ai-error-recovery.js");
+
+    const recoveryService = getAIErrorRecoveryService();
+    const result = recoveryService.resetAllCircuits();
+
+    res.json({
+      ok: true,
+      message: 'All circuit breakers reset',
+      result
+    });
+  } catch (e) {
+    res.status(500).json({ ok: false, error: String(e) });
+  }
+});
+
+// GET /api/ai/degradation/status - Get graceful degradation service status
+router.get("/degradation/status", async (req, res) => {
+  const { tenant, sig } = req.query;
+  const payload = `GET:${tenant}:ai_degradation_status`;
+
+  if (!tenant || !verify(sig, payload)) {
+    return res.status(403).json({ ok: false, error: "auth" });
+  }
+
+  try {
+    const { getAIDegradationService } = await import("../services/ai-graceful-degradation.js");
+
+    const degradationService = getAIDegradationService();
+    const status = degradationService.getStatus();
+    const userMessage = degradationService.getUserStatusMessage();
+
+    res.json({
+      ok: true,
+      status,
+      userMessage
+    });
+  } catch (e) {
+    res.status(500).json({ ok: false, error: String(e) });
+  }
+});
+
+// POST /api/ai/degradation/clear-cache - Clear AI response cache
+router.post("/degradation/clear-cache", async (req, res) => {
+  const { tenant, sig } = req.query;
+  const { nonce = Date.now() } = req.body || {};
+  const payload = `POST:${tenant}:ai_degradation_clear_cache:${nonce}`;
+
+  if (!tenant || !verify(sig, payload)) {
+    return res.status(403).json({ ok: false, error: "auth" });
+  }
+
+  try {
+    const { getAIDegradationService } = await import("../services/ai-graceful-degradation.js");
+
+    const degradationService = getAIDegradationService();
+    const result = degradationService.clearCache();
+
+    res.json({
+      ok: true,
+      message: 'AI response cache cleared',
+      result
+    });
+  } catch (e) {
+    res.status(500).json({ ok: false, error: String(e) });
+  }
+});
+
+// POST /api/ai/degradation/process-queue - Process queued AI requests
+router.post("/degradation/process-queue", async (req, res) => {
+  const { tenant, sig } = req.query;
+  const { nonce = Date.now() } = req.body || {};
+  const payload = `POST:${tenant}:ai_degradation_process_queue:${nonce}`;
+
+  if (!tenant || !verify(sig, payload)) {
+    return res.status(403).json({ ok: false, error: "auth" });
+  }
+
+  try {
+    const { getAIDegradationService } = await import("../services/ai-graceful-degradation.js");
+
+    const degradationService = getAIDegradationService();
+    const results = await degradationService.processQueue();
+
+    res.json({
+      ok: true,
+      message: 'Queue processing completed',
+      processed: results.length,
+      results
     });
   } catch (e) {
     res.status(500).json({ ok: false, error: String(e) });

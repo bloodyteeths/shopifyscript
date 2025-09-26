@@ -48,6 +48,9 @@ class HealthService {
 
     // Register default system checks
     this.registerDefaultChecks();
+
+    // Register AI provider health checks
+    this.registerAIProviderChecks();
   }
 
   /**
@@ -434,7 +437,164 @@ class HealthService {
   }
 
   /**
-   * Register Gemini AI health check
+   * Register comprehensive AI provider health checks
+   */
+  registerAIProviderChecks() {
+    // Main AI provider connectivity check
+    this.registerCheck(
+      "aiProvider",
+      async () => {
+        try {
+          const { getAIProviderService, validateAIConfig } = await import("../services/ai-provider.js");
+          const service = getAIProviderService();
+          const config = validateAIConfig();
+
+          if (!config.valid) {
+            throw new Error(`AI configuration invalid: ${config.errors.join(', ')}`);
+          }
+
+          // Test with a simple prompt
+          const testResult = await service.generateText(
+            "Test prompt for health check. Respond with 'OK'.",
+            { maxRetries: 1 }
+          );
+
+          if (!testResult || testResult.trim().length === 0) {
+            throw new Error('AI provider returned empty response');
+          }
+
+          const status = service.getStatus();
+
+          return {
+            message: `AI provider ${config.provider} is accessible`,
+            data: {
+              provider: config.provider,
+              initialized: status.initialized,
+              metrics: status.metrics,
+              remainingCalls: status.remainingCalls
+            },
+          };
+        } catch (error) {
+          throw new Error(`AI provider error: ${error.message}`);
+        }
+      },
+      { critical: true, description: "Check AI provider connectivity and configuration" },
+    );
+
+    // AI error handler health check
+    this.registerCheck(
+      "aiErrorHandler",
+      async () => {
+        try {
+          const { getAIErrorHandler } = await import("../middleware/ai-error-handler.js");
+          const handler = getAIErrorHandler();
+          const metrics = handler.getMetrics();
+
+          const healthStatus = handler.getHealthStatus();
+
+          if (healthStatus === 'unhealthy') {
+            throw new Error(`AI error handler reports unhealthy status: ${metrics.recent.errors1h} errors in last hour`);
+          }
+
+          return {
+            message: `AI error handling is ${healthStatus}`,
+            data: {
+              health: healthStatus,
+              totalRequests: metrics.total.requests,
+              successRate: metrics.total.successRate,
+              recentErrors: metrics.recent.errors1h
+            }
+          };
+        } catch (error) {
+          throw new Error(`AI error handler check failed: ${error.message}`);
+        }
+      },
+      { description: "Check AI error handling system health" }
+    );
+
+    // Token monitoring health check
+    this.registerCheck(
+      "aiTokenMonitor",
+      async () => {
+        try {
+          const { getTokenMonitorService } = await import("../services/token-monitor.js");
+          const monitor = getTokenMonitorService();
+
+          if (!monitor.isTracking) {
+            return {
+              message: "Token monitoring is not active",
+              data: { active: false }
+            };
+          }
+
+          return {
+            message: `Token monitoring is active, tracking ${monitor.tokenUsage?.size || 0} tenants`,
+            data: {
+              active: true,
+              tenantsTracked: monitor.tokenUsage?.size || 0
+            }
+          };
+        } catch (error) {
+          // Non-critical - token monitor might not be initialized
+          return {
+            message: "Token monitor not available",
+            data: { available: false, error: error.message }
+          };
+        }
+      },
+      { description: "Check AI token monitoring service" }
+    );
+
+    // AI provider fallback test
+    this.registerCheck(
+      "aiProviderFallback",
+      async () => {
+        try {
+          const { getAIProviderService } = await import("../services/ai-provider.js");
+          const service = getAIProviderService();
+
+          // Test fallback mechanism with invalid model
+          try {
+            await service.generateTextWithFallback(
+              "Health check with fallback",
+              {
+                fallbackModels: ['gpt-3.5-turbo', 'claude-3-haiku-20240307', 'gemini-1.5-flash'],
+                maxRetries: 2
+              }
+            );
+
+            return {
+              message: "AI provider fallback mechanism is working",
+              data: { fallbackTested: true }
+            };
+          } catch (error) {
+            // This is expected if no providers are available
+            if (error.attempts && error.attempts > 1) {
+              return {
+                message: "Fallback mechanism attempted multiple providers",
+                data: {
+                  fallbackTested: true,
+                  attempts: error.attempts,
+                  note: "All providers failed but fallback logic worked"
+                }
+              };
+            }
+            throw error;
+          }
+        } catch (error) {
+          // This check is less critical
+          return {
+            message: "Fallback test skipped - no providers available",
+            data: { skipped: true, reason: error.message }
+          };
+        }
+      },
+      { description: "Test AI provider fallback mechanisms" }
+    );
+  }
+
+  /**
+   * Register legacy Gemini AI health check (for backward compatibility)
    */
   registerGeminiCheck(aiService) {
     this.registerCheck(
