@@ -6,16 +6,14 @@ import {
   RangeSlider,
   RadioButton,
   Checkbox,
-  Stack,
   Button,
-  TextContainer,
   Banner,
   Badge,
   InlineGrid,
   Box,
   Text,
   BlockStack,
-  Divider
+  ChoiceList
 } from '@shopify/polaris';
 import { useState } from 'react';
 
@@ -168,16 +166,15 @@ export function CampaignSetupForm({
             <Text variant="headingSm" as="h3">
               What's your main goal?
             </Text>
-            <Stack>
-              {goalOptions.map((option) => (
-                <RadioButton
-                  key={option.value}
-                  label={option.label}
-                  checked={config.goal === option.value}
-                  onChange={() => setConfig({...config, goal: option.value})}
-                />
-              ))}
-            </Stack>
+            <ChoiceList
+              title=""
+              choices={goalOptions.map(opt => ({
+                label: opt.label,
+                value: opt.value
+              }))}
+              selected={[config.goal]}
+              onChange={(selected) => setConfig({...config, goal: selected[0]})}
+            />
           </BlockStack>
         </BlockStack>
       </Card>
@@ -220,7 +217,7 @@ export function CampaignSetupForm({
                 />
               </InlineGrid>
 
-              <Stack>
+              <BlockStack gap="100">
                 {['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'].map((day) => (
                   <Checkbox
                     key={day}
@@ -237,7 +234,7 @@ export function CampaignSetupForm({
                     }}
                   />
                 ))}
-              </Stack>
+              </BlockStack>
             </BlockStack>
           )}
         </BlockStack>
@@ -250,28 +247,17 @@ export function CampaignSetupForm({
             4. Keyword Strategy
           </Text>
 
-          <Stack>
-            <RadioButton
-              label="🤖 Let AI suggest keywords (Recommended)"
-              checked={config.keywordStrategy === 'auto'}
-              onChange={() => setConfig({...config, keywordStrategy: 'auto'})}
-            />
-            <RadioButton
-              label="🏷️ Focus on my brand name"
-              checked={config.keywordStrategy === 'brand'}
-              onChange={() => setConfig({...config, keywordStrategy: 'brand'})}
-            />
-            <RadioButton
-              label="🎯 Target competitor keywords"
-              checked={config.keywordStrategy === 'competitor'}
-              onChange={() => setConfig({...config, keywordStrategy: 'competitor'})}
-            />
-            <RadioButton
-              label="✏️ Use custom keywords"
-              checked={config.keywordStrategy === 'custom'}
-              onChange={() => setConfig({...config, keywordStrategy: 'custom'})}
-            />
-          </Stack>
+          <ChoiceList
+            title=""
+            choices={[
+              { label: '🤖 Let AI suggest keywords (Recommended)', value: 'auto' },
+              { label: '🏷️ Focus on my brand name', value: 'brand' },
+              { label: '🎯 Target competitor keywords', value: 'competitor' },
+              { label: '✏️ Use custom keywords', value: 'custom' }
+            ]}
+            selected={[config.keywordStrategy]}
+            onChange={(selected) => setConfig({...config, keywordStrategy: selected[0]})}
+          />
 
           {config.keywordStrategy === 'custom' && (
             <TextField
