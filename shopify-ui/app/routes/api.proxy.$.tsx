@@ -26,6 +26,14 @@ async function handleProxyRequest(
     // Get the path from the wildcard parameter
     const proxyPath = params["*"] || "";
 
+    // Log incoming request details
+    console.log(`[PROXY] Incoming request:`, {
+      method,
+      proxyPath,
+      url: request.url,
+      headers: Object.fromEntries(request.headers.entries())
+    });
+
     // Try to get shop name from Shopify session first
     let tenant = request.headers.get("X-Tenant-ID");
 
@@ -126,8 +134,8 @@ async function handleProxyRequest(
         .replace(/=+$/, "");
 
       // Build URL with sig and tenant in query params
-      const requestUrl = new URL(request.url);
-      const queryParams = new URLSearchParams(requestUrl.search);
+      // Start with a clean URLSearchParams for authentication
+      const queryParams = new URLSearchParams();
       queryParams.set("tenant", tenant);
       queryParams.set("sig", sig);
 
@@ -138,15 +146,14 @@ async function handleProxyRequest(
         "Content-Type": "application/json"
       };
 
-      // Log for debugging
-      if (process.env.NODE_ENV !== "production") {
-        console.log(`AI endpoint request (${proxyPath}):`, {
-          url: fullUrl,
-          tenant,
-          payload: aiPayload,
-          sig
-        });
-      }
+      // Log for debugging - ALWAYS log for these critical endpoints
+      console.log(`[PROXY] AI endpoint request (${proxyPath}):`, {
+        url: fullUrl,
+        tenant,
+        payload: aiPayload,
+        sig,
+        hmacSecret: hmacSecret ? `${hmacSecret.substring(0, 8)}...` : 'NOT SET'
+      });
     } else {
       // Build backend URL normally
       const url = `${backendUrl}/${proxyPath}`;

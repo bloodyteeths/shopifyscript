@@ -114659,7 +114659,14 @@ async function action6({ request: request2, params }) {
 }
 async function handleProxyRequest(request2, params, method) {
   try {
-    let proxyPath = params["*"] || "", tenant = request2.headers.get("X-Tenant-ID");
+    let proxyPath = params["*"] || "";
+    console.log("[PROXY] Incoming request:", {
+      method,
+      proxyPath,
+      url: request2.url,
+      headers: Object.fromEntries(request2.headers.entries())
+    });
+    let tenant = request2.headers.get("X-Tenant-ID");
     if (!tenant)
       try {
         let { session } = await authenticate.admin(request2);
@@ -114689,10 +114696,16 @@ async function handleProxyRequest(request2, params, method) {
         aiPayload = `${method}:${tenant}:${endpoint}`;
       }
       sig = import_crypto23.default.createHmac("sha256", hmacSecret).update(aiPayload).digest("base64").replace(/=+$/, "");
-      let requestUrl = new URL(request2.url), queryParams = new URLSearchParams(requestUrl.search);
+      let queryParams = new URLSearchParams();
       queryParams.set("tenant", tenant), queryParams.set("sig", sig), fullUrl = `${backendUrl}/${proxyPath}?${queryParams.toString()}`, headers2 = {
         "Content-Type": "application/json"
-      };
+      }, console.log(`[PROXY] AI endpoint request (${proxyPath}):`, {
+        url: fullUrl,
+        tenant,
+        payload: aiPayload,
+        sig,
+        hmacSecret: hmacSecret ? `${hmacSecret.substring(0, 8)}...` : "NOT SET"
+      });
     } else {
       let url = `${backendUrl}/${proxyPath}`, queryString = new URL(request2.url).search;
       fullUrl = url + queryString, headers2 = {
