@@ -169,7 +169,7 @@ async function createGoogleProvider() {
   const key = process.env.GEMINI_API_KEY || process.env.GOOGLE_API_KEY;
   if (!key) throw new AIProviderError("Gemini/Google API key required (GEMINI_API_KEY or GOOGLE_API_KEY)", "google");
 
-  const modelName = process.env.AI_MODEL || "gemini-1.5-flash";
+  const modelName = process.env.AI_MODEL || "gemini-1.5-flash-8b";
   const temperature = Number(process.env.AI_TEMPERATURE || 0.4);
   const maxTokens = Number(process.env.AI_MAX_TOKENS || 1024);
   const maxCalls = Number(process.env.AI_MAX_CALLS_PER_RUN || 20);
@@ -265,7 +265,7 @@ export function getAIProviderSync() {
         "AI disabled: set AI_PROVIDER=google and GOOGLE_API_KEY (see /docs/SECRETS.md).",
       );
 
-    const modelName = process.env.AI_MODEL || "gemini-1.5-flash";
+    const modelName = process.env.AI_MODEL || "gemini-1.5-flash-8b";
     const temperature = Number(process.env.AI_TEMPERATURE || 0.4);
     const maxCalls = Number(process.env.AI_MAX_CALLS_PER_RUN || 20);
     const genAI = new GoogleGenerativeAI(key);

@@ -10,7 +10,7 @@ dotenv.config();
 // Set environment variables for Gemini
 process.env.AI_PROVIDER = 'google';
 process.env.GEMINI_API_KEY = process.env.GEMINI_API_KEY || 'YOUR_GEMINI_API_KEY_HERE';
-process.env.AI_MODEL = 'gemini-1.5-flash';
+process.env.AI_MODEL = 'gemini-1.5-flash-8b';
 process.env.AI_TEMPERATURE = '0.4';
 process.env.AI_MAX_CALLS_PER_RUN = '20';
 // Skip budget checks for testing
