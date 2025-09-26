@@ -88,39 +88,64 @@ async function handleProxyRequest(
       }
     }
 
-    // Special handling for ai_writer endpoint which needs sig in query params
+    // Special handling for endpoints that need sig in query params
     let fullUrl;
     let headers: HeadersInit;
 
-    if (proxyPath === "jobs/ai_writer") {
-      // For ai_writer, we need to pass sig and tenant as query params
-      const nonce = parsedBody.nonce || Date.now();
-      const aiPayload = `POST:${tenant}:ai_writer:${nonce}`;
-      const sig = crypto.createHmac("sha256", hmacSecret)
+    // Check if this is an AI endpoint that needs query param authentication
+    const needsQueryAuth = proxyPath === "jobs/ai_writer" || proxyPath.startsWith("ai/");
+
+    if (needsQueryAuth) {
+      let aiPayload;
+      let sig;
+
+      if (proxyPath === "jobs/ai_writer") {
+        // ai_writer needs special nonce-based payload
+        const nonce = parsedBody.nonce || Date.now();
+        aiPayload = `POST:${tenant}:ai_writer:${nonce}`;
+
+        // Include the nonce in the body if not already present
+        if (!parsedBody.nonce) {
+          parsedBody.nonce = nonce;
+        }
+      } else if (proxyPath === "ai/drafts") {
+        // ai/drafts uses simple payload format
+        aiPayload = `GET:${tenant}:ai_drafts`;
+      } else {
+        // Other AI endpoints - construct payload based on path
+        const pathParts = proxyPath.split('/');
+        const endpoint = pathParts[pathParts.length - 1];
+        aiPayload = `${method}:${tenant}:${endpoint}`;
+      }
+
+      // Generate signature for the specific payload
+      sig = crypto.createHmac("sha256", hmacSecret)
         .update(aiPayload)
         .digest("base64")
         .replace(/=+$/, "");
 
-      fullUrl = `${backendUrl}/${proxyPath}?tenant=${tenant}&sig=${encodeURIComponent(sig)}`;
+      // Build URL with sig and tenant in query params
+      const requestUrl = new URL(request.url);
+      const queryParams = new URLSearchParams(requestUrl.search);
+      queryParams.set("tenant", tenant);
+      queryParams.set("sig", sig);
 
-      // ai_writer endpoint only uses query param auth, no headers needed
+      fullUrl = `${backendUrl}/${proxyPath}?${queryParams.toString()}`;
+
+      // These endpoints only use query param auth, no headers needed
       headers = {
         "Content-Type": "application/json"
       };
 
-      // Include the nonce in the body if not already present
-      if (!parsedBody.nonce) {
-        parsedBody.nonce = nonce;
-      }
-
       // Log for debugging
-      console.log("AI Writer request:", {
-        url: fullUrl,
-        tenant,
-        nonce,
-        payload: aiPayload,
-        sig
-      });
+      if (process.env.NODE_ENV !== "production") {
+        console.log(`AI endpoint request (${proxyPath}):`, {
+          url: fullUrl,
+          tenant,
+          payload: aiPayload,
+          sig
+        });
+      }
     } else {
       // Build backend URL normally
       const url = `${backendUrl}/${proxyPath}`;

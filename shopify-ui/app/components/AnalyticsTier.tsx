@@ -136,152 +136,93 @@ export function AnalyticsTier({
 
   const renderBasicKPIs = () => {
     const { kpi } = data;
-
+    
     return (
-      <div style={{
-        display: "grid",
-        gridTemplateColumns: "repeat(auto-fill, minmax(120px, 1fr))",
-        gap: 12,
-        marginBottom: 20,
-      }}>
-        <div style={{
-          background: "white",
-          border: "1px solid #e3e3e3",
-          borderRadius: 8,
-          padding: "12px 14px",
-          boxShadow: "0 1px 0 rgba(0, 0, 0, 0.05)",
-        }}>
-          <div style={{ color: "#616161", fontSize: 11, marginBottom: 4, fontWeight: "500", textTransform: "uppercase", letterSpacing: "0.5px" }}>
-            Clicks
-          </div>
-          <div style={{
-            fontSize: 20,
-            fontWeight: "600",
-            color: "#202223",
-            marginBottom: 2
-          }}>
-            {formatNumber(kpi.clicks)}
-          </div>
-          <div style={{ color: "#8a8a8a", fontSize: 10 }}>
-            Total clicks
-          </div>
-        </div>
+      <Grid>
+        <Grid.Cell columnSpan={{xs: 6, sm: 3, md: 2, lg: 2, xl: 2}}>
+          <Card>
+            <Stack>
+              <Text variant="headingMd">Clicks</Text>
+              <Text variant="heading2xl" as="h2">
+                {formatNumber(kpi.clicks)}
+              </Text>
+              <Text variant="bodyMd" color="subdued">
+                Total clicks
+              </Text>
+            </Stack>
+          </Card>
+        </Grid.Cell>
 
-        <div style={{
-          background: "white",
-          border: "1px solid #e3e3e3",
-          borderRadius: 8,
-          padding: "12px 14px",
-          boxShadow: "0 1px 0 rgba(0, 0, 0, 0.05)",
-        }}>
-          <div style={{ color: "#616161", fontSize: 11, marginBottom: 4, fontWeight: "500", textTransform: "uppercase", letterSpacing: "0.5px" }}>
-            Cost
-          </div>
-          <div style={{
-            fontSize: 20,
-            fontWeight: "600",
-            color: "#5c6ac4",
-            marginBottom: 2
-          }}>
-            {formatCurrency(kpi.cost)}
-          </div>
-          <div style={{ color: "#8a8a8a", fontSize: 10 }}>
-            Total spend
-          </div>
-        </div>
+        <Grid.Cell columnSpan={{xs: 6, sm: 3, md: 2, lg: 2, xl: 2}}>
+          <Card>
+            <Stack>
+              <Text variant="headingMd">Cost</Text>
+              <Text variant="heading2xl" as="h2">
+                {formatCurrency(kpi.cost)}
+              </Text>
+              <Text variant="bodyMd" color="subdued">
+                Total spend
+              </Text>
+            </Stack>
+          </Card>
+        </Grid.Cell>
 
-        <div style={{
-          background: "white",
-          border: "1px solid #e3e3e3",
-          borderRadius: 8,
-          padding: "12px 14px",
-          boxShadow: "0 1px 0 rgba(0, 0, 0, 0.05)",
-        }}>
-          <div style={{ color: "#616161", fontSize: 11, marginBottom: 4, fontWeight: "500", textTransform: "uppercase", letterSpacing: "0.5px" }}>
-            Conversions
-          </div>
-          <div style={{
-            fontSize: 20,
-            fontWeight: "600",
-            color: "#202223",
-            marginBottom: 2
-          }}>
-            {formatNumber(kpi.conversions)}
-          </div>
-          <div style={{ color: "#8a8a8a", fontSize: 10 }}>
-            Total conversions
-          </div>
-        </div>
+        <Grid.Cell columnSpan={{xs: 6, sm: 3, md: 2, lg: 2, xl: 2}}>
+          <Card>
+            <Stack>
+              <Text variant="headingMd">Conversions</Text>
+              <Text variant="heading2xl" as="h2">
+                {formatNumber(kpi.conversions)}
+              </Text>
+              <Text variant="bodyMd" color="subdued">
+                Total conversions
+              </Text>
+            </Stack>
+          </Card>
+        </Grid.Cell>
 
-        <div style={{
-          background: "white",
-          border: "1px solid #e3e3e3",
-          borderRadius: 8,
-          padding: "12px 14px",
-          boxShadow: "0 1px 0 rgba(0, 0, 0, 0.05)",
-        }}>
-          <div style={{ color: "#616161", fontSize: 11, marginBottom: 4, fontWeight: "500", textTransform: "uppercase", letterSpacing: "0.5px" }}>
-            CTR
-          </div>
-          <div style={{
-            fontSize: 20,
-            fontWeight: "600",
-            color: "#202223",
-            marginBottom: 2
-          }}>
-            {(kpi.ctr * 100).toFixed(2)}%
-          </div>
-          <div style={{ color: "#8a8a8a", fontSize: 10 }}>
-            Click-through rate
-          </div>
-        </div>
+        <Grid.Cell columnSpan={{xs: 6, sm: 3, md: 2, lg: 2, xl: 2}}>
+          <Card>
+            <Stack>
+              <Text variant="headingMd">CTR</Text>
+              <Text variant="heading2xl" as="h2">
+                {(kpi.ctr * 100).toFixed(2)}%
+              </Text>
+              <Text variant="bodyMd" color="subdued">
+                Click-through rate
+              </Text>
+            </Stack>
+          </Card>
+        </Grid.Cell>
 
-        <div style={{
-          background: "white",
-          border: "1px solid #e3e3e3",
-          borderRadius: 8,
-          padding: "12px 14px",
-          boxShadow: "0 1px 0 rgba(0, 0, 0, 0.05)",
-        }}>
-          <div style={{ color: "#616161", fontSize: 11, marginBottom: 4, fontWeight: "500", textTransform: "uppercase", letterSpacing: "0.5px" }}>
-            CPC
-          </div>
-          <div style={{
-            fontSize: 20,
-            fontWeight: "600",
-            color: "#5c6ac4",
-            marginBottom: 2
-          }}>
-            {formatCurrency(kpi.cpc)}
-          </div>
-          <div style={{ color: "#8a8a8a", fontSize: 10 }}>
-            Cost per click
-          </div>
-        </div>
+        <Grid.Cell columnSpan={{xs: 6, sm: 3, md: 2, lg: 2, xl: 2}}>
+          <Card>
+            <Stack>
+              <Text variant="headingMd">CPC</Text>
+              <Text variant="heading2xl" as="h2">
+                {formatCurrency(kpi.cpc)}
+              </Text>
+              <Text variant="bodyMd" color="subdued">
+                Cost per click
+              </Text>
+            </Stack>
+          </Card>
+        </Grid.Cell>
 
-        <div style={{
-          background: "white",
-          border: "1px solid #e3e3e3",
-          borderRadius: 8,
-          padding: "12px 14px",
-          boxShadow: "0 1px 0 rgba(0, 0, 0, 0.05)",
-        }}>
-          <div style={{ color: "#616161", fontSize: 11, marginBottom: 4, fontWeight: "500", textTransform: "uppercase", letterSpacing: "0.5px" }}>
-            CPA
-          </div>
-          <div style={{
-            fontSize: 20,
-            fontWeight: "600",
-            color: "#5c6ac4",
-            marginBottom: 2
-          }}>
-            {formatCurrency(kpi.cpa)}
-          </div>
-          <div style={{ color: "#8a8a8a", fontSize: 10 }}>
-            Cost per acquisition
-          </div>
-        </div>
-      </div>
+        <Grid.Cell columnSpan={{xs: 6, sm: 3, md: 2, lg: 2, xl: 2}}>
+          <Card>
+            <Stack>
+              <Text variant="headingMd">CPA</Text>
+              <Text variant="heading2xl" as="h2">
+                {formatCurrency(kpi.cpa)}
+              </Text>
+              <Text variant="bodyMd" color="subdued">
+                Cost per acquisition
+              </Text>
+            </Stack>
+          </Card>
+        </Grid.Cell>
+      </Grid>
     );
   };
 
@@ -460,175 +401,40 @@ export function AnalyticsTier({
     const nextTier = tier === 'starter' ? 'professional' : 'enterprise';
 
     return (
-      <div style={{
-        background: "white",
-        border: "1px solid #e3e3e3",
-        borderRadius: 8,
-        padding: 20,
-        boxShadow: "0 1px 0 rgba(0, 0, 0, 0.05)",
-        marginBottom: 24,
-      }}>
-        <div style={{ marginBottom: 24 }}>
-          <h3 style={{ 
-            fontSize: 24, 
-            fontWeight: "700", 
-            color: "#1f2937", 
-            margin: "0 0 8px 0",
-            background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent"
-          }}>
-            Unlock More Analytics Features
-          </h3>
-          <p style={{ color: "#6b7280", fontSize: 16, margin: 0 }}>
-            Upgrade to access advanced analytics and real-time insights
-          </p>
-        </div>
-        
-        <div style={{
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr",
-          gap: 32,
-        }}>
-          <div style={{
-            background: "#f6f6f7",
-            border: "1px solid #e3e3e3",
-            borderRadius: 16,
-            padding: 24,
-          }}>
-            <div style={{ marginBottom: 16 }}>
-              <h4 style={{ 
-                fontSize: 18, 
-                fontWeight: "600", 
-                color: "#1f2937", 
-                margin: "0 0 8px 0" 
-              }}>
-                Current Plan: {getTierDisplayName(tier)}
-              </h4>
-              <div style={{
-                display: "inline-block",
-                background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-                color: "white",
-                padding: "4px 12px",
-                borderRadius: 12,
-                fontSize: 12,
-                fontWeight: "600"
-              }}>
-                {getTierDisplayName(tier)}
-              </div>
-            </div>
-            <div>
-              {features[tier as keyof typeof features].map((feature, index) => (
-                <div key={index} style={{
-                  display: "flex",
-                  alignItems: "center",
-                  marginBottom: 8,
-                  color: "#6b7280",
-                  fontSize: 14
-                }}>
-                  <span style={{ 
-                    color: "#10b981", 
-                    marginRight: 8, 
-                    fontWeight: "bold" 
-                  }}>✓</span>
-                  {feature}
-                </div>
-              ))}
-            </div>
-          </div>
-          
-          <div style={{
-            background: "#f0fbf8",
-            border: "1px solid #008060",
-            borderRadius: 16,
-            padding: 24,
-            position: "relative"
-          }}>
-            <div style={{
-              position: "absolute",
-              top: -8,
-              right: 16,
-              background: "#008060",
-              color: "white",
-              padding: "4px 12px",
-              borderRadius: 12,
-              fontSize: 12,
-              fontWeight: "600"
-            }}>
-              RECOMMENDED
-            </div>
-            
-            <div style={{ marginBottom: 16 }}>
-              <h4 style={{ 
-                fontSize: 18, 
-                fontWeight: "600", 
-                color: "#1f2937", 
-                margin: "0 0 8px 0" 
-              }}>
-                {getTierDisplayName(nextTier)} Plan
-              </h4>
-              <div style={{
-                display: "inline-block",
-                background: "#008060",
-                color: "white",
-                padding: "4px 12px",
-                borderRadius: 12,
-                fontSize: 12,
-                fontWeight: "600"
-              }}>
-                {getTierDisplayName(nextTier)}
-              </div>
-            </div>
-            
-            <div style={{ marginBottom: 20 }}>
-              {features[nextTier as keyof typeof features].map((feature, index) => (
-                <div key={index} style={{
-                  display: "flex",
-                  alignItems: "center",
-                  marginBottom: 8,
-                  color: "#1f2937",
-                  fontSize: 14,
-                  fontWeight: "500"
-                }}>
-                  <span style={{ 
-                    color: "#10b981", 
-                    marginRight: 8, 
-                    fontWeight: "bold" 
-                  }}>✓</span>
-                  {feature}
-                </div>
-              ))}
-            </div>
-            
-            <button
-              onClick={() => onUpgrade?.(nextTier)}
-              style={{
-                background: "#008060",
-                color: "white",
-                border: "none",
-                padding: "12px 24px",
-                borderRadius: 12,
-                cursor: "pointer",
-                fontSize: 14,
-                fontWeight: "600",
-                width: "100%",
-                transition: "all 0.3s ease",
-                boxShadow: "0 4px 12px rgba(16, 185, 129, 0.3)"
-              }}
-              onMouseOver={(e) => {
-                e.currentTarget.style.transform = "translateY(-2px)";
-                e.currentTarget.style.boxShadow = "0 6px 20px rgba(16, 185, 129, 0.4)";
-              }}
-              onMouseOut={(e) => {
-                e.currentTarget.style.transform = "translateY(0)";
-                e.currentTarget.style.boxShadow = "0 4px 12px rgba(16, 185, 129, 0.3)";
-              }}
-            >
-              Upgrade to {getTierDisplayName(nextTier)}
-            </button>
-          </div>
-        </div>
-      </div>
+      <Card sectioned>
+        <Stack>
+          <Text variant="headingMd">Unlock More Analytics Features</Text>
+          <Grid>
+            <Grid.Cell columnSpan={{xs: 6, sm: 6, md: 6, lg: 6, xl: 6}}>
+              <Stack>
+                <Text variant="headingXs">Current Plan: {getTierDisplayName(tier)}</Text>
+                {features[tier as keyof typeof features].map((feature, index) => (
+                  <Text key={index} variant="bodyMd" color="subdued">
+                    ✓ {feature}
+                  </Text>
+                ))}
+              </Stack>
+            </Grid.Cell>
+            <Grid.Cell columnSpan={{xs: 6, sm: 6, md: 6, lg: 6, xl: 6}}>
+              <Stack>
+                <Text variant="headingXs">{getTierDisplayName(nextTier)} Plan</Text>
+                {features[nextTier as keyof typeof features].map((feature, index) => (
+                  <Text key={index} variant="bodyMd">
+                    ✓ {feature}
+                  </Text>
+                ))}
+                <Button
+                  primary
+                  size="slim"
+                  onClick={() => onUpgrade?.(nextTier)}
+                >
+                  Upgrade to {getTierDisplayName(nextTier)}
+                </Button>
+              </Stack>
+            </Grid.Cell>
+          </Grid>
+        </Stack>
+      </Card>
     );
   };
 
