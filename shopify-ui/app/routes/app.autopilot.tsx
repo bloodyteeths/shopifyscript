@@ -149,9 +149,21 @@ export async function action({ request }: ActionFunctionArgs) {
       console.log(`Server action generating script for shop: ${currentShopName}`);
 
       const mode = formData.get("mode") || "protect";
-      const budget = formData.get("budget") || "3.00";
-      const cpc = formData.get("cpc") || "0.20";
+      const budget = formData.get("budget") || "20.00";
+      const cpc = formData.get("cpc") || "0.50";
       const url = formData.get("url") || "";
+      const advancedConfigRaw = formData.get("advancedConfig");
+
+      // Parse advanced config if provided
+      let advancedConfig = null;
+      if (advancedConfigRaw) {
+        try {
+          advancedConfig = JSON.parse(advancedConfigRaw.toString());
+          console.log("Advanced config received:", advancedConfig);
+        } catch (e) {
+          console.error("Failed to parse advanced config:", e);
+        }
+      }
 
       try {
         // Fetch the real script using authenticated backend call
@@ -434,22 +446,39 @@ Shop: ${shopName || "unknown"}`;
             // Convert advanced config to simple form values
             setBudget(config.dailyBudget.toString());
             setCpc(config.targetCPC.toString());
-            setUrl(config.businessName); // Or use a custom URL field
+            setUrl(config.hasOffer ? config.offerText : url || "");
 
-            // Submit the form with enhanced data
-            const formData = new FormData();
-            formData.append("actionType", "generateScript");
-            formData.append("mode", config.goal === "sales" ? "scale" : "protect");
-            formData.append("budget", config.dailyBudget.toString());
-            formData.append("cpc", config.targetCPC.toString());
-            formData.append("url", url);
-            formData.append("advancedConfig", JSON.stringify(config));
+            // Map goal correctly
+            let mappedMode = "protect";
+            if (config.goal === "sales") mappedMode = "scale";
+            else if (config.goal === "traffic") mappedMode = "grow";
+            else if (config.goal === "leads") mappedMode = "protect";
+            setMode(mappedMode);
 
-            // Submit via fetch or form submission
-            fetch("", {
-              method: "POST",
-              body: formData,
+            // Create and submit form programmatically
+            const form = document.createElement("form");
+            form.method = "POST";
+            form.style.display = "none";
+
+            const fields = {
+              actionType: "generateScript",
+              mode: mappedMode,
+              budget: config.dailyBudget.toString(),
+              cpc: config.targetCPC.toString(),
+              url: url || "",
+              advancedConfig: JSON.stringify(config)
+            };
+
+            Object.entries(fields).forEach(([name, value]) => {
+              const input = document.createElement("input");
+              input.type = "hidden";
+              input.name = name;
+              input.value = value;
+              form.appendChild(input);
             });
+
+            document.body.appendChild(form);
+            form.submit();
           }}
         />
       ) : (
