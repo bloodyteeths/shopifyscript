@@ -133,7 +133,7 @@ function main() {
   var searchTerms = collectSearchTerms_(cfg);
   var runLogs = [[new Date(), 'Ads Autopilot AI run complete']];
 
-  // Send metrics to backend
+  // Send metrics to backend (only once - removed duplicate call)
   sendMetrics_(metrics, searchTerms, runLogs);
 
   if (PREVIEW_MODE || RUN_MODE === 'IDEMPOTENCY_TEST') {
@@ -143,13 +143,6 @@ function main() {
       mutations: MUTATION_LOG.slice(0, 50)
     })]);
   }
-
-  postToBackend_('metrics', {
-    nonce: new Date().getTime(),
-    metrics: metrics,
-    search_terms: stRows,
-    run_logs: runLogs
-  });
 }
 
 // Backend communication
@@ -456,7 +449,7 @@ function sendMetrics_(metrics, searchTerms, runLogs) {
   try {
     var nonce = Date.now();
     var sig = sign_("POST:" + TENANT_ID + ":metrics:" + nonce);
-    var url = BACKEND_URL + "/api/metrics?tenant=" + encodeURIComponent(TENANT_ID) + "&sig=" + encodeURIComponent(sig);
+    var url = BACKEND_URL + "/metrics?tenant=" + encodeURIComponent(TENANT_ID) + "&sig=" + encodeURIComponent(sig);
 
     var payload = {
       nonce: nonce,
