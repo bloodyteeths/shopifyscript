@@ -20,15 +20,9 @@ router.get("/drafts", async (req, res) => {
   const { tenant, sig } = req.query;
   const payload = `GET:${tenant}:ai_drafts`;
 
-  if (!tenant) {
-    return res.status(403).json({ ok: false, error: "tenant_required" });
+  if (!tenant || !verify(sig, payload)) {
+    return res.status(403).json({ ok: false, error: "auth" });
   }
-
-  // Temporarily skip HMAC verification for testing
-  // TODO: Fix frontend HMAC secret configuration
-  // if (!verify(sig, payload)) {
-  //   return res.status(403).json({ ok: false, error: "auth" });
-  // }
 
   try {
     const { getDoc } = await getSheetOperations();
@@ -152,15 +146,9 @@ router.post("/accept", async (req, res) => {
   const { nonce = Date.now(), items = [] } = req.body || {};
   const payload = `POST:${tenant}:ai_accept:${nonce}`;
 
-  if (!tenant) {
-    return res.status(403).json({ ok: false, error: "tenant_required" });
+  if (!tenant || !verify(sig, payload)) {
+    return res.status(403).json({ ok: false, error: "auth" });
   }
-
-  // Temporarily skip HMAC verification for testing
-  // TODO: Fix frontend HMAC secret configuration
-  // if (!verify(sig, payload)) {
-  //   return res.status(403).json({ ok: false, error: "auth" });
-  // }
 
   try {
     const { getDoc, ensureSheet, appendRows } = await getSheetOperations();
@@ -250,15 +238,9 @@ router.post("/jobs/ai_writer", async (req, res) => {
   const { nonce = Date.now(), dryRun = true, limit = 5 } = req.body || {};
   const payload = `POST:${tenant}:ai_writer:${nonce}`;
 
-  if (!tenant) {
-    return res.status(403).json({ ok: false, error: "tenant_required" });
+  if (!tenant || !verify(sig, payload)) {
+    return res.status(403).json({ ok: false, error: "auth" });
   }
-
-  // Temporarily skip HMAC verification for testing
-  // TODO: Fix frontend HMAC secret configuration
-  // if (!verify(sig, payload)) {
-  //   return res.status(403).json({ ok: false, error: "auth" });
-  // }
 
   try {
     const provider = (process.env.AI_PROVIDER || "").toLowerCase();
@@ -316,15 +298,9 @@ router.post("/jobs/weekly_summary", async (req, res) => {
   const { nonce = Date.now(), tier = 'starter', generateAI = true } = req.body || {};
   const payload = `POST:${tenant}:weekly_summary:${nonce}`;
 
-  if (!tenant) {
-    return res.status(403).json({ ok: false, error: "tenant_required" });
+  if (!tenant || !verify(sig, payload)) {
+    return res.status(403).json({ ok: false, error: "auth" });
   }
-
-  // Temporarily skip HMAC verification for testing
-  // TODO: Fix frontend HMAC secret configuration
-  // if (!verify(sig, payload)) {
-  //   return res.status(403).json({ ok: false, error: "auth" });
-  // }
 
   try {
     const { runWeeklySummary } = await import("../jobs/weekly_summary.js");
@@ -340,15 +316,9 @@ router.get("/weekly-summary-preview", async (req, res) => {
   const { tenant, sig } = req.query;
   const payload = `GET:${tenant}:weekly_summary_preview`;
 
-  if (!tenant) {
-    return res.status(403).json({ ok: false, error: "tenant_required" });
+  if (!tenant || !verify(sig, payload)) {
+    return res.status(403).json({ ok: false, error: "auth" });
   }
-
-  // Temporarily skip HMAC verification for testing
-  // TODO: Fix frontend HMAC secret configuration
-  // if (!verify(sig, payload)) {
-  //   return res.status(403).json({ ok: false, error: "auth" });
-  // }
 
   try {
     // Get subscription info to determine tier
@@ -480,15 +450,9 @@ router.post("/weekly-summary-email", async (req, res) => {
   } = req.body || {};
   const payload = `POST:${tenant}:weekly_summary_email:${nonce}`;
 
-  if (!tenant) {
-    return res.status(403).json({ ok: false, error: "tenant_required" });
+  if (!tenant || !verify(sig, payload)) {
+    return res.status(403).json({ ok: false, error: "auth" });
   }
-
-  // Temporarily skip HMAC verification for testing
-  // TODO: Fix frontend HMAC secret configuration
-  // if (!verify(sig, payload)) {
-  //   return res.status(403).json({ ok: false, error: "auth" });
-  // }
 
   if (!userEmail) {
     return res.status(400).json({ ok: false, error: "userEmail required" });
@@ -534,15 +498,9 @@ router.get("/weekly-summary-slack", async (req, res) => {
   const { tenant, sig, format = 'blocks' } = req.query;
   const payload = `GET:${tenant}:weekly_summary_slack`;
 
-  if (!tenant) {
-    return res.status(403).json({ ok: false, error: "tenant_required" });
+  if (!tenant || !verify(sig, payload)) {
+    return res.status(403).json({ ok: false, error: "auth" });
   }
-
-  // Temporarily skip HMAC verification for testing
-  // TODO: Fix frontend HMAC secret configuration
-  // if (!verify(sig, payload)) {
-  //   return res.status(403).json({ ok: false, error: "auth" });
-  // }
 
   try {
     // Get subscription info to determine tier
@@ -935,15 +893,9 @@ router.post("/autopilot/quickstart", async (req, res) => {
   } = req.body || {};
   const payload = `POST:${tenant}:autopilot_quickstart:${nonce}`;
 
-  if (!tenant) {
-    return res.status(403).json({ ok: false, error: "tenant_required" });
+  if (!tenant || !verify(sig, payload)) {
+    return res.status(403).json({ ok: false, error: "auth" });
   }
-
-  // Temporarily skip HMAC verification for testing
-  // TODO: Fix frontend HMAC secret configuration
-  // if (!verify(sig, payload)) {
-  //   return res.status(403).json({ ok: false, error: "auth" });
-  // }
 
   try {
     // Check campaign limits before allowing autopilot quickstart (campaign creation)
@@ -1068,15 +1020,9 @@ router.post("/generate/rsa", async (req, res) => {
   } = req.body || {};
   const payload = `POST:${tenant}:ai_generate_rsa:${nonce}`;
 
-  if (!tenant) {
-    return res.status(403).json({ ok: false, error: "tenant_required" });
+  if (!tenant || !verify(sig, payload)) {
+    return res.status(403).json({ ok: false, error: "auth" });
   }
-
-  // Temporarily skip HMAC verification for testing
-  // TODO: Fix frontend HMAC secret configuration
-  // if (!verify(sig, payload)) {
-  //   return res.status(403).json({ ok: false, error: "auth" });
-  // }
 
   try {
     // Get tenant configuration for business strategy context
@@ -1123,15 +1069,9 @@ router.post("/analyze/negatives", async (req, res) => {
   } = req.body || {};
   const payload = `POST:${tenant}:ai_analyze_negatives:${nonce}`;
 
-  if (!tenant) {
-    return res.status(403).json({ ok: false, error: "tenant_required" });
+  if (!tenant || !verify(sig, payload)) {
+    return res.status(403).json({ ok: false, error: "auth" });
   }
-
-  // Temporarily skip HMAC verification for testing
-  // TODO: Fix frontend HMAC secret configuration
-  // if (!verify(sig, payload)) {
-  //   return res.status(403).json({ ok: false, error: "auth" });
-  // }
 
   try {
     // Get tenant configuration for business strategy context and desired keywords
@@ -1178,15 +1118,9 @@ router.post("/approval/submit", async (req, res) => {
   } = req.body || {};
   const payload = `POST:${tenant}:ai_approval_submit:${nonce}`;
 
-  if (!tenant) {
-    return res.status(403).json({ ok: false, error: "tenant_required" });
+  if (!tenant || !verify(sig, payload)) {
+    return res.status(403).json({ ok: false, error: "auth" });
   }
-
-  // Temporarily skip HMAC verification for testing
-  // TODO: Fix frontend HMAC secret configuration
-  // if (!verify(sig, payload)) {
-  //   return res.status(403).json({ ok: false, error: "auth" });
-  // }
 
   try {
     const { getApprovalWorkflow } = await import(
@@ -1214,15 +1148,9 @@ router.get("/approval/pending", async (req, res) => {
   const { tenant, sig } = req.query;
   const payload = `GET:${tenant}:ai_approval_pending`;
 
-  if (!tenant) {
-    return res.status(403).json({ ok: false, error: "tenant_required" });
+  if (!tenant || !verify(sig, payload)) {
+    return res.status(403).json({ ok: false, error: "auth" });
   }
-
-  // Temporarily skip HMAC verification for testing
-  // TODO: Fix frontend HMAC secret configuration
-  // if (!verify(sig, payload)) {
-  //   return res.status(403).json({ ok: false, error: "auth" });
-  // }
 
   try {
     const { getApprovalWorkflow } = await import(
@@ -1252,15 +1180,9 @@ router.post("/approval/review", async (req, res) => {
   } = req.body || {};
   const payload = `POST:${tenant}:ai_approval_review:${nonce}`;
 
-  if (!tenant) {
-    return res.status(403).json({ ok: false, error: "tenant_required" });
+  if (!tenant || !verify(sig, payload)) {
+    return res.status(403).json({ ok: false, error: "auth" });
   }
-
-  // Temporarily skip HMAC verification for testing
-  // TODO: Fix frontend HMAC secret configuration
-  // if (!verify(sig, payload)) {
-  //   return res.status(403).json({ ok: false, error: "auth" });
-  // }
 
   try {
     const { getApprovalWorkflow } = await import(
@@ -1302,15 +1224,9 @@ router.get("/provider/status", async (req, res) => {
   const { tenant, sig } = req.query;
   const payload = `GET:${tenant}:ai_provider_status`;
 
-  if (!tenant) {
-    return res.status(403).json({ ok: false, error: "tenant_required" });
+  if (!tenant || !verify(sig, payload)) {
+    return res.status(403).json({ ok: false, error: "auth" });
   }
-
-  // Temporarily skip HMAC verification for testing
-  // TODO: Fix frontend HMAC secret configuration
-  // if (!verify(sig, payload)) {
-  //   return res.status(403).json({ ok: false, error: "auth" });
-  // }
 
   try {
     const { getAIProviderService, validateAIConfig } = await import(
@@ -1332,15 +1248,9 @@ router.get("/automation/status", async (req, res) => {
   const { tenant, sig } = req.query;
   const payload = `GET:${tenant}:ai_automation_status`;
 
-  if (!tenant) {
-    return res.status(403).json({ ok: false, error: "tenant_required" });
+  if (!tenant || !verify(sig, payload)) {
+    return res.status(403).json({ ok: false, error: "auth" });
   }
-
-  // Temporarily skip HMAC verification for testing
-  // TODO: Fix frontend HMAC secret configuration
-  // if (!verify(sig, payload)) {
-  //   return res.status(403).json({ ok: false, error: "auth" });
-  // }
 
   try {
     const { getAIAutomationService } = await import("../services/ai-automation.js");
@@ -1370,15 +1280,9 @@ router.post("/automation/start", async (req, res) => {
   const { nonce = Date.now() } = req.body || {};
   const payload = `POST:${tenant}:ai_automation_start:${nonce}`;
 
-  if (!tenant) {
-    return res.status(403).json({ ok: false, error: "tenant_required" });
+  if (!tenant || !verify(sig, payload)) {
+    return res.status(403).json({ ok: false, error: "auth" });
   }
-
-  // Temporarily skip HMAC verification for testing
-  // TODO: Fix frontend HMAC secret configuration
-  // if (!verify(sig, payload)) {
-  //   return res.status(403).json({ ok: false, error: "auth" });
-  // }
 
   try {
     const { startAIAutomation } = await import("../services/ai-automation.js");
@@ -1407,15 +1311,9 @@ router.post("/automation/stop", async (req, res) => {
   const { nonce = Date.now() } = req.body || {};
   const payload = `POST:${tenant}:ai_automation_stop:${nonce}`;
 
-  if (!tenant) {
-    return res.status(403).json({ ok: false, error: "tenant_required" });
+  if (!tenant || !verify(sig, payload)) {
+    return res.status(403).json({ ok: false, error: "auth" });
   }
-
-  // Temporarily skip HMAC verification for testing
-  // TODO: Fix frontend HMAC secret configuration
-  // if (!verify(sig, payload)) {
-  //   return res.status(403).json({ ok: false, error: "auth" });
-  // }
 
   try {
     const { getAIAutomationService } = await import("../services/ai-automation.js");
@@ -1439,15 +1337,9 @@ router.post("/automation/trigger", async (req, res) => {
   const { nonce = Date.now(), operations = [] } = req.body || {};
   const payload = `POST:${tenant}:ai_automation_trigger:${nonce}`;
 
-  if (!tenant) {
-    return res.status(403).json({ ok: false, error: "tenant_required" });
+  if (!tenant || !verify(sig, payload)) {
+    return res.status(403).json({ ok: false, error: "auth" });
   }
-
-  // Temporarily skip HMAC verification for testing
-  // TODO: Fix frontend HMAC secret configuration
-  // if (!verify(sig, payload)) {
-  //   return res.status(403).json({ ok: false, error: "auth" });
-  // }
 
   try {
     const { getAIAutomationService } = await import("../services/ai-automation.js");
@@ -1472,15 +1364,9 @@ router.get("/tokens/usage", async (req, res) => {
   const { tenant, sig } = req.query;
   const payload = `GET:${tenant}:ai_tokens_usage`;
 
-  if (!tenant) {
-    return res.status(403).json({ ok: false, error: "tenant_required" });
+  if (!tenant || !verify(sig, payload)) {
+    return res.status(403).json({ ok: false, error: "auth" });
   }
-
-  // Temporarily skip HMAC verification for testing
-  // TODO: Fix frontend HMAC secret configuration
-  // if (!verify(sig, payload)) {
-  //   return res.status(403).json({ ok: false, error: "auth" });
-  // }
 
   try {
     const { getTokenMonitorService } = await import("../services/token-monitor.js");
@@ -1502,15 +1388,9 @@ router.get("/tokens/export", async (req, res) => {
   const { tenant, sig, startDate, endDate } = req.query;
   const payload = `GET:${tenant}:ai_tokens_export`;
 
-  if (!tenant) {
-    return res.status(403).json({ ok: false, error: "tenant_required" });
+  if (!tenant || !verify(sig, payload)) {
+    return res.status(403).json({ ok: false, error: "auth" });
   }
-
-  // Temporarily skip HMAC verification for testing
-  // TODO: Fix frontend HMAC secret configuration
-  // if (!verify(sig, payload)) {
-  //   return res.status(403).json({ ok: false, error: "auth" });
-  // }
 
   try {
     const { getTokenMonitorService } = await import("../services/token-monitor.js");
@@ -1546,15 +1426,9 @@ router.post("/budget/update", async (req, res) => {
   } = req.body || {};
   const payload = `POST:${tenant}:ai_budget_update:${nonce}`;
 
-  if (!tenant) {
-    return res.status(403).json({ ok: false, error: "tenant_required" });
+  if (!tenant || !verify(sig, payload)) {
+    return res.status(403).json({ ok: false, error: "auth" });
   }
-
-  // Temporarily skip HMAC verification for testing
-  // TODO: Fix frontend HMAC secret configuration
-  // if (!verify(sig, payload)) {
-  //   return res.status(403).json({ ok: false, error: "auth" });
-  // }
 
   try {
     const { getTokenMonitorService } = await import("../services/token-monitor.js");
@@ -1594,15 +1468,9 @@ router.get("/optimization/recommendations", async (req, res) => {
   const { tenant, sig } = req.query;
   const payload = `GET:${tenant}:ai_optimization_recommendations`;
 
-  if (!tenant) {
-    return res.status(403).json({ ok: false, error: "tenant_required" });
+  if (!tenant || !verify(sig, payload)) {
+    return res.status(403).json({ ok: false, error: "auth" });
   }
-
-  // Temporarily skip HMAC verification for testing
-  // TODO: Fix frontend HMAC secret configuration
-  // if (!verify(sig, payload)) {
-  //   return res.status(403).json({ ok: false, error: "auth" });
-  // }
 
   try {
     const { getTokenMonitorService } = await import("../services/token-monitor.js");
@@ -1650,15 +1518,9 @@ router.get("/logs", async (req, res) => {
   const { tenant, sig, level, operation, startTime, endTime, limit } = req.query;
   const payload = `GET:${tenant}:ai_logs`;
 
-  if (!tenant) {
-    return res.status(403).json({ ok: false, error: "tenant_required" });
+  if (!tenant || !verify(sig, payload)) {
+    return res.status(403).json({ ok: false, error: "auth" });
   }
-
-  // Temporarily skip HMAC verification for testing
-  // TODO: Fix frontend HMAC secret configuration
-  // if (!verify(sig, payload)) {
-  //   return res.status(403).json({ ok: false, error: "auth" });
-  // }
 
   try {
     const { getAILoggerService } = await import("../services/ai-logger.js");
@@ -1687,15 +1549,9 @@ router.get("/analytics", async (req, res) => {
   const { tenant, sig, period } = req.query;
   const payload = `GET:${tenant}:ai_analytics`;
 
-  if (!tenant) {
-    return res.status(403).json({ ok: false, error: "tenant_required" });
+  if (!tenant || !verify(sig, payload)) {
+    return res.status(403).json({ ok: false, error: "auth" });
   }
-
-  // Temporarily skip HMAC verification for testing
-  // TODO: Fix frontend HMAC secret configuration
-  // if (!verify(sig, payload)) {
-  //   return res.status(403).json({ ok: false, error: "auth" });
-  // }
 
   try {
     const { getAILoggerService } = await import("../services/ai-logger.js");
@@ -1737,15 +1593,9 @@ router.get("/health", async (req, res) => {
   const { tenant, sig, detailed } = req.query;
   const payload = `GET:${tenant}:ai_health`;
 
-  if (!tenant) {
-    return res.status(403).json({ ok: false, error: "tenant_required" });
+  if (!tenant || !verify(sig, payload)) {
+    return res.status(403).json({ ok: false, error: "auth" });
   }
-
-  // Temporarily skip HMAC verification for testing
-  // TODO: Fix frontend HMAC secret configuration
-  // if (!verify(sig, payload)) {
-  //   return res.status(403).json({ ok: false, error: "auth" });
-  // }
 
   try {
     // Import health service and AI services
@@ -1862,15 +1712,9 @@ router.get("/health/provider", async (req, res) => {
   const { tenant, sig, provider } = req.query;
   const payload = `GET:${tenant}:ai_health_provider`;
 
-  if (!tenant) {
-    return res.status(403).json({ ok: false, error: "tenant_required" });
+  if (!tenant || !verify(sig, payload)) {
+    return res.status(403).json({ ok: false, error: "auth" });
   }
-
-  // Temporarily skip HMAC verification for testing
-  // TODO: Fix frontend HMAC secret configuration
-  // if (!verify(sig, payload)) {
-  //   return res.status(403).json({ ok: false, error: "auth" });
-  // }
 
   try {
     const { getAIProvider } = await import("../lib/aiProvider.js");
@@ -1944,15 +1788,9 @@ router.get("/recovery/status", async (req, res) => {
   const { tenant, sig } = req.query;
   const payload = `GET:${tenant}:ai_recovery_status`;
 
-  if (!tenant) {
-    return res.status(403).json({ ok: false, error: "tenant_required" });
+  if (!tenant || !verify(sig, payload)) {
+    return res.status(403).json({ ok: false, error: "auth" });
   }
-
-  // Temporarily skip HMAC verification for testing
-  // TODO: Fix frontend HMAC secret configuration
-  // if (!verify(sig, payload)) {
-  //   return res.status(403).json({ ok: false, error: "auth" });
-  // }
 
   try {
     const { getAIErrorRecoveryService } = await import("../services/ai-error-recovery.js");
@@ -2008,15 +1846,9 @@ router.post("/recovery/force", async (req, res) => {
   const { nonce = Date.now() } = req.body || {};
   const payload = `POST:${tenant}:ai_recovery_force:${nonce}`;
 
-  if (!tenant) {
-    return res.status(403).json({ ok: false, error: "tenant_required" });
+  if (!tenant || !verify(sig, payload)) {
+    return res.status(403).json({ ok: false, error: "auth" });
   }
-
-  // Temporarily skip HMAC verification for testing
-  // TODO: Fix frontend HMAC secret configuration
-  // if (!verify(sig, payload)) {
-  //   return res.status(403).json({ ok: false, error: "auth" });
-  // }
 
   try {
     const { getAIErrorRecoveryService } = await import("../services/ai-error-recovery.js");
@@ -2040,15 +1872,9 @@ router.post("/recovery/reset-circuits", async (req, res) => {
   const { nonce = Date.now() } = req.body || {};
   const payload = `POST:${tenant}:ai_recovery_reset:${nonce}`;
 
-  if (!tenant) {
-    return res.status(403).json({ ok: false, error: "tenant_required" });
+  if (!tenant || !verify(sig, payload)) {
+    return res.status(403).json({ ok: false, error: "auth" });
   }
-
-  // Temporarily skip HMAC verification for testing
-  // TODO: Fix frontend HMAC secret configuration
-  // if (!verify(sig, payload)) {
-  //   return res.status(403).json({ ok: false, error: "auth" });
-  // }
 
   try {
     const { getAIErrorRecoveryService } = await import("../services/ai-error-recovery.js");
@@ -2071,15 +1897,9 @@ router.get("/degradation/status", async (req, res) => {
   const { tenant, sig } = req.query;
   const payload = `GET:${tenant}:ai_degradation_status`;
 
-  if (!tenant) {
-    return res.status(403).json({ ok: false, error: "tenant_required" });
+  if (!tenant || !verify(sig, payload)) {
+    return res.status(403).json({ ok: false, error: "auth" });
   }
-
-  // Temporarily skip HMAC verification for testing
-  // TODO: Fix frontend HMAC secret configuration
-  // if (!verify(sig, payload)) {
-  //   return res.status(403).json({ ok: false, error: "auth" });
-  // }
 
   try {
     const { getAIDegradationService } = await import("../services/ai-graceful-degradation.js");
@@ -2104,15 +1924,9 @@ router.post("/degradation/clear-cache", async (req, res) => {
   const { nonce = Date.now() } = req.body || {};
   const payload = `POST:${tenant}:ai_degradation_clear_cache:${nonce}`;
 
-  if (!tenant) {
-    return res.status(403).json({ ok: false, error: "tenant_required" });
+  if (!tenant || !verify(sig, payload)) {
+    return res.status(403).json({ ok: false, error: "auth" });
   }
-
-  // Temporarily skip HMAC verification for testing
-  // TODO: Fix frontend HMAC secret configuration
-  // if (!verify(sig, payload)) {
-  //   return res.status(403).json({ ok: false, error: "auth" });
-  // }
 
   try {
     const { getAIDegradationService } = await import("../services/ai-graceful-degradation.js");
@@ -2136,15 +1950,9 @@ router.post("/degradation/process-queue", async (req, res) => {
   const { nonce = Date.now() } = req.body || {};
   const payload = `POST:${tenant}:ai_degradation_process_queue:${nonce}`;
 
-  if (!tenant) {
-    return res.status(403).json({ ok: false, error: "tenant_required" });
+  if (!tenant || !verify(sig, payload)) {
+    return res.status(403).json({ ok: false, error: "auth" });
   }
-
-  // Temporarily skip HMAC verification for testing
-  // TODO: Fix frontend HMAC secret configuration
-  // if (!verify(sig, payload)) {
-  //   return res.status(403).json({ ok: false, error: "auth" });
-  // }
 
   try {
     const { getAIDegradationService } = await import("../services/ai-graceful-degradation.js");
@@ -2169,15 +1977,9 @@ router.post("/test", async (req, res) => {
   const { nonce = Date.now(), testType = 'basic' } = req.body || {};
   const payload = `POST:${tenant}:ai_test:${nonce}`;
 
-  if (!tenant) {
-    return res.status(403).json({ ok: false, error: "tenant_required" });
+  if (!tenant || !verify(sig, payload)) {
+    return res.status(403).json({ ok: false, error: "auth" });
   }
-
-  // Temporarily skip HMAC verification for testing
-  // TODO: Fix frontend HMAC secret configuration
-  // if (!verify(sig, payload)) {
-  //   return res.status(403).json({ ok: false, error: "auth" });
-  // }
 
   try {
     // Import test suite dynamically
