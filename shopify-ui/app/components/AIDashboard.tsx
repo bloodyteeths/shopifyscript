@@ -168,25 +168,46 @@ export function AIDashboard({ shopName, subscriptionTier = "starter", hasFeature
     }
 
     try {
+      setError(null);
+      console.log("Triggering AI writer for shop:", shopName);
+
       const response = await authenticatedFetch("/jobs/ai_writer", "POST", {
         dryRun: false,
         limit: 5
       }, shopName);
 
-      if (response.ok) {
-        const data = await response.json();
-        if (data.ok) {
-          setError(null);
-          // Refresh data after triggering
-          setTimeout(() => {
-            fetchDrafts();
-            fetchActivities();
-          }, 2000);
-        } else {
-          setError(data.error || "Failed to trigger AI writer");
-        }
+      const responseText = await response.text();
+      console.log("AI Writer Response:", responseText);
+
+      let data;
+      try {
+        data = JSON.parse(responseText);
+      } catch (e) {
+        console.error("Failed to parse response:", responseText);
+        setError("AI Writer triggered but response was not valid JSON");
+        // Still refresh to see if anything changed
+        setTimeout(() => {
+          fetchDrafts();
+          fetchActivities();
+        }, 2000);
+        return;
+      }
+
+      if (response.ok && data.ok) {
+        setError(null);
+        // Show success message
+        console.log("AI Writer triggered successfully:", data);
+        // Refresh data after triggering
+        setTimeout(() => {
+          fetchDrafts();
+          fetchActivities();
+          fetchProviderStatus();
+        }, 2000);
+      } else {
+        setError(data.error || data.message || "Failed to trigger AI writer");
       }
     } catch (err) {
+      console.error("Error triggering AI writer:", err);
       setError("Error triggering AI writer: " + err.message);
     }
   };

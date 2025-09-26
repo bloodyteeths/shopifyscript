@@ -5,7 +5,8 @@
  */
 
 import { getAIProviderService } from './ai-provider.js';
-import { ShopifyLandingPageAPI } from '../middleware/shopify-auth.js';
+// Shopify integration removed - should be handled by UI layer
+// import { ShopifyLandingPageAPI } from '../middleware/shopify-auth.js';
 import logger from './logger.js';
 
 /**
