@@ -1547,22 +1547,34 @@ app.post("/api/metrics", async (req, res) => {
             }
           }
 
-          // Write ad group metrics to Supabase
-          const adGroupMetrics = mRows
+          // Write ad group metrics to Supabase - deduplicate by ad_group_id and date
+          const adGroupMetricsMap = new Map();
+          mRows
             .filter(row => row[1] === 'ad_group')
-            .map(row => ({
-              tenant_id: String(tenant),
-              date: new Date(row[0]).toISOString(),
-              campaign_name: String(row[2]),
-              ad_group_id: String(row[4]),
-              ad_group_name: String(row[3]),
-              clicks: parseInt(row[6]) || 0,
-              cost: parseFloat(row[7]) || 0,
-              conversions: parseFloat(row[8]) || 0,
-              impressions: parseInt(row[9]) || 0,
-              ctr: parseFloat(row[10]) || 0,
-              created_at: new Date().toISOString()
-            }));
+            .forEach(row => {
+              const dateStr = new Date(row[0]).toISOString();
+              const adGroupId = String(row[4]);
+              const key = `${adGroupId}_${dateStr}`;
+
+              // Only keep the first occurrence or the one with more data
+              if (!adGroupMetricsMap.has(key) ||
+                  (parseInt(row[9]) || 0) > (adGroupMetricsMap.get(key).impressions || 0)) {
+                adGroupMetricsMap.set(key, {
+                  tenant_id: String(tenant),
+                  date: dateStr,
+                  campaign_name: String(row[2]),
+                  ad_group_id: adGroupId,
+                  ad_group_name: String(row[3]),
+                  clicks: parseInt(row[6]) || 0,
+                  cost: parseFloat(row[7]) || 0,
+                  conversions: parseFloat(row[8]) || 0,
+                  impressions: parseInt(row[9]) || 0,
+                  ctr: parseFloat(row[10]) || 0,
+                  created_at: new Date().toISOString()
+                });
+              }
+            });
+          const adGroupMetrics = Array.from(adGroupMetricsMap.values());
 
           if (adGroupMetrics.length > 0) {
             const { error: adGroupError } = await supabase

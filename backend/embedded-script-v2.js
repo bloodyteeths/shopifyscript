@@ -440,33 +440,74 @@ function collectPerf_() {
   var rows = [];
 
   try {
+    // First check if we need to enable paused campaigns
+    var pausedCampaigns = AdsApp.campaigns()
+      .withCondition("AdvertisingChannelType = SEARCH")
+      .withCondition("Status = PAUSED")
+      .get();
+
+    var enabledCount = 0;
+    while (pausedCampaigns.hasNext()) {
+      var pausedCamp = pausedCampaigns.next();
+      // Only enable if it has a reasonable budget and ad groups
+      if (pausedCamp.getBudget().getAmount() >= 1 && pausedCamp.adGroups().get().hasNext()) {
+        try {
+          // Check if USER_CONFIG suggests enabling
+          if (typeof USER_CONFIG !== 'undefined' && USER_CONFIG && USER_CONFIG.alwaysOn) {
+            pausedCamp.enable();
+            enabledCount++;
+            log_("Enabled campaign: " + pausedCamp.getName());
+          }
+        } catch(e) {
+          log_("Could not enable campaign " + pausedCamp.getName() + ": " + e);
+        }
+      }
+    }
+    if (enabledCount > 0) {
+      log_("Enabled " + enabledCount + " paused campaigns");
+    }
+
     // Use the legacy API which is more reliable
     var campaigns = AdsApp.campaigns()
       .withCondition("AdvertisingChannelType = SEARCH")
-      .withCondition("Status IN ['ENABLED', 'PAUSED', 'REMOVED']")
+      .withCondition("Status IN ['ENABLED', 'PAUSED']")
       .get();
 
     while (campaigns.hasNext()) {
       var campaign = campaigns.next();
       var campaignId = campaign.getId();
       var campaignName = campaign.getName();
+      var campaignStatus = campaign.isEnabled() ? "ENABLED" : "PAUSED";
 
-      // Get stats for different periods including ALL_TIME to capture historical data
-      var periods = ["ALL_TIME", "LAST_30_DAYS", "LAST_7_DAYS", "TODAY", "YESTERDAY"];
+      // Get stats focusing on recent data first, then historical
+      var periods = ["TODAY", "YESTERDAY", "LAST_7_DAYS", "LAST_30_DAYS", "ALL_TIME"];
+      var hasRecentData = false;
 
       for (var i = 0; i < periods.length; i++) {
         try {
           var stats = campaign.getStatsFor(periods[i]);
+          var impressions = stats.getImpressions();
+          var clicks = stats.getClicks();
+          var cost = stats.getCost();
+          var conversions = stats.getConversions();
+          var ctr = stats.getCtr();
 
-          // Always record data, even if 0 (to show campaigns exist even without activity)
-          rows.push([
-            new Date(), 'campaign', campaignName, '', campaignId, campaignName,
-            stats.getClicks(), stats.getCost(), stats.getConversions(),
-            stats.getImpressions(), stats.getCtr()
-          ]);
+          // Only record if we have data or it's the first period to show campaign exists
+          if (impressions > 0 || clicks > 0 || cost > 0 || !hasRecentData) {
+            rows.push([
+              new Date(), 'campaign', campaignName, '', campaignId, campaignName,
+              clicks, cost, conversions, impressions, ctr
+            ]);
 
-          // Log for debugging - show all periods
-          log_("Campaign " + campaignName + " [" + periods[i] + "] - Impressions: " + stats.getImpressions() + ", Clicks: " + stats.getClicks() + ", Cost: $" + stats.getCost() + ", Conv: " + stats.getConversions());
+            if (impressions > 0 || clicks > 0) {
+              hasRecentData = true;
+            }
+          }
+
+          // Log for debugging - focus on periods with data
+          if (impressions > 0 || cost > 0) {
+            log_("Campaign " + campaignName + " [" + periods[i] + "] - Status: " + campaignStatus + ", Impressions: " + impressions + ", Clicks: " + clicks + ", Cost: $" + cost + ", Conv: " + conversions);
+          }
         } catch (e) {
           log_("Error getting stats for " + campaignName + " [" + periods[i] + "]: " + e);
         }
@@ -800,7 +841,24 @@ function buildSafeRSAs_(cfg) {
     var Hsrc = ov && ov.H && ov.H.length ? ov.H : (cfg.RSA_DEFAULT && cfg.RSA_DEFAULT.H ? cfg.RSA_DEFAULT.H : []);
     var Dsrc = ov && ov.D && ov.D.length ? ov.D : (cfg.RSA_DEFAULT && cfg.RSA_DEFAULT.D ? cfg.RSA_DEFAULT.D : []);
 
-    // If no configured content, try to extract from existing ads in the campaign
+    // First, try to use user-generated content from advanced config
+    if (typeof USER_CONFIG !== 'undefined' && USER_CONFIG && USER_CONFIG.generatedHeadlines) {
+      if (USER_CONFIG.generatedHeadlines && USER_CONFIG.generatedHeadlines.length >= 3) {
+        Hsrc = USER_CONFIG.generatedHeadlines;
+        log_("Using " + USER_CONFIG.generatedHeadlines.length + " user-configured headlines");
+      }
+      if (USER_CONFIG.generatedDescriptions && USER_CONFIG.generatedDescriptions.length >= 2) {
+        Dsrc = USER_CONFIG.generatedDescriptions;
+        log_("Using " + USER_CONFIG.generatedDescriptions.length + " user-configured descriptions");
+      }
+    } else if (typeof USER_HEADLINES !== 'undefined' && USER_HEADLINES && USER_HEADLINES.length >= 3) {
+      // Fallback to direct USER_HEADLINES variable
+      Hsrc = USER_HEADLINES;
+      Dsrc = USER_DESCRIPTIONS || Dsrc;
+      log_("Using direct USER_HEADLINES and USER_DESCRIPTIONS");
+    }
+
+    // If no user content or not enough, try to extract from existing ads
     if ((!Hsrc || Hsrc.length < 3) || (!Dsrc || Dsrc.length < 2)) {
       var campaign = ag.getCampaign();
       var extracted = extractExistingAdContent_(campaign);
