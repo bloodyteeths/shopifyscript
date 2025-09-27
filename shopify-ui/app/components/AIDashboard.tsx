@@ -82,12 +82,32 @@ export function AIDashboard({ shopName, subscriptionTier = "starter", hasFeature
   // Fetch AI provider status
   const fetchProviderStatus = async () => {
     try {
+      // Ensure authenticatedFetch is available
+      if (typeof authenticatedFetch !== 'function') {
+        console.error("authenticatedFetch is not a function");
+        setProviderStatus({
+          status: 'error',
+          initialized: false,
+          provider: 'unknown',
+          model: 'unknown'
+        });
+        return;
+      }
+
       const response = await authenticatedFetch("/ai/provider/status", "GET", undefined, shopName);
 
       if (response && response.ok) {
         const data = await response.json();
         if (data && data.ok && data.status) {
           setProviderStatus(data.status);
+        } else if (data && data.ok && data.config) {
+          // Handle alternate response format from provider/status
+          setProviderStatus({
+            status: data.config.configured ? 'healthy' : 'not_configured',
+            initialized: data.config.configured,
+            provider: data.config.provider || 'gemini',
+            model: data.config.model || 'gemini-2.5-flash'
+          });
         } else {
           // Set default status if response is malformed
           setProviderStatus({
@@ -99,6 +119,7 @@ export function AIDashboard({ shopName, subscriptionTier = "starter", hasFeature
         }
       } else {
         // Set offline status if request failed
+        console.error("Provider status request failed:", response?.status);
         setProviderStatus({
           status: 'offline',
           initialized: false,

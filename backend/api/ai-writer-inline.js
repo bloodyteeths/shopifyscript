@@ -130,7 +130,7 @@ async function getBusinessContext(tenant, supabase) {
       const { data: rsaAssets } = await supabase
         .from('rsa_assets')
         .select('theme, headlines_pipe')
-        .eq('tenant', tenant)
+        .eq('tenant_id', tenant)  // Changed from 'tenant' to 'tenant_id'
         .limit(20);
 
       if (rsaAssets && rsaAssets.length > 0) {
@@ -151,7 +151,7 @@ async function getBusinessContext(tenant, supabase) {
       const { data: searchTerms } = await supabase
         .from('search_terms')
         .select('search_term, conversions, clicks, cost, impressions')
-        .eq('tenant', tenant)
+        .eq('tenant_id', tenant)  // Changed to tenant_id - adjust if search_terms uses 'tenant'
         .gt('conversions', 0)
         .order('conversions', { ascending: false })
         .limit(10);
@@ -356,7 +356,7 @@ Return ONLY valid JSON with "headlines" array (5 items) and "descriptions" array
 
         // Prepare data for storage
         const rsaData = {
-          tenant,
+          tenant_id: tenant,  // Changed from 'tenant' to 'tenant_id' to match database column
           theme,
           headlines_pipe: v.clipped.h.join("|"),
           descriptions_pipe: v.clipped.d.join("|"),
