@@ -3792,50 +3792,45 @@ app.post("/api/jobs/ai_writer", async (req, res) => {
 
     console.log(`Starting inline AI writer for ${tenant} with limit ${limit}`);
 
-    // For Vercel, we need to complete the work before sending response
-    // Set a shorter limit to stay within timeout - just 1 theme at a time
-    const safeLimit = 1; // Only 1 theme at a time to ensure fast response
+    // Start the AI generation process
+    // Send immediate response to prevent UI timeout
+    res.json({
+      ok: true,
+      status: "processing",
+      message: `AI is generating ${limit} themes. Content will appear when ready.`,
+      processingId: `${tenant}_${Date.now()}`
+    });
 
-    try {
-      // Execute the AI writer with timeout protection - 6 seconds max
-      const result = await Promise.race([
-        handleInlineAIWriter(tenant, safeLimit),
-        new Promise((_, reject) =>
-          setTimeout(() => reject(new Error('Timeout - reducing batch size')), 6000)
-        )
-      ]);
+    // Continue processing in background (fire and forget)
+    handleInlineAIWriter(tenant, limit)
+      .then(async (result) => {
+        console.log(`AI writer completed for ${tenant}: generated ${result.wrote} themes`);
 
-      // Log success
-      try {
-        await appendRows(
-          tenant,
-          "RUN_LOGS",
-          ["timestamp", "message"],
-          [[new Date().toISOString(), `ai_writer_completed: ${result.wrote} themes`]],
-        );
-      } catch {}
+        // Log success
+        try {
+          await appendRows(
+            tenant,
+            "RUN_LOGS",
+            ["timestamp", "message"],
+            [[new Date().toISOString(), `ai_writer_completed: ${result.wrote} themes`]],
+          );
+        } catch (e) {
+          console.warn("Could not log completion:", e);
+        }
+      })
+      .catch((error) => {
+        console.error(`AI writer error for ${tenant}:`, error);
 
-      // Send successful response
-      res.json({
-        ok: true,
-        ...result,
-        limitReduced: safeLimit < limit,
-        message: safeLimit < limit ?
-          `Generated ${safeLimit} themes (reduced from ${limit} for timeout). Run again for more.` :
-          undefined
+        // Log error
+        try {
+          appendRows(
+            tenant,
+            "RUN_LOGS",
+            ["timestamp", "message"],
+            [[new Date().toISOString(), `ai_writer_error: ${error.message}`]],
+          ).catch(() => {});
+        } catch {}
       });
-
-    } catch (timeoutError) {
-      console.error(`AI writer timeout/error for ${tenant}:`, timeoutError);
-
-      // Send partial success or error response
-      res.json({
-        ok: false,
-        error: "Generation timed out. Try with fewer themes or run again.",
-        message: "Vercel timeout limit reached. Some content may have been saved.",
-        limitSuggestion: 1
-      });
-    }
   } catch (e) {
     res.status(500).json({ ok: false, error: String(e) });
   }

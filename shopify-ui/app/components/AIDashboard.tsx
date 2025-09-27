@@ -57,6 +57,7 @@ export function AIDashboard({ shopName, subscriptionTier = "starter", hasFeature
   const [error, setError] = useState<string | null>(null);
   // Fix hydration issue - use array instead of Set for initial state
   const [selectedDraftIndices, setSelectedDraftIndices] = useState<number[]>([]);
+  const [isGenerating, setIsGenerating] = useState(false);
 
   // Fetch AI drafts
   const fetchDrafts = async () => {
@@ -196,14 +197,44 @@ export function AIDashboard({ shopName, subscriptionTier = "starter", hasFeature
 
       if (response.ok && data.ok) {
         setError(null);
-        // Show success message
-        console.log("AI Writer triggered successfully:", data);
-        // Refresh data after triggering (10 seconds to allow AI generation to complete)
-        setTimeout(() => {
-          fetchDrafts();
-          fetchActivities();
-          fetchProviderStatus();
-        }, 10000);
+
+        // Check if it's async processing
+        if (data.status === "processing") {
+          setIsGenerating(true);
+          console.log("AI Writer started processing:", data);
+
+          // Start polling for new drafts every 3 seconds
+          let pollCount = 0;
+          const maxPolls = 20; // Poll for up to 60 seconds
+
+          const pollInterval = setInterval(async () => {
+            pollCount++;
+            console.log(`Polling for drafts (${pollCount}/${maxPolls})...`);
+
+            await fetchDrafts();
+
+            // Stop after max attempts
+            if (pollCount >= maxPolls) {
+              clearInterval(pollInterval);
+              setIsGenerating(false);
+              console.log("Stopped polling - max attempts reached");
+            }
+          }, 3000);
+
+          // Also refresh other data after a delay
+          setTimeout(() => {
+            fetchActivities();
+            fetchProviderStatus();
+          }, 5000);
+        } else {
+          // Legacy immediate response
+          console.log("AI Writer completed immediately:", data);
+          setTimeout(() => {
+            fetchDrafts();
+            fetchActivities();
+            fetchProviderStatus();
+          }, 2000);
+        }
       } else {
         setError(data.error || data.message || "Failed to trigger AI writer");
       }
@@ -279,6 +310,28 @@ export function AIDashboard({ shopName, subscriptionTier = "starter", hasFeature
         </div>
       )}
 
+      {isGenerating && (
+        <div style={{
+          background: "#fff3cd",
+          border: "1px solid #ffeaa7",
+          borderRadius: "6px",
+          padding: "12px",
+          marginBottom: "16px",
+          color: "#856404",
+          display: "flex",
+          alignItems: "center",
+          gap: "12px"
+        }}>
+          <span style={{ fontSize: "20px" }}>⏳</span>
+          <div>
+            <strong>AI is generating content...</strong>
+            <p style={{ margin: "4px 0 0 0", fontSize: "12px" }}>
+              This may take 30-60 seconds as the AI analyzes your store, fetches performance data, and creates optimized content.
+            </p>
+          </div>
+        </div>
+      )}
+
       {/* AI Provider Status */}
       <section style={{
         background: "#f8f9fa",
@@ -342,19 +395,31 @@ export function AIDashboard({ shopName, subscriptionTier = "starter", hasFeature
         <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
           <button
             onClick={triggerAIWriter}
-            disabled={!hasFeatureAccess}
+            disabled={!hasFeatureAccess || isGenerating}
             style={{
-              background: hasFeatureAccess ? "#28a745" : "#6c757d",
-              color: "white",
+              background: !hasFeatureAccess ? "#6c757d" : isGenerating ? "#ffc107" : "#28a745",
+              color: isGenerating ? "#000" : "white",
               padding: "8px 16px",
               border: "none",
               borderRadius: "4px",
-              cursor: hasFeatureAccess ? "pointer" : "not-allowed",
-              fontSize: "14px"
+              cursor: hasFeatureAccess && !isGenerating ? "pointer" : "not-allowed",
+              fontSize: "14px",
+              minWidth: "180px",
+              display: "inline-flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "8px"
             }}
-            title={!hasFeatureAccess ? "Requires Professional+ subscription" : "Generate new AI content"}
+            title={!hasFeatureAccess ? "Requires Professional+ subscription" : isGenerating ? "AI is generating content..." : "Generate new AI content"}
           >
-            Generate New Content
+            {isGenerating ? (
+              <>
+                <span>⏳</span>
+                <span>Generating Content...</span>
+              </>
+            ) : (
+              "Generate New Content"
+            )}
           </button>
 
           <button

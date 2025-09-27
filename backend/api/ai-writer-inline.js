@@ -34,9 +34,9 @@ async function fetchWebsiteContext(tenant) {
 
     console.log(`Fetching website context from ${storeUrl}`);
 
-    // Add shorter timeout for Vercel
+    // Add reasonable timeout for website fetch
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 1000); // 1 second timeout
+    const timeoutId = setTimeout(() => controller.abort(), 3000); // 3 second timeout
 
     const response = await fetch(storeUrl, {
       headers: {
@@ -96,7 +96,7 @@ async function getBusinessContext(tenant, supabase) {
 
   try {
     // Try to get config from tenant service
-    const config = await tenantConfigService.getConfig(tenant);
+    const config = await tenantConfigService.getTenantConfig(tenant);
 
     if (config) {
       context.businessName = config.business_name || tenant;
@@ -108,34 +108,53 @@ async function getBusinessContext(tenant, supabase) {
     console.warn("Could not load tenant config:", error.message);
   }
 
-  // Try to get performance data from Supabase (simplified for speed)
+  // Try to get performance data from Supabase
   if (supabase) {
     try {
-      // Only get most essential data to save time
-
-      // Get product categories from existing RSA assets (fastest query)
+      // Get product categories from existing RSA assets
       const { data: rsaAssets } = await supabase
         .from('rsa_assets')
-        .select('theme')
+        .select('theme, headlines_pipe')
         .eq('tenant', tenant)
-        .limit(10);
+        .limit(20);
 
       if (rsaAssets && rsaAssets.length > 0) {
         const themes = [...new Set(rsaAssets.map(r => r.theme))];
         context.products = themes.filter(t => t && t !== 'Theme 1' && !t.startsWith('Theme '));
+
+        // Also extract successful headlines for learning
+        const headlines = rsaAssets
+          .flatMap(r => r.headlines_pipe ? r.headlines_pipe.split('|') : [])
+          .filter(h => h && h.length > 0);
+
+        if (headlines.length > 0) {
+          context.successfulHeadlines = headlines.slice(0, 10);
+        }
       }
 
-      // Get top keywords (simplified)
+      // Get top performing search terms with metrics
       const { data: searchTerms } = await supabase
         .from('search_terms')
-        .select('search_term')
+        .select('search_term, conversions, clicks, cost, impressions')
         .eq('tenant', tenant)
         .gt('conversions', 0)
         .order('conversions', { ascending: false })
-        .limit(5);
+        .limit(10);
 
       if (searchTerms && searchTerms.length > 0) {
         context.topKeywords = searchTerms.map(st => st.search_term);
+
+        // Calculate average performance metrics
+        const totalImpressions = searchTerms.reduce((sum, st) => sum + (st.impressions || 0), 0);
+        const totalClicks = searchTerms.reduce((sum, st) => sum + (st.clicks || 0), 0);
+        const totalCost = searchTerms.reduce((sum, st) => sum + (st.cost || 0), 0);
+
+        if (totalImpressions > 0) {
+          context.performanceData.avgCTR = ((totalClicks / totalImpressions) * 100).toFixed(2);
+        }
+        if (totalClicks > 0) {
+          context.performanceData.avgCPC = (totalCost / totalClicks).toFixed(2);
+        }
       }
     } catch (error) {
       console.warn("Could not load Supabase context:", error.message);
@@ -236,19 +255,26 @@ export async function handleInlineAIWriter(tenant, limit = 5) {
 
         // Try AI generation with rich contextual prompt
         try {
-          const prompt = `Generate 5 Google Ads headlines (max 30 chars) and 2 descriptions (max 90 chars).
+          const prompt = `Generate 5 Google Ads headlines (max 30 chars each) and 2 descriptions (max 90 chars each) for a ${context.businessType} business.
 
 Business: ${context.businessName}
-Product: ${theme}
-${context.topKeywords.length > 0 ? `Keywords: ${context.topKeywords.slice(0, 3).join(', ')}` : ''}
+${context.websiteInfo.storeDescription ? `Store Description: ${context.websiteInfo.storeDescription}` : ''}
+Product/Service: ${theme}
+${context.targetAudience ? `Target Audience: ${context.targetAudience}` : ''}
+
+${context.topKeywords.length > 0 ? `Top Converting Keywords: ${context.topKeywords.slice(0, 5).join(', ')}` : ''}
+${context.performanceData.avgCTR > 0 ? `Average CTR: ${context.performanceData.avgCTR}%` : ''}
+${context.performanceData.avgCPC > 0 ? `Average CPC: $${context.performanceData.avgCPC}` : ''}
+${context.successfulHeadlines?.length > 0 ? `Past Successful Headlines: ${context.successfulHeadlines.slice(0, 3).join(', ')}` : ''}
 
 Requirements:
-- Headlines MUST be 30 characters or less
-- Descriptions MUST be 90 characters or less
+- Headlines MUST be 30 characters or less (count carefully!)
+- Descriptions MUST be 90 characters or less (count carefully!)
+- Learn from the successful keywords and headlines if provided
 - Include strong call-to-action
-- Focus on ${theme}
+- Make it specific to ${theme}
 
-Return ONLY JSON: {"headlines":["..."], "descriptions":["..."]}`;
+Return ONLY valid JSON with "headlines" array (5 items) and "descriptions" array (2 items).`;
 
           const response = await ai.generateText(prompt);
 
