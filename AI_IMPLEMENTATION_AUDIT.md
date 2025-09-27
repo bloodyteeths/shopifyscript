@@ -863,3 +863,75 @@ GET /api/ai/degradation/status
 - [x] Google Sheets as fallback
 - [x] AI reads from Supabase first
 - [x] AI writes insights to both systems (via Redis caching and dual-write pattern)
+
+---
+
+## September 27, 2025 - Vercel Serverless Fixes
+
+### Problem Summary
+The AI writer functionality was causing UI unresponsiveness when deployed on Vercel due to:
+1. Child process spawning not working in serverless environments
+2. Google AI returning empty responses with incorrect response parsing
+3. Redis connection timeouts in serverless cold starts
+4. Module resolution issues with job files in Vercel
+
+### Solutions Implemented
+
+#### 1. Fixed Google AI Response Handling
+**File**: `/backend/lib/aiProvider.js:196-221`
+- Added multiple extraction methods for Google AI responses
+- Try standard `response.text()` first
+- Fall back to checking candidates array
+- Added direct response property access
+- Better error logging for debugging response structure
+
+#### 2. Created Inline AI Writer for Serverless
+**File**: `/backend/api/ai-writer-inline.js` (NEW)
+- Replaced child process spawning with inline execution
+- Direct function calls instead of subprocess
+- Includes fallback content generation when AI fails
+- Graceful degradation with error handling
+- Returns structured results with success indicators
+
+#### 3. Modified Server to Use Inline Implementation
+**File**: `/backend/server.js:1206-1210`
+- Changed from `spawn('node', ['jobs/ai_writer.js'])` to inline execution
+- Import and call `handleInlineAIWriter` directly
+- Removed subprocess dependency for Vercel compatibility
+
+#### 4. Optimized Redis for Serverless
+**File**: `/backend/services/redis.js`
+- Added serverless detection via VERCEL environment variable
+- Implemented lazy connection initialization (0 min connections in serverless)
+- Reduced connection timeout from 5s to 2s in serverless
+- Added graceful degradation - returns null instead of throwing
+- Implemented Promise.race for connection timeouts
+- Reduced retry attempts and delays in serverless
+- Added command timeout protection
+
+### Key Changes for Serverless Compatibility
+
+1. **No Process Spawning**: All AI writer logic runs inline
+2. **Fast Failures**: Reduced timeouts and retries for serverless
+3. **Graceful Degradation**: Falls back to default content when services unavailable
+4. **Lazy Initialization**: Services only connect when needed
+5. **Null-Safe Operations**: Redis operations return null instead of throwing
+
+### Testing Results
+- Fallback mechanism confirmed working
+- AI writer generates default content when API unavailable
+- No more UI freezing issues
+- Redis gracefully handles connection failures
+
+### Environment Variables Required in Vercel
+All environment variables are already set in Vercel (confirmed by user):
+- `GEMINI_API_KEY` - For Google AI
+- `AI_PROVIDER=google`
+- `AI_MODEL=gemini-2.5-flash`
+- `REDIS_URL` or `KV_URL` - For Redis (optional)
+- Google Sheets credentials (optional)
+
+### Commits
+- `2c53777`: Optimize Redis for Vercel serverless environment
+- `e3c8dfb`: Trigger Vercel deployment
+- `0394252`: Reverted to stable base with gemini-2.5-flash model
