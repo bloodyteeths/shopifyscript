@@ -34,11 +34,18 @@ async function fetchWebsiteContext(tenant) {
 
     console.log(`Fetching website context from ${storeUrl}`);
 
+    // Add timeout to prevent hanging
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 2000); // 2 second timeout
+
     const response = await fetch(storeUrl, {
       headers: {
         'User-Agent': 'ProofKit AI Bot/1.0'
-      }
+      },
+      signal: controller.signal
     });
+
+    clearTimeout(timeoutId);
 
     if (response.ok) {
       const html = await response.text();
@@ -48,13 +55,17 @@ async function fetchWebsiteContext(tenant) {
       const descMatch = html.match(/<meta\s+name=["']description["']\s+content=["'](.*?)["']/i);
 
       return {
-        storeTitle: titleMatch ? titleMatch[1] : '',
-        storeDescription: descMatch ? descMatch[1] : '',
+        storeTitle: titleMatch ? titleMatch[1].substring(0, 100) : '', // Limit length
+        storeDescription: descMatch ? descMatch[1].substring(0, 200) : '', // Limit length
         websiteAvailable: true
       };
     }
   } catch (error) {
-    console.warn("Could not fetch website:", error.message);
+    if (error.name === 'AbortError') {
+      console.warn("Website fetch timeout for", tenant);
+    } else {
+      console.warn("Could not fetch website:", error.message);
+    }
   }
 
   return { websiteAvailable: false };

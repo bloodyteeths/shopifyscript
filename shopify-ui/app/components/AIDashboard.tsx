@@ -55,7 +55,8 @@ export function AIDashboard({ shopName, subscriptionTier = "starter", hasFeature
   const [activities, setActivities] = useState<AIActivity[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [selectedDrafts, setSelectedDrafts] = useState<Set<number>>(new Set());
+  // Fix hydration issue - use array instead of Set for initial state
+  const [selectedDraftIndices, setSelectedDraftIndices] = useState<number[]>([]);
 
   // Fetch AI drafts
   const fetchDrafts = async () => {
@@ -127,7 +128,7 @@ export function AIDashboard({ shopName, subscriptionTier = "starter", hasFeature
 
   // Accept selected drafts
   const acceptDrafts = async () => {
-    const selectedDraftsList = Array.from(selectedDrafts).map(index => drafts[index]);
+    const selectedDraftsList = selectedDraftIndices.map(index => drafts[index]);
 
     try {
       const response = await authenticatedFetch("/ai/accept", "POST", {
@@ -143,7 +144,7 @@ export function AIDashboard({ shopName, subscriptionTier = "starter", hasFeature
         const data = await response.json();
         if (data.ok && data.accepted > 0) {
           setError(null);
-          setSelectedDrafts(new Set());
+          setSelectedDraftIndices([]);
           await fetchDrafts(); // Refresh drafts
           // Show success message
         } else {
@@ -157,7 +158,7 @@ export function AIDashboard({ shopName, subscriptionTier = "starter", hasFeature
 
   // Reject selected drafts (remove from selection)
   const rejectDrafts = () => {
-    setSelectedDrafts(new Set());
+    setSelectedDraftIndices([]);
   };
 
   // Trigger AI writer job
@@ -213,6 +214,9 @@ export function AIDashboard({ shopName, subscriptionTier = "starter", hasFeature
   };
 
   useEffect(() => {
+    // Only run on client side to prevent hydration issues
+    if (typeof window === 'undefined') return;
+
     const loadData = async () => {
       setLoading(true);
       try {
@@ -235,13 +239,14 @@ export function AIDashboard({ shopName, subscriptionTier = "starter", hasFeature
   }, [shopName]);
 
   const toggleDraftSelection = (index: number) => {
-    const newSelection = new Set(selectedDrafts);
-    if (newSelection.has(index)) {
-      newSelection.delete(index);
+    const newSelection = [...selectedDraftIndices];
+    const indexPos = newSelection.indexOf(index);
+    if (indexPos > -1) {
+      newSelection.splice(indexPos, 1);
     } else {
-      newSelection.add(index);
+      newSelection.push(index);
     }
-    setSelectedDrafts(newSelection);
+    setSelectedDraftIndices(newSelection);
   };
 
   if (loading) {
@@ -391,7 +396,7 @@ export function AIDashboard({ shopName, subscriptionTier = "starter", hasFeature
             AI Generated Drafts ({drafts.length})
           </h2>
 
-          {selectedDrafts.size > 0 && (
+          {selectedDraftIndices.length > 0 && (
             <div style={{ display: "flex", gap: "8px" }}>
               <button
                 onClick={acceptDrafts}
@@ -405,7 +410,7 @@ export function AIDashboard({ shopName, subscriptionTier = "starter", hasFeature
                   fontSize: "12px"
                 }}
               >
-                Accept ({selectedDrafts.size})
+                Accept ({selectedDraftIndices.length})
               </button>
               <button
                 onClick={rejectDrafts}
@@ -436,7 +441,7 @@ export function AIDashboard({ shopName, subscriptionTier = "starter", hasFeature
               <div
                 key={index}
                 style={{
-                  border: selectedDrafts.has(index) ? "2px solid #007bff" : "1px solid #e1e3e5",
+                  border: selectedDraftIndices.includes(index) ? "2px solid #007bff" : "1px solid #e1e3e5",
                   borderRadius: "6px",
                   padding: "12px",
                   cursor: "pointer",
@@ -453,7 +458,7 @@ export function AIDashboard({ shopName, subscriptionTier = "starter", hasFeature
                   <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                     <input
                       type="checkbox"
-                      checked={selectedDrafts.has(index)}
+                      checked={selectedDraftIndices.includes(index)}
                       onChange={() => toggleDraftSelection(index)}
                       style={{ margin: 0 }}
                     />
