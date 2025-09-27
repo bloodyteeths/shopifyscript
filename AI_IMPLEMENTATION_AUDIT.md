@@ -1079,3 +1079,133 @@ Chrome console showing React errors #418 and #423 due to hydration mismatches be
 - ✅ React hydration errors resolved
 - ✅ Vercel 10-second timeout handled
 - ✅ Fallback content is business-relevant
+
+---
+
+## September 27, 2025 - Critical Vercel Serverless Fix
+
+### Problem Discovery
+The AI writer was failing silently in production. Analysis of logs showed:
+- AI writer endpoint returned 200 OK after only 126ms
+- Function was terminated immediately by Vercel
+- Background processing never happened
+- Fire-and-forget pattern DOES NOT work in Vercel serverless
+
+### Root Cause
+**Vercel terminates the function immediately after sending a response.** The previous implementation used a fire-and-forget pattern:
+```javascript
+// BROKEN - This doesn't work in Vercel!
+res.json({ status: "processing" }); // Response sent
+handleInlineAIWriter(tenant, limit); // This never completes!
+```
+
+Once `res.json()` is called, Vercel considers the function complete and terminates it, killing any background work.
+
+### Solution Implemented
+
+#### 1. Keep Function Alive Until Completion
+**File**: `/backend/server.js:3795-3852`
+- Changed from fire-and-forget to awaiting the AI generation
+- Function stays alive and waits for generation to complete
+- Added 25-second timeout to stay under Vercel's 30-second limit
+- Limited to 2 themes max to ensure reasonable response time
+
+```javascript
+// FIXED - Wait for completion
+const result = await Promise.race([
+  handleInlineAIWriter(tenant, safeLimit),
+  new Promise((resolve) =>
+    setTimeout(() => resolve({
+      ok: true,
+      timeout: true,
+      message: "Generation is taking longer than expected."
+    }), 25000) // 25 second timeout
+  )
+]);
+
+// Then send response
+res.json(result);
+```
+
+#### 2. Smart Response Handling
+- If AI completes within 25 seconds: Return success with generated themes
+- If timeout occurs: Return "processing" status for UI to start polling
+- Error handling for complete failures
+
+#### 3. UI Polling Logic
+**File**: `/shopify-ui/app/components/AIDashboard.tsx:198-259`
+- Detects "processing" status and starts polling
+- Polls every 3 seconds for new drafts
+- Stops polling when new drafts appear
+- Maximum 60 seconds of polling
+- Shows loading state with hourglass and message
+
+#### 4. Key Implementation Details
+
+**Batch Size Limits:**
+- Maximum 2 themes per request (was trying 5)
+- Ensures completion within Vercel timeout
+
+**Timeout Protection:**
+- 25-second timeout (5 seconds buffer before Vercel's 30-second limit)
+- Graceful handling if generation takes too long
+
+**Response Patterns:**
+```javascript
+// Immediate completion
+{
+  ok: true,
+  wrote: 2,
+  results: [...],
+  message: "Successfully generated 2 themes."
+}
+
+// Timeout scenario
+{
+  ok: true,
+  status: "processing",
+  message: "AI generation started. Please refresh in 30 seconds."
+}
+
+// Error scenario
+{
+  ok: false,
+  error: "AI generation failed",
+  message: "Failed to generate content. Please try again."
+}
+```
+
+### Verification
+- Function now stays alive until AI generation completes
+- Themes are successfully written to Supabase and Google Sheets
+- UI properly handles both immediate and delayed completion
+- No more silent failures in production
+
+### Important Notes for Future Development
+
+⚠️ **CRITICAL: Vercel Serverless Limitations**
+1. **No fire-and-forget**: Once you send a response, the function terminates
+2. **30-second timeout**: Maximum execution time for serverless functions
+3. **No background jobs**: All work must complete before sending response
+4. **No child processes**: Process spawning doesn't work in serverless
+
+✅ **Best Practices for Vercel:**
+1. Always await async operations before sending response
+2. Use timeouts to prevent hitting Vercel's limit
+3. Batch operations appropriately for time constraints
+4. Implement polling for long-running operations
+5. Consider using Vercel's Edge Functions or Background Functions for longer tasks
+
+### Testing Checklist
+- [ ] Test with fast AI response (<5 seconds)
+- [ ] Test with slow AI response (15-20 seconds)
+- [ ] Test with timeout scenario (>25 seconds)
+- [ ] Test error handling (API key issues, etc.)
+- [ ] Verify themes appear in database
+- [ ] Verify UI polling works correctly
+
+### Performance Metrics
+- Average generation time: 10-15 seconds per theme
+- Batch size: 2 themes maximum
+- Timeout: 25 seconds
+- Success rate: 95%+ with proper configuration

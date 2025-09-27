@@ -14,14 +14,29 @@ import tenantConfigService from "../services/tenant-config.js";
  */
 function getSupabaseClient() {
   const url = process.env.SUPABASE_URL;
-  const key = process.env.SUPABASE_ANON_KEY;
+  // Use SERVICE_ROLE_KEY for write permissions (same as other backend services)
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
+  // Debug log to check configuration
   if (!url || !key) {
-    console.warn("Supabase not configured - using Google Sheets only");
+    console.warn("Supabase not configured:", {
+      hasUrl: !!url,
+      hasServiceKey: !!key,
+      hasAnonKey: !!process.env.SUPABASE_ANON_KEY,
+      hint: "Check SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY in Vercel env"
+    });
     return null;
   }
 
-  return createClient(url, key);
+  console.log("Initializing Supabase client with service role key");
+
+  // Use service role key for backend operations
+  return createClient(url, key, {
+    auth: {
+      persistSession: false,
+      autoRefreshToken: false
+    }
+  });
 }
 
 /**
@@ -362,14 +377,27 @@ Return ONLY valid JSON with "headlines" array (5 items) and "descriptions" array
               .insert(rsaData);
 
             if (error) {
-              console.warn(`Failed to write to Supabase:`, error.message);
+              // Log more detailed error information
+              console.error(`Failed to write to Supabase for theme "${theme}":`, {
+                message: error.message,
+                code: error.code,
+                details: error.details,
+                hint: error.hint
+              });
+
+              // Check for common issues
+              if (error.message?.includes('Invalid API') || error.code === '401') {
+                console.error('⚠️ Supabase API key issue - check SUPABASE_SERVICE_ROLE_KEY env variable');
+              }
             } else {
               writtenToSupabase = true;
-              console.log(`Written to Supabase: ${theme}`);
+              console.log(`✅ Written to Supabase: ${theme}`);
             }
           } catch (error) {
-            console.warn(`Supabase write error:`, error.message);
+            console.error(`Supabase write error for theme "${theme}":`, error.message);
           }
+        } else {
+          console.warn('⚠️ Supabase client not initialized - check SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY');
         }
 
         // Also write to Google Sheets (dual-write pattern for backup)
