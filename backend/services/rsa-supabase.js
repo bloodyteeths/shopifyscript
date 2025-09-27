@@ -101,37 +101,47 @@ export async function getRSADraftsFromSupabase(tenant) {
       return null;
     }
 
+    // Separate assets by type first
+    const rsaAssets = assets.filter(a => a.asset_type === 'rsa');
+    const individualAssets = assets.filter(a => a.asset_type === 'headline' || a.asset_type === 'description');
+
     // Group by theme and format like Google Sheets response
     const grouped = {};
 
-    for (const asset of assets) {
+    // Process RSA format first (these are complete and should take priority)
+    for (const asset of rsaAssets) {
       const theme = asset.theme || 'default';
 
-      // Handle both formats: individual assets and pipe-delimited
-      if (asset.asset_type === 'rsa' && asset.headlines_pipe && asset.descriptions_pipe) {
-        // New format with pipe-delimited strings
+      if (asset.headlines_pipe && asset.descriptions_pipe) {
         grouped[theme] = {
           theme,
           headlines: asset.headlines_pipe.split('|').map(h => h.trim()).filter(Boolean),
           descriptions: asset.descriptions_pipe.split('|').map(d => d.trim()).filter(Boolean),
           source: asset.rationale || asset.source || 'ai_generated'
         };
-      } else {
-        // Old format with individual headline/description rows
-        if (!grouped[theme]) {
-          grouped[theme] = {
-            theme,
-            headlines: [],
-            descriptions: [],
-            source: asset.source || 'ai_generated'
-          };
-        }
+      }
+    }
 
-        if (asset.asset_type === 'headline') {
-          grouped[theme].headlines.push(asset.asset_text);
-        } else if (asset.asset_type === 'description') {
-          grouped[theme].descriptions.push(asset.asset_text);
-        }
+    // Only process individual assets for themes not already handled by RSA format
+    for (const asset of individualAssets) {
+      const theme = asset.theme || 'default';
+
+      // Skip if we already have this theme from RSA format
+      if (grouped[theme]) continue;
+
+      if (!grouped[theme]) {
+        grouped[theme] = {
+          theme,
+          headlines: [],
+          descriptions: [],
+          source: asset.source || 'ai_generated'
+        };
+      }
+
+      if (asset.asset_type === 'headline') {
+        grouped[theme].headlines.push(asset.asset_text);
+      } else if (asset.asset_type === 'description') {
+        grouped[theme].descriptions.push(asset.asset_text);
       }
     }
 
@@ -141,8 +151,14 @@ export async function getRSADraftsFromSupabase(tenant) {
     logger.info('✅ RSA drafts fetched from Supabase', {
       tenant,
       draftCount: drafts.length,
-      themes: drafts.map(d => d.theme),
-      assetCount: assets.length
+      themes: drafts.map(d => ({
+        theme: d.theme,
+        headlines: d.headlines.length,
+        descriptions: d.descriptions.length
+      })),
+      rsaAssets: rsaAssets.length,
+      individualAssets: individualAssets.length,
+      totalAssets: assets.length
     });
 
     // For compatibility, return all drafts in library if none are marked as default
