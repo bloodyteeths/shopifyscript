@@ -84,14 +84,37 @@ export function AIDashboard({ shopName, subscriptionTier = "starter", hasFeature
     try {
       const response = await authenticatedFetch("/ai/provider/status", "GET", undefined, shopName);
 
-      if (response.ok) {
+      if (response && response.ok) {
         const data = await response.json();
-        if (data.ok) {
+        if (data && data.ok && data.status) {
           setProviderStatus(data.status);
+        } else {
+          // Set default status if response is malformed
+          setProviderStatus({
+            status: 'unknown',
+            initialized: false,
+            provider: 'unknown',
+            model: 'unknown'
+          });
         }
+      } else {
+        // Set offline status if request failed
+        setProviderStatus({
+          status: 'offline',
+          initialized: false,
+          provider: 'unknown',
+          model: 'unknown'
+        });
       }
     } catch (err) {
-      console.error("Failed to fetch provider status:", err);
+      console.error("Failed to fetch AI provider status:", err);
+      // Set error status on exception
+      setProviderStatus({
+        status: 'error',
+        initialized: false,
+        provider: 'unknown',
+        model: 'unknown'
+      });
     }
   };
 
@@ -169,8 +192,15 @@ export function AIDashboard({ shopName, subscriptionTier = "starter", hasFeature
       return;
     }
 
+    // Prevent multiple simultaneous requests
+    if (isGenerating) {
+      console.log("AI generation already in progress");
+      return;
+    }
+
     try {
       setError(null);
+      setIsGenerating(true); // Set generating state immediately
       console.log("Triggering AI writer for shop:", shopName);
 
       const response = await authenticatedFetch("/jobs/ai_writer", "POST", {
@@ -222,7 +252,10 @@ export function AIDashboard({ shopName, subscriptionTier = "starter", hasFeature
 
               // Refresh other data
               fetchActivities();
-              fetchProviderStatus();
+              // Only fetch provider status if function exists
+              if (typeof fetchProviderStatus === 'function') {
+                fetchProviderStatus();
+              }
             }
 
             // Stop after max attempts
@@ -241,7 +274,10 @@ export function AIDashboard({ shopName, subscriptionTier = "starter", hasFeature
             setTimeout(() => {
               fetchDrafts();
               fetchActivities();
-              fetchProviderStatus();
+              // Only fetch provider status if function exists
+              if (typeof fetchProviderStatus === 'function') {
+                fetchProviderStatus();
+              }
               setIsGenerating(false);
             }, 1000);
           } else {
@@ -260,6 +296,7 @@ export function AIDashboard({ shopName, subscriptionTier = "starter", hasFeature
     } catch (err) {
       console.error("Error triggering AI writer:", err);
       setError("Error triggering AI writer: " + err.message);
+      setIsGenerating(false); // Reset generating state on error
     }
   };
 

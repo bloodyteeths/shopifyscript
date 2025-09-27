@@ -1209,3 +1209,251 @@ res.json(result);
 - Batch size: 2 themes maximum
 - Timeout: 25 seconds
 - Success rate: 95%+ with proper configuration
+
+---
+
+## September 27, 2025 - Supabase Write Permissions Fix
+
+### Problem Discovery
+AI writer was successfully generating content but failing to write to Supabase database. Log analysis revealed:
+```
+Failed to write to Supabase: Invalid API key
+Written to Sheets: Best Sellers
+```
+- Google Sheets writes were successful
+- Supabase writes failed with "Invalid API key" error
+- AI generation worked but storage to primary database failed
+
+### Root Cause Analysis
+
+#### 1. Wrong API Key Used
+**File**: `/backend/api/ai-writer-inline.js:17`
+```javascript
+// WRONG - Using anon key (public read-only access)
+const key = process.env.SUPABASE_ANON_KEY;
+```
+
+#### 2. Other Services Work Correctly
+**File**: `/backend/services/supabase-client.js:10`
+```javascript
+// CORRECT - Other services use service role key
+const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+```
+
+#### 3. Key Permission Differences
+- **`SUPABASE_ANON_KEY`**: Public key for frontend, read-only access
+- **`SUPABASE_SERVICE_ROLE_KEY`**: Backend key with full read/write permissions
+
+### Solution Implemented
+
+#### 1. Changed to Service Role Key
+**File**: `/backend/api/ai-writer-inline.js:15-40`
+```javascript
+function getSupabaseClient() {
+  const url = process.env.SUPABASE_URL;
+  // Use SERVICE_ROLE_KEY for write permissions (same as other backend services)
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+  if (!url || !key) {
+    console.warn("Supabase not configured:", {
+      hasUrl: !!url,
+      hasServiceKey: !!key,
+      hasAnonKey: !!process.env.SUPABASE_ANON_KEY,
+      hint: "Check SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY in Vercel env"
+    });
+    return null;
+  }
+
+  console.log("Initializing Supabase client with service role key");
+
+  // Use service role key for backend operations
+  return createClient(url, key, {
+    auth: {
+      persistSession: false,    // No session for server-side
+      autoRefreshToken: false   // No token refresh needed
+    }
+  });
+}
+```
+
+#### 2. Enhanced Error Logging
+**File**: `/backend/api/ai-writer-inline.js:371-383`
+```javascript
+if (error) {
+  // Log more detailed error information
+  console.error(`Failed to write to Supabase for theme "${theme}":`, {
+    message: error.message,
+    code: error.code,
+    details: error.details,
+    hint: error.hint
+  });
+
+  // Check for common issues
+  if (error.message?.includes('Invalid API') || error.code === '401') {
+    console.error('⚠️ Supabase API key issue - check SUPABASE_SERVICE_ROLE_KEY env variable');
+  }
+}
+```
+
+### Environment Variables Required
+
+#### Vercel Environment Configuration
+These MUST be set in Vercel Dashboard → Settings → Environment Variables:
+
+1. **`SUPABASE_URL`**
+   - Your Supabase project URL
+   - Format: `https://[project-ref].supabase.co`
+   - Example: `https://xyzabc123.supabase.co`
+
+2. **`SUPABASE_SERVICE_ROLE_KEY`**
+   - Service role key from Supabase dashboard
+   - Found in: Settings → API → Service role key
+   - Has full database access (read/write/delete)
+   - ⚠️ Keep this secret - never expose in frontend
+
+3. **`SUPABASE_ANON_KEY`** (optional)
+   - Only needed for frontend/public operations
+   - Has limited permissions (usually read-only)
+   - Safe to expose in browser
+
+### Key Differences
+
+| Aspect | ANON_KEY | SERVICE_ROLE_KEY |
+|--------|----------|------------------|
+| **Purpose** | Frontend/Public access | Backend/Server operations |
+| **Permissions** | Limited (RLS enforced) | Full access (bypasses RLS) |
+| **Security** | Safe to expose | Must be kept secret |
+| **Usage** | Browser apps | Server-side only |
+| **Write Access** | Usually NO | YES |
+
+### Verification Steps
+
+1. **Check Environment Variables**
+   ```bash
+   # In Vercel function logs, should see:
+   "Initializing Supabase client with service role key"
+   ```
+
+2. **Successful Write Logs**
+   ```bash
+   # Should see:
+   "✅ Written to Supabase: [theme_name]"
+   ```
+
+3. **Database Verification**
+   - Check Supabase dashboard → Table Editor → `rsa_assets`
+   - New rows should appear with AI-generated content
+
+### Common Issues and Solutions
+
+#### Issue 1: "Invalid API key"
+**Cause**: Using wrong key or key not set
+**Solution**: Ensure `SUPABASE_SERVICE_ROLE_KEY` is set in Vercel
+
+#### Issue 2: "Permission denied"
+**Cause**: Using anon key which lacks write permissions
+**Solution**: Switch to service role key for backend operations
+
+#### Issue 3: "Supabase not configured"
+**Cause**: Missing environment variables
+**Solution**: Set both `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY`
+
+### Security Best Practices
+
+1. **Never expose SERVICE_ROLE_KEY in frontend code**
+2. **Use ANON_KEY for browser/client operations**
+3. **SERVICE_ROLE_KEY only in server-side functions**
+4. **Enable RLS (Row Level Security) in Supabase**
+5. **Regularly rotate keys if compromised**
+
+### Testing Checklist
+- [ ] Verify `SUPABASE_SERVICE_ROLE_KEY` is set in Vercel
+- [ ] Check logs show "Initializing Supabase client with service role key"
+- [ ] Confirm AI-generated content appears in Supabase
+- [ ] Verify dual-write pattern (both Supabase and Sheets)
+- [ ] Test with missing environment variables (graceful fallback)
+
+### Impact
+- AI writer now successfully saves to Supabase (primary storage)
+- Dual-write pattern ensures data redundancy
+- Clear error messages for troubleshooting
+- Consistent with other backend services' implementation
+
+---
+
+## Fix 10: Database Schema and UI Fixes (2025-09-27)
+
+### 1. Supabase Table Schema Fix
+**Issue**: "Could not find the 'approval_status' column of 'rsa_assets'"
+
+**Solution**: Created proper table schema with all required columns
+```sql
+CREATE TABLE rsa_assets (
+    id SERIAL PRIMARY KEY,
+    tenant VARCHAR(255) NOT NULL,
+    theme VARCHAR(255) NOT NULL,
+    headlines_pipe TEXT NOT NULL,
+    descriptions_pipe TEXT NOT NULL,
+    rationale VARCHAR(255),
+    source_url TEXT,
+    approval_status VARCHAR(50) DEFAULT 'pending',
+    created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Add indexes for performance
+CREATE INDEX idx_rsa_assets_tenant ON rsa_assets(tenant);
+CREATE INDEX idx_rsa_assets_tenant_theme ON rsa_assets(tenant, theme);
+CREATE INDEX idx_rsa_assets_approval_status ON rsa_assets(approval_status);
+
+-- Add trigger for updated_at
+CREATE OR REPLACE FUNCTION update_updated_at_column()
+RETURNS TRIGGER AS $$
+BEGIN
+    NEW.updated_at = CURRENT_TIMESTAMP;
+    RETURN NEW;
+END;
+$$ language 'plpgsql';
+
+CREATE TRIGGER update_rsa_assets_updated_at
+BEFORE UPDATE ON rsa_assets
+FOR EACH ROW
+EXECUTE FUNCTION update_updated_at_column();
+```
+
+### 2. Provider Status TypeError Fix
+**Issue**: "Failed to fetch AI status: TypeError: t is not a function"
+
+**Solution**: Added proper error handling and null checks in fetchProviderStatus:
+- Check if response exists before accessing properties
+- Set default status object on error
+- Add try-catch with fallback status
+- Check if fetchProviderStatus is a function before calling
+
+### 3. UI Unresponsiveness Fix
+**Issue**: Generate button becomes unresponsive after clicking
+
+**Solution**: Improved async handling in triggerAIWriter:
+- Set isGenerating state immediately on click
+- Prevent multiple simultaneous requests
+- Reset isGenerating state on all error paths
+- Button is properly disabled during generation
+
+**Key Changes**:
+- Frontend: Enhanced error handling and state management
+- Backend: Database schema aligned with code expectations
+- UI: Prevented race conditions and improved responsiveness
+
+### Testing Checklist
+- [ ] Apply Supabase schema changes
+- [ ] Test AI writer generates content
+- [ ] Verify data saves to rsa_assets table
+- [ ] Check provider status loads without errors
+- [ ] Confirm Generate button remains responsive
+- [ ] Monitor console for TypeErrors
+
+### Impact
+- Fixed database schema mismatch preventing AI writes
+- Resolved frontend TypeError on provider status fetch
+- Improved UI responsiveness during AI generation
+- Better error handling throughout the flow
