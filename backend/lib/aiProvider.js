@@ -214,12 +214,14 @@ async function createGoogleProvider() {
         content = resp.response.text || resp.response.output || resp.response.content;
       }
 
-      if (!content || content.trim().length === 0) {
+      // Ensure content is a string and not empty
+      const contentStr = String(content || '');
+      if (!contentStr || contentStr.trim().length === 0) {
         console.error("Google AI response structure:", JSON.stringify(resp?.response, null, 2));
         throw new AIProviderError("Google AI returned empty response", "google");
       }
 
-      return content;
+      return contentStr;
     } catch (error) {
       if (error instanceof AIProviderError) {
         throw error;
