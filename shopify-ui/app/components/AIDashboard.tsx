@@ -62,17 +62,25 @@ export function AIDashboard({ shopName, subscriptionTier = "starter", hasFeature
   // Fetch AI drafts
   const fetchDrafts = async () => {
     try {
+      console.log("Fetching drafts for shop:", shopName);
       const response = await authenticatedFetch("/ai/drafts", "GET", undefined, shopName);
 
       if (response.ok) {
         const data = await response.json();
+        console.log("Drafts API response:", data);
+
         if (data.ok) {
           const allDrafts = [
             ...data.rsa_default.map((d: any) => ({ ...d, type: 'default' })),
             ...data.library.map((d: any) => ({ ...d, type: 'library' }))
           ];
+          console.log(`Setting ${allDrafts.length} drafts in UI:`, allDrafts);
           setDrafts(allDrafts);
+        } else {
+          console.log("API returned ok:false", data);
         }
+      } else {
+        console.error("Drafts API request failed:", response.status);
       }
     } catch (err) {
       console.error("Failed to fetch drafts:", err);
@@ -262,21 +270,37 @@ export function AIDashboard({ shopName, subscriptionTier = "starter", hasFeature
             pollCount++;
             console.log(`Polling for drafts (${pollCount}/${maxPolls})...`);
 
-            const prevDraftCount = drafts.length;
-            await fetchDrafts();
+            // Fetch drafts directly and check the response
+            try {
+              const response = await authenticatedFetch("/ai/drafts", "GET", undefined, shopName);
+              if (response.ok) {
+                const data = await response.json();
+                if (data.ok) {
+                  const newDrafts = [
+                    ...data.rsa_default.map((d: any) => ({ ...d, type: 'default' })),
+                    ...data.library.map((d: any) => ({ ...d, type: 'library' }))
+                  ];
 
-            // Check if new drafts appeared - if so, stop polling
-            if (drafts.length > prevDraftCount) {
-              clearInterval(pollInterval);
-              setIsGenerating(false);
-              console.log("New drafts detected - stopping polling");
+                  console.log(`Poll result: ${newDrafts.length} drafts found`);
 
-              // Refresh other data
-              fetchActivities();
-              // Only fetch provider status if function exists
-              if (typeof fetchProviderStatus === 'function') {
-                fetchProviderStatus();
+                  // Always update drafts if we have any
+                  if (newDrafts.length > 0) {
+                    console.log(`Updating UI with ${newDrafts.length} drafts`);
+                    setDrafts(newDrafts);
+                    clearInterval(pollInterval);
+                    setIsGenerating(false);
+
+                    // Refresh other data
+                    fetchActivities();
+                    // Only fetch provider status if function exists
+                    if (typeof fetchProviderStatus === 'function') {
+                      fetchProviderStatus();
+                    }
+                  }
+                }
               }
+            } catch (err) {
+              console.error("Polling error:", err);
             }
 
             // Stop after max attempts
@@ -284,23 +308,31 @@ export function AIDashboard({ shopName, subscriptionTier = "starter", hasFeature
               clearInterval(pollInterval);
               setIsGenerating(false);
               console.log("Stopped polling - max attempts reached");
+              // Final fetch attempt
+              fetchDrafts();
             }
           }, 3000);
         } else {
           // Immediate completion
           console.log("AI Writer completed:", data);
 
-          // If themes were written, refresh drafts
+          // If themes were written, refresh drafts immediately
           if (data.wrote && data.wrote > 0) {
+            console.log(`AI Writer completed: ${data.wrote} themes written`);
+            // Immediately fetch drafts
+            fetchDrafts();
+            fetchActivities();
+            // Only fetch provider status if function exists
+            if (typeof fetchProviderStatus === 'function') {
+              fetchProviderStatus();
+            }
+            setIsGenerating(false);
+
+            // Also do a delayed fetch to catch any slow database writes
             setTimeout(() => {
+              console.log("Doing delayed fetch to ensure all data is loaded");
               fetchDrafts();
-              fetchActivities();
-              // Only fetch provider status if function exists
-              if (typeof fetchProviderStatus === 'function') {
-                fetchProviderStatus();
-              }
-              setIsGenerating(false);
-            }, 1000);
+            }, 2000);
           } else {
             setIsGenerating(false);
           }
