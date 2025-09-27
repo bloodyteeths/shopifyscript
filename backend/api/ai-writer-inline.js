@@ -7,7 +7,7 @@ import { validateRSA } from "../lib/validators.js";
 import { getDoc, ensureSheet } from "../sheets.js";
 import { getAIProvider } from "../lib/aiProvider.js";
 import { createClient } from "@supabase/supabase-js";
-import { TenantConfigService } from "../services/tenant-config.js";
+import tenantConfigService from "../services/tenant-config.js";
 
 /**
  * Get Supabase client
@@ -34,9 +34,9 @@ async function fetchWebsiteContext(tenant) {
 
     console.log(`Fetching website context from ${storeUrl}`);
 
-    // Add timeout to prevent hanging
+    // Add shorter timeout for Vercel
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 2000); // 2 second timeout
+    const timeoutId = setTimeout(() => controller.abort(), 1000); // 1 second timeout
 
     const response = await fetch(storeUrl, {
       headers: {
@@ -96,8 +96,7 @@ async function getBusinessContext(tenant, supabase) {
 
   try {
     // Try to get config from tenant service
-    const configService = TenantConfigService.getInstance();
-    const config = await configService.getConfig(tenant);
+    const config = await tenantConfigService.getConfig(tenant);
 
     if (config) {
       context.businessName = config.business_name || tenant;
@@ -109,82 +108,34 @@ async function getBusinessContext(tenant, supabase) {
     console.warn("Could not load tenant config:", error.message);
   }
 
-  // Try to get performance data from Supabase
+  // Try to get performance data from Supabase (simplified for speed)
   if (supabase) {
     try {
-      // Get top performing search terms
-      const { data: searchTerms } = await supabase
-        .from('search_terms')
-        .select('search_term, conversions, clicks, cost, impressions')
-        .eq('tenant', tenant)
-        .gt('conversions', 0)
-        .order('conversions', { ascending: false })
-        .limit(10);
+      // Only get most essential data to save time
 
-      if (searchTerms && searchTerms.length > 0) {
-        context.topKeywords = searchTerms.map(st => st.search_term);
-
-        // Calculate average performance metrics
-        const totalImpressions = searchTerms.reduce((sum, st) => sum + (st.impressions || 0), 0);
-        const totalClicks = searchTerms.reduce((sum, st) => sum + (st.clicks || 0), 0);
-        const totalCost = searchTerms.reduce((sum, st) => sum + (st.cost || 0), 0);
-
-        if (totalImpressions > 0) {
-          context.performanceData.avgCTR = ((totalClicks / totalImpressions) * 100).toFixed(2);
-        }
-        if (totalClicks > 0) {
-          context.performanceData.avgCPC = (totalCost / totalClicks).toFixed(2);
-        }
-      }
-
-      // Get campaign performance data
-      const { data: campaigns } = await supabase
-        .from('campaign_metrics')
-        .select('campaign_name, conversions, ctr, cost_per_conversion')
-        .eq('tenant', tenant)
-        .gt('conversions', 0)
-        .order('conversions', { ascending: false })
-        .limit(5);
-
-      if (campaigns && campaigns.length > 0) {
-        context.performanceData.topCampaigns = campaigns.map(c => c.campaign_name);
-      }
-
-      // Get best performing ad headlines from test queue
-      const { data: adTests } = await supabase
-        .from('test_queue')
-        .select('variant_a, variant_b, winner, confidence')
-        .eq('tenant', tenant)
-        .not('winner', 'is', null)
-        .gte('confidence', 0.8)
-        .order('confidence', { ascending: false })
-        .limit(5);
-
-      if (adTests && adTests.length > 0) {
-        context.performanceData.bestPerformingAds = adTests.map(test =>
-          test.winner === 'a' ? test.variant_a : test.variant_b
-        );
-      }
-
-      // Get product categories from existing RSA assets
+      // Get product categories from existing RSA assets (fastest query)
       const { data: rsaAssets } = await supabase
         .from('rsa_assets')
-        .select('theme, headlines_pipe')
+        .select('theme')
         .eq('tenant', tenant)
-        .limit(20);
+        .limit(10);
 
       if (rsaAssets && rsaAssets.length > 0) {
         const themes = [...new Set(rsaAssets.map(r => r.theme))];
         context.products = themes.filter(t => t && t !== 'Theme 1' && !t.startsWith('Theme '));
+      }
 
-        // Also extract successful headlines for learning
-        const headlines = rsaAssets
-          .flatMap(r => r.headlines_pipe ? r.headlines_pipe.split('|') : [])
-          .filter(h => h && h.length > 0);
+      // Get top keywords (simplified)
+      const { data: searchTerms } = await supabase
+        .from('search_terms')
+        .select('search_term')
+        .eq('tenant', tenant)
+        .gt('conversions', 0)
+        .order('conversions', { ascending: false })
+        .limit(5);
 
-        if (headlines.length > 0) {
-          context.successfulHeadlines = headlines.slice(0, 10);
-        }
+      if (searchTerms && searchTerms.length > 0) {
+        context.topKeywords = searchTerms.map(st => st.search_term);
       }
     } catch (error) {
       console.warn("Could not load Supabase context:", error.message);
@@ -285,30 +236,19 @@ export async function handleInlineAIWriter(tenant, limit = 5) {
 
         // Try AI generation with rich contextual prompt
         try {
-          const prompt = `Generate 5 Google Ads headlines (max 30 chars each) and 2 descriptions (max 90 chars each) for a ${context.businessType} business.
+          const prompt = `Generate 5 Google Ads headlines (max 30 chars) and 2 descriptions (max 90 chars).
 
 Business: ${context.businessName}
-${context.websiteInfo.storeDescription ? `Store Description: ${context.websiteInfo.storeDescription}` : ''}
-Product/Service: ${theme}
-${context.targetAudience ? `Target Audience: ${context.targetAudience}` : ''}
-
-Performance Context:
-${context.topKeywords.length > 0 ? `Top Converting Keywords: ${context.topKeywords.slice(0, 5).join(', ')}` : ''}
-${context.performanceData.avgCTR > 0 ? `Average CTR: ${context.performanceData.avgCTR}%` : ''}
-${context.performanceData.avgCPC > 0 ? `Average CPC: $${context.performanceData.avgCPC}` : ''}
-${context.performanceData.bestPerformingAds?.length > 0 ? `Successful Ad Examples: ${context.performanceData.bestPerformingAds.slice(0, 2).join('; ')}` : ''}
-${context.successfulHeadlines?.length > 0 ? `Past Successful Headlines: ${context.successfulHeadlines.slice(0, 3).join(', ')}` : ''}
+Product: ${theme}
+${context.topKeywords.length > 0 ? `Keywords: ${context.topKeywords.slice(0, 3).join(', ')}` : ''}
 
 Requirements:
-- Headlines MUST be 30 characters or less (count carefully!)
-- Descriptions MUST be 90 characters or less (count carefully!)
-- Learn from the successful keywords and ads provided
-- Match the style of past successful headlines if available
-- Focus on what converts based on the performance data
+- Headlines MUST be 30 characters or less
+- Descriptions MUST be 90 characters or less
 - Include strong call-to-action
-- Make it specific to ${theme}
+- Focus on ${theme}
 
-Return ONLY valid JSON with "headlines" array (5 items) and "descriptions" array (2 items).`;
+Return ONLY JSON: {"headlines":["..."], "descriptions":["..."]}`;
 
           const response = await ai.generateText(prompt);
 

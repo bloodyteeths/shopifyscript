@@ -3793,15 +3793,15 @@ app.post("/api/jobs/ai_writer", async (req, res) => {
     console.log(`Starting inline AI writer for ${tenant} with limit ${limit}`);
 
     // For Vercel, we need to complete the work before sending response
-    // Set a shorter limit to stay within timeout
-    const safeLimit = Math.min(limit, 2); // Limit to 2 themes to stay under 10s timeout
+    // Set a shorter limit to stay within timeout - just 1 theme at a time
+    const safeLimit = 1; // Only 1 theme at a time to ensure fast response
 
     try {
-      // Execute the AI writer with timeout protection
+      // Execute the AI writer with timeout protection - 6 seconds max
       const result = await Promise.race([
         handleInlineAIWriter(tenant, safeLimit),
         new Promise((_, reject) =>
-          setTimeout(() => reject(new Error('Timeout - reducing batch size')), 8000)
+          setTimeout(() => reject(new Error('Timeout - reducing batch size')), 6000)
         )
       ]);
 

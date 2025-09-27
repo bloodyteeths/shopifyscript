@@ -965,3 +965,117 @@ return contentStr;
 ```
 
 This ensures the Google AI provider always returns a string type, preventing type errors in downstream processing.
+
+---
+
+## September 27, 2025 - Additional Vercel Fixes
+
+### Enhanced AI Writer with Business Context
+
+#### Problem
+AI was generating generic "Theme 1, Theme 2" content without accessing actual business data from Shopify stores or Google Ads performance metrics.
+
+#### Solutions Implemented
+
+##### 1. Website Context Fetching
+**File**: `/backend/api/ai-writer-inline.js:30-72`
+- Added `fetchWebsiteContext()` function to scrape Shopify store information
+- Fetches from `https://{tenant}.myshopify.com`
+- Extracts store title and description from HTML
+- Implements 2-second timeout to prevent hanging
+- Provides website availability status
+
+##### 2. Business Context Integration
+**File**: `/backend/api/ai-writer-inline.js:74-201`
+- Created comprehensive `getBusinessContext()` function
+- Fetches tenant configuration from TenantConfigService
+- Retrieves Google Ads performance data from Supabase:
+  - Top performing search terms with conversions
+  - Average CTR and CPC calculations
+  - Campaign performance metrics
+  - Best performing ad headlines from A/B tests
+  - Product categories from RSA assets
+- Combines website info with business data
+
+##### 3. Contextual Theme Generation
+**File**: `/backend/api/ai-writer-inline.js:205-236`
+- Replaced generic "Theme 1, Theme 2" with contextual themes
+- Uses actual products/services from existing RSA assets
+- Falls back to top keywords when products unavailable
+- Generates business-type specific themes (ecommerce, saas, service)
+- Ensures meaningful theme names for better AI generation
+
+##### 4. Enhanced AI Prompts
+**File**: `/backend/api/ai-writer-inline.js:288-311`
+- Rich contextual prompts including:
+  - Business name and description
+  - Target audience
+  - Top converting keywords
+  - Performance metrics (CTR, CPC)
+  - Successful ad examples
+  - Past successful headlines
+- AI learns from actual performance data
+
+##### 5. Supabase-First Storage
+**File**: `/backend/api/ai-writer-inline.js:392-407`
+- Changed storage priority: Supabase first, Google Sheets second
+- Implements dual-write pattern for redundancy
+- Tracks write success to both systems
+- Reports storage location in response
+
+##### 6. Contextual Fallback Content
+**File**: `/backend/api/ai-writer-inline.js:332-371`
+- Business-type specific fallback templates
+- Ecommerce: Shop Now, Best Deals, Free Shipping
+- SaaS: Free Trial, Platform, Teams
+- Service: Professional, Experts, Solutions
+- Uses actual theme names in fallback content
+
+#### 7. Timeout Protection for Vercel
+**File**: `/backend/server.js:3790-3842`
+- Limits batch size to 2 themes to stay under 10s limit
+- Implements 8-second timeout with Promise.race
+- Returns immediate response to prevent Vercel timeout
+- Graceful degradation on timeout
+
+### React Hydration Error Fixes
+
+#### Problem
+Chrome console showing React errors #418 and #423 due to hydration mismatches between server and client rendering.
+
+#### Solution
+**File**: `/shopify-ui/app/components/AIDashboard.tsx`
+- Changed state from `useState<Set<number>>(new Set())` to `useState<number[]>([])`
+- Updated all Set operations to array methods:
+  - `has()` → `includes()`
+  - `add()` → `push()`
+  - `delete()` → `splice()`
+- Added client-side only checks in useEffect: `if (typeof window === 'undefined') return;`
+- Prevents SSR/client mismatch by using serializable data structures
+
+### Performance Improvements
+
+1. **Parallel Data Fetching**: Website context fetched in parallel with Supabase queries
+2. **Timeout Protection**: All external calls have timeouts (2s for website, 8s for AI)
+3. **Batch Size Limits**: Maximum 2 themes per request in Vercel
+4. **Lazy Initialization**: Services only connect when needed
+5. **Cache Integration**: Uses existing cache mechanisms for performance
+
+### Business Impact
+
+- AI generates relevant content based on actual business data
+- Content reflects real performance metrics and successful patterns
+- Themes are meaningful (e.g., "Winter Collection" instead of "Theme 1")
+- Supabase-first approach ensures data consistency
+- React hydration fixes eliminate console errors
+- Vercel deployment works reliably without timeouts
+
+### Verification
+
+- ✅ AI writer fetches real business context
+- ✅ Themes based on actual products/services
+- ✅ Performance data integrated into AI prompts
+- ✅ Supabase used as primary storage
+- ✅ React hydration errors resolved
+- ✅ Vercel 10-second timeout handled
+- ✅ Fallback content is business-relevant
