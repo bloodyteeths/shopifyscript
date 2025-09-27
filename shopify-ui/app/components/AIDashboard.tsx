@@ -198,10 +198,10 @@ export function AIDashboard({ shopName, subscriptionTier = "starter", hasFeature
       if (response.ok && data.ok) {
         setError(null);
 
-        // Check if it's async processing
+        // Check if it's still processing
         if (data.status === "processing") {
           setIsGenerating(true);
-          console.log("AI Writer started processing:", data);
+          console.log("AI Writer is still processing:", data);
 
           // Start polling for new drafts every 3 seconds
           let pollCount = 0;
@@ -211,7 +211,19 @@ export function AIDashboard({ shopName, subscriptionTier = "starter", hasFeature
             pollCount++;
             console.log(`Polling for drafts (${pollCount}/${maxPolls})...`);
 
+            const prevDraftCount = drafts.length;
             await fetchDrafts();
+
+            // Check if new drafts appeared - if so, stop polling
+            if (drafts.length > prevDraftCount) {
+              clearInterval(pollInterval);
+              setIsGenerating(false);
+              console.log("New drafts detected - stopping polling");
+
+              // Refresh other data
+              fetchActivities();
+              fetchProviderStatus();
+            }
 
             // Stop after max attempts
             if (pollCount >= maxPolls) {
@@ -220,23 +232,30 @@ export function AIDashboard({ shopName, subscriptionTier = "starter", hasFeature
               console.log("Stopped polling - max attempts reached");
             }
           }, 3000);
-
-          // Also refresh other data after a delay
-          setTimeout(() => {
-            fetchActivities();
-            fetchProviderStatus();
-          }, 5000);
         } else {
-          // Legacy immediate response
-          console.log("AI Writer completed immediately:", data);
-          setTimeout(() => {
-            fetchDrafts();
-            fetchActivities();
-            fetchProviderStatus();
-          }, 2000);
+          // Immediate completion
+          console.log("AI Writer completed:", data);
+
+          // If themes were written, refresh drafts
+          if (data.wrote && data.wrote > 0) {
+            setTimeout(() => {
+              fetchDrafts();
+              fetchActivities();
+              fetchProviderStatus();
+              setIsGenerating(false);
+            }, 1000);
+          } else {
+            setIsGenerating(false);
+          }
+
+          // Show any messages from the server
+          if (data.message && !data.error) {
+            console.log("Server message:", data.message);
+          }
         }
       } else {
         setError(data.error || data.message || "Failed to trigger AI writer");
+        setIsGenerating(false);
       }
     } catch (err) {
       console.error("Error triggering AI writer:", err);

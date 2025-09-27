@@ -3792,45 +3792,64 @@ app.post("/api/jobs/ai_writer", async (req, res) => {
 
     console.log(`Starting inline AI writer for ${tenant} with limit ${limit}`);
 
-    // Start the AI generation process
-    // Send immediate response to prevent UI timeout
-    res.json({
-      ok: true,
-      status: "processing",
-      message: `AI is generating ${limit} themes. Content will appear when ready.`,
-      processingId: `${tenant}_${Date.now()}`
-    });
+    // For Vercel, we need to wait for the AI generation to complete
+    // But we'll limit to just 1 theme for speed and use a timeout
+    const safeLimit = Math.min(limit, 2); // Process 2 themes max
 
-    // Continue processing in background (fire and forget)
-    handleInlineAIWriter(tenant, limit)
-      .then(async (result) => {
-        console.log(`AI writer completed for ${tenant}: generated ${result.wrote} themes`);
+    try {
+      // Use a race between AI generation and timeout
+      const result = await Promise.race([
+        handleInlineAIWriter(tenant, safeLimit),
+        new Promise((resolve) =>
+          setTimeout(() => resolve({
+            ok: true,
+            wrote: 0,
+            timeout: true,
+            message: "Generation is taking longer than expected. Check back in a minute."
+          }), 25000) // 25 second timeout
+        )
+      ]);
 
-        // Log success
-        try {
-          await appendRows(
-            tenant,
-            "RUN_LOGS",
-            ["timestamp", "message"],
-            [[new Date().toISOString(), `ai_writer_completed: ${result.wrote} themes`]],
-          );
-        } catch (e) {
-          console.warn("Could not log completion:", e);
-        }
-      })
-      .catch((error) => {
-        console.error(`AI writer error for ${tenant}:`, error);
+      // Log result
+      try {
+        await appendRows(
+          tenant,
+          "RUN_LOGS",
+          ["timestamp", "message"],
+          [[new Date().toISOString(), result.timeout ?
+            `ai_writer_timeout: generation in progress` :
+            `ai_writer_completed: ${result.wrote} themes`]],
+        );
+      } catch {}
 
-        // Log error
-        try {
-          appendRows(
-            tenant,
-            "RUN_LOGS",
-            ["timestamp", "message"],
-            [[new Date().toISOString(), `ai_writer_error: ${error.message}`]],
-          ).catch(() => {});
-        } catch {}
+      // Send response
+      if (result.timeout) {
+        res.json({
+          ok: true,
+          status: "processing",
+          message: "AI generation started. It's taking longer than usual, please refresh in 30 seconds.",
+          limitReduced: safeLimit < limit
+        });
+      } else {
+        res.json({
+          ok: true,
+          ...result,
+          limitReduced: safeLimit < limit,
+          message: safeLimit < limit ?
+            `Generated ${safeLimit} themes (reduced from ${limit} for speed). Run again for more.` :
+            `Successfully generated ${result.wrote} themes.`
+        });
+      }
+
+    } catch (error) {
+      console.error(`AI writer error for ${tenant}:`, error);
+
+      res.json({
+        ok: false,
+        error: error.message || "AI generation failed",
+        message: "Failed to generate content. Please try again."
       });
+    }
   } catch (e) {
     res.status(500).json({ ok: false, error: String(e) });
   }
