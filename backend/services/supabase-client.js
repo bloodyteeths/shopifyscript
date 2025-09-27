@@ -180,10 +180,19 @@ const connectionPool = new SupabaseConnectionPool();
  * Check if Supabase is enabled and configured
  */
 export function isSupabaseEnabled() {
-  const enabled = process.env.SUPABASE_ENABLED === 'true';
+  // Check both explicit enable flag and if credentials are configured
+  const explicitlyEnabled = process.env.SUPABASE_ENABLED === 'true';
+  const hasCredentials = !!(process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY);
   const configured = supabase !== null;
-  
-  return enabled && configured;
+
+  // Enable if either explicitly enabled OR if credentials are present (auto-enable)
+  const enabled = explicitlyEnabled || (hasCredentials && configured);
+
+  if (!enabled && hasCredentials) {
+    console.log('⚠️ Supabase credentials present but SUPABASE_ENABLED not set to "true"');
+  }
+
+  return enabled;
 }
 
 /**
