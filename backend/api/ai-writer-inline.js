@@ -7,6 +7,7 @@ import { validateRSA } from "../lib/validators.js";
 import { getDoc, ensureSheet } from "../sheets.js";
 import { getAIProvider } from "../lib/aiProvider.js";
 import { createClient } from "@supabase/supabase-js";
+import { TenantConfigService } from "../services/tenant-config.js";
 
 /**
  * Get Supabase client
@@ -21,6 +22,104 @@ function getSupabaseClient() {
   }
 
   return createClient(url, key);
+}
+
+/**
+ * Get business context for AI generation
+ */
+async function getBusinessContext(tenant, supabase) {
+  const context = {
+    businessName: tenant,
+    products: [],
+    topKeywords: [],
+    businessType: 'general',
+    targetAudience: '',
+    uniqueSellingPoints: []
+  };
+
+  try {
+    // Try to get config from tenant service
+    const configService = TenantConfigService.getInstance();
+    const config = await configService.getConfig(tenant);
+
+    if (config) {
+      context.businessName = config.business_name || tenant;
+      context.businessType = config.business_type || 'ecommerce';
+      context.targetAudience = config.target_audience || '';
+      context.uniqueSellingPoints = config.unique_selling_points || [];
+    }
+  } catch (error) {
+    console.warn("Could not load tenant config:", error.message);
+  }
+
+  // Try to get performance data from Supabase
+  if (supabase) {
+    try {
+      // Get top performing search terms
+      const { data: searchTerms } = await supabase
+        .from('search_terms')
+        .select('search_term, conversions, clicks')
+        .eq('tenant', tenant)
+        .gt('conversions', 0)
+        .order('conversions', { ascending: false })
+        .limit(10);
+
+      if (searchTerms && searchTerms.length > 0) {
+        context.topKeywords = searchTerms.map(st => st.search_term);
+      }
+
+      // Get product categories from existing RSA assets
+      const { data: rsaAssets } = await supabase
+        .from('rsa_assets')
+        .select('theme')
+        .eq('tenant', tenant)
+        .limit(20);
+
+      if (rsaAssets && rsaAssets.length > 0) {
+        const themes = [...new Set(rsaAssets.map(r => r.theme))];
+        context.products = themes.filter(t => t && t !== 'Theme 1' && !t.startsWith('Theme '));
+      }
+    } catch (error) {
+      console.warn("Could not load Supabase context:", error.message);
+    }
+  }
+
+  return context;
+}
+
+/**
+ * Generate contextual themes based on business data
+ */
+function generateContextualThemes(context, limit) {
+  const themes = [];
+
+  // If we have actual products/themes, use those
+  if (context.products && context.products.length > 0) {
+    themes.push(...context.products.slice(0, limit));
+  }
+
+  // If we have top keywords, create themes from them
+  if (context.topKeywords && context.topKeywords.length > 0 && themes.length < limit) {
+    const keywordThemes = context.topKeywords
+      .slice(0, limit - themes.length)
+      .map(kw => kw.charAt(0).toUpperCase() + kw.slice(1));
+    themes.push(...keywordThemes);
+  }
+
+  // If still not enough, generate based on business type
+  while (themes.length < limit) {
+    const genericThemes = {
+      ecommerce: ['Best Sellers', 'New Arrivals', 'Special Offers', 'Premium Collection', 'Customer Favorites'],
+      saas: ['Free Trial', 'Premium Features', 'Enterprise Solution', 'Starter Plan', 'Professional Tools'],
+      service: ['Professional Service', 'Expert Consultation', 'Quick Solutions', 'Trusted Service', 'Quality Results'],
+      general: [`${context.businessName} Products`, `${context.businessName} Services`, `${context.businessName} Solutions`]
+    };
+
+    const typeThemes = genericThemes[context.businessType] || genericThemes.general;
+    themes.push(typeThemes[themes.length % typeThemes.length]);
+  }
+
+  return themes.slice(0, limit);
 }
 
 /**
@@ -42,10 +141,12 @@ export async function handleInlineAIWriter(tenant, limit = 5) {
       return generateFallbackContent(tenant, limit);
     }
 
-    // Generate themes
-    const themes = Array.from({ length: Math.max(1, Math.min(5, limit)) }).map(
-      (_, i) => `Theme ${i + 1}`,
-    );
+    // Get business context
+    const context = await getBusinessContext(tenant, supabase);
+    console.log(`Business context loaded: ${context.businessName}, type: ${context.businessType}`);
+
+    // Generate contextual themes instead of generic "Theme 1", "Theme 2"
+    const themes = generateContextualThemes(context, limit);
 
     // Try to get Google Sheets doc
     let doc, rsa;
@@ -69,9 +170,22 @@ export async function handleInlineAIWriter(tenant, limit = 5) {
       try {
         let headlines, descriptions;
 
-        // Try AI generation with simple prompt
+        // Try AI generation with contextual prompt
         try {
-          const prompt = `Generate 5 Google Ads headlines (max 30 chars each) and 2 descriptions (max 90 chars each) for: ${theme}. Return as JSON with "headlines" and "descriptions" arrays.`;
+          const prompt = `Generate 5 Google Ads headlines (max 30 chars each) and 2 descriptions (max 90 chars each) for a ${context.businessType} business named "${context.businessName}".
+
+Product/Service: ${theme}
+${context.targetAudience ? `Target Audience: ${context.targetAudience}` : ''}
+${context.topKeywords.length > 0 ? `Related Keywords: ${context.topKeywords.slice(0, 3).join(', ')}` : ''}
+
+Requirements:
+- Headlines MUST be 30 characters or less
+- Descriptions MUST be 90 characters or less
+- Focus on benefits and value propositions
+- Include a call to action where appropriate
+- Make it relevant to the specific product/service theme
+
+Return as JSON with "headlines" and "descriptions" arrays.`;
 
           const response = await ai.generateText(prompt);
 
@@ -91,19 +205,46 @@ export async function handleInlineAIWriter(tenant, limit = 5) {
           descriptions = [];
         }
 
-        // Use fallback if AI failed
+        // Use contextual fallback if AI failed
         if (headlines.length === 0 || descriptions.length === 0) {
-          headlines = [
-            `${theme} Solutions`,
-            `Premium ${theme}`,
-            `${theme} Services`,
-            `${theme} Start Free`,
-            `${theme} Trusted`,
-          ];
-          descriptions = [
-            `${theme} - shop now with fast shipping and easy returns.`,
-            `${theme} - compare options and find your best fit today.`,
-          ];
+          // Generate more relevant fallback content based on business type
+          if (context.businessType === 'ecommerce') {
+            headlines = [
+              `${theme} - Shop Now`,
+              `Best ${theme} Deals`,
+              `${theme} Sale Today`,
+              `Quality ${theme}`,
+              `${theme} Free Ship`,
+            ];
+            descriptions = [
+              `Shop ${theme} at ${context.businessName}. Fast shipping & easy returns.`,
+              `Best ${theme} selection. Quality guaranteed. Shop now & save.`,
+            ];
+          } else if (context.businessType === 'saas') {
+            headlines = [
+              `${theme} Software`,
+              `Try ${theme} Free`,
+              `${theme} Solution`,
+              `${theme} Platform`,
+              `${theme} for Teams`,
+            ];
+            descriptions = [
+              `${theme} by ${context.businessName}. Start free trial. No credit card.`,
+              `Professional ${theme} solution. Trusted by thousands. Try free.`,
+            ];
+          } else {
+            headlines = [
+              `${theme} Services`,
+              `${theme} Experts`,
+              `Professional ${theme}`,
+              `${theme} Solutions`,
+              `Trusted ${theme}`,
+            ];
+            descriptions = [
+              `${theme} services by ${context.businessName}. Get started today.`,
+              `Expert ${theme} solutions. Professional service guaranteed.`,
+            ];
+          }
         }
 
         // Validate RSA
