@@ -6,12 +6,29 @@
 import { validateRSA } from "../lib/validators.js";
 import { getDoc, ensureSheet } from "../sheets.js";
 import { getAIProvider } from "../lib/aiProvider.js";
+import { createClient } from "@supabase/supabase-js";
+
+/**
+ * Get Supabase client
+ */
+function getSupabaseClient() {
+  const url = process.env.SUPABASE_URL;
+  const key = process.env.SUPABASE_ANON_KEY;
+
+  if (!url || !key) {
+    console.warn("Supabase not configured - using Google Sheets only");
+    return null;
+  }
+
+  return createClient(url, key);
+}
 
 /**
  * Simple inline AI writer that works in serverless
  */
 export async function handleInlineAIWriter(tenant, limit = 5) {
   const results = [];
+  const supabase = getSupabaseClient();
 
   try {
     // Initialize AI provider
@@ -92,8 +109,40 @@ export async function handleInlineAIWriter(tenant, limit = 5) {
         // Validate RSA
         const v = validateRSA(headlines, descriptions);
 
-        // Try to write to Sheets if available
-        let written = false;
+        // Prepare data for storage
+        const rsaData = {
+          tenant,
+          theme,
+          headlines_pipe: v.clipped.h.join("|"),
+          descriptions_pipe: v.clipped.d.join("|"),
+          rationale: "ai_generated_inline",
+          source_url: "",
+          approval_status: "approved",
+          created_at: new Date().toISOString()
+        };
+
+        let writtenToSupabase = false;
+        let writtenToSheets = false;
+
+        // Try to write to Supabase FIRST (primary storage)
+        if (supabase) {
+          try {
+            const { data, error } = await supabase
+              .from('rsa_assets')
+              .insert(rsaData);
+
+            if (error) {
+              console.warn(`Failed to write to Supabase:`, error.message);
+            } else {
+              writtenToSupabase = true;
+              console.log(`Written to Supabase: ${theme}`);
+            }
+          } catch (error) {
+            console.warn(`Supabase write error:`, error.message);
+          }
+        }
+
+        // Also write to Google Sheets (dual-write pattern for backup)
         if (rsa) {
           try {
             await rsa.addRow({
@@ -104,18 +153,22 @@ export async function handleInlineAIWriter(tenant, limit = 5) {
               source_url: "",
               approval_status: "approved",
             });
-            written = true;
+            writtenToSheets = true;
             console.log(`Written to Sheets: ${theme}`);
           } catch (error) {
             console.warn(`Failed to write to Sheets:`, error.message);
           }
         }
 
+        const written = writtenToSupabase || writtenToSheets;
+
         results.push({
           theme,
           headlines: v.clipped.h,
           descriptions: v.clipped.d,
           written,
+          writtenToSupabase,
+          writtenToSheets,
           source: headlines[0]?.includes(theme) ? 'ai' : 'fallback'
         });
 
@@ -130,10 +183,16 @@ export async function handleInlineAIWriter(tenant, limit = 5) {
       }
     }
 
+    const supabaseWrites = results.filter(r => r.writtenToSupabase).length;
+    const sheetWrites = results.filter(r => r.writtenToSheets).length;
+
     return {
       success: true,
       results,
       wrote: results.filter(r => r.written).length,
+      wroteToSupabase: supabaseWrites,
+      wroteToSheets: sheetWrites,
+      storage: supabaseWrites > 0 ? 'supabase_primary' : (sheetWrites > 0 ? 'sheets_only' : 'none'),
       provider: ai?.provider || 'fallback'
     };
 

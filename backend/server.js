@@ -3792,20 +3792,40 @@ app.post("/api/jobs/ai_writer", async (req, res) => {
 
     console.log(`Starting inline AI writer for ${tenant} with limit ${limit}`);
 
-    // Run inline (no child process spawning)
-    const result = await handleInlineAIWriter(tenant, limit);
+    // Send immediate response to prevent timeout
+    // The actual work will continue in the background
+    res.json({
+      ok: true,
+      status: "processing",
+      message: `Generating ${limit} themes in background. Check drafts in 30-60 seconds.`,
+      limit
+    });
 
-    // Log completion
-    try {
-      await appendRows(
-        tenant,
-        "RUN_LOGS",
-        ["timestamp", "message"],
-        [[new Date().toISOString(), `ai_writer_completed: ${result.wrote} themes`]],
-      );
-    } catch {}
-
-    res.json({ ok: true, ...result });
+    // Continue processing after sending response
+    // This prevents Vercel timeout while work continues
+    handleInlineAIWriter(tenant, limit).then(async (result) => {
+      console.log(`AI writer completed for ${tenant}: wrote ${result.wrote} themes`);
+      try {
+        await appendRows(
+          tenant,
+          "RUN_LOGS",
+          ["timestamp", "message"],
+          [[new Date().toISOString(), `ai_writer_completed: ${result.wrote} themes`]],
+        );
+      } catch (e) {
+        console.error("Failed to log completion:", e);
+      }
+    }).catch(error => {
+      console.error(`AI writer failed for ${tenant}:`, error);
+      try {
+        appendRows(
+          tenant,
+          "RUN_LOGS",
+          ["timestamp", "message"],
+          [[new Date().toISOString(), `ai_writer_failed: ${error.message}`]],
+        );
+      } catch {}
+    });
   } catch (e) {
     res.status(500).json({ ok: false, error: String(e) });
   }
