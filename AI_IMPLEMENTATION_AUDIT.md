@@ -935,3 +935,33 @@ All environment variables are already set in Vercel (confirmed by user):
 - `2c53777`: Optimize Redis for Vercel serverless environment
 - `e3c8dfb`: Trigger Vercel deployment
 - `0394252`: Reverted to stable base with gemini-2.5-flash model
+- `55385cc`: Fix non-string content handling in Google AI response
+
+### Additional Fix - Google AI Response Type Error
+
+#### Problem
+After the initial fixes, production logs showed `TypeError: content.trim is not a function` errors when processing Google AI responses. The issue occurred because the response content wasn't always a string type.
+
+#### Solution
+**File**: `/backend/lib/aiProvider.js:217-224`
+- Added type conversion to ensure content is always a string before calling `.trim()`
+- Changed from directly checking `content.trim()` to converting via `String(content || '')`
+- Return the converted string instead of the original content variable
+
+#### Code Change
+```javascript
+// Before (causing error)
+if (!content || content.trim().length === 0) {
+  throw new AIProviderError("Google AI returned empty response", "google");
+}
+return content;
+
+// After (fixed)
+const contentStr = String(content || '');
+if (!contentStr || contentStr.trim().length === 0) {
+  throw new AIProviderError("Google AI returned empty response", "google");
+}
+return contentStr;
+```
+
+This ensures the Google AI provider always returns a string type, preventing type errors in downstream processing.
