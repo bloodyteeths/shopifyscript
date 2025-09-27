@@ -357,6 +357,7 @@ Return ONLY valid JSON with "headlines" array (5 items) and "descriptions" array
         // Prepare data for storage
         const rsaData = {
           tenant_id: tenant,  // Changed from 'tenant' to 'tenant_id' to match database column
+          asset_type: "rsa",  // Added required asset_type field
           theme,
           headlines_pipe: v.clipped.h.join("|"),
           descriptions_pipe: v.clipped.d.join("|"),

@@ -1457,3 +1457,42 @@ EXECUTE FUNCTION update_updated_at_column();
 - Resolved frontend TypeError on provider status fetch
 - Improved UI responsiveness during AI generation
 - Better error handling throughout the flow
+
+---
+
+## Fix 11: Asset Type Column and Complete Schema Fix (2025-09-27)
+
+### Issue
+Database write failing with: "null value in column 'asset_type' of relation 'rsa_assets' violates not-null constraint"
+
+### Solution
+1. **Added asset_type field to backend code**:
+   - Set `asset_type: "rsa"` in the rsaData object
+   - This is a required field in the database schema
+
+2. **Created comprehensive SQL fix**:
+   - `fix_rsa_assets_complete.sql` handles all required columns
+   - Safely updates NULL values before adding constraints
+   - Creates proper indexes for performance
+
+3. **Column mapping fixes**:
+   - Using `tenant_id` instead of `tenant`
+   - Added `asset_type` field with value "rsa"
+   - All required fields now properly mapped
+
+### Files Changed
+- `/backend/api/ai-writer-inline.js`: Added asset_type field
+- Created `/fix_rsa_assets_complete.sql`: Complete database fix
+
+### Testing
+Run `fix_rsa_assets_complete.sql` in Supabase SQL editor to:
+1. Add all missing columns
+2. Update NULL values with defaults
+3. Add NOT NULL constraints safely
+4. Create performance indexes
+5. Display final table structure
+
+### Impact
+- AI writer can now successfully write to Supabase
+- All required database columns are populated
+- No more NULL constraint violations
