@@ -358,12 +358,14 @@ Return ONLY valid JSON with "headlines" array (5 items) and "descriptions" array
         const rsaData = {
           tenant_id: tenant,  // Changed from 'tenant' to 'tenant_id' to match database column
           asset_type: "rsa",  // Added required asset_type field
+          asset_text: `${theme} - ${v.clipped.h[0]}`, // Added required asset_text field
           theme,
           headlines_pipe: v.clipped.h.join("|"),
           descriptions_pipe: v.clipped.d.join("|"),
           rationale: "ai_generated_inline",
           source_url: "",
           approval_status: "approved",
+          active: true,  // Added active field for fetching
           created_at: new Date().toISOString()
         };
 
