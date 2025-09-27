@@ -1,30 +1,41 @@
 import { createClient } from "redis";
 
-// Connection pool management
+// Connection pool management optimized for serverless
 class RedisConnectionPool {
   constructor() {
     this.clients = [];
     this.availableClients = [];
-    this.maxConnections = Number(process.env.REDIS_MAX_CONNECTIONS || 10);
-    this.minConnections = Number(process.env.REDIS_MIN_CONNECTIONS || 2);
-    this.connectionTimeout = Number(process.env.REDIS_CONNECTION_TIMEOUT || 5000);
-    this.retryAttempts = Number(process.env.REDIS_RETRY_ATTEMPTS || 3);
-    this.retryDelay = Number(process.env.REDIS_RETRY_DELAY || 1000);
-    
-    // Enhanced Redis configuration
+    this.isServerless = process.env.VERCEL || process.env.AWS_LAMBDA_FUNCTION_NAME || process.env.NETLIFY;
+    this.maxConnections = Number(process.env.REDIS_MAX_CONNECTIONS || (this.isServerless ? 3 : 10));
+    this.minConnections = Number(process.env.REDIS_MIN_CONNECTIONS || (this.isServerless ? 0 : 2));
+    this.connectionTimeout = Number(process.env.REDIS_CONNECTION_TIMEOUT || (this.isServerless ? 2000 : 5000));
+    this.retryAttempts = Number(process.env.REDIS_RETRY_ATTEMPTS || (this.isServerless ? 1 : 3));
+    this.retryDelay = Number(process.env.REDIS_RETRY_DELAY || 500);
+    this.initialized = false;
+    this.initializePromise = null;
+
+    // Enhanced Redis configuration for serverless
     this.redisConfig = {
       url: this.getRedisUrl(),
       socket: {
         connectTimeout: this.connectionTimeout,
+        commandTimeout: this.connectionTimeout,
+        reconnectStrategy: (retries) => {
+          if (this.isServerless && retries > 1) {
+            // In serverless, fail fast
+            return null;
+          }
+          return Math.min(retries * 100, 1000);
+        },
         lazyConnect: true,
-        keepAlive: 30000,
+        keepAlive: this.isServerless ? 5000 : 30000,
       },
       retryDelayOnFailover: 100,
-      enableAutoPipelining: true, // Enable command pipelining
+      enableAutoPipelining: !this.isServerless, // Disable in serverless
       maxRetriesPerRequest: this.retryAttempts,
       lazyConnect: true,
     };
-    
+
     // Metrics
     this.metrics = {
       totalCommands: 0,
@@ -37,8 +48,11 @@ class RedisConnectionPool {
       cacheHits: 0,
       cacheMisses: 0,
     };
-    
-    this.initialize();
+
+    // Don't initialize immediately in serverless
+    if (!this.isServerless) {
+      this.initialize();
+    }
   }
   
   getRedisUrl() {
@@ -49,12 +63,28 @@ class RedisConnectionPool {
   }
   
   async initialize() {
+    if (this.initialized) return;
+    if (this.initializePromise) return this.initializePromise;
+
+    this.initializePromise = this._doInitialize();
+    return this.initializePromise;
+  }
+
+  async _doInitialize() {
     if (!this.redisConfig.url) {
-      console.warn('Redis URL not configured');
+      console.warn('Redis URL not configured - Redis caching disabled');
+      this.initialized = true;
       return;
     }
-    
-    // Create minimum connections
+
+    // In serverless, don't pre-create connections
+    if (this.isServerless) {
+      console.log('Redis pool configured for serverless (lazy connection)');
+      this.initialized = true;
+      return;
+    }
+
+    // Create minimum connections for non-serverless
     for (let i = 0; i < this.minConnections; i++) {
       try {
         const client = await this.createConnection();
@@ -64,8 +94,9 @@ class RedisConnectionPool {
         console.error(`Failed to create Redis connection ${i}:`, error.message);
       }
     }
-    
+
     console.log(`Redis connection pool initialized with ${this.clients.length} connections`);
+    this.initialized = true;
   }
   
   async createConnection() {
@@ -89,31 +120,60 @@ class RedisConnectionPool {
   }
   
   async getConnection() {
+    // Ensure initialized (lazy init for serverless)
+    if (!this.initialized) {
+      await this.initialize();
+    }
+
+    // If Redis is not configured, return null
+    if (!this.redisConfig.url) {
+      return null;
+    }
+
     // Try to get available connection
     if (this.availableClients.length > 0) {
       this.metrics.connectionPoolHits++;
-      return this.availableClients.pop();
+      const client = this.availableClients.pop();
+      // Verify connection is still valid
+      if (client && client.isOpen) {
+        return client;
+      }
     }
-    
+
     // Create new connection if under limit
     if (this.clients.length < this.maxConnections) {
       this.metrics.connectionPoolMisses++;
       try {
-        const client = await this.createConnection();
+        const client = await Promise.race([
+          this.createConnection(),
+          new Promise((_, reject) =>
+            setTimeout(() => reject(new Error('Redis connection timeout')), this.connectionTimeout)
+          )
+        ]);
         this.clients.push(client);
         return client;
       } catch (error) {
-        console.error('Failed to create new Redis connection:', error.message);
+        console.warn('Failed to create Redis connection:', error.message);
+        // In serverless, fail gracefully
+        if (this.isServerless) {
+          return null;
+        }
         throw error;
       }
     }
-    
-    // Wait for available connection
+
+    // In serverless, don't wait for connections
+    if (this.isServerless) {
+      console.warn('Redis connection pool exhausted in serverless');
+      return null;
+    }
+
+    // Wait for available connection (non-serverless only)
     return new Promise((resolve, reject) => {
       const timeout = setTimeout(() => {
         reject(new Error('Redis connection pool timeout'));
       }, this.connectionTimeout);
-      
+
       const checkForConnection = () => {
         if (this.availableClients.length > 0) {
           clearTimeout(timeout);
@@ -122,7 +182,7 @@ class RedisConnectionPool {
           setTimeout(checkForConnection, 50);
         }
       };
-      
+
       checkForConnection();
     });
   }
@@ -136,29 +196,53 @@ class RedisConnectionPool {
   async executeCommand(command, ...args) {
     const startTime = Date.now();
     this.metrics.totalCommands++;
-    
+
     let client;
     let retryCount = 0;
-    
+
     while (retryCount <= this.retryAttempts) {
       try {
         client = await this.getConnection();
-        const result = await client[command](...args);
-        
+
+        // If no client available (Redis not configured or connection failed), return null
+        if (!client) {
+          console.debug(`Redis command ${command} skipped - no connection available`);
+          return null;
+        }
+
+        // Execute command with timeout in serverless
+        const commandPromise = client[command](...args);
+        const result = this.isServerless
+          ? await Promise.race([
+              commandPromise,
+              new Promise((_, reject) =>
+                setTimeout(() => reject(new Error('Redis command timeout')), this.connectionTimeout)
+              )
+            ])
+          : await commandPromise;
+
         this.metrics.successfulCommands++;
         this.updateResponseTime(startTime);
-        
+
         return result;
       } catch (error) {
         this.metrics.failedCommands++;
-        
+
         if (retryCount < this.retryAttempts && this.isRetryableError(error)) {
           retryCount++;
           console.warn(`Redis command failed, retrying (${retryCount}/${this.retryAttempts}):`, error.message);
-          
-          // Exponential backoff
-          await this.sleep(this.retryDelay * Math.pow(2, retryCount - 1));
+
+          // Shorter backoff in serverless
+          const delay = this.isServerless
+            ? Math.min(this.retryDelay, 500)
+            : this.retryDelay * Math.pow(2, retryCount - 1);
+          await this.sleep(delay);
         } else {
+          // In serverless, fail gracefully
+          if (this.isServerless) {
+            console.warn(`Redis command ${command} failed:`, error.message);
+            return null;
+          }
           throw error;
         }
       } finally {
@@ -166,6 +250,11 @@ class RedisConnectionPool {
           this.releaseConnection(client);
         }
       }
+    }
+
+    // If we exhausted retries in serverless, return null
+    if (this.isServerless) {
+      return null;
     }
   }
   

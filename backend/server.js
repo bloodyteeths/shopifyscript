@@ -3766,14 +3766,15 @@ app.post("/api/jobs/ai_writer", async (req, res) => {
   const payload = `POST:${tenant}:ai_writer:${nonce}`;
   if (!tenant || !verify(sig, payload))
     return res.status(403).json({ ok: false, error: "auth" });
+
   try {
     const provider = (process.env.AI_PROVIDER || "").toLowerCase();
     if (provider === "openai" && !process.env.OPENAI_KEY)
       return res.status(400).json({ ok: false, error: "OPENAI_KEY missing" });
     if (provider === "anthropic" && !process.env.ANTHROPIC_KEY)
-      return res
-        .status(400)
-        .json({ ok: false, error: "ANTHROPIC_KEY missing" });
+      return res.status(400).json({ ok: false, error: "ANTHROPIC_KEY missing" });
+    if (provider === "google" && !process.env.GEMINI_API_KEY && !process.env.GOOGLE_API_KEY)
+      return res.status(400).json({ ok: false, error: "GEMINI_API_KEY missing" });
     if (dryRun) {
       try {
         await appendRows(
@@ -3785,24 +3786,26 @@ app.post("/api/jobs/ai_writer", async (req, res) => {
       } catch {}
       return res.json({ ok: true, dryRun: true, limit });
     }
-    // Shell out to node job to avoid ESM interop here
-    const { spawn } = await import("child_process");
-    const p = spawn(
-      "node",
-      ["backend/jobs/ai_writer.js", `--tenant=${tenant}`, `--limit=${limit}`],
-      { shell: true, env: process.env },
-    );
-    p.on("close", async (code) => {
-      try {
-        await appendRows(
-          tenant,
-          "RUN_LOGS",
-          ["timestamp", "message"],
-          [[new Date().toISOString(), `ai_writer_exit:${code}`]],
-        );
-      } catch {}
-    });
-    res.json({ ok: true, started: true });
+
+    // Use inline execution for Vercel serverless compatibility
+    const { handleInlineAIWriter } = await import("./api/ai-writer-inline.js");
+
+    console.log(`Starting inline AI writer for ${tenant} with limit ${limit}`);
+
+    // Run inline (no child process spawning)
+    const result = await handleInlineAIWriter(tenant, limit);
+
+    // Log completion
+    try {
+      await appendRows(
+        tenant,
+        "RUN_LOGS",
+        ["timestamp", "message"],
+        [[new Date().toISOString(), `ai_writer_completed: ${result.wrote} themes`]],
+      );
+    } catch {}
+
+    res.json({ ok: true, ...result });
   } catch (e) {
     res.status(500).json({ ok: false, error: String(e) });
   }

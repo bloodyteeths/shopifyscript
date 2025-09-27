@@ -193,9 +193,29 @@ async function createGoogleProvider() {
         },
       });
 
-      const content = resp?.response?.text?.();
+      // Try multiple ways to extract the text from the response
+      let content = null;
+
+      // Method 1: Standard response.text()
+      try {
+        content = resp?.response?.text?.();
+      } catch (e) {
+        console.warn("Failed to get text() from response:", e);
+      }
+
+      // Method 2: Check candidates array
+      if (!content && resp?.response?.candidates?.length > 0) {
+        const candidate = resp.response.candidates[0];
+        content = candidate?.content?.parts?.[0]?.text;
+      }
+
+      // Method 3: Direct response text
+      if (!content && resp?.response) {
+        content = resp.response.text || resp.response.output || resp.response.content;
+      }
 
       if (!content || content.trim().length === 0) {
+        console.error("Google AI response structure:", JSON.stringify(resp?.response, null, 2));
         throw new AIProviderError("Google AI returned empty response", "google");
       }
 
