@@ -140,12 +140,19 @@ export async function getRSADraftsFromSupabase(tenant) {
 
     logger.info('✅ RSA drafts fetched from Supabase', {
       tenant,
-      draftCount: drafts.length
+      draftCount: drafts.length,
+      themes: drafts.map(d => d.theme),
+      assetCount: assets.length
     });
 
+    // For compatibility, return all drafts in library if none are marked as default
+    // Most themes like "Best Sellers", "New Arrivals" should be in library
+    const defaultDrafts = drafts.filter(d => d.theme === 'default' || d.theme === 'Default Theme');
+    const libraryDrafts = drafts.filter(d => d.theme !== 'default' && d.theme !== 'Default Theme');
+
     return {
-      rsa_default: drafts.filter(d => d.theme === 'default'),
-      library: drafts.filter(d => d.theme !== 'default')
+      rsa_default: defaultDrafts,
+      library: libraryDrafts
     };
   } catch (error) {
     logger.error('Error fetching RSA drafts from Supabase', { tenant, error: error.message });
