@@ -356,7 +356,8 @@ Return ONLY valid JSON with "headlines" array (5 items) and "descriptions" array
 
         // Prepare data for storage
         const rsaData = {
-          tenant_id: tenant,  // Changed from 'tenant' to 'tenant_id' to match database column
+          tenant: tenant,  // Some tables have 'tenant' column
+          tenant_id: tenant,  // Some tables have 'tenant_id' column - including both for compatibility
           asset_type: "rsa",  // Added required asset_type field
           asset_text: `${theme} - ${v.clipped.h[0]}`, // Added required asset_text field
           theme,
