@@ -18,6 +18,8 @@ async function getValidators() {
 }
 
 // GET /api/ai/drafts - List AI generated drafts and assets
+// TEMPORARILY DISABLED - Using Supabase-only version
+/*
 router.get("/drafts", async (req, res) => {
   const { tenant, sig } = req.query;
   const payload = `GET:${tenant}:ai_drafts`;
@@ -216,6 +218,61 @@ router.get("/drafts", async (req, res) => {
     res.json({ ok: true, ...out, source: 'sheets' });
   } catch (e) {
     logger.error(`\u274c Error fetching RSA drafts`, { tenant, error: e.message });
+    res.status(500).json({ ok: false, error: String(e) });
+  }
+});
+*/
+
+// GET /api/ai/drafts - Simplified Supabase-only version
+router.get("/drafts", async (req, res) => {
+  const { tenant, sig } = req.query;
+  const payload = `GET:${tenant}:ai_drafts`;
+
+  if (!tenant || !verify(sig, payload)) {
+    return res.status(403).json({ ok: false, error: "auth" });
+  }
+
+  try {
+    // Only use Supabase - no fallback
+    logger.info(`🔍 Fetching RSA drafts from Supabase`, { tenant });
+    const supabaseDrafts = await getRSADraftsFromSupabase(tenant);
+
+    if (!supabaseDrafts) {
+      logger.warn(`⚠️ No Supabase data available`, { tenant });
+      return res.json({
+        ok: true,
+        rsa_default: [],
+        library: [],
+        sitelinks: [],
+        callouts: [],
+        snippets: [],
+        source: 'supabase'
+      });
+    }
+
+    logger.info(`✅ RSA drafts fetched from Supabase`, {
+      tenant,
+      defaultCount: supabaseDrafts.rsa_default?.length || 0,
+      libraryCount: supabaseDrafts.library?.length || 0
+    });
+
+    // Add validation to drafts
+    const { validateRSA } = await getValidators();
+    for (const draft of [...supabaseDrafts.rsa_default, ...supabaseDrafts.library]) {
+      draft.lint = validateRSA(draft.headlines, draft.descriptions);
+    }
+
+    return res.json({
+      ok: true,
+      rsa_default: supabaseDrafts.rsa_default,
+      library: supabaseDrafts.library,
+      sitelinks: [],
+      callouts: [],
+      snippets: [],
+      source: 'supabase'
+    });
+  } catch (e) {
+    logger.error(`❌ Error fetching RSA drafts`, { tenant, error: e.message });
     res.status(500).json({ ok: false, error: String(e) });
   }
 });
