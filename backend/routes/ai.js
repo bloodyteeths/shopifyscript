@@ -223,6 +223,35 @@ router.get("/drafts", async (req, res) => {
 });
 */
 
+// Simple test endpoint to verify Supabase data
+router.get("/test-rsa-simple", async (req, res) => {
+  try {
+    const tenant = "mybabybymerry";
+    const supabaseClient = getSupabaseClient();
+
+    if (!supabaseClient) {
+      return res.json({ error: "No Supabase client" });
+    }
+
+    // Direct simple query
+    const { data, error } = await supabaseClient
+      .from('rsa_assets')
+      .select('theme, headlines_pipe, descriptions_pipe')
+      .eq('tenant_id', tenant)
+      .eq('asset_type', 'rsa')
+      .limit(10);
+
+    return res.json({
+      success: true,
+      count: data?.length || 0,
+      data: data || [],
+      error: error?.message || null
+    });
+  } catch (err) {
+    return res.json({ error: err.message });
+  }
+});
+
 // Debug endpoint - directly query Supabase to see raw data
 router.get("/debug-rsa", async (req, res) => {
   const { tenant, sig } = req.query;
