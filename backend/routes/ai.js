@@ -64,6 +64,13 @@ router.get("/drafts", async (req, res) => {
     // Try Supabase first for RSA drafts (reduces Google Sheets API calls)
     logger.info(`\ud83d\udd0d Fetching RSA drafts`, { tenant, source: 'attempting_supabase' });
     const supabaseDrafts = await getRSADraftsFromSupabase(tenant);
+    
+    console.log('📊 getRSADraftsFromSupabase result:', {
+      hasResult: !!supabaseDrafts,
+      isNull: supabaseDrafts === null,
+      hasDefault: supabaseDrafts?.rsa_default?.length || 0,
+      hasLibrary: supabaseDrafts?.library?.length || 0
+    });
 
     if (supabaseDrafts) {
       logger.info(`\u2705 RSA drafts fetched from Supabase`, {
@@ -90,6 +97,7 @@ router.get("/drafts", async (req, res) => {
     }
 
     // Fallback to Google Sheets if Supabase fails
+    console.log('⚠️ Supabase returned null, falling back to Google Sheets');
     logger.info(`\u26a0\ufe0f Falling back to Google Sheets for RSA drafts`, { tenant });
 
     const { getDoc } = await getSheetOperations();

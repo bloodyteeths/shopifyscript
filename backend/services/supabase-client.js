@@ -34,10 +34,18 @@ export function getSupabaseClient() {
     const supabaseUrl = process.env.SUPABASE_URL;
     const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
+    console.log('🔧 getSupabaseClient called:', {
+      hasUrl: !!supabaseUrl,
+      hasKey: !!supabaseServiceKey,
+      urlPreview: supabaseUrl ? supabaseUrl.substring(0, 30) + '...' : 'not set'
+    });
+
     if (!supabaseUrl || !supabaseServiceKey) {
+      console.log('❌ Missing Supabase credentials');
       return null;
     }
 
+    console.log('✅ Creating Supabase client');
     supabaseInstance = createClient(supabaseUrl, supabaseServiceKey, supabaseOptions);
   }
   return supabaseInstance;
@@ -189,9 +197,17 @@ const connectionPool = new SupabaseConnectionPool();
  * Check if Supabase is enabled and configured
  */
 export function isSupabaseEnabled() {
-  // Check if we can get a Supabase client
-  const client = getSupabaseClient();
-  return client !== null;
+  const enabled = process.env.SUPABASE_ENABLED === 'true';
+  const configured = !!(process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY);
+  
+  console.log('🔐 isSupabaseEnabled check:', {
+    enabled,
+    configured,
+    hasUrl: !!process.env.SUPABASE_URL,
+    hasKey: !!process.env.SUPABASE_SERVICE_ROLE_KEY
+  });
+  
+  return enabled && configured;
 }
 
 /**
