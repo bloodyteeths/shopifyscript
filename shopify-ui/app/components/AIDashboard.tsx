@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { authenticatedFetch } from "../utils/ai-client";
 import { SystemOverview } from "./AIDashboard/SystemOverview";
+import { UserDashboard } from "./AIDashboard/UserDashboard";
+import { CampaignManager } from "./AIDashboard/CampaignManager";
+import { AIContentStudio } from "./AIDashboard/AIContentStudio";
+import { PerformanceInsights } from "./AIDashboard/PerformanceInsights";
+import { Tabs, Page, Layout, Card, Text, Button, Badge, BlockStack, InlineStack } from "@shopify/polaris";
 
 interface AIDraft {
   theme: string;
@@ -62,6 +67,10 @@ export function AIDashboard({ shopName, subscriptionTier = "starter", hasFeature
   // Fix hydration issue - use array instead of Set for initial state
   const [selectedDraftIndices, setSelectedDraftIndices] = useState<number[]>([]);
   const [isGenerating, setIsGenerating] = useState(false);
+
+  // State for tab navigation
+  const [selectedTab, setSelectedTab] = useState(0);
+  const [showAdminView, setShowAdminView] = useState(false);
 
   // Fetch AI drafts
   const fetchDrafts = async () => {
@@ -401,17 +410,86 @@ export function AIDashboard({ shopName, subscriptionTier = "starter", hasFeature
     );
   }
 
+  const tabs = [
+    {
+      id: 'dashboard',
+      content: 'Dashboard',
+      accessibilityLabel: 'Dashboard',
+      panelID: 'dashboard-panel',
+    },
+    {
+      id: 'campaigns',
+      content: 'Campaigns',
+      accessibilityLabel: 'Campaign Manager',
+      panelID: 'campaigns-panel',
+    },
+    {
+      id: 'content',
+      content: 'AI Content Studio',
+      accessibilityLabel: 'Content Studio',
+      panelID: 'content-panel',
+    },
+    {
+      id: 'insights',
+      content: 'Insights',
+      accessibilityLabel: 'Performance Insights',
+      panelID: 'insights-panel',
+    },
+  ];
+
+  // Show user-friendly view by default
+  if (!showAdminView) {
+    return (
+      <Page
+        title="AI Campaign Center"
+        subtitle="Manage your Google Ads campaigns with AI-powered optimization"
+        primaryAction={{
+          content: 'Admin View',
+          onAction: () => setShowAdminView(true),
+        }}
+      >
+        <Layout>
+          <Layout.Section>
+            <Card>
+              <Tabs tabs={tabs} selected={selectedTab} onSelect={setSelectedTab}>
+                <div style={{ paddingTop: "16px" }}>
+                  {selectedTab === 0 && (
+                    <UserDashboard shopName={shopName} hasFeatureAccess={hasFeatureAccess} />
+                  )}
+                  {selectedTab === 1 && (
+                    <CampaignManager shopName={shopName} hasFeatureAccess={hasFeatureAccess} />
+                  )}
+                  {selectedTab === 2 && (
+                    <AIContentStudio shopName={shopName} hasFeatureAccess={hasFeatureAccess} />
+                  )}
+                  {selectedTab === 3 && (
+                    <PerformanceInsights shopName={shopName} hasFeatureAccess={hasFeatureAccess} />
+                  )}
+                </div>
+              </Tabs>
+            </Card>
+          </Layout.Section>
+        </Layout>
+      </Page>
+    );
+  }
+
+  // Admin view with system monitoring
   return (
     <div style={{ padding: "20px" }}>
-      {/* New System Overview Component */}
+      {/* Switch back to user view button */}
+      <div style={{ marginBottom: "16px" }}>
+        <Button onClick={() => setShowAdminView(false)}>← Back to User View</Button>
+      </div>
+      {/* System Overview Component */}
       <div style={{ marginBottom: "32px" }}>
         <SystemOverview shopName={shopName} hasFeatureAccess={hasFeatureAccess} />
       </div>
 
       <div style={{ marginBottom: "24px" }}>
-        <h1 style={{ margin: "0 0 8px 0", fontSize: "24px", fontWeight: "bold" }}>AI Content Management</h1>
+        <h1 style={{ margin: "0 0 8px 0", fontSize: "24px", fontWeight: "bold" }}>AI System Management</h1>
         <p style={{ margin: 0, color: "#666", fontSize: "14px" }}>
-          Review and manage AI-generated content, monitor usage, and track automation status
+          Review system health, monitor automation status, and manage technical configurations
         </p>
       </div>
 
