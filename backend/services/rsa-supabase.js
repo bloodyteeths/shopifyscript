@@ -204,15 +204,15 @@ export async function getRSADraftsFromSupabase(tenant) {
       totalAssets: assets.length
     });
 
-    // Separate themes: "Default Theme" goes to rsa_default, everything else to library
-    const defaultDrafts = drafts.filter(d => d.theme === 'Default Theme');
-    const libraryDrafts = drafts.filter(d => d.theme !== 'Default Theme');
+    // ALL themes go to library since none are "Default Theme"
+    // The UI expects library themes like "Best Sellers", "New Arrivals"
+    const libraryDrafts = drafts; // All drafts are library themes
+    const defaultDrafts = []; // No default theme
 
     console.log('📦 Final categorization:', {
       defaultCount: defaultDrafts.length,
       libraryCount: libraryDrafts.length,
-      defaultThemes: defaultDrafts.map(d => d.theme),
-      libraryThemes: libraryDrafts.map(d => d.theme)
+      themes: libraryDrafts.map(d => d.theme)
     });
 
     const result = {
