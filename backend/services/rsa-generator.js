@@ -1,10 +1,12 @@
 /**
  * RSA Content Generator Service for ProofKit SaaS
  * Generates intelligent RSA content with 30/90 character validation
+ * Now enhanced with website content extraction for dynamic, specific ads
  */
 
 import { getAIProviderService } from "./ai-provider.js";
 import { validateRSA } from "../lib/validators.js";
+import { getContentIndexer } from "./content-indexer.js";
 
 /**
  * RSA Content Generator with intelligent validation and optimization
@@ -12,15 +14,18 @@ import { validateRSA } from "../lib/validators.js";
 export class RSAContentGenerator {
   constructor() {
     this.aiService = getAIProviderService();
+    this.contentIndexer = getContentIndexer();
     this.generationStats = {
       totalGenerated: 0,
       validGenerated: 0,
       rejectedByValidation: 0,
+      withWebsiteContent: 0,
     };
   }
 
   /**
    * Generate RSA content for a specific theme/business
+   * Enhanced with website content for dynamic, specific ads
    */
   async generateRSAContent(options = {}) {
     const {
@@ -36,7 +41,23 @@ export class RSAContentGenerator {
       targetCPA = null,
       targetROAS = null,
       businessStrategy = "protect",
+      tenant = null,
+      useWebsiteContent = true,
     } = options;
+
+    // Try to get website content for this tenant
+    let websiteContent = null;
+    if (tenant && useWebsiteContent) {
+      try {
+        websiteContent = await this.contentIndexer.getAllContentForAds(tenant);
+        if (websiteContent && websiteContent.totalItems > 0) {
+          this.generationStats.withWebsiteContent++;
+          console.log(`Using ${websiteContent.totalItems} website content items for RSA generation`);
+        }
+      } catch (error) {
+        console.warn('Failed to fetch website content, using generic generation:', error.message);
+      }
+    }
 
     const prompt = this.buildRSAPrompt({
       theme,
@@ -51,6 +72,7 @@ export class RSAContentGenerator {
       targetCPA,
       targetROAS,
       businessStrategy,
+      websiteContent,
     });
 
     try {
@@ -70,6 +92,13 @@ export class RSAContentGenerator {
         success: true,
         content: processedContent,
         stats: { ...this.generationStats },
+        usedWebsiteContent: !!websiteContent,
+        websiteContentSummary: websiteContent ? {
+          products: websiteContent.products.length,
+          testimonials: websiteContent.testimonials.length,
+          offers: websiteContent.offers.length,
+          usps: websiteContent.usps.length
+        } : null
       };
     } catch (error) {
       console.error("RSA generation failed:", error);
@@ -83,6 +112,7 @@ export class RSAContentGenerator {
 
   /**
    * Build intelligent prompt for RSA generation
+   * Enhanced with website content for specific, compelling ads
    */
   buildRSAPrompt(options) {
     const {
@@ -98,6 +128,7 @@ export class RSAContentGenerator {
       targetCPA,
       targetROAS,
       businessStrategy,
+      websiteContent,
     } = options;
 
     const keywordText =
@@ -126,6 +157,12 @@ export class RSAContentGenerator {
       targetText = ` Performance Targets: Optimize for ${targets.join(" and ")}.`;
     }
 
+    // Website content context (NEW!)
+    let websiteContentText = "";
+    if (websiteContent && websiteContent.totalItems > 0) {
+      websiteContentText = this.buildWebsiteContentContext(websiteContent);
+    }
+
     // Strategy-based tone adjustment
     let adjustedTone = tone;
     if (businessStrategy === "scale" || businessStrategy === "grow") {
@@ -140,8 +177,8 @@ export class RSAContentGenerator {
           : `${tone} with trust emphasis`;
     }
 
-    return `Generate Google Ads RSA (Responsive Search Ads) content for a ${industry} business with theme "${theme}". 
-    
+    return `Generate Google Ads RSA (Responsive Search Ads) content for a ${industry} business with theme "${theme}".
+
 Requirements:
 - Generate ${headlineCount} unique headlines (each 30 characters or less)
 - Generate ${descriptionCount} unique descriptions (each 90 characters or less)
@@ -150,8 +187,11 @@ Requirements:
 - Include strong calls-to-action
 ${keywordText}${offerText}${brandingText}${strategyText}${targetText}
 
+${websiteContentText}
+
 ${strategyText ? "IMPORTANT: Align all messaging with the provided business strategy context." : ""}
 ${targetText ? "IMPORTANT: Create ads that will appeal to users likely to meet the performance targets." : ""}
+${websiteContentText ? "IMPORTANT: Use the actual website content provided above to create specific, compelling ads. Reference real products, offers, and USPs." : ""}
 
 Return ONLY valid JSON in this exact format:
 {
@@ -160,6 +200,83 @@ Return ONLY valid JSON in this exact format:
 }
 
 Headlines must be under 30 characters. Descriptions must be under 90 characters. No additional text outside the JSON.`;
+  }
+
+  /**
+   * Build website content context for AI prompt
+   */
+  buildWebsiteContentContext(websiteContent) {
+    let context = "\n\nWEBSITE CONTENT (Use this real business data to create specific ads):\n";
+
+    // Add products
+    if (websiteContent.products && websiteContent.products.length > 0) {
+      context += "\nProducts/Services:\n";
+      websiteContent.products.slice(0, 5).forEach(product => {
+        const item = product.metadata || product;
+        context += `- ${product.title || item.name}`;
+        if (item.price) context += ` ($${item.price})`;
+        if (product.content) context += ` - ${product.content.substring(0, 100)}`;
+        context += "\n";
+      });
+    }
+
+    // Add USPs
+    if (websiteContent.usps && websiteContent.usps.length > 0) {
+      context += "\nUnique Selling Points:\n";
+      websiteContent.usps.slice(0, 5).forEach(usp => {
+        context += `- ${usp.title || usp.content}\n`;
+      });
+    }
+
+    // Add offers
+    if (websiteContent.offers && websiteContent.offers.length > 0) {
+      context += "\nCurrent Offers:\n";
+      websiteContent.offers.slice(0, 3).forEach(offer => {
+        context += `- ${offer.title || offer.content}\n`;
+      });
+    }
+
+    // Add guarantees
+    if (websiteContent.guarantees && websiteContent.guarantees.length > 0) {
+      context += "\nGuarantees:\n";
+      websiteContent.guarantees.slice(0, 2).forEach(guarantee => {
+        context += `- ${guarantee.title || guarantee.content}\n`;
+      });
+    }
+
+    // Add winning hooks
+    if (websiteContent.hooks && websiteContent.hooks.length > 0) {
+      context += "\nWinning Headlines/Hooks from Website:\n";
+      websiteContent.hooks.slice(0, 5).forEach(hook => {
+        context += `- ${hook.title || hook.content}\n`;
+      });
+    }
+
+    // Add CTAs
+    if (websiteContent.ctas && websiteContent.ctas.length > 0) {
+      context += "\nEffective CTAs from Website:\n";
+      context += websiteContent.ctas.slice(0, 5).join(", ") + "\n";
+    }
+
+    // Add brand voice if available
+    if (websiteContent.brandVoice && websiteContent.brandVoice.primaryTone) {
+      context += `\nBrand Voice: ${websiteContent.brandVoice.primaryTone} tone`;
+      if (websiteContent.brandVoice.commonPhrases && websiteContent.brandVoice.commonPhrases.length > 0) {
+        context += `\nCommon Phrases: ${websiteContent.brandVoice.commonPhrases.slice(0, 3).map(p => p.phrase).join(", ")}`;
+      }
+      context += "\n";
+    }
+
+    // Add testimonial snippets
+    if (websiteContent.testimonials && websiteContent.testimonials.length > 0) {
+      context += "\nCustomer Testimonials (for social proof in descriptions):\n";
+      websiteContent.testimonials.slice(0, 2).forEach(testimonial => {
+        const snippet = (testimonial.content || testimonial.title).substring(0, 80);
+        context += `- "${snippet}..." - ${testimonial.metadata?.author || 'Customer'}\n`;
+      });
+    }
+
+    return context;
   }
 
   /**

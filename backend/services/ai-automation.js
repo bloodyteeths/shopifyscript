@@ -16,6 +16,14 @@ import { getRSAGenerator } from "./rsa-generator.js";
 import { getNegativeAnalyzer } from "./negative-analyzer.js";
 import analyticsTiers from "./analytics-tiers.js";
 import { getCurrentSubscription } from "../middleware/subscription-check.js";
+import tenantRegistry from "./tenant-registry.js";
+import dataStore from "./data-store.js";
+import { getCompetitorIntelligenceService } from "./competitor-intelligence.js";
+import { getSERPMonitorService } from "./serp-monitor.js";
+import { getAdSpyService } from "./ad-spy.js";
+import demographicProfiler from "./demographic-profiler.js";
+import customerSegmentation from "./customer-segmentation.js";
+import audienceBuilder from "./audience-builder.js";
 
 /**
  * AI Automation Service with comprehensive cost controls
@@ -25,12 +33,21 @@ export class AIAutomationService {
     this.aiService = getAIProviderService();
     this.rsaGenerator = getRSAGenerator();
     this.negativeAnalyzer = getNegativeAnalyzer();
-    
+    this.competitorIntelligence = getCompetitorIntelligenceService();
+    this.serpMonitor = getSERPMonitorService();
+    this.adSpy = getAdSpyService();
+
+    // Customer intelligence services
+    this.demographicProfiler = demographicProfiler;
+    this.customerSegmentation = customerSegmentation;
+    this.audienceBuilder = audienceBuilder;
+
     // Token usage tracking
     this.tokenUsage = new Map(); // tenant -> usage stats
     this.costThresholds = new Map(); // tenant -> cost limits
     this.lastOptimization = new Map(); // tenant -> last optimization time
     this.automationQueue = new Map(); // tenant -> queued tasks
+    this.lastAudienceSync = new Map(); // tenant -> last audience sync time
     
     // Cost control settings
     this.defaultCostLimits = {
@@ -164,6 +181,16 @@ export class AIAutomationService {
       tasks.push(this.runAutomatedCampaignOptimization(tenant, tier));
     }
 
+    // Add competitor intelligence tasks for professional+ tiers
+    if (await this.shouldRunCompetitorIntelligence(tenant, tier)) {
+      tasks.push(this.runCompetitorIntelligenceAutomation(tenant, tier));
+    }
+
+    // Add customer intelligence and audience sync for professional+ tiers
+    if (await this.shouldRunAudienceSync(tenant, tier)) {
+      tasks.push(this.runAudienceSyncAutomation(tenant, tier));
+    }
+
     // Execute tasks with cost monitoring
     const results = await Promise.allSettled(tasks);
     
@@ -203,13 +230,15 @@ export class AIAutomationService {
         return cached.result;
       }
       
-      // Generate RSA content with optimized prompts
+      // Generate RSA content with optimized prompts and website content
       const result = await this.rsaGenerator.generateRSAContent({
         theme: params.theme,
         industry: "general",
         tone: "professional",
         headlineCount: params.headlineCount,
         descriptionCount: params.descriptionCount,
+        tenant: tenant, // Pass tenant for website content lookup
+        useWebsiteContent: true, // Enable website content integration
         // Use shorter, optimized prompts for cost savings
         playbookPrompt: "", // Remove verbose prompts for automation
       });
@@ -426,35 +455,82 @@ export class AIAutomationService {
   }
 
   /**
-   * Get recent search terms for analysis
+   * Get recent search terms for analysis (UPDATED: Uses data-store)
    */
   async getRecentSearchTerms(tenant, tier) {
-    // This would integrate with your sheets service or database
-    // For now, return mock data
-    const mockTerms = [
-      { search_term: "free software", cost: 5.0, clicks: 3, conversions: 0 },
-      { search_term: "business solutions", cost: 2.5, clicks: 5, conversions: 1 },
-      { search_term: "discount codes", cost: 3.0, clicks: 2, conversions: 0 },
-    ];
-    
-    return mockTerms.slice(0, this.getMaxSearchTermsForTier(tier));
+    try {
+      const maxTerms = this.getMaxSearchTermsForTier(tier);
+      const endDate = new Date();
+      const startDate = new Date();
+      startDate.setDate(startDate.getDate() - 30); // Last 30 days
+
+      // Get search terms from data-store (Supabase-first, Sheets-fallback)
+      const searchTerms = await dataStore.getSearchTerms(tenant, {
+        startDate,
+        endDate,
+        limit: maxTerms
+      });
+
+      return searchTerms;
+    } catch (error) {
+      console.error(`Failed to get search terms for ${tenant}:`, error.message);
+      // Return empty array on error
+      return [];
+    }
   }
 
   /**
-   * Get campaign performance data
+   * Get campaign performance data (UPDATED: Uses data-store)
    */
   async getCampaignPerformanceData(tenant) {
-    // This would integrate with your metrics system
-    return [
-      {
-        id: 'campaign1',
-        name: 'Test Campaign',
-        cost: 100,
-        conversions: 5,
-        clicks: 200,
-        cpa: 20
-      }
-    ];
+    try {
+      const endDate = new Date();
+      const startDate = new Date();
+      startDate.setDate(startDate.getDate() - 7); // Last 7 days
+
+      // Get metrics from data-store (Supabase-first, Sheets-fallback)
+      const metrics = await dataStore.getMetrics(tenant, startDate, endDate, 'campaign');
+
+      // Transform metrics into campaign performance objects
+      const campaigns = [];
+      const campaignMap = new Map();
+
+      metrics.forEach(metric => {
+        const key = metric.campaign_name || metric.entity_name;
+        if (!key) return;
+
+        if (!campaignMap.has(key)) {
+          campaignMap.set(key, {
+            id: metric.entity_id || key,
+            name: key,
+            cost: 0,
+            conversions: 0,
+            clicks: 0,
+            impressions: 0,
+            cpa: 0
+          });
+        }
+
+        const campaign = campaignMap.get(key);
+        campaign.cost += (metric.cost_micros || 0) / 1000000; // Convert from micros
+        campaign.conversions += metric.conversions || 0;
+        campaign.clicks += metric.clicks || 0;
+        campaign.impressions += metric.impressions || 0;
+      });
+
+      // Calculate CPA for each campaign
+      campaignMap.forEach(campaign => {
+        campaign.cpa = campaign.conversions > 0
+          ? campaign.cost / campaign.conversions
+          : 0;
+        campaigns.push(campaign);
+      });
+
+      return campaigns;
+    } catch (error) {
+      console.error(`Failed to get campaign performance for ${tenant}:`, error.message);
+      return [];
+    }
   }
 
   /**
@@ -509,13 +585,303 @@ export class AIAutomationService {
     return tier === 'enterprise';
   }
 
+  async shouldRunCompetitorIntelligence(tenant, tier) {
+    // Competitor intelligence for professional+ tiers
+    return tier === 'professional' || tier === 'enterprise';
+  }
+
+  async shouldRunAudienceSync(tenant, tier) {
+    // Audience sync for professional+ tiers
+    if (tier !== 'professional' && tier !== 'enterprise') {
+      return false;
+    }
+
+    // Check last sync time - daily for professional, every 6 hours for enterprise
+    const lastSync = this.lastAudienceSync.get(tenant);
+    const syncInterval = tier === 'enterprise' ? 6 * 60 * 60 * 1000 : 24 * 60 * 60 * 1000;
+
+    if (!lastSync || Date.now() - lastSync > syncInterval) {
+      return true;
+    }
+
+    return false;
+  }
+
+  /**
+   * Run audience sync automation with customer intelligence
+   */
+  async runAudienceSyncAutomation(tenant, tier) {
+    console.log(`👥 Running audience sync automation for ${tenant}`);
+
+    const startTime = Date.now();
+
+    try {
+      // Step 1: Generate demographic profile
+      console.log(`📊 Generating demographic profile for ${tenant}`);
+      const demographics = await this.demographicProfiler.generateDemographicProfile(tenant, {
+        refreshCache: true,
+        minOrders: 1,
+        minSpend: 0,
+        includeIndividuals: false
+      });
+
+      await dataStore.addLog(tenant, 'info',
+        `Demographic profile generated: ${demographics.totalCustomers} customers analyzed`,
+        {
+          highValueProfiles: demographics.highValueProfiles?.count || 0,
+          topInterests: demographics.interests ? Object.keys(demographics.interests).slice(0, 3) : []
+        }
+      );
+
+      // Step 2: Perform customer segmentation
+      console.log(`🎯 Segmenting customers for ${tenant}`);
+      const segmentation = await this.customerSegmentation.segmentCustomers(tenant, {
+        refreshCache: true,
+        includeCustomerIds: false,
+        minOrders: 1
+      });
+
+      await dataStore.addLog(tenant, 'info',
+        `Customer segmentation completed: ${segmentation.totalCustomers} customers segmented`,
+        {
+          segments: Object.keys(segmentation.rfmSegments || {}).length,
+          vipCount: segmentation.specialGroups?.vip?.count || 0,
+          atRiskCount: segmentation.specialGroups?.atRisk?.count || 0
+        }
+      );
+
+      // Step 3: Build audiences for Google Ads
+      console.log(`🎨 Building audiences for ${tenant}`);
+      const audiences = await this.audienceBuilder.buildAudiences(tenant, {
+        refreshCache: true,
+        includeCustomerMatch: true,
+        includeLookalikes: tier === 'enterprise', // Lookalikes only for enterprise
+        includeExclusions: true,
+        minCustomers: 100,
+        exportFormat: 'google_ads'
+      });
+
+      // Log audience build results
+      const audienceMetrics = audiences.metrics || {};
+      await dataStore.addLog(tenant, 'info',
+        `Audiences built: ${audienceMetrics.totalAudiences || 0} audiences created`,
+        {
+          totalCustomers: audiences.totalCustomers,
+          customerMatchLists: audiences.customerMatchLists ? Object.keys(audiences.customerMatchLists).length : 0,
+          lookalikeAudiences: audiences.lookalikeAudiences ? Object.keys(audiences.lookalikeAudiences).length : 0,
+          exclusionLists: audiences.exclusionLists ? Object.keys(audiences.exclusionLists).length : 0
+        }
+      );
+
+      // Step 4: Store audience recommendations for user review
+      if (audiences.recommendations && audiences.recommendations.length > 0) {
+        await dataStore.setTenantConfig(tenant, 'audience_recommendations', {
+          recommendations: audiences.recommendations,
+          generatedAt: new Date().toISOString(),
+          demographics: demographics.highValueProfiles,
+          segmentation: segmentation.specialGroups
+        });
+
+        // Log urgent recommendations
+        const urgentRecs = audiences.recommendations.filter(r => r.priority === 'urgent' || r.priority === 'high');
+        if (urgentRecs.length > 0) {
+          await dataStore.addLog(tenant, 'warning',
+            `${urgentRecs.length} high-priority audience recommendations available`,
+            { recommendations: urgentRecs.map(r => r.title) }
+          );
+        }
+      }
+
+      // Step 5: Store segmentation insights
+      if (segmentation.insights && segmentation.insights.length > 0) {
+        const urgentInsights = segmentation.insights.filter(i => i.priority === 'urgent');
+        if (urgentInsights.length > 0) {
+          await dataStore.addLog(tenant, 'warning',
+            `${urgentInsights.length} urgent customer insights require action`,
+            { insights: urgentInsights.map(i => i.message) }
+          );
+        }
+      }
+
+      // Update last sync time
+      this.lastAudienceSync.set(tenant, Date.now());
+
+      const duration = Date.now() - startTime;
+      console.log(`✅ Audience sync completed for ${tenant}: ${duration}ms`);
+
+      return {
+        success: true,
+        demographics,
+        segmentation,
+        audiences,
+        duration
+      };
+
+    } catch (error) {
+      console.error(`❌ Audience sync failed for ${tenant}:`, error.message);
+      await dataStore.addLog(tenant, 'error',
+        `Audience sync automation failed: ${error.message}`,
+        { error: error.stack }
+      );
+      throw error;
+    }
+  }
+
+  /**
+   * Run competitor intelligence automation
+   */
+  async runCompetitorIntelligenceAutomation(tenant, tier) {
+    console.log(`🕵️  Running competitor intelligence automation for ${tenant}`);
+
+    const startTime = Date.now();
+
+    try {
+      // Get business context for competitor identification
+      const businessContext = await dataStore.getAllTenantConfigs(tenant);
+      const industry = businessContext.industry || 'general';
+
+      // Step 1: Identify/Update competitors (weekly for professional, daily for enterprise)
+      const lastCompetitorCheck = await dataStore.getTenantConfig(tenant, 'last_competitor_check', {
+        defaultValue: null
+      });
+
+      const shouldUpdateCompetitors = !lastCompetitorCheck ||
+        Date.now() - new Date(lastCompetitorCheck).getTime() > (tier === 'enterprise' ? 24 : 168) * 60 * 60 * 1000;
+
+      if (shouldUpdateCompetitors) {
+        console.log(`🔍 Identifying competitors for ${tenant}`);
+        const competitors = await this.competitorIntelligence.identifyCompetitors(tenant, {
+          industry,
+          targetAudience: businessContext.target_audience
+        });
+
+        await dataStore.setTenantConfig(tenant, 'last_competitor_check', new Date());
+
+        // Step 2: Monitor competitor domains
+        if (competitors.length > 0) {
+          console.log(`👀 Monitoring ${competitors.length} competitor domains`);
+          const changes = await this.competitorIntelligence.monitorCompetitorDomains(tenant, competitors);
+
+          if (changes.length > 0) {
+            await dataStore.addLog(tenant, 'info',
+              `Competitor intelligence: ${changes.length} changes detected`,
+              { changes: changes.slice(0, 3) }
+            );
+          }
+        }
+      }
+
+      // Step 3: Track SERP positions (for enterprise tier)
+      if (tier === 'enterprise') {
+        console.log(`📊 Tracking SERP positions for ${tenant}`);
+        const serpData = await this.serpMonitor.trackKeywordPositions(tenant);
+
+        // Detect new competitors
+        const newCompetitors = await this.serpMonitor.detectNewCompetitors(tenant);
+
+        if (newCompetitors.length > 0) {
+          await dataStore.addLog(tenant, 'warning',
+            `${newCompetitors.length} new competitors detected in search results`,
+            { competitors: newCompetitors }
+          );
+        }
+      }
+
+      // Step 4: Analyze competitor ads (weekly)
+      const lastAdAnalysis = await dataStore.getTenantConfig(tenant, 'last_ad_analysis', {
+        defaultValue: null
+      });
+
+      const shouldAnalyzeAds = !lastAdAnalysis ||
+        Date.now() - new Date(lastAdAnalysis).getTime() > 7 * 24 * 60 * 60 * 1000;
+
+      if (shouldAnalyzeAds) {
+        console.log(`📝 Analyzing competitor ad copy for ${tenant}`);
+        const competitors = await this.competitorIntelligence._getStoredCompetitors(tenant);
+
+        if (competitors.length > 0) {
+          const adAnalysis = await this.adSpy.analyzeCompetitorAdCopy(tenant, competitors);
+          await dataStore.setTenantConfig(tenant, 'last_ad_analysis', new Date());
+
+          // Generate competitive ad recommendations
+          if (adAnalysis.insights) {
+            await dataStore.addLog(tenant, 'info',
+              'Competitor ad analysis completed',
+              {
+                competitors_analyzed: adAnalysis.competitors_analyzed,
+                insights: adAnalysis.insights.insights?.slice(0, 2)
+              }
+            );
+          }
+        }
+      }
+
+      // Step 5: Identify market gaps (for enterprise tier, monthly)
+      if (tier === 'enterprise') {
+        const lastGapAnalysis = await dataStore.getTenantConfig(tenant, 'last_gap_analysis', {
+          defaultValue: null
+        });
+
+        const shouldAnalyzeGaps = !lastGapAnalysis ||
+          Date.now() - new Date(lastGapAnalysis).getTime() > 30 * 24 * 60 * 60 * 1000;
+
+        if (shouldAnalyzeGaps) {
+          console.log(`🎯 Identifying market gaps for ${tenant}`);
+          const gapAnalysis = await this.competitorIntelligence.identifyMarketGaps(tenant, {
+            industry
+          });
+
+          await dataStore.setTenantConfig(tenant, 'last_gap_analysis', new Date());
+
+          if (gapAnalysis.gaps && gapAnalysis.gaps.length > 0) {
+            await dataStore.addLog(tenant, 'info',
+              `Market gap analysis: ${gapAnalysis.gaps.length} opportunities identified`,
+              { gaps: gapAnalysis.gaps.slice(0, 3) }
+            );
+          }
+        }
+      }
+
+      const duration = Date.now() - startTime;
+      console.log(`✅ Competitor intelligence automation completed for ${tenant}: ${duration}ms`);
+
+      return {
+        success: true,
+        duration,
+        tier
+      };
+
+    } catch (error) {
+      console.error(`❌ Competitor intelligence automation failed for ${tenant}:`, error.message);
+      throw error;
+    }
+  }
+
   /**
    * Get active tenants for automation
    */
   async getActiveTenants() {
-    // This would come from your tenant management system
-    // For now, return a mock list
-    return ['tenant1', 'tenant2', 'tenant3'];
+    try {
+      // Ensure tenant registry is initialized
+      if (!tenantRegistry.isInitialized) {
+        await tenantRegistry.initialize();
+      }
+
+      // Get all tenants from the registry
+      const allTenants = tenantRegistry.getAllTenants();
+
+      // Filter for enabled tenants only
+      const activeTenants = allTenants
+        .filter(tenant => tenant.enabled !== false)
+        .map(tenant => tenant.id);
+
+      console.log(`Found ${activeTenants.length} active tenants for AI automation`);
+      return activeTenants;
+    } catch (error) {
+      console.error("Failed to get active tenants from registry:", error.message);
+      // Return empty array to prevent automation failures
+      return [];
+    }
   }
 
   /**
@@ -541,23 +907,43 @@ export class AIAutomationService {
   }
 
   /**
-   * Log cost limit exceeded
+   * Log cost limit exceeded (UPDATED: Uses data-store)
    */
   async logCostLimitExceeded(tenant, tier, usage, limits) {
     console.warn(`💰 Cost limit exceeded for ${tenant} (${tier}):`, {
       daily: `$${usage.daily.toFixed(2)} / $${limits.daily.toFixed(2)}`,
       monthly: `$${usage.monthly.toFixed(2)} / $${limits.monthly.toFixed(2)}`
     });
+
+    // Log to data-store
+    await dataStore.addLog(tenant, 'warning', 'Cost limit exceeded', {
+      tier,
+      usage: {
+        daily: usage.daily,
+        monthly: usage.monthly
+      },
+      limits: {
+        daily: limits.daily,
+        monthly: limits.monthly
+      }
+    });
   }
 
   /**
-   * Log automation errors
+   * Log automation errors (UPDATED: Uses data-store)
    */
   async logError(tenant, operation, error) {
     console.error(`❌ Automation error for ${tenant}:`, {
       operation,
       error: error.message,
       timestamp: new Date().toISOString()
+    });
+
+    // Log to data-store
+    await dataStore.addLog(tenant, 'error', `Automation error: ${operation}`, {
+      operation,
+      error: error.message,
+      stack: error.stack
     });
   }
 

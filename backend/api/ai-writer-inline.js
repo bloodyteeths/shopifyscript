@@ -51,7 +51,7 @@ async function fetchWebsiteContext(tenant) {
 
     // Add reasonable timeout for website fetch
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 3000); // 3 second timeout
+    const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
 
     const response = await fetch(storeUrl, {
       headers: {
@@ -65,13 +65,46 @@ async function fetchWebsiteContext(tenant) {
     if (response.ok) {
       const html = await response.text();
 
-      // Extract basic info from HTML (simple parsing)
+      // Extract comprehensive info from HTML
       const titleMatch = html.match(/<title>(.*?)<\/title>/i);
       const descMatch = html.match(/<meta\s+name=["']description["']\s+content=["'](.*?)["']/i);
 
+      // Extract product names from structured data or product listings
+      const productMatches = html.match(/product['"]:[\s]*{[^}]*"name"[\s]*:[\s]*["']([^"']+)["']/gi) || [];
+      const products = productMatches.slice(0, 5).map(match => {
+        const nameMatch = match.match(/"name"[\s]*:[\s]*["']([^"']+)["']/i);
+        return nameMatch ? nameMatch[1] : null;
+      }).filter(Boolean);
+
+      // Extract price ranges if available
+      const priceMatches = html.match(/\$[\d,]+\.?\d*/g) || [];
+      const prices = [...new Set(priceMatches)].slice(0, 10);
+
+      // Extract any promotional text
+      const promoPatterns = [
+        /sale|discount|off|save|free shipping|limited time/gi,
+        /\d+%\s*off/gi
+      ];
+
+      const promotions = [];
+      promoPatterns.forEach(pattern => {
+        const matches = html.match(pattern) || [];
+        promotions.push(...matches);
+      });
+
+      // Extract collection/category names
+      const collectionMatches = html.match(/\/collections\/([a-z0-9-]+)/gi) || [];
+      const collections = [...new Set(collectionMatches.map(m =>
+        m.replace('/collections/', '').replace(/-/g, ' ')
+      ))].slice(0, 5);
+
       return {
-        storeTitle: titleMatch ? titleMatch[1].substring(0, 100) : '', // Limit length
-        storeDescription: descMatch ? descMatch[1].substring(0, 200) : '', // Limit length
+        storeTitle: titleMatch ? titleMatch[1].substring(0, 100) : '',
+        storeDescription: descMatch ? descMatch[1].substring(0, 300) : '',
+        products: products,
+        priceRange: prices.length > 0 ? { min: Math.min(...prices.map(p => parseFloat(p.replace(/[$,]/g, '')))), max: Math.max(...prices.map(p => parseFloat(p.replace(/[$,]/g, ''))))} : null,
+        promotions: [...new Set(promotions)].slice(0, 3),
+        collections: collections,
         websiteAvailable: true
       };
     }
@@ -126,49 +159,92 @@ async function getBusinessContext(tenant, supabase) {
   // Try to get performance data from Supabase
   if (supabase) {
     try {
-      // Get product categories from existing RSA assets
-      const { data: rsaAssets } = await supabase
-        .from('rsa_assets')
-        .select('theme, headlines_pipe')
-        .eq('tenant_id', tenant)  // Changed from 'tenant' to 'tenant_id'
+      // Get ACTUAL campaign performance data from Google Ads
+      const { data: campaigns } = await supabase
+        .from('tenant_metrics')
+        .select('campaign_name, impressions, clicks, conversions, cost, ctr, conversion_rate')
+        .eq('tenant_id', tenant)
+        .eq('entity_type', 'campaign')
+        .gt('conversions', 0)
+        .order('conversions', { ascending: false })
         .limit(20);
 
-      if (rsaAssets && rsaAssets.length > 0) {
-        const themes = [...new Set(rsaAssets.map(r => r.theme))];
-        context.products = themes.filter(t => t && t !== 'Theme 1' && !t.startsWith('Theme '));
+      if (campaigns && campaigns.length > 0) {
+        // Extract high-performing campaign themes
+        context.topCampaigns = campaigns.slice(0, 5).map(c => c.campaign_name);
 
-        // Also extract successful headlines for learning
-        const headlines = rsaAssets
-          .flatMap(r => r.headlines_pipe ? r.headlines_pipe.split('|') : [])
-          .filter(h => h && h.length > 0);
+        // Find patterns in successful campaigns
+        const campaignWords = campaigns
+          .map(c => c.campaign_name.toLowerCase().split(/[\s-_]+/))
+          .flat()
+          .filter(word => word.length > 3 && !['campaign', 'search', 'shopping'].includes(word));
 
-        if (headlines.length > 0) {
-          context.successfulHeadlines = headlines.slice(0, 10);
-        }
+        // Count word frequency to identify successful themes
+        const wordFreq = {};
+        campaignWords.forEach(word => {
+          wordFreq[word] = (wordFreq[word] || 0) + 1;
+        });
+
+        // Get top product/theme words
+        context.products = Object.entries(wordFreq)
+          .sort((a, b) => b[1] - a[1])
+          .slice(0, 5)
+          .map(([word]) => word.charAt(0).toUpperCase() + word.slice(1));
       }
 
-      // Get top performing search terms with metrics
-      const { data: searchTerms } = await supabase
-        .from('search_terms')
-        .select('search_term, conversions, clicks, cost, impressions')
-        .eq('tenant_id', tenant)  // Changed to tenant_id - adjust if search_terms uses 'tenant'
+      // Get ACTUAL ad performance data
+      const { data: adGroups } = await supabase
+        .from('tenant_metrics')
+        .select('ad_group_name, campaign_name, clicks, conversions, ctr')
+        .eq('tenant_id', tenant)
+        .eq('entity_type', 'ad_group')
         .gt('conversions', 0)
         .order('conversions', { ascending: false })
         .limit(10);
 
-      if (searchTerms && searchTerms.length > 0) {
-        context.topKeywords = searchTerms.map(st => st.search_term);
+      if (adGroups && adGroups.length > 0) {
+        context.performanceData.bestPerformingAds = adGroups.slice(0, 5).map(ag => ({
+          name: ag.ad_group_name,
+          campaign: ag.campaign_name,
+          ctr: ag.ctr,
+          conversions: ag.conversions
+        }));
+      }
 
-        // Calculate average performance metrics
+      // Get top performing search terms with REAL conversion data
+      const { data: searchTerms } = await supabase
+        .from('search_terms')
+        .select('search_term, conversions, clicks, cost, impressions, conversion_rate')
+        .eq('tenant_id', tenant)
+        .gt('conversions', 0)
+        .order('conversions', { ascending: false })
+        .limit(20);
+
+      if (searchTerms && searchTerms.length > 0) {
+        // Get the ACTUAL converting keywords
+        context.topKeywords = searchTerms.slice(0, 10).map(st => st.search_term);
+
+        // Get high-conversion rate terms for quality signals
+        const highConversionTerms = searchTerms
+          .filter(st => st.conversion_rate > 5) // 5%+ conversion rate
+          .map(st => st.search_term);
+
+        if (highConversionTerms.length > 0) {
+          context.highValueKeywords = highConversionTerms;
+        }
+
+        // Calculate REAL performance metrics
         const totalImpressions = searchTerms.reduce((sum, st) => sum + (st.impressions || 0), 0);
         const totalClicks = searchTerms.reduce((sum, st) => sum + (st.clicks || 0), 0);
         const totalCost = searchTerms.reduce((sum, st) => sum + (st.cost || 0), 0);
+        const totalConversions = searchTerms.reduce((sum, st) => sum + (st.conversions || 0), 0);
 
         if (totalImpressions > 0) {
           context.performanceData.avgCTR = ((totalClicks / totalImpressions) * 100).toFixed(2);
         }
         if (totalClicks > 0) {
           context.performanceData.avgCPC = (totalCost / totalClicks).toFixed(2);
+          context.performanceData.avgConversionRate = ((totalConversions / totalClicks) * 100).toFixed(2);
         }
       }
     } catch (error) {
@@ -186,35 +262,70 @@ async function getBusinessContext(tenant, supabase) {
 }
 
 /**
- * Generate contextual themes based on business data
+ * Generate contextual themes based on REAL performance data
  */
 function generateContextualThemes(context, limit) {
   const themes = [];
+  const usedThemes = new Set();
 
-  // If we have actual products/themes, use those
+  // 1. Use actual high-performing campaign names/themes
+  if (context.topCampaigns && context.topCampaigns.length > 0) {
+    context.topCampaigns.forEach(campaign => {
+      // Extract meaningful part of campaign name
+      const cleanName = campaign.replace(/campaign|search|shopping/gi, '').trim();
+      if (cleanName && !usedThemes.has(cleanName.toLowerCase())) {
+        themes.push(cleanName);
+        usedThemes.add(cleanName.toLowerCase());
+      }
+    });
+  }
+
+  // 2. Use actual product categories from successful ads
   if (context.products && context.products.length > 0) {
-    themes.push(...context.products.slice(0, limit));
+    context.products.forEach(product => {
+      if (!usedThemes.has(product.toLowerCase()) && themes.length < limit) {
+        themes.push(product);
+        usedThemes.add(product.toLowerCase());
+      }
+    });
   }
 
-  // If we have top keywords, create themes from them
-  if (context.topKeywords && context.topKeywords.length > 0 && themes.length < limit) {
-    const keywordThemes = context.topKeywords
-      .slice(0, limit - themes.length)
-      .map(kw => kw.charAt(0).toUpperCase() + kw.slice(1));
-    themes.push(...keywordThemes);
+  // 3. Use high-converting keywords as themes
+  if (context.highValueKeywords && context.highValueKeywords.length > 0 && themes.length < limit) {
+    context.highValueKeywords.slice(0, limit - themes.length).forEach(keyword => {
+      // Clean up keyword for use as theme
+      const cleanKeyword = keyword
+        .split(' ')
+        .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+        .join(' ');
+      if (!usedThemes.has(cleanKeyword.toLowerCase())) {
+        themes.push(cleanKeyword);
+        usedThemes.add(cleanKeyword.toLowerCase());
+      }
+    });
   }
 
-  // If still not enough, generate based on business type
-  while (themes.length < limit) {
-    const genericThemes = {
-      ecommerce: ['Best Sellers', 'New Arrivals', 'Special Offers', 'Premium Collection', 'Customer Favorites'],
-      saas: ['Free Trial', 'Premium Features', 'Enterprise Solution', 'Starter Plan', 'Professional Tools'],
-      service: ['Professional Service', 'Expert Consultation', 'Quick Solutions', 'Trusted Service', 'Quality Results'],
-      general: [`${context.businessName} Products`, `${context.businessName} Services`, `${context.businessName} Solutions`]
-    };
+  // 4. Extract themes from best performing ad groups
+  if (context.performanceData.bestPerformingAds && themes.length < limit) {
+    context.performanceData.bestPerformingAds.forEach(ad => {
+      if (ad.name && !usedThemes.has(ad.name.toLowerCase()) && themes.length < limit) {
+        themes.push(ad.name);
+        usedThemes.add(ad.name.toLowerCase());
+      }
+    });
+  }
 
-    const typeThemes = genericThemes[context.businessType] || genericThemes.general;
-    themes.push(typeThemes[themes.length % typeThemes.length]);
+  // 5. ONLY use generic themes if we have NO real data
+  if (themes.length === 0) {
+    console.warn('⚠️ No performance data available, using fallback themes');
+    // At least try to be specific to the business
+    themes.push(
+      `${context.businessName} Sale`,
+      `${context.businessName} Deals`,
+      `Premium ${context.businessName}`,
+      `${context.businessName} Offers`,
+      `Shop ${context.businessName}`
+    );
   }
 
   return themes.slice(0, limit);
@@ -284,28 +395,49 @@ export async function handleInlineAIWriter(tenant, limit = 5) {
       try {
         let headlines, descriptions;
 
-        // Try AI generation with rich contextual prompt
+        // Try AI generation with performance-driven prompt
         try {
-          const prompt = `Generate 5 Google Ads headlines (max 30 chars each) and 2 descriptions (max 90 chars each) for a ${context.businessType} business.
+          const prompt = `You are an expert Google Ads copywriter analyzing REAL performance data to write HIGH-CONVERTING ad copy.
 
-Business: ${context.businessName}
-${context.websiteInfo.storeDescription ? `Store Description: ${context.websiteInfo.storeDescription}` : ''}
-Product/Service: ${theme}
-${context.targetAudience ? `Target Audience: ${context.targetAudience}` : ''}
+BUSINESS DATA:
+- Store: ${context.businessName}
+- Focus: ${theme}
+${context.websiteInfo.storeDescription ? `- About: ${context.websiteInfo.storeDescription}` : ''}
 
-${context.topKeywords.length > 0 ? `Top Converting Keywords: ${context.topKeywords.slice(0, 5).join(', ')}` : ''}
-${context.performanceData.avgCTR > 0 ? `Average CTR: ${context.performanceData.avgCTR}%` : ''}
-${context.performanceData.avgCPC > 0 ? `Average CPC: $${context.performanceData.avgCPC}` : ''}
-${context.successfulHeadlines?.length > 0 ? `Past Successful Headlines: ${context.successfulHeadlines.slice(0, 3).join(', ')}` : ''}
+ACTUAL PERFORMANCE METRICS:
+${context.topKeywords.length > 0 ? `✅ TOP CONVERTING KEYWORDS (Real data):
+${context.topKeywords.slice(0, 7).map(kw => `  • "${kw}"`).join('\n')}` : ''}
 
-Requirements:
-- Headlines MUST be 30 characters or less (count carefully!)
-- Descriptions MUST be 90 characters or less (count carefully!)
-- Learn from the successful keywords and headlines if provided
-- Include strong call-to-action
-- Make it specific to ${theme}
+${context.highValueKeywords?.length > 0 ? `🔥 HIGH-CONVERSION KEYWORDS (>5% conv rate):
+${context.highValueKeywords.slice(0, 5).map(kw => `  • "${kw}"`).join('\n')}` : ''}
 
-Return ONLY valid JSON with "headlines" array (5 items) and "descriptions" array (2 items).`;
+${context.performanceData.avgCTR > 0 ? `📊 CURRENT PERFORMANCE:
+  • CTR: ${context.performanceData.avgCTR}% (must beat this)
+  • CPC: $${context.performanceData.avgCPC}
+  • Conv Rate: ${context.performanceData.avgConversionRate || 'N/A'}%` : ''}
+
+${context.performanceData.bestPerformingAds?.length > 0 ? `🏆 BEST PERFORMING AD GROUPS:
+${context.performanceData.bestPerformingAds.slice(0, 3).map(ad =>
+  `  • ${ad.name}: ${ad.conversions} conversions, ${ad.ctr}% CTR`).join('\n')}` : ''}
+
+COPYWRITING RULES:
+1. Use EXACT keywords from top converting terms when possible
+2. Focus on what's ACTUALLY converting (use the data!)
+3. Create urgency without being generic
+4. Include numbers/stats when relevant
+5. Test different emotional triggers
+6. Use power words that convert: Save, Free, Now, Get, Best, Exclusive
+7. Include the brand/product name "${theme}" naturally
+
+CHARACTER LIMITS (STRICT):
+- Headlines: MAX 30 characters each
+- Descriptions: MAX 90 characters each
+
+Write 5 headlines and 2 descriptions that will BEAT the current ${context.performanceData.avgCTR || '2'}% CTR.
+
+Focus on "${theme}" specifically - make it compelling and data-driven.
+
+Return ONLY valid JSON: {"headlines": [...], "descriptions": [...]}`;
 
           const response = await ai.generateText(prompt);
 

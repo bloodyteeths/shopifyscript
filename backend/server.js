@@ -9,6 +9,7 @@ import {
   initializeHMACValidation,
 } from "./utils/secret-validator.js";
 import { getDoc, ensureSheet, getDocById } from "./sheets.js";
+import dataStore from "./services/data-store.js";
 import { validateRSA } from "./lib/validators.js";
 import { getRSAGenerator } from "./services/rsa-generator.js";
 import {
@@ -53,6 +54,10 @@ import scheduledReports from "./jobs/scheduled-reports.js";
 import mlAutopilot from "./services/ml-autopilot.js";
 // Landing Page AI Service
 import { getLandingPageAIService } from "./services/landing-page-ai.js";
+// AI Automation Service
+import { startAIAutomation, stopAIAutomation, getAIAutomationService } from "./services/ai-automation.js";
+// Tenant Registry
+import tenantRegistry from "./services/tenant-registry.js";
 
 // Load env from root and backend/.env (resolve relative to this file)
 dotenv.config();
@@ -425,46 +430,30 @@ function verify(sig, payload) {
   }
 }
 
-// ----- Minimal helpers for Google Sheets rows -----
+// ----- Minimal helpers for Google Sheets rows (UPDATED: Now using data-store) -----
 async function upsertConfigToSheets(tenant, settings) {
   console.log(
     `🔍 upsertConfigToSheets called for ${tenant} with:`,
     Object.keys(settings),
   );
 
-  const doc = await getDoc();
-  if (!doc) {
+  try {
+    // Use data-store with Supabase-first, Sheets-fallback pattern
+    for (const [key, value] of Object.entries(settings)) {
+      await dataStore.setTenantConfig(tenant, key, value);
+    }
+
     console.log(
-      `❌ getDoc() returned null for ${tenant} - Google Sheets not accessible`,
+      `✅ Successfully wrote ${Object.keys(settings).length} config entries via data-store for ${tenant}`,
+    );
+  } catch (error) {
+    console.log(
+      `❌ Data store failed for ${tenant} - saving to memory instead:`,
+      error.message
     );
     memory.configs[tenant] = { ...(memory.configs[tenant] || {}), ...settings };
-    throw new Error("Google Sheets not accessible - saved to memory instead");
+    throw error;
   }
-
-  console.log(
-    `📄 Google Sheets doc obtained for ${tenant}, creating CONFIG_${tenant} tab`,
-  );
-  const sh = await ensureSheet(doc, `CONFIG_${tenant}`, ["key", "value"]);
-  console.log(`📋 Sheet CONFIG_${tenant} ensured, reading existing rows`);
-
-  const rows = await sh.getRows();
-  console.log(`📖 Found ${rows.length} existing config rows for ${tenant}`);
-
-  const map = {};
-  rows.forEach((r) => {
-    if (r.key) map[String(r.key).trim()] = String(r.value || "").trim();
-  });
-  Object.entries(settings || {}).forEach(([k, v]) => (map[k] = String(v)));
-
-  console.log(`💾 Updating CONFIG_${tenant} with:`, Object.keys(map));
-  await sh.clearRows();
-  await sh.setHeaderRow(["key", "value"]);
-  for (const [k, v] of Object.entries(map))
-    await sh.addRow({ key: k, value: v });
-
-  console.log(
-    `✅ Successfully wrote ${Object.keys(map).length} config entries to Google Sheets for ${tenant}`,
-  );
 }
 
 // Helper function to get tier-based defaults
@@ -496,7 +485,7 @@ function getTierDefaults(plan) {
   return tiers[plan?.toLowerCase()] || tiers.starter;
 }
 
-// Helper to get user settings from storage
+// Helper to get user settings from storage (UPDATED: Now using data-store)
 async function getUserSettings(tenant) {
   try {
     // Try to get from Redis cache first
@@ -506,16 +495,14 @@ async function getUserSettings(tenant) {
       return cached;
     }
 
-    // Try to get from Google Sheets CONFIG table
-    const sheet = await ensureSheet(doc, `CONFIG_${tenant}`, ["key", "value"]);
-    const rows = await sheet.getRows();
+    // Get all configs from data-store (Supabase-first, Sheets-fallback)
+    const allConfigs = await dataStore.getAllTenantConfigs(tenant);
     const settings = {};
-    rows.forEach(r => {
-      if (r.key === "USER_BUDGET_CAP") settings.budget = r.value;
-      if (r.key === "USER_CPC_CEILING") settings.cpc = r.value;
-      if (r.key === "USER_LANDING_URL") settings.landing_url = r.value;
-      if (r.key === "PLAN") settings.plan = r.value;
-    });
+
+    if (allConfigs.USER_BUDGET_CAP) settings.budget = allConfigs.USER_BUDGET_CAP;
+    if (allConfigs.USER_CPC_CEILING) settings.cpc = allConfigs.USER_CPC_CEILING;
+    if (allConfigs.USER_LANDING_URL) settings.landing_url = allConfigs.USER_LANDING_URL;
+    if (allConfigs.PLAN) settings.plan = allConfigs.PLAN;
 
     if (Object.keys(settings).length > 0) {
       // Cache for next time
@@ -531,14 +518,13 @@ async function getUserSettings(tenant) {
 }
 
 async function readConfigFromSheets(tenant) {
-  const doc = await getDoc();
-  if (!doc) return memory.configs[tenant] || null;
-  const sh = await ensureSheet(doc, `CONFIG_${tenant}`, ["key", "value"]);
-  const rows = await sh.getRows();
-  const map = {};
-  rows.forEach((r) => {
-    if (r.key) map[String(r.key).trim()] = String(r.value || "").trim();
-  });
+  // UPDATED: Use data-store with Supabase-first, Sheets-fallback
+  try {
+    const map = await dataStore.getAllTenantConfigs(tenant);
+
+    if (!map || Object.keys(map).length === 0) {
+      return memory.configs[tenant] || null;
+    }
 
   // Get tier-based defaults
   const tierDefaults = getTierDefaults(map.PLAN || "starter");
@@ -765,6 +751,10 @@ async function readConfigFromSheets(tenant) {
   cfg.AUDIENCE_MAP = await readAudienceMap();
 
   return cfg;
+  } catch (error) {
+    console.error(`Error reading config from data-store for ${tenant}:`, error.message);
+    return memory.configs[tenant] || null;
+  }
 }
 
 async function appendRows(tenant, title, header, rows) {
@@ -1080,6 +1070,51 @@ app.post("/api/redis/test", async (req, res) => {
     await setJson(key, value, ttl);
     const roundtrip = await getJson(key);
     return json(res, 200, { ok: true, key, roundtrip });
+  } catch (error) {
+    return json(res, 500, { ok: false, error: error.message });
+  }
+});
+
+// ---- AI Automation Service health and status endpoints ----
+app.get("/api/ai-automation/health", async (req, res) => {
+  try {
+    const service = getAIAutomationService();
+    const status = service.getStatus();
+    return json(res, 200, {
+      ok: true,
+      running: status.running,
+      totalTenants: status.totalTenants,
+      cacheSize: status.cacheSize,
+      uptime: status.running ? "active" : "stopped"
+    });
+  } catch (error) {
+    return json(res, 500, { ok: false, error: error.message });
+  }
+});
+
+app.get("/api/ai-automation/status", async (req, res) => {
+  try {
+    const service = getAIAutomationService();
+    const status = service.getStatus();
+    return json(res, 200, {
+      ok: true,
+      ...status
+    });
+  } catch (error) {
+    return json(res, 500, { ok: false, error: error.message });
+  }
+});
+
+app.get("/api/ai-automation/tenant/:tenantId", async (req, res) => {
+  try {
+    const { tenantId } = req.params;
+    const service = getAIAutomationService();
+    const tenantStatus = service.getTenantStatus(tenantId);
+    return json(res, 200, {
+      ok: true,
+      tenant: tenantId,
+      ...tenantStatus
+    });
   } catch (error) {
     return json(res, 500, { ok: false, error: error.message });
   }
@@ -4998,8 +5033,17 @@ process.on("SIGTERM", async () => {
   logger.info("SIGTERM received, starting graceful shutdown...");
 
   try {
+    // Stop AI automation service
+    logger.info("Stopping AI automation service...");
+    stopAIAutomation();
+
+    // Stop health monitoring
     healthService.stopMonitoring();
+
+    // Shutdown logger
     await logger.shutdown();
+
+    logger.info("Graceful shutdown completed");
     process.exit(0);
   } catch (error) {
     logger.error("Error during graceful shutdown", { error: error.message });
@@ -5011,8 +5055,17 @@ process.on("SIGINT", async () => {
   logger.info("SIGINT received, starting graceful shutdown...");
 
   try {
+    // Stop AI automation service
+    logger.info("Stopping AI automation service...");
+    stopAIAutomation();
+
+    // Stop health monitoring
     healthService.stopMonitoring();
+
+    // Shutdown logger
     await logger.shutdown();
+
+    logger.info("Graceful shutdown completed");
     process.exit(0);
   } catch (error) {
     logger.error("Error during graceful shutdown", { error: error.message });
@@ -5063,7 +5116,7 @@ import aiRoutes from "./routes/ai.js";
 app.use("/api/ai", aiRoutes);  // Mount AI routes at /api/ai
 
 // Start the server (works for both local and Vercel)
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
   logger.info("ProofKit backend server started", {
     port: PORT,
     environment: process.env.NODE_ENV || "development",
@@ -5082,6 +5135,39 @@ app.listen(PORT, () => {
     } catch (error) {
       logger.error("Failed to start scheduled reports service:", error);
     }
+  }
+
+  // Initialize and start AI automation service
+  if (process.env.ENABLE_AI_AUTOMATION !== 'false') {
+    try {
+      // Initialize tenant registry first
+      await tenantRegistry.initialize();
+      logger.info("Tenant registry initialized", {
+        tenants: tenantRegistry.getStats()
+      });
+
+      // Start AI automation service
+      await startAIAutomation();
+      logger.info("AI automation service started", {
+        frequencies: {
+          starter: "24 hours",
+          professional: "8 hours",
+          enterprise: "4 hours"
+        },
+        features: {
+          starter: ["RSA generation"],
+          professional: ["RSA generation", "Negative keyword analysis"],
+          enterprise: ["RSA generation", "Negative keyword analysis", "Campaign optimization"]
+        }
+      });
+    } catch (error) {
+      logger.error("Failed to start AI automation service:", {
+        error: error.message,
+        stack: error.stack
+      });
+    }
+  } else {
+    logger.info("AI automation service disabled via ENABLE_AI_AUTOMATION=false");
   }
 
   // Start always-on automation jobs for all tenants

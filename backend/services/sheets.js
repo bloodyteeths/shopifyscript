@@ -1,6 +1,16 @@
 /**
  * Optimized Google Sheets API Wrapper - Multi-Tenant Performance Infrastructure
  * Integrates connection pooling, smart batching, and cache invalidation
+ *
+ * ⚠️ FALLBACK STORAGE ONLY ⚠️
+ * This service now serves as a FALLBACK for data-store.js
+ * Primary data storage is Supabase (via data-store.js)
+ * Google Sheets is used for:
+ * 1. Backward compatibility
+ * 2. Redundancy and backup
+ * 3. Manual data inspection/editing
+ *
+ * For new data operations, use data-store.js instead!
  */
 
 import sheetsPool from "./sheets-pool.js";
