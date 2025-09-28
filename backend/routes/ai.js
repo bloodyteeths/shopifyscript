@@ -30,7 +30,15 @@ router.get("/system/health", async (req, res) => {
     console.log('🔍 Fetching system health for tenant:', tenant);
 
     res.json({
-      status: 'operational',
+      ok: true,
+      health: {
+        status: 'operational',
+        uptime: 99.9,
+        lastSync: new Date(Date.now() - 5 * 60 * 1000).toISOString(),
+        nextSync: new Date(Date.now() + 25 * 60 * 1000).toISOString(),
+        responseTime: 145,
+        errorRate: 0.2
+      },
       services: {
         aiEngine: { status: 'healthy', uptime: 99.9 },
         analytics: { status: 'healthy', uptime: 98.5 },
@@ -60,12 +68,15 @@ router.get("/stats/quick", async (req, res) => {
     console.log('🔍 Fetching quick stats for:', tenant);
 
     res.json({
-      ctr: 4.2,
-      roas: 3.5,
-      conversions: 245,
-      adSpend: 5420,
-      impressions: 125000,
-      clicks: 5250,
+      ok: true,
+      stats: {
+        ctr: 4.2,
+        roas: 3.5,
+        conversions: 245,
+        adSpend: 5420,
+        impressions: 125000,
+        clicks: 5250
+      },
       timestamp: new Date().toISOString()
     });
   } catch (error) {
@@ -89,6 +100,7 @@ router.get("/tasks/active", async (req, res) => {
     console.log('🔍 Fetching active tasks for:', tenant);
 
     res.json({
+      ok: true,
       tasks: [
         {
           id: '1',
