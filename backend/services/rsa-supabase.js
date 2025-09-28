@@ -84,15 +84,18 @@ export async function getRSAAssetsFromSupabase(tenant, options = {}) {
  */
 export async function getRSADraftsFromSupabase(tenant) {
   if (!isSupabaseEnabled()) {
+    console.log('❌ Supabase not enabled in getRSADraftsFromSupabase');
     return null;
   }
 
   const supabase = getSupabaseClient();
   if (!supabase) {
+    console.log('❌ No Supabase client available');
     return null;
   }
 
   try {
+    console.log('✅ Supabase client available, fetching for:', tenant);
     logger.info('🔍 Fetching RSA drafts from Supabase', { tenant });
 
     // Fetch all RSA assets for this tenant
@@ -107,70 +110,70 @@ export async function getRSADraftsFromSupabase(tenant) {
       return null;
     }
 
-    // Separate assets by type first
-    const rsaAssets = assets.filter(a => a.asset_type === 'rsa');
-    const individualAssets = assets.filter(a => a.asset_type === 'headline' || a.asset_type === 'description');
+    // Log the fetched assets for debugging
+    console.log('📊 Fetched assets from Supabase:', {
+      tenant,
+      totalCount: assets.length,
+      sampleAsset: assets[0]
+    });
 
     // Group by theme and format like Google Sheets response
     const grouped = {};
 
-    // Process RSA format first (these are complete and should take priority)
-    for (const asset of rsaAssets) {
+    // Process all RSA assets - they have headlines_pipe and descriptions_pipe
+    for (const asset of assets) {
+      if (asset.asset_type !== 'rsa') continue;
+
       const theme = asset.theme || 'default';
 
+      // Check if we have pipe-delimited content
       if (asset.headlines_pipe && asset.descriptions_pipe) {
+        // Split the pipe-delimited strings
+        const headlines = asset.headlines_pipe.split('|').map(h => h.trim()).filter(Boolean);
+        const descriptions = asset.descriptions_pipe.split('|').map(d => d.trim()).filter(Boolean);
+
+        console.log(`✅ Found RSA content for theme "${theme}":`, {
+          headlines: headlines.length,
+          descriptions: descriptions.length
+        });
+
         grouped[theme] = {
           theme,
-          headlines: asset.headlines_pipe.split('|').map(h => h.trim()).filter(Boolean),
-          descriptions: asset.descriptions_pipe.split('|').map(d => d.trim()).filter(Boolean),
+          headlines,
+          descriptions,
           source: asset.rationale || asset.source || 'ai_generated'
         };
-      }
-    }
-
-    // Only process individual assets for themes not already handled by RSA format
-    for (const asset of individualAssets) {
-      const theme = asset.theme || 'default';
-
-      // Skip if we already have this theme from RSA format
-      if (grouped[theme]) continue;
-
-      if (!grouped[theme]) {
-        grouped[theme] = {
-          theme,
-          headlines: [],
-          descriptions: [],
-          source: asset.source || 'ai_generated'
-        };
-      }
-
-      if (asset.asset_type === 'headline') {
-        grouped[theme].headlines.push(asset.asset_text);
-      } else if (asset.asset_type === 'description') {
-        grouped[theme].descriptions.push(asset.asset_text);
       }
     }
 
     // Convert to array format
     const drafts = Object.values(grouped);
 
-    logger.info('✅ RSA drafts fetched from Supabase', {
-      tenant,
+    console.log('📋 Processed drafts:', {
       draftCount: drafts.length,
       themes: drafts.map(d => ({
         theme: d.theme,
         headlines: d.headlines.length,
         descriptions: d.descriptions.length
-      })),
-      rsaAssets: rsaAssets.length,
-      individualAssets: individualAssets.length,
+      }))
+    });
+
+    logger.info('✅ RSA drafts fetched from Supabase', {
+      tenant,
+      draftCount: drafts.length,
       totalAssets: assets.length
     });
 
-    // For compatibility, return all drafts in library if none are marked as default
-    // Most themes like "Best Sellers", "New Arrivals" should be in library
-    const defaultDrafts = drafts.filter(d => d.theme === 'default' || d.theme === 'Default Theme');
-    const libraryDrafts = drafts.filter(d => d.theme !== 'default' && d.theme !== 'Default Theme');
+    // Separate themes: "Default Theme" goes to rsa_default, everything else to library
+    const defaultDrafts = drafts.filter(d => d.theme === 'Default Theme');
+    const libraryDrafts = drafts.filter(d => d.theme !== 'Default Theme');
+
+    console.log('📦 Final categorization:', {
+      defaultCount: defaultDrafts.length,
+      libraryCount: libraryDrafts.length,
+      defaultThemes: defaultDrafts.map(d => d.theme),
+      libraryThemes: libraryDrafts.map(d => d.theme)
+    });
 
     return {
       rsa_default: defaultDrafts,
