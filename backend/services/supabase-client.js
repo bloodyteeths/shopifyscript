@@ -5,13 +5,8 @@
 
 import { createClient } from '@supabase/supabase-js';
 
-// Initialize Supabase client with connection pooling
-const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-
-if (!supabaseUrl || !supabaseServiceKey) {
-  console.warn('⚠️ Supabase credentials not configured - running in Sheets-only mode');
-}
+// Lazy initialization for Vercel compatibility
+let supabaseInstance = null;
 
 // Enhanced connection configuration for production scale
 const supabaseOptions = {
@@ -34,9 +29,21 @@ const supabaseOptions = {
   },
 };
 
-export const supabase = supabaseUrl && supabaseServiceKey 
-  ? createClient(supabaseUrl, supabaseServiceKey, supabaseOptions)
-  : null;
+export function getSupabaseClient() {
+  if (!supabaseInstance) {
+    const supabaseUrl = process.env.SUPABASE_URL;
+    const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+    if (!supabaseUrl || !supabaseServiceKey) {
+      return null;
+    }
+
+    supabaseInstance = createClient(supabaseUrl, supabaseServiceKey, supabaseOptions);
+  }
+  return supabaseInstance;
+}
+
+export const supabase = getSupabaseClient();
 
 // Connection pool management
 class SupabaseConnectionPool {
@@ -180,14 +187,9 @@ const connectionPool = new SupabaseConnectionPool();
  * Check if Supabase is enabled and configured
  */
 export function isSupabaseEnabled() {
-  // Auto-enable if Supabase credentials are present
-  const hasCredentials = !!(process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY);
-  const configured = supabase !== null;
-
-  // Enable if credentials are present (auto-enable)
-  const enabled = hasCredentials && configured;
-
-  return enabled;
+  // Check if we can get a Supabase client
+  const client = getSupabaseClient();
+  return client !== null;
 }
 
 /**

@@ -3,7 +3,7 @@
  * Handles reading and writing RSA assets to Supabase
  */
 
-import { supabase, isSupabaseEnabled } from './supabase-client.js';
+import { getSupabaseClient, isSupabaseEnabled } from './supabase-client.js';
 import { logger } from './logger.js';
 
 /**
@@ -84,22 +84,22 @@ export async function getRSAAssetsFromSupabase(tenant, options = {}) {
  */
 export async function getRSADraftsFromSupabase(tenant) {
   if (!isSupabaseEnabled()) {
-    logger.warn('Supabase not enabled for getRSADraftsFromSupabase', {
-      SUPABASE_ENABLED: process.env.SUPABASE_ENABLED,
-      hasUrl: !!process.env.SUPABASE_URL,
-      hasKey: !!process.env.SUPABASE_SERVICE_ROLE_KEY
-    });
+    return null;
+  }
+
+  const supabase = getSupabaseClient();
+  if (!supabase) {
     return null;
   }
 
   try {
     logger.info('🔍 Fetching RSA drafts from Supabase', { tenant });
 
-    // Fetch all RSA assets for this tenant (or proofkit for backwards compatibility)
+    // Fetch all RSA assets for this tenant
     const { data: assets, error } = await supabase
       .from('rsa_assets')
       .select('*')
-      .or(`tenant_id.eq.${tenant},tenant_id.eq.proofkit`)
+      .eq('tenant_id', tenant)
       .order('created_at', { ascending: false });
 
     if (error) {
