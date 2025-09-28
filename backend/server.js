@@ -5215,6 +5215,11 @@ app.listen(PORT, async () => {
   console.log(
     `📈 Sheets auth: ${process.env.GOOGLE_SERVICE_EMAIL ? "service_account " + process.env.GOOGLE_SERVICE_EMAIL : "unknown"}`,
   );
+
+  // Add AI Dashboard endpoints
+  const aiDashboardRoutes = require('./routes/ai-dashboard-endpoints');
+  app.use('/api/ai', aiDashboardRoutes);
+  console.log(`🤖 AI Dashboard endpoints mounted at: /api/ai/*`);
 });
 
 // ----- Autopilot QuickStart (HMAC) -----
