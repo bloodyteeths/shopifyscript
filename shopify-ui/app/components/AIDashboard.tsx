@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { authenticatedFetch } from "../utils/ai-client";
+import { SystemOverview } from "./AIDashboard/SystemOverview";
 
 interface AIDraft {
   theme: string;
   headlines: string[];
   descriptions: string[];
   source: string;
+  type?: string;
   lint: {
     ok: boolean;
     errors: string[];
@@ -15,6 +17,8 @@ interface AIDraft {
 interface AIProviderStatus {
   status: string;
   initialized: boolean;
+  provider?: string;
+  model?: string;
 }
 
 interface TokenUsage {
@@ -205,7 +209,7 @@ export function AIDashboard({ shopName, subscriptionTier = "starter", hasFeature
         }
       }
     } catch (err) {
-      setError("Error accepting drafts: " + err.message);
+      setError("Error accepting drafts: " + (err instanceof Error ? err.message : String(err)));
     }
   };
 
@@ -348,7 +352,7 @@ export function AIDashboard({ shopName, subscriptionTier = "starter", hasFeature
       }
     } catch (err) {
       console.error("Error triggering AI writer:", err);
-      setError("Error triggering AI writer: " + err.message);
+      setError("Error triggering AI writer: " + (err instanceof Error ? err.message : String(err)));
       setIsGenerating(false); // Reset generating state on error
     }
   };
@@ -399,10 +403,15 @@ export function AIDashboard({ shopName, subscriptionTier = "starter", hasFeature
 
   return (
     <div style={{ padding: "20px" }}>
+      {/* New System Overview Component */}
+      <div style={{ marginBottom: "32px" }}>
+        <SystemOverview shopName={shopName} hasFeatureAccess={hasFeatureAccess} />
+      </div>
+
       <div style={{ marginBottom: "24px" }}>
-        <h1 style={{ margin: "0 0 8px 0", fontSize: "24px", fontWeight: "bold" }}>AI Dashboard</h1>
+        <h1 style={{ margin: "0 0 8px 0", fontSize: "24px", fontWeight: "bold" }}>AI Content Management</h1>
         <p style={{ margin: 0, color: "#666", fontSize: "14px" }}>
-          Manage AI-generated content, monitor usage, and track automation status
+          Review and manage AI-generated content, monitor usage, and track automation status
         </p>
       </div>
 

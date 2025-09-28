@@ -24,6 +24,7 @@ import { getAdSpyService } from "./ad-spy.js";
 import demographicProfiler from "./demographic-profiler.js";
 import customerSegmentation from "./customer-segmentation.js";
 import audienceBuilder from "./audience-builder.js";
+import { broadcastToTenant, WS_EVENTS, MESSAGE_PRIORITY } from "./websocket-server.js";
 
 /**
  * AI Automation Service with comprehensive cost controls
@@ -214,22 +215,48 @@ export class AIAutomationService {
    */
   async runAutomatedRSAGeneration(tenant, tier) {
     console.log(`📝 Running automated RSA generation for ${tenant}`);
-    
+
     const startTokens = await this.getCurrentTokenUsage(tenant);
-    
+    const optimizationId = `rsa-${tenant}-${Date.now()}`;
+
+    // Emit optimization created event
+    await broadcastToTenant(tenant, {
+      type: WS_EVENTS.OPTIMIZATION_CREATED,
+      optimizationId,
+      campaign: 'RSA Generation',
+      details: {
+        type: 'rsa_generation',
+        tier,
+        startTime: new Date().toISOString()
+      }
+    }, MESSAGE_PRIORITY.NORMAL);
+
     try {
       // Get optimized generation parameters based on tier
       const params = this.getOptimizedRSAParams(tier);
-      
+
       // Use cached prompts when possible
       const cacheKey = `rsa-${tenant}-${JSON.stringify(params)}`;
       const cached = this.promptCache.get(cacheKey);
-      
+
       if (cached && Date.now() - cached.timestamp < this.cacheTimeout) {
         console.log(`♻️  Using cached RSA content for ${tenant}`);
+
+        // Emit optimization applied event for cached result
+        await broadcastToTenant(tenant, {
+          type: WS_EVENTS.OPTIMIZATION_APPLIED,
+          optimizationId,
+          campaign: 'RSA Generation',
+          details: {
+            type: 'rsa_generation',
+            cached: true,
+            result: cached.result
+          }
+        }, MESSAGE_PRIORITY.NORMAL);
+
         return cached.result;
       }
-      
+
       // Generate RSA content with optimized prompts and website content
       const result = await this.rsaGenerator.generateRSAContent({
         theme: params.theme,
@@ -249,16 +276,54 @@ export class AIAutomationService {
           result,
           timestamp: Date.now()
         });
+
+        // Emit optimization applied event for successful generation
+        await broadcastToTenant(tenant, {
+          type: WS_EVENTS.OPTIMIZATION_APPLIED,
+          optimizationId,
+          campaign: 'RSA Generation',
+          details: {
+            type: 'rsa_generation',
+            cached: false,
+            result,
+            tokensUsed: await this.getCurrentTokenUsage(tenant) - startTokens
+          }
+        }, MESSAGE_PRIORITY.NORMAL);
+      } else {
+        // Emit optimization failed event
+        await broadcastToTenant(tenant, {
+          type: WS_EVENTS.OPTIMIZATION_FAILED,
+          optimizationId,
+          campaign: 'RSA Generation',
+          details: {
+            type: 'rsa_generation',
+            error: result.error || 'Generation failed',
+            tokensUsed: await this.getCurrentTokenUsage(tenant) - startTokens
+          }
+        }, MESSAGE_PRIORITY.HIGH);
       }
 
       const tokensUsed = await this.getCurrentTokenUsage(tenant) - startTokens;
       await this.recordTokenUsage(tenant, 'rsa_generation', tokensUsed);
-      
+
       console.log(`✅ RSA generation completed for ${tenant}: ${tokensUsed} tokens`);
       return result;
-      
+
     } catch (error) {
       console.error(`❌ RSA generation failed for ${tenant}:`, error.message);
+
+      // Emit optimization failed event
+      await broadcastToTenant(tenant, {
+        type: WS_EVENTS.OPTIMIZATION_FAILED,
+        optimizationId,
+        campaign: 'RSA Generation',
+        details: {
+          type: 'rsa_generation',
+          error: error.message,
+          tokensUsed: await this.getCurrentTokenUsage(tenant) - startTokens
+        }
+      }, MESSAGE_PRIORITY.HIGH);
+
       throw error;
     }
   }

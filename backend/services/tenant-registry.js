@@ -197,6 +197,37 @@ class TenantRegistry {
   }
 
   /**
+   * Get subscription information for a tenant
+   */
+  getSubscription(tenantId) {
+    const tenant = this.getTenant(tenantId);
+    if (!tenant) {
+      return null;
+    }
+
+    // Default subscription limits based on plan
+    const subscriptionLimits = {
+      starter: {
+        optimization_limit: 50,
+        script_access: true,
+        features: ['basic_optimization', 'keyword_bidding']
+      },
+      pro: {
+        optimization_limit: 200,
+        script_access: true,
+        features: ['advanced_optimization', 'keyword_bidding', 'audience_optimization', 'rollback_support']
+      },
+      enterprise: {
+        optimization_limit: 1000,
+        script_access: true,
+        features: ['all_optimizations', 'custom_integrations', 'priority_support']
+      }
+    };
+
+    return subscriptionLimits[tenant.plan] || subscriptionLimits.starter;
+  }
+
+  /**
    * Get Google Sheets document for a tenant
    */
   async getTenantDoc(tenantId) {

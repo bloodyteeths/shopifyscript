@@ -239,18 +239,18 @@ ORDER BY ca.engagement_score DESC;
 -- Analytics: Competitor threat matrix
 CREATE OR REPLACE VIEW competitor_threat_matrix AS
 SELECT
-  tenant_id,
-  competitor_name,
-  threat_level,
+  cp.tenant_id,
+  cp.competitor_name,
+  cp.threat_level,
   COUNT(DISTINCT cc.id) as total_changes,
   COUNT(DISTINCT ca.id) as total_ads,
   MAX(cc.detected_at) as last_activity
 FROM competitor_profiles cp
 LEFT JOIN competitor_changes cc ON cp.id = cc.competitor_id
 LEFT JOIN competitor_ads ca ON cp.id = ca.competitor_id
-GROUP BY tenant_id, competitor_name, threat_level
+GROUP BY cp.tenant_id, cp.competitor_name, cp.threat_level
 ORDER BY
-  CASE threat_level
+  CASE cp.threat_level
     WHEN 'high' THEN 1
     WHEN 'medium' THEN 2
     WHEN 'low' THEN 3

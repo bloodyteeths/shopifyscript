@@ -1047,6 +1047,478 @@ class DataStoreService {
   }
 
   /**
+   * =====================================
+   * OPTIMIZATION OPERATIONS
+   * =====================================
+   */
+
+  /**
+   * Store optimization in persistent storage
+   */
+  async storeOptimization(optimization) {
+    const startTime = Date.now();
+
+    try {
+      if (this.useSupabase) {
+        return await this._storeOptimizationSupabase(optimization);
+      } else {
+        return await this._storeOptimizationSheets(optimization);
+      }
+    } catch (error) {
+      this.metrics.errors++;
+      logger.error('Store optimization error', {
+        optimizationId: optimization.id,
+        error: error.message
+      });
+
+      // Try fallback
+      try {
+        if (this.useSupabase) {
+          this.metrics.supabaseFallbacks++;
+          return await this._storeOptimizationSheets(optimization);
+        }
+      } catch (fallbackError) {
+        logger.error('Optimization storage fallback failed', {
+          optimizationId: optimization.id,
+          error: fallbackError.message
+        });
+      }
+
+      throw error;
+    } finally {
+      this._updateMetrics(Date.now() - startTime);
+    }
+  }
+
+  /**
+   * Get optimization by ID
+   */
+  async getOptimizationById(optimizationId) {
+    const startTime = Date.now();
+
+    try {
+      if (this.useSupabase) {
+        return await this._getOptimizationByIdSupabase(optimizationId);
+      } else {
+        return await this._getOptimizationByIdSheets(optimizationId);
+      }
+    } catch (error) {
+      this.metrics.errors++;
+      logger.error('Get optimization by ID error', {
+        optimizationId,
+        error: error.message
+      });
+
+      // Try fallback
+      try {
+        if (this.useSupabase) {
+          this.metrics.supabaseFallbacks++;
+          return await this._getOptimizationByIdSheets(optimizationId);
+        }
+      } catch (fallbackError) {
+        logger.error('Get optimization fallback failed', {
+          optimizationId,
+          error: fallbackError.message
+        });
+      }
+
+      throw error;
+    } finally {
+      this._updateMetrics(Date.now() - startTime);
+    }
+  }
+
+  /**
+   * Get optimization history for a tenant
+   */
+  async getOptimizationHistory(tenantId, filters = {}) {
+    const startTime = Date.now();
+
+    try {
+      if (this.useSupabase) {
+        return await this._getOptimizationHistorySupabase(tenantId, filters);
+      } else {
+        return await this._getOptimizationHistorySheets(tenantId, filters);
+      }
+    } catch (error) {
+      this.metrics.errors++;
+      logger.error('Get optimization history error', {
+        tenantId,
+        error: error.message
+      });
+
+      // Try fallback
+      try {
+        if (this.useSupabase) {
+          this.metrics.supabaseFallbacks++;
+          return await this._getOptimizationHistorySheets(tenantId, filters);
+        }
+      } catch (fallbackError) {
+        logger.error('Get optimization history fallback failed', {
+          tenantId,
+          error: fallbackError.message
+        });
+      }
+
+      throw error;
+    } finally {
+      this._updateMetrics(Date.now() - startTime);
+    }
+  }
+
+  /**
+   * Store script metrics
+   */
+  async storeMetrics(metricsData) {
+    const startTime = Date.now();
+
+    try {
+      if (this.useSupabase) {
+        return await this._storeMetricsSupabase(metricsData);
+      } else {
+        return await this._storeMetricsSheets(metricsData);
+      }
+    } catch (error) {
+      this.metrics.errors++;
+      logger.error('Store metrics error', {
+        tenantId: metricsData.tenantId,
+        error: error.message
+      });
+
+      // Try fallback
+      try {
+        if (this.useSupabase) {
+          this.metrics.supabaseFallbacks++;
+          return await this._storeMetricsSheets(metricsData);
+        }
+      } catch (fallbackError) {
+        logger.error('Store metrics fallback failed', {
+          tenantId: metricsData.tenantId,
+          error: fallbackError.message
+        });
+      }
+
+      throw error;
+    } finally {
+      this._updateMetrics(Date.now() - startTime);
+    }
+  }
+
+  /**
+   * Store script error
+   */
+  async storeError(errorData) {
+    const startTime = Date.now();
+
+    try {
+      if (this.useSupabase) {
+        return await this._storeErrorSupabase(errorData);
+      } else {
+        return await this._storeErrorSheets(errorData);
+      }
+    } catch (error) {
+      this.metrics.errors++;
+      logger.error('Store error error', {
+        tenantId: errorData.tenantId,
+        error: error.message
+      });
+
+      // Try fallback
+      try {
+        if (this.useSupabase) {
+          this.metrics.supabaseFallbacks++;
+          return await this._storeErrorSheets(errorData);
+        }
+      } catch (fallbackError) {
+        logger.error('Store error fallback failed', {
+          tenantId: errorData.tenantId,
+          error: fallbackError.message
+        });
+      }
+
+      throw error;
+    } finally {
+      this._updateMetrics(Date.now() - startTime);
+    }
+  }
+
+  // Supabase implementations for optimization operations
+  async _storeOptimizationSupabase(optimization) {
+    const query = `
+      INSERT INTO optimizations (
+        id, tenant_id, type, priority, status, data, metadata,
+        retries, max_retries, expires_at, rollback_data,
+        created_at, updated_at
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13)
+      ON CONFLICT (id) DO UPDATE SET
+        status = $5, data = $6, metadata = $7, retries = $8,
+        rollback_data = $11, updated_at = $13
+      RETURNING *
+    `;
+
+    const values = [
+      optimization.id,
+      optimization.tenantId,
+      optimization.type,
+      optimization.priority,
+      optimization.status,
+      JSON.stringify(optimization.data),
+      JSON.stringify(optimization.metadata),
+      optimization.retries,
+      optimization.maxRetries,
+      optimization.expiresAt,
+      optimization.rollbackData ? JSON.stringify(optimization.rollbackData) : null,
+      optimization.metadata.createdAt,
+      optimization.lastUpdatedAt || new Date().toISOString()
+    ];
+
+    const result = await executeQuery(query, values);
+    this.metrics.supabaseOps++;
+    return result.rows[0];
+  }
+
+  async _getOptimizationByIdSupabase(optimizationId) {
+    const query = 'SELECT * FROM optimizations WHERE id = $1';
+    const result = await executeQuery(query, [optimizationId]);
+    this.metrics.supabaseOps++;
+
+    if (result.rows.length === 0) return null;
+
+    const opt = result.rows[0];
+    return {
+      ...opt,
+      data: JSON.parse(opt.data),
+      metadata: JSON.parse(opt.metadata),
+      rollbackData: opt.rollback_data ? JSON.parse(opt.rollback_data) : null
+    };
+  }
+
+  async _getOptimizationHistorySupabase(tenantId, filters) {
+    let query = 'SELECT * FROM optimizations WHERE tenant_id = $1';
+    const values = [tenantId];
+    let paramCount = 1;
+
+    if (filters.status) {
+      query += ` AND status = $${++paramCount}`;
+      values.push(filters.status);
+    }
+
+    if (filters.type) {
+      query += ` AND type = $${++paramCount}`;
+      values.push(filters.type);
+    }
+
+    if (filters.dateFrom) {
+      query += ` AND created_at >= $${++paramCount}`;
+      values.push(filters.dateFrom);
+    }
+
+    if (filters.dateTo) {
+      query += ` AND created_at <= $${++paramCount}`;
+      values.push(filters.dateTo);
+    }
+
+    query += ' ORDER BY created_at DESC';
+
+    if (filters.limit) {
+      query += ` LIMIT $${++paramCount}`;
+      values.push(filters.limit);
+    }
+
+    const result = await executeQuery(query, values);
+    this.metrics.supabaseOps++;
+
+    return result.rows.map(opt => ({
+      ...opt,
+      data: JSON.parse(opt.data),
+      metadata: JSON.parse(opt.metadata),
+      rollbackData: opt.rollback_data ? JSON.parse(opt.rollback_data) : null
+    }));
+  }
+
+  async _storeMetricsSupabase(metricsData) {
+    const query = `
+      INSERT INTO script_metrics (
+        tenant_id, type, metrics, timestamp
+      ) VALUES ($1, $2, $3, $4)
+      RETURNING *
+    `;
+
+    const values = [
+      metricsData.tenantId,
+      metricsData.type,
+      JSON.stringify(metricsData.metrics),
+      metricsData.timestamp
+    ];
+
+    const result = await executeQuery(query, values);
+    this.metrics.supabaseOps++;
+    return result.rows[0];
+  }
+
+  async _storeErrorSupabase(errorData) {
+    const query = `
+      INSERT INTO script_errors (
+        tenant_id, type, error, context, timestamp
+      ) VALUES ($1, $2, $3, $4, $5)
+      RETURNING *
+    `;
+
+    const values = [
+      errorData.tenantId,
+      errorData.type,
+      JSON.stringify(errorData.error),
+      JSON.stringify(errorData.context),
+      errorData.timestamp
+    ];
+
+    const result = await executeQuery(query, values);
+    this.metrics.supabaseOps++;
+    return result.rows[0];
+  }
+
+  // Sheets implementations for optimization operations
+  async _storeOptimizationSheets(optimization) {
+    const sheetTitle = `OPTIMIZATIONS_${optimization.tenantId}`;
+    await optimizedSheets.ensureSheet(optimization.tenantId, sheetTitle, [
+      'id', 'type', 'priority', 'status', 'data', 'metadata',
+      'retries', 'max_retries', 'expires_at', 'rollback_data',
+      'created_at', 'updated_at'
+    ]);
+
+    const row = {
+      id: optimization.id,
+      type: optimization.type,
+      priority: optimization.priority,
+      status: optimization.status,
+      data: JSON.stringify(optimization.data),
+      metadata: JSON.stringify(optimization.metadata),
+      retries: optimization.retries,
+      max_retries: optimization.maxRetries,
+      expires_at: optimization.expiresAt,
+      rollback_data: optimization.rollbackData ? JSON.stringify(optimization.rollbackData) : '',
+      created_at: optimization.metadata.createdAt,
+      updated_at: optimization.lastUpdatedAt || new Date().toISOString()
+    };
+
+    // Check if exists and update, otherwise add
+    const rows = await optimizedSheets.getRows(optimization.tenantId, sheetTitle, { limit: 1000 });
+    const existingIndex = rows.findIndex(r => r.id === optimization.id);
+
+    if (existingIndex !== -1) {
+      await optimizedSheets.updateRow(optimization.tenantId, sheetTitle, existingIndex, row);
+    } else {
+      await optimizedSheets.addRows(optimization.tenantId, sheetTitle, [row]);
+    }
+
+    this.metrics.sheetsOps++;
+    return row;
+  }
+
+  async _getOptimizationByIdSheets(optimizationId) {
+    // Search across all tenant sheets (less efficient but necessary for sheets)
+    // In production, you might want to maintain an index
+    const tenants = await tenantRegistry.getAllTenants();
+
+    for (const tenant of tenants) {
+      try {
+        const sheetTitle = `OPTIMIZATIONS_${tenant.id}`;
+        const rows = await optimizedSheets.getRows(tenant.id, sheetTitle, { limit: 1000 });
+        const optimization = rows.find(row => row.id === optimizationId);
+
+        if (optimization) {
+          this.metrics.sheetsOps++;
+          return {
+            ...optimization,
+            data: JSON.parse(optimization.data),
+            metadata: JSON.parse(optimization.metadata),
+            rollbackData: optimization.rollback_data ? JSON.parse(optimization.rollback_data) : null
+          };
+        }
+      } catch (error) {
+        // Sheet might not exist, continue searching
+        continue;
+      }
+    }
+
+    this.metrics.sheetsOps++;
+    return null;
+  }
+
+  async _getOptimizationHistorySheets(tenantId, filters) {
+    const sheetTitle = `OPTIMIZATIONS_${tenantId}`;
+    const rows = await optimizedSheets.getRows(tenantId, sheetTitle, { limit: filters.limit || 1000 });
+
+    let filteredRows = rows;
+
+    if (filters.status) {
+      filteredRows = filteredRows.filter(row => row.status === filters.status);
+    }
+
+    if (filters.type) {
+      filteredRows = filteredRows.filter(row => row.type === filters.type);
+    }
+
+    if (filters.dateFrom) {
+      filteredRows = filteredRows.filter(row =>
+        new Date(row.created_at) >= new Date(filters.dateFrom)
+      );
+    }
+
+    if (filters.dateTo) {
+      filteredRows = filteredRows.filter(row =>
+        new Date(row.created_at) <= new Date(filters.dateTo)
+      );
+    }
+
+    this.metrics.sheetsOps++;
+
+    return filteredRows.map(row => ({
+      ...row,
+      data: JSON.parse(row.data),
+      metadata: JSON.parse(row.metadata),
+      rollbackData: row.rollback_data ? JSON.parse(row.rollback_data) : null
+    }));
+  }
+
+  async _storeMetricsSheets(metricsData) {
+    const sheetTitle = `SCRIPT_METRICS_${metricsData.tenantId}`;
+    await optimizedSheets.ensureSheet(metricsData.tenantId, sheetTitle, [
+      'tenant_id', 'type', 'metrics', 'timestamp'
+    ]);
+
+    const row = {
+      tenant_id: metricsData.tenantId,
+      type: metricsData.type,
+      metrics: JSON.stringify(metricsData.metrics),
+      timestamp: metricsData.timestamp
+    };
+
+    await optimizedSheets.addRows(metricsData.tenantId, sheetTitle, [row]);
+    this.metrics.sheetsOps++;
+    return row;
+  }
+
+  async _storeErrorSheets(errorData) {
+    const sheetTitle = `SCRIPT_ERRORS_${errorData.tenantId}`;
+    await optimizedSheets.ensureSheet(errorData.tenantId, sheetTitle, [
+      'tenant_id', 'type', 'error', 'context', 'timestamp'
+    ]);
+
+    const row = {
+      tenant_id: errorData.tenantId,
+      type: errorData.type,
+      error: JSON.stringify(errorData.error),
+      context: JSON.stringify(errorData.context),
+      timestamp: errorData.timestamp
+    };
+
+    await optimizedSheets.addRows(errorData.tenantId, sheetTitle, [row]);
+    this.metrics.sheetsOps++;
+    return row;
+  }
+
+  /**
    * Health check
    */
   async healthCheck() {

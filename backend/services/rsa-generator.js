@@ -7,6 +7,9 @@
 import { getAIProviderService } from "./ai-provider.js";
 import { validateRSA } from "../lib/validators.js";
 import { getContentIndexer } from "./content-indexer.js";
+import { getDynamicCopyGenerator } from "./dynamic-copy.js";
+import { getABTestingService } from "./ab-tester.js";
+import { getMessageAdapter } from "./message-adapter.js";
 
 /**
  * RSA Content Generator with intelligent validation and optimization
@@ -15,17 +18,23 @@ export class RSAContentGenerator {
   constructor() {
     this.aiService = getAIProviderService();
     this.contentIndexer = getContentIndexer();
+    this.dynamicCopyGenerator = getDynamicCopyGenerator();
+    this.abTester = getABTestingService();
+    this.messageAdapter = getMessageAdapter();
     this.generationStats = {
       totalGenerated: 0,
       validGenerated: 0,
       rejectedByValidation: 0,
       withWebsiteContent: 0,
+      withDynamicCopy: 0,
+      withSegmentation: 0,
+      withABTesting: 0,
     };
   }
 
   /**
    * Generate RSA content for a specific theme/business
-   * Enhanced with website content for dynamic, specific ads
+   * Enhanced with ALL data sources and dynamic copy generation
    */
   async generateRSAContent(options = {}) {
     const {
@@ -43,39 +52,113 @@ export class RSAContentGenerator {
       businessStrategy = "protect",
       tenant = null,
       useWebsiteContent = true,
+      useDynamicCopy = true,
+      generateVariations = true,
+      createABTest = false,
+      targetSegment = null,
     } = options;
 
-    // Try to get website content for this tenant
-    let websiteContent = null;
-    if (tenant && useWebsiteContent) {
-      try {
-        websiteContent = await this.contentIndexer.getAllContentForAds(tenant);
-        if (websiteContent && websiteContent.totalItems > 0) {
-          this.generationStats.withWebsiteContent++;
-          console.log(`Using ${websiteContent.totalItems} website content items for RSA generation`);
-        }
-      } catch (error) {
-        console.warn('Failed to fetch website content, using generic generation:', error.message);
-      }
-    }
-
-    const prompt = this.buildRSAPrompt({
-      theme,
-      industry,
-      keywords,
-      tone,
-      headlineCount,
-      descriptionCount,
-      includeOffers,
-      includeBranding,
-      playbookPrompt,
-      targetCPA,
-      targetROAS,
-      businessStrategy,
-      websiteContent,
-    });
-
     try {
+      // ENHANCED: Use dynamic copy generator if available and tenant is provided
+      if (tenant && useDynamicCopy) {
+        console.log('Using dynamic copy generator with ALL data sources');
+
+        // Generate comprehensive copy using all 5 data sources
+        const dynamicResult = await this.dynamicCopyGenerator.generateComprehensiveCopy(tenant, {
+          theme,
+          industry,
+          keywords,
+          headlineCount,
+          descriptionCount,
+          generateVariations,
+          includeAllSegments: !targetSegment,
+          targetSegment,
+          includeTimeVariations: true
+        });
+
+        if (dynamicResult.success) {
+          this.generationStats.withDynamicCopy++;
+          if (dynamicResult.dataSources.customerSegmentation) {
+            this.generationStats.withSegmentation++;
+          }
+
+          // Process and validate the generated copy
+          const processedContent = this.processAndValidateContent(dynamicResult.baseCopy);
+
+          // Optionally create A/B test with variations
+          let abTest = null;
+          if (createABTest && generateVariations && dynamicResult.variations) {
+            abTest = await this._createABTestFromVariations(tenant, theme, {
+              base: processedContent,
+              variations: dynamicResult.variations
+            });
+
+            if (abTest && abTest.success) {
+              this.generationStats.withABTesting++;
+            }
+          }
+
+          this.updateStats(processedContent);
+
+          return {
+            success: true,
+            content: processedContent,
+
+            // Include all variations
+            variations: dynamicResult.variations,
+
+            // Data source information
+            dataSources: dynamicResult.dataSources,
+
+            // Quality metrics
+            qualityScores: dynamicResult.qualityScores,
+
+            // A/B test info
+            abTest,
+
+            // Metadata
+            metadata: dynamicResult.metadata,
+            recommendations: dynamicResult.recommendations,
+
+            // Stats
+            stats: { ...this.generationStats }
+          };
+        }
+      }
+
+      // FALLBACK: Use original method if dynamic copy fails or is not enabled
+      console.log('Using standard RSA generation method');
+
+      // Try to get website content for this tenant
+      let websiteContent = null;
+      if (tenant && useWebsiteContent) {
+        try {
+          websiteContent = await this.contentIndexer.getAllContentForAds(tenant);
+          if (websiteContent && websiteContent.totalItems > 0) {
+            this.generationStats.withWebsiteContent++;
+            console.log(`Using ${websiteContent.totalItems} website content items for RSA generation`);
+          }
+        } catch (error) {
+          console.warn('Failed to fetch website content, using generic generation:', error.message);
+        }
+      }
+
+      const prompt = this.buildRSAPrompt({
+        theme,
+        industry,
+        keywords,
+        tone,
+        headlineCount,
+        descriptionCount,
+        includeOffers,
+        includeBranding,
+        playbookPrompt,
+        targetCPA,
+        targetROAS,
+        businessStrategy,
+        websiteContent,
+      });
+
       const rawContent = await this.aiService.generateStructuredContent(
         prompt,
         "json",
@@ -520,7 +603,71 @@ Headlines must be under 30 characters. Descriptions must be under 90 characters.
       totalGenerated: 0,
       validGenerated: 0,
       rejectedByValidation: 0,
+      withWebsiteContent: 0,
+      withDynamicCopy: 0,
+      withSegmentation: 0,
+      withABTesting: 0,
     };
+  }
+
+  /**
+   * Create A/B test from generated variations
+   * @private
+   */
+  async _createABTestFromVariations(tenantId, theme, copyData) {
+    try {
+      const { base, variations } = copyData;
+
+      // Create test variants from base + top variations
+      const testVariants = [
+        {
+          name: 'Base Copy',
+          headlines: base.headlines,
+          descriptions: base.descriptions
+        }
+      ];
+
+      // Add segment variations (top 2)
+      if (variations.bySegment) {
+        const segmentKeys = Object.keys(variations.bySegment).slice(0, 2);
+        segmentKeys.forEach((segment, idx) => {
+          const segmentCopy = variations.bySegment[segment];
+          testVariants.push({
+            name: `${segment} Segment`,
+            headlines: segmentCopy.headlines || base.headlines,
+            descriptions: segmentCopy.descriptions || base.descriptions
+          });
+        });
+      }
+
+      // Add time variation
+      if (variations.byTime) {
+        const timeKeys = Object.keys(variations.byTime).slice(0, 1);
+        if (timeKeys.length > 0) {
+          const timeCopy = variations.byTime[timeKeys[0]];
+          testVariants.push({
+            name: `${timeKeys[0]} Time-Optimized`,
+            headlines: timeCopy.headlines || base.headlines,
+            descriptions: timeCopy.descriptions || base.descriptions
+          });
+        }
+      }
+
+      // Create A/B test
+      const testResult = await this.abTester.createTest(tenantId, {
+        name: `RSA Copy Test - ${theme}`,
+        description: `A/B test for ${theme} RSA variations`,
+        variants: testVariants.slice(0, 4), // Max 4 variants
+        metric: 'ctr',
+        duration: 14
+      });
+
+      return testResult;
+
+    } catch (error) {
+      console.error('Failed to create A/B test from variations:', error);
+      return null;
+    }
   }
 }
 

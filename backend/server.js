@@ -58,6 +58,8 @@ import { getLandingPageAIService } from "./services/landing-page-ai.js";
 import { startAIAutomation, stopAIAutomation, getAIAutomationService } from "./services/ai-automation.js";
 // Tenant Registry
 import tenantRegistry from "./services/tenant-registry.js";
+// WebSocket Server
+import { initializeWebSocketServer } from "./services/websocket-server.js";
 
 // Load env from root and backend/.env (resolve relative to this file)
 dotenv.config();
@@ -5111,6 +5113,10 @@ app.use("/api/ai", aiInsightsRoutes);
 // import aiDashboardRoutes from "./routes/ai-routes.js";
 // app.use("/api/ai", aiDashboardRoutes);
 
+// ==== SCRIPT SYNC ROUTES (for Google Ads Scripts) ====
+import scriptSyncRoutes from "./routes/script-sync.js";
+app.use("/api/script", scriptSyncRoutes);
+
 // ==== MAIN AI ROUTES (with HMAC authentication) ====
 import aiRoutes from "./routes/ai.js";
 app.use("/api/ai", aiRoutes);  // Mount AI routes at /api/ai
@@ -5126,6 +5132,16 @@ app.listen(PORT, async () => {
     hmacSecurityInitialized: true,
     pid: process.pid,
   });
+
+  // Initialize WebSocket server for real-time updates
+  if (process.env.ENABLE_WEBSOCKET !== 'false') {
+    try {
+      await initializeWebSocketServer();
+      logger.info("WebSocket server initialized for real-time updates");
+    } catch (error) {
+      logger.error("Failed to initialize WebSocket server", { error: error.message });
+    }
+  }
 
   // Start scheduled reports service
   if (process.env.ENABLE_SCHEDULED_REPORTS !== 'false') {
