@@ -223,6 +223,79 @@ router.get("/drafts", async (req, res) => {
 });
 */
 
+// Debug endpoint - directly query Supabase to see raw data
+router.get("/debug-rsa", async (req, res) => {
+  const { tenant, sig } = req.query;
+  const payload = `GET:${tenant}:debug_rsa`;
+
+  if (!tenant || !verify(sig, payload)) {
+    return res.status(403).json({ ok: false, error: "auth" });
+  }
+
+  try {
+    const supabaseClient = getSupabaseClient();
+
+    if (!supabaseClient) {
+      return res.json({
+        ok: false,
+        error: 'No Supabase client available'
+      });
+    }
+
+    // Direct query to see what's in the database
+    const { data: allAssets, error: queryError } = await supabaseClient
+      .from('rsa_assets')
+      .select('*')
+      .eq('tenant_id', tenant)
+      .eq('asset_type', 'rsa')
+      .order('created_at', { ascending: false });
+
+    if (queryError) {
+      return res.json({
+        ok: false,
+        error: queryError.message
+      });
+    }
+
+    // Process the data the same way getRSADraftsFromSupabase does
+    const grouped = {};
+
+    for (const asset of (allAssets || [])) {
+      const theme = asset.theme || 'default';
+
+      if (asset.headlines_pipe && asset.descriptions_pipe) {
+        const headlines = asset.headlines_pipe.split('|').map(h => h.trim()).filter(Boolean);
+        const descriptions = asset.descriptions_pipe.split('|').map(d => d.trim()).filter(Boolean);
+
+        grouped[theme] = {
+          theme,
+          headlines,
+          descriptions,
+          source: asset.rationale || asset.source || 'ai_generated'
+        };
+      }
+    }
+
+    const drafts = Object.values(grouped);
+    const defaultDrafts = drafts.filter(d => d.theme === 'Default Theme');
+    const libraryDrafts = drafts.filter(d => d.theme !== 'Default Theme');
+
+    return res.json({
+      ok: true,
+      totalRecords: allAssets?.length || 0,
+      processedThemes: Object.keys(grouped),
+      rsa_default: defaultDrafts,
+      library: libraryDrafts,
+      rawSample: allAssets?.[0] || null
+    });
+  } catch (error) {
+    return res.json({
+      ok: false,
+      error: error.message
+    });
+  }
+});
+
 // GET /api/ai/drafts - Simplified Supabase-only version
 router.get("/drafts", async (req, res) => {
   const { tenant, sig } = req.query;
