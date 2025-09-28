@@ -100,7 +100,6 @@ export async function getRSADraftsFromSupabase(tenant) {
       .from('rsa_assets')
       .select('*')
       .eq('tenant_id', tenant)
-      .eq('active', true)
       .order('created_at', { ascending: false });
 
     if (error) {
