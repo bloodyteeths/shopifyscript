@@ -227,14 +227,30 @@ export async function handleInlineAIWriter(tenant, limit = 5) {
   const results = [];
   const supabase = getSupabaseClient();
 
+  // Log AI operation start
+  let aiLogger;
+  try {
+    const { getAILoggerService } = await import("../services/ai-logger.js");
+    aiLogger = getAILoggerService();
+    aiLogger.logAIOperation(tenant, 'ai_writer', 'info', `Starting AI writer for ${limit} themes`);
+  } catch (e) {
+    console.warn("AI logger not available:", e.message);
+  }
+
   try {
     // Initialize AI provider
     let ai;
     try {
       ai = await getAIProvider();
       console.log(`AI provider initialized: ${ai.provider}`);
+      if (aiLogger) {
+        aiLogger.logAIOperation(tenant, 'ai_writer', 'info', `AI provider: ${ai.provider}`);
+      }
     } catch (error) {
       console.error("AI provider initialization failed:", error);
+      if (aiLogger) {
+        aiLogger.logAIOperation(tenant, 'ai_writer', 'error', `Provider init failed: ${error.message}`);
+      }
       // Use fallback content
       return generateFallbackContent(tenant, limit);
     }
@@ -447,6 +463,12 @@ Return ONLY valid JSON with "headlines" array (5 items) and "descriptions" array
 
     const supabaseWrites = results.filter(r => r.writtenToSupabase).length;
     const sheetWrites = results.filter(r => r.writtenToSheets).length;
+
+    // Log completion
+    if (aiLogger) {
+      aiLogger.logAIOperation(tenant, 'ai_writer', 'success',
+        `Generated ${results.length} themes, wrote ${supabaseWrites} to Supabase, ${sheetWrites} to Sheets`);
+    }
 
     return {
       success: true,

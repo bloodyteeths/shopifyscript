@@ -150,8 +150,8 @@ export async function getRSADraftsFromSupabase(tenant) {
       });
     });
 
-    // Group by theme and format like Google Sheets response
-    const grouped = {};
+    // Don't group by theme - return all drafts individually
+    const drafts = [];
 
     // Process all RSA assets - they have headlines_pipe and descriptions_pipe
     for (const asset of assets) {
@@ -170,15 +170,18 @@ export async function getRSADraftsFromSupabase(tenant) {
 
         console.log(`✅ Found RSA content for theme "${theme}":`, {
           headlines: headlines.length,
-          descriptions: descriptions.length
+          descriptions: descriptions.length,
+          id: asset.id
         });
 
-        grouped[theme] = {
+        // Add each draft individually (don't group by theme)
+        drafts.push({
           theme,
           headlines,
           descriptions,
-          source: asset.rationale || asset.source || 'ai_generated'
-        };
+          source: asset.rationale || asset.source || 'ai_generated',
+          created_at: asset.created_at
+        });
       } else {
         console.log(`⚠️ RSA asset missing pipe data for theme "${theme}":`, {
           has_headlines: !!asset.headlines_pipe,
@@ -186,9 +189,6 @@ export async function getRSADraftsFromSupabase(tenant) {
         });
       }
     }
-
-    // Convert to array format
-    const drafts = Object.values(grouped);
 
     console.log('📋 Processed drafts:', {
       draftCount: drafts.length,
