@@ -573,7 +573,7 @@ export function AIDashboard({ shopName, subscriptionTier = "starter", hasFeature
           {selectedDraftIndices.length > 0 && (
             <div style={{ display: "flex", gap: "8px" }}>
               <button
-                onClick={acceptDrafts}
+                onClick={() => alert("Drafts are already saved in your account and ready to use in campaigns!")}
                 style={{
                   background: "#28a745",
                   color: "white",
@@ -583,8 +583,9 @@ export function AIDashboard({ shopName, subscriptionTier = "starter", hasFeature
                   cursor: "pointer",
                   fontSize: "12px"
                 }}
+                title="Drafts are automatically saved"
               >
-                Accept ({selectedDraftIndices.length})
+                ✓ Saved ({selectedDraftIndices.length})
               </button>
               <button
                 onClick={rejectDrafts}
