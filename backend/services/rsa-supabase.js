@@ -115,6 +115,7 @@ export async function getRSADraftsFromSupabase(tenant) {
       .order('created_at', { ascending: false });
 
     if (error) {
+      console.error('❌ Supabase query error:', error);
       logger.error('Failed to fetch RSA drafts from Supabase', { tenant, error: error.message });
       return null;
     }

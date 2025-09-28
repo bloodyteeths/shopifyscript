@@ -240,12 +240,30 @@ router.get("/test-rsa-simple", async (req, res) => {
       .select('theme, headlines_pipe, descriptions_pipe')
       .eq('tenant_id', tenant)
       .eq('asset_type', 'rsa')
-      .limit(10);
+      .order('created_at', { ascending: false });
+
+    // Process like getRSADraftsFromSupabase
+    const grouped = {};
+    for (const asset of (data || [])) {
+      const theme = asset.theme || 'unknown';
+      if (asset.headlines_pipe && asset.descriptions_pipe) {
+        if (!grouped[theme]) {
+          grouped[theme] = {
+            theme,
+            headlines: asset.headlines_pipe.split('|').map(h => h.trim()).filter(Boolean),
+            descriptions: asset.descriptions_pipe.split('|').map(d => d.trim()).filter(Boolean)
+          };
+        }
+      }
+    }
+
+    const themes = Object.values(grouped);
 
     return res.json({
       success: true,
-      count: data?.length || 0,
-      data: data || [],
+      totalRecords: data?.length || 0,
+      uniqueThemes: themes.length,
+      themes: themes,
       error: error?.message || null
     });
   } catch (err) {
@@ -372,8 +390,20 @@ router.get("/drafts", async (req, res) => {
 
     // Add validation to drafts
     const { validateRSA } = await getValidators();
+
+    // Log what we're about to validate
+    console.log('🔍 Validating drafts:', {
+      defaultCount: supabaseDrafts.rsa_default.length,
+      libraryCount: supabaseDrafts.library.length
+    });
+
     for (const draft of [...supabaseDrafts.rsa_default, ...supabaseDrafts.library]) {
-      draft.lint = validateRSA(draft.headlines, draft.descriptions);
+      try {
+        draft.lint = validateRSA(draft.headlines, draft.descriptions);
+      } catch (e) {
+        console.error('Validation error for draft:', draft.theme, e);
+        draft.lint = { ok: false, errors: ['Validation failed'] };
+      }
     }
 
     return res.json({
