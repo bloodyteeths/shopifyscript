@@ -4,6 +4,7 @@ import { verify, sign } from "../utils/hmac.js";
 import { requireFeature, getCurrentSubscription } from "../middleware/subscription-check.js";
 import { canCreateCampaign, recordCampaignCreation } from "../services/campaign-counter.js";
 import { getRSADraftsFromSupabase } from "../services/rsa-supabase.js";
+import { getSupabaseClient, isSupabaseEnabled } from "../services/supabase-client.js";
 import { logger } from "../services/logger.js";
 
 const router = express.Router();
