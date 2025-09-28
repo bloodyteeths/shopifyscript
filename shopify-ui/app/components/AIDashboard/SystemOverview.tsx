@@ -324,7 +324,7 @@ export function SystemOverview({ shopName, hasFeatureAccess = false }: SystemOve
               <BlockStack gap="300">
                 <InlineStack align="space-between">
                   <Text variant="headingMd" as="h3">System Health</Text>
-                  {systemHealth && (
+                  {systemHealth && systemHealth.status && (
                     <Badge tone={getStatusTone(systemHealth.status)}>
                       {systemHealth.status.charAt(0).toUpperCase() + systemHealth.status.slice(1)}
                     </Badge>
@@ -395,8 +395,8 @@ export function SystemOverview({ shopName, hasFeatureAccess = false }: SystemOve
                   <BlockStack gap="200">
                     <InlineStack align="space-between">
                       <Text variant="bodyMd" as="span">Status:</Text>
-                      <Badge tone={getStatusTone(automationStatus.status)}>
-                        {automationStatus.status.charAt(0).toUpperCase() + automationStatus.status.slice(1)}
+                      <Badge tone={getStatusTone(automationStatus.status || 'unknown')}>
+                        {automationStatus.status ? (automationStatus.status.charAt(0).toUpperCase() + automationStatus.status.slice(1)) : 'Unknown'}
                       </Badge>
                     </InlineStack>
 

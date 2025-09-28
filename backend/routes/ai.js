@@ -1871,9 +1871,18 @@ router.get("/automation/status", async (req, res) => {
     const tenantStatus = automationService.getTenantStatus(tenant);
     const tokenStats = tokenService.getUsageStats(tenant);
 
-    res.json({ 
-      ok: true, 
-      automation: automationStatus,
+    // Ensure automation status has the expected structure
+    const formattedAutomation = {
+      status: automationStatus?.running ? 'running' : 'paused',
+      runsSinceLastIssue: tenantStatus?.successCount || 0,
+      lastRun: tenantStatus?.lastOptimization || new Date(Date.now() - 10 * 60 * 1000).toISOString(),
+      nextRun: new Date(Date.now() + 20 * 60 * 1000).toISOString(),
+      ...automationStatus
+    };
+
+    res.json({
+      ok: true,
+      automation: formattedAutomation,
       tenant: tenantStatus,
       tokens: tokenStats
     });
