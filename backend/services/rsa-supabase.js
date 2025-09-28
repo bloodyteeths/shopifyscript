@@ -95,11 +95,11 @@ export async function getRSADraftsFromSupabase(tenant) {
   try {
     logger.info('🔍 Fetching RSA drafts from Supabase', { tenant });
 
-    // Fetch all RSA assets for this tenant
+    // Fetch all RSA assets for this tenant (or proofkit for backwards compatibility)
     const { data: assets, error } = await supabase
       .from('rsa_assets')
       .select('*')
-      .eq('tenant_id', tenant)
+      .or(`tenant_id.eq.${tenant},tenant_id.eq.proofkit`)
       .order('created_at', { ascending: false });
 
     if (error) {
