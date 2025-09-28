@@ -127,14 +127,18 @@ router.get("/drafts", async (req, res) => {
           .split("|")
           .map((s) => s.trim())
           .filter(Boolean);
-        const { validateRSA } = await getValidators();
-        const lint = validateRSA(H, D);
-        out.rsa_default.push({
-          theme: "default",
-          headlines: H,
-          descriptions: D,
-          lint,
-        });
+
+        // Only add if there's actual content
+        if (H.length > 0 || D.length > 0) {
+          const { validateRSA } = await getValidators();
+          const lint = validateRSA(H, D);
+          out.rsa_default.push({
+            theme: "default",
+            headlines: H,
+            descriptions: D,
+            lint,
+          });
+        }
       }
     }
 
@@ -153,16 +157,20 @@ router.get("/drafts", async (req, res) => {
           .split("|")
           .map((s) => s.trim())
           .filter(Boolean);
-        const source = String(r.source || "");
-        const { validateRSA } = await getValidators();
-        const lint = validateRSA(H, D);
-        out.library.push({
-          theme,
-          headlines: H,
-          descriptions: D,
-          source,
-          lint,
-        });
+
+        // Only add if there's actual content
+        if (H.length > 0 || D.length > 0) {
+          const source = String(r.source || "");
+          const { validateRSA } = await getValidators();
+          const lint = validateRSA(H, D);
+          out.library.push({
+            theme,
+            headlines: H,
+            descriptions: D,
+            source,
+            lint,
+          });
+        }
       }
     }
 
