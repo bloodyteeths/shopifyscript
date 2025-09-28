@@ -27,7 +27,7 @@ router.get("/system/health", async (req, res) => {
   }
 
   try {
-    console.log('🔍 Fetching system health for:', tenant);
+    console.log('🔍 Fetching system health for tenant:', tenant);
 
     res.json({
       status: 'operational',
