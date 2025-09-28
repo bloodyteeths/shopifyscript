@@ -83,6 +83,15 @@ export async function getRSAAssetsFromSupabase(tenant, options = {}) {
  * @returns {Promise<Object|null>} RSA drafts or null if error
  */
 export async function getRSADraftsFromSupabase(tenant) {
+  console.log('🔍 getRSADraftsFromSupabase called for tenant:', tenant);
+
+  // Check environment variables
+  console.log('🔐 Environment check:', {
+    has_SUPABASE_URL: !!process.env.SUPABASE_URL,
+    has_SUPABASE_SERVICE_ROLE_KEY: !!process.env.SUPABASE_SERVICE_ROLE_KEY,
+    url_preview: process.env.SUPABASE_URL ? process.env.SUPABASE_URL.substring(0, 30) + '...' : 'not set'
+  });
+
   if (!isSupabaseEnabled()) {
     console.log('❌ Supabase not enabled in getRSADraftsFromSupabase');
     return null;
@@ -110,11 +119,34 @@ export async function getRSADraftsFromSupabase(tenant) {
       return null;
     }
 
-    // Log the fetched assets for debugging
-    console.log('📊 Fetched assets from Supabase:', {
+    // Log the raw query result
+    console.log('📊 Raw Supabase query result:', {
       tenant,
-      totalCount: assets.length,
-      sampleAsset: assets[0]
+      hasData: !!assets,
+      recordCount: assets?.length || 0,
+      error: error?.message || null
+    });
+
+    if (!assets || assets.length === 0) {
+      console.log('⚠️ No assets found in Supabase for tenant:', tenant);
+      return {
+        rsa_default: [],
+        library: []
+      };
+    }
+
+    // Log first few records for debugging
+    console.log('📝 Sample records from Supabase:');
+    assets.slice(0, 3).forEach((asset, i) => {
+      console.log(`Record ${i + 1}:`, {
+        id: asset.id,
+        theme: asset.theme,
+        asset_type: asset.asset_type,
+        has_headlines: !!asset.headlines_pipe,
+        has_descriptions: !!asset.descriptions_pipe,
+        headlines_preview: asset.headlines_pipe ? asset.headlines_pipe.substring(0, 50) + '...' : 'null',
+        descriptions_preview: asset.descriptions_pipe ? asset.descriptions_pipe.substring(0, 50) + '...' : 'null'
+      });
     });
 
     // Group by theme and format like Google Sheets response
@@ -122,7 +154,10 @@ export async function getRSADraftsFromSupabase(tenant) {
 
     // Process all RSA assets - they have headlines_pipe and descriptions_pipe
     for (const asset of assets) {
-      if (asset.asset_type !== 'rsa') continue;
+      if (asset.asset_type !== 'rsa') {
+        console.log(`⏭️ Skipping non-RSA asset with type: ${asset.asset_type}`);
+        continue;
+      }
 
       const theme = asset.theme || 'default';
 
@@ -143,6 +178,11 @@ export async function getRSADraftsFromSupabase(tenant) {
           descriptions,
           source: asset.rationale || asset.source || 'ai_generated'
         };
+      } else {
+        console.log(`⚠️ RSA asset missing pipe data for theme "${theme}":`, {
+          has_headlines: !!asset.headlines_pipe,
+          has_descriptions: !!asset.descriptions_pipe
+        });
       }
     }
 
@@ -175,10 +215,19 @@ export async function getRSADraftsFromSupabase(tenant) {
       libraryThemes: libraryDrafts.map(d => d.theme)
     });
 
-    return {
+    const result = {
       rsa_default: defaultDrafts,
       library: libraryDrafts
     };
+
+    console.log('🎯 Returning from getRSADraftsFromSupabase:', {
+      tenant,
+      has_defaults: defaultDrafts.length > 0,
+      has_library: libraryDrafts.length > 0,
+      total_themes: drafts.length
+    });
+
+    return result;
   } catch (error) {
     logger.error('Error fetching RSA drafts from Supabase', { tenant, error: error.message });
     return null;

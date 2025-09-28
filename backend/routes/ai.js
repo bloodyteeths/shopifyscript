@@ -308,10 +308,21 @@ router.get("/drafts", async (req, res) => {
   try {
     // Only use Supabase - no fallback
     logger.info(`🔍 Fetching RSA drafts from Supabase`, { tenant });
+    console.log(`📡 API /drafts called for tenant: ${tenant}`);
+
     const supabaseDrafts = await getRSADraftsFromSupabase(tenant);
+
+    console.log('📦 getRSADraftsFromSupabase returned:', {
+      tenant,
+      isNull: supabaseDrafts === null,
+      hasData: !!supabaseDrafts,
+      defaultCount: supabaseDrafts?.rsa_default?.length || 0,
+      libraryCount: supabaseDrafts?.library?.length || 0
+    });
 
     if (!supabaseDrafts) {
       logger.warn(`⚠️ No Supabase data available`, { tenant });
+      console.log('⚠️ Returning empty arrays because supabaseDrafts is null');
       return res.json({
         ok: true,
         rsa_default: [],
