@@ -43,7 +43,8 @@ export function getSupabaseClient() {
   return supabaseInstance;
 }
 
-export const supabase = getSupabaseClient();
+// Don't initialize at module load time - use getSupabaseClient() instead
+export const supabase = null;
 
 // Connection pool management
 class SupabaseConnectionPool {
@@ -68,7 +69,8 @@ class SupabaseConnectionPool {
   }
 
   async executeQuery(operation, retryCount = 0) {
-    if (!supabase) {
+    const supabaseClient = getSupabaseClient();
+    if (!supabaseClient) {
       throw new Error('Supabase client not initialized');
     }
 
@@ -85,9 +87,9 @@ class SupabaseConnectionPool {
       }
 
       this.activeConnections++;
-      
+
       // Execute the operation
-      const result = await operation(supabase);
+      const result = await operation(supabaseClient);
       
       this.metrics.successfulQueries++;
       this.updateMetrics(startTime);
@@ -196,7 +198,8 @@ export function isSupabaseEnabled() {
  * Test Supabase connection with pool management
  */
 export async function testSupabaseConnection() {
-  if (!supabase) {
+  const supabaseClient = getSupabaseClient();
+  if (!supabaseClient) {
     return { connected: false, error: 'Supabase not configured' };
   }
 
@@ -229,7 +232,8 @@ export async function testSupabaseConnection() {
  * Create tables if they don't exist
  */
 export async function ensureSupabaseTables() {
-  if (!supabase) {
+  const supabaseClient = getSupabaseClient();
+  if (!supabaseClient) {
     throw new Error('Supabase not configured');
   }
 
