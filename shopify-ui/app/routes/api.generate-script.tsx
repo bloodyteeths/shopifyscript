@@ -39,7 +39,9 @@ export async function action({ request }: ActionFunctionArgs) {
       }
     }
 
-    // Save user settings to backend before generating script
+    // Optional: Save user settings to backend (commented out - now passing as query params)
+    // Uncomment if you want to persist settings for future sessions
+    /*
     try {
       console.log(`💾 Saving user settings for ${currentShopName} (tier: ${actualTier})`);
       const saveResult = await backendFetch("/config/save-settings", "POST", {
@@ -62,16 +64,24 @@ export async function action({ request }: ActionFunctionArgs) {
       console.warn(`Failed to save user settings:`, saveError.message);
       // Continue with script generation even if save fails
     }
+    */
 
     console.log(`🔗 Fetching script from backend for shop: ${currentShopName}`);
 
+    // Build query parameters to pass user settings directly
+    const scriptParams = new URLSearchParams({
+      budget: String(budget || "20.00"),
+      cpc: String(cpc || "0.50"),
+      landing_url: String(url || "")
+    }).toString();
+
     let realScript;
     try {
-      // Try v2 endpoint first, fallback to raw endpoint
+      // Try v2 endpoint first with parameters, fallback to raw endpoint
       try {
-        console.log(`🔗 Attempting to fetch from /ads-script/v2 endpoint`);
+        console.log(`🔗 Attempting to fetch from /ads-script/v2 endpoint with params: ${scriptParams}`);
         realScript = await backendFetchText(
-          "/ads-script/v2",
+          `/ads-script/v2?${scriptParams}`,
           "GET",
           undefined,
           currentShopName,
@@ -79,7 +89,7 @@ export async function action({ request }: ActionFunctionArgs) {
       } catch (v2Error) {
         console.log(`⚠️ V2 endpoint failed, falling back to /ads-script/raw: ${v2Error.message}`);
         realScript = await backendFetchText(
-          "/ads-script/raw",
+          `/ads-script/raw?${scriptParams}`,
           "GET",
           undefined,
           currentShopName,
