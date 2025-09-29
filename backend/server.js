@@ -106,6 +106,18 @@ try {
 const app = express();
 app.set("trust proxy", 1);
 
+// ==== INITIALIZE TENANT REGISTRY (MUST BE EARLY) ====
+// Initialize tenant registry before any routes that might need it
+await tenantRegistry.initialize().catch((error) => {
+  logger.error("Failed to initialize tenant registry:", {
+    error: error.message,
+    stack: error.stack
+  });
+});
+logger.info("Tenant registry initialized early", {
+  tenants: tenantRegistry.getStats()
+});
+
 // ==== LOGGING MIDDLEWARE ====
 // Add request logging middleware
 // app.use(logger.middleware()); // Disabled for debugging
@@ -5607,19 +5619,6 @@ app.listen(PORT, async () => {
     } catch (error) {
       logger.error("Failed to start scheduled reports service:", error);
     }
-  }
-
-  // Initialize tenant registry (needed for all multi-tenant operations)
-  try {
-    await tenantRegistry.initialize();
-    logger.info("Tenant registry initialized", {
-      tenants: tenantRegistry.getStats()
-    });
-  } catch (error) {
-    logger.error("Failed to initialize tenant registry:", {
-      error: error.message,
-      stack: error.stack
-    });
   }
 
   // Initialize and start AI automation service
