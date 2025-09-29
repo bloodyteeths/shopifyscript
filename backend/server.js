@@ -1545,30 +1545,38 @@ app.post("/api/metrics", async (req, res) => {
 
     // New comprehensive data type headers
     const CAMPAIGN_DETAILS_HEADERS = [
-      "date", "campaign_id", "campaign_name", "budget", "status",
-      "bidding_strategy", "target_cpa", "target_roas", "budget_type"
+      "date", "type", "campaign_name", "campaign_id", "status",
+      "channel_type", "daily_budget", "budget_period", "bidding_strategy",
+      "cpc_ceiling", "target_cpa", "target_roas", "start_date", "end_date",
+      "cost", "conversion_value", "avg_cpc"
     ];
     const DEVICE_METRICS_HEADERS = [
-      "date", "campaign_name", "device", "clicks", "cost",
-      "conversions", "impressions", "ctr", "avg_cpc"
+      "date", "type", "campaign_name", "device", "clicks",
+      "cost", "conversions", "impressions", "ctr", "conversion_rate",
+      "avg_cpc", "cost_per_conversion", "value", "roas", "conversion_value"
     ];
     const KEYWORD_PERFORMANCE_HEADERS = [
-      "date", "campaign_name", "ad_group_name", "keyword", "match_type",
-      "clicks", "cost", "conversions", "impressions", "ctr",
-      "quality_score", "first_page_cpc", "top_of_page_cpc"
+      "date", "type", "campaign_name", "ad_group_id", "ad_group_name",
+      "keyword_id", "keyword", "match_type", "clicks", "cost",
+      "conversions", "impressions", "ctr", "avg_cpc", "conversion_rate",
+      "quality_score", "search_impression_share", "search_top_impression_share",
+      "first_page_cpc", "top_of_page_cpc"
     ];
     const HOURLY_PATTERNS_HEADERS = [
-      "date", "hour", "campaign_name", "clicks", "cost",
-      "conversions", "impressions", "ctr"
+      "date", "type", "hour", "campaign_name", "clicks",
+      "cost", "conversions", "impressions", "ctr", "conversion_rate",
+      "avg_cpc", "cost_per_conversion", "value"
     ];
     const GEOGRAPHIC_DATA_HEADERS = [
-      "date", "campaign_name", "location", "location_type", "clicks",
-      "cost", "conversions", "impressions", "ctr"
+      "date", "type", "campaign_name", "location", "location_type",
+      "clicks", "cost", "conversions", "impressions", "ctr",
+      "conversion_rate", "avg_cpc", "cost_per_conversion"
     ];
     const AD_PERFORMANCE_HEADERS = [
-      "date", "campaign_name", "ad_group_name", "ad_id", "ad_type",
-      "headline", "description", "clicks", "cost", "conversions",
-      "impressions", "ctr"
+      "date", "type", "campaign_name", "ad_group_id", "ad_group_name",
+      "ad_id", "ad_type", "headline1", "headline2", "headline3",
+      "description1", "description2", "clicks", "cost", "conversions",
+      "impressions", "ctr", "avg_cpc", "conversion_rate", "conversion_value"
     ];
     const CONVERSION_VALUES_HEADERS = [
       "date", "campaign_name", "conversion_action", "conversions",
@@ -1913,15 +1921,23 @@ app.post("/api/metrics", async (req, res) => {
         if (campaignDetailsRows.length) {
           const campaignDetails = campaignDetailsRows.map(row => ({
             tenant_id: String(tenant),
-            date: new Date(row[0]).toISOString(),
-            campaign_id: String(row[1]),
+            date: row[0] ? new Date(row[0]).toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
+            type: String(row[1] || 'campaign_details'),
             campaign_name: String(row[2]),
-            budget: parseFloat(row[3]) || 0,
+            campaign_id: String(row[3]),
             status: String(row[4]),
-            bidding_strategy: String(row[5]),
-            target_cpa: parseFloat(row[6]) || 0,
-            target_roas: parseFloat(row[7]) || 0,
-            budget_type: String(row[8]),
+            channel_type: String(row[5]),
+            daily_budget: parseFloat(row[6]) || 0,
+            budget_period: String(row[7]),
+            bidding_strategy: String(row[8]),
+            cpc_ceiling: parseFloat(row[9]) || 0,
+            target_cpa: parseFloat(row[10]) || 0,
+            target_roas: parseFloat(row[11]) || 0,
+            start_date: row[12] ? new Date(row[12]).toISOString().split('T')[0] : null,
+            end_date: row[13] ? new Date(row[13]).toISOString().split('T')[0] : null,
+            cost: parseFloat(row[14]) || 0,
+            conversion_value: parseFloat(row[15]) || 0,
+            avg_cpc: parseFloat(row[16]) || 0,
             created_at: new Date().toISOString()
           }));
 
