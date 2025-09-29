@@ -167,9 +167,16 @@ export async function action({ request }: ActionFunctionArgs) {
       }
 
       try {
-        // Fetch the real script using authenticated backend call
+        // Build query parameters to pass user settings
+        const scriptParams = new URLSearchParams({
+          budget: String(budget || "20.00"),
+          cpc: String(cpc || "0.50"),
+          landing_url: String(url || "")
+        }).toString();
+
+        // Fetch the real script using authenticated backend call with parameters
         const realScript = await backendFetchText(
-          "/ads-script/raw",
+          `/ads-script/raw?${scriptParams}`,
           "GET",
           undefined,
           currentShopName,
