@@ -1959,15 +1959,18 @@ app.post("/api/metrics", async (req, res) => {
         if (deviceMetricsRows.length) {
           const deviceMetrics = deviceMetricsRows.map(row => ({
             tenant_id: String(tenant),
-            date: new Date(row[0]).toISOString(),
-            campaign_name: String(row[1]),
-            device: String(row[2]),
-            clicks: parseInt(row[3]) || 0,
-            cost: parseFloat(row[4]) || 0,
-            conversions: parseFloat(row[5]) || 0,
-            impressions: parseInt(row[6]) || 0,
-            ctr: parseFloat(row[7]) || 0,
-            avg_cpc: parseFloat(row[8]) || 0,
+            date: row[0] ? new Date(row[0]).toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
+            type: String(row[1] || 'device_metrics'),
+            campaign_name: String(row[2]),
+            campaign_id: String(row[3]),
+            device: String(row[6]),
+            impressions: parseInt(row[7]) || 0,
+            clicks: parseInt(row[8]) || 0,
+            cost: parseFloat(row[9]) || 0,
+            conversions: parseFloat(row[10]) || 0,
+            conversion_value: parseFloat(row[11]) || 0,
+            ctr: parseFloat(row[12]) || 0,
+            avg_cpc: parseFloat(row[13]) || 0,
             created_at: new Date().toISOString()
           }));
 
@@ -1990,25 +1993,31 @@ app.post("/api/metrics", async (req, res) => {
           const keywordPerformance = keywordPerformanceRows.map(row => ({
             tenant_id: String(tenant),
             date: new Date(row[0]).toISOString(),
-            campaign_name: String(row[1]),
-            ad_group_name: String(row[2]),
-            keyword: String(row[3]),
-            match_type: String(row[4]),
-            clicks: parseInt(row[5]) || 0,
-            cost: parseFloat(row[6]) || 0,
-            conversions: parseFloat(row[7]) || 0,
-            impressions: parseInt(row[8]) || 0,
-            ctr: parseFloat(row[9]) || 0,
-            quality_score: parseInt(row[10]) || 0,
-            first_page_cpc: parseFloat(row[11]) || 0,
-            top_of_page_cpc: parseFloat(row[12]) || 0,
+            campaign_name: String(row[2]) || null,
+            ad_group_id: String(row[3]) || null,
+            ad_group_name: String(row[4]) || null,
+            keyword_id: String(row[5]) || null,
+            keyword_text: String(row[6]) || null,
+            match_type: String(row[7]) || null,
+            clicks: parseInt(row[8]) || 0,
+            cost: parseFloat(row[9]) || 0,
+            conversions: parseFloat(row[10]) || 0,
+            impressions: parseInt(row[11]) || 0,
+            ctr: parseFloat(row[12]) || 0,
+            avg_cpc: parseFloat(row[13]) || 0,
+            conversion_rate: parseFloat(row[14]) || 0,
+            quality_score: parseInt(row[15]) || null,
+            search_impression_share: parseFloat(row[16]) || null,
+            search_top_impression_share: parseFloat(row[17]) || null,
+            first_page_cpc: parseFloat(row[18]) || null,
+            top_of_page_cpc: parseFloat(row[19]) || null,
             created_at: new Date().toISOString()
           }));
 
           const { error: keywordPerformanceError } = await supabase
             .from('keyword_performance')
             .upsert(keywordPerformance, {
-              onConflict: 'tenant_id,campaign_name,ad_group_name,keyword,match_type,date',
+              onConflict: 'tenant_id,keyword_id,date',
               ignoreDuplicates: false
             });
 
@@ -2024,20 +2033,24 @@ app.post("/api/metrics", async (req, res) => {
           const hourlyPatterns = hourlyPatternsRows.map(row => ({
             tenant_id: String(tenant),
             date: new Date(row[0]).toISOString(),
-            hour: parseInt(row[1]) || 0,
-            campaign_name: String(row[2]),
-            clicks: parseInt(row[3]) || 0,
-            cost: parseFloat(row[4]) || 0,
-            conversions: parseFloat(row[5]) || 0,
-            impressions: parseInt(row[6]) || 0,
-            ctr: parseFloat(row[7]) || 0,
+            hour: parseInt(row[2]) || 0,
+            campaign_name: String(row[3]) || null,
+            campaign_id: String(row[4]) || null,
+            clicks: parseInt(row[5]) || 0,
+            cost: parseFloat(row[6]) || 0,
+            conversions: parseFloat(row[7]) || 0,
+            impressions: parseInt(row[8]) || 0,
+            ctr: parseFloat(row[9]) || 0,
+            conversion_rate: parseFloat(row[10]) || 0,
+            avg_cpc: parseFloat(row[11]) || 0,
+            cost_per_conversion: parseFloat(row[12]) || null,
             created_at: new Date().toISOString()
           }));
 
           const { error: hourlyPatternsError } = await supabase
             .from('hourly_patterns')
             .upsert(hourlyPatterns, {
-              onConflict: 'tenant_id,campaign_name,date,hour',
+              onConflict: 'tenant_id,campaign_id,date,hour',
               ignoreDuplicates: false
             });
 
@@ -2053,21 +2066,24 @@ app.post("/api/metrics", async (req, res) => {
           const geographicData = geographicDataRows.map(row => ({
             tenant_id: String(tenant),
             date: new Date(row[0]).toISOString(),
-            campaign_name: String(row[1]),
-            location: String(row[2]),
-            location_type: String(row[3]),
-            clicks: parseInt(row[4]) || 0,
-            cost: parseFloat(row[5]) || 0,
-            conversions: parseFloat(row[6]) || 0,
-            impressions: parseInt(row[7]) || 0,
-            ctr: parseFloat(row[8]) || 0,
+            campaign_name: String(row[2]) || null,
+            campaign_id: String(row[3]) || null,
+            location: String(row[4]) || null,
+            location_type: String(row[5]) || null,
+            clicks: parseInt(row[6]) || 0,
+            cost: parseFloat(row[7]) || 0,
+            conversions: parseFloat(row[8]) || 0,
+            impressions: parseInt(row[9]) || 0,
+            ctr: parseFloat(row[10]) || 0,
+            conversion_rate: parseFloat(row[11]) || 0,
+            avg_cpc: parseFloat(row[12]) || 0,
             created_at: new Date().toISOString()
           }));
 
           const { error: geographicDataError } = await supabase
             .from('geographic_data')
             .upsert(geographicData, {
-              onConflict: 'tenant_id,campaign_name,location,date',
+              onConflict: 'tenant_id,campaign_id,location,date',
               ignoreDuplicates: false
             });
 
@@ -2083,17 +2099,24 @@ app.post("/api/metrics", async (req, res) => {
           const adPerformance = adPerformanceRows.map(row => ({
             tenant_id: String(tenant),
             date: new Date(row[0]).toISOString(),
-            campaign_name: String(row[1]),
-            ad_group_name: String(row[2]),
-            ad_id: String(row[3]),
-            ad_type: String(row[4]),
-            headline: String(row[5]),
-            description: String(row[6]),
-            clicks: parseInt(row[7]) || 0,
-            cost: parseFloat(row[8]) || 0,
-            conversions: parseFloat(row[9]) || 0,
-            impressions: parseInt(row[10]) || 0,
-            ctr: parseFloat(row[11]) || 0,
+            campaign_name: String(row[2]) || null,
+            campaign_id: String(row[3]) || null,
+            ad_group_id: String(row[4]) || null,
+            ad_group_name: String(row[5]) || null,
+            ad_id: String(row[6]) || null,
+            ad_type: String(row[7]) || null,
+            headline1: String(row[8]) || null,
+            headline2: String(row[9]) || null,
+            headline3: String(row[10]) || null,
+            description1: String(row[11]) || null,
+            description2: String(row[12]) || null,
+            clicks: parseInt(row[13]) || 0,
+            cost: parseFloat(row[14]) || 0,
+            conversions: parseFloat(row[15]) || 0,
+            impressions: parseInt(row[16]) || 0,
+            ctr: parseFloat(row[17]) || 0,
+            avg_cpc: parseFloat(row[18]) || 0,
+            conversion_value: parseFloat(row[19]) || 0,
             created_at: new Date().toISOString()
           }));
 
