@@ -52,7 +52,7 @@ export function getSupabaseClient() {
 }
 
 // Don't initialize at module load time - use getSupabaseClient() instead
-export const supabase = null;
+export const getSupabase = getSupabaseClient;
 
 // Connection pool management
 class SupabaseConnectionPool {
@@ -300,7 +300,7 @@ export async function getConnectionHealth() {
 }
 
 export default {
-  supabase,
+  getSupabase: getSupabaseClient,
   isSupabaseEnabled,
   testSupabaseConnection,
   ensureSupabaseTables,

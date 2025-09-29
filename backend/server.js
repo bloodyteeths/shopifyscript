@@ -1775,11 +1775,16 @@ app.post("/api/metrics", async (req, res) => {
       insCV = 0;
 
     // Try to write to Supabase first if enabled
-    const { supabase, isSupabaseEnabled } = await import('./services/supabase-client.js');
+    const { getSupabase, isSupabaseEnabled } = await import('./services/supabase-client.js');
 
     if (isSupabaseEnabled()) {
       try {
         console.log(`🔄 Writing metrics to Supabase for ${tenant}`);
+
+        const supabase = getSupabase();
+        if (!supabase) {
+          throw new Error('Supabase client not available');
+        }
 
         // Set tenant context for RLS
         await supabase.rpc('set_config', {
