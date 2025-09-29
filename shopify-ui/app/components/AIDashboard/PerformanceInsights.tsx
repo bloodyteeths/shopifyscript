@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   Card,
   Text,
@@ -16,6 +16,7 @@ import {
   Layout,
 } from "@shopify/polaris";
 import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { authenticatedFetch } from "../../utils/ai-client";
 
 interface PerformanceInsightsProps {
   shopName: string;
@@ -25,39 +26,50 @@ interface PerformanceInsightsProps {
 export function PerformanceInsights({ shopName, hasFeatureAccess = false }: PerformanceInsightsProps) {
   const [timeRange, setTimeRange] = useState('7d');
   const [compareMode, setCompareMode] = useState(false);
+  const [performanceData, setPerformanceData] = useState<any[]>([]);
+  const [deviceBreakdown, setDeviceBreakdown] = useState<any[]>([]);
+  const [topKeywords, setTopKeywords] = useState<any[]>([]);
+  const [aiImpact, setAiImpact] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  // Mock performance data
-  const performanceData = [
-    { date: 'Mon', impressions: 12000, clicks: 480, conversions: 24, spend: 150, withAI: 28, withoutAI: 24 },
-    { date: 'Tue', impressions: 15000, clicks: 600, conversions: 32, spend: 180, withAI: 35, withoutAI: 32 },
-    { date: 'Wed', impressions: 13500, clicks: 540, conversions: 28, spend: 165, withAI: 32, withoutAI: 28 },
-    { date: 'Thu', impressions: 16000, clicks: 720, conversions: 38, spend: 195, withAI: 42, withoutAI: 38 },
-    { date: 'Fri', impressions: 18000, clicks: 810, conversions: 45, spend: 220, withAI: 52, withoutAI: 45 },
-    { date: 'Sat', impressions: 20000, clicks: 900, conversions: 48, spend: 240, withAI: 56, withoutAI: 48 },
-    { date: 'Sun', impressions: 17000, clicks: 765, conversions: 40, spend: 200, withAI: 46, withoutAI: 40 },
-  ];
+  // Fetch performance data from API
+  const fetchPerformanceData = useCallback(async () => {
+    try {
+      const response = await authenticatedFetch(`/ai/performance/insights?timeRange=${timeRange}`, "GET", undefined, shopName);
+      if (response.ok) {
+        const data = await response.json();
+        if (data.ok) {
+          setPerformanceData(data.performanceData || []);
+          setDeviceBreakdown(data.deviceBreakdown || []);
+          setTopKeywords(data.topKeywords || []);
+          setAiImpact(data.aiImpact || null);
+        } else {
+          setPerformanceData([]);
+          setDeviceBreakdown([]);
+          setTopKeywords([]);
+          setAiImpact(null);
+        }
+      }
+    } catch (err) {
+      console.error("Failed to fetch performance data:", err);
+      setError("Failed to load performance insights");
+      setPerformanceData([]);
+      setDeviceBreakdown([]);
+      setTopKeywords([]);
+      setAiImpact(null);
+    }
+  }, [shopName, timeRange]);
 
-  const deviceBreakdown = [
-    { name: 'Mobile', value: 65, color: '#5C6AC4' },
-    { name: 'Desktop', value: 28, color: '#006FBB' },
-    { name: 'Tablet', value: 7, color: '#47C1BF' },
-  ];
-
-  const topKeywords = [
-    { keyword: 'summer sale', impressions: 25000, clicks: 1250, ctr: 5.0, cpc: 0.35, conversions: 65, position: 1.2 },
-    { keyword: 'free shipping', impressions: 22000, clicks: 990, ctr: 4.5, cpc: 0.28, conversions: 48, position: 1.5 },
-    { keyword: 'best deals', impressions: 18000, clicks: 720, ctr: 4.0, cpc: 0.42, conversions: 35, position: 2.1 },
-    { keyword: 'discount code', impressions: 15000, clicks: 600, ctr: 4.0, cpc: 0.38, conversions: 28, position: 2.3 },
-    { keyword: 'buy online', impressions: 12000, clicks: 420, ctr: 3.5, cpc: 0.45, conversions: 22, position: 2.8 },
-  ];
-
-  const aiImpact = {
-    ctrImprovement: 23.5,
-    conversionImprovement: 18.2,
-    costReduction: 12.8,
-    roasIncrease: 35.0,
-    timeSaved: 15, // hours per week
-  };
+  useEffect(() => {
+    const loadData = async () => {
+      setLoading(true);
+      setError(null);
+      await fetchPerformanceData();
+      setLoading(false);
+    };
+    loadData();
+  }, [fetchPerformanceData]);
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-US', {
@@ -72,6 +84,36 @@ export function PerformanceInsights({ shopName, hasFeatureAccess = false }: Perf
     if (num >= 1000) return `${(num / 1000).toFixed(1)}K`;
     return num.toString();
   };
+
+  if (loading) {
+    return (
+      <BlockStack gap="400">
+        <Card>
+          <BlockStack gap="400">
+            <Text variant="headingLg" as="h2">Performance Insights</Text>
+            <Box padding="600">
+              <Text variant="bodyMd" alignment="center">Loading performance insights...</Text>
+            </Box>
+          </BlockStack>
+        </Card>
+      </BlockStack>
+    );
+  }
+
+  if (error) {
+    return (
+      <BlockStack gap="400">
+        <Card>
+          <BlockStack gap="400">
+            <Text variant="headingLg" as="h2">Performance Insights</Text>
+            <Banner tone="critical" title="Error loading performance data">
+              <p>{error}. Please try again later.</p>
+            </Banner>
+          </BlockStack>
+        </Card>
+      </BlockStack>
+    );
+  }
 
   return (
     <BlockStack gap="600">
@@ -112,44 +154,52 @@ export function PerformanceInsights({ shopName, hasFeatureAccess = false }: Perf
       <Card>
         <BlockStack gap="400">
           <Text variant="headingMd">AI Optimization Impact</Text>
-          <Grid>
-            <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 3, lg: 3 }}>
-              <BlockStack gap="100">
-                <Text variant="headingLg" tone="success">
-                  +{aiImpact.ctrImprovement}%
-                </Text>
-                <Text variant="bodySm" tone="subdued">CTR Improvement</Text>
-                <ProgressBar progress={aiImpact.ctrImprovement} size="small" tone="success" />
-              </BlockStack>
-            </Grid.Cell>
-            <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 3, lg: 3 }}>
-              <BlockStack gap="100">
-                <Text variant="headingLg" tone="success">
-                  +{aiImpact.conversionImprovement}%
-                </Text>
-                <Text variant="bodySm" tone="subdued">More Conversions</Text>
-                <ProgressBar progress={aiImpact.conversionImprovement} size="small" tone="success" />
-              </BlockStack>
-            </Grid.Cell>
-            <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 3, lg: 3 }}>
-              <BlockStack gap="100">
-                <Text variant="headingLg" tone="success">
-                  -{aiImpact.costReduction}%
-                </Text>
-                <Text variant="bodySm" tone="subdued">Cost Reduction</Text>
-                <ProgressBar progress={aiImpact.costReduction} size="small" tone="success" />
-              </BlockStack>
-            </Grid.Cell>
-            <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 3, lg: 3 }}>
-              <BlockStack gap="100">
-                <Text variant="headingLg" tone="success">
-                  +{aiImpact.roasIncrease}%
-                </Text>
-                <Text variant="bodySm" tone="subdued">ROAS Increase</Text>
-                <ProgressBar progress={aiImpact.roasIncrease} size="small" tone="success" />
-              </BlockStack>
-            </Grid.Cell>
-          </Grid>
+{aiImpact ? (
+            <Grid>
+              <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 3, lg: 3 }}>
+                <BlockStack gap="100">
+                  <Text variant="headingLg" tone="success">
+                    +{aiImpact.ctrImprovement || 0}%
+                  </Text>
+                  <Text variant="bodySm" tone="subdued">CTR Improvement</Text>
+                  <ProgressBar progress={aiImpact.ctrImprovement || 0} size="small" tone="success" />
+                </BlockStack>
+              </Grid.Cell>
+              <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 3, lg: 3 }}>
+                <BlockStack gap="100">
+                  <Text variant="headingLg" tone="success">
+                    +{aiImpact.conversionImprovement || 0}%
+                  </Text>
+                  <Text variant="bodySm" tone="subdued">More Conversions</Text>
+                  <ProgressBar progress={aiImpact.conversionImprovement || 0} size="small" tone="success" />
+                </BlockStack>
+              </Grid.Cell>
+              <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 3, lg: 3 }}>
+                <BlockStack gap="100">
+                  <Text variant="headingLg" tone="success">
+                    -{aiImpact.costReduction || 0}%
+                  </Text>
+                  <Text variant="bodySm" tone="subdued">Cost Reduction</Text>
+                  <ProgressBar progress={aiImpact.costReduction || 0} size="small" tone="success" />
+                </BlockStack>
+              </Grid.Cell>
+              <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 3, lg: 3 }}>
+                <BlockStack gap="100">
+                  <Text variant="headingLg" tone="success">
+                    +{aiImpact.roasIncrease || 0}%
+                  </Text>
+                  <Text variant="bodySm" tone="subdued">ROAS Increase</Text>
+                  <ProgressBar progress={aiImpact.roasIncrease || 0} size="small" tone="success" />
+                </BlockStack>
+              </Grid.Cell>
+            </Grid>
+          ) : (
+            <Box padding="400" background="bg-surface-secondary" borderRadius="200">
+              <Text variant="bodyMd" tone="subdued" alignment="center">
+                AI impact data will appear here once campaigns are active and optimized.
+              </Text>
+            </Box>
+          )}
         </BlockStack>
       </Card>
 
@@ -166,29 +216,37 @@ export function PerformanceInsights({ shopName, hasFeatureAccess = false }: Perf
           </InlineStack>
 
           <Box padding="400">
-            <ResponsiveContainer width="100%" height={300}>
-              {compareMode ? (
-                <BarChart data={performanceData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="date" />
-                  <YAxis />
-                  <Tooltip />
-                  <Legend />
-                  <Bar dataKey="withAI" fill="#00a047" name="With AI" />
-                  <Bar dataKey="withoutAI" fill="#c3c3c3" name="Without AI" />
-                </BarChart>
-              ) : (
-                <LineChart data={performanceData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="date" />
-                  <YAxis />
-                  <Tooltip />
-                  <Legend />
-                  <Line type="monotone" dataKey="conversions" stroke="#00a047" strokeWidth={2} />
-                  <Line type="monotone" dataKey="clicks" stroke="#006fbb" strokeWidth={2} />
-                </LineChart>
-              )}
-            </ResponsiveContainer>
+            {performanceData.length > 0 ? (
+              <ResponsiveContainer width="100%" height={300}>
+                {compareMode ? (
+                  <BarChart data={performanceData}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="date" />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend />
+                    <Bar dataKey="withAI" fill="#00a047" name="With AI" />
+                    <Bar dataKey="withoutAI" fill="#c3c3c3" name="Without AI" />
+                  </BarChart>
+                ) : (
+                  <LineChart data={performanceData}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="date" />
+                    <YAxis />
+                    <Tooltip />
+                    <Legend />
+                    <Line type="monotone" dataKey="conversions" stroke="#00a047" strokeWidth={2} />
+                    <Line type="monotone" dataKey="clicks" stroke="#006fbb" strokeWidth={2} />
+                  </LineChart>
+                )}
+              </ResponsiveContainer>
+            ) : (
+              <Box padding="600">
+                <Text variant="bodyMd" tone="subdued" alignment="center">
+                  Performance trend data will appear here once campaigns start generating traffic.
+                </Text>
+              </Box>
+            )}
           </Box>
         </BlockStack>
       </Card>
@@ -200,24 +258,32 @@ export function PerformanceInsights({ shopName, hasFeatureAccess = false }: Perf
             <BlockStack gap="400">
               <Text variant="headingMd">Traffic by Device</Text>
               <Box padding="200">
-                <ResponsiveContainer width="100%" height={200}>
-                  <PieChart>
-                    <Pie
-                      data={deviceBreakdown}
-                      cx="50%"
-                      cy="50%"
-                      outerRadius={80}
-                      fill="#8884d8"
-                      dataKey="value"
-                      label={(entry) => `${entry.name}: ${entry.value}%`}
-                    >
-                      {deviceBreakdown.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={entry.color} />
-                      ))}
-                    </Pie>
-                    <Tooltip />
-                  </PieChart>
-                </ResponsiveContainer>
+                {deviceBreakdown.length > 0 ? (
+                  <ResponsiveContainer width="100%" height={200}>
+                    <PieChart>
+                      <Pie
+                        data={deviceBreakdown}
+                        cx="50%"
+                        cy="50%"
+                        outerRadius={80}
+                        fill="#8884d8"
+                        dataKey="value"
+                        label={(entry) => `${entry.name}: ${entry.value}%`}
+                      >
+                        {deviceBreakdown.map((entry, index) => (
+                          <Cell key={`cell-${index}`} fill={entry.color} />
+                        ))}
+                      </Pie>
+                      <Tooltip />
+                    </PieChart>
+                  </ResponsiveContainer>
+                ) : (
+                  <Box padding="400">
+                    <Text variant="bodyMd" tone="subdued" alignment="center">
+                      Device breakdown data will appear here once campaigns generate traffic.
+                    </Text>
+                  </Box>
+                )}
               </Box>
               <Box background="bg-surface-secondary" padding="300" borderRadius="200">
                 <Text variant="bodySm" tone="subdued">
@@ -234,25 +300,33 @@ export function PerformanceInsights({ shopName, hasFeatureAccess = false }: Perf
             <BlockStack gap="400">
               <Text variant="headingMd">Top Performing Keywords</Text>
               <BlockStack gap="200">
-                {topKeywords.slice(0, 5).map((kw, index) => (
-                  <Box key={index} padding="200" background="bg-surface-secondary" borderRadius="200">
-                    <InlineStack align="space-between">
-                      <BlockStack gap="100">
-                        <Text variant="bodyMd" fontWeight="bold">{kw.keyword}</Text>
-                        <InlineStack gap="200">
-                          <Text variant="bodySm" tone="subdued">
-                            {formatNumber(kw.impressions)} imp
-                          </Text>
-                          <Badge>{kw.ctr}% CTR</Badge>
-                        </InlineStack>
-                      </BlockStack>
-                      <BlockStack gap="100" align="end">
-                        <Badge tone="success">{kw.conversions} conv</Badge>
-                        <Text variant="bodySm">{formatCurrency(kw.cpc)} CPC</Text>
-                      </BlockStack>
-                    </InlineStack>
+                {topKeywords.length > 0 ? (
+                  topKeywords.slice(0, 5).map((kw, index) => (
+                    <Box key={index} padding="200" background="bg-surface-secondary" borderRadius="200">
+                      <InlineStack align="space-between">
+                        <BlockStack gap="100">
+                          <Text variant="bodyMd" fontWeight="bold">{kw.keyword}</Text>
+                          <InlineStack gap="200">
+                            <Text variant="bodySm" tone="subdued">
+                              {formatNumber(kw.impressions)} imp
+                            </Text>
+                            <Badge>{kw.ctr}% CTR</Badge>
+                          </InlineStack>
+                        </BlockStack>
+                        <BlockStack gap="100" align="end">
+                          <Badge tone="success">{kw.conversions} conv</Badge>
+                          <Text variant="bodySm">{formatCurrency(kw.cpc)} CPC</Text>
+                        </BlockStack>
+                      </InlineStack>
+                    </Box>
+                  ))
+                ) : (
+                  <Box padding="400" background="bg-surface-secondary" borderRadius="200">
+                    <Text variant="bodyMd" tone="subdued" alignment="center">
+                      Top performing keywords will appear here once campaigns are active.
+                    </Text>
                   </Box>
-                ))}
+                )}
               </BlockStack>
             </BlockStack>
           </Card>
@@ -308,12 +382,14 @@ export function PerformanceInsights({ shopName, hasFeatureAccess = false }: Perf
       </Card>
 
       {/* Time Saved Banner */}
-      <Banner
-        title={`AI saved you ${aiImpact.timeSaved} hours this week`}
-        tone="success"
-      >
-        <p>That's time you can invest in strategy and growth instead of manual optimization!</p>
-      </Banner>
+      {aiImpact?.timeSaved && (
+        <Banner
+          title={`AI saved you ${aiImpact.timeSaved} hours this week`}
+          tone="success"
+        >
+          <p>That's time you can invest in strategy and growth instead of manual optimization!</p>
+        </Banner>
+      )}
     </BlockStack>
   );
 }

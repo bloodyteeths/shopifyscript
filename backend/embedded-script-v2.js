@@ -1,3 +1,4 @@
+/* eslint-disable */
 // Full Google Ads Script Content (for embedding in server.js)
 // Updated with optimized 26KB version
 export default String.raw`/** Ads Autopilot AI - Google Ads Script v2.1
@@ -134,10 +135,29 @@ function main() {
   // Collect and send metrics to backend
   var metrics = collectPerf_();
   var searchTerms = collectSearchTerms_(cfg);
+
+  // Collect comprehensive data for dashboard
+  log_("Collecting comprehensive data for dashboard...");
+  var campaignDetails = collectCampaignDetails_();
+  var deviceMetrics = collectDeviceMetrics_();
+  var keywordPerformance = collectKeywordPerformance_();
+  var hourlyPatterns = collectHourlyPatterns_();
+  var geographicData = collectGeographicData_();
+  var adPerformance = collectAdPerformance_();
+  var conversionValue = collectConversionValue_();
+
   var runLogs = [[new Date(), 'Ads Autopilot AI run complete']];
 
-  // Send metrics to backend (only once - removed duplicate call)
-  sendMetrics_(metrics, searchTerms, runLogs);
+  // Send all metrics to backend
+  sendMetrics_(metrics, searchTerms, runLogs, {
+    campaignDetails: campaignDetails,
+    deviceMetrics: deviceMetrics,
+    keywordPerformance: keywordPerformance,
+    hourlyPatterns: hourlyPatterns,
+    geographicData: geographicData,
+    adPerformance: adPerformance,
+    conversionValue: conversionValue
+  });
 
   if (PREVIEW_MODE || RUN_MODE === 'IDEMPOTENCY_TEST') {
     runLogs.push([new Date(), 'IDEMPOTENCY_LOG: ' + JSON.stringify({
@@ -744,8 +764,796 @@ function collectPerf_() {
   return rows;
 }
 
+// Campaign details collection
+function collectCampaignDetails_() {
+  var rows = [];
+  log_("Collecting campaign details...");
+
+  try {
+    // Use GAQL for comprehensive campaign data
+    var query = `
+      SELECT
+        campaign.id,
+        campaign.name,
+        campaign.status,
+        campaign.advertising_channel_type,
+        campaign_budget.amount_micros,
+        campaign_budget.period,
+        campaign.bidding_strategy_type,
+        campaign.target_spend.cpc_bid_ceiling_micros,
+        campaign.target_cpa.target_cpa_micros,
+        campaign.target_roas.target_roas,
+        campaign.maximize_conversions.target_cpa_micros,
+        campaign.start_date,
+        campaign.end_date,
+        metrics.impressions,
+        metrics.clicks,
+        metrics.cost_micros,
+        metrics.conversions,
+        metrics.conversions_value,
+        metrics.average_cpc
+      FROM campaign
+      WHERE campaign.advertising_channel_type = 'SEARCH'
+      AND segments.date DURING LAST_30_DAYS
+    `;
+
+    var iterator = AdsApp.search(query);
+    while (iterator.hasNext()) {
+      var row = iterator.next();
+
+      // Convert micros to dollars
+      var dailyBudget = row.campaignBudget && row.campaignBudget.amountMicros ?
+        row.campaignBudget.amountMicros / 1000000 : 0;
+      var cost = row.metrics && row.metrics.costMicros ?
+        row.metrics.costMicros / 1000000 : 0;
+      var conversionValue = row.metrics && row.metrics.conversionsValue ?
+        row.metrics.conversionsValue : 0;
+      var avgCpc = row.metrics && row.metrics.averageCpc ?
+        row.metrics.averageCpc / 1000000 : 0;
+      var cpcCeiling = 0;
+      var targetCpa = 0;
+      var targetRoas = 0;
+
+      // Extract bidding strategy details
+      if (row.campaign.targetSpend && row.campaign.targetSpend.cpcBidCeilingMicros) {
+        cpcCeiling = row.campaign.targetSpend.cpcBidCeilingMicros / 1000000;
+      }
+      if (row.campaign.targetCpa && row.campaign.targetCpa.targetCpaMicros) {
+        targetCpa = row.campaign.targetCpa.targetCpaMicros / 1000000;
+      }
+      if (row.campaign.targetRoas && row.campaign.targetRoas.targetRoas) {
+        targetRoas = row.campaign.targetRoas.targetRoas;
+      }
+      if (row.campaign.maximizeConversions && row.campaign.maximizeConversions.targetCpaMicros) {
+        targetCpa = row.campaign.maximizeConversions.targetCpaMicros / 1000000;
+      }
+
+      rows.push([
+        new Date(),
+        'campaign_details',
+        row.campaign.name,
+        row.campaign.id,
+        row.campaign.status,
+        row.campaign.advertisingChannelType,
+        dailyBudget,
+        row.campaignBudget && row.campaignBudget.period ? row.campaignBudget.period : 'DAILY',
+        row.campaign.biddingStrategyType,
+        cpcCeiling,
+        targetCpa,
+        targetRoas,
+        row.campaign.startDate,
+        row.campaign.endDate,
+        cost,
+        conversionValue,
+        avgCpc
+      ]);
+    }
+
+    log_("Collected " + rows.length + " campaign detail records");
+  } catch (e) {
+    log_("Campaign details collection error: " + e);
+
+    // Fallback to Legacy API
+    try {
+      var campaigns = AdsApp.campaigns()
+        .withCondition("AdvertisingChannelType = SEARCH")
+        .get();
+
+      while (campaigns.hasNext()) {
+        var campaign = campaigns.next();
+        var budget = campaign.getBudget();
+
+        rows.push([
+          new Date(),
+          'campaign_details',
+          campaign.getName(),
+          campaign.getId(),
+          campaign.isEnabled() ? 'ENABLED' : 'PAUSED',
+          'SEARCH',
+          budget.getAmount(),
+          'DAILY',
+          campaign.getBiddingStrategyType ? campaign.getBiddingStrategyType() : 'UNKNOWN',
+          0, 0, 0, '', '', 0, 0, 0
+        ]);
+      }
+      log_("Fallback: Collected " + rows.length + " campaign detail records");
+    } catch (fallbackError) {
+      log_("Campaign details fallback error: " + fallbackError);
+    }
+  }
+
+  return rows;
+}
+
+// Device performance collection
+function collectDeviceMetrics_() {
+  var rows = [];
+  log_("Collecting device metrics...");
+
+  try {
+    // Use GAQL for device segmentation
+    var query = `
+      SELECT
+        campaign.name,
+        campaign.id,
+        ad_group.name,
+        ad_group.id,
+        segments.device,
+        metrics.impressions,
+        metrics.clicks,
+        metrics.cost_micros,
+        metrics.conversions,
+        metrics.conversions_value,
+        metrics.ctr,
+        metrics.average_cpc,
+        metrics.average_cpm
+      FROM campaign
+      WHERE campaign.advertising_channel_type = 'SEARCH'
+      AND segments.date DURING LAST_30_DAYS
+      AND metrics.impressions > 0
+    `;
+
+    var iterator = AdsApp.search(query);
+    while (iterator.hasNext()) {
+      var row = iterator.next();
+
+      var cost = row.metrics && row.metrics.costMicros ?
+        row.metrics.costMicros / 1000000 : 0;
+      var avgCpc = row.metrics && row.metrics.averageCpc ?
+        row.metrics.averageCpc / 1000000 : 0;
+      var avgCpm = row.metrics && row.metrics.averageCpm ?
+        row.metrics.averageCpm / 1000000 : 0;
+
+      rows.push([
+        new Date(),
+        'device_metrics',
+        row.campaign.name,
+        row.campaign.id,
+        row.adGroup ? row.adGroup.name : '',
+        row.adGroup ? row.adGroup.id : '',
+        row.segments.device,
+        row.metrics.impressions || 0,
+        row.metrics.clicks || 0,
+        cost,
+        row.metrics.conversions || 0,
+        row.metrics.conversionsValue || 0,
+        row.metrics.ctr || 0,
+        avgCpc,
+        avgCpm
+      ]);
+    }
+
+    log_("Collected " + rows.length + " device metric records");
+  } catch (e) {
+    log_("Device metrics collection error: " + e);
+
+    // Fallback to Report API
+    try {
+      var report = AdsApp.report(
+        "SELECT CampaignName, CampaignId, AdGroupName, AdGroupId, Device, " +
+        "Impressions, Clicks, Cost, Conversions, ConversionValue, Ctr, AverageCpc, AverageCpm " +
+        "FROM CAMPAIGN_PERFORMANCE_REPORT " +
+        "WHERE CampaignStatus IN ['ENABLED', 'PAUSED'] " +
+        "AND Impressions > 0 " +
+        "DURING LAST_30_DAYS"
+      );
+
+      var reportRows = report.rows();
+      while (reportRows.hasNext()) {
+        var row = reportRows.next();
+        rows.push([
+          new Date(),
+          'device_metrics',
+          row['CampaignName'],
+          row['CampaignId'],
+          row['AdGroupName'] || '',
+          row['AdGroupId'] || '',
+          row['Device'] || 'UNKNOWN',
+          parseInt(row['Impressions']) || 0,
+          parseInt(row['Clicks']) || 0,
+          parseFloat(row['Cost']) || 0,
+          parseFloat(row['Conversions']) || 0,
+          parseFloat(row['ConversionValue']) || 0,
+          parseFloat(row['Ctr']) || 0,
+          parseFloat(row['AverageCpc']) || 0,
+          parseFloat(row['AverageCpm']) || 0
+        ]);
+      }
+      log_("Fallback: Collected " + rows.length + " device metric records");
+    } catch (fallbackError) {
+      log_("Device metrics fallback error: " + fallbackError);
+    }
+  }
+
+  return rows;
+}
+
+// Keyword performance collection
+function collectKeywordPerformance_() {
+  var rows = [];
+  log_("Collecting keyword performance...");
+
+  try {
+    // Use GAQL for keyword data with Quality Score
+    var query = `
+      SELECT
+        campaign.name,
+        campaign.id,
+        ad_group.name,
+        ad_group.id,
+        ad_group_criterion.keyword.text,
+        ad_group_criterion.keyword.match_type,
+        ad_group_criterion.quality_info.quality_score,
+        ad_group_criterion.quality_info.creative_quality_score,
+        ad_group_criterion.quality_info.post_click_quality_score,
+        ad_group_criterion.quality_info.search_predicted_ctr,
+        ad_group_criterion.final_urls,
+        ad_group_criterion.status,
+        metrics.impressions,
+        metrics.clicks,
+        metrics.cost_micros,
+        metrics.conversions,
+        metrics.conversions_value,
+        metrics.ctr,
+        metrics.average_cpc,
+        metrics.average_position
+      FROM keyword_view
+      WHERE campaign.advertising_channel_type = 'SEARCH'
+      AND segments.date DURING LAST_30_DAYS
+      AND metrics.impressions > 0
+    `;
+
+    var iterator = AdsApp.search(query);
+    while (iterator.hasNext()) {
+      var row = iterator.next();
+
+      var cost = row.metrics && row.metrics.costMicros ?
+        row.metrics.costMicros / 1000000 : 0;
+      var avgCpc = row.metrics && row.metrics.averageCpc ?
+        row.metrics.averageCpc / 1000000 : 0;
+
+      // Extract Quality Score components
+      var qualityScore = row.adGroupCriterion && row.adGroupCriterion.qualityInfo ?
+        row.adGroupCriterion.qualityInfo.qualityScore || 0 : 0;
+      var creativeQuality = row.adGroupCriterion && row.adGroupCriterion.qualityInfo ?
+        row.adGroupCriterion.qualityInfo.creativeQualityScore || 'UNKNOWN' : 'UNKNOWN';
+      var postClickQuality = row.adGroupCriterion && row.adGroupCriterion.qualityInfo ?
+        row.adGroupCriterion.qualityInfo.postClickQualityScore || 'UNKNOWN' : 'UNKNOWN';
+      var searchPredictedCtr = row.adGroupCriterion && row.adGroupCriterion.qualityInfo ?
+        row.adGroupCriterion.qualityInfo.searchPredictedCtr || 'UNKNOWN' : 'UNKNOWN';
+
+      rows.push([
+        new Date(),
+        'keyword_performance',
+        row.campaign.name,
+        row.campaign.id,
+        row.adGroup.name,
+        row.adGroup.id,
+        row.adGroupCriterion.keyword.text,
+        row.adGroupCriterion.keyword.matchType,
+        qualityScore,
+        creativeQuality,
+        postClickQuality,
+        searchPredictedCtr,
+        row.adGroupCriterion.status,
+        row.metrics.impressions || 0,
+        row.metrics.clicks || 0,
+        cost,
+        row.metrics.conversions || 0,
+        row.metrics.conversionsValue || 0,
+        row.metrics.ctr || 0,
+        avgCpc,
+        row.metrics.averagePosition || 0
+      ]);
+    }
+
+    log_("Collected " + rows.length + " keyword performance records");
+  } catch (e) {
+    log_("Keyword performance collection error: " + e);
+
+    // Fallback to Report API
+    try {
+      var report = AdsApp.report(
+        "SELECT CampaignName, CampaignId, AdGroupName, AdGroupId, Criteria, KeywordMatchType, " +
+        "QualityScore, CreativeQualityScore, PostClickQualityScore, SearchPredictedCtr, Status, " +
+        "Impressions, Clicks, Cost, Conversions, ConversionValue, Ctr, AverageCpc, AveragePosition " +
+        "FROM KEYWORDS_PERFORMANCE_REPORT " +
+        "WHERE CampaignStatus IN ['ENABLED', 'PAUSED'] " +
+        "AND Impressions > 0 " +
+        "DURING LAST_30_DAYS"
+      );
+
+      var reportRows = report.rows();
+      while (reportRows.hasNext()) {
+        var row = reportRows.next();
+        rows.push([
+          new Date(),
+          'keyword_performance',
+          row['CampaignName'],
+          row['CampaignId'],
+          row['AdGroupName'],
+          row['AdGroupId'],
+          row['Criteria'],
+          row['KeywordMatchType'],
+          parseInt(row['QualityScore']) || 0,
+          row['CreativeQualityScore'] || 'UNKNOWN',
+          row['PostClickQualityScore'] || 'UNKNOWN',
+          row['SearchPredictedCtr'] || 'UNKNOWN',
+          row['Status'],
+          parseInt(row['Impressions']) || 0,
+          parseInt(row['Clicks']) || 0,
+          parseFloat(row['Cost']) || 0,
+          parseFloat(row['Conversions']) || 0,
+          parseFloat(row['ConversionValue']) || 0,
+          parseFloat(row['Ctr']) || 0,
+          parseFloat(row['AverageCpc']) || 0,
+          parseFloat(row['AveragePosition']) || 0
+        ]);
+      }
+      log_("Fallback: Collected " + rows.length + " keyword performance records");
+    } catch (fallbackError) {
+      log_("Keyword performance fallback error: " + fallbackError);
+    }
+  }
+
+  return rows;
+}
+
+// Hourly performance patterns collection
+function collectHourlyPatterns_() {
+  var rows = [];
+  log_("Collecting hourly patterns...");
+
+  try {
+    // Use GAQL for hourly data
+    var query = `
+      SELECT
+        campaign.name,
+        campaign.id,
+        segments.hour,
+        segments.day_of_week,
+        metrics.impressions,
+        metrics.clicks,
+        metrics.cost_micros,
+        metrics.conversions,
+        metrics.conversions_value,
+        metrics.ctr,
+        metrics.average_cpc
+      FROM campaign
+      WHERE campaign.advertising_channel_type = 'SEARCH'
+      AND segments.date DURING LAST_30_DAYS
+      AND metrics.impressions > 0
+    `;
+
+    var iterator = AdsApp.search(query);
+    while (iterator.hasNext()) {
+      var row = iterator.next();
+
+      var cost = row.metrics && row.metrics.costMicros ?
+        row.metrics.costMicros / 1000000 : 0;
+      var avgCpc = row.metrics && row.metrics.averageCpc ?
+        row.metrics.averageCpc / 1000000 : 0;
+
+      rows.push([
+        new Date(),
+        'hourly_patterns',
+        row.campaign.name,
+        row.campaign.id,
+        row.segments.hour || 0,
+        row.segments.dayOfWeek || 'UNKNOWN',
+        row.metrics.impressions || 0,
+        row.metrics.clicks || 0,
+        cost,
+        row.metrics.conversions || 0,
+        row.metrics.conversionsValue || 0,
+        row.metrics.ctr || 0,
+        avgCpc
+      ]);
+    }
+
+    log_("Collected " + rows.length + " hourly pattern records");
+  } catch (e) {
+    log_("Hourly patterns collection error: " + e);
+
+    // Fallback to Report API
+    try {
+      var report = AdsApp.report(
+        "SELECT CampaignName, CampaignId, HourOfDay, DayOfWeek, " +
+        "Impressions, Clicks, Cost, Conversions, ConversionValue, Ctr, AverageCpc " +
+        "FROM CAMPAIGN_PERFORMANCE_REPORT " +
+        "WHERE CampaignStatus IN ['ENABLED', 'PAUSED'] " +
+        "AND Impressions > 0 " +
+        "DURING LAST_30_DAYS"
+      );
+
+      var reportRows = report.rows();
+      while (reportRows.hasNext()) {
+        var row = reportRows.next();
+        rows.push([
+          new Date(),
+          'hourly_patterns',
+          row['CampaignName'],
+          row['CampaignId'],
+          parseInt(row['HourOfDay']) || 0,
+          row['DayOfWeek'] || 'UNKNOWN',
+          parseInt(row['Impressions']) || 0,
+          parseInt(row['Clicks']) || 0,
+          parseFloat(row['Cost']) || 0,
+          parseFloat(row['Conversions']) || 0,
+          parseFloat(row['ConversionValue']) || 0,
+          parseFloat(row['Ctr']) || 0,
+          parseFloat(row['AverageCpc']) || 0
+        ]);
+      }
+      log_("Fallback: Collected " + rows.length + " hourly pattern records");
+    } catch (fallbackError) {
+      log_("Hourly patterns fallback error: " + fallbackError);
+    }
+  }
+
+  return rows;
+}
+
+// Geographic performance collection
+function collectGeographicData_() {
+  var rows = [];
+  log_("Collecting geographic data...");
+
+  try {
+    // Use GAQL for geographic data
+    var query = `
+      SELECT
+        campaign.name,
+        campaign.id,
+        geographic_view.country_criterion_id,
+        geographic_view.location_type,
+        user_location_view.country_criterion_id,
+        user_location_view.target_campaign,
+        metrics.impressions,
+        metrics.clicks,
+        metrics.cost_micros,
+        metrics.conversions,
+        metrics.conversions_value,
+        metrics.ctr,
+        metrics.average_cpc
+      FROM geographic_view
+      WHERE campaign.advertising_channel_type = 'SEARCH'
+      AND segments.date DURING LAST_30_DAYS
+      AND metrics.impressions > 0
+    `;
+
+    var iterator = AdsApp.search(query);
+    while (iterator.hasNext()) {
+      var row = iterator.next();
+
+      var cost = row.metrics && row.metrics.costMicros ?
+        row.metrics.costMicros / 1000000 : 0;
+      var avgCpc = row.metrics && row.metrics.averageCpc ?
+        row.metrics.averageCpc / 1000000 : 0;
+
+      rows.push([
+        new Date(),
+        'geographic_data',
+        row.campaign.name,
+        row.campaign.id,
+        row.geographicView ? row.geographicView.countryCriterionId : '',
+        row.geographicView ? row.geographicView.locationType : '',
+        row.metrics.impressions || 0,
+        row.metrics.clicks || 0,
+        cost,
+        row.metrics.conversions || 0,
+        row.metrics.conversionsValue || 0,
+        row.metrics.ctr || 0,
+        avgCpc
+      ]);
+    }
+
+    log_("Collected " + rows.length + " geographic data records");
+  } catch (e) {
+    log_("Geographic data collection error: " + e);
+
+    // Fallback to Report API
+    try {
+      var report = AdsApp.report(
+        "SELECT CampaignName, CampaignId, CountryCriteriaId, IsTargetingLocation, " +
+        "Impressions, Clicks, Cost, Conversions, ConversionValue, Ctr, AverageCpc " +
+        "FROM GEO_PERFORMANCE_REPORT " +
+        "WHERE CampaignStatus IN ['ENABLED', 'PAUSED'] " +
+        "AND Impressions > 0 " +
+        "DURING LAST_30_DAYS"
+      );
+
+      var reportRows = report.rows();
+      while (reportRows.hasNext()) {
+        var row = reportRows.next();
+        rows.push([
+          new Date(),
+          'geographic_data',
+          row['CampaignName'],
+          row['CampaignId'],
+          row['CountryCriteriaId'] || '',
+          row['IsTargetingLocation'] || '',
+          parseInt(row['Impressions']) || 0,
+          parseInt(row['Clicks']) || 0,
+          parseFloat(row['Cost']) || 0,
+          parseFloat(row['Conversions']) || 0,
+          parseFloat(row['ConversionValue']) || 0,
+          parseFloat(row['Ctr']) || 0,
+          parseFloat(row['AverageCpc']) || 0
+        ]);
+      }
+      log_("Fallback: Collected " + rows.length + " geographic data records");
+    } catch (fallbackError) {
+      log_("Geographic data fallback error: " + fallbackError);
+    }
+  }
+
+  return rows;
+}
+
+// Ad performance collection (RSA variations)
+function collectAdPerformance_() {
+  var rows = [];
+  log_("Collecting ad performance...");
+
+  try {
+    // Use GAQL for ad performance data
+    var query = `
+      SELECT
+        campaign.name,
+        campaign.id,
+        ad_group.name,
+        ad_group.id,
+        ad_group_ad.ad.id,
+        ad_group_ad.ad.type,
+        ad_group_ad.ad.responsive_search_ad.headlines,
+        ad_group_ad.ad.responsive_search_ad.descriptions,
+        ad_group_ad.status,
+        metrics.impressions,
+        metrics.clicks,
+        metrics.cost_micros,
+        metrics.conversions,
+        metrics.conversions_value,
+        metrics.ctr,
+        metrics.average_cpc
+      FROM ad_group_ad
+      WHERE campaign.advertising_channel_type = 'SEARCH'
+      AND ad_group_ad.ad.type = 'RESPONSIVE_SEARCH_AD'
+      AND segments.date DURING LAST_30_DAYS
+      AND metrics.impressions > 0
+    `;
+
+    var iterator = AdsApp.search(query);
+    while (iterator.hasNext()) {
+      var row = iterator.next();
+
+      var cost = row.metrics && row.metrics.costMicros ?
+        row.metrics.costMicros / 1000000 : 0;
+      var avgCpc = row.metrics && row.metrics.averageCpc ?
+        row.metrics.averageCpc / 1000000 : 0;
+
+      // Extract RSA content details
+      var headlineCount = 0;
+      var descriptionCount = 0;
+      var headlineText = '';
+      var descriptionText = '';
+
+      if (row.adGroupAd && row.adGroupAd.ad && row.adGroupAd.ad.responsiveSearchAd) {
+        var rsa = row.adGroupAd.ad.responsiveSearchAd;
+        if (rsa.headlines) {
+          headlineCount = rsa.headlines.length;
+          headlineText = rsa.headlines.map(function(h) { return h.text; }).join(' | ');
+        }
+        if (rsa.descriptions) {
+          descriptionCount = rsa.descriptions.length;
+          descriptionText = rsa.descriptions.map(function(d) { return d.text; }).join(' | ');
+        }
+      }
+
+      rows.push([
+        new Date(),
+        'ad_performance',
+        row.campaign.name,
+        row.campaign.id,
+        row.adGroup.name,
+        row.adGroup.id,
+        row.adGroupAd.ad.id,
+        row.adGroupAd.ad.type,
+        headlineCount,
+        descriptionCount,
+        headlineText.substring(0, 500), // Limit text length
+        descriptionText.substring(0, 500),
+        row.adGroupAd.status,
+        row.metrics.impressions || 0,
+        row.metrics.clicks || 0,
+        cost,
+        row.metrics.conversions || 0,
+        row.metrics.conversionsValue || 0,
+        row.metrics.ctr || 0,
+        avgCpc
+      ]);
+    }
+
+    log_("Collected " + rows.length + " ad performance records");
+  } catch (e) {
+    log_("Ad performance collection error: " + e);
+
+    // Fallback to Report API
+    try {
+      var report = AdsApp.report(
+        "SELECT CampaignName, CampaignId, AdGroupName, AdGroupId, Id, AdType, Status, " +
+        "Impressions, Clicks, Cost, Conversions, ConversionValue, Ctr, AverageCpc " +
+        "FROM AD_PERFORMANCE_REPORT " +
+        "WHERE CampaignStatus IN ['ENABLED', 'PAUSED'] " +
+        "AND AdType = 'Responsive search ad' " +
+        "AND Impressions > 0 " +
+        "DURING LAST_30_DAYS"
+      );
+
+      var reportRows = report.rows();
+      while (reportRows.hasNext()) {
+        var row = reportRows.next();
+        rows.push([
+          new Date(),
+          'ad_performance',
+          row['CampaignName'],
+          row['CampaignId'],
+          row['AdGroupName'],
+          row['AdGroupId'],
+          row['Id'],
+          row['AdType'],
+          0, 0, '', '', // No headline/description data in fallback
+          row['Status'],
+          parseInt(row['Impressions']) || 0,
+          parseInt(row['Clicks']) || 0,
+          parseFloat(row['Cost']) || 0,
+          parseFloat(row['Conversions']) || 0,
+          parseFloat(row['ConversionValue']) || 0,
+          parseFloat(row['Ctr']) || 0,
+          parseFloat(row['AverageCpc']) || 0
+        ]);
+      }
+      log_("Fallback: Collected " + rows.length + " ad performance records");
+    } catch (fallbackError) {
+      log_("Ad performance fallback error: " + fallbackError);
+    }
+  }
+
+  return rows;
+}
+
+// Conversion value collection for ROAS calculation
+function collectConversionValue_() {
+  var rows = [];
+  log_("Collecting conversion value data...");
+
+  try {
+    // Use GAQL for conversion value data
+    var query = `
+      SELECT
+        campaign.name,
+        campaign.id,
+        ad_group.name,
+        ad_group.id,
+        segments.conversion_action_name,
+        segments.conversion_action_category,
+        metrics.conversions,
+        metrics.conversions_value,
+        metrics.cost_micros,
+        metrics.view_through_conversions,
+        metrics.value_per_conversion,
+        metrics.cost_per_conversion
+      FROM campaign
+      WHERE campaign.advertising_channel_type = 'SEARCH'
+      AND segments.date DURING LAST_30_DAYS
+      AND metrics.conversions > 0
+    `;
+
+    var iterator = AdsApp.search(query);
+    while (iterator.hasNext()) {
+      var row = iterator.next();
+
+      var cost = row.metrics && row.metrics.costMicros ?
+        row.metrics.costMicros / 1000000 : 0;
+      var valuePerConversion = row.metrics && row.metrics.valuePerConversion ?
+        row.metrics.valuePerConversion : 0;
+      var costPerConversion = row.metrics && row.metrics.costPerConversion ?
+        row.metrics.costPerConversion / 1000000 : 0;
+
+      // Calculate ROAS
+      var roas = cost > 0 && row.metrics.conversionsValue > 0 ?
+        row.metrics.conversionsValue / cost : 0;
+
+      rows.push([
+        new Date(),
+        'conversion_value',
+        row.campaign.name,
+        row.campaign.id,
+        row.adGroup ? row.adGroup.name : '',
+        row.adGroup ? row.adGroup.id : '',
+        row.segments.conversionActionName || '',
+        row.segments.conversionActionCategory || '',
+        row.metrics.conversions || 0,
+        row.metrics.conversionsValue || 0,
+        cost,
+        row.metrics.viewThroughConversions || 0,
+        valuePerConversion,
+        costPerConversion,
+        roas
+      ]);
+    }
+
+    log_("Collected " + rows.length + " conversion value records");
+  } catch (e) {
+    log_("Conversion value collection error: " + e);
+
+    // Fallback to Report API
+    try {
+      var report = AdsApp.report(
+        "SELECT CampaignName, CampaignId, AdGroupName, AdGroupId, ConversionTypeName, ConversionCategoryName, " +
+        "Conversions, ConversionValue, Cost, ViewThroughConversions, ValuePerConversion, CostPerConversion " +
+        "FROM CAMPAIGN_PERFORMANCE_REPORT " +
+        "WHERE CampaignStatus IN ['ENABLED', 'PAUSED'] " +
+        "AND Conversions > 0 " +
+        "DURING LAST_30_DAYS"
+      );
+
+      var reportRows = report.rows();
+      while (reportRows.hasNext()) {
+        var row = reportRows.next();
+        var cost = parseFloat(row['Cost']) || 0;
+        var conversionValue = parseFloat(row['ConversionValue']) || 0;
+        var roas = cost > 0 && conversionValue > 0 ? conversionValue / cost : 0;
+
+        rows.push([
+          new Date(),
+          'conversion_value',
+          row['CampaignName'],
+          row['CampaignId'],
+          row['AdGroupName'] || '',
+          row['AdGroupId'] || '',
+          row['ConversionTypeName'] || '',
+          row['ConversionCategoryName'] || '',
+          parseFloat(row['Conversions']) || 0,
+          conversionValue,
+          cost,
+          parseFloat(row['ViewThroughConversions']) || 0,
+          parseFloat(row['ValuePerConversion']) || 0,
+          parseFloat(row['CostPerConversion']) || 0,
+          roas
+        ]);
+      }
+      log_("Fallback: Collected " + rows.length + " conversion value records");
+    } catch (fallbackError) {
+      log_("Conversion value fallback error: " + fallbackError);
+    }
+  }
+
+  return rows;
+}
+
 // Send metrics to backend
-function sendMetrics_(metrics, searchTerms, runLogs) {
+function sendMetrics_(metrics, searchTerms, runLogs, additionalData) {
   try {
     var nonce = Date.now();
     var sig = sign_("POST:" + TENANT_ID + ":metrics:" + nonce);
@@ -758,26 +1566,125 @@ function sendMetrics_(metrics, searchTerms, runLogs) {
       run_logs: runLogs || []
     };
 
-    log_("Sending " + metrics.length + " metrics, " + searchTerms.length + " search terms to backend");
+    // Add comprehensive data if provided
+    if (additionalData) {
+      payload.campaign_details = additionalData.campaignDetails || [];
+      payload.device_metrics = additionalData.deviceMetrics || [];
+      payload.keyword_performance = additionalData.keywordPerformance || [];
+      payload.hourly_patterns = additionalData.hourlyPatterns || [];
+      payload.geographic_data = additionalData.geographicData || [];
+      payload.ad_performance = additionalData.adPerformance || [];
+      payload.conversion_value = additionalData.conversionValue || [];
+    }
 
-    var response = UrlFetchApp.fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'User-Agent': 'AdsAutopilotAI/1.0'
-      },
-      payload: JSON.stringify(payload),
-      muteHttpExceptions: true
-    });
+    // Calculate total data points for logging
+    var totalDataPoints = (metrics || []).length + (searchTerms || []).length;
+    if (additionalData) {
+      totalDataPoints += (additionalData.campaignDetails || []).length;
+      totalDataPoints += (additionalData.deviceMetrics || []).length;
+      totalDataPoints += (additionalData.keywordPerformance || []).length;
+      totalDataPoints += (additionalData.hourlyPatterns || []).length;
+      totalDataPoints += (additionalData.geographicData || []).length;
+      totalDataPoints += (additionalData.adPerformance || []).length;
+      totalDataPoints += (additionalData.conversionValue || []).length;
+    }
 
-    var code = response.getResponseCode();
-    if (code >= 200 && code < 300) {
-      log_("Metrics sent successfully");
+    log_("Sending " + totalDataPoints + " total data points to backend");
+    if (additionalData) {
+      log_("Data breakdown: " +
+        "Campaigns: " + (additionalData.campaignDetails || []).length +
+        ", Device: " + (additionalData.deviceMetrics || []).length +
+        ", Keywords: " + (additionalData.keywordPerformance || []).length +
+        ", Hourly: " + (additionalData.hourlyPatterns || []).length +
+        ", Geo: " + (additionalData.geographicData || []).length +
+        ", Ads: " + (additionalData.adPerformance || []).length +
+        ", Conversions: " + (additionalData.conversionValue || []).length
+      );
+    }
+
+    // Split large payloads into chunks to avoid size limits
+    var MAX_PAYLOAD_SIZE = 10000000; // 10MB limit
+    var payloadString = JSON.stringify(payload);
+
+    if (payloadString.length > MAX_PAYLOAD_SIZE) {
+      log_("Payload too large (" + payloadString.length + " chars), splitting into chunks");
+      sendLargePayload_(url, payload);
     } else {
-      log_("Failed to send metrics: HTTP " + code);
+      var response = UrlFetchApp.fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'User-Agent': 'AdsAutopilotAI/1.0'
+        },
+        payload: payloadString,
+        muteHttpExceptions: true
+      });
+
+      var code = response.getResponseCode();
+      if (code >= 200 && code < 300) {
+        log_("All metrics sent successfully");
+      } else {
+        log_("Failed to send metrics: HTTP " + code);
+      }
     }
   } catch (e) {
     log_("Error sending metrics: " + e.toString());
+  }
+}
+
+// Helper function to send large payloads in chunks
+function sendLargePayload_(url, payload) {
+  try {
+    var CHUNK_SIZE = 500; // Records per chunk
+    var dataTypes = ['metrics', 'search_terms', 'campaign_details', 'device_metrics',
+                     'keyword_performance', 'hourly_patterns', 'geographic_data',
+                     'ad_performance', 'conversion_value'];
+
+    var chunkIndex = 0;
+
+    for (var i = 0; i < dataTypes.length; i++) {
+      var dataType = dataTypes[i];
+      var data = payload[dataType] || [];
+
+      if (data.length === 0) continue;
+
+      for (var j = 0; j < data.length; j += CHUNK_SIZE) {
+        var chunk = {
+          nonce: payload.nonce,
+          chunk_index: chunkIndex++,
+          data_type: dataType,
+          run_logs: j === 0 ? payload.run_logs : [] // Only include run logs in first chunk
+        };
+
+        chunk[dataType] = data.slice(j, j + CHUNK_SIZE);
+
+        try {
+          var response = UrlFetchApp.fetch(url, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'User-Agent': 'AdsAutopilotAI/1.0'
+            },
+            payload: JSON.stringify(chunk),
+            muteHttpExceptions: true
+          });
+
+          var code = response.getResponseCode();
+          if (code < 200 || code >= 300) {
+            log_("Failed to send chunk " + chunkIndex + " for " + dataType + ": HTTP " + code);
+          }
+        } catch (chunkError) {
+          log_("Error sending chunk " + chunkIndex + " for " + dataType + ": " + chunkError);
+        }
+
+        // Small delay between chunks to avoid rate limiting
+        Utilities.sleep(100);
+      }
+    }
+
+    log_("Large payload sent in " + chunkIndex + " chunks");
+  } catch (e) {
+    log_("Error sending large payload: " + e);
   }
 }
 

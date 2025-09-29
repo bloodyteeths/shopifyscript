@@ -46,6 +46,8 @@ export function AIContentStudio({ shopName, hasFeatureAccess = false }: AIConten
   const [selectedDrafts, setSelectedDrafts] = useState<string[]>([]);
   const [isGenerating, setIsGenerating] = useState(false);
   const [generationModal, setGenerationModal] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   // Generation form state
   const [theme, setTheme] = useState('');
@@ -60,41 +62,46 @@ export function AIContentStudio({ shopName, hasFeatureAccess = false }: AIConten
 
   const fetchDrafts = async () => {
     try {
+      setLoading(true);
+      setError(null);
       const response = await authenticatedFetch("/ai/drafts", "GET", undefined, shopName);
       if (response.ok) {
         const data = await response.json();
         if (data.ok) {
           const formattedDrafts = [
-            ...data.rsa_default.map((d: any, index: number) => ({
+            ...(data.rsa_default || []).map((d: any, index: number) => ({
               id: `default-${index}`,
               theme: d.theme,
               headlines: d.headlines,
               descriptions: d.descriptions,
-              createdAt: new Date(Date.now() - Math.random() * 7 * 24 * 60 * 60 * 1000).toISOString(),
-              performance: {
-                ctr: Math.random() * 10,
-                conversions: Math.floor(Math.random() * 50),
-                status: ['testing', 'winner', 'loser', 'new'][Math.floor(Math.random() * 4)] as any,
-              },
+              createdAt: d.createdAt || new Date().toISOString(),
+              // Only include performance data if it exists in API response
+              performance: d.performance || undefined,
             })),
-            ...data.library.map((d: any, index: number) => ({
+            ...(data.library || []).map((d: any, index: number) => ({
               id: `library-${index}`,
               theme: d.theme,
               headlines: d.headlines,
               descriptions: d.descriptions,
-              createdAt: new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000).toISOString(),
-              performance: {
-                ctr: Math.random() * 10,
-                conversions: Math.floor(Math.random() * 50),
-                status: ['testing', 'winner', 'loser', 'new'][Math.floor(Math.random() * 4)] as any,
-              },
+              createdAt: d.createdAt || new Date().toISOString(),
+              // Only include performance data if it exists in API response
+              performance: d.performance || undefined,
             })),
           ];
           setDrafts(formattedDrafts);
+        } else {
+          setDrafts([]);
         }
+      } else {
+        setError("Failed to load ad drafts");
+        setDrafts([]);
       }
     } catch (err) {
       console.error("Failed to fetch drafts:", err);
+      setError("Failed to load ad drafts");
+      setDrafts([]);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -139,6 +146,36 @@ export function AIContentStudio({ shopName, hasFeatureAccess = false }: AIConten
       content: 'Performance Insights',
     },
   ];
+
+  if (loading) {
+    return (
+      <BlockStack gap="400">
+        <Card>
+          <BlockStack gap="400">
+            <Text variant="headingLg" as="h2">AI Content Studio</Text>
+            <Box padding="600">
+              <Text variant="bodyMd" alignment="center">Loading ad drafts...</Text>
+            </Box>
+          </BlockStack>
+        </Card>
+      </BlockStack>
+    );
+  }
+
+  if (error) {
+    return (
+      <BlockStack gap="400">
+        <Card>
+          <BlockStack gap="400">
+            <Text variant="headingLg" as="h2">AI Content Studio</Text>
+            <Banner tone="critical" title="Error loading ad drafts">
+              <p>{error}. Please try again later.</p>
+            </Banner>
+          </BlockStack>
+        </Card>
+      </BlockStack>
+    );
+  }
 
   return (
     <BlockStack gap="600">
@@ -197,68 +234,86 @@ export function AIContentStudio({ shopName, hasFeatureAccess = false }: AIConten
             </InlineStack>
           </Card>
 
-          <Grid>
-            {drafts.slice(0, 6).map((draft) => (
-              <Grid.Cell key={draft.id} columnSpan={{ xs: 6, sm: 6, md: 4, lg: 4 }}>
-                <Card>
-                  <BlockStack gap="300">
-                    <InlineStack align="space-between">
-                      <Checkbox
-                        label=""
-                        checked={selectedDrafts.includes(draft.id)}
-                        onChange={(checked) => {
-                          if (checked) {
-                            setSelectedDrafts([...selectedDrafts, draft.id]);
-                          } else {
-                            setSelectedDrafts(selectedDrafts.filter(id => id !== draft.id));
-                          }
-                        }}
-                      />
-                      {draft.performance && getPerformanceBadge(draft.performance.status)}
-                    </InlineStack>
-
-                    <BlockStack gap="200">
-                      <Text variant="headingMd" fontWeight="bold">{draft.theme}</Text>
-                      <Box background="bg-surface-secondary" padding="200" borderRadius="200">
-                        <BlockStack gap="200">
-                          <Text variant="bodySm" fontWeight="semibold">Headlines:</Text>
-                          {draft.headlines.slice(0, 2).map((headline, i) => (
-                            <Text key={i} variant="bodySm">• {headline}</Text>
-                          ))}
-                          {draft.headlines.length > 2 && (
-                            <Text variant="bodySm" tone="subdued">
-                              +{draft.headlines.length - 2} more
-                            </Text>
-                          )}
-                        </BlockStack>
-                      </Box>
-                    </BlockStack>
-
-                    {draft.performance && (
-                      <InlineStack gap="400">
-                        <BlockStack gap="100">
-                          <Text variant="headingSm">{draft.performance.ctr?.toFixed(1)}%</Text>
-                          <Text variant="bodySm" tone="subdued">CTR</Text>
-                        </BlockStack>
-                        <BlockStack gap="100">
-                          <Text variant="headingSm" tone="success">
-                            {draft.performance.conversions}
-                          </Text>
-                          <Text variant="bodySm" tone="subdued">Conversions</Text>
-                        </BlockStack>
+{drafts.length > 0 ? (
+            <Grid>
+              {drafts.slice(0, 6).map((draft) => (
+                <Grid.Cell key={draft.id} columnSpan={{ xs: 6, sm: 6, md: 4, lg: 4 }}>
+                  <Card>
+                    <BlockStack gap="300">
+                      <InlineStack align="space-between">
+                        <Checkbox
+                          label=""
+                          checked={selectedDrafts.includes(draft.id)}
+                          onChange={(checked) => {
+                            if (checked) {
+                              setSelectedDrafts([...selectedDrafts, draft.id]);
+                            } else {
+                              setSelectedDrafts(selectedDrafts.filter(id => id !== draft.id));
+                            }
+                          }}
+                        />
+                        {draft.performance && getPerformanceBadge(draft.performance.status)}
                       </InlineStack>
-                    )}
 
-                    <InlineStack gap="200">
-                      <Button size="slim" variant="plain">Preview</Button>
-                      <Button size="slim" variant="plain">Edit</Button>
-                      <Button size="slim" variant="plain">Duplicate</Button>
-                    </InlineStack>
-                  </BlockStack>
-                </Card>
-              </Grid.Cell>
-            ))}
-          </Grid>
+                      <BlockStack gap="200">
+                        <Text variant="headingMd" fontWeight="bold">{draft.theme}</Text>
+                        <Box background="bg-surface-secondary" padding="200" borderRadius="200">
+                          <BlockStack gap="200">
+                            <Text variant="bodySm" fontWeight="semibold">Headlines:</Text>
+                            {draft.headlines.slice(0, 2).map((headline, i) => (
+                              <Text key={i} variant="bodySm">• {headline}</Text>
+                            ))}
+                            {draft.headlines.length > 2 && (
+                              <Text variant="bodySm" tone="subdued">
+                                +{draft.headlines.length - 2} more
+                              </Text>
+                            )}
+                          </BlockStack>
+                        </Box>
+                      </BlockStack>
+
+                      {draft.performance ? (
+                        <InlineStack gap="400">
+                          <BlockStack gap="100">
+                            <Text variant="headingSm">{draft.performance.ctr?.toFixed(1) || '0.0'}%</Text>
+                            <Text variant="bodySm" tone="subdued">CTR</Text>
+                          </BlockStack>
+                          <BlockStack gap="100">
+                            <Text variant="headingSm" tone="success">
+                              {draft.performance.conversions || 0}
+                            </Text>
+                            <Text variant="bodySm" tone="subdued">Conversions</Text>
+                          </BlockStack>
+                        </InlineStack>
+                      ) : (
+                        <Text variant="bodySm" tone="subdued">
+                          Performance data will appear once ads are deployed and active.
+                        </Text>
+                      )}
+
+                      <InlineStack gap="200">
+                        <Button size="slim" variant="plain">Preview</Button>
+                        <Button size="slim" variant="plain">Edit</Button>
+                        <Button size="slim" variant="plain">Duplicate</Button>
+                      </InlineStack>
+                    </BlockStack>
+                  </Card>
+                </Grid.Cell>
+              ))}
+            </Grid>
+          ) : (
+            <Box padding="600">
+              <BlockStack gap="400" align="center">
+                <Text variant="headingMd" alignment="center">No ad drafts found</Text>
+                <Text variant="bodyMd" alignment="center" tone="subdued">
+                  Create your first AI-generated ad variations to get started.
+                </Text>
+                <Button variant="primary" onClick={() => setGenerationModal(true)}>
+                  Generate First Ads
+                </Button>
+              </BlockStack>
+            </Box>
+          )}
         </BlockStack>
       )}
 

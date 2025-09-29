@@ -13,5 +13,6 @@ export default {
     "**/tests/fixtures/",
     "**/*Test.js",
     "**/*UnitTest.js",
+    "**/embedded-script-v2.js",
   ],
 };

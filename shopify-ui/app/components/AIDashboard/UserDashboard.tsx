@@ -64,17 +64,8 @@ export function UserDashboard({ shopName, hasFeatureAccess = false }: UserDashbo
       }
     } catch (err) {
       console.error("Failed to fetch metrics:", err);
-      // Use demo data as fallback
-      setMetrics({
-        impressions: 125000,
-        clicks: 5250,
-        conversions: 245,
-        spend: 5420,
-        ctr: 4.2,
-        cpc: 1.03,
-        roas: 3.5,
-        cpa: 22.12,
-      });
+      // Set metrics to null to show no data state
+      setMetrics(null);
     }
   }, [shopName]);
 
@@ -95,12 +86,8 @@ export function UserDashboard({ shopName, hasFeatureAccess = false }: UserDashbo
       }
     } catch (err) {
       console.error("Failed to fetch AI status:", err);
-      setAIStatus({
-        status: 'active',
-        optimizationsApplied: 8,
-        improvementRate: 23.5,
-        lastOptimization: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
-      });
+      // Set AI status to null to show no data state
+      setAIStatus(null);
     }
   }, [shopName]);
 
@@ -328,21 +315,11 @@ export function UserDashboard({ shopName, hasFeatureAccess = false }: UserDashbo
           </InlineStack>
 
           <BlockStack gap="200">
-            {[
-              { time: '2 hours ago', action: 'Optimized bidding strategy for "Summer Sale" campaign', impact: '+12% CTR' },
-              { time: '5 hours ago', action: 'Generated 5 new ad variations for A/B testing', impact: 'Testing' },
-              { time: '1 day ago', action: 'Added 8 negative keywords to reduce wasted spend', impact: '-$45/day saved' },
-            ].map((activity, index) => (
-              <Box key={index} padding="300" background="bg-surface-secondary" borderRadius="200">
-                <InlineStack align="space-between">
-                  <BlockStack gap="100">
-                    <Text variant="bodyMd">{activity.action}</Text>
-                    <Text variant="bodySm" tone="subdued">{activity.time}</Text>
-                  </BlockStack>
-                  <Badge tone="success">{activity.impact}</Badge>
-                </InlineStack>
-              </Box>
-            ))}
+            <Box padding="400" background="bg-surface-secondary" borderRadius="200">
+              <Text variant="bodyMd" tone="subdued" alignment="center">
+                Recent AI activity will appear here once campaigns are active.
+              </Text>
+            </Box>
           </BlockStack>
         </BlockStack>
       </Card>

@@ -1,0 +1,2 @@
+# Google Ads Script templates (contain GAQL syntax that ESLint can't parse)
+backend/embedded-script-v2.js

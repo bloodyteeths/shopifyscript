@@ -1476,6 +1476,14 @@ app.post("/api/metrics", async (req, res) => {
     metrics = [],
     search_terms = [],
     run_logs = [],
+    // New comprehensive data types
+    campaign_details = [],
+    device_metrics = [],
+    keyword_performance = [],
+    hourly_patterns = [],
+    geographic_data = [],
+    ad_performance = [],
+    conversion_values = [],
   } = req.body || {};
   const payload = `POST:${tenant}:metrics:${nonce}`;
   if (!tenant || !verify(sig, payload))
@@ -1511,6 +1519,87 @@ app.post("/api/metrics", async (req, res) => {
     ];
     const LOG_HEADERS = ["timestamp", "message"];
 
+    // New comprehensive data type headers
+    const CAMPAIGN_DETAILS_HEADERS = [
+      "date", "campaign_id", "campaign_name", "budget", "status",
+      "bidding_strategy", "target_cpa", "target_roas", "budget_type"
+    ];
+    const DEVICE_METRICS_HEADERS = [
+      "date", "campaign_name", "device", "clicks", "cost",
+      "conversions", "impressions", "ctr", "avg_cpc"
+    ];
+    const KEYWORD_PERFORMANCE_HEADERS = [
+      "date", "campaign_name", "ad_group_name", "keyword", "match_type",
+      "clicks", "cost", "conversions", "impressions", "ctr",
+      "quality_score", "first_page_cpc", "top_of_page_cpc"
+    ];
+    const HOURLY_PATTERNS_HEADERS = [
+      "date", "hour", "campaign_name", "clicks", "cost",
+      "conversions", "impressions", "ctr"
+    ];
+    const GEOGRAPHIC_DATA_HEADERS = [
+      "date", "campaign_name", "location", "location_type", "clicks",
+      "cost", "conversions", "impressions", "ctr"
+    ];
+    const AD_PERFORMANCE_HEADERS = [
+      "date", "campaign_name", "ad_group_name", "ad_id", "ad_type",
+      "headline", "description", "clicks", "cost", "conversions",
+      "impressions", "ctr"
+    ];
+    const CONVERSION_VALUES_HEADERS = [
+      "date", "campaign_name", "conversion_action", "conversions",
+      "conversion_value", "cost_per_conversion", "value_per_conversion"
+    ];
+
+    // Validation helper functions
+    const validateDataType = (data, expectedHeaders, dataTypeName) => {
+      if (!Array.isArray(data)) {
+        console.warn(`${dataTypeName}: Expected array, got ${typeof data}`);
+        return false;
+      }
+
+      if (data.length > 1000) {
+        console.warn(`${dataTypeName}: Too many rows (${data.length}), maximum 1000 per data type`);
+        return false;
+      }
+
+      for (let i = 0; i < data.length; i++) {
+        const row = data[i];
+        if (!Array.isArray(row)) {
+          console.warn(`${dataTypeName}: Row ${i} is not an array`);
+          continue;
+        }
+        if (row.length === 0) {
+          console.warn(`${dataTypeName}: Row ${i} is empty`);
+          continue;
+        }
+        if (row.length > expectedHeaders.length) {
+          console.warn(`${dataTypeName}: Row ${i} has ${row.length} fields, expected max ${expectedHeaders.length}`);
+        }
+      }
+      return true;
+    };
+
+    // Validate all incoming data types
+    const dataTypes = [
+      { data: metrics, headers: MET_HEADERS, name: "metrics" },
+      { data: search_terms, headers: ST_HEADERS, name: "search_terms" },
+      { data: run_logs, headers: LOG_HEADERS, name: "run_logs" },
+      { data: campaign_details, headers: CAMPAIGN_DETAILS_HEADERS, name: "campaign_details" },
+      { data: device_metrics, headers: DEVICE_METRICS_HEADERS, name: "device_metrics" },
+      { data: keyword_performance, headers: KEYWORD_PERFORMANCE_HEADERS, name: "keyword_performance" },
+      { data: hourly_patterns, headers: HOURLY_PATTERNS_HEADERS, name: "hourly_patterns" },
+      { data: geographic_data, headers: GEOGRAPHIC_DATA_HEADERS, name: "geographic_data" },
+      { data: ad_performance, headers: AD_PERFORMANCE_HEADERS, name: "ad_performance" },
+      { data: conversion_values, headers: CONVERSION_VALUES_HEADERS, name: "conversion_values" }
+    ];
+
+    dataTypes.forEach(({ data, headers, name }) => {
+      if (data && data.length > 0) {
+        validateDataType(data, headers, name);
+      }
+    });
+
     // Coerce numeric fields
     const mRows = (Array.isArray(metrics) ? metrics : [])
       .map((r) => {
@@ -1538,7 +1627,111 @@ app.post("/api/metrics", async (req, res) => {
       .map((r) => (Array.isArray(r) ? r.slice(0, LOG_HEADERS.length) : null))
       .filter(Boolean);
 
-    const totalRows = mRows.length + stRows.length + logRows.length;
+    // Process new comprehensive data types
+    const campaignDetailsRows = (Array.isArray(campaign_details) ? campaign_details : [])
+      .map((r) => {
+        const a = Array.isArray(r) ? r.slice(0, CAMPAIGN_DETAILS_HEADERS.length) : [];
+        if (!a.length) return null;
+        // Coerce numeric fields: budget, target_cpa, target_roas
+        a[3] = Number(a[3] || 0); // budget
+        a[6] = Number(a[6] || 0); // target_cpa
+        a[7] = Number(a[7] || 0); // target_roas
+        return a;
+      })
+      .filter(Boolean);
+
+    const deviceMetricsRows = (Array.isArray(device_metrics) ? device_metrics : [])
+      .map((r) => {
+        const a = Array.isArray(r) ? r.slice(0, DEVICE_METRICS_HEADERS.length) : [];
+        if (!a.length) return null;
+        // Coerce numeric fields: clicks, cost, conversions, impressions, ctr, avg_cpc
+        a[3] = Number(a[3] || 0); // clicks
+        a[4] = Number(a[4] || 0); // cost
+        a[5] = Number(a[5] || 0); // conversions
+        a[6] = Number(a[6] || 0); // impressions
+        a[7] = Number(a[7] || 0); // ctr
+        a[8] = Number(a[8] || 0); // avg_cpc
+        return a;
+      })
+      .filter(Boolean);
+
+    const keywordPerformanceRows = (Array.isArray(keyword_performance) ? keyword_performance : [])
+      .map((r) => {
+        const a = Array.isArray(r) ? r.slice(0, KEYWORD_PERFORMANCE_HEADERS.length) : [];
+        if (!a.length) return null;
+        // Coerce numeric fields: clicks, cost, conversions, impressions, ctr, quality_score, first_page_cpc, top_of_page_cpc
+        a[5] = Number(a[5] || 0); // clicks
+        a[6] = Number(a[6] || 0); // cost
+        a[7] = Number(a[7] || 0); // conversions
+        a[8] = Number(a[8] || 0); // impressions
+        a[9] = Number(a[9] || 0); // ctr
+        a[10] = Number(a[10] || 0); // quality_score
+        a[11] = Number(a[11] || 0); // first_page_cpc
+        a[12] = Number(a[12] || 0); // top_of_page_cpc
+        return a;
+      })
+      .filter(Boolean);
+
+    const hourlyPatternsRows = (Array.isArray(hourly_patterns) ? hourly_patterns : [])
+      .map((r) => {
+        const a = Array.isArray(r) ? r.slice(0, HOURLY_PATTERNS_HEADERS.length) : [];
+        if (!a.length) return null;
+        // Coerce numeric fields: hour, clicks, cost, conversions, impressions, ctr
+        a[1] = Number(a[1] || 0); // hour
+        a[3] = Number(a[3] || 0); // clicks
+        a[4] = Number(a[4] || 0); // cost
+        a[5] = Number(a[5] || 0); // conversions
+        a[6] = Number(a[6] || 0); // impressions
+        a[7] = Number(a[7] || 0); // ctr
+        return a;
+      })
+      .filter(Boolean);
+
+    const geographicDataRows = (Array.isArray(geographic_data) ? geographic_data : [])
+      .map((r) => {
+        const a = Array.isArray(r) ? r.slice(0, GEOGRAPHIC_DATA_HEADERS.length) : [];
+        if (!a.length) return null;
+        // Coerce numeric fields: clicks, cost, conversions, impressions, ctr
+        a[4] = Number(a[4] || 0); // clicks
+        a[5] = Number(a[5] || 0); // cost
+        a[6] = Number(a[6] || 0); // conversions
+        a[7] = Number(a[7] || 0); // impressions
+        a[8] = Number(a[8] || 0); // ctr
+        return a;
+      })
+      .filter(Boolean);
+
+    const adPerformanceRows = (Array.isArray(ad_performance) ? ad_performance : [])
+      .map((r) => {
+        const a = Array.isArray(r) ? r.slice(0, AD_PERFORMANCE_HEADERS.length) : [];
+        if (!a.length) return null;
+        // Coerce numeric fields: clicks, cost, conversions, impressions, ctr
+        a[7] = Number(a[7] || 0); // clicks
+        a[8] = Number(a[8] || 0); // cost
+        a[9] = Number(a[9] || 0); // conversions
+        a[10] = Number(a[10] || 0); // impressions
+        a[11] = Number(a[11] || 0); // ctr
+        return a;
+      })
+      .filter(Boolean);
+
+    const conversionValuesRows = (Array.isArray(conversion_values) ? conversion_values : [])
+      .map((r) => {
+        const a = Array.isArray(r) ? r.slice(0, CONVERSION_VALUES_HEADERS.length) : [];
+        if (!a.length) return null;
+        // Coerce numeric fields: conversions, conversion_value, cost_per_conversion, value_per_conversion
+        a[3] = Number(a[3] || 0); // conversions
+        a[4] = Number(a[4] || 0); // conversion_value
+        a[5] = Number(a[5] || 0); // cost_per_conversion
+        a[6] = Number(a[6] || 0); // value_per_conversion
+        return a;
+      })
+      .filter(Boolean);
+
+    const totalRows = mRows.length + stRows.length + logRows.length +
+      campaignDetailsRows.length + deviceMetricsRows.length + keywordPerformanceRows.length +
+      hourlyPatternsRows.length + geographicDataRows.length + adPerformanceRows.length +
+      conversionValuesRows.length;
     if (totalRows > 5000)
       return json(res, 413, {
         ok: false,
@@ -1548,7 +1741,14 @@ app.post("/api/metrics", async (req, res) => {
       });
     let insM = 0,
       insS = 0,
-      insL = 0;
+      insL = 0,
+      insCD = 0,
+      insDM = 0,
+      insKP = 0,
+      insHP = 0,
+      insGD = 0,
+      insAP = 0,
+      insCV = 0;
 
     // Try to write to Supabase first if enabled
     const { supabase, isSupabaseEnabled } = await import('./services/supabase-client.js');
@@ -1679,6 +1879,220 @@ app.post("/api/metrics", async (req, res) => {
             console.log(`✅ Inserted ${searchTerms.length} search terms to Supabase`);
           }
         }
+
+        // Write campaign details to Supabase
+        if (campaignDetailsRows.length) {
+          const campaignDetails = campaignDetailsRows.map(row => ({
+            tenant_id: String(tenant),
+            date: new Date(row[0]).toISOString(),
+            campaign_id: String(row[1]),
+            campaign_name: String(row[2]),
+            budget: parseFloat(row[3]) || 0,
+            status: String(row[4]),
+            bidding_strategy: String(row[5]),
+            target_cpa: parseFloat(row[6]) || 0,
+            target_roas: parseFloat(row[7]) || 0,
+            budget_type: String(row[8]),
+            created_at: new Date().toISOString()
+          }));
+
+          const { error: campaignDetailsError } = await supabase
+            .from('campaign_details')
+            .upsert(campaignDetails, {
+              onConflict: 'tenant_id,campaign_id,date',
+              ignoreDuplicates: false
+            });
+
+          if (campaignDetailsError) {
+            console.error('Failed to insert campaign details to Supabase:', campaignDetailsError);
+          } else {
+            console.log(`✅ Inserted ${campaignDetails.length} campaign details to Supabase`);
+          }
+        }
+
+        // Write device metrics to Supabase
+        if (deviceMetricsRows.length) {
+          const deviceMetrics = deviceMetricsRows.map(row => ({
+            tenant_id: String(tenant),
+            date: new Date(row[0]).toISOString(),
+            campaign_name: String(row[1]),
+            device: String(row[2]),
+            clicks: parseInt(row[3]) || 0,
+            cost: parseFloat(row[4]) || 0,
+            conversions: parseFloat(row[5]) || 0,
+            impressions: parseInt(row[6]) || 0,
+            ctr: parseFloat(row[7]) || 0,
+            avg_cpc: parseFloat(row[8]) || 0,
+            created_at: new Date().toISOString()
+          }));
+
+          const { error: deviceMetricsError } = await supabase
+            .from('device_metrics')
+            .upsert(deviceMetrics, {
+              onConflict: 'tenant_id,campaign_name,device,date',
+              ignoreDuplicates: false
+            });
+
+          if (deviceMetricsError) {
+            console.error('Failed to insert device metrics to Supabase:', deviceMetricsError);
+          } else {
+            console.log(`✅ Inserted ${deviceMetrics.length} device metrics to Supabase`);
+          }
+        }
+
+        // Write keyword performance to Supabase
+        if (keywordPerformanceRows.length) {
+          const keywordPerformance = keywordPerformanceRows.map(row => ({
+            tenant_id: String(tenant),
+            date: new Date(row[0]).toISOString(),
+            campaign_name: String(row[1]),
+            ad_group_name: String(row[2]),
+            keyword: String(row[3]),
+            match_type: String(row[4]),
+            clicks: parseInt(row[5]) || 0,
+            cost: parseFloat(row[6]) || 0,
+            conversions: parseFloat(row[7]) || 0,
+            impressions: parseInt(row[8]) || 0,
+            ctr: parseFloat(row[9]) || 0,
+            quality_score: parseInt(row[10]) || 0,
+            first_page_cpc: parseFloat(row[11]) || 0,
+            top_of_page_cpc: parseFloat(row[12]) || 0,
+            created_at: new Date().toISOString()
+          }));
+
+          const { error: keywordPerformanceError } = await supabase
+            .from('keyword_performance')
+            .upsert(keywordPerformance, {
+              onConflict: 'tenant_id,campaign_name,ad_group_name,keyword,match_type,date',
+              ignoreDuplicates: false
+            });
+
+          if (keywordPerformanceError) {
+            console.error('Failed to insert keyword performance to Supabase:', keywordPerformanceError);
+          } else {
+            console.log(`✅ Inserted ${keywordPerformance.length} keyword performance records to Supabase`);
+          }
+        }
+
+        // Write hourly patterns to Supabase
+        if (hourlyPatternsRows.length) {
+          const hourlyPatterns = hourlyPatternsRows.map(row => ({
+            tenant_id: String(tenant),
+            date: new Date(row[0]).toISOString(),
+            hour: parseInt(row[1]) || 0,
+            campaign_name: String(row[2]),
+            clicks: parseInt(row[3]) || 0,
+            cost: parseFloat(row[4]) || 0,
+            conversions: parseFloat(row[5]) || 0,
+            impressions: parseInt(row[6]) || 0,
+            ctr: parseFloat(row[7]) || 0,
+            created_at: new Date().toISOString()
+          }));
+
+          const { error: hourlyPatternsError } = await supabase
+            .from('hourly_patterns')
+            .upsert(hourlyPatterns, {
+              onConflict: 'tenant_id,campaign_name,date,hour',
+              ignoreDuplicates: false
+            });
+
+          if (hourlyPatternsError) {
+            console.error('Failed to insert hourly patterns to Supabase:', hourlyPatternsError);
+          } else {
+            console.log(`✅ Inserted ${hourlyPatterns.length} hourly patterns to Supabase`);
+          }
+        }
+
+        // Write geographic data to Supabase
+        if (geographicDataRows.length) {
+          const geographicData = geographicDataRows.map(row => ({
+            tenant_id: String(tenant),
+            date: new Date(row[0]).toISOString(),
+            campaign_name: String(row[1]),
+            location: String(row[2]),
+            location_type: String(row[3]),
+            clicks: parseInt(row[4]) || 0,
+            cost: parseFloat(row[5]) || 0,
+            conversions: parseFloat(row[6]) || 0,
+            impressions: parseInt(row[7]) || 0,
+            ctr: parseFloat(row[8]) || 0,
+            created_at: new Date().toISOString()
+          }));
+
+          const { error: geographicDataError } = await supabase
+            .from('geographic_data')
+            .upsert(geographicData, {
+              onConflict: 'tenant_id,campaign_name,location,date',
+              ignoreDuplicates: false
+            });
+
+          if (geographicDataError) {
+            console.error('Failed to insert geographic data to Supabase:', geographicDataError);
+          } else {
+            console.log(`✅ Inserted ${geographicData.length} geographic data records to Supabase`);
+          }
+        }
+
+        // Write ad performance to Supabase
+        if (adPerformanceRows.length) {
+          const adPerformance = adPerformanceRows.map(row => ({
+            tenant_id: String(tenant),
+            date: new Date(row[0]).toISOString(),
+            campaign_name: String(row[1]),
+            ad_group_name: String(row[2]),
+            ad_id: String(row[3]),
+            ad_type: String(row[4]),
+            headline: String(row[5]),
+            description: String(row[6]),
+            clicks: parseInt(row[7]) || 0,
+            cost: parseFloat(row[8]) || 0,
+            conversions: parseFloat(row[9]) || 0,
+            impressions: parseInt(row[10]) || 0,
+            ctr: parseFloat(row[11]) || 0,
+            created_at: new Date().toISOString()
+          }));
+
+          const { error: adPerformanceError } = await supabase
+            .from('ad_performance')
+            .upsert(adPerformance, {
+              onConflict: 'tenant_id,ad_id,date',
+              ignoreDuplicates: false
+            });
+
+          if (adPerformanceError) {
+            console.error('Failed to insert ad performance to Supabase:', adPerformanceError);
+          } else {
+            console.log(`✅ Inserted ${adPerformance.length} ad performance records to Supabase`);
+          }
+        }
+
+        // Write conversion values to Supabase
+        if (conversionValuesRows.length) {
+          const conversionValues = conversionValuesRows.map(row => ({
+            tenant_id: String(tenant),
+            date: new Date(row[0]).toISOString(),
+            campaign_name: String(row[1]),
+            conversion_action: String(row[2]),
+            conversions: parseFloat(row[3]) || 0,
+            conversion_value: parseFloat(row[4]) || 0,
+            cost_per_conversion: parseFloat(row[5]) || 0,
+            value_per_conversion: parseFloat(row[6]) || 0,
+            created_at: new Date().toISOString()
+          }));
+
+          const { error: conversionValuesError } = await supabase
+            .from('conversion_values')
+            .upsert(conversionValues, {
+              onConflict: 'tenant_id,campaign_name,conversion_action,date',
+              ignoreDuplicates: false
+            });
+
+          if (conversionValuesError) {
+            console.error('Failed to insert conversion values to Supabase:', conversionValuesError);
+          } else {
+            console.log(`✅ Inserted ${conversionValues.length} conversion values to Supabase`);
+          }
+        }
       } catch (supabaseError) {
         console.error('Supabase write error (will fallback to Sheets):', supabaseError);
       }
@@ -1697,9 +2111,50 @@ app.post("/api/metrics", async (req, res) => {
       await appendRows(String(tenant), "RUN_LOGS", LOG_HEADERS, logRows);
       insL = logRows.length;
     }
+
+    // Write new comprehensive data types to Google Sheets as backup
+    if (campaignDetailsRows.length) {
+      await appendRows(String(tenant), "CAMPAIGN_DETAILS", CAMPAIGN_DETAILS_HEADERS, campaignDetailsRows);
+      insCD = campaignDetailsRows.length;
+    }
+    if (deviceMetricsRows.length) {
+      await appendRows(String(tenant), "DEVICE_METRICS", DEVICE_METRICS_HEADERS, deviceMetricsRows);
+      insDM = deviceMetricsRows.length;
+    }
+    if (keywordPerformanceRows.length) {
+      await appendRows(String(tenant), "KEYWORD_PERFORMANCE", KEYWORD_PERFORMANCE_HEADERS, keywordPerformanceRows);
+      insKP = keywordPerformanceRows.length;
+    }
+    if (hourlyPatternsRows.length) {
+      await appendRows(String(tenant), "HOURLY_PATTERNS", HOURLY_PATTERNS_HEADERS, hourlyPatternsRows);
+      insHP = hourlyPatternsRows.length;
+    }
+    if (geographicDataRows.length) {
+      await appendRows(String(tenant), "GEOGRAPHIC_DATA", GEOGRAPHIC_DATA_HEADERS, geographicDataRows);
+      insGD = geographicDataRows.length;
+    }
+    if (adPerformanceRows.length) {
+      await appendRows(String(tenant), "AD_PERFORMANCE", AD_PERFORMANCE_HEADERS, adPerformanceRows);
+      insAP = adPerformanceRows.length;
+    }
+    if (conversionValuesRows.length) {
+      await appendRows(String(tenant), "CONVERSION_VALUES", CONVERSION_VALUES_HEADERS, conversionValuesRows);
+      insCV = conversionValuesRows.length;
+    }
     return json(res, 200, {
       ok: true,
-      inserted: { metrics: insM, search_terms: insS, run_logs: insL },
+      inserted: {
+        metrics: insM,
+        search_terms: insS,
+        run_logs: insL,
+        campaign_details: insCD,
+        device_metrics: insDM,
+        keyword_performance: insKP,
+        hourly_patterns: insHP,
+        geographic_data: insGD,
+        ad_performance: insAP,
+        conversion_values: insCV
+      },
     });
   } catch (e) {
     return json(res, 500, { ok: false, code: "METRICS", error: String(e) });

@@ -45,90 +45,39 @@ export function CampaignManager({ shopName, hasFeatureAccess = false }: Campaign
   const [selectedCampaigns, setSelectedCampaigns] = useState<string[]>([]);
   const [sortValue, setSortValue] = useState('performance');
   const [filterStatus, setFilterStatus] = useState('all');
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [bulkActionsActive, setBulkActionsActive] = useState(false);
 
-  // Mock data for campaigns
+  // Fetch campaigns from API
   useEffect(() => {
-    const mockCampaigns: Campaign[] = [
-      {
-        id: '1',
-        name: 'Summer Sale 2025',
-        status: 'active',
-        budget: 500,
-        spent: 325.50,
-        impressions: 45230,
-        clicks: 1856,
-        conversions: 92,
-        ctr: 4.1,
-        cpc: 0.18,
-        roas: 5.2,
-        aiOptimized: true,
-        lastOptimized: new Date(Date.now() - 2 * 60 * 60 * 1000).toISOString(),
-      },
-      {
-        id: '2',
-        name: 'Brand Awareness',
-        status: 'active',
-        budget: 1000,
-        spent: 752.00,
-        impressions: 125600,
-        clicks: 3890,
-        conversions: 45,
-        ctr: 3.1,
-        cpc: 0.19,
-        roas: 2.8,
-        aiOptimized: true,
-        lastOptimized: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
-      },
-      {
-        id: '3',
-        name: 'Product Launch - Pro Series',
-        status: 'paused',
-        budget: 750,
-        spent: 0,
-        impressions: 0,
-        clicks: 0,
-        conversions: 0,
-        ctr: 0,
-        cpc: 0,
-        roas: 0,
-        aiOptimized: false,
-        lastOptimized: '',
-      },
-      {
-        id: '4',
-        name: 'Retargeting - Cart Abandoners',
-        status: 'active',
-        budget: 300,
-        spent: 189.75,
-        impressions: 28900,
-        clicks: 1450,
-        conversions: 78,
-        ctr: 5.0,
-        cpc: 0.13,
-        roas: 8.5,
-        aiOptimized: true,
-        lastOptimized: new Date(Date.now() - 1 * 60 * 60 * 1000).toISOString(),
-      },
-      {
-        id: '5',
-        name: 'Holiday Special Offers',
-        status: 'pending',
-        budget: 2000,
-        spent: 0,
-        impressions: 0,
-        clicks: 0,
-        conversions: 0,
-        ctr: 0,
-        cpc: 0,
-        roas: 0,
-        aiOptimized: false,
-        lastOptimized: '',
-      },
-    ];
-    setCampaigns(mockCampaigns);
-  }, []);
+    const fetchCampaigns = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const response = await authenticatedFetch("/ai/campaigns", "GET", undefined, shopName);
+        if (response.ok) {
+          const data = await response.json();
+          if (data.ok && data.campaigns) {
+            setCampaigns(data.campaigns);
+          } else {
+            setCampaigns([]);
+          }
+        } else {
+          setError("Failed to load campaigns");
+          setCampaigns([]);
+        }
+      } catch (err) {
+        console.error("Failed to fetch campaigns:", err);
+        setError("Failed to load campaigns");
+        setCampaigns([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCampaigns();
+  }, [shopName]);
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-US', {
@@ -247,6 +196,70 @@ export function CampaignManager({ shopName, hasFeatureAccess = false }: Campaign
       Actions
     </Button>
   ]);
+
+  if (loading) {
+    return (
+      <BlockStack gap="400">
+        <Card>
+          <BlockStack gap="400">
+            <Text variant="headingLg" as="h2">Campaign Manager</Text>
+            <Box padding="600">
+              <Text variant="bodyMd" alignment="center">Loading campaigns...</Text>
+            </Box>
+          </BlockStack>
+        </Card>
+      </BlockStack>
+    );
+  }
+
+  if (error) {
+    return (
+      <BlockStack gap="400">
+        <Card>
+          <BlockStack gap="400">
+            <Text variant="headingLg" as="h2">Campaign Manager</Text>
+            <Banner tone="critical" title="Error loading campaigns">
+              <p>{error}. Please try again later.</p>
+            </Banner>
+          </BlockStack>
+        </Card>
+      </BlockStack>
+    );
+  }
+
+  if (campaigns.length === 0) {
+    return (
+      <BlockStack gap="400">
+        <Card>
+          <BlockStack gap="400">
+            <InlineStack align="space-between">
+              <Text variant="headingLg" as="h2">Campaign Manager</Text>
+              <InlineStack gap="200">
+                <Button variant="primary">
+                  Create New Campaign
+                </Button>
+                <Button>
+                  Import from Google Ads
+                </Button>
+              </InlineStack>
+            </InlineStack>
+            <Box padding="600">
+              <BlockStack gap="400" align="center">
+                <Text variant="headingMd" alignment="center">No campaigns found</Text>
+                <Text variant="bodyMd" alignment="center" tone="subdued">
+                  Get started by creating your first AI-powered campaign or importing existing campaigns from Google Ads.
+                </Text>
+                <InlineStack gap="200">
+                  <Button variant="primary">Create First Campaign</Button>
+                  <Button>Import from Google Ads</Button>
+                </InlineStack>
+              </BlockStack>
+            </Box>
+          </BlockStack>
+        </Card>
+      </BlockStack>
+    );
+  }
 
   return (
     <BlockStack gap="400">
