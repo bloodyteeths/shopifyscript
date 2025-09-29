@@ -4764,9 +4764,10 @@ import MASTER_SCRIPT_CONTENT from "./embedded-script-v2.js";
 // Force rebuild: 2025-09-25 - Fixed dollar sign issue in embedded script
 app.get("/api/ads-script/raw", async (req, res) => {
   console.log("🚀 /api/ads-script/raw endpoint hit", req.query);
-  const { tenant, sig } = req.query;
+  const { tenant, sig, budget, cpc, landing_url } = req.query;
   const payload = `GET:${tenant}:script_raw`;
   console.log("🔐 HMAC verification:", { tenant, sig, payload });
+  console.log("📋 User parameters:", { budget, cpc, landing_url });
 
   if (!tenant || !verify(sig, payload)) {
     console.log("🔐 Auth failed - returning 403");
@@ -4796,13 +4797,25 @@ app.get("/api/ads-script/raw", async (req, res) => {
       ? normalizedHost
       : `${normalizedHost}/api`;
 
-    // Get user settings to inject directly into script
-    const userSettings = await getUserSettings(tenantId);
-    console.log(`📊 Raw user settings for ${tenantId}:`, userSettings);
+    // Get user settings - prefer query params over database
+    let userSettings = null;
+    let userBudget, userCpc, userUrl;
 
-    const userBudget = userSettings?.budget || "20.00";
-    const userCpc = userSettings?.cpc || "0.50";
-    const userUrl = userSettings?.landing_url || "";
+    // If parameters are provided in the query, use them directly
+    if (budget || cpc || landing_url) {
+      console.log(`📲 Using parameters from query for ${tenantId}`);
+      userBudget = budget || "20.00";
+      userCpc = cpc || "0.50";
+      userUrl = landing_url || "";
+    } else {
+      // Fall back to database settings
+      userSettings = await getUserSettings(tenantId);
+      console.log(`📊 Raw user settings from DB for ${tenantId}:`, userSettings);
+      userBudget = userSettings?.budget || "20.00";
+      userCpc = userSettings?.cpc || "0.50";
+      userUrl = userSettings?.landing_url || "";
+    }
+
     const userLabel = `${tenantId} • Managed`;
 
     console.log(`🎯 Injecting user values into script for ${tenantId}:`, {
@@ -4840,9 +4853,10 @@ app.get("/api/ads-script/raw", async (req, res) => {
 // ----- NEW V2 Script endpoint to bypass CDN cache -----
 app.get("/api/ads-script/v2", async (req, res) => {
   console.log("🚀 /api/ads-script/v2 endpoint hit", req.query);
-  const { tenant, sig } = req.query;
+  const { tenant, sig, budget, cpc, landing_url } = req.query;
   const payload = `GET:${tenant}:script_raw`;
   console.log("🔐 HMAC verification:", { tenant, sig, payload });
+  console.log("📋 User parameters:", { budget, cpc, landing_url });
   if (!tenant || !verify(sig, payload)) {
     console.log("🔐 Auth failed - returning 403");
     return res.status(403).json({ ok: false, error: "auth" });
@@ -4869,11 +4883,25 @@ app.get("/api/ads-script/v2", async (req, res) => {
       ? normalizedHost
       : `${normalizedHost}/api`;
 
-    // Get user settings to inject directly into script
-    const userSettings = await getUserSettings(tenantId);
-    const userBudget = userSettings?.budget || "20.00";
-    const userCpc = userSettings?.cpc || "0.50";
-    const userUrl = userSettings?.landing_url || "";
+    // Get user settings - prefer query params over database
+    let userSettings = null;
+    let userBudget, userCpc, userUrl;
+
+    // If parameters are provided in the query, use them directly
+    if (budget || cpc || landing_url) {
+      console.log(`📲 Using parameters from query for ${tenantId}`);
+      userBudget = budget || "20.00";
+      userCpc = cpc || "0.50";
+      userUrl = landing_url || "";
+    } else {
+      // Fall back to database settings
+      userSettings = await getUserSettings(tenantId);
+      console.log(`📊 Raw user settings from DB for ${tenantId}:`, userSettings);
+      userBudget = userSettings?.budget || "20.00";
+      userCpc = userSettings?.cpc || "0.50";
+      userUrl = userSettings?.landing_url || "";
+    }
+
     const userLabel = `${tenantId} • Managed`;
 
     console.log(`🎯 Injecting user values into v2 script for ${tenantId}:`, {
