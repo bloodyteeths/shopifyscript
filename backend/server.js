@@ -506,11 +506,17 @@ async function getUserSettings(tenant) {
     const cacheKey = `user_settings:${tenant}`;
     const cached = await getJson(cacheKey);
     if (cached) {
+      console.log(`🔥 Using cached settings for ${tenant}:`, cached);
       return cached;
     }
 
     // Get all configs from data-store (Supabase-first, Sheets-fallback)
     const allConfigs = await dataStore.getAllTenantConfigs(tenant);
+    console.log(`🔍 Raw configs from data-store for ${tenant}:`, {
+      USER_LANDING_URL: allConfigs.USER_LANDING_URL,
+      default_final_url: allConfigs.default_final_url,
+      configKeys: Object.keys(allConfigs)
+    });
     const settings = {};
 
     if (allConfigs.USER_BUDGET_CAP) settings.budget = allConfigs.USER_BUDGET_CAP;
@@ -4786,6 +4792,8 @@ app.get("/api/ads-script/raw", async (req, res) => {
 
     // Get user settings to inject directly into script
     const userSettings = await getUserSettings(tenantId);
+    console.log(`📊 Raw user settings for ${tenantId}:`, userSettings);
+
     const userBudget = userSettings?.budget || "20.00";
     const userCpc = userSettings?.cpc || "0.50";
     const userUrl = userSettings?.landing_url || "";
@@ -4795,7 +4803,9 @@ app.get("/api/ads-script/raw", async (req, res) => {
       budget: userBudget,
       cpc: userCpc,
       url: userUrl,
-      label: userLabel
+      label: userLabel,
+      hadLandingUrl: !!userSettings?.landing_url,
+      rawLandingUrl: userSettings?.landing_url
     });
 
     const out = scriptBody
