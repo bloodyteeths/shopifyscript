@@ -1222,6 +1222,7 @@ function collectGeographicData_() {
       SELECT
         campaign.name,
         campaign.id,
+        campaign.advertising_channel_type,
         geographic_view.country_criterion_id,
         geographic_view.location_type,
         metrics.impressions,
@@ -1443,21 +1444,18 @@ function collectConversionValue_() {
   log_("Collecting conversion value data...");
 
   try {
-    // Use GAQL for conversion value data - using ad_group view for both campaign and ad group data
+    // Use GAQL for conversion value data - simplified without conversion segments due to cost metric conflict
     var query = \`
       SELECT
         campaign.name,
         campaign.id,
         ad_group.name,
         ad_group.id,
-        segments.conversion_action_name,
-        segments.conversion_action_category,
         metrics.conversions,
         metrics.conversions_value,
         metrics.cost_micros,
         metrics.view_through_conversions,
-        metrics.value_per_conversion,
-        metrics.cost_per_conversion
+        metrics.value_per_conversion
       FROM ad_group
       WHERE campaign.advertising_channel_type = 'SEARCH'
       AND segments.date DURING LAST_30_DAYS
@@ -1472,8 +1470,9 @@ function collectConversionValue_() {
         row.metrics.costMicros / 1000000 : 0;
       var valuePerConversion = row.metrics && row.metrics.valuePerConversion ?
         row.metrics.valuePerConversion : 0;
-      var costPerConversion = row.metrics && row.metrics.costPerConversion ?
-        row.metrics.costPerConversion / 1000000 : 0;
+
+      // Calculate cost per conversion manually
+      var costPerConversion = row.metrics.conversions > 0 ? cost / row.metrics.conversions : 0;
 
       // Calculate ROAS
       var roas = cost > 0 && row.metrics.conversionsValue > 0 ?
@@ -1486,8 +1485,8 @@ function collectConversionValue_() {
         row.campaign.id,
         row.adGroup ? row.adGroup.name : '',
         row.adGroup ? row.adGroup.id : '',
-        row.segments.conversionActionName || '',
-        row.segments.conversionActionCategory || '',
+        '', // No conversion action name available with cost metrics
+        '', // No conversion action category available with cost metrics
         row.metrics.conversions || 0,
         row.metrics.conversionsValue || 0,
         cost,
