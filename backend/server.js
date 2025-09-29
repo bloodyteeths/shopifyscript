@@ -4787,6 +4787,7 @@ app.get("/api/ads-script/raw", async (req, res) => {
     });
 
     const out = scriptBody
+      .replace(/\\\`/g, '`')  // Remove backslash escapes from template literals
       .replace(/__BACKEND_URL__/g, backendBase)
       .replace(/__TENANT_ID__/g, tenantId)
       .replace(/__HMAC_SECRET__/g, process.env.HMAC_SECRET || "")
