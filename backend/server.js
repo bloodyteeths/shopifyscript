@@ -5609,15 +5609,22 @@ app.listen(PORT, async () => {
     }
   }
 
+  // Initialize tenant registry (needed for all multi-tenant operations)
+  try {
+    await tenantRegistry.initialize();
+    logger.info("Tenant registry initialized", {
+      tenants: tenantRegistry.getStats()
+    });
+  } catch (error) {
+    logger.error("Failed to initialize tenant registry:", {
+      error: error.message,
+      stack: error.stack
+    });
+  }
+
   // Initialize and start AI automation service
   if (process.env.ENABLE_AI_AUTOMATION !== 'false') {
     try {
-      // Initialize tenant registry first
-      await tenantRegistry.initialize();
-      logger.info("Tenant registry initialized", {
-        tenants: tenantRegistry.getStats()
-      });
-
       // Start AI automation service
       await startAIAutomation();
       logger.info("AI automation service started", {

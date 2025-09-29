@@ -197,6 +197,17 @@ class TenantRegistry {
   }
 
   /**
+   * Get registry stats for logging
+   */
+  getStats() {
+    return {
+      total: this.registry.size,
+      initialized: this.isInitialized,
+      lastUpdated: this.lastUpdated
+    };
+  }
+
+  /**
    * Get subscription information for a tenant
    */
   getSubscription(tenantId) {
