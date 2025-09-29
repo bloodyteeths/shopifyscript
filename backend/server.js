@@ -1955,29 +1955,44 @@ app.post("/api/metrics", async (req, res) => {
           }
         }
 
-        // Write device metrics to Supabase
+        // Write device metrics to Supabase - deduplicate first
         if (deviceMetricsRows.length) {
-          const deviceMetrics = deviceMetricsRows.map(row => ({
-            tenant_id: String(tenant),
-            date: row[0] ? new Date(row[0]).toISOString().split('T')[0] : new Date().toISOString().split('T')[0],
-            type: String(row[1] || 'device_metrics'),
-            campaign_name: String(row[2]),
-            campaign_id: String(row[3]),
-            device: String(row[6]),
-            impressions: parseInt(row[7]) || 0,
-            clicks: parseInt(row[8]) || 0,
-            cost: parseFloat(row[9]) || 0,
-            conversions: parseFloat(row[10]) || 0,
-            conversion_value: parseFloat(row[11]) || 0,
-            ctr: parseFloat(row[12]) || 0,
-            avg_cpc: parseFloat(row[13]) || 0,
-            created_at: new Date().toISOString()
-          }));
+          // Deduplicate device metrics by unique key
+          const deviceMetricsMap = new Map();
+          deviceMetricsRows.forEach(row => {
+            const dateStr = row[0] ? new Date(row[0]).toISOString().split('T')[0] : new Date().toISOString().split('T')[0];
+            const campaignId = String(row[3]);
+            const device = String(row[6]);
+            const key = `${tenant}_${campaignId}_${device}_${dateStr}`;
+
+            // Only keep the first occurrence or the one with more impressions
+            if (!deviceMetricsMap.has(key) ||
+                (parseInt(row[7]) || 0) > (deviceMetricsMap.get(key).impressions || 0)) {
+              deviceMetricsMap.set(key, {
+                tenant_id: String(tenant),
+                date: dateStr,
+                type: String(row[1] || 'device_metrics'),
+                campaign_name: String(row[2]),
+                campaign_id: campaignId,
+                device: device,
+                impressions: parseInt(row[7]) || 0,
+                clicks: parseInt(row[8]) || 0,
+                cost: parseFloat(row[9]) || 0,
+                conversions: parseFloat(row[10]) || 0,
+                conversion_value: parseFloat(row[11]) || 0,
+                ctr: parseFloat(row[12]) || 0,
+                avg_cpc: parseFloat(row[13]) || 0,
+                created_at: new Date().toISOString()
+              });
+            }
+          });
+
+          const deviceMetrics = Array.from(deviceMetricsMap.values());
 
           const { error: deviceMetricsError } = await supabase
             .from('device_metrics')
             .upsert(deviceMetrics, {
-              onConflict: 'tenant_id,campaign_name,device,date',
+              onConflict: 'tenant_id,campaign_id,device,date',
               ignoreDuplicates: false
             });
 
@@ -2061,24 +2076,39 @@ app.post("/api/metrics", async (req, res) => {
           }
         }
 
-        // Write geographic data to Supabase
+        // Write geographic data to Supabase - deduplicate first
         if (geographicDataRows.length) {
-          const geographicData = geographicDataRows.map(row => ({
-            tenant_id: String(tenant),
-            date: new Date(row[0]).toISOString(),
-            campaign_name: String(row[2]) || null,
-            campaign_id: String(row[3]) || null,
-            location: String(row[4]) || null,
-            location_type: String(row[5]) || null,
-            clicks: parseInt(row[6]) || 0,
-            cost: parseFloat(row[7]) || 0,
-            conversions: parseFloat(row[8]) || 0,
-            impressions: parseInt(row[9]) || 0,
-            ctr: parseFloat(row[10]) || 0,
-            conversion_rate: parseFloat(row[11]) || 0,
-            avg_cpc: parseFloat(row[12]) || 0,
-            created_at: new Date().toISOString()
-          }));
+          // Deduplicate geographic data by unique key
+          const geoDataMap = new Map();
+          geographicDataRows.forEach(row => {
+            const dateStr = new Date(row[0]).toISOString();
+            const campaignId = String(row[3]) || '';
+            const location = String(row[4]) || '';
+            const key = `${tenant}_${campaignId}_${location}_${dateStr}`;
+
+            // Only keep the first occurrence or the one with more impressions
+            if (!geoDataMap.has(key) ||
+                (parseInt(row[9]) || 0) > (geoDataMap.get(key).impressions || 0)) {
+              geoDataMap.set(key, {
+                tenant_id: String(tenant),
+                date: dateStr,
+                campaign_name: String(row[2]) || null,
+                campaign_id: campaignId || null,
+                location: location || null,
+                location_type: String(row[5]) || null,
+                clicks: parseInt(row[6]) || 0,
+                cost: parseFloat(row[7]) || 0,
+                conversions: parseFloat(row[8]) || 0,
+                impressions: parseInt(row[9]) || 0,
+                ctr: parseFloat(row[10]) || 0,
+                conversion_rate: parseFloat(row[11]) || 0,
+                avg_cpc: parseFloat(row[12]) || 0,
+                created_at: new Date().toISOString()
+              });
+            }
+          });
+
+          const geographicData = Array.from(geoDataMap.values());
 
           const { error: geographicDataError } = await supabase
             .from('geographic_data')
