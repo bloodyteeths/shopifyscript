@@ -96,33 +96,63 @@ function main() {
 
   // Business hours schedule
   if (cfg.add_business_hours_if_none) {
+    log_("Checking business hours schedules for " + camps.length + " campaigns");
     camps.forEach(function(c) {
       if (isExcludedCampaign_(cfg, c.getName())) return;
-      var has = c.targeting().adSchedules().get().hasNext();
-      if (!has) {
-        if (!PREVIEW_MODE && cfg.PROMOTE) {
-          addSchedule_(c, cfg.business_days_csv, cfg.business_start, cfg.business_end);
-          log_("Schedule added: " + c.getName());
+      try {
+        var has = c.targeting().adSchedules().get().hasNext();
+        if (!has) {
+          if (!PREVIEW_MODE && cfg.PROMOTE) {
+            addSchedule_(c, cfg.business_days_csv, cfg.business_start, cfg.business_end);
+            log_("Schedule added: " + c.getName());
+          }
         }
+        safeLabel_(c, cfg.label);
+      } catch(e) {
+        log_("Schedule check error for " + c.getName() + ": " + e);
       }
-      safeLabel_(c, cfg.label);
     });
+    log_("Business hours check complete");
   }
 
   // Negative keywords
-  var list = getOrCreateNegList_(cfg.master_neg_list_name);
-  upsertListNegs_(list, cfg.MASTER_NEGATIVES);
-  camps.forEach(function(c) {
-    if (isExcludedCampaign_(cfg, c.getName())) return;
-    attachList_(c, list);
-  });
-  applyWasteNegs_(cfg, cfg.WASTE_NEGATIVE_MAP);
+  log_("Starting negative keywords processing");
+  try {
+    var list = getOrCreateNegList_(cfg.master_neg_list_name);
+    upsertListNegs_(list, cfg.MASTER_NEGATIVES);
+    camps.forEach(function(c) {
+      if (isExcludedCampaign_(cfg, c.getName())) return;
+      attachList_(c, list);
+    });
+    log_("Master negative list applied");
+  } catch(e) {
+    log_("Negative keywords error: " + e);
+  }
+
+  try {
+    applyWasteNegs_(cfg, cfg.WASTE_NEGATIVE_MAP);
+    log_("Waste negatives applied");
+  } catch(e) {
+    log_("Waste negatives error: " + e);
+  }
 
   // N-gram negative keywords (PRO tier feature)
-  applyNgramNegatives_(cfg);
+  log_("Starting N-gram negatives");
+  try {
+    applyNgramNegatives_(cfg);
+  } catch(e) {
+    log_("N-gram negatives error: " + e);
+  }
 
   // Search terms analysis
-  var stRows = autoNegateAndCollectST_(cfg, cfg.st_lookback, cfg.st_min_clicks, cfg.st_min_cost);
+  log_("Starting search terms analysis");
+  var stRows = [];
+  try {
+    stRows = autoNegateAndCollectST_(cfg, cfg.st_lookback, cfg.st_min_clicks, cfg.st_min_cost);
+    log_("Search terms collected: " + stRows.length);
+  } catch(e) {
+    log_("Search terms error: " + e);
+  }
 
   // RSA creation
   buildSafeRSAs_(cfg);
