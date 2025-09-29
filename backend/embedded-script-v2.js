@@ -771,7 +771,7 @@ function collectCampaignDetails_() {
 
   try {
     // Use GAQL for comprehensive campaign data
-    var query = `
+    var query = \`
       SELECT
         campaign.id,
         campaign.name,
@@ -795,7 +795,7 @@ function collectCampaignDetails_() {
       FROM campaign
       WHERE campaign.advertising_channel_type = 'SEARCH'
       AND segments.date DURING LAST_30_DAYS
-    `;
+    \`;
 
     var iterator = AdsApp.search(query);
     while (iterator.hasNext()) {
@@ -892,7 +892,7 @@ function collectDeviceMetrics_() {
 
   try {
     // Use GAQL for device segmentation
-    var query = `
+    var query = \`
       SELECT
         campaign.name,
         campaign.id,
@@ -911,7 +911,7 @@ function collectDeviceMetrics_() {
       WHERE campaign.advertising_channel_type = 'SEARCH'
       AND segments.date DURING LAST_30_DAYS
       AND metrics.impressions > 0
-    `;
+    \`;
 
     var iterator = AdsApp.search(query);
     while (iterator.hasNext()) {
@@ -995,7 +995,7 @@ function collectKeywordPerformance_() {
 
   try {
     // Use GAQL for keyword data with Quality Score
-    var query = `
+    var query = \`
       SELECT
         campaign.name,
         campaign.id,
@@ -1021,7 +1021,7 @@ function collectKeywordPerformance_() {
       WHERE campaign.advertising_channel_type = 'SEARCH'
       AND segments.date DURING LAST_30_DAYS
       AND metrics.impressions > 0
-    `;
+    \`;
 
     var iterator = AdsApp.search(query);
     while (iterator.hasNext()) {
@@ -1126,7 +1126,7 @@ function collectHourlyPatterns_() {
 
   try {
     // Use GAQL for hourly data
-    var query = `
+    var query = \`
       SELECT
         campaign.name,
         campaign.id,
@@ -1143,7 +1143,7 @@ function collectHourlyPatterns_() {
       WHERE campaign.advertising_channel_type = 'SEARCH'
       AND segments.date DURING LAST_30_DAYS
       AND metrics.impressions > 0
-    `;
+    \`;
 
     var iterator = AdsApp.search(query);
     while (iterator.hasNext()) {
@@ -1221,7 +1221,7 @@ function collectGeographicData_() {
 
   try {
     // Use GAQL for geographic data
-    var query = `
+    var query = \`
       SELECT
         campaign.name,
         campaign.id,
@@ -1240,7 +1240,7 @@ function collectGeographicData_() {
       WHERE campaign.advertising_channel_type = 'SEARCH'
       AND segments.date DURING LAST_30_DAYS
       AND metrics.impressions > 0
-    `;
+    \`;
 
     var iterator = AdsApp.search(query);
     while (iterator.hasNext()) {
@@ -1318,7 +1318,7 @@ function collectAdPerformance_() {
 
   try {
     // Use GAQL for ad performance data
-    var query = `
+    var query = \`
       SELECT
         campaign.name,
         campaign.id,
@@ -1341,7 +1341,7 @@ function collectAdPerformance_() {
       AND ad_group_ad.ad.type = 'RESPONSIVE_SEARCH_AD'
       AND segments.date DURING LAST_30_DAYS
       AND metrics.impressions > 0
-    `;
+    \`;
 
     var iterator = AdsApp.search(query);
     while (iterator.hasNext()) {
@@ -1449,7 +1449,7 @@ function collectConversionValue_() {
 
   try {
     // Use GAQL for conversion value data
-    var query = `
+    var query = \`
       SELECT
         campaign.name,
         campaign.id,
@@ -1467,7 +1467,7 @@ function collectConversionValue_() {
       WHERE campaign.advertising_channel_type = 'SEARCH'
       AND segments.date DURING LAST_30_DAYS
       AND metrics.conversions > 0
-    `;
+    \`;
 
     var iterator = AdsApp.search(query);
     while (iterator.hasNext()) {
