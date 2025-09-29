@@ -507,7 +507,9 @@ async function getUserSettings(tenant) {
     const cached = await getJson(cacheKey);
     if (cached) {
       console.log(`🔥 Using cached settings for ${tenant}:`, cached);
-      return cached;
+      // Temporarily disabled cache to force fresh reads
+      // return cached;
+      console.log(`⚠️ Cache disabled temporarily - fetching fresh data`);
     }
 
     // Get all configs from data-store (Supabase-first, Sheets-fallback)
@@ -1408,6 +1410,8 @@ app.post("/api/config/save-settings", async (req, res) => {
   }
 
   try {
+    console.log(`📥 Received settings for ${tenant}:`, settings);
+
     // Validate and save settings
     const tierDefaults = getTierDefaults(settings.plan || "starter");
     const validSettings = {
@@ -1422,6 +1426,8 @@ app.post("/api/config/save-settings", async (req, res) => {
       st_lookback: tierDefaults.lookbackPeriod,
       label: `${tenant} • Managed`,
     };
+
+    console.log(`✅ Validated settings for ${tenant}:`, validSettings);
 
     // Import dual-write service
     const { dualWriteConfig } = await import('./services/dual-write.js');
