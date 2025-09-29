@@ -770,9 +770,10 @@ function collectCampaignDetails_() {
   log_("Collecting campaign details...");
 
   try {
-    // Use GAQL for comprehensive campaign data
+    // Use GAQL for comprehensive campaign data - with daily segmentation
     var query = \`
       SELECT
+        segments.date,
         campaign.id,
         campaign.name,
         campaign.status,
@@ -828,8 +829,12 @@ function collectCampaignDetails_() {
         targetCpa = row.campaign.maximizeConversions.targetCpaMicros / 1000000;
       }
 
+      // Use segment date if available
+      var dataDate = row.segments && row.segments.date ?
+        new Date(row.segments.date) : new Date();
+
       rows.push([
-        new Date(),
+        dataDate,
         'campaign_details',
         row.campaign.name,
         row.campaign.id,
