@@ -28,7 +28,8 @@ function main() {
   // Force user values to override backend config
   cfg.daily_budget_cap_default = USER_BUDGET;
   cfg.cpc_ceiling_default = USER_CPC;
-  if (USER_URL && USER_URL !== '__USER_URL__' && USER_URL !== '') {
+  // Check if USER_URL was replaced with an actual value (not empty and not starting with underscore placeholders)
+  if (USER_URL && USER_URL !== '' && !USER_URL.startsWith('__')) {
     cfg.default_final_url = USER_URL;
   }
   cfg.label = USER_LABEL;
