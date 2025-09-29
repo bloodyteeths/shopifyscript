@@ -3,7 +3,7 @@
  * Writes data to both Google Sheets and Supabase during migration period
  */
 
-import { supabase, isSupabaseEnabled } from './supabase-client.js';
+import { getSupabase, isSupabaseEnabled } from './supabase-client.js';
 
 /**
  * Dual write configuration data
@@ -188,6 +188,7 @@ export async function dualWriteNgramNegatives(tenant, ngramData) {
  */
 
 async function writeConfigToSupabase(tenant, configData) {
+  const supabase = getSupabase();
   if (!supabase) {
     throw new Error('Supabase client not initialized');
   }
@@ -214,6 +215,7 @@ async function writeConfigToSupabase(tenant, configData) {
 }
 
 async function writeMetricsToSupabase(tenant, metricsData) {
+  const supabase = getSupabase();
   if (!supabase) {
     throw new Error('Supabase client not initialized');
   }
@@ -250,6 +252,7 @@ async function writeMetricsToSupabase(tenant, metricsData) {
 }
 
 async function writeSearchTermsToSupabase(tenant, searchTermsData) {
+  const supabase = getSupabase();
   if (!supabase) {
     throw new Error('Supabase client not initialized');
   }
@@ -284,6 +287,7 @@ async function writeSearchTermsToSupabase(tenant, searchTermsData) {
 }
 
 async function writeRunLogsToSupabase(tenant, runLogsData) {
+  const supabase = getSupabase();
   if (!supabase) {
     throw new Error('Supabase client not initialized');
   }
@@ -313,6 +317,7 @@ async function writeRunLogsToSupabase(tenant, runLogsData) {
 }
 
 async function writeNgramNegativesToSupabase(tenant, ngramData) {
+  const supabase = getSupabase();
   if (!supabase) {
     throw new Error('Supabase client not initialized');
   }
@@ -373,6 +378,7 @@ export async function readFromPreferredSource(tenant, dataType) {
 }
 
 async function readFromSupabase(tenant, dataType) {
+  const supabase = getSupabase();
   if (!supabase) {
     throw new Error('Supabase client not initialized');
   }
