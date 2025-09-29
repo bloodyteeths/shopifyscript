@@ -891,7 +891,7 @@ function collectDeviceMetrics_() {
   log_("Collecting device metrics...");
 
   try {
-    // Use GAQL for device segmentation
+    // Use GAQL for device segmentation - using ad_group view for both campaign and ad group data
     var query = \`
       SELECT
         campaign.name,
@@ -907,7 +907,7 @@ function collectDeviceMetrics_() {
         metrics.ctr,
         metrics.average_cpc,
         metrics.average_cpm
-      FROM campaign
+      FROM ad_group
       WHERE campaign.advertising_channel_type = 'SEARCH'
       AND segments.date DURING LAST_30_DAYS
       AND metrics.impressions > 0
@@ -1015,8 +1015,7 @@ function collectKeywordPerformance_() {
         metrics.conversions,
         metrics.conversions_value,
         metrics.ctr,
-        metrics.average_cpc,
-        metrics.average_position
+        metrics.average_cpc
       FROM keyword_view
       WHERE campaign.advertising_channel_type = 'SEARCH'
       AND segments.date DURING LAST_30_DAYS
@@ -1062,8 +1061,7 @@ function collectKeywordPerformance_() {
         row.metrics.conversions || 0,
         row.metrics.conversionsValue || 0,
         row.metrics.ctr || 0,
-        avgCpc,
-        row.metrics.averagePosition || 0
+        avgCpc
       ]);
     }
 
@@ -1076,7 +1074,7 @@ function collectKeywordPerformance_() {
       var report = AdsApp.report(
         "SELECT CampaignName, CampaignId, AdGroupName, AdGroupId, Criteria, KeywordMatchType, " +
         "QualityScore, CreativeQualityScore, PostClickQualityScore, SearchPredictedCtr, Status, " +
-        "Impressions, Clicks, Cost, Conversions, ConversionValue, Ctr, AverageCpc, AveragePosition " +
+        "Impressions, Clicks, Cost, Conversions, ConversionValue, Ctr, AverageCpc " +
         "FROM KEYWORDS_PERFORMANCE_REPORT " +
         "WHERE CampaignStatus IN ['ENABLED', 'PAUSED'] " +
         "AND Impressions > 0 " +
@@ -1106,8 +1104,7 @@ function collectKeywordPerformance_() {
           parseFloat(row['Conversions']) || 0,
           parseFloat(row['ConversionValue']) || 0,
           parseFloat(row['Ctr']) || 0,
-          parseFloat(row['AverageCpc']) || 0,
-          parseFloat(row['AveragePosition']) || 0
+          parseFloat(row['AverageCpc']) || 0
         ]);
       }
       log_("Fallback: Collected " + rows.length + " keyword performance records");
@@ -1220,15 +1217,13 @@ function collectGeographicData_() {
   log_("Collecting geographic data...");
 
   try {
-    // Use GAQL for geographic data
+    // Use GAQL for geographic data - simplified to use only geographic_view
     var query = \`
       SELECT
         campaign.name,
         campaign.id,
         geographic_view.country_criterion_id,
         geographic_view.location_type,
-        user_location_view.country_criterion_id,
-        user_location_view.target_campaign,
         metrics.impressions,
         metrics.clicks,
         metrics.cost_micros,
@@ -1448,7 +1443,7 @@ function collectConversionValue_() {
   log_("Collecting conversion value data...");
 
   try {
-    // Use GAQL for conversion value data
+    // Use GAQL for conversion value data - using ad_group view for both campaign and ad group data
     var query = \`
       SELECT
         campaign.name,
@@ -1463,7 +1458,7 @@ function collectConversionValue_() {
         metrics.view_through_conversions,
         metrics.value_per_conversion,
         metrics.cost_per_conversion
-      FROM campaign
+      FROM ad_group
       WHERE campaign.advertising_channel_type = 'SEARCH'
       AND segments.date DURING LAST_30_DAYS
       AND metrics.conversions > 0
