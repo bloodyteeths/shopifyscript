@@ -358,6 +358,9 @@ export class SupportSystemService {
    */
   async checkSLABreaches() {
     try {
+      if (!this.supabase) {
+        throw new Error('Supabase client not initialized');
+      }
       const { data, error } = await this.supabase.rpc('check_sla_breaches');
       
       if (error) {
@@ -378,6 +381,9 @@ export class SupportSystemService {
    */
   async generateTicketNumber() {
     try {
+      if (!this.supabase) {
+        throw new Error('Supabase client not initialized');
+      }
       const { data, error } = await this.supabase.rpc('generate_ticket_number');
       
       if (error) {

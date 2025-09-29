@@ -84,8 +84,8 @@ async function getCurrentSubscription(tenant) {
     // Query database for tenant subscription info
     let subscription = null;
     try {
-      const { createClient } = await import("../services/supabase-client.js");
-      const supabase = createClient();
+      const { getSupabaseClient } = await import("../services/supabase-client.js");
+      const supabase = getSupabaseClient();
       
       const { data, error } = await supabase
         .from("tenant_subscriptions")
@@ -474,8 +474,8 @@ export async function syncSubscriptionStatus(tenant, shopDomain, accessToken) {
       const status = billingService.parseSubscriptionStatus(shopifySubscription.status);
       
       // Update database with current Shopify subscription data
-      const { createClient } = await import("../services/supabase-client.js");
-      const supabase = createClient();
+      const { getSupabaseClient } = await import("../services/supabase-client.js");
+      const supabase = getSupabaseClient();
       
       const subscriptionData = {
         tenant_id: tenant,
@@ -510,8 +510,8 @@ export async function syncSubscriptionStatus(tenant, shopDomain, accessToken) {
       return subscriptionData;
     } else {
       // No active subscription found in Shopify
-      const { createClient } = await import("../services/supabase-client.js");
-      const supabase = createClient();
+      const { getSupabaseClient } = await import("../services/supabase-client.js");
+      const supabase = getSupabaseClient();
       
       await supabase
         .from("tenant_subscriptions")

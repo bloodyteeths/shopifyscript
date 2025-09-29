@@ -43,6 +43,10 @@ class DashboardBuilderService {
    */
   async createDashboard(tenant, dashboardData) {
     try {
+      if (!supabase) {
+        throw new Error('Supabase client not initialized');
+      }
+
       // Verify Enterprise tier access
       const hasAccess = await analyticsTiers.hasFeature(tenant, 'customDashboards');
       if (!hasAccess) {
@@ -111,6 +115,10 @@ class DashboardBuilderService {
    */
   async createDashboardFromTemplate(tenant, templateId, dashboardName) {
     try {
+      if (!supabase) {
+        throw new Error('Supabase client not initialized');
+      }
+
       // Verify Enterprise tier access
       const hasAccess = await analyticsTiers.hasFeature(tenant, 'customDashboards');
       if (!hasAccess) {
@@ -186,6 +194,10 @@ class DashboardBuilderService {
    */
   async getDashboard(tenant, dashboardId) {
     try {
+      if (!supabase) {
+        throw new Error('Supabase client not initialized');
+      }
+
       // Set tenant context for RLS
       await supabase.rpc('set_tenant_context', { tenant_id: tenant });
 
@@ -238,6 +250,10 @@ class DashboardBuilderService {
    */
   async getDashboards(tenant, options = {}) {
     try {
+      if (!supabase) {
+        throw new Error('Supabase client not initialized');
+      }
+
       // Verify Enterprise tier access
       const hasAccess = await analyticsTiers.hasFeature(tenant, 'customDashboards');
       if (!hasAccess) {
@@ -302,6 +318,10 @@ class DashboardBuilderService {
    */
   async updateDashboard(tenant, dashboardId, updates) {
     try {
+      if (!supabase) {
+        throw new Error('Supabase client not initialized');
+      }
+
       // Set tenant context for RLS
       await supabase.rpc('set_tenant_context', { tenant_id: tenant });
 
@@ -354,6 +374,10 @@ class DashboardBuilderService {
    */
   async deleteDashboard(tenant, dashboardId) {
     try {
+      if (!supabase) {
+        throw new Error('Supabase client not initialized');
+      }
+
       // Set tenant context for RLS
       await supabase.rpc('set_tenant_context', { tenant_id: tenant });
 
@@ -387,6 +411,10 @@ class DashboardBuilderService {
    */
   async addWidget(tenant, dashboardId, widgetData) {
     try {
+      if (!supabase) {
+        throw new Error('Supabase client not initialized');
+      }
+
       // Set tenant context for RLS
       await supabase.rpc('set_tenant_context', { tenant_id: tenant });
 
@@ -435,6 +463,10 @@ class DashboardBuilderService {
    */
   async updateWidget(tenant, widgetId, updates) {
     try {
+      if (!supabase) {
+        throw new Error('Supabase client not initialized');
+      }
+
       // Set tenant context for RLS
       await supabase.rpc('set_tenant_context', { tenant_id: tenant });
 
@@ -471,6 +503,10 @@ class DashboardBuilderService {
    */
   async deleteWidget(tenant, widgetId) {
     try {
+      if (!supabase) {
+        throw new Error('Supabase client not initialized');
+      }
+
       // Set tenant context for RLS
       await supabase.rpc('set_tenant_context', { tenant_id: tenant });
 
@@ -501,9 +537,13 @@ class DashboardBuilderService {
    */
   async getWidgetData(tenant, widgetId, dateRange = '30d') {
     try {
+      if (!supabase) {
+        throw new Error('Supabase client not initialized');
+      }
+
       const cacheKey = `widget-data:${tenant}:${widgetId}:${dateRange}`;
       const cached = this.cache.get(cacheKey);
-      
+
       if (cached && Date.now() - cached.timestamp < this.cacheTimeout) {
         return cached.data;
       }
@@ -565,6 +605,10 @@ class DashboardBuilderService {
    */
   async getTemplates(tenant) {
     try {
+      if (!supabase) {
+        throw new Error('Supabase client not initialized');
+      }
+
       const tierFeatures = await analyticsTiers.getTierFeatures(tenant);
 
       const { data: templates, error } = await supabase
@@ -661,6 +705,10 @@ class DashboardBuilderService {
    * Fetch metrics data
    */
   async fetchMetricsData(tenant, widgetConfig, filters, dateFilter) {
+    if (!supabase) {
+      throw new Error('Supabase client not initialized');
+    }
+
     let query = supabase
       .from('tenant_metrics')
       .select('*')
@@ -690,6 +738,10 @@ class DashboardBuilderService {
    * Fetch campaign data
    */
   async fetchCampaignData(tenant, widgetConfig, filters, dateFilter) {
+    if (!supabase) {
+      throw new Error('Supabase client not initialized');
+    }
+
     let query = supabase
       .from('tenant_metrics')
       .select('*')
@@ -711,6 +763,10 @@ class DashboardBuilderService {
    * Fetch search terms data
    */
   async fetchSearchTermsData(tenant, widgetConfig, filters, dateFilter) {
+    if (!supabase) {
+      throw new Error('Supabase client not initialized');
+    }
+
     let query = supabase
       .from('search_terms')
       .select('*')
@@ -853,6 +909,11 @@ class DashboardBuilderService {
    */
   async logDashboardAccess(tenant, dashboardId, accessType, metadata = {}) {
     try {
+      if (!supabase) {
+        console.warn('Supabase client not initialized - skipping dashboard access logging');
+        return;
+      }
+
       await supabase
         .from('dashboard_access_logs')
         .insert({

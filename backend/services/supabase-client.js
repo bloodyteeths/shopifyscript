@@ -51,7 +51,8 @@ export function getSupabaseClient() {
   return supabaseInstance;
 }
 
-// Don't initialize at module load time - use getSupabaseClient() instead
+// Lazy initialization - will return null if not configured, or client instance if configured
+export const supabase = getSupabaseClient();
 export const getSupabase = getSupabaseClient;
 
 // Connection pool management
@@ -268,7 +269,7 @@ export async function ensureSupabaseTables() {
   
   for (const table of tables) {
     try {
-      const { data, error } = await supabase
+      const { data, error } = await supabaseClient
         .from(table)
         .select('count')
         .limit(1);
