@@ -899,6 +899,7 @@ function collectDeviceMetrics_() {
     // Use GAQL for device segmentation - using ad_group view for both campaign and ad group data
     var query = \`
       SELECT
+        segments.date,
         campaign.name,
         campaign.id,
         ad_group.name,
@@ -929,8 +930,12 @@ function collectDeviceMetrics_() {
       var avgCpm = row.metrics && row.metrics.averageCpm ?
         row.metrics.averageCpm / 1000000 : 0;
 
+      // Use segment date if available
+      var dataDate = row.segments && row.segments.date ?
+        new Date(row.segments.date) : new Date();
+
       rows.push([
-        new Date(),
+        dataDate,
         'device_metrics',
         row.campaign.name,
         row.campaign.id,
@@ -1002,6 +1007,7 @@ function collectKeywordPerformance_() {
     // Use GAQL for keyword data with Quality Score
     var query = \`
       SELECT
+        segments.date,
         campaign.name,
         campaign.id,
         ad_group.name,
@@ -1046,8 +1052,12 @@ function collectKeywordPerformance_() {
       var searchPredictedCtr = row.adGroupCriterion && row.adGroupCriterion.qualityInfo ?
         row.adGroupCriterion.qualityInfo.searchPredictedCtr || 'UNKNOWN' : 'UNKNOWN';
 
+      // Use segment date if available
+      var dataDate = row.segments && row.segments.date ?
+        new Date(row.segments.date) : new Date();
+
       rows.push([
-        new Date(),
+        dataDate,
         'keyword_performance',
         row.campaign.name,
         row.campaign.id,
@@ -1130,6 +1140,7 @@ function collectHourlyPatterns_() {
     // Use GAQL for hourly data
     var query = \`
       SELECT
+        segments.date,
         campaign.name,
         campaign.id,
         segments.hour,
@@ -1156,8 +1167,12 @@ function collectHourlyPatterns_() {
       var avgCpc = row.metrics && row.metrics.averageCpc ?
         row.metrics.averageCpc / 1000000 : 0;
 
+      // Use segment date if available
+      var dataDate = row.segments && row.segments.date ?
+        new Date(row.segments.date) : new Date();
+
       rows.push([
-        new Date(),
+        dataDate,
         'hourly_patterns',
         row.campaign.name,
         row.campaign.id,
@@ -1225,6 +1240,7 @@ function collectGeographicData_() {
     // Use GAQL for geographic data - simplified to use only geographic_view
     var query = \`
       SELECT
+        segments.date,
         campaign.name,
         campaign.id,
         campaign.advertising_channel_type,
@@ -1247,13 +1263,14 @@ function collectGeographicData_() {
     while (iterator.hasNext()) {
       var row = iterator.next();
 
+      var dataDate = row.segments && row.segments.date ? new Date(row.segments.date) : new Date();
       var cost = row.metrics && row.metrics.costMicros ?
         row.metrics.costMicros / 1000000 : 0;
       var avgCpc = row.metrics && row.metrics.averageCpc ?
         row.metrics.averageCpc / 1000000 : 0;
 
       rows.push([
-        new Date(),
+        dataDate,
         'geographic_data',
         row.campaign.name,
         row.campaign.id,
@@ -1321,6 +1338,7 @@ function collectAdPerformance_() {
     // Use GAQL for ad performance data
     var query = \`
       SELECT
+        segments.date,
         campaign.name,
         campaign.id,
         ad_group.name,
@@ -1348,6 +1366,8 @@ function collectAdPerformance_() {
     while (iterator.hasNext()) {
       var row = iterator.next();
 
+      var dataDate = row.segments && row.segments.date ? new Date(row.segments.date) : new Date();
+
       var cost = row.metrics && row.metrics.costMicros ?
         row.metrics.costMicros / 1000000 : 0;
       var avgCpc = row.metrics && row.metrics.averageCpc ?
@@ -1372,7 +1392,7 @@ function collectAdPerformance_() {
       }
 
       rows.push([
-        new Date(),
+        dataDate,
         'ad_performance',
         row.campaign.name,
         row.campaign.id,
@@ -1452,6 +1472,7 @@ function collectConversionValue_() {
     // Use GAQL for conversion value data - simplified without conversion segments due to cost metric conflict
     var query = \`
       SELECT
+        segments.date,
         campaign.name,
         campaign.id,
         ad_group.name,
@@ -1471,6 +1492,8 @@ function collectConversionValue_() {
     while (iterator.hasNext()) {
       var row = iterator.next();
 
+      var dataDate = row.segments && row.segments.date ? new Date(row.segments.date) : new Date();
+
       var cost = row.metrics && row.metrics.costMicros ?
         row.metrics.costMicros / 1000000 : 0;
       var valuePerConversion = row.metrics && row.metrics.valuePerConversion ?
@@ -1484,7 +1507,7 @@ function collectConversionValue_() {
         row.metrics.conversionsValue / cost : 0;
 
       rows.push([
-        new Date(),
+        dataDate,
         'conversion_value',
         row.campaign.name,
         row.campaign.id,
