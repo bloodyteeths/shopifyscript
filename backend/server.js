@@ -2003,31 +2003,45 @@ app.post("/api/metrics", async (req, res) => {
           }
         }
 
-        // Write keyword performance to Supabase
+        // Write keyword performance to Supabase - deduplicate first
         if (keywordPerformanceRows.length) {
-          const keywordPerformance = keywordPerformanceRows.map(row => ({
-            tenant_id: String(tenant),
-            date: new Date(row[0]).toISOString(),
-            campaign_name: String(row[2]) || null,
-            ad_group_id: String(row[3]) || null,
-            ad_group_name: String(row[4]) || null,
-            keyword_id: String(row[5]) || null,
-            keyword_text: String(row[6]) || null,
-            match_type: String(row[7]) || null,
-            clicks: parseInt(row[8]) || 0,
-            cost: parseFloat(row[9]) || 0,
-            conversions: parseFloat(row[10]) || 0,
-            impressions: parseInt(row[11]) || 0,
-            ctr: parseFloat(row[12]) || 0,
-            avg_cpc: parseFloat(row[13]) || 0,
-            conversion_rate: parseFloat(row[14]) || 0,
-            quality_score: parseInt(row[15]) || null,
-            search_impression_share: parseFloat(row[16]) || null,
-            search_top_impression_share: parseFloat(row[17]) || null,
-            first_page_cpc: parseFloat(row[18]) || null,
-            top_of_page_cpc: parseFloat(row[19]) || null,
-            created_at: new Date().toISOString()
-          }));
+          // Deduplicate keyword performance by unique key
+          const keywordPerfMap = new Map();
+          keywordPerformanceRows.forEach(row => {
+            const dateStr = new Date(row[0]).toISOString();
+            const keywordId = String(row[5]) || '';
+            const key = `${tenant}_${keywordId}_${dateStr}`;
+
+            // Only keep the first occurrence or the one with more impressions
+            if (!keywordPerfMap.has(key) ||
+                (parseInt(row[11]) || 0) > (keywordPerfMap.get(key).impressions || 0)) {
+              keywordPerfMap.set(key, {
+                tenant_id: String(tenant),
+                date: dateStr,
+                campaign_name: String(row[2]) || null,
+                ad_group_id: String(row[3]) || null,
+                ad_group_name: String(row[4]) || null,
+                keyword_id: keywordId || null,
+                keyword_text: String(row[6]) || null,
+                match_type: String(row[7]) || null,
+                clicks: parseInt(row[8]) || 0,
+                cost: parseFloat(row[9]) || 0,
+                conversions: parseFloat(row[10]) || 0,
+                impressions: parseInt(row[11]) || 0,
+                ctr: parseFloat(row[12]) || 0,
+                avg_cpc: parseFloat(row[13]) || 0,
+                conversion_rate: parseFloat(row[14]) || 0,
+                quality_score: parseInt(row[15]) || null,
+                search_impression_share: parseFloat(row[16]) || null,
+                search_top_impression_share: parseFloat(row[17]) || null,
+                first_page_cpc: parseFloat(row[18]) || null,
+                top_of_page_cpc: parseFloat(row[19]) || null,
+                created_at: new Date().toISOString()
+              });
+            }
+          });
+
+          const keywordPerformance = Array.from(keywordPerfMap.values());
 
           const { error: keywordPerformanceError } = await supabase
             .from('keyword_performance')
