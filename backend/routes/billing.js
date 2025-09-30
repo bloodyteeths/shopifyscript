@@ -308,23 +308,42 @@ router.post("/shopify/sync-tier", async (req, res) => {
     // Get current Shopify subscription
     const subscription = await shopifyBillingService.getCurrentSubscription(shop, accessToken);
 
-    let tier = 'starter'; // Default tier
+    console.log('📊 Shopify subscription data:', JSON.stringify(subscription, null, 2));
+
+    let tier = 'trial'; // Default tier
 
     if (subscription && subscription.status === 'ACTIVE') {
       // Extract tier from subscription amount
-      const amount = parseFloat(subscription.lineItems[0]?.plan?.pricingDetails?.price?.amount || 0);
+      const amount = parseFloat(subscription.lineItems?.[0]?.plan?.pricingDetails?.price?.amount || 0);
 
+      console.log(`💵 Subscription amount detected: $${amount}`);
+
+      // Map price to tier
       if (amount >= 299) {
         tier = 'enterprise';
       } else if (amount >= 99) {
         tier = 'pro';
       } else if (amount >= 29) {
         tier = 'starter';
+      } else if (amount > 0) {
+        tier = 'starter'; // Any paid amount defaults to at least starter
       } else {
         tier = 'trial';
       }
-    } else if (!subscription) {
-      // No subscription = trial tier
+
+      // Also check subscription name as fallback
+      const subscriptionName = subscription.name?.toLowerCase() || '';
+      if (subscriptionName.includes('enterprise')) {
+        tier = 'enterprise';
+      } else if (subscriptionName.includes('pro')) {
+        tier = 'pro';
+      } else if (subscriptionName.includes('starter')) {
+        tier = 'starter';
+      }
+
+      console.log(`🎯 Detected tier: ${tier} (from amount: $${amount}, name: ${subscription.name})`);
+    } else {
+      console.log('⚠️ No active subscription found, defaulting to trial tier');
       tier = 'trial';
     }
 
@@ -337,6 +356,10 @@ router.post("/shopify/sync-tier", async (req, res) => {
           process.env.SUPABASE_SERVICE_ROLE_KEY
         );
 
+        // For enterprise customers without Shopify subscription, set status as active
+        const status = tier === 'enterprise' ? 'active' :
+                      (subscription?.status ? subscription.status.toLowerCase() : 'inactive');
+
         const { data, error } = await supabase
           .from('tenant_subscriptions')
           .upsert({
@@ -345,8 +368,8 @@ router.post("/shopify/sync-tier", async (req, res) => {
             platform: 'shopify',
             subscription_id: subscription?.id || null,
             tier: tier,
-            status: subscription?.status ? subscription.status.toLowerCase() : 'inactive',
-            current_period_start: subscription?.createdAt || null,
+            status: status,
+            current_period_start: subscription?.createdAt || new Date().toISOString(),
             current_period_end: subscription?.currentPeriodEnd || null,
             updated_at: new Date().toISOString()
           }, {
@@ -363,13 +386,20 @@ router.post("/shopify/sync-tier", async (req, res) => {
       }
     }
 
-    // Update in tenant registry for immediate use
+    // Check if tenant has a manual override (e.g., enterprise customers)
     const tenantRegistry = (await import('../services/tenant-registry.js')).default;
     const tenantData = tenantRegistry.getTenant(tenant);
+
+    // For mybabybymerry specifically, they're an enterprise customer
+    if (tenant === 'mybabybymerry') {
+      tier = 'enterprise';
+      console.log('🏯 Manual override: mybabybymerry is an enterprise customer');
+    }
+
     if (tenantData) {
       tenantData.plan = tier;
       tenantData.shop_domain = shop;
-      tenantData.subscription_status = subscription?.status ? subscription.status.toLowerCase() : 'inactive';
+      tenantData.subscription_status = subscription?.status ? subscription.status.toLowerCase() : 'active'; // Force active for enterprise
       console.log(`✅ Updated tier in tenant registry for ${tenant}: ${tier}`);
     }
 

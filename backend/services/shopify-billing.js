@@ -131,7 +131,6 @@ export class ShopifyBillingService {
               lineItems {
                 id
                 plan {
-                  id
                   pricingDetails {
                     ... on AppRecurringPricing {
                       price {
