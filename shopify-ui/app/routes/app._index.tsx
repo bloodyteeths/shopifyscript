@@ -45,7 +45,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
     try {
       subscriptionInfo = await checkSubscriptionStatus(admin);
-      
+
       console.log(`Subscription check for ${shopName}:`, {
         hasActivePayment: subscriptionInfo.hasActivePayment,
         isInTrial: subscriptionInfo.isInTrial,
@@ -53,6 +53,34 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
         needsSubscription: subscriptionInfo.needsSubscription,
         isPostSubscription
       });
+
+      // Sync tier with backend for rate limiting
+      if (session?.accessToken && shopName) {
+        try {
+          const backendUrl = process.env.BACKEND_PUBLIC_URL || 'http://localhost:3005/api';
+          const syncResponse = await fetch(`${backendUrl}/billing/shopify/sync-tier`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'X-Tenant-ID': shopName
+            },
+            body: JSON.stringify({
+              shop: session.shop,
+              accessToken: session.accessToken
+            })
+          });
+
+          if (syncResponse.ok) {
+            const tierData = await syncResponse.json();
+            console.log(`✅ Tier synced with backend for ${shopName}:`, tierData.tier);
+          } else {
+            console.warn(`Failed to sync tier for ${shopName}:`, syncResponse.status);
+          }
+        } catch (tierSyncError) {
+          console.error(`Tier sync error for ${shopName}:`, tierSyncError);
+          // Non-blocking - continue even if tier sync fails
+        }
+      }
 
       // CRITICAL: Don't redirect if just returned from subscription selection
       if (subscriptionInfo.needsSubscription && !isPostSubscription) {
