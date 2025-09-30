@@ -126,9 +126,47 @@ export function CampaignManager({ shopName, hasFeatureAccess = false }: Campaign
     );
   };
 
-  const handleBulkOptimize = () => {
-    console.log('Optimizing campaigns:', selectedCampaigns);
-    // Trigger AI optimization
+  const handleBulkOptimize = async () => {
+    if (selectedCampaigns.length === 0) {
+      alert('Please select campaigns to optimize');
+      return;
+    }
+
+    setLoading(true);
+    try {
+      // Call AI optimization endpoint
+      const response = await authenticatedFetch(
+        '/ai/campaigns/optimize',
+        'POST',
+        { campaignIds: selectedCampaigns },
+        shopName
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        alert(`Successfully queued ${selectedCampaigns.length} campaigns for AI optimization`);
+        // Refresh campaigns to show updated status
+        await fetchCampaigns();
+        setSelectedCampaigns([]);
+      } else {
+        alert('Failed to optimize campaigns. Please try again.');
+      }
+    } catch (error) {
+      console.error('Optimization error:', error);
+      alert('Error optimizing campaigns');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleCreateCampaign = () => {
+    // Navigate to campaign creation or show modal
+    window.location.href = '/app/campaigns?action=create';
+  };
+
+  const handleImportCampaigns = () => {
+    // Navigate to import flow
+    window.location.href = '/app/setup?tab=google-ads';
   };
 
   const filteredCampaigns = campaigns.filter(campaign => {
@@ -192,7 +230,14 @@ export function CampaignManager({ shopName, hasFeatureAccess = false }: Campaign
         CPC: {formatCurrency(campaign.cpc)}
       </Text>
     </BlockStack>,
-    <Button variant="plain" size="slim">
+    <Button
+      variant="plain"
+      size="slim"
+      onClick={() => {
+        // Show campaign-specific actions menu
+        alert(`Actions for ${campaign.name}:\n- View Details\n- Edit Settings\n- Pause Campaign\n- View Reports\n- AI Recommendations`);
+      }}
+    >
       Actions
     </Button>
   ]);
@@ -235,10 +280,10 @@ export function CampaignManager({ shopName, hasFeatureAccess = false }: Campaign
             <InlineStack align="space-between">
               <Text variant="headingLg" as="h2">Campaign Manager</Text>
               <InlineStack gap="200">
-                <Button variant="primary">
+                <Button variant="primary" onClick={handleCreateCampaign}>
                   Create New Campaign
                 </Button>
-                <Button>
+                <Button onClick={handleImportCampaigns}>
                   Import from Google Ads
                 </Button>
               </InlineStack>
@@ -250,8 +295,8 @@ export function CampaignManager({ shopName, hasFeatureAccess = false }: Campaign
                   Get started by creating your first AI-powered campaign or importing existing campaigns from Google Ads.
                 </Text>
                 <InlineStack gap="200">
-                  <Button variant="primary">Create First Campaign</Button>
-                  <Button>Import from Google Ads</Button>
+                  <Button variant="primary" onClick={handleCreateCampaign}>Create First Campaign</Button>
+                  <Button onClick={handleImportCampaigns}>Import from Google Ads</Button>
                 </InlineStack>
               </BlockStack>
             </Box>
@@ -269,7 +314,7 @@ export function CampaignManager({ shopName, hasFeatureAccess = false }: Campaign
           <InlineStack align="space-between">
             <Text variant="headingLg" as="h2">Campaign Manager</Text>
             <InlineStack gap="200">
-              <Button variant="primary">
+              <Button variant="primary" onClick={handleCreateCampaign}>
                 Create New Campaign
               </Button>
               <Button>
