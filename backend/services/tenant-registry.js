@@ -130,7 +130,48 @@ class TenantRegistry {
       tenant = this.autoRegisterTenant(tenantId);
     }
 
+    // Sync tier from Supabase if available (async in background)
+    if (tenant && process.env.SUPABASE_ENABLED === 'true') {
+      this.syncTierFromSupabase(tenantId).catch(err =>
+        console.warn(`Could not sync tier for ${tenantId}:`, err.message)
+      );
+    }
+
     return tenant || this.registry.get("default");
+  }
+
+  /**
+   * Sync tenant tier from Supabase (runs in background)
+   */
+  async syncTierFromSupabase(tenantId) {
+    try {
+      const { createClient } = await import('@supabase/supabase-js');
+      const supabase = createClient(
+        process.env.SUPABASE_URL,
+        process.env.SUPABASE_SERVICE_ROLE_KEY
+      );
+
+      const { data, error } = await supabase
+        .from('tenant_subscriptions')
+        .select('tier, status, shop_domain')
+        .eq('tenant_id', tenantId)
+        .single();
+
+      if (!error && data) {
+        const tenant = this.registry.get(tenantId);
+        if (tenant) {
+          // Update tier and status from Supabase
+          tenant.plan = data.tier || tenant.plan;
+          tenant.subscription_status = data.status || 'inactive';
+          tenant.shop_domain = data.shop_domain || tenant.shop_domain;
+          tenant.updatedAt = new Date().toISOString();
+          console.log(`ℹ️ Synced tier from Supabase for ${tenantId}: ${data.tier}`);
+        }
+      }
+    } catch (error) {
+      // Silently fail - this is a background sync
+      console.debug(`Background tier sync failed for ${tenantId}:`, error.message);
+    }
   }
 
   /**

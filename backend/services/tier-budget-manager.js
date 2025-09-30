@@ -158,9 +158,40 @@ export class TierBudgetManager {
       }
     }
 
-    // Get from registry
-    const tenant = tenantRegistry.getTenant(tenantId);
-    const tier = tenant?.plan || 'starter';
+    let tier = 'starter'; // Default tier
+
+    // Try to get from Supabase first if enabled
+    if (process.env.SUPABASE_ENABLED === 'true') {
+      try {
+        const { createClient } = await import('@supabase/supabase-js');
+        const supabase = createClient(
+          process.env.SUPABASE_URL,
+          process.env.SUPABASE_SERVICE_ROLE_KEY
+        );
+
+        const { data, error } = await supabase
+          .from('tenant_subscriptions')
+          .select('tier')
+          .eq('tenant_id', tenantId)
+          .single();
+
+        if (!error && data?.tier) {
+          tier = data.tier;
+          console.log(`ℹ️ Fetched tier from Supabase for ${tenantId}: ${tier}`);
+        }
+      } catch (supabaseError) {
+        console.warn(`Could not fetch tier from Supabase for ${tenantId}:`, supabaseError.message);
+      }
+    }
+
+    // Fall back to registry if Supabase didn't work or is disabled
+    if (!tier || tier === 'starter') {
+      const tenant = tenantRegistry.getTenant(tenantId);
+      if (tenant?.plan) {
+        tier = tenant.plan;
+        console.log(`ℹ️ Using tier from registry for ${tenantId}: ${tier}`);
+      }
+    }
 
     // Cache for 5 minutes
     this.tenantTiers.set(tenantId, {

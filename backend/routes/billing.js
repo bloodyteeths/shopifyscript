@@ -291,6 +291,105 @@ router.post("/stripe/portal/:customerId", async (req, res) => {
 // ==== SHOPIFY BILLING ====
 
 /**
+ * Sync tier from Shopify subscription - Called when user accesses dashboard
+ */
+router.post("/shopify/sync-tier", async (req, res) => {
+  try {
+    const tenant = req.headers['x-tenant-id'];
+    const { shop, accessToken } = req.body;
+
+    if (!tenant || !shop || !accessToken) {
+      return res.status(400).json({ error: 'Missing required parameters' });
+    }
+
+    // Initialize Shopify billing service
+    const shopifyBillingService = new ShopifyBillingService();
+
+    // Get current Shopify subscription
+    const subscription = await shopifyBillingService.getCurrentSubscription(shop, accessToken);
+
+    let tier = 'starter'; // Default tier
+
+    if (subscription && subscription.status === 'ACTIVE') {
+      // Extract tier from subscription amount
+      const amount = parseFloat(subscription.lineItems[0]?.plan?.pricingDetails?.price?.amount || 0);
+
+      if (amount >= 299) {
+        tier = 'enterprise';
+      } else if (amount >= 99) {
+        tier = 'pro';
+      } else if (amount >= 29) {
+        tier = 'starter';
+      } else {
+        tier = 'trial';
+      }
+    } else if (!subscription) {
+      // No subscription = trial tier
+      tier = 'trial';
+    }
+
+    // Update in Supabase if enabled
+    if (process.env.SUPABASE_ENABLED === 'true') {
+      try {
+        const { createClient } = await import('@supabase/supabase-js');
+        const supabase = createClient(
+          process.env.SUPABASE_URL,
+          process.env.SUPABASE_SERVICE_ROLE_KEY
+        );
+
+        const { data, error } = await supabase
+          .from('tenant_subscriptions')
+          .upsert({
+            tenant_id: tenant,
+            shop_domain: shop,
+            platform: 'shopify',
+            subscription_id: subscription?.id || null,
+            tier: tier,
+            status: subscription?.status ? subscription.status.toLowerCase() : 'inactive',
+            current_period_start: subscription?.createdAt || null,
+            current_period_end: subscription?.currentPeriodEnd || null,
+            updated_at: new Date().toISOString()
+          }, {
+            onConflict: 'tenant_id'
+          });
+
+        if (error) {
+          console.error('Error updating tenant subscription in Supabase:', error);
+        } else {
+          console.log(`✅ Updated tier for tenant ${tenant}: ${tier} in Supabase`);
+        }
+      } catch (supabaseError) {
+        console.error('Supabase error:', supabaseError);
+      }
+    }
+
+    // Update in tenant registry for immediate use
+    const tenantRegistry = (await import('../services/tenant-registry.js')).default;
+    const tenantData = tenantRegistry.getTenant(tenant);
+    if (tenantData) {
+      tenantData.plan = tier;
+      tenantData.shop_domain = shop;
+      tenantData.subscription_status = subscription?.status ? subscription.status.toLowerCase() : 'inactive';
+      console.log(`✅ Updated tier in tenant registry for ${tenant}: ${tier}`);
+    }
+
+    res.json({
+      success: true,
+      tier,
+      subscription: {
+        id: subscription?.id,
+        status: subscription?.status,
+        tier
+      }
+    });
+
+  } catch (error) {
+    console.error('Error syncing tier:', error);
+    res.status(500).json({ error: 'Failed to sync tier' });
+  }
+});
+
+/**
  * Create Shopify subscription
  */
 router.post("/shopify/subscribe", async (req, res) => {
