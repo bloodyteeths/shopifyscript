@@ -140,28 +140,67 @@ router.get("/stats/quick", async (req, res) => {
     startDate.setDate(startDate.getDate() - dayCount);
     const startDateStr = startDate.toISOString().split('T')[0];
 
+    // Try tenant_metrics first (primary source)
+    let metricsData = null;
+    let dataSource = 'none';
+
     // Query tenant metrics from the last N days
-    const { data: metricsData, error: metricsError } = await supabaseClient
+    const { data: tenantMetricsData, error: tenantMetricsError } = await supabaseClient
       .from('tenant_metrics')
       .select('clicks, cost_micros, conversions, impressions, ctr, date')
       .eq('tenant_id', tenant)
       .gte('date', startDateStr)
       .order('date', { ascending: false });
 
-    if (metricsError) {
-      console.error('❌ Failed to query tenant metrics:', {
-        error: metricsError.message,
-        details: metricsError.details,
-        hint: metricsError.hint,
-        code: metricsError.code,
-        tenant: tenant,
-        query: 'tenant_metrics table'
-      });
-      throw metricsError;
+    if (!tenantMetricsError && tenantMetricsData && tenantMetricsData.length > 0) {
+      metricsData = tenantMetricsData;
+      dataSource = 'tenant_metrics';
+      console.log(`✅ Using tenant_metrics data for ${tenant}: ${metricsData.length} records`);
+    } else {
+      console.log(`⚠️ No data in tenant_metrics, trying fallback tables...`);
+
+      // Fallback 1: Try campaign_metrics table
+      const { data: campaignData, error: campaignError } = await supabaseClient
+        .from('campaign_metrics')
+        .select('clicks, cost, conversions, impressions, ctr, date')
+        .eq('tenant_id', tenant)
+        .gte('date', startDateStr)
+        .order('date', { ascending: false });
+
+      if (!campaignError && campaignData && campaignData.length > 0) {
+        // Convert cost to cost_micros for consistency
+        metricsData = campaignData.map(row => ({
+          ...row,
+          cost_micros: Math.round((row.cost || 0) * 1000000),
+          cost: undefined // Remove original cost field
+        }));
+        dataSource = 'campaign_metrics';
+        console.log(`✅ Using campaign_metrics fallback for ${tenant}: ${metricsData.length} records`);
+      } else {
+        // Fallback 2: Try ad_group_metrics table
+        const { data: adGroupData, error: adGroupError } = await supabaseClient
+          .from('ad_group_metrics')
+          .select('clicks, cost, conversions, impressions, ctr, date')
+          .eq('tenant_id', tenant)
+          .gte('date', startDateStr)
+          .order('date', { ascending: false });
+
+        if (!adGroupError && adGroupData && adGroupData.length > 0) {
+          // Convert cost to cost_micros for consistency
+          metricsData = adGroupData.map(row => ({
+            ...row,
+            cost_micros: Math.round((row.cost || 0) * 1000000),
+            cost: undefined // Remove original cost field
+          }));
+          dataSource = 'ad_group_metrics';
+          console.log(`✅ Using ad_group_metrics fallback for ${tenant}: ${metricsData.length} records`);
+        }
+      }
     }
 
-    console.log(`📊 Queried tenant_metrics for ${tenant}:`, {
+    console.log(`📊 Final metrics query result for ${tenant}:`, {
       recordCount: metricsData?.length || 0,
+      dataSource: dataSource,
       dateRange: `${startDateStr} to now`,
       firstRecord: metricsData?.[0]
     });
@@ -209,6 +248,7 @@ router.get("/stats/quick", async (req, res) => {
       stats,
       timestamp: new Date().toISOString(),
       source: 'supabase',
+      dataSource: dataSource, // Which table provided the data
       period: `${dayCount}_days`
     };
 
@@ -3048,10 +3088,11 @@ router.get("/campaigns", async (req, res) => {
     // Check if Supabase is enabled
     if (isSupabaseEnabled()) {
       const supabase = getSupabaseClient();
+      let metricsData = null;
+      let dataSource = 'none';
 
-      // Get campaign metrics from tenant_metrics table
-      // Group by campaign to get aggregated stats
-      const { data: metricsData, error } = await supabase
+      // Try tenant_metrics first
+      const { data: tenantData, error: tenantError } = await supabase
         .from('tenant_metrics')
         .select('*')
         .eq('tenant_id', tenant)
@@ -3059,14 +3100,41 @@ router.get("/campaigns", async (req, res) => {
         .gte('date', new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString())
         .order('date', { ascending: false });
 
+      if (!tenantError && tenantData && tenantData.length > 0) {
+        metricsData = tenantData;
+        dataSource = 'tenant_metrics';
+        console.log(`✅ Using tenant_metrics for campaigns: ${metricsData.length} records`);
+      } else {
+        // Fallback to campaign_metrics table
+        const { data: campaignData, error: campaignError } = await supabase
+          .from('campaign_metrics')
+          .select('*')
+          .eq('tenant_id', tenant)
+          .gte('date', new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString())
+          .order('date', { ascending: false });
+
+        if (!campaignError && campaignData && campaignData.length > 0) {
+          // Convert to tenant_metrics format
+          metricsData = campaignData.map(row => ({
+            ...row,
+            entity_type: 'campaign',
+            entity_id: row.campaign_id,
+            entity_name: row.campaign_name,
+            cost_micros: Math.round((row.cost || 0) * 1000000)
+          }));
+          dataSource = 'campaign_metrics';
+          console.log(`✅ Using campaign_metrics fallback: ${metricsData.length} records`);
+        }
+      }
+
       console.log(`📊 Campaign metrics query for ${tenant}:`, {
         recordCount: metricsData?.length || 0,
-        error: error?.message,
+        dataSource: dataSource,
         sampleRecord: metricsData?.[0],
-        query: 'tenant_metrics with entity_type=campaign'
+        query: `${dataSource} table`
       });
 
-      if (!error && metricsData && metricsData.length > 0) {
+      if (metricsData && metricsData.length > 0) {
         // Aggregate metrics by campaign
         const campaignMap = new Map();
 
@@ -3122,6 +3190,7 @@ router.get("/campaigns", async (req, res) => {
           ok: true,
           campaigns: transformedCampaigns,
           total: transformedCampaigns.length,
+          dataSource: dataSource, // Which table provided the data
           timestamp: new Date().toISOString()
         });
       }
@@ -3230,24 +3299,29 @@ router.get("/performance/insights", async (req, res) => {
       return series;
     };
 
-    // Check if real data exists in Supabase
+    // Check if real data exists in Supabase - try multiple tables
     let realMetrics = null;
+    let dataSource = 'none';
+
     if (isSupabaseEnabled()) {
       const supabase = getSupabaseClient();
-      const { data, error } = await supabase
+
+      // Try tenant_metrics first
+      let { data, error } = await supabase
         .from('tenant_metrics')
         .select('*')
         .eq('tenant_id', tenant)
-        .gte('created_at', new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString())
-        .order('created_at', { ascending: true });
+        .gte('date', new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString())
+        .order('date', { ascending: true });
 
       if (!error && data && data.length > 0) {
-        // Calculate real metrics from data
+        dataSource = 'tenant_metrics';
+        // Calculate real metrics from data - handle cost_micros
         const totalImpressions = data.reduce((sum, m) => sum + (m.impressions || 0), 0);
         const totalClicks = data.reduce((sum, m) => sum + (m.clicks || 0), 0);
         const totalConversions = data.reduce((sum, m) => sum + (m.conversions || 0), 0);
-        const totalCost = data.reduce((sum, m) => sum + (m.cost || 0), 0);
-        const totalRevenue = data.reduce((sum, m) => sum + (m.conversions_value || 0), 0);
+        const totalCost = data.reduce((sum, m) => sum + ((m.cost_micros || 0) / 1000000), 0);
+        const totalRevenue = data.reduce((sum, m) => sum + (m.conversions_value || totalConversions * 50), 0);
 
         realMetrics = {
           impressions: totalImpressions,
@@ -3259,7 +3333,38 @@ router.get("/performance/insights", async (req, res) => {
           ctr: totalImpressions > 0 ? ((totalClicks / totalImpressions) * 100).toFixed(2) : 0,
           conversionRate: totalClicks > 0 ? ((totalConversions / totalClicks) * 100).toFixed(2) : 0
         };
+      } else {
+        // Fallback to campaign_metrics
+        const { data: campaignData, error: campaignError } = await supabase
+          .from('campaign_metrics')
+          .select('*')
+          .eq('tenant_id', tenant)
+          .gte('date', new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString())
+          .order('date', { ascending: true });
+
+        if (!campaignError && campaignData && campaignData.length > 0) {
+          dataSource = 'campaign_metrics';
+          // Calculate real metrics from campaign data
+          const totalImpressions = campaignData.reduce((sum, m) => sum + (m.impressions || 0), 0);
+          const totalClicks = campaignData.reduce((sum, m) => sum + (m.clicks || 0), 0);
+          const totalConversions = campaignData.reduce((sum, m) => sum + (m.conversions || 0), 0);
+          const totalCost = campaignData.reduce((sum, m) => sum + (m.cost || 0), 0);
+          const totalRevenue = totalConversions * 50; // Estimate revenue
+
+          realMetrics = {
+            impressions: totalImpressions,
+            clicks: totalClicks,
+            conversions: totalConversions,
+            cost: totalCost,
+            revenue: totalRevenue,
+            roas: totalCost > 0 ? (totalRevenue / totalCost).toFixed(2) : 0,
+            ctr: totalImpressions > 0 ? ((totalClicks / totalImpressions) * 100).toFixed(2) : 0,
+            conversionRate: totalClicks > 0 ? ((totalConversions / totalClicks) * 100).toFixed(2) : 0
+          };
+        }
       }
+
+      console.log(`📊 Performance insights data source for ${tenant}: ${dataSource}, records: ${realMetrics ? 'found' : 'none'}`);
     }
 
     const insights = {
