@@ -3037,32 +3037,71 @@ router.get("/campaigns", async (req, res) => {
       const supabase = getSupabaseClient();
 
       // Get campaign metrics from tenant_metrics table
-      const { data: campaigns, error } = await supabase
+      // Group by campaign to get aggregated stats
+      const { data: metricsData, error } = await supabase
         .from('tenant_metrics')
         .select('*')
         .eq('tenant_id', tenant)
-        .gte('created_at', new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString())
-        .order('created_at', { ascending: false })
-        .limit(10);
+        .eq('entity_type', 'campaign')
+        .gte('date', new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString())
+        .order('date', { ascending: false });
 
-      if (!error && campaigns) {
-        // Transform metrics data to campaign format
-        const transformedCampaigns = campaigns.map(metric => ({
-          id: `campaign_${metric.id}`,
-          name: metric.campaign || 'Campaign',
-          status: metric.roas > 2 ? 'performing' : metric.roas > 1 ? 'optimizing' : 'learning',
-          budget: metric.cost || 0,
-          spend: metric.cost || 0,
-          impressions: metric.impressions || 0,
-          clicks: metric.clicks || 0,
-          conversions: metric.conversions || 0,
-          roas: metric.roas || 0,
-          ctr: metric.ctr || 0,
-          cpc: metric.avg_cpc || 0,
-          lastOptimized: metric.created_at,
-          optimizationType: 'ai_automated',
-          recommendations: []
-        }));
+      console.log(`📊 Campaign metrics query for ${tenant}:`, {
+        recordCount: metricsData?.length || 0,
+        error: error?.message
+      });
+
+      if (!error && metricsData && metricsData.length > 0) {
+        // Aggregate metrics by campaign
+        const campaignMap = new Map();
+
+        for (const metric of metricsData) {
+          const campaignName = metric.campaign_name || metric.entity_name || 'Unknown Campaign';
+
+          if (!campaignMap.has(campaignName)) {
+            campaignMap.set(campaignName, {
+              name: campaignName,
+              impressions: 0,
+              clicks: 0,
+              conversions: 0,
+              cost_micros: 0,
+              dates: []
+            });
+          }
+
+          const camp = campaignMap.get(campaignName);
+          camp.impressions += metric.impressions || 0;
+          camp.clicks += metric.clicks || 0;
+          camp.conversions += parseFloat(metric.conversions) || 0;
+          camp.cost_micros += metric.cost_micros || 0;
+          camp.dates.push(metric.date);
+        }
+
+        // Transform to campaign format
+        const transformedCampaigns = Array.from(campaignMap.values()).map((camp, index) => {
+          const spend = camp.cost_micros / 1000000; // Convert micros to dollars
+          const ctr = camp.impressions > 0 ? (camp.clicks / camp.impressions) * 100 : 0;
+          const cpc = camp.clicks > 0 ? spend / camp.clicks : 0;
+          const revenue = camp.conversions * 50; // Assuming $50 per conversion
+          const roas = spend > 0 ? revenue / spend : 0;
+
+          return {
+            id: `campaign_${index + 1}`,
+            name: camp.name,
+            status: roas > 2 ? 'performing' : roas > 1 ? 'optimizing' : 'learning',
+            budget: Math.round(spend * 1.5), // Estimate budget as 150% of spend
+            spend: Math.round(spend * 100) / 100,
+            impressions: camp.impressions,
+            clicks: camp.clicks,
+            conversions: camp.conversions,
+            roas: Math.round(roas * 100) / 100,
+            ctr: Math.round(ctr * 100) / 100,
+            cpc: Math.round(cpc * 100) / 100,
+            lastOptimized: camp.dates[camp.dates.length - 1],
+            optimizationType: 'ai_automated',
+            recommendations: []
+          };
+        });
 
         return res.json({
           ok: true,
