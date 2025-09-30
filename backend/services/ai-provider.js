@@ -7,6 +7,7 @@ import { getAIProvider as getBaseProvider } from "../lib/aiProvider.js";
 import { recordTokenUsage, checkBudgetLimit } from "./token-monitor.js";
 import { getAIErrorHandler } from "../middleware/ai-error-handler.js";
 import { getAIErrorRecoveryService } from "./ai-error-recovery.js";
+import { getTierBudgetManager } from "./tier-budget-manager.js";
 
 /**
  * Enhanced AI provider with advanced features
@@ -43,18 +44,30 @@ export class AIProviderService {
    * Generate text with advanced error handling, recovery, and token monitoring
    */
   async generateText(prompt, options = {}) {
-    const { tenant, operation = 'text_generation', maxRetries = 3, ...aiOptions } = options;
+    const { tenant, operation = 'text_generation', maxRetries = 3, agentType = 'basic_optimization', ...aiOptions } = options;
     const startTime = Date.now();
 
-    // Check budget limits if tenant provided and budget checking is enabled
+    // Use tier-based budget manager for multi-tenant support
+    const tierManager = getTierBudgetManager();
     const skipBudgetCheck = process.env.AI_SKIP_BUDGET_CHECK === 'true' || process.env.NODE_ENV === 'development';
 
     if (tenant && !skipBudgetCheck) {
-      const budgetCheck = checkBudgetLimit(tenant, this.estimateTokens(prompt));
-      if (!budgetCheck.allowed) {
-        console.warn(`🚫 AI request blocked for ${tenant}: ${budgetCheck.reason}`);
-        throw new Error(`Budget limit exceeded: ${budgetCheck.reason}. Remaining: $${budgetCheck.remaining?.toFixed(2)}`);
+      // Check tier-based limits
+      const estimatedTokens = this.estimateTokens(prompt);
+      const tierCheck = await tierManager.canMakeAICall(tenant, agentType, estimatedTokens);
+
+      if (!tierCheck.allowed) {
+        console.warn(`🚫 AI request blocked for ${tenant}: ${tierCheck.reason}`);
+
+        // Return graceful fallback for tier limits
+        if (tierCheck.upgrade) {
+          console.log(`💡 Upgrade suggestion for ${tenant}: ${tierCheck.upgrade.benefit} (${tierCheck.upgrade.tier} - $${tierCheck.upgrade.price}/mo)`);
+        }
+
+        throw new Error(`AI limit exceeded: ${tierCheck.reason}. ${tierCheck.resetIn ? `Resets in ${tierCheck.resetIn}` : ''}`);
       }
+
+      console.log(`✅ AI request approved for ${tenant} (${tierCheck.tier} tier, priority: ${tierCheck.priority})`);
     } else if (skipBudgetCheck) {
       console.log(`💰 Budget check skipped for ${tenant || 'unknown'} (development mode or AI_SKIP_BUDGET_CHECK=true)`);
     }
@@ -82,10 +95,19 @@ export class AIProviderService {
 
         // Record token usage if tenant provided
         if (tenant && operation) {
+          const totalTokens = inputTokens + outputTokens;
+          const estimatedCost = (totalTokens / 1000) * 0.000375; // Gemini pricing
+
+          // Record with tier budget manager
+          if (!skipBudgetCheck) {
+            await tierManager.recordAICall(tenant, agentType, totalTokens, estimatedCost);
+          }
+
+          // Also record with existing token monitor for detailed tracking
           await recordTokenUsage(tenant, operation, {
             inputTokens,
             outputTokens,
-            totalTokens: inputTokens + outputTokens,
+            totalTokens,
             provider: this.provider?.provider || 'unknown',
             model: aiOptions.model || 'default',
             prompt: optimizedPrompt,
