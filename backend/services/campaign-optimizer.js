@@ -21,6 +21,7 @@ import trafficAnalyzer from './traffic-analyzer.js';
 import demographicProfiler from './demographic-profiler.js';
 import { getBidManager } from './bid-manager.js';
 import { getBudgetAllocator } from './budget-allocator.js';
+import { getOptimizationRules } from './optimization-rules.js';
 
 /**
  * Campaign Performance Thresholds
@@ -64,6 +65,7 @@ export class CampaignOptimizer {
     this.competitorIntel = null;
     this.bidManager = null;
     this.budgetAllocator = null;
+    this.optimizationRules = null;
 
     // Optimization state tracking
     this.optimizationHistory = new Map(); // tenant -> optimization history
@@ -104,6 +106,7 @@ export class CampaignOptimizer {
       this.competitorIntel = getCompetitorIntelligenceService();
       this.bidManager = getBidManager();
       this.budgetAllocator = getBudgetAllocator();
+      this.optimizationRules = getOptimizationRules();
 
       await this.websiteScraper.initialize();
 
@@ -676,10 +679,22 @@ export class CampaignOptimizer {
     );
     actions.push(...bidActions);
 
+    // Rules-based optimization actions
+    const ruleActions = await this.optimizationRules.evaluateRules(
+      tenantId,
+      performance.campaigns,
+      intelligence
+    );
+    actions.push(...ruleActions);
+
     // Priority and confidence scoring
     actions.forEach(action => {
-      action.confidence = this.calculateActionConfidence(action, intelligence);
-      action.priority = this.calculateActionPriority(action, classification);
+      if (!action.confidence) {
+        action.confidence = this.calculateActionConfidence(action, intelligence);
+      }
+      if (!action.priority) {
+        action.priority = this.calculateActionPriority(action, classification);
+      }
     });
 
     // Sort by priority and confidence

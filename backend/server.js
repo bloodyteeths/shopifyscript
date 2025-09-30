@@ -1166,6 +1166,10 @@ import analyticsRoutes from "./routes/analytics.js";
 import aiInsightsService from "./services/ai-insights.js";
 app.use("/api/analytics", analyticsRoutes);
 
+// ==== DEMOGRAPHICS ROUTES ====
+import demographicsRoutes from "./api/demographics.js";
+app.use("/api/demographics", demographicsRoutes);
+
 // ==== ANALYTICS TIER ENDPOINT ====
 app.get("/api/analytics/tier-features", async (req, res) => {
   try {

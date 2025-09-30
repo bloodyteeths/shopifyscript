@@ -1,0 +1,581 @@
+{
+  "ok": true,
+  "tenantId": "shopify_store_demo",
+  "generatedAt": "2025-09-30T00:45:12.345Z",
+  "executionTime": 1847,
+
+  "demographics": {
+    "tenantId": "shopify_store_demo",
+    "totalCustomers": 5247,
+    "fromCache": false,
+
+    "demographics": {
+      "ageDistribution": {
+        "18-24": {
+          "count": 524,
+          "percentage": "10.0",
+          "totalSpent": 45623.12,
+          "avgOrderValue": "87.06",
+          "googleAdsId": "age_range_18_24"
+        },
+        "25-34": {
+          "count": 1574,
+          "percentage": "30.0",
+          "totalSpent": 234567.89,
+          "avgOrderValue": "149.12",
+          "googleAdsId": "age_range_25_34"
+        },
+        "35-44": {
+          "count": 1887,
+          "percentage": "36.0",
+          "totalSpent": 345678.90,
+          "avgOrderValue": "183.25",
+          "googleAdsId": "age_range_35_44"
+        },
+        "45-54": {
+          "count": 942,
+          "percentage": "18.0",
+          "totalSpent": 198765.43,
+          "avgOrderValue": "210.98",
+          "googleAdsId": "age_range_45_54"
+        },
+        "55-64": {
+          "count": 262,
+          "percentage": "5.0",
+          "totalSpent": 67890.12,
+          "avgOrderValue": "259.12",
+          "googleAdsId": "age_range_55_64"
+        },
+        "65+": {
+          "count": 58,
+          "percentage": "1.0",
+          "totalSpent": 15432.10,
+          "avgOrderValue": "266.07",
+          "googleAdsId": "age_range_65_plus"
+        }
+      },
+      "genderDistribution": {
+        "Female": {
+          "count": 3148,
+          "percentage": "60.0",
+          "totalSpent": 512345.67,
+          "avgOrderValue": "162.78",
+          "googleAdsId": "gender_female"
+        },
+        "Male": {
+          "count": 1574,
+          "percentage": "30.0",
+          "totalSpent": 289123.45,
+          "avgOrderValue": "183.74",
+          "googleAdsId": "gender_male"
+        },
+        "Unknown": {
+          "count": 525,
+          "percentage": "10.0",
+          "totalSpent": 45678.90,
+          "avgOrderValue": "87.00",
+          "googleAdsId": "gender_unknown"
+        }
+      }
+    },
+
+    "interests": {
+      "Beauty & Personal Care": {
+        "count": 1312,
+        "percentage": "25.0",
+        "totalSpent": 234567.89,
+        "avgOrderValue": "178.85",
+        "keywords": ["beauty", "cosmetic", "skincare", "makeup", "care"]
+      },
+      "Fashion": {
+        "count": 1049,
+        "percentage": "20.0",
+        "totalSpent": 187654.32,
+        "avgOrderValue": "178.98",
+        "keywords": ["fashion", "clothing", "apparel", "style", "wear"]
+      },
+      "Home & Garden": {
+        "count": 787,
+        "percentage": "15.0",
+        "totalSpent": 156789.01,
+        "avgOrderValue": "199.22",
+        "keywords": ["home", "garden", "furniture", "decor", "kitchen"]
+      },
+      "Technology": {
+        "count": 630,
+        "percentage": "12.0",
+        "totalSpent": 145623.78,
+        "avgOrderValue": "231.15",
+        "keywords": ["tech", "gadget", "electronics", "software", "app"]
+      },
+      "Health & Wellness": {
+        "count": 525,
+        "percentage": "10.0",
+        "totalSpent": 98765.43,
+        "avgOrderValue": "188.12",
+        "keywords": ["health", "wellness", "vitamin", "supplement", "medical"]
+      }
+    },
+
+    "geography": {
+      "countries": {
+        "United States": {
+          "count": 3673,
+          "totalSpent": 645123.45
+        },
+        "Canada": {
+          "count": 787,
+          "totalSpent": 134567.89
+        },
+        "United Kingdom": {
+          "count": 524,
+          "totalSpent": 89012.34
+        },
+        "Australia": {
+          "count": 263,
+          "totalSpent": 45678.90
+        }
+      },
+      "totalWithLocation": 5247
+    },
+
+    "behavior": {
+      "purchaseFrequency": {
+        "frequent": {"count": 262, "minOrders": 5},
+        "regular": {"count": 525, "minOrders": 3},
+        "occasional": {"count": 1574, "minOrders": 1},
+        "oneTime": {"count": 2886, "minOrders": 1}
+      },
+      "recency": {
+        "active": {"count": 1312, "daysSinceLastOrder": 30},
+        "recent": {"count": 1049, "daysSinceLastOrder": 90},
+        "lapsed": {"count": 1574, "daysSinceLastOrder": 180},
+        "dormant": {"count": 1312, "daysSinceLastOrder": 999}
+      },
+      "avgOrdersPerCustomer": "2.4",
+      "avgSpendPerCustomer": "167.23",
+      "avgDaysBetweenOrders": 0
+    },
+
+    "highValueProfiles": {
+      "count": 524,
+      "avgSpend": "847.23",
+      "avgOrders": "4.8",
+      "topCategories": [
+        {"category": "Premium Skincare", "count": 198},
+        {"category": "Luxury Fashion", "count": 156},
+        {"category": "High-End Electronics", "count": 89},
+        {"category": "Designer Home Decor", "count": 81}
+      ],
+      "demographics": {
+        "ageDistribution": {
+          "35-44": {"count": 210, "percentage": "40.0"},
+          "25-34": {"count": 157, "percentage": "30.0"},
+          "45-54": {"count": 105, "percentage": "20.0"}
+        }
+      }
+    }
+  },
+
+  "segmentation": {
+    "tenantId": "shopify_store_demo",
+    "totalCustomers": 5247,
+    "rfmSegments": {
+      "Champions": {
+        "label": "Champions",
+        "description": "Best customers: bought recently, buy often, spend the most",
+        "priority": 1,
+        "color": "#00C853",
+        "customerCount": 262,
+        "totalRevenue": 123456.78,
+        "avgOrderValue": "471.04",
+        "avgOrderCount": "6.2",
+        "avgRecencyDays": 15
+      },
+      "Loyal Customers": {
+        "label": "Loyal Customers",
+        "description": "Buy regularly and spend good amounts",
+        "priority": 2,
+        "color": "#00E676",
+        "customerCount": 525,
+        "totalRevenue": 189234.56,
+        "avgOrderValue": "360.45",
+        "avgOrderCount": "4.8",
+        "avgRecencyDays": 25
+      },
+      "At Risk": {
+        "label": "At Risk",
+        "description": "Spent big money, purchased often but long time ago",
+        "priority": 8,
+        "color": "#F44336",
+        "customerCount": 314,
+        "totalRevenue": 145678.90,
+        "avgOrderValue": "464.01",
+        "avgOrderCount": "5.1",
+        "avgRecencyDays": 125
+      },
+      "Recent Customers": {
+        "label": "Recent Customers",
+        "description": "Bought recently but not frequently",
+        "priority": 4,
+        "color": "#FFEB3B",
+        "customerCount": 1049,
+        "totalRevenue": 87654.32,
+        "avgOrderValue": "83.56",
+        "avgOrderCount": "1.2",
+        "avgRecencyDays": 18
+      }
+    },
+
+    "lifetimeValue": {
+      "totalCustomers": 5247,
+      "totalLifetimeValue": "877654.32",
+      "avgLifetimeValue": "167.23",
+      "medianLifetimeValue": "89.45",
+      "topPercentile": {
+        "top1": {
+          "threshold": "2456.78",
+          "count": 52,
+          "totalValue": "234567.89",
+          "avgValue": "4510.92"
+        },
+        "top5": {
+          "threshold": "845.67",
+          "count": 262,
+          "totalValue": "456789.01",
+          "avgValue": "1743.47"
+        },
+        "top10": {
+          "threshold": "456.78",
+          "count": 525,
+          "totalValue": "567890.12",
+          "avgValue": "1081.52"
+        }
+      }
+    },
+
+    "specialGroups": {
+      "vip": {
+        "label": "VIP Customers",
+        "description": "Top tier customers requiring special attention",
+        "count": 262,
+        "totalRevenue": "234567.89"
+      },
+      "atRisk": {
+        "label": "At Risk",
+        "description": "High-value customers who might churn",
+        "count": 314,
+        "potentialLostRevenue": "145678.90"
+      },
+      "winBack": {
+        "label": "Win Back",
+        "description": "Previously valuable customers to re-engage",
+        "count": 156,
+        "potentialRevenue": "34567.89"
+      },
+      "newHighPotential": {
+        "label": "New High Potential",
+        "description": "Recent customers with strong first purchase",
+        "count": 89,
+        "projectedValue": "156789.01"
+      }
+    },
+
+    "insights": [
+      {
+        "segment": "Champions",
+        "priority": "high",
+        "type": "opportunity",
+        "message": "You have 262 Champions spending an average of $471.04. Reward their loyalty with exclusive offers and referral incentives.",
+        "actionItems": [
+          "Create VIP loyalty program",
+          "Offer early access to new products",
+          "Request testimonials and reviews",
+          "Implement referral rewards"
+        ]
+      },
+      {
+        "segment": "At Risk",
+        "priority": "urgent",
+        "type": "risk",
+        "message": "314 high-value customers are at risk. They spent $145678.90 but haven't ordered in 125 days.",
+        "actionItems": [
+          "Send personalized win-back campaigns",
+          "Offer special discounts (15-20%)",
+          "Survey to understand why they stopped",
+          "Provide customer success outreach"
+        ]
+      }
+    ]
+  },
+
+  "audiences": {
+    "tenantId": "shopify_store_demo",
+    "totalCustomers": 5247,
+    "exportFormat": "google_ads",
+
+    "customerMatchLists": {
+      "vip": {
+        "name": "VIP Customers",
+        "description": "High-value loyal customers for premium offers",
+        "size": 1247,
+        "eligible": true,
+        "data": {
+          "format": "google_ads",
+          "count": 1247,
+          "eligible": true,
+          "minRequired": 1000
+        },
+        "targetingStrategy": {
+          "bidAdjustment": "+30%",
+          "adSchedule": "All times",
+          "devices": "All devices",
+          "locations": "All",
+          "messaging": "Exclusive VIP offers, early access, loyalty rewards"
+        }
+      },
+      "atRisk": {
+        "name": "At-Risk Customers",
+        "description": "Previously engaged customers needing re-engagement",
+        "size": 892,
+        "eligible": false,
+        "data": {
+          "format": "google_ads",
+          "count": 892,
+          "eligible": false,
+          "minRequired": 1000
+        },
+        "targetingStrategy": {
+          "bidAdjustment": "+15%",
+          "adSchedule": "All times",
+          "devices": "All devices",
+          "locations": "All",
+          "messaging": "Win-back offers, special discounts, new product highlights"
+        }
+      },
+      "recentBuyers": {
+        "name": "Recent Buyers (30 days)",
+        "description": "Customers who purchased in the last 30 days",
+        "size": 1312,
+        "eligible": true,
+        "targetingStrategy": {
+          "bidAdjustment": "+10%",
+          "messaging": "Cross-sell, upsell, repeat purchase incentives"
+        }
+      }
+    },
+
+    "lookalikeAudiences": {
+      "top1Percent": {
+        "name": "Lookalike - Top 1% Customers",
+        "description": "Find new customers similar to your best 1%",
+        "seedAudienceSize": 524,
+        "expansionRatio": "1%",
+        "characteristics": {
+          "avgSpend": "847.23",
+          "avgOrders": "4.8",
+          "topCategories": [
+            {"category": "Premium Skincare", "count": 198}
+          ]
+        },
+        "targetingStrategy": {
+          "bidAdjustment": "+35%",
+          "budget": "High",
+          "messaging": "Value proposition, premium positioning"
+        }
+      },
+      "frequentBuyers": {
+        "name": "Lookalike - Frequent Buyers",
+        "description": "Find customers likely to make repeat purchases",
+        "seedAudienceSize": 787,
+        "expansionRatio": "5%",
+        "targetingStrategy": {
+          "bidAdjustment": "+20%",
+          "messaging": "Product variety, subscription offers, loyalty benefits"
+        }
+      }
+    },
+
+    "exclusionLists": {
+      "recentConverters": {
+        "name": "Exclusion - Recent Converters (7 days)",
+        "description": "Exclude customers who purchased in last 7 days",
+        "size": 423,
+        "applyTo": ["acquisition", "remarketing"],
+        "reason": "Avoid ad fatigue and wasted spend on recent buyers"
+      },
+      "lostCustomers": {
+        "name": "Exclusion - Lost Customers",
+        "description": "Exclude from acquisition campaigns, target with win-back instead",
+        "size": 1312,
+        "applyTo": ["acquisition", "prospecting"],
+        "reason": "Prevent wasted spend on customers who need different messaging"
+      }
+    },
+
+    "recommendations": [
+      {
+        "priority": "high",
+        "type": "opportunity",
+        "title": "Customer Match Ready",
+        "message": "2 audience lists meet Google Ads minimum requirements (1000+ customers). Upload immediately for best results.",
+        "actionItems": [
+          "Upload VIP and recent buyers lists first",
+          "Set up automated audience syncing",
+          "Create separate campaigns for each audience",
+          "Implement bid adjustments based on audience value"
+        ]
+      },
+      {
+        "priority": "high",
+        "type": "scaling",
+        "title": "Lookalike Audiences Available",
+        "message": "You have high-quality seed audiences for lookalike expansion. This can significantly reduce acquisition costs.",
+        "actionItems": [
+          "Create 1% lookalike for highest ROAS",
+          "Test 3-5% lookalikes for broader reach",
+          "Use different messaging for each lookalike tier",
+          "Monitor performance and adjust expansion ratios"
+        ]
+      }
+    ],
+
+    "readiness": {
+      "customerMatchReady": 2,
+      "totalCustomerMatchLists": 3,
+      "lookalikeAudiencesAvailable": 2,
+      "exclusionListsCreated": 2,
+      "totalUniqueCustomers": 4847
+    },
+
+    "metrics": {
+      "totalAudiences": 7,
+      "totalCustomersInAudiences": 4847,
+      "avgAudienceSize": 976
+    }
+  },
+
+  "insights": {
+    "topDemographics": {
+      "ageGroups": [
+        {
+          "ageRange": "35-44",
+          "percentage": "36.0",
+          "avgOrderValue": "183.25",
+          "targeting": "Target 35-44 age group with 36.0% of customers"
+        },
+        {
+          "ageRange": "25-34",
+          "percentage": "30.0",
+          "avgOrderValue": "149.12",
+          "targeting": "Target 25-34 age group with 30.0% of customers"
+        },
+        {
+          "ageRange": "45-54",
+          "percentage": "18.0",
+          "avgOrderValue": "210.98",
+          "targeting": "Target 45-54 age group with 18.0% of customers"
+        }
+      ],
+      "topInterests": [
+        {
+          "interest": "Beauty & Personal Care",
+          "percentage": "25.0",
+          "avgOrderValue": "178.85",
+          "targeting": "Create Beauty & Personal Care themed campaigns for 25.0% market share"
+        },
+        {
+          "interest": "Fashion",
+          "percentage": "20.0",
+          "avgOrderValue": "178.98",
+          "targeting": "Create Fashion themed campaigns for 20.0% market share"
+        }
+      ]
+    },
+
+    "revenueOpportunities": {
+      "vipCustomers": {
+        "count": 262,
+        "revenue": "234567.89",
+        "recommendation": "Implement VIP loyalty program and exclusive offers"
+      },
+      "atRiskRevenue": {
+        "count": 314,
+        "potentialLoss": "145678.90",
+        "recommendation": "Launch immediate win-back campaigns with 20-30% discounts"
+      },
+      "winBackOpportunity": {
+        "count": 156,
+        "potentialRevenue": "34567.89",
+        "recommendation": "Create targeted re-engagement campaigns for dormant high-value customers"
+      }
+    },
+
+    "adTargeting": {
+      "readyToLaunch": [
+        {
+          "name": "VIP Customers",
+          "size": 1247,
+          "strategy": {
+            "bidAdjustment": "+30%",
+            "messaging": "Exclusive VIP offers, early access, loyalty rewards"
+          },
+          "priority": "high"
+        },
+        {
+          "name": "Recent Buyers (30 days)",
+          "size": 1312,
+          "strategy": {
+            "bidAdjustment": "+10%",
+            "messaging": "Cross-sell, upsell, repeat purchase incentives"
+          },
+          "priority": "medium"
+        }
+      ],
+      "growthOpportunities": [
+        {
+          "name": "Lookalike - Top 1% Customers",
+          "seedSize": 524,
+          "expansionRatio": "1%",
+          "strategy": {
+            "bidAdjustment": "+35%",
+            "messaging": "Value proposition, premium positioning"
+          },
+          "projectedReach": "52400 potential customers"
+        }
+      ]
+    }
+  },
+
+  "metrics": {
+    "demographic": {
+      "profilesGenerated": 1547,
+      "cacheHits": 847,
+      "cacheMisses": 156,
+      "avgProfileTime": 234,
+      "errors": 0,
+      "cacheSize": 23,
+      "cacheHitRate": "84.4%"
+    },
+    "segmentation": {
+      "segmentationsPerformed": 891,
+      "cacheHits": 534,
+      "cacheMisses": 89,
+      "avgExecutionTime": 156,
+      "errors": 0,
+      "cacheSize": 15,
+      "cacheHitRate": "85.7%"
+    },
+    "audienceBuilder": {
+      "audiencesCreated": 2341,
+      "customersProcessed": 45672,
+      "listsGenerated": 756,
+      "uploadsPrepared": 1234,
+      "avgBuildTime": 198,
+      "errors": 0,
+      "cacheSize": 18,
+      "cacheHitRate": "82.1%"
+    },
+    "totalExecutionTime": 1847
+  }
+}
