@@ -2209,6 +2209,20 @@ app.post("/api/metrics", async (req, res) => {
             console.log(`✅ Inserted ${conversionValues.length} conversion values to Supabase`);
           }
         }
+        // CRITICAL: Also write to tenant_metrics table for AI dashboard
+        // This table is used by the AI dashboard to display metrics
+        if (mRows.length) {
+          console.log(`📊 Writing ${mRows.length} rows to tenant_metrics for AI dashboard`);
+          const { writeMetricsToSupabase } = await import('./services/dual-write.js');
+
+          try {
+            await writeMetricsToSupabase(String(tenant), mRows);
+            console.log(`✅ Successfully wrote to tenant_metrics table for ${tenant}`);
+          } catch (tenantMetricsError) {
+            console.error(`❌ Failed to write to tenant_metrics: ${tenantMetricsError.message}`);
+            // Continue execution even if tenant_metrics write fails
+          }
+        }
       } catch (supabaseError) {
         console.error('Supabase write error (will fallback to Sheets):', supabaseError);
       }

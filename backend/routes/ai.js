@@ -143,15 +143,28 @@ router.get("/stats/quick", async (req, res) => {
     // Query tenant metrics from the last N days
     const { data: metricsData, error: metricsError } = await supabaseClient
       .from('tenant_metrics')
-      .select('clicks, cost_micros, conversions, impressions, ctr')
+      .select('clicks, cost_micros, conversions, impressions, ctr, date')
       .eq('tenant_id', tenant)
       .gte('date', startDateStr)
       .order('date', { ascending: false });
 
     if (metricsError) {
-      console.warn('⚠️ Failed to query tenant metrics:', metricsError.message);
+      console.error('❌ Failed to query tenant metrics:', {
+        error: metricsError.message,
+        details: metricsError.details,
+        hint: metricsError.hint,
+        code: metricsError.code,
+        tenant: tenant,
+        query: 'tenant_metrics table'
+      });
       throw metricsError;
     }
+
+    console.log(`📊 Queried tenant_metrics for ${tenant}:`, {
+      recordCount: metricsData?.length || 0,
+      dateRange: `${startDateStr} to now`,
+      firstRecord: metricsData?.[0]
+    });
 
     // Aggregate metrics
     let totalClicks = 0;
@@ -3048,7 +3061,9 @@ router.get("/campaigns", async (req, res) => {
 
       console.log(`📊 Campaign metrics query for ${tenant}:`, {
         recordCount: metricsData?.length || 0,
-        error: error?.message
+        error: error?.message,
+        sampleRecord: metricsData?.[0],
+        query: 'tenant_metrics with entity_type=campaign'
       });
 
       if (!error && metricsData && metricsData.length > 0) {
