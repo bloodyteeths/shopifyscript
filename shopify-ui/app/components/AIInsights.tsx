@@ -4,7 +4,7 @@
  */
 
 import * as React from "react";
-import { useFetcher } from "@remix-run/react";
+import { authenticatedFetch } from "../utils/ai-client";
 
 interface AIInsightsProps {
   shopName: string;
@@ -57,8 +57,6 @@ export function AIInsights({ shopName, period, onRefresh }: AIInsightsProps) {
   const [loading, setLoading] = React.useState(false);
   const [error, setError] = React.useState<string | null>(null);
   const [expandedRecommendations, setExpandedRecommendations] = React.useState<Set<string>>(new Set());
-  const fetcher = useFetcher();
-
   // Load AI insights on component mount and when period changes
   React.useEffect(() => {
     if (shopName && period) {
@@ -73,15 +71,12 @@ export function AIInsights({ shopName, period, onRefresh }: AIInsightsProps) {
     setError(null);
 
     try {
-      // Use the backend fetch utility to make authenticated requests
-      const { backendFetch } = await import("../server/hmac.server");
-
-      // Try the new AI insights endpoint
-      const response = await fetch(`/api/ai/insights?tenant=${shopName}&period=${period}`, {
-        headers: {
-          'X-Tenant-Id': shopName
-        }
-      });
+      const response = await authenticatedFetch(
+        `/ai/insights?period=${period}`,
+        "GET",
+        undefined,
+        shopName
+      );
 
       if (response.ok) {
         const result = await response.json();
