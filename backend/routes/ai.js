@@ -3651,7 +3651,7 @@ router.get("/performance/insights", async (req, res) => {
       });
 
       // Calculate CTR for each date
-      Object.values(performanceByDate).forEach((day: any) => {
+      Object.values(performanceByDate).forEach((day) => {
         if (day.impressions > 0) {
           day.ctr = ((day.clicks / day.impressions) * 100).toFixed(2);
         }
