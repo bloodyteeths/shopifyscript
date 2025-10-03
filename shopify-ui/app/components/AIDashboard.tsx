@@ -468,7 +468,11 @@ export function AIDashboard({ shopName, subscriptionTier = "starter", hasFeature
               <Tabs tabs={tabs} selected={selectedTab} onSelect={setSelectedTab}>
                 <div style={{ paddingTop: "16px" }}>
                   {selectedTab === 0 && (
-                    <UserDashboard shopName={shopName} hasFeatureAccess={hasFeatureAccess} />
+                    <UserDashboard
+                      shopName={shopName}
+                      hasFeatureAccess={hasFeatureAccess}
+                      onNavigateToTab={setSelectedTab}
+                    />
                   )}
                   {selectedTab === 1 && (
                     <CampaignManager shopName={shopName} hasFeatureAccess={hasFeatureAccess} />

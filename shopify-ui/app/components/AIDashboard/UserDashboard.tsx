@@ -19,6 +19,7 @@ import { TimeRangeSelector, TimePeriod, getPeriodLabel } from "../TimeRangeSelec
 interface UserDashboardProps {
   shopName: string;
   hasFeatureAccess?: boolean;
+  onNavigateToTab?: (tabIndex: number) => void;
 }
 
 interface CampaignMetrics {
@@ -39,7 +40,7 @@ interface AIOptimization {
   lastOptimization: string;
 }
 
-export function UserDashboard({ shopName, hasFeatureAccess = false }: UserDashboardProps) {
+export function UserDashboard({ shopName, hasFeatureAccess = false, onNavigateToTab }: UserDashboardProps) {
   const [metrics, setMetrics] = useState<CampaignMetrics | null>(null);
   const [aiStatus, setAIStatus] = useState<AIOptimization | null>(null);
   const [loading, setLoading] = useState(true);
@@ -107,10 +108,12 @@ export function UserDashboard({ shopName, hasFeatureAccess = false }: UserDashbo
     loadData();
   }, [fetchMetrics, fetchAIStatus]);
 
-  // Handle period change
+  // Handle period change - refetch data when period changes
   const handlePeriodChange = useCallback((period: TimePeriod) => {
     setSelectedPeriod(period);
-  }, []);
+    // Trigger immediate refetch
+    fetchMetrics();
+  }, [fetchMetrics]);
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-US', {
@@ -194,11 +197,11 @@ export function UserDashboard({ shopName, hasFeatureAccess = false }: UserDashbo
             <Button
               variant="primary"
               size="large"
-              onClick={() => window.location.href = '/app/ai-dashboard?tab=content'}
+              onClick={() => onNavigateToTab?.(2)}
             >
               Generate New Ads
             </Button>
-            <Button onClick={() => window.location.href = '/app/ai-dashboard?tab=campaigns'}>
+            <Button onClick={() => onNavigateToTab?.(1)}>
               View All Campaigns
             </Button>
             <Button onClick={() => window.location.href = '/app/setup?tab=ai-settings'}>
