@@ -69,7 +69,21 @@ export function AIDashboard({ shopName, subscriptionTier = "starter", hasFeature
   const [isGenerating, setIsGenerating] = useState(false);
 
   // State for tab navigation
-  const [selectedTab, setSelectedTab] = useState(0);
+  const [selectedTab, setSelectedTab] = useState(() => {
+    // Read initial tab from URL params
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search);
+      const tabParam = params.get('tab');
+      const tabMap: Record<string, number> = {
+        'dashboard': 0,
+        'campaigns': 1,
+        'content': 2,
+        'insights': 3
+      };
+      return tabMap[tabParam || ''] ?? 0;
+    }
+    return 0;
+  });
   const [showAdminView, setShowAdminView] = useState(false);
 
   // Fetch AI drafts
