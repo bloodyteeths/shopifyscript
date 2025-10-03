@@ -46,3 +46,4 @@ async function testDraftsEndpoint() {
 
 // Run the test
 testDraftsEndpoint().catch(console.error);
+

@@ -106,13 +106,45 @@ export function AIContentStudio({ shopName, hasFeatureAccess = false }: AIConten
   };
 
   const handleGenerateAds = async () => {
+    if (!hasFeatureAccess) {
+      setError("AI Content Generation requires Professional+ subscription");
+      return;
+    }
+
     setIsGenerating(true);
-    // Simulate generation
-    setTimeout(() => {
+    setError(null);
+
+    try {
+      // Call the actual AI writer endpoint
+      const response = await authenticatedFetch("/jobs/ai_writer", "POST", {
+        dryRun: false,
+        limit: parseInt(numberOfVariants) || 5,
+        theme: theme || undefined,
+        tone: tone || 'professional',
+        mode: aiMode || 'creative'
+      }, shopName);
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data.ok) {
+          // Close modal and refresh drafts
+          setGenerationModal(false);
+          // Wait a bit for drafts to be written to database
+          setTimeout(() => {
+            fetchDrafts();
+          }, 2000);
+        } else {
+          setError(data.error || "Failed to generate ads");
+        }
+      } else {
+        setError("Failed to generate ads. Please try again.");
+      }
+    } catch (err) {
+      console.error("Error generating ads:", err);
+      setError("Error generating ads: " + (err instanceof Error ? err.message : String(err)));
+    } finally {
       setIsGenerating(false);
-      setGenerationModal(false);
-      fetchDrafts();
-    }, 2000);
+    }
   };
 
   const getPerformanceBadge = (status: string) => {
@@ -214,21 +246,33 @@ export function AIContentStudio({ shopName, hasFeatureAccess = false }: AIConten
                     { label: 'Sale Items', value: 'sale' },
                   ]}
                   value="all"
-                  onChange={() => {}}
+                  onChange={(value) => console.log('Filter by theme:', value)}
                 />
                 <TextField
                   label=""
                   placeholder="Search ads..."
                   value=""
-                  onChange={() => {}}
+                  onChange={(value) => console.log('Search:', value)}
                   autoComplete="off"
                 />
               </InlineStack>
               {selectedDrafts.length > 0 && (
                 <InlineStack gap="200">
                   <Text variant="bodyMd">{selectedDrafts.length} selected</Text>
-                  <Button>Deploy to Campaign</Button>
-                  <Button variant="plain">Delete</Button>
+                  <Button onClick={() => alert(`Deploy ${selectedDrafts.length} ads to campaign - feature coming soon`)}>
+                    Deploy to Campaign
+                  </Button>
+                  <Button
+                    variant="plain"
+                    onClick={() => {
+                      if (confirm(`Delete ${selectedDrafts.length} selected ads?`)) {
+                        setSelectedDrafts([]);
+                        alert('Delete functionality coming soon');
+                      }
+                    }}
+                  >
+                    Delete
+                  </Button>
                 </InlineStack>
               )}
             </InlineStack>
@@ -292,9 +336,36 @@ export function AIContentStudio({ shopName, hasFeatureAccess = false }: AIConten
                       )}
 
                       <InlineStack gap="200">
-                        <Button size="slim" variant="plain">Preview</Button>
-                        <Button size="slim" variant="plain">Edit</Button>
-                        <Button size="slim" variant="plain">Duplicate</Button>
+                        <Button
+                          size="slim"
+                          variant="plain"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            alert(`Preview ad: ${draft.theme}\n\nHeadlines:\n${draft.headlines.join('\n')}\n\nDescriptions:\n${draft.descriptions.join('\n')}`);
+                          }}
+                        >
+                          Preview
+                        </Button>
+                        <Button
+                          size="slim"
+                          variant="plain"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            alert('Edit functionality coming soon');
+                          }}
+                        >
+                          Edit
+                        </Button>
+                        <Button
+                          size="slim"
+                          variant="plain"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            alert('Duplicate functionality coming soon');
+                          }}
+                        >
+                          Duplicate
+                        </Button>
                       </InlineStack>
                     </BlockStack>
                   </Card>
@@ -394,10 +465,18 @@ export function AIContentStudio({ shopName, hasFeatureAccess = false }: AIConten
               </Box>
 
               <InlineStack gap="200">
-                <Button variant="primary" size="large" onClick={handleGenerateAds} loading={isGenerating}>
-                  Generate Ads
+                <Button
+                  variant="primary"
+                  size="large"
+                  onClick={handleGenerateAds}
+                  loading={isGenerating}
+                  disabled={!hasFeatureAccess}
+                >
+                  {hasFeatureAccess ? 'Generate Ads' : 'Upgrade to Generate'}
                 </Button>
-                <Button>Use Template</Button>
+                <Button onClick={() => alert('Template selection coming soon')}>
+                  Use Template
+                </Button>
               </InlineStack>
             </BlockStack>
           </BlockStack>
@@ -410,7 +489,10 @@ export function AIContentStudio({ shopName, hasFeatureAccess = false }: AIConten
           <Banner
             title="3 Active Tests Running"
             tone="info"
-            action={{ content: 'View Details' }}
+            action={{
+              content: 'View Details',
+              onAction: () => alert('A/B test details coming soon')
+            }}
           >
             <p>Your ads are being automatically tested. Winners will be promoted after reaching statistical significance.</p>
           </Banner>
