@@ -33,6 +33,7 @@ export function PerformanceInsights({ shopName, hasFeatureAccess = false }: Perf
   const [aiImpact, setAiImpact] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [hasData, setHasData] = useState(false);
 
   // Convert timeRange to period for API call
   const getPeriodFromTimeRange = (range: string): TimePeriod => {
@@ -62,12 +63,17 @@ export function PerformanceInsights({ shopName, hasFeatureAccess = false }: Perf
           setDeviceBreakdown(data.deviceBreakdown || []);
           setTopKeywords(data.topKeywords || []);
           setAiImpact(data.aiImpact || null);
+          const dataAvailable = Boolean((data.performanceData && data.performanceData.length) || (data.deviceBreakdown && data.deviceBreakdown.length) || (data.topKeywords && data.topKeywords.length));
+          setHasData(dataAvailable);
         } else {
           setPerformanceData([]);
           setDeviceBreakdown([]);
           setTopKeywords([]);
           setAiImpact(null);
+          setHasData(false);
         }
+      } else {
+        setHasData(false);
       }
     } catch (err) {
       console.error("Failed to fetch performance data:", err);
@@ -76,6 +82,7 @@ export function PerformanceInsights({ shopName, hasFeatureAccess = false }: Perf
       setDeviceBreakdown([]);
       setTopKeywords([]);
       setAiImpact(null);
+      setHasData(false);
     }
   }, [shopName, timeRange]);
 
@@ -127,6 +134,54 @@ export function PerformanceInsights({ shopName, hasFeatureAccess = false }: Perf
             <Banner tone="critical" title="Error loading performance data">
               <p>{error}. Please try again later.</p>
             </Banner>
+          </BlockStack>
+        </Card>
+      </BlockStack>
+    );
+  }
+
+  if (!hasData) {
+    return (
+      <BlockStack gap="600">
+        <Card>
+          <InlineStack align="space-between">
+            <BlockStack gap="200">
+              <Text variant="headingLg" as="h2">Performance Insights</Text>
+              <Text variant="bodyMd" tone="subdued">
+                Deep analytics and AI performance tracking
+              </Text>
+            </BlockStack>
+            <InlineStack gap="200">
+              <Select
+                label=""
+                options={[
+                  { label: 'Last 7 days', value: '7d' },
+                  { label: 'Last 30 days', value: '30d' },
+                  { label: 'Last 90 days', value: '90d' },
+                  { label: 'This month', value: 'month' },
+                  { label: 'This year', value: 'year' },
+                ]}
+                value={timeRange}
+                onChange={setTimeRange}
+              />
+              <Button
+                pressed={compareMode}
+                onClick={() => setCompareMode(!compareMode)}
+              >
+                Compare with/without AI
+              </Button>
+              <Button onClick={() => alert('Export report functionality coming soon')}>
+                Export Report
+              </Button>
+            </InlineStack>
+          </InlineStack>
+        </Card>
+        <Card>
+          <BlockStack gap="300">
+            <Text variant="headingMd">No performance data yet</Text>
+            <Text tone="subdued">
+              We haven’t received impressions or clicks for this period. Try a longer range or check back once your Google Ads campaigns have activity.
+            </Text>
           </BlockStack>
         </Card>
       </BlockStack>

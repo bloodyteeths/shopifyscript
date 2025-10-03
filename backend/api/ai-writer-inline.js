@@ -11,6 +11,13 @@ import tenantConfigService from "../services/tenant-config.js";
 import { WebsiteScraperService } from "../services/website-scraper.js";
 import { CompetitorIntelligenceService } from "../services/competitor-intelligence.js";
 
+const INLINE_WRITER_MAX_DURATION_MS = Number(process.env.AI_WRITER_DEADLINE_MS || 20000);
+const INLINE_WRITER_SKIP_COMPETITORS = (
+  process.env.AI_WRITER_SKIP_COMPETITORS === 'true' ||
+  process.env.VERCEL === '1' ||
+  process.env.VERCEL === 'true'
+);
+
 /**
  * Get Supabase client
  */
@@ -154,8 +161,13 @@ async function getBusinessContext(tenant, supabase) {
   }
 
   try {
-    competitorIntel = new CompetitorIntelligenceService();
-    console.log('✅ CompetitorIntelligenceService initialized');
+    if (INLINE_WRITER_SKIP_COMPETITORS) {
+      console.log('⏭️  Skipping competitor intelligence for inline writer');
+      competitorIntel = null;
+    } else {
+      competitorIntel = new CompetitorIntelligenceService();
+      console.log('✅ CompetitorIntelligenceService initialized');
+    }
   } catch (err) {
     console.error('❌ CompetitorIntelligenceService init failed:', err.message, err.stack);
     competitorIntel = null;
@@ -531,6 +543,8 @@ export async function handleInlineAIWriter(tenant, limit = 5) {
 
     // Generate contextual themes instead of generic "Theme 1", "Theme 2"
     const themes = generateContextualThemes(context, limit);
+    const writerDeadline = Date.now() + Math.min(INLINE_WRITER_MAX_DURATION_MS, 25000);
+    let timedOut = false;
 
     // Try to get Google Sheets doc
     let doc, rsa;
@@ -551,6 +565,15 @@ export async function handleInlineAIWriter(tenant, limit = 5) {
     }
 
     for (const theme of themes) {
+      const remainingTime = writerDeadline - Date.now();
+      if (remainingTime <= 500) {
+        console.warn(`⏰ AI writer deadline reached before processing theme "${theme}"`);
+        if (aiLogger && typeof aiLogger.logAIOperation === 'function') {
+          aiLogger.logAIOperation(tenant, 'ai_writer', 'warning', `Deadline reached before processing theme ${theme}`);
+        }
+        timedOut = true;
+        break;
+      }
       try {
         let headlines, descriptions;
 
@@ -620,7 +643,12 @@ Focus on "${theme}" - make it compelling, data-driven, and differentiated from c
 
 Return ONLY valid JSON: {"headlines": [...], "descriptions": [...]}`;
 
-          const response = await ai.generateText(prompt);
+          const response = await Promise.race([
+            ai.generateText(prompt),
+            new Promise((_, reject) =>
+              setTimeout(() => reject(new Error('ai_writer_prompt_timeout')), Math.max(500, remainingTime))
+            )
+          ]);
 
           // Try to parse response
           try {
@@ -633,6 +661,14 @@ Return ONLY valid JSON: {"headlines": [...], "descriptions": [...]}`;
             descriptions = [];
           }
         } catch (aiError) {
+          if (aiError?.message === 'ai_writer_prompt_timeout') {
+            console.warn(`⏰ AI writer prompt timeout for theme "${theme}"`);
+            if (aiLogger && typeof aiLogger.logAIOperation === 'function') {
+              aiLogger.logAIOperation(tenant, 'ai_writer', 'warning', `Prompt timeout for ${theme}`);
+            }
+            timedOut = true;
+            break;
+          }
           console.warn(`AI generation failed for ${theme}:`, aiError.message);
           headlines = [];
           descriptions = [];
@@ -779,13 +815,16 @@ Return ONLY valid JSON: {"headlines": [...], "descriptions": [...]}`;
 
     // Log completion
     if (aiLogger && typeof aiLogger.logAIOperation === 'function') {
-      aiLogger.logAIOperation(tenant, 'ai_writer', 'success',
-        `Generated ${results.length} themes, wrote ${supabaseWrites} to Supabase, ${sheetWrites} to Sheets`);
+      const statusMessage = timedOut
+        ? `Generation stopped early after ${results.length} themes (deadline ${INLINE_WRITER_MAX_DURATION_MS}ms)`
+        : `Generated ${results.length} themes, wrote ${supabaseWrites} to Supabase, ${sheetWrites} to Sheets`;
+      aiLogger.logAIOperation(tenant, 'ai_writer', timedOut ? 'warning' : 'success', statusMessage);
     }
 
     return {
       ok: true,
-      success: true,
+      success: results.length > 0,
+      timedOut,
       results,
       wrote: results.filter(r => r.written).length,
       wroteToSupabase: supabaseWrites,

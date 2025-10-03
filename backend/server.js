@@ -4444,13 +4444,16 @@ app.post("/api/jobs/ai_writer", async (req, res) => {
 
       // Log result
       try {
+        const logMessage = result.timeout
+          ? 'ai_writer_timeout: generation in progress'
+          : result.timedOut
+            ? `ai_writer_partial: ${result.wrote} themes before deadline`
+            : `ai_writer_completed: ${result.wrote} themes`;
         await appendRows(
           tenant,
           "RUN_LOGS",
           ["timestamp", "message"],
-          [[new Date().toISOString(), result.timeout ?
-            `ai_writer_timeout: generation in progress` :
-            `ai_writer_completed: ${result.wrote} themes`]],
+          [[new Date().toISOString(), logMessage]],
         );
       } catch {}
 
@@ -4467,9 +4470,11 @@ app.post("/api/jobs/ai_writer", async (req, res) => {
           ok: true,
           ...result,
           limitReduced: safeLimit < limit,
-          message: safeLimit < limit ?
-            `Generated ${safeLimit} themes (reduced from ${limit} for speed). Run again for more.` :
-            `Successfully generated ${result.wrote} themes.`
+          message: result.timedOut
+            ? `Generated ${result.wrote} themes before hitting the safety timeout. Run again for more.`
+            : safeLimit < limit
+              ? `Generated ${safeLimit} themes (reduced from ${limit} for speed). Run again for more.`
+              : `Successfully generated ${result.wrote} themes.`
         });
       }
 
