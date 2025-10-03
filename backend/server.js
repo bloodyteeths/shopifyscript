@@ -1524,6 +1524,7 @@ app.post("/api/metrics", async (req, res) => {
       return json(res, 429, { ok: false, code: "THROTTLED" });
     metricsThrottle.set(tenant, nowTs);
     const MET_HEADERS = [
+      "period",      // NEW: time period (TODAY, YESTERDAY, LAST_7_DAYS, etc.)
       "date",
       "level",
       "campaign",
@@ -1641,11 +1642,18 @@ app.post("/api/metrics", async (req, res) => {
       .map((r) => {
         const a = Array.isArray(r) ? r.slice(0, MET_HEADERS.length) : [];
         if (!a.length) return null;
-        a[6] = Number(a[6] || 0);
-        a[7] = Number(a[7] || 0);
-        a[8] = Number(a[8] || 0);
-        a[9] = Number(a[9] || 0);
-        a[10] = Number(a[10] || 0);
+
+        // Validate and normalize period field (index 0)
+        if (typeof a[0] !== 'string' || !a[0]) {
+          a[0] = 'UNKNOWN';  // Default period if missing
+        }
+
+        // Ensure numeric fields (indices shifted by 1 due to new period field)
+        a[7] = Number(a[7] || 0);  // clicks
+        a[8] = Number(a[8] || 0);  // cost
+        a[9] = Number(a[9] || 0);  // conversions
+        a[10] = Number(a[10] || 0); // impr
+        a[11] = Number(a[11] || 0); // ctr
         return a;
       })
       .filter(Boolean);
@@ -2213,10 +2221,10 @@ app.post("/api/metrics", async (req, res) => {
         // This table is used by the AI dashboard to display metrics
         if (mRows.length) {
           console.log(`📊 Writing ${mRows.length} rows to tenant_metrics for AI dashboard`);
-          const { writeMetricsToSupabase } = await import('./services/dual-write.js');
+          const { dualWriteMetrics } = await import('./services/dual-write.js');
 
           try {
-            await writeMetricsToSupabase(String(tenant), mRows);
+            await dualWriteMetrics(String(tenant), mRows);
             console.log(`✅ Successfully wrote to tenant_metrics table for ${tenant}`);
           } catch (tenantMetricsError) {
             console.error(`❌ Failed to write to tenant_metrics: ${tenantMetricsError.message}`);
@@ -3358,6 +3366,7 @@ app.get("/api/insights", async (req, res) => {
       return json(res, 200, cached.data);
 
     const MET_HEADERS = [
+      "period",      // NEW: time period (TODAY, YESTERDAY, LAST_7_DAYS, etc.)
       "date",
       "level",
       "campaign",
@@ -4139,6 +4148,7 @@ app.get("/api/insights/debug", async (req, res) => {
     return json(res, 403, { ok: false, code: "AUTH" });
   try {
     const MET_HEADERS = [
+      "period",      // NEW: time period (TODAY, YESTERDAY, LAST_7_DAYS, etc.)
       "date",
       "level",
       "campaign",
