@@ -12,7 +12,9 @@ const router = express.Router();
 const metricsThrottle = new Map();
 
 // Standard headers for different data types
+// ✅ UPDATED: Added 'period' as first field
 const MET_HEADERS = [
+  "period",      // NEW: time period (TODAY, YESTERDAY, LAST_7_DAYS, etc.)
   "date",
   "level",
   "campaign",
@@ -64,16 +66,23 @@ router.post("/metrics",
     metricsThrottle.set(tenant, nowTs);
 
     // Coerce numeric fields for metrics
+    // ✅ UPDATED: Handle period field (index 0)
     const mRows = (Array.isArray(metrics) ? metrics : [])
       .map((r) => {
         const a = Array.isArray(r) ? r.slice(0, MET_HEADERS.length) : [];
         if (!a.length) return null;
-        // Ensure numeric fields
-        a[6] = Number(a[6] || 0); // clicks
-        a[7] = Number(a[7] || 0); // cost
-        a[8] = Number(a[8] || 0); // conversions
-        a[9] = Number(a[9] || 0); // impr
-        a[10] = Number(a[10] || 0); // ctr
+
+        // Validate and normalize period field
+        if (typeof a[0] !== 'string' || !a[0]) {
+          a[0] = 'UNKNOWN';  // Default period if missing
+        }
+
+        // Ensure numeric fields (indices shifted by 1 due to new period field)
+        a[7] = Number(a[7] || 0);  // clicks
+        a[8] = Number(a[8] || 0);  // cost
+        a[9] = Number(a[9] || 0);  // conversions
+        a[10] = Number(a[10] || 0); // impr
+        a[11] = Number(a[11] || 0); // ctr
         return a;
       })
       .filter(Boolean);

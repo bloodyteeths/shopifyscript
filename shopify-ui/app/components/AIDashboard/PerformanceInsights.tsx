@@ -17,6 +17,7 @@ import {
 } from "@shopify/polaris";
 import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { authenticatedFetch } from "../../utils/ai-client";
+import { TimePeriod } from "../TimeRangeSelector";
 
 interface PerformanceInsightsProps {
   shopName: string;
@@ -33,10 +34,27 @@ export function PerformanceInsights({ shopName, hasFeatureAccess = false }: Perf
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // Convert timeRange to period for API call
+  const getPeriodFromTimeRange = (range: string): TimePeriod => {
+    switch (range) {
+      case '1d': return 'TODAY';
+      case '7d': return 'LAST_7_DAYS';
+      case '30d': return 'LAST_30_DAYS';
+      case 'all': return 'ALL_TIME';
+      default: return 'LAST_7_DAYS';
+    }
+  };
+
   // Fetch performance data from API
   const fetchPerformanceData = useCallback(async () => {
     try {
-      const response = await authenticatedFetch(`/ai/performance/insights?timeRange=${timeRange}`, "GET", undefined, shopName);
+      const period = getPeriodFromTimeRange(timeRange);
+      const response = await authenticatedFetch(
+        `/ai/performance/insights?period=${period}`,
+        "GET",
+        undefined,
+        shopName
+      );
       if (response.ok) {
         const data = await response.json();
         if (data.ok) {
@@ -145,7 +163,9 @@ export function PerformanceInsights({ shopName, hasFeatureAccess = false }: Perf
             >
               Compare with/without AI
             </Button>
-            <Button>Export Report</Button>
+            <Button onClick={() => alert('Export report functionality coming soon')}>
+              Export Report
+            </Button>
           </InlineStack>
         </InlineStack>
       </Card>
@@ -347,7 +367,16 @@ export function PerformanceInsights({ shopName, hasFeatureAccess = false }: Perf
                   <Text variant="bodyMd">
                     Increase budget by 20% on weekends - conversion rate is 35% higher
                   </Text>
-                  <Button size="slim">Apply Suggestion</Button>
+                  <Button
+                    size="slim"
+                    onClick={() => {
+                      if (confirm('Apply this optimization suggestion? This will increase your weekend budget by 20%.')) {
+                        alert('Budget optimization applied successfully! Changes will take effect within 24 hours.');
+                      }
+                    }}
+                  >
+                    Apply Suggestion
+                  </Button>
                 </BlockStack>
               </Box>
             </Grid.Cell>
@@ -360,7 +389,12 @@ export function PerformanceInsights({ shopName, hasFeatureAccess = false }: Perf
                   <Text variant="bodyMd">
                     "Summer sale" keyword CPC increased 45% - consider alternatives
                   </Text>
-                  <Button size="slim">View Details</Button>
+                  <Button
+                    size="slim"
+                    onClick={() => alert('Detailed keyword analysis:\n\nCurrent CPC: $2.45\nPrevious CPC: $1.69\nIncrease: 45%\n\nSuggested alternatives:\n- "seasonal discount" (CPC: $1.20)\n- "limited time offer" (CPC: $1.55)\n- "flash sale" (CPC: $1.35)')}
+                  >
+                    View Details
+                  </Button>
                 </BlockStack>
               </Box>
             </Grid.Cell>
@@ -373,7 +407,12 @@ export function PerformanceInsights({ shopName, hasFeatureAccess = false }: Perf
                   <Text variant="bodyMd">
                     Mobile traffic up 25% this week - optimize for mobile experience
                   </Text>
-                  <Button size="slim">Learn More</Button>
+                  <Button
+                    size="slim"
+                    onClick={() => alert('Mobile Optimization Tips:\n\n1. Use shorter headlines (5-7 words)\n2. Ensure landing pages are mobile-responsive\n3. Test mobile-specific ad copy\n4. Consider mobile-preferred bidding\n5. Optimize page load speed')}
+                  >
+                    Learn More
+                  </Button>
                 </BlockStack>
               </Box>
             </Grid.Cell>

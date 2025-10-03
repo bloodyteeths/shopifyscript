@@ -14,6 +14,7 @@ import {
   Divider,
 } from "@shopify/polaris";
 import { authenticatedFetch } from "../../utils/ai-client";
+import { TimeRangeSelector, TimePeriod, getPeriodLabel } from "../TimeRangeSelector";
 
 interface UserDashboardProps {
   shopName: string;
@@ -42,11 +43,17 @@ export function UserDashboard({ shopName, hasFeatureAccess = false }: UserDashbo
   const [metrics, setMetrics] = useState<CampaignMetrics | null>(null);
   const [aiStatus, setAIStatus] = useState<AIOptimization | null>(null);
   const [loading, setLoading] = useState(true);
+  const [selectedPeriod, setSelectedPeriod] = useState<TimePeriod>('LAST_7_DAYS');
 
   // Fetch campaign metrics
   const fetchMetrics = useCallback(async () => {
     try {
-      const response = await authenticatedFetch("/ai/stats/quick", "GET", undefined, shopName);
+      const response = await authenticatedFetch(
+        `/ai/stats/quick?period=${selectedPeriod}`,
+        "GET",
+        undefined,
+        shopName
+      );
       if (response.ok) {
         const data = await response.json();
         if (data.ok && data.stats) {
@@ -67,7 +74,7 @@ export function UserDashboard({ shopName, hasFeatureAccess = false }: UserDashbo
       // Set metrics to null to show no data state
       setMetrics(null);
     }
-  }, [shopName]);
+  }, [shopName, selectedPeriod]);
 
   // Fetch AI optimization status
   const fetchAIStatus = useCallback(async () => {
@@ -99,6 +106,11 @@ export function UserDashboard({ shopName, hasFeatureAccess = false }: UserDashbo
     };
     loadData();
   }, [fetchMetrics, fetchAIStatus]);
+
+  // Handle period change
+  const handlePeriodChange = useCallback((period: TimePeriod) => {
+    setSelectedPeriod(period);
+  }, []);
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-US', {
@@ -132,13 +144,34 @@ export function UserDashboard({ shopName, hasFeatureAccess = false }: UserDashbo
 
   return (
     <BlockStack gap="600">
-      {/* Welcome Section with AI Status */}
+      {/* Time Period Selector */}
+      <Card>
+        <InlineStack align="space-between" blockAlign="center">
+          <BlockStack gap="200">
+            <Text variant="headingLg" as="h2">
+              AI Campaign Dashboard
+            </Text>
+            <Text variant="bodyMd" as="p" tone="subdued">
+              Showing data for: {getPeriodLabel(selectedPeriod)}
+            </Text>
+          </BlockStack>
+          <Box minWidth="200px">
+            <TimeRangeSelector
+              value={selectedPeriod}
+              onChange={handlePeriodChange}
+              label=""
+            />
+          </Box>
+        </InlineStack>
+      </Card>
+
+      {/* AI Status Section */}
       <Card>
         <BlockStack gap="400">
           <InlineStack align="space-between">
             <BlockStack gap="200">
-              <Text variant="headingLg" as="h2">
-                AI Campaign Dashboard
+              <Text variant="headingMd" as="h3">
+                AI Optimization Status
               </Text>
               <Text variant="bodyMd" as="p" tone="subdued">
                 Your Google Ads campaigns powered by AI optimization
@@ -158,13 +191,17 @@ export function UserDashboard({ shopName, hasFeatureAccess = false }: UserDashbo
 
           {/* Quick Actions */}
           <InlineStack gap="200">
-            <Button variant="primary" size="large">
+            <Button
+              variant="primary"
+              size="large"
+              onClick={() => window.location.href = '/app/ai-dashboard?tab=content'}
+            >
               Generate New Ads
             </Button>
-            <Button>
+            <Button onClick={() => window.location.href = '/app/ai-dashboard?tab=campaigns'}>
               View All Campaigns
             </Button>
-            <Button>
+            <Button onClick={() => window.location.href = '/app/setup?tab=ai-settings'}>
               Optimization Settings
             </Button>
           </InlineStack>
@@ -301,7 +338,10 @@ export function UserDashboard({ shopName, hasFeatureAccess = false }: UserDashbo
       <Banner
         title="AI Recommendations Available"
         tone="info"
-        action={{ content: 'View Recommendations' }}
+        action={{
+          content: 'View Recommendations',
+          onAction: () => window.location.href = '/app/ai-dashboard?tab=insights'
+        }}
       >
         <p>Your AI has identified 3 high-impact optimizations that could improve your ROAS by 15%</p>
       </Banner>
@@ -311,7 +351,9 @@ export function UserDashboard({ shopName, hasFeatureAccess = false }: UserDashbo
         <BlockStack gap="400">
           <InlineStack align="space-between">
             <Text variant="headingMd" as="h3">Recent AI Activity</Text>
-            <Button variant="plain">View All</Button>
+            <Button variant="plain" onClick={() => window.location.href = '/app/ai-dashboard?view=admin'}>
+              View All
+            </Button>
           </InlineStack>
 
           <BlockStack gap="200">

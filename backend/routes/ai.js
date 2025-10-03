@@ -96,17 +96,17 @@ router.get("/system/health", async (req, res) => {
 
 // GET /api/ai/stats/quick - Get quick stats for AI dashboard
 router.get("/stats/quick", async (req, res) => {
-  const { tenant, sig, days = "7" } = req.query;
+  const { tenant, sig, days = "7", period = "TODAY" } = req.query;
   const payload = `GET:${tenant}:ai_stats_quick`;
   if (!tenant || !verify(sig, payload)) {
     return res.status(403).json({ ok: false, error: "auth" });
   }
 
   try {
-    console.log('🔍 Fetching quick stats for:', tenant);
+    console.log('🔍 Fetching quick stats for:', tenant, '- Period:', period);
 
     // Check cache first
-    const cacheKey = getCacheKey('stats_quick', tenant, { days });
+    const cacheKey = getCacheKey('stats_quick', tenant, { days, period });
     const cachedData = getFromCache(cacheKey);
     if (cachedData) {
       console.log('✅ Returning cached quick stats for:', tenant);
@@ -130,8 +130,20 @@ router.get("/stats/quick", async (req, res) => {
           clicks: 5250
         },
         timestamp: new Date().toISOString(),
-        source: 'fallback'
+        source: 'fallback',
+        period: period
       });
+    }
+
+    // ✅ NEW: Determine which period to query based on request
+    let queryPeriod = period;
+    if (days && !period) {
+      // Map days parameter to period for backward compatibility
+      const dayNum = parseInt(days);
+      if (dayNum === 1) queryPeriod = 'TODAY';
+      else if (dayNum === 7) queryPeriod = 'LAST_7_DAYS';
+      else if (dayNum === 30) queryPeriod = 'LAST_30_DAYS';
+      else queryPeriod = 'LAST_7_DAYS';
     }
 
     // Calculate date range for metrics query
@@ -144,20 +156,21 @@ router.get("/stats/quick", async (req, res) => {
     let metricsData = null;
     let dataSource = 'none';
 
-    // Query tenant metrics from the last N days
+    // ✅ UPDATED: Query tenant metrics filtering by BOTH date AND period
     const { data: tenantMetricsData, error: tenantMetricsError } = await supabaseClient
       .from('tenant_metrics')
-      .select('clicks, cost_micros, conversions, impressions, ctr, date')
+      .select('clicks, cost_micros, conversions, impressions, ctr, date, period')
       .eq('tenant_id', tenant)
+      .eq('period', queryPeriod)  // ✅ NEW: Filter by period
       .gte('date', startDateStr)
       .order('date', { ascending: false });
 
     if (!tenantMetricsError && tenantMetricsData && tenantMetricsData.length > 0) {
       metricsData = tenantMetricsData;
       dataSource = 'tenant_metrics';
-      console.log(`✅ Using tenant_metrics data for ${tenant}: ${metricsData.length} records`);
+      console.log(`✅ Using tenant_metrics data for ${tenant} [${queryPeriod}]: ${metricsData.length} records`);
     } else {
-      console.log(`⚠️ No data in tenant_metrics, trying fallback tables...`);
+      console.log(`⚠️ No ${queryPeriod} data in tenant_metrics, trying fallback tables...`);
 
       // Fallback 1: Try campaign_metrics table
       const { data: campaignData, error: campaignError } = await supabaseClient
@@ -3429,6 +3442,226 @@ router.get("/performance/insights", async (req, res) => {
   } catch (error) {
     console.error('Failed to fetch performance insights:', error);
     res.status(500).json({
+      ok: false,
+      error: error.message
+    });
+  }
+});
+
+// ✅ NEW: GET /api/ai/campaigns - Get campaigns list
+router.get("/campaigns", async (req, res) => {
+  const { tenant, sig } = req.query;
+  const payload = `GET:${tenant}:ai_campaigns`;
+  if (!tenant || !verify(sig, payload)) {
+    return res.status(403).json({ ok: false, error: "auth" });
+  }
+
+  try {
+    console.log('🔍 Fetching campaigns for:', tenant);
+
+    const supabaseClient = getSupabaseClient();
+    if (!supabaseClient) {
+      return res.json({
+        ok: true,
+        campaigns: [],
+        timestamp: new Date().toISOString()
+      });
+    }
+
+    // Query campaigns from tenant_metrics (aggregated by campaign)
+    const { data, error } = await supabaseClient
+      .from('tenant_metrics')
+      .select('entity_name, entity_id, clicks, cost_micros, conversions, impressions, date, period')
+      .eq('tenant_id', tenant)
+      .eq('entity_type', 'campaign')
+      .eq('period', 'LAST_7_DAYS')
+      .order('date', { ascending: false })
+      .limit(100);
+
+    if (error) {
+      console.error('Campaign query error:', error);
+      return res.json({
+        ok: true,
+        campaigns: [],
+        timestamp: new Date().toISOString()
+      });
+    }
+
+    // Aggregate campaigns by name
+    const campaignMap = new Map();
+    if (data) {
+      data.forEach(row => {
+        const campaignName = row.entity_name;
+        if (!campaignMap.has(campaignName)) {
+          campaignMap.set(campaignName, {
+            id: row.entity_id,
+            name: campaignName,
+            status: 'ENABLED',
+            clicks: 0,
+            impressions: 0,
+            conversions: 0,
+            cost: 0
+          });
+        }
+
+        const campaign = campaignMap.get(campaignName);
+        campaign.clicks += row.clicks || 0;
+        campaign.impressions += row.impressions || 0;
+        campaign.conversions += parseFloat(row.conversions) || 0;
+        campaign.cost += (row.cost_micros || 0) / 1000000;
+      });
+    }
+
+    const campaigns = Array.from(campaignMap.values());
+
+    console.log(`✅ Found ${campaigns.length} campaigns for ${tenant}`);
+
+    return res.json({
+      ok: true,
+      campaigns,
+      timestamp: new Date().toISOString()
+    });
+
+  } catch (error) {
+    console.error('❌ Failed to fetch campaigns:', error.message);
+    return res.json({
+      ok: true,
+      campaigns: [],
+      error: error.message,
+      timestamp: new Date().toISOString()
+    });
+  }
+});
+
+// ✅ NEW: GET /api/ai/optimizations/stats - Get optimization statistics
+router.get("/optimizations/stats", async (req, res) => {
+  const { tenant, sig } = req.query;
+  const payload = `GET:${tenant}:ai_optimizations_stats`;
+  if (!tenant || !verify(sig, payload)) {
+    return res.status(403).json({ ok: false, error: "auth" });
+  }
+
+  try {
+    console.log('🔍 Fetching optimization stats for:', tenant);
+
+    // Return mock optimization stats for now
+    // TODO: Implement real optimization tracking
+    const stats = {
+      total_optimizations: 147,
+      this_week: 23,
+      avg_improvement: 12.5,
+      categories: {
+        budget: 8,
+        bids: 12,
+        keywords: 3
+      }
+    };
+
+    return res.json({
+      ok: true,
+      stats,
+      timestamp: new Date().toISOString()
+    });
+
+  } catch (error) {
+    console.error('❌ Failed to fetch optimization stats:', error.message);
+    return res.status(500).json({
+      ok: false,
+      error: error.message
+    });
+  }
+});
+
+// ✅ NEW: GET /api/ai/performance/insights - Get AI performance insights
+router.get("/performance/insights", async (req, res) => {
+  const { tenant, sig, period = 'LAST_7_DAYS' } = req.query;
+  const payload = `GET:${tenant}:ai_performance_insights`;
+  if (!tenant || !verify(sig, payload)) {
+    return res.status(403).json({ ok: false, error: "auth" });
+  }
+
+  try {
+    console.log('🔍 Fetching performance insights for:', tenant);
+
+    const supabaseClient = getSupabaseClient();
+    if (!supabaseClient) {
+      return res.json({
+        ok: true,
+        insights: [],
+        timestamp: new Date().toISOString()
+      });
+    }
+
+    // Query recent performance data
+    const startDate = new Date();
+    startDate.setDate(startDate.getDate() - 7);
+    const startDateStr = startDate.toISOString().split('T')[0];
+
+    const { data, error } = await supabaseClient
+      .from('tenant_metrics')
+      .select('clicks, cost_micros, conversions, impressions, ctr, date')
+      .eq('tenant_id', tenant)
+      .eq('period', period)
+      .gte('date', startDateStr)
+      .order('date', { ascending: false });
+
+    if (error) {
+      console.error('Insights query error:', error);
+      return res.json({
+        ok: true,
+        insights: [],
+        timestamp: new Date().toISOString()
+      });
+    }
+
+    // Generate insights from data
+    const insights = [];
+
+    if (data && data.length > 0) {
+      const totalClicks = data.reduce((sum, row) => sum + (row.clicks || 0), 0);
+      const totalCost = data.reduce((sum, row) => sum + ((row.cost_micros || 0) / 1000000), 0);
+      const totalConversions = data.reduce((sum, row) => sum + (parseFloat(row.conversions) || 0), 0);
+      const avgCtr = data.reduce((sum, row) => sum + (row.ctr || 0), 0) / data.length;
+
+      if (avgCtr > 5) {
+        insights.push({
+          type: 'positive',
+          category: 'ctr',
+          message: `CTR is ${avgCtr.toFixed(2)}% - above industry average`,
+          impact: 'high'
+        });
+      }
+
+      if (totalConversions > 0 && totalCost > 0) {
+        const cpa = totalCost / totalConversions;
+        insights.push({
+          type: 'info',
+          category: 'cpa',
+          message: `Cost per acquisition: $${cpa.toFixed(2)}`,
+          impact: 'medium'
+        });
+      }
+
+      if (totalClicks > 1000) {
+        insights.push({
+          type: 'positive',
+          category: 'traffic',
+          message: `Strong traffic volume: ${totalClicks} clicks in last 7 days`,
+          impact: 'medium'
+        });
+      }
+    }
+
+    return res.json({
+      ok: true,
+      insights,
+      timestamp: new Date().toISOString(),
+      period
+    });
+
+  } catch (error) {
+    console.error('❌ Failed to fetch performance insights:', error.message);
+    return res.status(500).json({
       ok: false,
       error: error.message
     });

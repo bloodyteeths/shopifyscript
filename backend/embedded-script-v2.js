@@ -608,10 +608,8 @@ function collectPerf_() {
     var enabledCount = 0;
     while (pausedCampaigns.hasNext()) {
       var pausedCamp = pausedCampaigns.next();
-      // Only enable if it has a reasonable budget and ad groups
       if (pausedCamp.getBudget().getAmount() >= 1 && pausedCamp.adGroups().get().hasNext()) {
         try {
-          // Check if USER_CONFIG suggests enabling
           if (typeof USER_CONFIG !== 'undefined' && USER_CONFIG && USER_CONFIG.alwaysOn) {
             pausedCamp.enable();
             enabledCount++;
@@ -626,7 +624,11 @@ function collectPerf_() {
       log_("Enabled " + enabledCount + " paused campaigns");
     }
 
-    // Use the legacy API which is more reliable
+    // ✅ FIX: Collect data for EACH period separately
+    var periods = ["TODAY", "YESTERDAY", "LAST_7_DAYS", "LAST_30_DAYS"];
+
+    log_("Collecting metrics for " + periods.length + " time periods...");
+
     var campaigns = AdsApp.campaigns()
       .withCondition("AdvertisingChannelType = SEARCH")
       .withCondition("Status IN ['ENABLED', 'PAUSED']")
@@ -638,45 +640,41 @@ function collectPerf_() {
       var campaignName = campaign.getName();
       var campaignStatus = campaign.isEnabled() ? "ENABLED" : "PAUSED";
 
-      // Get stats - only record the most comprehensive data period to avoid duplicates
-      var periods = ["TODAY", "YESTERDAY", "LAST_7_DAYS", "LAST_30_DAYS", "ALL_TIME"];
-      var bestStats = null;
-      var bestPeriod = null;
-      var maxImpressions = 0;
+      // ✅ NEW: Collect stats for EACH period separately
+      for (var p = 0; p < periods.length; p++) {
+        var period = periods[p];
 
-      // Find the period with the most data
-      for (var i = 0; i < periods.length; i++) {
         try {
-          var stats = campaign.getStatsFor(periods[i]);
+          var stats = campaign.getStatsFor(period);
           var impressions = stats.getImpressions();
 
-          if (impressions > maxImpressions) {
-            maxImpressions = impressions;
-            bestStats = stats;
-            bestPeriod = periods[i];
+          // Only record if there's actual data for this period
+          if (impressions > 0 || stats.getClicks() > 0 || stats.getCost() > 0) {
+            // ✅ NEW: Add period as the FIRST field in the row
+            rows.push([
+              period,                      // Period label (NEW!)
+              new Date(),                  // date
+              'campaign',                  // level
+              campaignName,                // campaign
+              '',                          // ad_group
+              campaignId,                  // id
+              campaignName,                // name
+              stats.getClicks(),           // clicks
+              stats.getCost(),             // cost
+              stats.getConversions(),      // conversions
+              stats.getImpressions(),      // impr
+              stats.getCtr()               // ctr
+            ]);
+
+            log_("Campaign [" + period + "] " + campaignName + " - Impr: " + impressions + ", Clicks: " + stats.getClicks());
           }
         } catch (e) {
-          log_("Error getting stats for " + campaignName + " [" + periods[i] + "]: " + e);
+          // Period may not have data yet, that's OK
+          if (period === "TODAY") {
+            // TODAY should always be attempted, log if it fails
+            log_("Error getting " + period + " stats for " + campaignName + ": " + e);
+          }
         }
-      }
-
-      // Record only the best data point for this campaign
-      if (bestStats) {
-        rows.push([
-          new Date(), 'campaign', campaignName, '', campaignId, campaignName,
-          bestStats.getClicks(), bestStats.getCost(), bestStats.getConversions(),
-          bestStats.getImpressions(), bestStats.getCtr()
-        ]);
-
-        if (bestStats.getImpressions() > 0 || bestStats.getCost() > 0) {
-          log_("Campaign " + campaignName + " [" + bestPeriod + "] - Status: " + campaignStatus + ", Impressions: " + bestStats.getImpressions() + ", Clicks: " + bestStats.getClicks() + ", Cost: $" + bestStats.getCost() + ", Conv: " + bestStats.getConversions());
-        }
-      } else {
-        // Still record campaign existence even with no data
-        rows.push([
-          new Date(), 'campaign', campaignName, '', campaignId, campaignName,
-          0, 0, 0, 0, 0
-        ]);
       }
 
       // Get ad groups for this campaign
@@ -689,42 +687,33 @@ function collectPerf_() {
         var adGroupId = adGroup.getId();
         var adGroupName = adGroup.getName();
 
-        // Get only the best data period for each ad group
-        var agPeriods = ["TODAY", "YESTERDAY", "LAST_7_DAYS", "LAST_30_DAYS", "ALL_TIME"];
-        var bestAgStats = null;
-        var bestAgPeriod = null;
-        var maxAgImpressions = 0;
+        // ✅ NEW: Collect ad group stats for EACH period
+        for (var p = 0; p < periods.length; p++) {
+          var period = periods[p];
 
-        for (var j = 0; j < agPeriods.length; j++) {
           try {
-            var agStats = adGroup.getStatsFor(agPeriods[j]);
-            if (agStats.getImpressions() > maxAgImpressions) {
-              maxAgImpressions = agStats.getImpressions();
-              bestAgStats = agStats;
-              bestAgPeriod = agPeriods[j];
+            var agStats = adGroup.getStatsFor(period);
+
+            if (agStats.getImpressions() > 0 || agStats.getClicks() > 0) {
+              // ✅ NEW: Add period as the FIRST field
+              rows.push([
+                period,                      // Period label (NEW!)
+                new Date(),                  // date
+                'ad_group',                  // level
+                campaignName,                // campaign
+                adGroupName,                 // ad_group
+                adGroupId,                   // id
+                adGroupName,                 // name
+                agStats.getClicks(),         // clicks
+                agStats.getCost(),           // cost
+                agStats.getConversions(),    // conversions
+                agStats.getImpressions(),    // impr
+                agStats.getCtr()             // ctr
+              ]);
             }
           } catch (e) {
             // Continue to next period
           }
-        }
-
-        // Record only the best data point for this ad group
-        if (bestAgStats) {
-          rows.push([
-            new Date(), 'ad_group', campaignName, adGroupName, adGroupId, adGroupName,
-            bestAgStats.getClicks(), bestAgStats.getCost(), bestAgStats.getConversions(),
-            bestAgStats.getImpressions(), bestAgStats.getCtr()
-          ]);
-
-          if (bestAgStats.getImpressions() > 0) {
-            log_("Ad Group " + adGroupName + " [" + bestAgPeriod + "] - Impressions: " + bestAgStats.getImpressions());
-          }
-        } else {
-          // Record existence even with no data
-          rows.push([
-            new Date(), 'ad_group', campaignName, adGroupName, adGroupId, adGroupName,
-            0, 0, 0, 0, 0
-          ]);
         }
       }
     }

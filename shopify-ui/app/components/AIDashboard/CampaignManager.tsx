@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   Card,
   DataTable,
@@ -18,6 +18,7 @@ import {
   ProgressBar,
 } from "@shopify/polaris";
 import { authenticatedFetch } from "../../utils/ai-client";
+import { TimeRangeSelector, TimePeriod, getPeriodLabel } from "../TimeRangeSelector";
 
 interface Campaign {
   id: string;
@@ -48,36 +49,47 @@ export function CampaignManager({ shopName, hasFeatureAccess = false }: Campaign
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [bulkActionsActive, setBulkActionsActive] = useState(false);
+  const [selectedPeriod, setSelectedPeriod] = useState<TimePeriod>('LAST_7_DAYS');
 
-  // Fetch campaigns from API
-  useEffect(() => {
-    const fetchCampaigns = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        const response = await authenticatedFetch("/ai/campaigns", "GET", undefined, shopName);
-        if (response.ok) {
-          const data = await response.json();
-          if (data.ok && data.campaigns) {
-            setCampaigns(data.campaigns);
-          } else {
-            setCampaigns([]);
-          }
+  // Fetch campaigns from API - defined as a separate function for reusability
+  const fetchCampaigns = useCallback(async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const response = await authenticatedFetch(
+        `/ai/campaigns?period=${selectedPeriod}`,
+        "GET",
+        undefined,
+        shopName
+      );
+      if (response.ok) {
+        const data = await response.json();
+        if (data.ok && data.campaigns) {
+          setCampaigns(data.campaigns);
         } else {
-          setError("Failed to load campaigns");
           setCampaigns([]);
         }
-      } catch (err) {
-        console.error("Failed to fetch campaigns:", err);
+      } else {
         setError("Failed to load campaigns");
         setCampaigns([]);
-      } finally {
-        setLoading(false);
       }
-    };
+    } catch (err) {
+      console.error("Failed to fetch campaigns:", err);
+      setError("Failed to load campaigns");
+      setCampaigns([]);
+    } finally {
+      setLoading(false);
+    }
+  }, [shopName, selectedPeriod]);
 
+  useEffect(() => {
     fetchCampaigns();
-  }, [shopName]);
+  }, [fetchCampaigns]);
+
+  // Handle period change
+  const handlePeriodChange = useCallback((period: TimePeriod) => {
+    setSelectedPeriod(period);
+  }, []);
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-US', {
@@ -312,12 +324,24 @@ export function CampaignManager({ shopName, hasFeatureAccess = false }: Campaign
       <Card>
         <BlockStack gap="400">
           <InlineStack align="space-between">
-            <Text variant="headingLg" as="h2">Campaign Manager</Text>
+            <BlockStack gap="200">
+              <Text variant="headingLg" as="h2">Campaign Manager</Text>
+              <Text variant="bodyMd" tone="subdued">
+                Showing data for: {getPeriodLabel(selectedPeriod)}
+              </Text>
+            </BlockStack>
             <InlineStack gap="200">
+              <Box minWidth="180px">
+                <TimeRangeSelector
+                  value={selectedPeriod}
+                  onChange={handlePeriodChange}
+                  label=""
+                />
+              </Box>
               <Button variant="primary" onClick={handleCreateCampaign}>
                 Create New Campaign
               </Button>
-              <Button>
+              <Button onClick={handleImportCampaigns}>
                 Import from Google Ads
               </Button>
             </InlineStack>
@@ -351,7 +375,6 @@ export function CampaignManager({ shopName, hasFeatureAccess = false }: Campaign
               value=""
               onChange={() => {}}
               autoComplete="off"
-              prefix={<Icon source="SearchIcon" />}
             />
           </InlineStack>
         </BlockStack>

@@ -227,24 +227,26 @@ async function writeMetricsToSupabase(tenant, metricsData) {
   });
 
   // Transform metrics data to match Supabase schema
+  // ✅ UPDATED: Handle new period field at index 0
   const metricsEntries = metricsData.map(row => ({
     tenant_id: tenant,
-    date: new Date(row[0]),
-    entity_type: row[1] || 'campaign',
-    campaign_name: row[2] || '',
-    ad_group_name: row[3] || '',
-    entity_id: row[4] || '',
-    entity_name: row[5] || '',
-    clicks: parseInt(row[6]) || 0,
-    cost_micros: Math.round((parseFloat(row[7]) || 0) * 1000000),
-    conversions: parseFloat(row[8]) || 0,
-    impressions: parseInt(row[9]) || 0,
-    ctr: parseFloat(row[10]) || 0
+    period: row[0] || 'UNKNOWN',           // NEW: period field
+    date: new Date(row[1]),                 // Shifted from index 0 to 1
+    entity_type: row[2] || 'campaign',      // Shifted from index 1 to 2
+    campaign_name: row[3] || '',            // Shifted from index 2 to 3
+    ad_group_name: row[4] || '',            // Shifted from index 3 to 4
+    entity_id: row[5] || '',                // Shifted from index 4 to 5
+    entity_name: row[6] || '',              // Shifted from index 5 to 6
+    clicks: parseInt(row[7]) || 0,          // Shifted from index 6 to 7
+    cost_micros: Math.round((parseFloat(row[8]) || 0) * 1000000), // Shifted from index 7 to 8
+    conversions: parseFloat(row[9]) || 0,   // Shifted from index 8 to 9
+    impressions: parseInt(row[10]) || 0,    // Shifted from index 9 to 10
+    ctr: parseFloat(row[11]) || 0           // Shifted from index 10 to 11
   }));
 
   const { error } = await supabase
     .from('tenant_metrics')
-    .upsert(metricsEntries, { onConflict: 'tenant_id,date,entity_type,entity_id' });
+    .upsert(metricsEntries, { onConflict: 'tenant_id,date,period,entity_type,entity_id' });
 
   if (error) {
     throw new Error(`Supabase metrics write error: ${error.message}`);
