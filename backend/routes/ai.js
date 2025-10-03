@@ -149,11 +149,21 @@ router.get("/stats/quick", async (req, res) => {
       else queryPeriod = 'LAST_7_DAYS';
     }
 
-    // Calculate date range for metrics query
-    const dayCount = Math.max(1, Math.min(30, parseInt(days) || 7));
+    // Calculate date range from period (not days parameter which may be missing)
+    let dayCount = 7; // default
+    switch(queryPeriod) {
+      case 'TODAY': dayCount = 1; break;
+      case 'YESTERDAY': dayCount = 2; break;
+      case 'LAST_7_DAYS': dayCount = 7; break;
+      case 'LAST_30_DAYS': dayCount = 30; break;
+      case 'ALL_TIME': dayCount = 365; break;
+    }
+
     const startDate = new Date();
     startDate.setDate(startDate.getDate() - dayCount);
     const startDateStr = startDate.toISOString().split('T')[0];
+
+    console.log(`📅 Date range for ${queryPeriod}: ${startDateStr} to now (${dayCount} days)`);
 
     // Try tenant_metrics first (primary source)
     let metricsData = null;
