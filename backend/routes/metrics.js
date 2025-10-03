@@ -87,6 +87,15 @@ router.post("/metrics",
       })
       .filter(Boolean);
 
+    // 🔍 DEBUG: Log first few rows with period field
+    if (mRows.length > 0) {
+      console.log(`📊 Processing ${mRows.length} metric rows for tenant: ${tenant}`);
+      console.log('🔍 First 3 rows with period field:');
+      mRows.slice(0, 3).forEach((row, i) => {
+        console.log(`  Row ${i}: period="${row[0]}", date="${row[1]}", level="${row[2]}", campaign="${row[3]}", impr=${row[10]}, clicks=${row[7]}`);
+      });
+    }
+
     // Coerce numeric fields for search terms
     const stRows = (Array.isArray(search_terms) ? search_terms : [])
       .map((r) => {

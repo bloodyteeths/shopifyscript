@@ -244,12 +244,24 @@ async function writeMetricsToSupabase(tenant, metricsData) {
     ctr: parseFloat(row[11]) || 0           // Shifted from index 10 to 11
   }));
 
+  // 🔍 DEBUG: Log what we're about to write to Supabase
+  console.log(`💾 Writing ${metricsEntries.length} metrics to Supabase for tenant: ${tenant}`);
+  if (metricsEntries.length > 0) {
+    console.log('🔍 First 3 entries to write:');
+    metricsEntries.slice(0, 3).forEach((entry, i) => {
+      console.log(`  Entry ${i}: period="${entry.period}", date="${entry.date.toISOString()}", entity_type="${entry.entity_type}", entity_name="${entry.entity_name}", impressions=${entry.impressions}, clicks=${entry.clicks}`);
+    });
+  }
+
   const { error } = await supabase
     .from('tenant_metrics')
     .upsert(metricsEntries, { onConflict: 'tenant_id,date,period,entity_type,entity_id' });
 
   if (error) {
+    console.error(`❌ Supabase metrics write error for tenant ${tenant}:`, error);
     throw new Error(`Supabase metrics write error: ${error.message}`);
+  } else {
+    console.log(`✅ Successfully wrote ${metricsEntries.length} metrics to Supabase for tenant: ${tenant}`);
   }
 }
 
