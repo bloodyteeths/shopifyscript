@@ -168,7 +168,7 @@ export async function loader(args: LoaderFunctionArgs) {
 
     // Try to fetch insights data (may still have old format)
     const r = await backendFetch(
-      `/insights?w=${w}`,
+      `/ai/insights?period=${w}`,
       "GET",
       undefined,
       shopName,

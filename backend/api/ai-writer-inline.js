@@ -285,6 +285,8 @@ async function getBusinessContext(tenant, supabase) {
         }));
         console.log(`✅ Best ad groups: ${context.performanceData.bestPerformingAds.map(a => a.name).join(', ')}`);
 
+      }
+
       // Get top performing search terms with REAL data
       const { data: searchTerms } = await supabase
         .from('search_terms')

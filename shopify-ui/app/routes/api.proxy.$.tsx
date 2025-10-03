@@ -100,6 +100,9 @@ async function handleProxyRequest(
     let fullUrl;
     let headers: HeadersInit;
 
+    // Parse incoming URL once so we can preserve original query params
+    const requestUrl = new URL(request.url);
+
     // ALL AI endpoints use query param authentication
     // Other backend routes use header-based HMAC auth
     const needsQueryAuth = proxyPath.startsWith("ai/") || proxyPath.startsWith("jobs/");
@@ -131,8 +134,8 @@ async function handleProxyRequest(
         .replace(/=+$/, "");
 
       // Build URL with sig and tenant in query params
-      // Start with a clean URLSearchParams for authentication
-      const queryParams = new URLSearchParams();
+      // Start with caller-provided query params so period and filters are preserved
+      const queryParams = new URLSearchParams(requestUrl.search);
       queryParams.set("tenant", tenant);
       queryParams.set("sig", sig);
 
@@ -155,7 +158,6 @@ async function handleProxyRequest(
       // Build backend URL normally
       const url = `${backendUrl}/${proxyPath}`;
       // Copy query parameters if any
-      const requestUrl = new URL(request.url);
       const queryString = requestUrl.search;
       fullUrl = url + queryString;
 
