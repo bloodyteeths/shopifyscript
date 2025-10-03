@@ -8,6 +8,8 @@ import { getDoc, ensureSheet } from "../sheets.js";
 import { getAIProvider } from "../lib/aiProvider.js";
 import { createClient } from "@supabase/supabase-js";
 import tenantConfigService from "../services/tenant-config.js";
+import { WebsiteScraperService } from "../services/website-scraper.js";
+import { CompetitorIntelligenceService } from "../services/competitor-intelligence.js";
 
 /**
  * Get Supabase client
@@ -136,11 +138,39 @@ async function getBusinessContext(tenant, supabase) {
       topCampaigns: [],
       bestPerformingAds: []
     },
-    websiteInfo: {}
+    websiteInfo: {},
+    competitorInsights: null,
+    websiteAnalysis: null
   };
 
-  // Fetch website information in parallel with other data
-  const websitePromise = fetchWebsiteContext(tenant);
+  // Initialize advanced services
+  const websiteScraper = new WebsiteScraperService();
+  const competitorIntel = new CompetitorIntelligenceService();
+
+  // Fetch comprehensive website analysis (products, USPs, testimonials, offers)
+  const websitePromise = websiteScraper.initialize()
+    .then(() => websiteScraper.scrapeWebsite(`https://${tenant}.myshopify.com`, {
+      tenant: tenant,
+      extractProducts: true,
+      extractTestimonials: true,
+      extractOffers: true,
+      extractUSPs: true,
+      depth: 2,
+      maxPages: 10
+    }))
+    .then(analysis => {
+      console.log('📊 Website analysis complete:', {
+        products: analysis?.products?.length || 0,
+        testimonials: analysis?.testimonials?.length || 0,
+        offers: analysis?.offers?.length || 0,
+        usps: analysis?.usps?.length || 0
+      });
+      return analysis;
+    })
+    .catch(err => {
+      console.warn('⚠️ Website scraper failed, using basic fetch:', err.message);
+      return fetchWebsiteContext(tenant);
+    });
 
   try {
     // Try to get config from tenant service
@@ -284,10 +314,60 @@ async function getBusinessContext(tenant, supabase) {
     }
   }
 
-  // Wait for website info
-  context.websiteInfo = await websitePromise;
-  if (context.websiteInfo.storeTitle) {
-    context.businessName = context.websiteInfo.storeTitle.split(' - ')[0] || context.businessName;
+  // Wait for website analysis
+  context.websiteAnalysis = await websitePromise;
+
+  // Extract comprehensive website data
+  if (context.websiteAnalysis) {
+    context.websiteInfo = context.websiteAnalysis; // Keep backward compatibility
+
+    if (context.websiteAnalysis.storeTitle) {
+      context.businessName = context.websiteAnalysis.storeTitle.split(' - ')[0] || context.businessName;
+    }
+
+    // Extract products
+    if (context.websiteAnalysis.products && context.websiteAnalysis.products.length > 0) {
+      context.products = context.websiteAnalysis.products;
+      console.log(`✅ Found ${context.products.length} products from website`);
+    }
+
+    // Extract USPs
+    if (context.websiteAnalysis.usps && context.websiteAnalysis.usps.length > 0) {
+      context.uniqueSellingPoints = context.websiteAnalysis.usps;
+      console.log(`✅ Found ${context.uniqueSellingPoints.length} USPs from website`);
+    }
+  }
+
+  // Get competitor intelligence
+  try {
+    console.log('🕵️ Analyzing competitors...');
+    const competitors = await competitorIntel.identifyCompetitors(tenant, {
+      industry: context.businessType,
+      keywords: context.topKeywords.slice(0, 10),
+      targetAudience: context.targetAudience
+    });
+
+    if (competitors && competitors.length > 0) {
+      // Analyze top 3 competitor landing pages
+      const competitorAnalyses = await Promise.all(
+        competitors.slice(0, 3).map(comp =>
+          competitorIntel.analyzeLandingPage(tenant, comp).catch(err => {
+            console.warn(`Failed to analyze ${comp.domain || comp.name}:`, err.message);
+            return null;
+          })
+        )
+      );
+
+      context.competitorInsights = {
+        competitors: competitors.slice(0, 5),
+        analyses: competitorAnalyses.filter(Boolean),
+        totalFound: competitors.length
+      };
+
+      console.log(`✅ Analyzed ${competitorAnalyses.filter(Boolean).length} competitors`);
+    }
+  } catch (error) {
+    console.warn('⚠️ Competitor analysis failed:', error.message);
   }
 
   return context;
@@ -431,45 +511,67 @@ export async function handleInlineAIWriter(tenant, limit = 5) {
 
         // Try AI generation with performance-driven prompt
         try {
-          const prompt = `You are an expert Google Ads copywriter analyzing REAL performance data to write HIGH-CONVERTING ad copy.
+          const prompt = `You are an expert Google Ads copywriter with access to COMPREHENSIVE MARKET INTELLIGENCE. Write HIGH-CONVERTING ad copy based on deep analysis.
 
-BUSINESS DATA:
+🏪 BUSINESS INTELLIGENCE:
 - Store: ${context.businessName}
-- Focus: ${theme}
+- Theme: ${theme}
+- Type: ${context.businessType}
 ${context.websiteInfo.storeDescription ? `- About: ${context.websiteInfo.storeDescription}` : ''}
 
-ACTUAL PERFORMANCE METRICS:
-${context.topKeywords.length > 0 ? `✅ TOP CONVERTING KEYWORDS (Real data):
+${context.products.length > 0 ? `📦 PRODUCTS (from website):
+${context.products.slice(0, 5).map(p => `  • ${p}`).join('\n')}` : ''}
+
+${context.uniqueSellingPoints.length > 0 ? `💎 UNIQUE SELLING POINTS:
+${context.uniqueSellingPoints.slice(0, 3).map(usp => `  • ${usp}`).join('\n')}` : ''}
+
+${context.websiteAnalysis?.testimonials?.length > 0 ? `⭐ CUSTOMER TESTIMONIALS (use for social proof):
+${context.websiteAnalysis.testimonials.slice(0, 2).map(t => `  • "${t.text?.substring(0, 80)}..."`).join('\n')}` : ''}
+
+${context.websiteAnalysis?.offers?.length > 0 ? `🎁 ACTIVE OFFERS:
+${context.websiteAnalysis.offers.slice(0, 3).map(o => `  • ${o}`).join('\n')}` : ''}
+
+📊 ACTUAL PERFORMANCE DATA:
+${context.topKeywords.length > 0 ? `✅ TOP CONVERTING KEYWORDS:
 ${context.topKeywords.slice(0, 7).map(kw => `  • "${kw}"`).join('\n')}` : ''}
 
 ${context.highValueKeywords?.length > 0 ? `🔥 HIGH-CONVERSION KEYWORDS (>5% conv rate):
 ${context.highValueKeywords.slice(0, 5).map(kw => `  • "${kw}"`).join('\n')}` : ''}
 
-${context.performanceData.avgCTR > 0 ? `📊 CURRENT PERFORMANCE:
+${context.performanceData.avgCTR > 0 ? `📈 CURRENT PERFORMANCE:
   • CTR: ${context.performanceData.avgCTR}% (must beat this)
   • CPC: $${context.performanceData.avgCPC}
   • Conv Rate: ${context.performanceData.avgConversionRate || 'N/A'}%` : ''}
 
-${context.performanceData.bestPerformingAds?.length > 0 ? `🏆 BEST PERFORMING AD GROUPS:
+${context.performanceData.bestPerformingAds?.length > 0 ? `🏆 BEST PERFORMING ADS:
 ${context.performanceData.bestPerformingAds.slice(0, 3).map(ad =>
   `  • ${ad.name}: ${ad.conversions} conversions, ${ad.ctr}% CTR`).join('\n')}` : ''}
 
-COPYWRITING RULES:
-1. Use EXACT keywords from top converting terms when possible
-2. Focus on what's ACTUALLY converting (use the data!)
-3. Create urgency without being generic
-4. Include numbers/stats when relevant
-5. Test different emotional triggers
-6. Use power words that convert: Save, Free, Now, Get, Best, Exclusive
-7. Include the brand/product name "${theme}" naturally
+${context.competitorInsights?.analyses?.length > 0 ? `🕵️ COMPETITOR INTELLIGENCE:
+${context.competitorInsights.analyses.slice(0, 2).map((comp, i) =>
+  `  Competitor ${i+1}:
+    ${comp.adCopy?.length > 0 ? `• Ad Copy: "${comp.adCopy[0]?.substring(0, 50)}..."` : ''}
+    ${comp.offers?.length > 0 ? `• Offers: ${comp.offers[0]}` : ''}
+    ${comp.usps?.length > 0 ? `• USPs: ${comp.usps[0]}` : ''}`).join('\n')}
 
-CHARACTER LIMITS (STRICT):
+DIFFERENTIATION STRATEGY: Use our USPs and offers to OUTPERFORM competitors` : ''}
+
+🎯 COPYWRITING STRATEGY:
+1. Lead with the strongest USP or offer for "${theme}"
+2. Use EXACT high-converting keywords naturally
+3. Include social proof elements from testimonials
+4. Create urgency with active offers
+5. Differentiate from competitor messaging
+6. Use power words: Save, Free, Now, Get, Best, Exclusive, Trusted
+7. Match the brand voice from website analysis
+
+📏 CHARACTER LIMITS (STRICT):
 - Headlines: MAX 30 characters each
 - Descriptions: MAX 90 characters each
 
-Write 5 headlines and 2 descriptions that will BEAT the current ${context.performanceData.avgCTR || '2'}% CTR.
-
-Focus on "${theme}" specifically - make it compelling and data-driven.
+🎨 OUTPUT:
+Write 5 headlines and 2 descriptions optimized to BEAT ${context.performanceData.avgCTR || '2'}% CTR.
+Focus on "${theme}" - make it compelling, data-driven, and differentiated from competitors.
 
 Return ONLY valid JSON: {"headlines": [...], "descriptions": [...]}`;
 
