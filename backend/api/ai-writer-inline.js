@@ -159,17 +159,20 @@ async function getBusinessContext(tenant, supabase) {
   // Try to get performance data from Supabase
   if (supabase) {
     try {
+      console.log(`🔍 Fetching performance data for tenant: ${tenant}`);
+
       // Set tenant context for RLS (even with service role, good practice)
       await supabase.rpc('set_config', {
         parameter: 'app.current_tenant_id',
         value: tenant
-      }).catch(() => {
+      }).catch((rlsErr) => {
+        console.warn('RLS set_config failed (may not exist):', rlsErr.message);
         // Ignore errors - service role can bypass RLS anyway
       });
 
       // Get ACTUAL campaign performance data from Google Ads
       // Use ALL_TIME or LAST_7_DAYS period data, and remove conversion filter
-      const { data: campaigns } = await supabase
+      const { data: campaigns, error: campaignError } = await supabase
         .from('tenant_metrics')
         .select('campaign_name, impressions, clicks, conversions, cost_micros, ctr')
         .eq('tenant_id', tenant)
@@ -178,6 +181,10 @@ async function getBusinessContext(tenant, supabase) {
         .gt('impressions', 0)  // At least some traffic
         .order('impressions', { ascending: false })
         .limit(50);
+
+      if (campaignError) {
+        console.error('❌ Campaign query error:', campaignError);
+      }
 
       console.log(`📊 Campaign query returned ${campaigns?.length || 0} results`);
 

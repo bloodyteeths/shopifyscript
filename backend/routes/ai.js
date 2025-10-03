@@ -96,7 +96,7 @@ router.get("/system/health", async (req, res) => {
 
 // GET /api/ai/stats/quick - Get quick stats for AI dashboard
 router.get("/stats/quick", async (req, res) => {
-  const { tenant, sig, days = "7", period = "TODAY" } = req.query;
+  const { tenant, sig, days = "7", period = "LAST_7_DAYS" } = req.query;
   const payload = `GET:${tenant}:ai_stats_quick`;
   if (!tenant || !verify(sig, payload)) {
     return res.status(403).json({ ok: false, error: "auth" });
@@ -105,15 +105,21 @@ router.get("/stats/quick", async (req, res) => {
   try {
     console.log('🔍 Fetching quick stats for:', tenant, '- Period:', period);
 
-    // Check cache first
-    const cacheKey = getCacheKey('stats_quick', tenant, { days, period });
-    const cachedData = getFromCache(cacheKey);
-    if (cachedData) {
-      console.log('✅ Returning cached quick stats for:', tenant);
-      return res.json({
-        ...cachedData,
-        cached: true
-      });
+    // Skip cache for period-based queries to ensure fresh data
+    // Cache causes stale data when users change time periods
+    const skipCache = req.query.period !== undefined;
+
+    if (!skipCache) {
+      // Check cache first (only for default queries)
+      const cacheKey = getCacheKey('stats_quick', tenant, { days, period });
+      const cachedData = getFromCache(cacheKey);
+      if (cachedData) {
+        console.log('✅ Returning cached quick stats for:', tenant);
+        return res.json({
+          ...cachedData,
+          cached: true
+        });
+      }
     }
 
     const supabaseClient = getSupabaseClient();
@@ -1313,6 +1319,8 @@ router.post("/jobs/ai_writer", async (req, res) => {
     const safeLimit = Math.min(limit, 2); // Process 2 themes max
 
     try {
+      console.log(`🚀 Starting AI generation for tenant: ${tenant}, limit: ${safeLimit}`);
+
       // Use a race between AI generation and timeout
       const result = await Promise.race([
         handleInlineAIWriter(tenant, safeLimit),
@@ -1326,6 +1334,13 @@ router.post("/jobs/ai_writer", async (req, res) => {
         )
       ]);
 
+      console.log(`✅ AI generation result:`, {
+        ok: result.ok,
+        wrote: result.wrote,
+        timeout: result.timeout,
+        error: result.error
+      });
+
       // Log result
       try {
         const { appendRows } = await getSheetOperations();
@@ -1337,7 +1352,9 @@ router.post("/jobs/ai_writer", async (req, res) => {
             `ai_writer_timeout: generation in progress` :
             `ai_writer_completed: ${result.wrote} themes`]],
         );
-      } catch {}
+      } catch (logErr) {
+        console.warn(`Sheet logging failed:`, logErr.message);
+      }
 
       // Send response
       if (result.timeout) {
@@ -1359,12 +1376,14 @@ router.post("/jobs/ai_writer", async (req, res) => {
       }
 
     } catch (error) {
-      console.error(`AI writer error for ${tenant}:`, error);
+      console.error(`❌ AI writer error for ${tenant}:`, error);
+      console.error(`Error stack:`, error.stack);
 
-      res.json({
+      res.status(500).json({
         ok: false,
         error: error.message || "AI generation failed",
-        message: "Failed to generate content. Please try again."
+        message: "Failed to generate content. Please try again.",
+        stack: process.env.NODE_ENV === 'development' ? error.stack : undefined
       });
     }
   } catch (e) {
