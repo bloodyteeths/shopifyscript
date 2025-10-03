@@ -105,24 +105,19 @@ router.get("/stats/quick", async (req, res) => {
   try {
     console.log('🔍 Fetching quick stats for:', tenant, '- Period:', period);
 
-    // Always generate cache key (needed for setCache later)
+    // Generate cache key
     const cacheKey = getCacheKey('stats_quick', tenant, { days, period });
 
-    // Skip cache READ for period-based queries to ensure fresh data
-    // Cache causes stale data when users change time periods
-    const skipCache = req.query.period !== undefined;
-
-    if (!skipCache) {
-      // Check cache first (only for default queries)
-      const cachedData = getFromCache(cacheKey);
-      if (cachedData) {
-        console.log('✅ Returning cached quick stats for:', tenant);
-        return res.json({
-          ...cachedData,
-          cached: true
-        });
-      }
-    }
+    // DISABLE CACHE for now - causing stale data issues
+    // TODO: Implement proper cache invalidation strategy
+    // const cachedData = getFromCache(cacheKey);
+    // if (cachedData) {
+    //   console.log('✅ Returning cached quick stats for:', tenant);
+    //   return res.json({
+    //     ...cachedData,
+    //     cached: true
+    //   });
+    // }
 
     const supabaseClient = getSupabaseClient();
     if (!supabaseClient) {
@@ -1314,16 +1309,20 @@ router.post("/jobs/ai_writer", async (req, res) => {
     // Use inline execution for Vercel serverless compatibility
     const { handleInlineAIWriter } = await import("../api/ai-writer-inline.js");
 
-    console.log(`Starting inline AI writer for ${tenant} with limit ${limit}`);
+    console.log(`🚀 Starting inline AI writer for ${tenant} with limit ${limit}`);
 
     // For Vercel, we need to wait for the AI generation to complete
-    // But we'll limit to just 2 themes for speed and use a timeout
-    const safeLimit = Math.min(limit, 2); // Process 2 themes max
+    // Allow more themes since we optimized with timeouts
+    const safeLimit = Math.min(limit, 5); // Process up to 5 themes
 
     try {
-      console.log(`🚀 Starting AI generation for tenant: ${tenant}, limit: ${safeLimit}`);
+      // Send early response to UI to show "processing" state
+      res.writeHead(200, { 'Content-Type': 'application/json' });
 
-      // Use a race between AI generation and timeout
+      console.log(`🔄 Starting AI generation with comprehensive analysis...`);
+
+      // Wait for AI generation with extended timeout for comprehensive services
+      // Website scraper: 8s, Competitor analysis: 10s, AI generation: 20s = ~40s total
       const result = await Promise.race([
         handleInlineAIWriter(tenant, safeLimit),
         new Promise((resolve) =>
@@ -1331,8 +1330,8 @@ router.post("/jobs/ai_writer", async (req, res) => {
             ok: true,
             wrote: 0,
             timeout: true,
-            message: "Generation is taking longer than expected. Check back in a minute."
-          }), 25000) // 25 second timeout
+            message: "AI is still analyzing your website and competitors. This may take up to 60 seconds."
+          }), 50000) // 50 second timeout (under Vercel's 60s limit)
         )
       ]);
 
@@ -1358,23 +1357,24 @@ router.post("/jobs/ai_writer", async (req, res) => {
         console.warn(`Sheet logging failed:`, logErr.message);
       }
 
-      // Send response
+      // Send final response
       if (result.timeout) {
-        res.json({
+        res.end(JSON.stringify({
           ok: true,
           status: "processing",
-          message: "AI generation started. It's taking longer than usual, please refresh in 30 seconds.",
+          processing: true,
+          message: "🔍 AI is analyzing your website, competitors, and performance data. This creates better ads but takes 30-60 seconds. Please wait...",
           limitReduced: safeLimit < limit
-        });
+        }));
       } else {
-        res.json({
+        res.end(JSON.stringify({
           ok: true,
           ...result,
           limitReduced: safeLimit < limit,
           message: safeLimit < limit ?
-            `Generated ${safeLimit} themes (reduced from ${limit} for speed). Run again for more.` :
-            `Successfully generated ${result.wrote} themes.`
-        });
+            `✅ Generated ${safeLimit} high-quality themes using comprehensive market analysis (reduced from ${limit}). Run again for more.` :
+            `✅ Successfully generated ${result.wrote} data-driven themes with competitor insights.`
+        }));
       }
 
     } catch (error) {

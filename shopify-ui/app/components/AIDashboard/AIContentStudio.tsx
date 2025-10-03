@@ -127,22 +127,38 @@ export function AIContentStudio({ shopName, hasFeatureAccess = false }: AIConten
       if (response.ok) {
         const data = await response.json();
         if (data.ok) {
-          // Close modal and refresh drafts
-          setGenerationModal(false);
-          // Wait a bit for drafts to be written to database
-          setTimeout(() => {
-            fetchDrafts();
-          }, 2000);
+          // Check if still processing (comprehensive analysis takes time)
+          if (data.processing || data.status === 'processing') {
+            setError(null);
+            // Show processing message - keep loading state
+            console.log('AI generation in progress:', data.message);
+            // Keep modal open with loading state to show progress
+            // The comprehensive analysis is running
+            setTimeout(() => {
+              fetchDrafts();
+              setIsGenerating(false);
+              setGenerationModal(false);
+            }, 10000); // Check again in 10 seconds
+          } else {
+            // Generation complete
+            setGenerationModal(false);
+            setIsGenerating(false);
+            // Wait a bit for drafts to be written to database
+            setTimeout(() => {
+              fetchDrafts();
+            }, 2000);
+          }
         } else {
           setError(data.error || "Failed to generate ads");
+          setIsGenerating(false);
         }
       } else {
         setError("Failed to generate ads. Please try again.");
+        setIsGenerating(false);
       }
     } catch (err) {
       console.error("Error generating ads:", err);
       setError("Error generating ads: " + (err instanceof Error ? err.message : String(err)));
-    } finally {
       setIsGenerating(false);
     }
   };
@@ -592,9 +608,15 @@ export function AIContentStudio({ shopName, hasFeatureAccess = false }: AIConten
         <Modal.Section>
           {isGenerating ? (
             <BlockStack gap="400">
-              <Text variant="bodyMd">AI is creating your ad variations...</Text>
+              <Text variant="bodyMd" fontWeight="semibold">🔍 AI is analyzing your business...</Text>
+              <BlockStack gap="200">
+                <Text variant="bodySm">✓ Scraping your website for products and offers</Text>
+                <Text variant="bodySm">✓ Analyzing competitor strategies</Text>
+                <Text variant="bodySm">✓ Reviewing your Google Ads performance</Text>
+                <Text variant="bodySm">✓ Generating data-driven ad copy</Text>
+              </BlockStack>
               <Text variant="bodySm" tone="subdued">
-                This typically takes 10-20 seconds
+                This comprehensive analysis takes 30-60 seconds but creates much better ads!
               </Text>
             </BlockStack>
           ) : (
