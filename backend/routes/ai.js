@@ -159,21 +159,22 @@ router.get("/stats/quick", async (req, res) => {
     let metricsData = null;
     let dataSource = 'none';
 
-    // ✅ UPDATED: Query tenant metrics filtering by BOTH date AND period
+    // Get GRANULAR data by filtering for specific entity types, not period aggregates
+    // Period rows are pre-aggregated summaries - we need raw campaign/ad_group data
     const { data: tenantMetricsData, error: tenantMetricsError } = await supabaseClient
       .from('tenant_metrics')
-      .select('clicks, cost_micros, conversions, impressions, ctr, date, period')
+      .select('clicks, cost_micros, conversions, impressions, ctr, date, entity_type')
       .eq('tenant_id', tenant)
-      .eq('period', queryPeriod)  // ✅ NEW: Filter by period
+      .in('entity_type', ['campaign', 'ad_group', 'keyword'])  // Get granular data only
       .gte('date', startDateStr)
       .order('date', { ascending: false });
 
     if (!tenantMetricsError && tenantMetricsData && tenantMetricsData.length > 0) {
       metricsData = tenantMetricsData;
       dataSource = 'tenant_metrics';
-      console.log(`✅ Using tenant_metrics data for ${tenant} [${queryPeriod}]: ${metricsData.length} records`);
+      console.log(`✅ Using tenant_metrics granular data for ${tenant}: ${metricsData.length} records`);
     } else {
-      console.log(`⚠️ No ${queryPeriod} data in tenant_metrics, trying fallback tables...`);
+      console.log(`⚠️ No granular data in tenant_metrics, trying fallback tables...`);
 
       // Fallback 1: Try campaign_metrics table
       const { data: campaignData, error: campaignError } = await supabaseClient
@@ -1316,9 +1317,6 @@ router.post("/jobs/ai_writer", async (req, res) => {
     const safeLimit = Math.min(limit, 5); // Process up to 5 themes
 
     try {
-      // Send early response to UI to show "processing" state
-      res.writeHead(200, { 'Content-Type': 'application/json' });
-
       console.log(`🔄 Starting AI generation with comprehensive analysis...`);
 
       // Wait for AI generation with extended timeout for comprehensive services
@@ -1359,22 +1357,22 @@ router.post("/jobs/ai_writer", async (req, res) => {
 
       // Send final response
       if (result.timeout) {
-        res.end(JSON.stringify({
+        return res.json({
           ok: true,
           status: "processing",
           processing: true,
           message: "🔍 AI is analyzing your website, competitors, and performance data. This creates better ads but takes 30-60 seconds. Please wait...",
           limitReduced: safeLimit < limit
-        }));
+        });
       } else {
-        res.end(JSON.stringify({
+        return res.json({
           ok: true,
           ...result,
           limitReduced: safeLimit < limit,
           message: safeLimit < limit ?
             `✅ Generated ${safeLimit} high-quality themes using comprehensive market analysis (reduced from ${limit}). Run again for more.` :
             `✅ Successfully generated ${result.wrote} data-driven themes with competitor insights.`
-        }));
+        });
       }
 
     } catch (error) {
@@ -3682,11 +3680,12 @@ router.get("/performance/insights", async (req, res) => {
     const startDateStr = startDate.toISOString().split('T')[0];
 
     // Fetch metrics data grouped by date for performance chart
-    // Don't filter by period - aggregate ALL data for the date range
+    // Use entity_type filter to get granular data, avoid period aggregate duplicates
     const { data: metricsData, error: metricsError } = await supabaseClient
       .from('tenant_metrics')
-      .select('date, clicks, cost_micros, conversions, impressions, ctr')
+      .select('date, clicks, cost_micros, conversions, impressions, ctr, entity_type')
       .eq('tenant_id', tenant)
+      .in('entity_type', ['campaign', 'ad_group', 'keyword'])  // Get granular data only
       .gte('date', startDateStr)
       .order('date', { ascending: true });
 

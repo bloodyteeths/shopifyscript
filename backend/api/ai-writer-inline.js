@@ -147,9 +147,18 @@ async function getBusinessContext(tenant, supabase) {
   let websiteScraper, competitorIntel;
   try {
     websiteScraper = new WebsiteScraperService();
-    competitorIntel = new CompetitorIntelligenceService();
+    console.log('✅ WebsiteScraperService initialized');
   } catch (err) {
-    console.warn('⚠️ Service initialization failed:', err.message);
+    console.error('❌ WebsiteScraperService init failed:', err.message, err.stack);
+    websiteScraper = null;
+  }
+
+  try {
+    competitorIntel = new CompetitorIntelligenceService();
+    console.log('✅ CompetitorIntelligenceService initialized');
+  } catch (err) {
+    console.error('❌ CompetitorIntelligenceService init failed:', err.message, err.stack);
+    competitorIntel = null;
   }
 
   // Fetch comprehensive website analysis (products, USPs, testimonials, offers)
