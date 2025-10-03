@@ -3572,7 +3572,7 @@ router.get("/optimizations/stats", async (req, res) => {
   }
 });
 
-// ✅ NEW: GET /api/ai/performance/insights - Get AI performance insights
+// ✅ GET /api/ai/performance/insights - Get AI performance insights
 router.get("/performance/insights", async (req, res) => {
   const { tenant, sig, period = 'LAST_7_DAYS' } = req.query;
   const payload = `GET:${tenant}:ai_performance_insights`;
@@ -3581,80 +3581,154 @@ router.get("/performance/insights", async (req, res) => {
   }
 
   try {
-    console.log('🔍 Fetching performance insights for:', tenant);
+    console.log(`🔍 Fetching performance insights for: ${tenant}, period: ${period}`);
 
     const supabaseClient = getSupabaseClient();
     if (!supabaseClient) {
+      console.warn('⚠️ Supabase not configured');
       return res.json({
         ok: true,
-        insights: [],
+        performanceData: [],
+        deviceBreakdown: [],
+        topKeywords: [],
+        aiImpact: null,
         timestamp: new Date().toISOString()
       });
     }
 
-    // Query recent performance data
+    // Set RLS context
+    await supabaseClient.rpc('set_config', {
+      parameter: 'app.current_tenant_id',
+      value: tenant
+    }).catch(() => {});
+
+    // Calculate date range based on period
+    let daysBack = 7;
+    switch(period) {
+      case 'TODAY': daysBack = 1; break;
+      case 'YESTERDAY': daysBack = 2; break;
+      case 'LAST_7_DAYS': daysBack = 7; break;
+      case 'LAST_30_DAYS': daysBack = 30; break;
+      case 'ALL_TIME': daysBack = 365; break;
+    }
+
     const startDate = new Date();
-    startDate.setDate(startDate.getDate() - 7);
+    startDate.setDate(startDate.getDate() - daysBack);
     const startDateStr = startDate.toISOString().split('T')[0];
 
-    const { data, error } = await supabaseClient
+    // Fetch metrics data grouped by date for performance chart
+    const { data: metricsData, error: metricsError } = await supabaseClient
       .from('tenant_metrics')
-      .select('clicks, cost_micros, conversions, impressions, ctr, date')
+      .select('date, clicks, cost_micros, conversions, impressions, ctr')
       .eq('tenant_id', tenant)
       .eq('period', period)
       .gte('date', startDateStr)
-      .order('date', { ascending: false });
+      .order('date', { ascending: true });
 
-    if (error) {
-      console.error('Insights query error:', error);
-      return res.json({
-        ok: true,
-        insights: [],
-        timestamp: new Date().toISOString()
+    if (metricsError) {
+      console.error('Metrics query error:', metricsError);
+    }
+
+    // Group metrics by date for performance trend
+    const performanceByDate = {};
+    if (metricsData && metricsData.length > 0) {
+      metricsData.forEach(row => {
+        const dateStr = row.date;
+        if (!performanceByDate[dateStr]) {
+          performanceByDate[dateStr] = {
+            date: dateStr,
+            clicks: 0,
+            impressions: 0,
+            conversions: 0,
+            cost: 0,
+            ctr: 0
+          };
+        }
+        performanceByDate[dateStr].clicks += row.clicks || 0;
+        performanceByDate[dateStr].impressions += row.impressions || 0;
+        performanceByDate[dateStr].conversions += parseFloat(row.conversions) || 0;
+        performanceByDate[dateStr].cost += (row.cost_micros || 0) / 1000000;
+      });
+
+      // Calculate CTR for each date
+      Object.values(performanceByDate).forEach((day: any) => {
+        if (day.impressions > 0) {
+          day.ctr = ((day.clicks / day.impressions) * 100).toFixed(2);
+        }
       });
     }
 
-    // Generate insights from data
-    const insights = [];
+    const performanceData = Object.values(performanceByDate);
+    console.log(`📊 Performance data points: ${performanceData.length}`);
 
-    if (data && data.length > 0) {
-      const totalClicks = data.reduce((sum, row) => sum + (row.clicks || 0), 0);
-      const totalCost = data.reduce((sum, row) => sum + ((row.cost_micros || 0) / 1000000), 0);
-      const totalConversions = data.reduce((sum, row) => sum + (parseFloat(row.conversions) || 0), 0);
-      const avgCtr = data.reduce((sum, row) => sum + (row.ctr || 0), 0) / data.length;
+    // Fetch device breakdown (if device_metrics exists)
+    let deviceBreakdown = [];
+    try {
+      const { data: deviceData } = await supabaseClient
+        .from('device_metrics')
+        .select('device_type, clicks, impressions, conversions')
+        .eq('tenant_id', tenant)
+        .gte('date', startDateStr);
 
-      if (avgCtr > 5) {
-        insights.push({
-          type: 'positive',
-          category: 'ctr',
-          message: `CTR is ${avgCtr.toFixed(2)}% - above industry average`,
-          impact: 'high'
+      if (deviceData && deviceData.length > 0) {
+        const deviceAgg = {};
+        deviceData.forEach(row => {
+          const device = row.device_type || 'Unknown';
+          if (!deviceAgg[device]) {
+            deviceAgg[device] = { name: device, clicks: 0, impressions: 0, conversions: 0 };
+          }
+          deviceAgg[device].clicks += row.clicks || 0;
+          deviceAgg[device].impressions += row.impressions || 0;
+          deviceAgg[device].conversions += parseFloat(row.conversions) || 0;
         });
+        deviceBreakdown = Object.values(deviceAgg);
       }
+    } catch (err) {
+      console.log('Device metrics not available');
+    }
 
-      if (totalConversions > 0 && totalCost > 0) {
-        const cpa = totalCost / totalConversions;
-        insights.push({
-          type: 'info',
-          category: 'cpa',
-          message: `Cost per acquisition: $${cpa.toFixed(2)}`,
-          impact: 'medium'
-        });
-      }
+    // Fetch top keywords from search_terms
+    const { data: searchTermsData } = await supabaseClient
+      .from('search_terms')
+      .select('search_term, clicks, conversions, cost_micros')
+      .eq('tenant_id', tenant)
+      .gte('date', startDateStr)
+      .order('clicks', { ascending: false })
+      .limit(10);
 
-      if (totalClicks > 1000) {
-        insights.push({
-          type: 'positive',
-          category: 'traffic',
-          message: `Strong traffic volume: ${totalClicks} clicks in last 7 days`,
-          impact: 'medium'
-        });
-      }
+    const topKeywords = (searchTermsData || []).map(st => ({
+      keyword: st.search_term,
+      clicks: st.clicks || 0,
+      conversions: st.conversions || 0,
+      cost: (st.cost_micros || 0) / 1000000
+    }));
+
+    console.log(`🔑 Top keywords: ${topKeywords.length}`);
+
+    // Calculate AI impact metrics
+    let aiImpact = null;
+    if (metricsData && metricsData.length > 0) {
+      const totalClicks = metricsData.reduce((sum, row) => sum + (row.clicks || 0), 0);
+      const totalCost = metricsData.reduce((sum, row) => sum + ((row.cost_micros || 0) / 1000000), 0);
+      const totalConversions = metricsData.reduce((sum, row) => sum + (parseFloat(row.conversions) || 0), 0);
+      const totalImpressions = metricsData.reduce((sum, row) => sum + (row.impressions || 0), 0);
+
+      aiImpact = {
+        totalClicks,
+        totalConversions,
+        totalSpend: totalCost,
+        avgCTR: totalImpressions > 0 ? ((totalClicks / totalImpressions) * 100).toFixed(2) : 0,
+        avgCPC: totalClicks > 0 ? (totalCost / totalClicks).toFixed(2) : 0,
+        conversionRate: totalClicks > 0 ? ((totalConversions / totalClicks) * 100).toFixed(2) : 0
+      };
     }
 
     return res.json({
       ok: true,
-      insights,
+      performanceData,
+      deviceBreakdown,
+      topKeywords,
+      aiImpact,
       timestamp: new Date().toISOString(),
       period
     });
