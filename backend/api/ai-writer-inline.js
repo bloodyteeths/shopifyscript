@@ -143,34 +143,46 @@ async function getBusinessContext(tenant, supabase) {
     websiteAnalysis: null
   };
 
-  // Initialize advanced services
-  const websiteScraper = new WebsiteScraperService();
-  const competitorIntel = new CompetitorIntelligenceService();
+  // Initialize advanced services (with timeout protection for Vercel)
+  let websiteScraper, competitorIntel;
+  try {
+    websiteScraper = new WebsiteScraperService();
+    competitorIntel = new CompetitorIntelligenceService();
+  } catch (err) {
+    console.warn('⚠️ Service initialization failed:', err.message);
+  }
 
   // Fetch comprehensive website analysis (products, USPs, testimonials, offers)
-  const websitePromise = websiteScraper.initialize()
-    .then(() => websiteScraper.scrapeWebsite(`https://${tenant}.myshopify.com`, {
-      tenant: tenant,
-      extractProducts: true,
-      extractTestimonials: true,
-      extractOffers: true,
-      extractUSPs: true,
-      depth: 2,
-      maxPages: 10
-    }))
-    .then(analysis => {
-      console.log('📊 Website analysis complete:', {
-        products: analysis?.products?.length || 0,
-        testimonials: analysis?.testimonials?.length || 0,
-        offers: analysis?.offers?.length || 0,
-        usps: analysis?.usps?.length || 0
-      });
-      return analysis;
-    })
-    .catch(err => {
-      console.warn('⚠️ Website scraper failed, using basic fetch:', err.message);
-      return fetchWebsiteContext(tenant);
-    });
+  // Add 8-second timeout for Vercel serverless
+  const websitePromise = websiteScraper
+    ? Promise.race([
+        websiteScraper.initialize()
+          .then(() => websiteScraper.scrapeWebsite(`https://${tenant}.myshopify.com`, {
+            tenant: tenant,
+            extractProducts: true,
+            extractTestimonials: true,
+            extractOffers: true,
+            extractUSPs: true,
+            depth: 2,
+            maxPages: 10
+          }))
+          .then(analysis => {
+            console.log('📊 Website analysis complete:', {
+              products: analysis?.products?.length || 0,
+              testimonials: analysis?.testimonials?.length || 0,
+              offers: analysis?.offers?.length || 0,
+              usps: analysis?.usps?.length || 0
+            });
+            return analysis;
+          }),
+        new Promise((_, reject) =>
+          setTimeout(() => reject(new Error('Website scraper timeout')), 8000)
+        )
+      ]).catch(err => {
+        console.warn('⚠️ Website scraper failed, using basic fetch:', err.message);
+        return fetchWebsiteContext(tenant);
+      })
+    : fetchWebsiteContext(tenant);
 
   try {
     // Try to get config from tenant service
@@ -338,36 +350,52 @@ async function getBusinessContext(tenant, supabase) {
     }
   }
 
-  // Get competitor intelligence
-  try {
-    console.log('🕵️ Analyzing competitors...');
-    const competitors = await competitorIntel.identifyCompetitors(tenant, {
-      industry: context.businessType,
-      keywords: context.topKeywords.slice(0, 10),
-      targetAudience: context.targetAudience
-    });
+  // Get competitor intelligence (with timeout for Vercel)
+  if (competitorIntel) {
+    try {
+      console.log('🕵️ Analyzing competitors...');
 
-    if (competitors && competitors.length > 0) {
-      // Analyze top 3 competitor landing pages
-      const competitorAnalyses = await Promise.all(
-        competitors.slice(0, 3).map(comp =>
-          competitorIntel.analyzeLandingPage(tenant, comp).catch(err => {
-            console.warn(`Failed to analyze ${comp.domain || comp.name}:`, err.message);
-            return null;
-          })
+      // Add 10-second timeout for competitor analysis
+      const competitorPromise = Promise.race([
+        competitorIntel.identifyCompetitors(tenant, {
+          industry: context.businessType,
+          keywords: context.topKeywords.slice(0, 10),
+          targetAudience: context.targetAudience
+        }),
+        new Promise((_, reject) =>
+          setTimeout(() => reject(new Error('Competitor analysis timeout')), 10000)
         )
-      );
+      ]);
 
-      context.competitorInsights = {
-        competitors: competitors.slice(0, 5),
-        analyses: competitorAnalyses.filter(Boolean),
-        totalFound: competitors.length
-      };
+      const competitors = await competitorPromise;
 
-      console.log(`✅ Analyzed ${competitorAnalyses.filter(Boolean).length} competitors`);
+      if (competitors && competitors.length > 0) {
+        // Analyze top 2 competitors only (for speed)
+        const competitorAnalyses = await Promise.race([
+          Promise.all(
+            competitors.slice(0, 2).map(comp =>
+              competitorIntel.analyzeLandingPage(tenant, comp).catch(err => {
+                console.warn(`Failed to analyze ${comp.domain || comp.name}:`, err.message);
+                return null;
+              })
+            )
+          ),
+          new Promise((_, reject) =>
+            setTimeout(() => reject(new Error('Landing page analysis timeout')), 8000)
+          )
+        ]).catch(() => []);
+
+        context.competitorInsights = {
+          competitors: competitors.slice(0, 5),
+          analyses: competitorAnalyses.filter(Boolean),
+          totalFound: competitors.length
+        };
+
+        console.log(`✅ Analyzed ${competitorAnalyses.filter(Boolean).length} competitors`);
+      }
+    } catch (error) {
+      console.warn('⚠️ Competitor analysis failed:', error.message);
     }
-  } catch (error) {
-    console.warn('⚠️ Competitor analysis failed:', error.message);
   }
 
   return context;

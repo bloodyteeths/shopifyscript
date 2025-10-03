@@ -105,13 +105,15 @@ router.get("/stats/quick", async (req, res) => {
   try {
     console.log('🔍 Fetching quick stats for:', tenant, '- Period:', period);
 
-    // Skip cache for period-based queries to ensure fresh data
+    // Always generate cache key (needed for setCache later)
+    const cacheKey = getCacheKey('stats_quick', tenant, { days, period });
+
+    // Skip cache READ for period-based queries to ensure fresh data
     // Cache causes stale data when users change time periods
     const skipCache = req.query.period !== undefined;
 
     if (!skipCache) {
       // Check cache first (only for default queries)
-      const cacheKey = getCacheKey('stats_quick', tenant, { days, period });
       const cachedData = getFromCache(cacheKey);
       if (cachedData) {
         console.log('✅ Returning cached quick stats for:', tenant);
@@ -3680,11 +3682,11 @@ router.get("/performance/insights", async (req, res) => {
     const startDateStr = startDate.toISOString().split('T')[0];
 
     // Fetch metrics data grouped by date for performance chart
+    // Don't filter by period - aggregate ALL data for the date range
     const { data: metricsData, error: metricsError } = await supabaseClient
       .from('tenant_metrics')
       .select('date, clicks, cost_micros, conversions, impressions, ctr')
       .eq('tenant_id', tenant)
-      .eq('period', period)
       .gte('date', startDateStr)
       .order('date', { ascending: true });
 
