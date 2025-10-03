@@ -343,7 +343,9 @@ export async function handleInlineAIWriter(tenant, limit = 5) {
   try {
     const { getAILoggerService } = await import("../services/ai-logger.js");
     aiLogger = getAILoggerService();
-    aiLogger.logAIOperation(tenant, 'ai_writer', 'info', `Starting AI writer for ${limit} themes`);
+    if (aiLogger && typeof aiLogger.logAIOperation === 'function') {
+      aiLogger.logAIOperation(tenant, 'ai_writer', 'info', `Starting AI writer for ${limit} themes`);
+    }
   } catch (e) {
     console.warn("AI logger not available:", e.message);
   }
@@ -354,12 +356,12 @@ export async function handleInlineAIWriter(tenant, limit = 5) {
     try {
       ai = await getAIProvider();
       console.log(`AI provider initialized: ${ai.provider}`);
-      if (aiLogger) {
+      if (aiLogger && typeof aiLogger.logAIOperation === 'function') {
         aiLogger.logAIOperation(tenant, 'ai_writer', 'info', `AI provider: ${ai.provider}`);
       }
     } catch (error) {
       console.error("AI provider initialization failed:", error);
-      if (aiLogger) {
+      if (aiLogger && typeof aiLogger.logAIOperation === 'function') {
         aiLogger.logAIOperation(tenant, 'ai_writer', 'error', `Provider init failed: ${error.message}`);
       }
       // Use fallback content
@@ -597,7 +599,7 @@ Return ONLY valid JSON: {"headlines": [...], "descriptions": [...]}`;
     const sheetWrites = results.filter(r => r.writtenToSheets).length;
 
     // Log completion
-    if (aiLogger) {
+    if (aiLogger && typeof aiLogger.logAIOperation === 'function') {
       aiLogger.logAIOperation(tenant, 'ai_writer', 'success',
         `Generated ${results.length} themes, wrote ${supabaseWrites} to Supabase, ${sheetWrites} to Sheets`);
     }

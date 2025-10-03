@@ -108,12 +108,15 @@ export function UserDashboard({ shopName, hasFeatureAccess = false, onNavigateTo
     loadData();
   }, [fetchMetrics, fetchAIStatus]);
 
-  // Handle period change - refetch data when period changes
+  // Add useEffect to refetch when period changes
+  useEffect(() => {
+    fetchMetrics();
+  }, [selectedPeriod, fetchMetrics]);
+
+  // Handle period change
   const handlePeriodChange = useCallback((period: TimePeriod) => {
     setSelectedPeriod(period);
-    // Trigger immediate refetch
-    fetchMetrics();
-  }, [fetchMetrics]);
+  }, []);
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-US', {
@@ -204,7 +207,7 @@ export function UserDashboard({ shopName, hasFeatureAccess = false, onNavigateTo
             <Button onClick={() => onNavigateToTab?.(1)}>
               View All Campaigns
             </Button>
-            <Button onClick={() => window.location.href = '/app/setup?tab=ai-settings'}>
+            <Button disabled>
               Optimization Settings
             </Button>
           </InlineStack>
@@ -343,7 +346,7 @@ export function UserDashboard({ shopName, hasFeatureAccess = false, onNavigateTo
         tone="info"
         action={{
           content: 'View Recommendations',
-          onAction: () => window.location.href = '/app/ai-dashboard?tab=insights'
+          onAction: () => onNavigateToTab?.(3)
         }}
       >
         <p>Your AI has identified 3 high-impact optimizations that could improve your ROAS by 15%</p>
