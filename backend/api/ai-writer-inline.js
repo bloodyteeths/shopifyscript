@@ -159,19 +159,32 @@ async function getBusinessContext(tenant, supabase) {
   // Try to get performance data from Supabase
   if (supabase) {
     try {
+      // Set tenant context for RLS (even with service role, good practice)
+      await supabase.rpc('set_config', {
+        parameter: 'app.current_tenant_id',
+        value: tenant
+      }).catch(() => {
+        // Ignore errors - service role can bypass RLS anyway
+      });
+
       // Get ACTUAL campaign performance data from Google Ads
+      // Use ALL_TIME or LAST_7_DAYS period data, and remove conversion filter
       const { data: campaigns } = await supabase
         .from('tenant_metrics')
-        .select('campaign_name, impressions, clicks, conversions, cost, ctr, conversion_rate')
+        .select('campaign_name, impressions, clicks, conversions, cost_micros, ctr')
         .eq('tenant_id', tenant)
         .eq('entity_type', 'campaign')
-        .gt('conversions', 0)
-        .order('conversions', { ascending: false })
-        .limit(20);
+        .in('period', ['ALL_TIME', 'LAST_7_DAYS', 'LAST_30_DAYS'])
+        .gt('impressions', 0)  // At least some traffic
+        .order('impressions', { ascending: false })
+        .limit(50);
+
+      console.log(`📊 Campaign query returned ${campaigns?.length || 0} results`);
 
       if (campaigns && campaigns.length > 0) {
         // Extract high-performing campaign themes
         context.topCampaigns = campaigns.slice(0, 5).map(c => c.campaign_name);
+        console.log(`✅ Top campaigns: ${context.topCampaigns.join(', ')}`);
 
         // Find patterns in successful campaigns
         const campaignWords = campaigns
@@ -198,9 +211,12 @@ async function getBusinessContext(tenant, supabase) {
         .select('ad_group_name, campaign_name, clicks, conversions, ctr')
         .eq('tenant_id', tenant)
         .eq('entity_type', 'ad_group')
-        .gt('conversions', 0)
-        .order('conversions', { ascending: false })
-        .limit(10);
+        .in('period', ['ALL_TIME', 'LAST_7_DAYS', 'LAST_30_DAYS'])
+        .gt('clicks', 0)  // At least some clicks
+        .order('clicks', { ascending: false })
+        .limit(20);
+
+      console.log(`📊 Ad group query returned ${adGroups?.length || 0} results`);
 
       if (adGroups && adGroups.length > 0) {
         context.performanceData.bestPerformingAds = adGroups.slice(0, 5).map(ag => ({
@@ -209,24 +225,30 @@ async function getBusinessContext(tenant, supabase) {
           ctr: ag.ctr,
           conversions: ag.conversions
         }));
-      }
+        console.log(`✅ Best ad groups: ${context.performanceData.bestPerformingAds.map(a => a.name).join(', ')}`);
 
-      // Get top performing search terms with REAL conversion data
+      // Get top performing search terms with REAL data
       const { data: searchTerms } = await supabase
         .from('search_terms')
-        .select('search_term, conversions, clicks, cost, impressions, conversion_rate')
+        .select('search_term, conversions, clicks, cost_micros, impressions')
         .eq('tenant_id', tenant)
-        .gt('conversions', 0)
-        .order('conversions', { ascending: false })
-        .limit(20);
+        .gt('clicks', 0)  // At least some clicks
+        .order('clicks', { ascending: false })
+        .limit(50);
+
+      console.log(`📊 Search terms query returned ${searchTerms?.length || 0} results`);
 
       if (searchTerms && searchTerms.length > 0) {
         // Get the ACTUAL converting keywords
         context.topKeywords = searchTerms.slice(0, 10).map(st => st.search_term);
+        console.log(`✅ Top keywords: ${context.topKeywords.slice(0, 5).join(', ')}...`);
 
         // Get high-conversion rate terms for quality signals
         const highConversionTerms = searchTerms
-          .filter(st => st.conversion_rate > 5) // 5%+ conversion rate
+          .filter(st => {
+            const convRate = st.clicks > 0 ? (st.conversions / st.clicks) * 100 : 0;
+            return convRate > 5; // 5%+ conversion rate
+          })
           .map(st => st.search_term);
 
         if (highConversionTerms.length > 0) {
@@ -236,16 +258,19 @@ async function getBusinessContext(tenant, supabase) {
         // Calculate REAL performance metrics
         const totalImpressions = searchTerms.reduce((sum, st) => sum + (st.impressions || 0), 0);
         const totalClicks = searchTerms.reduce((sum, st) => sum + (st.clicks || 0), 0);
-        const totalCost = searchTerms.reduce((sum, st) => sum + (st.cost || 0), 0);
+        const totalCostMicros = searchTerms.reduce((sum, st) => sum + (st.cost_micros || 0), 0);
         const totalConversions = searchTerms.reduce((sum, st) => sum + (st.conversions || 0), 0);
 
         if (totalImpressions > 0) {
           context.performanceData.avgCTR = ((totalClicks / totalImpressions) * 100).toFixed(2);
         }
         if (totalClicks > 0) {
-          context.performanceData.avgCPC = (totalCost / totalClicks).toFixed(2);
+          // Convert micros to dollars
+          context.performanceData.avgCPC = (totalCostMicros / 1000000 / totalClicks).toFixed(2);
           context.performanceData.avgConversionRate = ((totalConversions / totalClicks) * 100).toFixed(2);
         }
+
+        console.log(`📊 Performance data loaded: ${totalClicks} clicks, ${totalConversions} conversions, ${context.topKeywords.length} keywords`);
       }
     } catch (error) {
       console.warn("Could not load Supabase context:", error.message);

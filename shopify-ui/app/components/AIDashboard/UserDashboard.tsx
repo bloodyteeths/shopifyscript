@@ -108,10 +108,38 @@ export function UserDashboard({ shopName, hasFeatureAccess = false, onNavigateTo
     loadData();
   }, [fetchMetrics, fetchAIStatus]);
 
-  // Add useEffect to refetch when period changes
+  // Refetch metrics when period changes
   useEffect(() => {
-    fetchMetrics();
-  }, [selectedPeriod, fetchMetrics]);
+    const refetchMetrics = async () => {
+      try {
+        const response = await authenticatedFetch(
+          `/ai/stats/quick?period=${selectedPeriod}`,
+          "GET",
+          undefined,
+          shopName
+        );
+        if (response.ok) {
+          const data = await response.json();
+          if (data.ok && data.stats) {
+            setMetrics({
+              impressions: data.stats.impressions || 0,
+              clicks: data.stats.clicks || 0,
+              conversions: data.stats.conversions || 0,
+              spend: data.stats.adSpend || 0,
+              ctr: data.stats.ctr || 0,
+              cpc: data.stats.clicks ? (data.stats.adSpend / data.stats.clicks) : 0,
+              roas: data.stats.roas || 0,
+              cpa: data.stats.conversions ? (data.stats.adSpend / data.stats.conversions) : 0,
+            });
+          }
+        }
+      } catch (err) {
+        console.error("Failed to refetch metrics:", err);
+      }
+    };
+
+    refetchMetrics();
+  }, [selectedPeriod, shopName]);
 
   // Handle period change
   const handlePeriodChange = useCallback((period: TimePeriod) => {

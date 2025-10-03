@@ -54696,7 +54696,7 @@ var require_Select = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Select/Select.js"(exports) {
     "use strict";
     var React32 = require_react(), polarisIcons = require_dist3(), css = require_css(), useToggle = require_use_toggle(), Select_module = require_Select_css(), Icon7 = require_Icon(), Labelled = require_Labelled(), Box10 = require_Box(), Text14 = require_Text(), PLACEHOLDER_VALUE = "";
-    function Select7({
+    function Select8({
       options: optionsProp,
       label,
       labelAction,
@@ -54843,7 +54843,7 @@ var require_Select = __commonJS({
       }
       return renderSingleOption(optionOrGroup);
     }
-    exports.Select = Select7;
+    exports.Select = Select8;
   }
 });
 
@@ -54851,7 +54851,7 @@ var require_Select = __commonJS({
 var require_ResourceList = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/ResourceList/ResourceList.js"(exports) {
     "use strict";
-    var React32 = require_react(), polarisIcons = require_dist3(), polarisTokens = require_build(), debounce = require_debounce(), css = require_css(), components = require_components2(), useLazyRef = require_use_lazy_ref(), useEventListener = require_use_event_listener(), ResourceList_module = require_ResourceList_css(), types4 = require_types6(), Select7 = require_Select(), ResourceItem2 = require_ResourceItem(), hooks = require_hooks2(), Text14 = require_Text(), Button12 = require_Button(), CheckableButton = require_CheckableButton(), Sticky = require_Sticky(), EmptySearchResult = require_EmptySearchResult(), Spinner5 = require_Spinner(), Pagination = require_Pagination(), context = require_context19(), BulkActions = require_BulkActions(), SMALL_SPINNER_HEIGHT = 28, LARGE_SPINNER_HEIGHT = 45;
+    var React32 = require_react(), polarisIcons = require_dist3(), polarisTokens = require_build(), debounce = require_debounce(), css = require_css(), components = require_components2(), useLazyRef = require_use_lazy_ref(), useEventListener = require_use_event_listener(), ResourceList_module = require_ResourceList_css(), types4 = require_types6(), Select8 = require_Select(), ResourceItem2 = require_ResourceItem(), hooks = require_hooks2(), Text14 = require_Text(), Button12 = require_Button(), CheckableButton = require_CheckableButton(), Sticky = require_Sticky(), EmptySearchResult = require_EmptySearchResult(), Spinner5 = require_Spinner(), Pagination = require_Pagination(), context = require_context19(), BulkActions = require_BulkActions(), SMALL_SPINNER_HEIGHT = 28, LARGE_SPINNER_HEIGHT = 45;
     function getAllItemsOnPage(items, idForItem) {
       return items.map((item, index) => idForItem(item, index));
     }
@@ -55010,7 +55010,7 @@ var require_ResourceList = __commonJS({
         className: css.classNames(!flushFilters && ResourceList_module.default.FiltersWrapper)
       }, filterControl) : null, sortingSelectMarkup = sortOptions && sortOptions.length > 0 && !alternateTool ? /* @__PURE__ */ React32.createElement("div", {
         className: ResourceList_module.default.SortWrapper
-      }, /* @__PURE__ */ React32.createElement(Select7.Select, {
+      }, /* @__PURE__ */ React32.createElement(Select8.Select, {
         label: i18n.translate("Polaris.ResourceList.sortingLabel"),
         labelInline: !smallScreen,
         labelHidden: smallScreen,
@@ -56236,7 +56236,7 @@ var require_hooks14 = __commonJS({
 var require_cjs3 = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/index.js"(exports) {
     "use strict";
-    var configure = require_configure(), types4 = require_types(), shared = require_shared(), ThemeProvider = require_ThemeProvider(), colorTransformers = require_color_transformers(), withinContentContext = require_within_content_context(), useCopyToClipboard = require_use_copy_to_clipboard(), useEventListener = require_use_event_listener(), useFocus = require_use_focus(), useHover = require_use_hover(), useMediaQuery = require_use_media_query(), useTheme = require_use_theme(), useIndexResourceState = require_use_index_resource_state(), breakpoints = require_breakpoints2(), AppProvider3 = require_AppProvider(), AccountConnection = require_AccountConnection(), ActionList3 = require_ActionList(), ActionMenu = require_ActionMenu(), Autocomplete = require_Autocomplete(), Avatar2 = require_Avatar(), Backdrop = require_Backdrop(), Badge13 = require_Badge(), types$1 = require_types2(), Banner10 = require_Banner(), Bleed = require_Bleed(), Box10 = require_Box(), Breadcrumbs = require_Breadcrumbs(), BulkActions = require_BulkActions(), Button12 = require_Button(), utils = require_utils5(), ButtonGroup4 = require_ButtonGroup(), CalloutCard = require_CalloutCard(), Card13 = require_Card(), Checkbox4 = require_Checkbox(), ChoiceList2 = require_ChoiceList(), Collapsible = require_Collapsible(), ColorPicker = require_ColorPicker(), InlineGrid2 = require_InlineGrid(), Combobox = require_Combobox(), Connected = require_Connected(), ContextualSaveBar = require_ContextualSaveBar(), DataTable3 = require_DataTable(), DatePicker = require_DatePicker(), DescriptionList = require_DescriptionList(), Divider6 = require_Divider(), DropZone = require_DropZone(), EmptySearchResult = require_EmptySearchResult(), EmptyState4 = require_EmptyState(), EventListener = require_EventListener(), ExceptionList = require_ExceptionList(), Filters = require_Filters(), Focus = require_Focus(), FooterHelp = require_FooterHelp(), Form8 = require_Form(), FormLayout2 = require_FormLayout(), Frame = require_Frame(), Toast2 = require_Toast(), FullscreenBar = require_FullscreenBar(), Grid5 = require_Grid(), Icon7 = require_Icon(), Image = require_Image(), IndexFilters = require_IndexFilters(), useSetIndexFiltersMode = require_useSetIndexFiltersMode(), types$2 = require_types3(), IndexTable = require_IndexTable(), Indicator = require_Indicator(), InlineStack9 = require_InlineStack(), InlineCode = require_InlineCode(), InlineError = require_InlineError(), KeyboardKey = require_KeyboardKey(), KeypressListener = require_KeypressListener(), Label = require_Label(), Labelled = require_Labelled(), Layout10 = require_Layout(), LegacyCard = require_LegacyCard(), LegacyFilters = require_LegacyFilters(), LegacyStack = require_LegacyStack(), LegacyTabs = require_LegacyTabs(), Link8 = require_Link(), List2 = require_List3(), Listbox = require_Listbox(), Loading = require_Loading3(), MediaCard = require_MediaCard(), Modal5 = require_Modal(), Navigation = require_Navigation2(), Item = require_Item10(), OptionList = require_OptionList(), Page5 = require_Page(), PageActions = require_PageActions(), Pagination = require_Pagination(), Picker = require_Picker(), PolarisTestProvider = require_PolarisTestProvider(), Popover3 = require_Popover(), PopoverOverlay = require_PopoverOverlay(), Portal = require_Portal(), PortalsManager = require_PortalsManager(), PositionedOverlay = require_PositionedOverlay(), ProgressBar9 = require_ProgressBar(), RadioButton3 = require_RadioButton(), RangeSlider2 = require_RangeSlider(), ResourceItem2 = require_ResourceItem(), ResourceList2 = require_ResourceList(), Scrollable = require_Scrollable(), ScrollLock = require_ScrollLock(), Select7 = require_Select(), SelectAllActions = require_SelectAllActions(), SettingToggle = require_SettingToggle(), Sheet = require_Sheet(), SkeletonBodyText = require_SkeletonBodyText(), SkeletonDisplayText = require_SkeletonDisplayText(), SkeletonPage = require_SkeletonPage(), SkeletonTabs = require_SkeletonTabs(), SkeletonThumbnail = require_SkeletonThumbnail(), Spinner5 = require_Spinner(), Sticky = require_Sticky(), Tabs3 = require_Tabs(), Tag = require_Tag(), Text14 = require_Text(), TextContainer2 = require_TextContainer(), TextField6 = require_TextField(), Thumbnail2 = require_Thumbnail(), Toast$1 = require_Toast2(), Tooltip7 = require_Tooltip(), TopBar = require_TopBar(), TrapFocus = require_TrapFocus(), Truncate = require_Truncate(), UnstyledButton = require_UnstyledButton(), utils$1 = require_utils8(), UnstyledLink = require_UnstyledLink(), BlockStack11 = require_BlockStack(), VideoThumbnail = require_VideoThumbnail(), hooks = require_hooks9(), context = require_context15(), context$1 = require_context3(), hooks$1 = require_hooks14(), types$3 = require_types4(), hooks$2 = require_hooks3();
+    var configure = require_configure(), types4 = require_types(), shared = require_shared(), ThemeProvider = require_ThemeProvider(), colorTransformers = require_color_transformers(), withinContentContext = require_within_content_context(), useCopyToClipboard = require_use_copy_to_clipboard(), useEventListener = require_use_event_listener(), useFocus = require_use_focus(), useHover = require_use_hover(), useMediaQuery = require_use_media_query(), useTheme = require_use_theme(), useIndexResourceState = require_use_index_resource_state(), breakpoints = require_breakpoints2(), AppProvider3 = require_AppProvider(), AccountConnection = require_AccountConnection(), ActionList3 = require_ActionList(), ActionMenu = require_ActionMenu(), Autocomplete = require_Autocomplete(), Avatar2 = require_Avatar(), Backdrop = require_Backdrop(), Badge13 = require_Badge(), types$1 = require_types2(), Banner10 = require_Banner(), Bleed = require_Bleed(), Box10 = require_Box(), Breadcrumbs = require_Breadcrumbs(), BulkActions = require_BulkActions(), Button12 = require_Button(), utils = require_utils5(), ButtonGroup4 = require_ButtonGroup(), CalloutCard = require_CalloutCard(), Card13 = require_Card(), Checkbox4 = require_Checkbox(), ChoiceList2 = require_ChoiceList(), Collapsible = require_Collapsible(), ColorPicker = require_ColorPicker(), InlineGrid2 = require_InlineGrid(), Combobox = require_Combobox(), Connected = require_Connected(), ContextualSaveBar = require_ContextualSaveBar(), DataTable3 = require_DataTable(), DatePicker = require_DatePicker(), DescriptionList = require_DescriptionList(), Divider6 = require_Divider(), DropZone = require_DropZone(), EmptySearchResult = require_EmptySearchResult(), EmptyState4 = require_EmptyState(), EventListener = require_EventListener(), ExceptionList = require_ExceptionList(), Filters = require_Filters(), Focus = require_Focus(), FooterHelp = require_FooterHelp(), Form8 = require_Form(), FormLayout2 = require_FormLayout(), Frame = require_Frame(), Toast2 = require_Toast(), FullscreenBar = require_FullscreenBar(), Grid5 = require_Grid(), Icon7 = require_Icon(), Image = require_Image(), IndexFilters = require_IndexFilters(), useSetIndexFiltersMode = require_useSetIndexFiltersMode(), types$2 = require_types3(), IndexTable = require_IndexTable(), Indicator = require_Indicator(), InlineStack9 = require_InlineStack(), InlineCode = require_InlineCode(), InlineError = require_InlineError(), KeyboardKey = require_KeyboardKey(), KeypressListener = require_KeypressListener(), Label = require_Label(), Labelled = require_Labelled(), Layout10 = require_Layout(), LegacyCard = require_LegacyCard(), LegacyFilters = require_LegacyFilters(), LegacyStack = require_LegacyStack(), LegacyTabs = require_LegacyTabs(), Link8 = require_Link(), List2 = require_List3(), Listbox = require_Listbox(), Loading = require_Loading3(), MediaCard = require_MediaCard(), Modal5 = require_Modal(), Navigation = require_Navigation2(), Item = require_Item10(), OptionList = require_OptionList(), Page5 = require_Page(), PageActions = require_PageActions(), Pagination = require_Pagination(), Picker = require_Picker(), PolarisTestProvider = require_PolarisTestProvider(), Popover3 = require_Popover(), PopoverOverlay = require_PopoverOverlay(), Portal = require_Portal(), PortalsManager = require_PortalsManager(), PositionedOverlay = require_PositionedOverlay(), ProgressBar9 = require_ProgressBar(), RadioButton3 = require_RadioButton(), RangeSlider2 = require_RangeSlider(), ResourceItem2 = require_ResourceItem(), ResourceList2 = require_ResourceList(), Scrollable = require_Scrollable(), ScrollLock = require_ScrollLock(), Select8 = require_Select(), SelectAllActions = require_SelectAllActions(), SettingToggle = require_SettingToggle(), Sheet = require_Sheet(), SkeletonBodyText = require_SkeletonBodyText(), SkeletonDisplayText = require_SkeletonDisplayText(), SkeletonPage = require_SkeletonPage(), SkeletonTabs = require_SkeletonTabs(), SkeletonThumbnail = require_SkeletonThumbnail(), Spinner5 = require_Spinner(), Sticky = require_Sticky(), Tabs3 = require_Tabs(), Tag = require_Tag(), Text14 = require_Text(), TextContainer2 = require_TextContainer(), TextField6 = require_TextField(), Thumbnail2 = require_Thumbnail(), Toast$1 = require_Toast2(), Tooltip7 = require_Tooltip(), TopBar = require_TopBar(), TrapFocus = require_TrapFocus(), Truncate = require_Truncate(), UnstyledButton = require_UnstyledButton(), utils$1 = require_utils8(), UnstyledLink = require_UnstyledLink(), BlockStack11 = require_BlockStack(), VideoThumbnail = require_VideoThumbnail(), hooks = require_hooks9(), context = require_context15(), context$1 = require_context3(), hooks$1 = require_hooks14(), types$3 = require_types4(), hooks$2 = require_hooks3();
     exports.DEFAULT_LOCALE = configure.DEFAULT_LOCALE;
     exports.SUPPORTED_LOCALES = configure.SUPPORTED_LOCALES;
     Object.defineProperty(exports, "Key", {
@@ -56387,7 +56387,7 @@ var require_cjs3 = __commonJS({
     exports.ResourceList = ResourceList2.ResourceList;
     exports.Scrollable = Scrollable.Scrollable;
     exports.ScrollLock = ScrollLock.ScrollLock;
-    exports.Select = Select7.Select;
+    exports.Select = Select8.Select;
     exports.SelectAllActions = SelectAllActions.SelectAllActions;
     exports.SettingToggle = SettingToggle.SettingToggle;
     exports.Sheet = Sheet.Sheet;
@@ -140884,12 +140884,12 @@ __export(app_ai_dashboard_exports, {
   default: () => AIDashboardPage,
   loader: () => loader6
 });
-var import_react12 = __toESM(require_dist2()), import_node5 = __toESM(require_dist4());
+var import_react13 = __toESM(require_dist2()), import_node5 = __toESM(require_dist4());
 init_shopify_server();
 init_subscription_server();
 
 // app/components/AIDashboard.tsx
-var import_react11 = __toESM(require_react());
+var import_react12 = __toESM(require_react());
 
 // app/utils/ai-client.ts
 async function authenticatedFetch(path, method = "GET", body, shopName) {
@@ -141733,12 +141733,51 @@ function SystemOverview({ shopName, hasFeatureAccess: hasFeatureAccess2 = !1 }) 
 }
 
 // app/components/AIDashboard/UserDashboard.tsx
-var import_react7 = __toESM(require_react()), import_polaris5 = __toESM(require_cjs3());
-var import_jsx_runtime8 = __toESM(require_jsx_runtime());
-function UserDashboard({ shopName, hasFeatureAccess: hasFeatureAccess2 = !1 }) {
-  let [metrics, setMetrics] = (0, import_react7.useState)(null), [aiStatus, setAIStatus] = (0, import_react7.useState)(null), [loading, setLoading] = (0, import_react7.useState)(!0), fetchMetrics = (0, import_react7.useCallback)(async () => {
+var import_react8 = __toESM(require_react()), import_polaris6 = __toESM(require_cjs3());
+
+// app/components/TimeRangeSelector.tsx
+var import_polaris5 = __toESM(require_cjs3()), import_react7 = __toESM(require_react()), import_jsx_runtime8 = __toESM(require_jsx_runtime()), TIME_PERIOD_OPTIONS = [
+  { label: "Today", value: "TODAY" },
+  { label: "Yesterday", value: "YESTERDAY" },
+  { label: "Last 7 Days", value: "LAST_7_DAYS" },
+  { label: "Last 30 Days", value: "LAST_30_DAYS" },
+  { label: "All Time", value: "ALL_TIME" }
+];
+function TimeRangeSelector({
+  value,
+  onChange,
+  label = "Time Period",
+  helpText
+}) {
+  let handleChange = (0, import_react7.useCallback)((selectedValue) => {
+    onChange(selectedValue);
+  }, [onChange]);
+  return /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(
+    import_polaris5.Select,
+    {
+      label,
+      options: TIME_PERIOD_OPTIONS,
+      value,
+      onChange: handleChange,
+      helpText
+    }
+  );
+}
+function getPeriodLabel(period) {
+  return TIME_PERIOD_OPTIONS.find((opt) => opt.value === period)?.label || period;
+}
+
+// app/components/AIDashboard/UserDashboard.tsx
+var import_jsx_runtime9 = __toESM(require_jsx_runtime());
+function UserDashboard({ shopName, hasFeatureAccess: hasFeatureAccess2 = !1, onNavigateToTab }) {
+  let [metrics, setMetrics] = (0, import_react8.useState)(null), [aiStatus, setAIStatus] = (0, import_react8.useState)(null), [loading, setLoading] = (0, import_react8.useState)(!0), [selectedPeriod, setSelectedPeriod] = (0, import_react8.useState)("LAST_7_DAYS"), fetchMetrics = (0, import_react8.useCallback)(async () => {
     try {
-      let response = await authenticatedFetch("/ai/stats/quick", "GET", void 0, shopName);
+      let response = await authenticatedFetch(
+        `/ai/stats/quick?period=${selectedPeriod}`,
+        "GET",
+        void 0,
+        shopName
+      );
       if (response.ok) {
         let data = await response.json();
         data.ok && data.stats && setMetrics({
@@ -141755,7 +141794,7 @@ function UserDashboard({ shopName, hasFeatureAccess: hasFeatureAccess2 = !1 }) {
     } catch (err) {
       console.error("Failed to fetch metrics:", err), setMetrics(null);
     }
-  }, [shopName]), fetchAIStatus = (0, import_react7.useCallback)(async () => {
+  }, [shopName, selectedPeriod]), fetchAIStatus = (0, import_react8.useCallback)(async () => {
     try {
       let response = await authenticatedFetch("/ai/optimizations/stats", "GET", void 0, shopName);
       if (response.ok) {
@@ -141771,12 +141810,16 @@ function UserDashboard({ shopName, hasFeatureAccess: hasFeatureAccess2 = !1 }) {
       console.error("Failed to fetch AI status:", err), setAIStatus(null);
     }
   }, [shopName]);
-  (0, import_react7.useEffect)(() => {
+  (0, import_react8.useEffect)(() => {
     (async () => {
       setLoading(!0), await Promise.all([fetchMetrics(), fetchAIStatus()]), setLoading(!1);
     })();
-  }, [fetchMetrics, fetchAIStatus]);
-  let formatCurrency = (amount) => new Intl.NumberFormat("en-US", {
+  }, [fetchMetrics, fetchAIStatus]), (0, import_react8.useEffect)(() => {
+    fetchMetrics();
+  }, [selectedPeriod, fetchMetrics]);
+  let handlePeriodChange = (0, import_react8.useCallback)((period) => {
+    setSelectedPeriod(period);
+  }, []), formatCurrency = (amount) => new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",
     minimumFractionDigits: 0,
@@ -141785,148 +141828,183 @@ function UserDashboard({ shopName, hasFeatureAccess: hasFeatureAccess2 = !1 }) {
     let now = /* @__PURE__ */ new Date(), time = new Date(timestamp), diffMs = now.getTime() - time.getTime(), diffHours = Math.floor(diffMs / (1e3 * 60 * 60));
     return diffHours < 1 ? "Just now" : diffHours < 24 ? `${diffHours}h ago` : `${Math.floor(diffHours / 24)}d ago`;
   };
-  return /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_polaris5.BlockStack, { gap: "600", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris5.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_polaris5.BlockStack, { gap: "400", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_polaris5.InlineStack, { align: "space-between", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_polaris5.BlockStack, { gap: "200", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris5.Text, { variant: "headingLg", as: "h2", children: "AI Campaign Dashboard" }),
-          /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris5.Text, { variant: "bodyMd", as: "p", tone: "subdued", children: "Your Google Ads campaigns powered by AI optimization" })
+  return /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris6.BlockStack, { gap: "600", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris6.InlineStack, { align: "space-between", blockAlign: "center", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris6.BlockStack, { gap: "200", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Text, { variant: "headingLg", as: "h2", children: "AI Campaign Dashboard" }),
+        /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris6.Text, { variant: "bodyMd", as: "p", tone: "subdued", children: [
+          "Showing data for: ",
+          getPeriodLabel(selectedPeriod)
+        ] })
+      ] }),
+      /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Box, { minWidth: "200px", children: /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+        TimeRangeSelector,
+        {
+          value: selectedPeriod,
+          onChange: handlePeriodChange,
+          label: ""
+        }
+      ) })
+    ] }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris6.BlockStack, { gap: "400", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris6.InlineStack, { align: "space-between", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris6.BlockStack, { gap: "200", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Text, { variant: "headingMd", as: "h3", children: "AI Optimization Status" }),
+          /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Text, { variant: "bodyMd", as: "p", tone: "subdued", children: "Your Google Ads campaigns powered by AI optimization" })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_polaris5.BlockStack, { gap: "200", align: "end", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_polaris5.Badge, { tone: aiStatus?.status === "active" ? "success" : "warning", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris6.BlockStack, { gap: "200", align: "end", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris6.Badge, { tone: aiStatus?.status === "active" ? "success" : "warning", children: [
             "AI ",
             aiStatus?.status === "active" ? "Active" : "Paused"
           ] }),
-          aiStatus?.lastOptimization && /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_polaris5.Text, { variant: "bodySm", as: "p", tone: "subdued", children: [
+          aiStatus?.lastOptimization && /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris6.Text, { variant: "bodySm", as: "p", tone: "subdued", children: [
             "Last optimization: ",
             formatTimeAgo(aiStatus.lastOptimization)
           ] })
         ] })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_polaris5.InlineStack, { gap: "200", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris5.Button, { variant: "primary", size: "large", children: "Generate New Ads" }),
-        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris5.Button, { children: "View All Campaigns" }),
-        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris5.Button, { children: "Optimization Settings" })
+      /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris6.InlineStack, { gap: "200", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+          import_polaris6.Button,
+          {
+            variant: "primary",
+            size: "large",
+            onClick: () => onNavigateToTab?.(2),
+            children: "Generate New Ads"
+          }
+        ),
+        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Button, { onClick: () => onNavigateToTab?.(1), children: "View All Campaigns" }),
+        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Button, { disabled: !0, children: "Optimization Settings" })
       ] })
     ] }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_polaris5.Layout, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris5.Layout.Section, { oneThird: !0, children: /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris5.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_polaris5.BlockStack, { gap: "300", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris5.Text, { variant: "headingMd", as: "h3", children: "Today's Performance" }),
-        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris5.Divider, {}),
-        /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_polaris5.BlockStack, { gap: "300", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_polaris5.BlockStack, { gap: "100", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_polaris5.InlineStack, { align: "space-between", children: [
-              /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris5.Text, { variant: "bodyMd", tone: "subdued", children: "Impressions" }),
-              /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris5.Text, { variant: "headingMd", as: "p", fontWeight: "bold", children: formatNumber(metrics?.impressions || 0) })
+    /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris6.Layout, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Layout.Section, { oneThird: !0, children: /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris6.BlockStack, { gap: "300", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Text, { variant: "headingMd", as: "h3", children: "Today's Performance" }),
+        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Divider, {}),
+        /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris6.BlockStack, { gap: "300", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris6.BlockStack, { gap: "100", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris6.InlineStack, { align: "space-between", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Text, { variant: "bodyMd", tone: "subdued", children: "Impressions" }),
+              /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Text, { variant: "headingMd", as: "p", fontWeight: "bold", children: formatNumber(metrics?.impressions || 0) })
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris5.ProgressBar, { progress: 75, size: "small" })
+            /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.ProgressBar, { progress: 75, size: "small" })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_polaris5.BlockStack, { gap: "100", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_polaris5.InlineStack, { align: "space-between", children: [
-              /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris5.Text, { variant: "bodyMd", tone: "subdued", children: "Clicks" }),
-              /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris5.Text, { variant: "headingMd", as: "p", fontWeight: "bold", children: formatNumber(metrics?.clicks || 0) })
+          /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris6.BlockStack, { gap: "100", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris6.InlineStack, { align: "space-between", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Text, { variant: "bodyMd", tone: "subdued", children: "Clicks" }),
+              /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Text, { variant: "headingMd", as: "p", fontWeight: "bold", children: formatNumber(metrics?.clicks || 0) })
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_polaris5.Badge, { tone: "success", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris6.Badge, { tone: "success", children: [
               "CTR: ",
               formatPercent(metrics?.ctr || 0)
             ] })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_polaris5.BlockStack, { gap: "100", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_polaris5.InlineStack, { align: "space-between", children: [
-              /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris5.Text, { variant: "bodyMd", tone: "subdued", children: "Conversions" }),
-              /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris5.Text, { variant: "headingMd", as: "p", fontWeight: "bold", tone: "success", children: metrics?.conversions || 0 })
+          /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris6.BlockStack, { gap: "100", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris6.InlineStack, { align: "space-between", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Text, { variant: "bodyMd", tone: "subdued", children: "Conversions" }),
+              /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Text, { variant: "headingMd", as: "p", fontWeight: "bold", tone: "success", children: metrics?.conversions || 0 })
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_polaris5.Text, { variant: "bodySm", tone: "subdued", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris6.Text, { variant: "bodySm", tone: "subdued", children: [
               "CPA: ",
               formatCurrency(metrics?.cpa || 0)
             ] })
           ] })
         ] })
       ] }) }) }),
-      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris5.Layout.Section, { oneThird: !0, children: /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris5.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_polaris5.BlockStack, { gap: "300", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris5.Text, { variant: "headingMd", as: "h3", children: "AI Optimization Impact" }),
-        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris5.Divider, {}),
-        /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_polaris5.BlockStack, { gap: "300", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_polaris5.Box, { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_polaris5.Text, { variant: "headingXl", as: "p", tone: "success", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Layout.Section, { oneThird: !0, children: /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris6.BlockStack, { gap: "300", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Text, { variant: "headingMd", as: "h3", children: "AI Optimization Impact" }),
+        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Divider, {}),
+        /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris6.BlockStack, { gap: "300", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris6.Box, { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris6.Text, { variant: "headingXl", as: "p", tone: "success", children: [
               "+",
               formatPercent(aiStatus?.improvementRate || 0)
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris5.Text, { variant: "bodyMd", tone: "subdued", children: "Performance Improvement" })
+            /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Text, { variant: "bodyMd", tone: "subdued", children: "Performance Improvement" })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_polaris5.InlineStack, { align: "space-between", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris5.Text, { variant: "bodyMd", tone: "subdued", children: "Optimizations Today" }),
-            /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris5.Badge, { children: aiStatus?.optimizationsApplied || 0 })
+          /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris6.InlineStack, { align: "space-between", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Text, { variant: "bodyMd", tone: "subdued", children: "Optimizations Today" }),
+            /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Badge, { children: aiStatus?.optimizationsApplied || 0 })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris5.Box, { background: "bg-surface-secondary", padding: "300", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_polaris5.InlineStack, { align: "space-between", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris5.Text, { variant: "bodyMd", children: "ROAS" }),
-            /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_polaris5.Text, { variant: "headingMd", as: "p", fontWeight: "bold", tone: "success", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Box, { background: "bg-surface-secondary", padding: "300", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris6.InlineStack, { align: "space-between", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Text, { variant: "bodyMd", children: "ROAS" }),
+            /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris6.Text, { variant: "headingMd", as: "p", fontWeight: "bold", tone: "success", children: [
               metrics?.roas?.toFixed(1),
               "x"
             ] })
           ] }) })
         ] })
       ] }) }) }),
-      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris5.Layout.Section, { oneThird: !0, children: /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris5.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_polaris5.BlockStack, { gap: "300", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris5.Text, { variant: "headingMd", as: "h3", children: "Budget & Spend" }),
-        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris5.Divider, {}),
-        /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_polaris5.BlockStack, { gap: "300", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_polaris5.BlockStack, { gap: "100", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris5.Text, { variant: "bodyMd", tone: "subdued", children: "Today's Spend" }),
-            /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris5.Text, { variant: "headingLg", as: "p", fontWeight: "bold", children: formatCurrency(metrics?.spend || 0) }),
-            /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris5.ProgressBar, { progress: 65, tone: "info", size: "small" }),
-            /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris5.Text, { variant: "bodySm", tone: "subdued", children: "65% of daily budget" })
+      /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Layout.Section, { oneThird: !0, children: /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris6.BlockStack, { gap: "300", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Text, { variant: "headingMd", as: "h3", children: "Budget & Spend" }),
+        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Divider, {}),
+        /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris6.BlockStack, { gap: "300", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris6.BlockStack, { gap: "100", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Text, { variant: "bodyMd", tone: "subdued", children: "Today's Spend" }),
+            /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Text, { variant: "headingLg", as: "p", fontWeight: "bold", children: formatCurrency(metrics?.spend || 0) }),
+            /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.ProgressBar, { progress: 65, tone: "info", size: "small" }),
+            /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Text, { variant: "bodySm", tone: "subdued", children: "65% of daily budget" })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_polaris5.InlineStack, { align: "space-between", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris5.Text, { variant: "bodyMd", tone: "subdued", children: "Avg. CPC" }),
-            /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris5.Text, { variant: "bodyMd", fontWeight: "bold", children: formatCurrency(metrics?.cpc || 0) })
+          /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris6.InlineStack, { align: "space-between", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Text, { variant: "bodyMd", tone: "subdued", children: "Avg. CPC" }),
+            /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Text, { variant: "bodyMd", fontWeight: "bold", children: formatCurrency(metrics?.cpc || 0) })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris5.Box, { background: "bg-surface-warning", padding: "200", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris5.Text, { variant: "bodySm", children: "\u{1F4A1} AI suggests increasing budget by 20% for better results" }) })
+          /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Box, { background: "bg-surface-warning", padding: "200", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Text, { variant: "bodySm", children: "\u{1F4A1} AI suggests increasing budget by 20% for better results" }) })
         ] })
       ] }) }) })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(
-      import_polaris5.Banner,
+    /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
+      import_polaris6.Banner,
       {
         title: "AI Recommendations Available",
         tone: "info",
-        action: { content: "View Recommendations" },
-        children: /* @__PURE__ */ (0, import_jsx_runtime8.jsx)("p", { children: "Your AI has identified 3 high-impact optimizations that could improve your ROAS by 15%" })
+        action: {
+          content: "View Recommendations",
+          onAction: () => onNavigateToTab?.(3)
+        },
+        children: /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("p", { children: "Your AI has identified 3 high-impact optimizations that could improve your ROAS by 15%" })
       }
     ),
-    /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris5.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_polaris5.BlockStack, { gap: "400", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_polaris5.InlineStack, { align: "space-between", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris5.Text, { variant: "headingMd", as: "h3", children: "Recent AI Activity" }),
-        /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris5.Button, { variant: "plain", children: "View All" })
+    /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris6.BlockStack, { gap: "400", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris6.InlineStack, { align: "space-between", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Text, { variant: "headingMd", as: "h3", children: "Recent AI Activity" }),
+        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Button, { variant: "plain", onClick: () => window.location.href = "/app/ai-dashboard?view=admin", children: "View All" })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris5.BlockStack, { gap: "200", children: /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris5.Box, { padding: "400", background: "bg-surface-secondary", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris5.Text, { variant: "bodyMd", tone: "subdued", alignment: "center", children: "Recent AI activity will appear here once campaigns are active." }) }) })
+      /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.BlockStack, { gap: "200", children: /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Box, { padding: "400", background: "bg-surface-secondary", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Text, { variant: "bodyMd", tone: "subdued", alignment: "center", children: "Recent AI activity will appear here once campaigns are active." }) }) })
     ] }) })
   ] });
 }
 
 // app/components/AIDashboard/CampaignManager.tsx
-var import_react8 = __toESM(require_react()), import_polaris6 = __toESM(require_cjs3());
-var import_jsx_runtime9 = __toESM(require_jsx_runtime());
+var import_react9 = __toESM(require_react()), import_polaris7 = __toESM(require_cjs3());
+var import_jsx_runtime10 = __toESM(require_jsx_runtime());
 function CampaignManager({ shopName, hasFeatureAccess: hasFeatureAccess2 = !1 }) {
-  let [campaigns, setCampaigns] = (0, import_react8.useState)([]), [selectedCampaigns, setSelectedCampaigns] = (0, import_react8.useState)([]), [sortValue, setSortValue] = (0, import_react8.useState)("performance"), [filterStatus, setFilterStatus] = (0, import_react8.useState)("all"), [loading, setLoading] = (0, import_react8.useState)(!0), [error, setError] = (0, import_react8.useState)(null), [bulkActionsActive, setBulkActionsActive] = (0, import_react8.useState)(!1);
-  (0, import_react8.useEffect)(() => {
-    (async () => {
-      try {
-        setLoading(!0), setError(null);
-        let response = await authenticatedFetch("/ai/campaigns", "GET", void 0, shopName);
-        if (response.ok) {
-          let data = await response.json();
-          data.ok && data.campaigns ? setCampaigns(data.campaigns) : setCampaigns([]);
-        } else
-          setError("Failed to load campaigns"), setCampaigns([]);
-      } catch (err) {
-        console.error("Failed to fetch campaigns:", err), setError("Failed to load campaigns"), setCampaigns([]);
-      } finally {
-        setLoading(!1);
-      }
-    })();
-  }, [shopName]);
-  let formatCurrency = (amount) => new Intl.NumberFormat("en-US", {
+  let [campaigns, setCampaigns] = (0, import_react9.useState)([]), [selectedCampaigns, setSelectedCampaigns] = (0, import_react9.useState)([]), [sortValue, setSortValue] = (0, import_react9.useState)("performance"), [filterStatus, setFilterStatus] = (0, import_react9.useState)("all"), [loading, setLoading] = (0, import_react9.useState)(!0), [error, setError] = (0, import_react9.useState)(null), [bulkActionsActive, setBulkActionsActive] = (0, import_react9.useState)(!1), [selectedPeriod, setSelectedPeriod] = (0, import_react9.useState)("LAST_7_DAYS"), fetchCampaigns = (0, import_react9.useCallback)(async () => {
+    try {
+      setLoading(!0), setError(null);
+      let response = await authenticatedFetch(
+        `/ai/campaigns?period=${selectedPeriod}`,
+        "GET",
+        void 0,
+        shopName
+      );
+      if (response.ok) {
+        let data = await response.json();
+        data.ok && data.campaigns ? setCampaigns(data.campaigns) : setCampaigns([]);
+      } else
+        setError("Failed to load campaigns"), setCampaigns([]);
+    } catch (err) {
+      console.error("Failed to fetch campaigns:", err), setError("Failed to load campaigns"), setCampaigns([]);
+    } finally {
+      setLoading(!1);
+    }
+  }, [shopName, selectedPeriod]);
+  (0, import_react9.useEffect)(() => {
+    fetchCampaigns();
+  }, [fetchCampaigns]);
+  let handlePeriodChange = (0, import_react9.useCallback)((period) => {
+    setSelectedPeriod(period);
+  }, []), formatCurrency = (amount) => new Intl.NumberFormat("en-US", {
     style: "currency",
     currency: "USD",
     minimumFractionDigits: 0
@@ -141935,7 +142013,7 @@ function CampaignManager({ shopName, hasFeatureAccess: hasFeatureAccess2 = !1 })
       return "Never";
     let now = /* @__PURE__ */ new Date(), time = new Date(timestamp), diffMs = now.getTime() - time.getTime(), diffHours = Math.floor(diffMs / (1e3 * 60 * 60));
     return diffHours < 1 ? "Just now" : diffHours < 24 ? `${diffHours}h ago` : `${Math.floor(diffHours / 24)}d ago`;
-  }, getStatusBadge = (status) => /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Badge, { tone: {
+  }, getStatusBadge = (status) => /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Badge, { tone: {
     active: "success",
     paused: "warning",
     pending: "info"
@@ -141943,8 +142021,33 @@ function CampaignManager({ shopName, hasFeatureAccess: hasFeatureAccess2 = !1 })
     setSelectedCampaigns(
       (prev) => prev.includes(campaignId) ? prev.filter((id) => id !== campaignId) : [...prev, campaignId]
     );
-  }, handleBulkOptimize = () => {
-    console.log("Optimizing campaigns:", selectedCampaigns);
+  }, handleBulkOptimize = async () => {
+    if (selectedCampaigns.length === 0) {
+      alert("Please select campaigns to optimize");
+      return;
+    }
+    setLoading(!0);
+    try {
+      let response = await authenticatedFetch(
+        "/ai/campaigns/optimize",
+        "POST",
+        { campaignIds: selectedCampaigns },
+        shopName
+      );
+      if (response.ok) {
+        let data = await response.json();
+        alert(`Successfully queued ${selectedCampaigns.length} campaigns for AI optimization`), await fetchCampaigns(), setSelectedCampaigns([]);
+      } else
+        alert("Failed to optimize campaigns. Please try again.");
+    } catch (error2) {
+      console.error("Optimization error:", error2), alert("Error optimizing campaigns");
+    } finally {
+      setLoading(!1);
+    }
+  }, handleCreateCampaign = () => {
+    window.location.href = "/app/campaigns?action=create";
+  }, handleImportCampaigns = () => {
+    window.location.href = "/app/setup?tab=google-ads";
   }, rows = [...campaigns.filter((campaign) => filterStatus === "all" ? !0 : campaign.status === filterStatus)].sort((a, b) => {
     switch (sortValue) {
       case "performance":
@@ -141957,30 +142060,30 @@ function CampaignManager({ shopName, hasFeatureAccess: hasFeatureAccess2 = !1 })
         return 0;
     }
   }).map((campaign) => [
-    /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
-      import_polaris6.Checkbox,
+    /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
+      import_polaris7.Checkbox,
       {
         label: "",
         checked: selectedCampaigns.includes(campaign.id),
         onChange: () => handleCampaignSelect(campaign.id)
       }
     ),
-    /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris6.BlockStack, { gap: "100", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Text, { variant: "bodyMd", fontWeight: "bold", children: campaign.name }),
-      campaign.aiOptimized && /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris6.InlineStack, { gap: "100", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Badge, { tone: "success", children: "AI Optimized" }),
-        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Text, { variant: "bodySm", tone: "subdued", children: formatTimeAgo(campaign.lastOptimized) })
+    /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.BlockStack, { gap: "100", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Text, { variant: "bodyMd", fontWeight: "bold", children: campaign.name }),
+      campaign.aiOptimized && /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.InlineStack, { gap: "100", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Badge, { tone: "success", children: "AI Optimized" }),
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Text, { variant: "bodySm", tone: "subdued", children: formatTimeAgo(campaign.lastOptimized) })
       ] })
     ] }),
     getStatusBadge(campaign.status),
-    /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris6.BlockStack, { gap: "100", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Text, { variant: "bodyMd", children: formatCurrency(campaign.spent) }),
-      /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris6.Text, { variant: "bodySm", tone: "subdued", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.BlockStack, { gap: "100", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Text, { variant: "bodyMd", children: formatCurrency(campaign.spent) }),
+      /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.Text, { variant: "bodySm", tone: "subdued", children: [
         "of ",
         formatCurrency(campaign.budget)
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
-        import_polaris6.ProgressBar,
+      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
+        import_polaris7.ProgressBar,
         {
           progress: campaign.spent / campaign.budget * 100,
           size: "small",
@@ -141988,69 +142091,98 @@ function CampaignManager({ shopName, hasFeatureAccess: hasFeatureAccess2 = !1 })
         }
       )
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris6.BlockStack, { gap: "100", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Text, { variant: "bodyMd", children: formatNumber(campaign.impressions) }),
-      /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris6.Text, { variant: "bodySm", tone: "subdued", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.BlockStack, { gap: "100", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Text, { variant: "bodyMd", children: formatNumber(campaign.impressions) }),
+      /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.Text, { variant: "bodySm", tone: "subdued", children: [
         formatNumber(campaign.clicks),
         " clicks"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris6.BlockStack, { gap: "100", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Text, { variant: "bodyMd", fontWeight: "bold", tone: "success", children: campaign.conversions }),
-      /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris6.Badge, { tone: campaign.ctr > 4 ? "success" : "default", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.BlockStack, { gap: "100", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Text, { variant: "bodyMd", fontWeight: "bold", tone: "success", children: campaign.conversions }),
+      /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.Badge, { tone: campaign.ctr > 4 ? "success" : "default", children: [
         campaign.ctr.toFixed(1),
         "% CTR"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris6.BlockStack, { gap: "100", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris6.Text, { variant: "headingMd", fontWeight: "bold", tone: campaign.roas > 3 ? "success" : "default", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.BlockStack, { gap: "100", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.Text, { variant: "headingMd", fontWeight: "bold", tone: campaign.roas > 3 ? "success" : "default", children: [
         campaign.roas.toFixed(1),
         "x"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris6.Text, { variant: "bodySm", tone: "subdued", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.Text, { variant: "bodySm", tone: "subdued", children: [
         "CPC: ",
         formatCurrency(campaign.cpc)
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Button, { variant: "plain", size: "slim", children: "Actions" })
+    /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
+      import_polaris7.Button,
+      {
+        variant: "plain",
+        size: "slim",
+        onClick: () => {
+          alert(`Actions for ${campaign.name}:
+- View Details
+- Edit Settings
+- Pause Campaign
+- View Reports
+- AI Recommendations`);
+        },
+        children: "Actions"
+      }
+    )
   ]);
-  return loading ? /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.BlockStack, { gap: "400", children: /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris6.BlockStack, { gap: "400", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Text, { variant: "headingLg", as: "h2", children: "Campaign Manager" }),
-    /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Box, { padding: "600", children: /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Text, { variant: "bodyMd", alignment: "center", children: "Loading campaigns..." }) })
-  ] }) }) }) : error ? /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.BlockStack, { gap: "400", children: /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris6.BlockStack, { gap: "400", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Text, { variant: "headingLg", as: "h2", children: "Campaign Manager" }),
-    /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Banner, { tone: "critical", title: "Error loading campaigns", children: /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("p", { children: [
+  return loading ? /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.BlockStack, { gap: "400", children: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.BlockStack, { gap: "400", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Text, { variant: "headingLg", as: "h2", children: "Campaign Manager" }),
+    /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Box, { padding: "600", children: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Text, { variant: "bodyMd", alignment: "center", children: "Loading campaigns..." }) })
+  ] }) }) }) : error ? /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.BlockStack, { gap: "400", children: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.BlockStack, { gap: "400", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Text, { variant: "headingLg", as: "h2", children: "Campaign Manager" }),
+    /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Banner, { tone: "critical", title: "Error loading campaigns", children: /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("p", { children: [
       error,
       ". Please try again later."
     ] }) })
-  ] }) }) }) : campaigns.length === 0 ? /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.BlockStack, { gap: "400", children: /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris6.BlockStack, { gap: "400", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris6.InlineStack, { align: "space-between", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Text, { variant: "headingLg", as: "h2", children: "Campaign Manager" }),
-      /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris6.InlineStack, { gap: "200", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Button, { variant: "primary", children: "Create New Campaign" }),
-        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Button, { children: "Import from Google Ads" })
+  ] }) }) }) : campaigns.length === 0 ? /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.BlockStack, { gap: "400", children: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.BlockStack, { gap: "400", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.InlineStack, { align: "space-between", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Text, { variant: "headingLg", as: "h2", children: "Campaign Manager" }),
+      /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.InlineStack, { gap: "200", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Button, { variant: "primary", onClick: handleCreateCampaign, children: "Create New Campaign" }),
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Button, { onClick: handleImportCampaigns, children: "Import from Google Ads" })
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Box, { padding: "600", children: /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris6.BlockStack, { gap: "400", align: "center", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Text, { variant: "headingMd", alignment: "center", children: "No campaigns found" }),
-      /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Text, { variant: "bodyMd", alignment: "center", tone: "subdued", children: "Get started by creating your first AI-powered campaign or importing existing campaigns from Google Ads." }),
-      /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris6.InlineStack, { gap: "200", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Button, { variant: "primary", children: "Create First Campaign" }),
-        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Button, { children: "Import from Google Ads" })
+    /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Box, { padding: "600", children: /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.BlockStack, { gap: "400", align: "center", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Text, { variant: "headingMd", alignment: "center", children: "No campaigns found" }),
+      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Text, { variant: "bodyMd", alignment: "center", tone: "subdued", children: "Get started by creating your first AI-powered campaign or importing existing campaigns from Google Ads." }),
+      /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.InlineStack, { gap: "200", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Button, { variant: "primary", onClick: handleCreateCampaign, children: "Create First Campaign" }),
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Button, { onClick: handleImportCampaigns, children: "Import from Google Ads" })
       ] })
     ] }) })
-  ] }) }) }) : /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris6.BlockStack, { gap: "400", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris6.BlockStack, { gap: "400", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris6.InlineStack, { align: "space-between", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Text, { variant: "headingLg", as: "h2", children: "Campaign Manager" }),
-        /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris6.InlineStack, { gap: "200", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Button, { variant: "primary", children: "Create New Campaign" }),
-          /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Button, { children: "Import from Google Ads" })
+  ] }) }) }) : /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.BlockStack, { gap: "400", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.BlockStack, { gap: "400", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.InlineStack, { align: "space-between", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.BlockStack, { gap: "200", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Text, { variant: "headingLg", as: "h2", children: "Campaign Manager" }),
+          /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.Text, { variant: "bodyMd", tone: "subdued", children: [
+            "Showing data for: ",
+            getPeriodLabel(selectedPeriod)
+          ] })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.InlineStack, { gap: "200", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Box, { minWidth: "180px", children: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
+            TimeRangeSelector,
+            {
+              value: selectedPeriod,
+              onChange: handlePeriodChange,
+              label: ""
+            }
+          ) }),
+          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Button, { variant: "primary", onClick: handleCreateCampaign, children: "Create New Campaign" }),
+          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Button, { onClick: handleImportCampaigns, children: "Import from Google Ads" })
         ] })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris6.InlineStack, { gap: "200", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
-          import_polaris6.Select,
+      /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.InlineStack, { gap: "200", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
+          import_polaris7.Select,
           {
             label: "",
             options: [
@@ -142062,8 +142194,8 @@ function CampaignManager({ shopName, hasFeatureAccess: hasFeatureAccess2 = !1 })
             onChange: setSortValue
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
-          import_polaris6.Select,
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
+          import_polaris7.Select,
           {
             label: "",
             options: [
@@ -142076,32 +142208,31 @@ function CampaignManager({ shopName, hasFeatureAccess: hasFeatureAccess2 = !1 })
             onChange: setFilterStatus
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
-          import_polaris6.TextField,
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
+          import_polaris7.TextField,
           {
             label: "",
             placeholder: "Search campaigns...",
             value: "",
             onChange: () => {
             },
-            autoComplete: "off",
-            prefix: /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Icon, { source: "SearchIcon" })
+            autoComplete: "off"
           }
         )
       ] })
     ] }) }),
-    selectedCampaigns.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
-      import_polaris6.Banner,
+    selectedCampaigns.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
+      import_polaris7.Banner,
       {
         title: `${selectedCampaigns.length} campaigns selected`,
         tone: "info",
         action: { content: "Optimize with AI", onAction: handleBulkOptimize },
         secondaryAction: { content: "Clear selection", onAction: () => setSelectedCampaigns([]) },
-        children: /* @__PURE__ */ (0, import_jsx_runtime9.jsx)("p", { children: "Apply bulk actions to selected campaigns" })
+        children: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("p", { children: "Apply bulk actions to selected campaigns" })
       }
     ),
-    /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(
-      import_polaris6.DataTable,
+    /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
+      import_polaris7.DataTable,
       {
         columnContentTypes: [
           "text",
@@ -142127,40 +142258,40 @@ function CampaignManager({ shopName, hasFeatureAccess: hasFeatureAccess2 = !1 })
         hoverable: !0
       }
     ) }),
-    /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris6.InlineStack, { align: "space-between", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris6.BlockStack, { gap: "100", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Text, { variant: "headingMd", fontWeight: "bold", children: formatCurrency(campaigns.reduce((sum, c) => sum + c.spent, 0)) }),
-        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Text, { variant: "bodySm", tone: "subdued", children: "Total Spend Today" })
+    /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.InlineStack, { align: "space-between", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.BlockStack, { gap: "100", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Text, { variant: "headingMd", fontWeight: "bold", children: formatCurrency(campaigns.reduce((sum, c) => sum + c.spent, 0)) }),
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Text, { variant: "bodySm", tone: "subdued", children: "Total Spend Today" })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris6.BlockStack, { gap: "100", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Text, { variant: "headingMd", fontWeight: "bold", tone: "success", children: campaigns.reduce((sum, c) => sum + c.conversions, 0) }),
-        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Text, { variant: "bodySm", tone: "subdued", children: "Total Conversions" })
+      /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.BlockStack, { gap: "100", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Text, { variant: "headingMd", fontWeight: "bold", tone: "success", children: campaigns.reduce((sum, c) => sum + c.conversions, 0) }),
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Text, { variant: "bodySm", tone: "subdued", children: "Total Conversions" })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris6.BlockStack, { gap: "100", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris6.Text, { variant: "headingMd", fontWeight: "bold", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.BlockStack, { gap: "100", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.Text, { variant: "headingMd", fontWeight: "bold", children: [
           (campaigns.reduce((sum, c) => sum + c.roas * c.spent, 0) / campaigns.reduce((sum, c) => sum + c.spent, 0) || 0).toFixed(1),
           "x"
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Text, { variant: "bodySm", tone: "subdued", children: "Average ROAS" })
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Text, { variant: "bodySm", tone: "subdued", children: "Average ROAS" })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris6.BlockStack, { gap: "100", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris6.Text, { variant: "headingMd", fontWeight: "bold", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.BlockStack, { gap: "100", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.Text, { variant: "headingMd", fontWeight: "bold", children: [
           campaigns.filter((c) => c.aiOptimized).length,
           "/",
           campaigns.length
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris6.Text, { variant: "bodySm", tone: "subdued", children: "AI Optimized" })
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Text, { variant: "bodySm", tone: "subdued", children: "AI Optimized" })
       ] })
     ] }) })
   ] });
 }
 
 // app/components/AIDashboard/AIContentStudio.tsx
-var import_react9 = __toESM(require_react()), import_polaris7 = __toESM(require_cjs3());
-var import_jsx_runtime10 = __toESM(require_jsx_runtime());
+var import_react10 = __toESM(require_react()), import_polaris8 = __toESM(require_cjs3());
+var import_jsx_runtime11 = __toESM(require_jsx_runtime());
 function AIContentStudio({ shopName, hasFeatureAccess: hasFeatureAccess2 = !1 }) {
-  let [selectedTab, setSelectedTab] = (0, import_react9.useState)(0), [drafts, setDrafts] = (0, import_react9.useState)([]), [selectedDrafts, setSelectedDrafts] = (0, import_react9.useState)([]), [isGenerating, setIsGenerating] = (0, import_react9.useState)(!1), [generationModal, setGenerationModal] = (0, import_react9.useState)(!1), [loading, setLoading] = (0, import_react9.useState)(!0), [error, setError] = (0, import_react9.useState)(null), [theme, setTheme] = (0, import_react9.useState)(""), [keywords, setKeywords] = (0, import_react9.useState)(""), [tone, setTone] = (0, import_react9.useState)("professional"), [aiMode, setAIMode] = (0, import_react9.useState)("creative"), [numberOfVariants, setNumberOfVariants] = (0, import_react9.useState)("5");
-  (0, import_react9.useEffect)(() => {
+  let [selectedTab, setSelectedTab] = (0, import_react10.useState)(0), [drafts, setDrafts] = (0, import_react10.useState)([]), [selectedDrafts, setSelectedDrafts] = (0, import_react10.useState)([]), [isGenerating, setIsGenerating] = (0, import_react10.useState)(!1), [generationModal, setGenerationModal] = (0, import_react10.useState)(!1), [loading, setLoading] = (0, import_react10.useState)(!0), [error, setError] = (0, import_react10.useState)(null), [theme, setTheme] = (0, import_react10.useState)(""), [keywords, setKeywords] = (0, import_react10.useState)(""), [tone, setTone] = (0, import_react10.useState)("professional"), [aiMode, setAIMode] = (0, import_react10.useState)("creative"), [numberOfVariants, setNumberOfVariants] = (0, import_react10.useState)("5");
+  (0, import_react10.useEffect)(() => {
     fetchDrafts();
   }, [shopName]);
   let fetchDrafts = async () => {
@@ -142201,9 +142332,31 @@ function AIContentStudio({ shopName, hasFeatureAccess: hasFeatureAccess2 = !1 })
       setLoading(!1);
     }
   }, handleGenerateAds = async () => {
-    setIsGenerating(!0), setTimeout(() => {
-      setIsGenerating(!1), setGenerationModal(!1), fetchDrafts();
-    }, 2e3);
+    if (!hasFeatureAccess2) {
+      setError("AI Content Generation requires Professional+ subscription");
+      return;
+    }
+    setIsGenerating(!0), setError(null);
+    try {
+      let response = await authenticatedFetch("/jobs/ai_writer", "POST", {
+        dryRun: !1,
+        limit: parseInt(numberOfVariants) || 5,
+        theme: theme || void 0,
+        tone: tone || "professional",
+        mode: aiMode || "creative"
+      }, shopName);
+      if (response.ok) {
+        let data = await response.json();
+        data.ok ? (setGenerationModal(!1), setTimeout(() => {
+          fetchDrafts();
+        }, 2e3)) : setError(data.error || "Failed to generate ads");
+      } else
+        setError("Failed to generate ads. Please try again.");
+    } catch (err) {
+      console.error("Error generating ads:", err), setError("Error generating ads: " + (err instanceof Error ? err.message : String(err)));
+    } finally {
+      setIsGenerating(!1);
+    }
   }, getPerformanceBadge = (status) => {
     let config = {
       winner: { tone: "success", label: "Top Performer" },
@@ -142211,7 +142364,7 @@ function AIContentStudio({ shopName, hasFeatureAccess: hasFeatureAccess2 = !1 })
       loser: { tone: "critical", label: "Underperforming" },
       new: { tone: "attention", label: "New" }
     }, { tone: tone2, label } = config[status] || { tone: "default", label: status };
-    return /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Badge, { tone: tone2, children: label });
+    return /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Badge, { tone: tone2, children: label });
   }, tabs = [
     {
       id: "library",
@@ -142232,32 +142385,32 @@ function AIContentStudio({ shopName, hasFeatureAccess: hasFeatureAccess2 = !1 })
       content: "Performance Insights"
     }
   ];
-  return loading ? /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.BlockStack, { gap: "400", children: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.BlockStack, { gap: "400", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Text, { variant: "headingLg", as: "h2", children: "AI Content Studio" }),
-    /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Box, { padding: "600", children: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Text, { variant: "bodyMd", alignment: "center", children: "Loading ad drafts..." }) })
-  ] }) }) }) : error ? /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.BlockStack, { gap: "400", children: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.BlockStack, { gap: "400", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Text, { variant: "headingLg", as: "h2", children: "AI Content Studio" }),
-    /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Banner, { tone: "critical", title: "Error loading ad drafts", children: /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)("p", { children: [
+  return loading ? /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.BlockStack, { gap: "400", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.BlockStack, { gap: "400", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Text, { variant: "headingLg", as: "h2", children: "AI Content Studio" }),
+    /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Box, { padding: "600", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Text, { variant: "bodyMd", alignment: "center", children: "Loading ad drafts..." }) })
+  ] }) }) }) : error ? /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.BlockStack, { gap: "400", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.BlockStack, { gap: "400", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Text, { variant: "headingLg", as: "h2", children: "AI Content Studio" }),
+    /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Banner, { tone: "critical", title: "Error loading ad drafts", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("p", { children: [
       error,
       ". Please try again later."
     ] }) })
-  ] }) }) }) : /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.BlockStack, { gap: "600", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.BlockStack, { gap: "400", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.InlineStack, { align: "space-between", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.BlockStack, { gap: "200", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Text, { variant: "headingLg", as: "h2", children: "AI Content Studio" }),
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Text, { variant: "bodyMd", tone: "subdued", children: "Create, test, and optimize ad content with AI" })
+  ] }) }) }) : /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.BlockStack, { gap: "600", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.BlockStack, { gap: "400", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.InlineStack, { align: "space-between", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.BlockStack, { gap: "200", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Text, { variant: "headingLg", as: "h2", children: "AI Content Studio" }),
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Text, { variant: "bodyMd", tone: "subdued", children: "Create, test, and optimize ad content with AI" })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Button, { variant: "primary", onClick: () => setGenerationModal(!0), children: "Generate New Ads" })
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Button, { variant: "primary", onClick: () => setGenerationModal(!0), children: "Generate New Ads" })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Tabs, { tabs, selected: selectedTab, onSelect: setSelectedTab })
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Tabs, { tabs, selected: selectedTab, onSelect: setSelectedTab })
     ] }) }),
     selectedTab === 0 && /* Ad Library Tab */
-    /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.BlockStack, { gap: "400", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.InlineStack, { align: "space-between", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.InlineStack, { gap: "200", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
-            import_polaris7.Select,
+    /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.BlockStack, { gap: "400", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.InlineStack, { align: "space-between", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.InlineStack, { gap: "200", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
+            import_polaris8.Select,
             {
               label: "",
               options: [
@@ -142267,35 +142420,42 @@ function AIContentStudio({ shopName, hasFeatureAccess: hasFeatureAccess2 = !1 })
                 { label: "Sale Items", value: "sale" }
               ],
               value: "all",
-              onChange: () => {
-              }
+              onChange: (value) => console.log("Filter by theme:", value)
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
-            import_polaris7.TextField,
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
+            import_polaris8.TextField,
             {
               label: "",
               placeholder: "Search ads...",
               value: "",
-              onChange: () => {
-              },
+              onChange: (value) => console.log("Search:", value),
               autoComplete: "off"
             }
           )
         ] }),
-        selectedDrafts.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.InlineStack, { gap: "200", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.Text, { variant: "bodyMd", children: [
+        selectedDrafts.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.InlineStack, { gap: "200", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.Text, { variant: "bodyMd", children: [
             selectedDrafts.length,
             " selected"
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Button, { children: "Deploy to Campaign" }),
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Button, { variant: "plain", children: "Delete" })
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Button, { onClick: () => alert(`Deploy ${selectedDrafts.length} ads to campaign - feature coming soon`), children: "Deploy to Campaign" }),
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
+            import_polaris8.Button,
+            {
+              variant: "plain",
+              onClick: () => {
+                confirm(`Delete ${selectedDrafts.length} selected ads?`) && (setSelectedDrafts([]), alert("Delete functionality coming soon"));
+              },
+              children: "Delete"
+            }
+          )
         ] })
       ] }) }),
-      drafts.length > 0 ? /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Grid, { children: drafts.slice(0, 6).map((draft) => /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Grid.Cell, { columnSpan: { xs: 6, sm: 6, md: 4, lg: 4 }, children: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.BlockStack, { gap: "300", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.InlineStack, { align: "space-between", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
-            import_polaris7.Checkbox,
+      drafts.length > 0 ? /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Grid, { children: drafts.slice(0, 6).map((draft) => /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Grid.Cell, { columnSpan: { xs: 6, sm: 6, md: 4, lg: 4 }, children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.BlockStack, { gap: "300", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.InlineStack, { align: "space-between", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
+            import_polaris8.Checkbox,
             {
               label: "",
               checked: selectedDrafts.includes(draft.id),
@@ -142306,51 +142466,89 @@ function AIContentStudio({ shopName, hasFeatureAccess: hasFeatureAccess2 = !1 })
           ),
           draft.performance && getPerformanceBadge(draft.performance.status)
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.BlockStack, { gap: "200", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Text, { variant: "headingMd", fontWeight: "bold", children: draft.theme }),
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Box, { background: "bg-surface-secondary", padding: "200", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.BlockStack, { gap: "200", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Text, { variant: "bodySm", fontWeight: "semibold", children: "Headlines:" }),
-            draft.headlines.slice(0, 2).map((headline, i) => /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.Text, { variant: "bodySm", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.BlockStack, { gap: "200", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Text, { variant: "headingMd", fontWeight: "bold", children: draft.theme }),
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Box, { background: "bg-surface-secondary", padding: "200", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.BlockStack, { gap: "200", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Text, { variant: "bodySm", fontWeight: "semibold", children: "Headlines:" }),
+            draft.headlines.slice(0, 2).map((headline, i) => /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.Text, { variant: "bodySm", children: [
               "\u2022 ",
               headline
             ] }, i)),
-            draft.headlines.length > 2 && /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.Text, { variant: "bodySm", tone: "subdued", children: [
+            draft.headlines.length > 2 && /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.Text, { variant: "bodySm", tone: "subdued", children: [
               "+",
               draft.headlines.length - 2,
               " more"
             ] })
           ] }) })
         ] }),
-        draft.performance ? /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.InlineStack, { gap: "400", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.BlockStack, { gap: "100", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.Text, { variant: "headingSm", children: [
+        draft.performance ? /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.InlineStack, { gap: "400", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.BlockStack, { gap: "100", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.Text, { variant: "headingSm", children: [
               draft.performance.ctr?.toFixed(1) || "0.0",
               "%"
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Text, { variant: "bodySm", tone: "subdued", children: "CTR" })
+            /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Text, { variant: "bodySm", tone: "subdued", children: "CTR" })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.BlockStack, { gap: "100", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Text, { variant: "headingSm", tone: "success", children: draft.performance.conversions || 0 }),
-            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Text, { variant: "bodySm", tone: "subdued", children: "Conversions" })
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.BlockStack, { gap: "100", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Text, { variant: "headingSm", tone: "success", children: draft.performance.conversions || 0 }),
+            /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Text, { variant: "bodySm", tone: "subdued", children: "Conversions" })
           ] })
-        ] }) : /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Text, { variant: "bodySm", tone: "subdued", children: "Performance data will appear once ads are deployed and active." }),
-        /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.InlineStack, { gap: "200", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Button, { size: "slim", variant: "plain", children: "Preview" }),
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Button, { size: "slim", variant: "plain", children: "Edit" }),
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Button, { size: "slim", variant: "plain", children: "Duplicate" })
+        ] }) : /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Text, { variant: "bodySm", tone: "subdued", children: "Performance data will appear once ads are deployed and active." }),
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.InlineStack, { gap: "200", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
+            import_polaris8.Button,
+            {
+              size: "slim",
+              variant: "plain",
+              onClick: (e) => {
+                e.stopPropagation(), alert(`Preview ad: ${draft.theme}
+
+Headlines:
+${draft.headlines.join(`
+`)}
+
+Descriptions:
+${draft.descriptions.join(`
+`)}`);
+              },
+              children: "Preview"
+            }
+          ),
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
+            import_polaris8.Button,
+            {
+              size: "slim",
+              variant: "plain",
+              onClick: (e) => {
+                e.stopPropagation(), alert("Edit functionality coming soon");
+              },
+              children: "Edit"
+            }
+          ),
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
+            import_polaris8.Button,
+            {
+              size: "slim",
+              variant: "plain",
+              onClick: (e) => {
+                e.stopPropagation(), alert("Duplicate functionality coming soon");
+              },
+              children: "Duplicate"
+            }
+          )
         ] })
-      ] }) }) }, draft.id)) }) : /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Box, { padding: "600", children: /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.BlockStack, { gap: "400", align: "center", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Text, { variant: "headingMd", alignment: "center", children: "No ad drafts found" }),
-        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Text, { variant: "bodyMd", alignment: "center", tone: "subdued", children: "Create your first AI-generated ad variations to get started." }),
-        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Button, { variant: "primary", onClick: () => setGenerationModal(!0), children: "Generate First Ads" })
+      ] }) }) }, draft.id)) }) : /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Box, { padding: "600", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.BlockStack, { gap: "400", align: "center", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Text, { variant: "headingMd", alignment: "center", children: "No ad drafts found" }),
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Text, { variant: "bodyMd", alignment: "center", tone: "subdued", children: "Create your first AI-generated ad variations to get started." }),
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Button, { variant: "primary", onClick: () => setGenerationModal(!0), children: "Generate First Ads" })
       ] }) })
     ] }),
     selectedTab === 1 && /* Generate New Tab */
-    /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.BlockStack, { gap: "600", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Text, { variant: "headingMd", children: "Quick Generate" }),
-      /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.BlockStack, { gap: "400", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
-          import_polaris7.TextField,
+    /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.BlockStack, { gap: "600", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Text, { variant: "headingMd", children: "Quick Generate" }),
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.BlockStack, { gap: "400", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
+          import_polaris8.TextField,
           {
             label: "Campaign Theme",
             value: theme,
@@ -142359,8 +142557,8 @@ function AIContentStudio({ shopName, hasFeatureAccess: hasFeatureAccess2 = !1 })
             helpText: "Describe what you're advertising"
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
-          import_polaris7.TextField,
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
+          import_polaris8.TextField,
           {
             label: "Target Keywords",
             value: keywords,
@@ -142370,9 +142568,9 @@ function AIContentStudio({ shopName, hasFeatureAccess: hasFeatureAccess2 = !1 })
             multiline: 2
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.InlineStack, { gap: "400", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
-            import_polaris7.Select,
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.InlineStack, { gap: "400", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
+            import_polaris8.Select,
             {
               label: "Tone of Voice",
               options: [
@@ -142386,8 +142584,8 @@ function AIContentStudio({ shopName, hasFeatureAccess: hasFeatureAccess2 = !1 })
               onChange: setTone
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
-            import_polaris7.Select,
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
+            import_polaris8.Select,
             {
               label: "Number of Variants",
               options: [
@@ -142400,11 +142598,11 @@ function AIContentStudio({ shopName, hasFeatureAccess: hasFeatureAccess2 = !1 })
             }
           )
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Box, { background: "bg-surface-secondary", padding: "400", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.BlockStack, { gap: "300", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Text, { variant: "headingSm", children: "AI Generation Mode" }),
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.BlockStack, { gap: "200", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
-              import_polaris7.RadioButton,
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Box, { background: "bg-surface-secondary", padding: "400", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.BlockStack, { gap: "300", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Text, { variant: "headingSm", children: "AI Generation Mode" }),
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.BlockStack, { gap: "200", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
+              import_polaris8.RadioButton,
               {
                 label: "Creative - Generate unique, attention-grabbing copy",
                 checked: aiMode === "creative",
@@ -142412,8 +142610,8 @@ function AIContentStudio({ shopName, hasFeatureAccess: hasFeatureAccess2 = !1 })
                 onChange: () => setAIMode("creative")
               }
             ),
-            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
-              import_polaris7.RadioButton,
+            /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
+              import_polaris8.RadioButton,
               {
                 label: "Data-Driven - Based on your best performing ads",
                 checked: aiMode === "data-driven",
@@ -142421,8 +142619,8 @@ function AIContentStudio({ shopName, hasFeatureAccess: hasFeatureAccess2 = !1 })
                 onChange: () => setAIMode("data-driven")
               }
             ),
-            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
-              import_polaris7.RadioButton,
+            /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
+              import_polaris8.RadioButton,
               {
                 label: "Competitor-Inspired - Learn from market leaders",
                 checked: aiMode === "competitor",
@@ -142432,30 +142630,43 @@ function AIContentStudio({ shopName, hasFeatureAccess: hasFeatureAccess2 = !1 })
             )
           ] })
         ] }) }),
-        /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.InlineStack, { gap: "200", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Button, { variant: "primary", size: "large", onClick: handleGenerateAds, loading: isGenerating, children: "Generate Ads" }),
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Button, { children: "Use Template" })
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.InlineStack, { gap: "200", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
+            import_polaris8.Button,
+            {
+              variant: "primary",
+              size: "large",
+              onClick: handleGenerateAds,
+              loading: isGenerating,
+              disabled: !hasFeatureAccess2,
+              children: hasFeatureAccess2 ? "Generate Ads" : "Upgrade to Generate"
+            }
+          ),
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Button, { onClick: () => alert("Template selection coming soon"), children: "Use Template" })
         ] })
       ] })
     ] }) }),
     selectedTab === 2 && /* A/B Tests Tab */
-    /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.BlockStack, { gap: "400", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
-        import_polaris7.Banner,
+    /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.BlockStack, { gap: "400", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
+        import_polaris8.Banner,
         {
           title: "3 Active Tests Running",
           tone: "info",
-          action: { content: "View Details" },
-          children: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)("p", { children: "Your ads are being automatically tested. Winners will be promoted after reaching statistical significance." })
+          action: {
+            content: "View Details",
+            onAction: () => alert("A/B test details coming soon")
+          },
+          children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("p", { children: "Your ads are being automatically tested. Winners will be promoted after reaching statistical significance." })
         }
       ),
-      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.BlockStack, { gap: "400", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Text, { variant: "headingMd", children: "Active A/B Tests" }),
-        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Divider, {}),
-        drafts.filter((d) => d.performance?.status === "testing").slice(0, 3).map((draft) => /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Box, { padding: "300", background: "bg-surface-secondary", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.InlineStack, { align: "space-between", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.BlockStack, { gap: "100", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Text, { variant: "bodyMd", fontWeight: "bold", children: draft.theme }),
-            /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.Text, { variant: "bodySm", tone: "subdued", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.BlockStack, { gap: "400", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Text, { variant: "headingMd", children: "Active A/B Tests" }),
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Divider, {}),
+        drafts.filter((d) => d.performance?.status === "testing").slice(0, 3).map((draft) => /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Box, { padding: "300", background: "bg-surface-secondary", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.InlineStack, { align: "space-between", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.BlockStack, { gap: "100", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Text, { variant: "bodyMd", fontWeight: "bold", children: draft.theme }),
+            /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.Text, { variant: "bodySm", tone: "subdued", children: [
               "Testing ",
               draft.headlines.length,
               " headlines \xD7 ",
@@ -142463,63 +142674,63 @@ function AIContentStudio({ shopName, hasFeatureAccess: hasFeatureAccess2 = !1 })
               " descriptions"
             ] })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.BlockStack, { gap: "100", align: "end", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Badge, { tone: "info", children: "Testing" }),
-            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Text, { variant: "bodySm", children: "72% confidence" })
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.BlockStack, { gap: "100", align: "end", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Badge, { tone: "info", children: "Testing" }),
+            /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Text, { variant: "bodySm", children: "72% confidence" })
           ] })
         ] }) }, draft.id))
       ] }) })
     ] }),
     selectedTab === 3 && /* Performance Insights Tab */
-    /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.Grid, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Grid.Cell, { columnSpan: { xs: 6, sm: 6, md: 6, lg: 6 }, children: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.BlockStack, { gap: "300", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Text, { variant: "headingMd", children: "Top Performing Elements" }),
-        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Divider, {}),
-        /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.BlockStack, { gap: "200", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Box, { padding: "200", background: "bg-surface-success", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.InlineStack, { align: "space-between", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Text, { variant: "bodyMd", children: '"Free Shipping" in headline' }),
-            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Badge, { tone: "success", children: "+45% CTR" })
+    /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.Grid, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Grid.Cell, { columnSpan: { xs: 6, sm: 6, md: 6, lg: 6 }, children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.BlockStack, { gap: "300", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Text, { variant: "headingMd", children: "Top Performing Elements" }),
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Divider, {}),
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.BlockStack, { gap: "200", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Box, { padding: "200", background: "bg-surface-success", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.InlineStack, { align: "space-between", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Text, { variant: "bodyMd", children: '"Free Shipping" in headline' }),
+            /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Badge, { tone: "success", children: "+45% CTR" })
           ] }) }),
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Box, { padding: "200", background: "bg-surface-success", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.InlineStack, { align: "space-between", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Text, { variant: "bodyMd", children: '"Limited Time" urgency' }),
-            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Badge, { tone: "success", children: "+32% conversions" })
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Box, { padding: "200", background: "bg-surface-success", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.InlineStack, { align: "space-between", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Text, { variant: "bodyMd", children: '"Limited Time" urgency' }),
+            /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Badge, { tone: "success", children: "+32% conversions" })
           ] }) }),
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Box, { padding: "200", background: "bg-surface-success", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.InlineStack, { align: "space-between", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Text, { variant: "bodyMd", children: "Price in description" }),
-            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Badge, { tone: "success", children: "+28% ROAS" })
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Box, { padding: "200", background: "bg-surface-success", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.InlineStack, { align: "space-between", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Text, { variant: "bodyMd", children: "Price in description" }),
+            /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Badge, { tone: "success", children: "+28% ROAS" })
           ] }) })
         ] })
       ] }) }) }),
-      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Grid.Cell, { columnSpan: { xs: 6, sm: 6, md: 6, lg: 6 }, children: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.BlockStack, { gap: "300", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Text, { variant: "headingMd", children: "AI Recommendations" }),
-        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Divider, {}),
-        /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.BlockStack, { gap: "200", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Box, { padding: "200", background: "bg-surface-warning", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Text, { variant: "bodySm", children: "\u{1F4A1} Try emphasizing sustainability - competitors seeing 25% better engagement" }) }),
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Box, { padding: "200", background: "bg-surface-warning", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Text, { variant: "bodySm", children: "\u{1F4A1} Test shorter headlines (5-7 words) for mobile optimization" }) }),
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Box, { padding: "200", background: "bg-surface-warning", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Text, { variant: "bodySm", children: "\u{1F4A1} Include customer testimonials in descriptions for trust signals" }) })
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Grid.Cell, { columnSpan: { xs: 6, sm: 6, md: 6, lg: 6 }, children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.BlockStack, { gap: "300", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Text, { variant: "headingMd", children: "AI Recommendations" }),
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Divider, {}),
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.BlockStack, { gap: "200", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Box, { padding: "200", background: "bg-surface-warning", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Text, { variant: "bodySm", children: "\u{1F4A1} Try emphasizing sustainability - competitors seeing 25% better engagement" }) }),
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Box, { padding: "200", background: "bg-surface-warning", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Text, { variant: "bodySm", children: "\u{1F4A1} Test shorter headlines (5-7 words) for mobile optimization" }) }),
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Box, { padding: "200", background: "bg-surface-warning", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Text, { variant: "bodySm", children: "\u{1F4A1} Include customer testimonials in descriptions for trust signals" }) })
         ] })
       ] }) }) })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
-      import_polaris7.Modal,
+    /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
+      import_polaris8.Modal,
       {
         open: generationModal,
         onClose: () => setGenerationModal(!1),
         title: "Generating AI Content",
         loading: isGenerating,
-        children: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Modal.Section, { children: isGenerating ? /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.BlockStack, { gap: "400", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Text, { variant: "bodyMd", children: "AI is creating your ad variations..." }),
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Text, { variant: "bodySm", tone: "subdued", children: "This typically takes 10-20 seconds" })
-        ] }) : /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.BlockStack, { gap: "400", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Text, { variant: "bodyMd", children: "Ready to generate ads!" }),
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris7.Text, { variant: "bodySm", children: [
+        children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Modal.Section, { children: isGenerating ? /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.BlockStack, { gap: "400", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Text, { variant: "bodyMd", children: "AI is creating your ad variations..." }),
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Text, { variant: "bodySm", tone: "subdued", children: "This typically takes 10-20 seconds" })
+        ] }) : /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.BlockStack, { gap: "400", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Text, { variant: "bodyMd", children: "Ready to generate ads!" }),
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.Text, { variant: "bodySm", children: [
             "Click generate to create ",
             numberOfVariants,
             " unique ad variations using ",
             aiMode,
             " mode."
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris7.Button, { variant: "primary", onClick: handleGenerateAds, children: "Start Generation" })
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Button, { variant: "primary", onClick: handleGenerateAds, children: "Start Generation" })
         ] }) })
       }
     )
@@ -142527,12 +142738,30 @@ function AIContentStudio({ shopName, hasFeatureAccess: hasFeatureAccess2 = !1 })
 }
 
 // app/components/AIDashboard/PerformanceInsights.tsx
-var import_react10 = __toESM(require_react()), import_polaris8 = __toESM(require_cjs3()), import_recharts = __toESM(require_lib6());
-var import_jsx_runtime11 = __toESM(require_jsx_runtime());
+var import_react11 = __toESM(require_react()), import_polaris9 = __toESM(require_cjs3()), import_recharts = __toESM(require_lib6());
+var import_jsx_runtime12 = __toESM(require_jsx_runtime());
 function PerformanceInsights({ shopName, hasFeatureAccess: hasFeatureAccess2 = !1 }) {
-  let [timeRange, setTimeRange] = (0, import_react10.useState)("7d"), [compareMode, setCompareMode] = (0, import_react10.useState)(!1), [performanceData, setPerformanceData] = (0, import_react10.useState)([]), [deviceBreakdown, setDeviceBreakdown] = (0, import_react10.useState)([]), [topKeywords, setTopKeywords] = (0, import_react10.useState)([]), [aiImpact, setAiImpact] = (0, import_react10.useState)(null), [loading, setLoading] = (0, import_react10.useState)(!0), [error, setError] = (0, import_react10.useState)(null), fetchPerformanceData = (0, import_react10.useCallback)(async () => {
+  let [timeRange, setTimeRange] = (0, import_react11.useState)("7d"), [compareMode, setCompareMode] = (0, import_react11.useState)(!1), [performanceData, setPerformanceData] = (0, import_react11.useState)([]), [deviceBreakdown, setDeviceBreakdown] = (0, import_react11.useState)([]), [topKeywords, setTopKeywords] = (0, import_react11.useState)([]), [aiImpact, setAiImpact] = (0, import_react11.useState)(null), [loading, setLoading] = (0, import_react11.useState)(!0), [error, setError] = (0, import_react11.useState)(null), getPeriodFromTimeRange = (range) => {
+    switch (range) {
+      case "1d":
+        return "TODAY";
+      case "7d":
+        return "LAST_7_DAYS";
+      case "30d":
+        return "LAST_30_DAYS";
+      case "all":
+        return "ALL_TIME";
+      default:
+        return "LAST_7_DAYS";
+    }
+  }, fetchPerformanceData = (0, import_react11.useCallback)(async () => {
     try {
-      let response = await authenticatedFetch(`/ai/performance/insights?timeRange=${timeRange}`, "GET", void 0, shopName);
+      let period = getPeriodFromTimeRange(timeRange), response = await authenticatedFetch(
+        `/ai/performance/insights?period=${period}`,
+        "GET",
+        void 0,
+        shopName
+      );
       if (response.ok) {
         let data = await response.json();
         data.ok ? (setPerformanceData(data.performanceData || []), setDeviceBreakdown(data.deviceBreakdown || []), setTopKeywords(data.topKeywords || []), setAiImpact(data.aiImpact || null)) : (setPerformanceData([]), setDeviceBreakdown([]), setTopKeywords([]), setAiImpact(null));
@@ -142541,7 +142770,7 @@ function PerformanceInsights({ shopName, hasFeatureAccess: hasFeatureAccess2 = !
       console.error("Failed to fetch performance data:", err), setError("Failed to load performance insights"), setPerformanceData([]), setDeviceBreakdown([]), setTopKeywords([]), setAiImpact(null);
     }
   }, [shopName, timeRange]);
-  (0, import_react10.useEffect)(() => {
+  (0, import_react11.useEffect)(() => {
     (async () => {
       setLoading(!0), setError(null), await fetchPerformanceData(), setLoading(!1);
     })();
@@ -142551,24 +142780,24 @@ function PerformanceInsights({ shopName, hasFeatureAccess: hasFeatureAccess2 = !
     currency: "USD",
     minimumFractionDigits: 0
   }).format(amount), formatNumber = (num) => num >= 1e6 ? `${(num / 1e6).toFixed(1)}M` : num >= 1e3 ? `${(num / 1e3).toFixed(1)}K` : num.toString();
-  return loading ? /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.BlockStack, { gap: "400", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.BlockStack, { gap: "400", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Text, { variant: "headingLg", as: "h2", children: "Performance Insights" }),
-    /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Box, { padding: "600", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Text, { variant: "bodyMd", alignment: "center", children: "Loading performance insights..." }) })
-  ] }) }) }) : error ? /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.BlockStack, { gap: "400", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.BlockStack, { gap: "400", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Text, { variant: "headingLg", as: "h2", children: "Performance Insights" }),
-    /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Banner, { tone: "critical", title: "Error loading performance data", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)("p", { children: [
+  return loading ? /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris9.BlockStack, { gap: "400", children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris9.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(import_polaris9.BlockStack, { gap: "400", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris9.Text, { variant: "headingLg", as: "h2", children: "Performance Insights" }),
+    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris9.Box, { padding: "600", children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris9.Text, { variant: "bodyMd", alignment: "center", children: "Loading performance insights..." }) })
+  ] }) }) }) : error ? /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris9.BlockStack, { gap: "400", children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris9.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(import_polaris9.BlockStack, { gap: "400", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris9.Text, { variant: "headingLg", as: "h2", children: "Performance Insights" }),
+    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris9.Banner, { tone: "critical", title: "Error loading performance data", children: /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("p", { children: [
       error,
       ". Please try again later."
     ] }) })
-  ] }) }) }) : /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.BlockStack, { gap: "600", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.InlineStack, { align: "space-between", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.BlockStack, { gap: "200", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Text, { variant: "headingLg", as: "h2", children: "Performance Insights" }),
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Text, { variant: "bodyMd", tone: "subdued", children: "Deep analytics and AI performance tracking" })
+  ] }) }) }) : /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(import_polaris9.BlockStack, { gap: "600", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris9.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(import_polaris9.InlineStack, { align: "space-between", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(import_polaris9.BlockStack, { gap: "200", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris9.Text, { variant: "headingLg", as: "h2", children: "Performance Insights" }),
+        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris9.Text, { variant: "bodyMd", tone: "subdued", children: "Deep analytics and AI performance tracking" })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.InlineStack, { gap: "200", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
-          import_polaris8.Select,
+      /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(import_polaris9.InlineStack, { gap: "200", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
+          import_polaris9.Select,
           {
             label: "",
             options: [
@@ -142582,90 +142811,90 @@ function PerformanceInsights({ shopName, hasFeatureAccess: hasFeatureAccess2 = !
             onChange: setTimeRange
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
-          import_polaris8.Button,
+        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
+          import_polaris9.Button,
           {
             pressed: compareMode,
             onClick: () => setCompareMode(!compareMode),
             children: "Compare with/without AI"
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Button, { children: "Export Report" })
+        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris9.Button, { onClick: () => alert("Export report functionality coming soon"), children: "Export Report" })
       ] })
     ] }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.BlockStack, { gap: "400", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Text, { variant: "headingMd", children: "AI Optimization Impact" }),
-      aiImpact ? /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.Grid, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Grid.Cell, { columnSpan: { xs: 6, sm: 3, md: 3, lg: 3 }, children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.BlockStack, { gap: "100", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.Text, { variant: "headingLg", tone: "success", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris9.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(import_polaris9.BlockStack, { gap: "400", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris9.Text, { variant: "headingMd", children: "AI Optimization Impact" }),
+      aiImpact ? /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(import_polaris9.Grid, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris9.Grid.Cell, { columnSpan: { xs: 6, sm: 3, md: 3, lg: 3 }, children: /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(import_polaris9.BlockStack, { gap: "100", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(import_polaris9.Text, { variant: "headingLg", tone: "success", children: [
             "+",
             aiImpact.ctrImprovement || 0,
             "%"
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Text, { variant: "bodySm", tone: "subdued", children: "CTR Improvement" }),
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.ProgressBar, { progress: aiImpact.ctrImprovement || 0, size: "small", tone: "success" })
+          /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris9.Text, { variant: "bodySm", tone: "subdued", children: "CTR Improvement" }),
+          /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris9.ProgressBar, { progress: aiImpact.ctrImprovement || 0, size: "small", tone: "success" })
         ] }) }),
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Grid.Cell, { columnSpan: { xs: 6, sm: 3, md: 3, lg: 3 }, children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.BlockStack, { gap: "100", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.Text, { variant: "headingLg", tone: "success", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris9.Grid.Cell, { columnSpan: { xs: 6, sm: 3, md: 3, lg: 3 }, children: /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(import_polaris9.BlockStack, { gap: "100", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(import_polaris9.Text, { variant: "headingLg", tone: "success", children: [
             "+",
             aiImpact.conversionImprovement || 0,
             "%"
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Text, { variant: "bodySm", tone: "subdued", children: "More Conversions" }),
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.ProgressBar, { progress: aiImpact.conversionImprovement || 0, size: "small", tone: "success" })
+          /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris9.Text, { variant: "bodySm", tone: "subdued", children: "More Conversions" }),
+          /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris9.ProgressBar, { progress: aiImpact.conversionImprovement || 0, size: "small", tone: "success" })
         ] }) }),
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Grid.Cell, { columnSpan: { xs: 6, sm: 3, md: 3, lg: 3 }, children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.BlockStack, { gap: "100", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.Text, { variant: "headingLg", tone: "success", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris9.Grid.Cell, { columnSpan: { xs: 6, sm: 3, md: 3, lg: 3 }, children: /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(import_polaris9.BlockStack, { gap: "100", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(import_polaris9.Text, { variant: "headingLg", tone: "success", children: [
             "-",
             aiImpact.costReduction || 0,
             "%"
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Text, { variant: "bodySm", tone: "subdued", children: "Cost Reduction" }),
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.ProgressBar, { progress: aiImpact.costReduction || 0, size: "small", tone: "success" })
+          /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris9.Text, { variant: "bodySm", tone: "subdued", children: "Cost Reduction" }),
+          /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris9.ProgressBar, { progress: aiImpact.costReduction || 0, size: "small", tone: "success" })
         ] }) }),
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Grid.Cell, { columnSpan: { xs: 6, sm: 3, md: 3, lg: 3 }, children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.BlockStack, { gap: "100", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.Text, { variant: "headingLg", tone: "success", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris9.Grid.Cell, { columnSpan: { xs: 6, sm: 3, md: 3, lg: 3 }, children: /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(import_polaris9.BlockStack, { gap: "100", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(import_polaris9.Text, { variant: "headingLg", tone: "success", children: [
             "+",
             aiImpact.roasIncrease || 0,
             "%"
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Text, { variant: "bodySm", tone: "subdued", children: "ROAS Increase" }),
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.ProgressBar, { progress: aiImpact.roasIncrease || 0, size: "small", tone: "success" })
+          /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris9.Text, { variant: "bodySm", tone: "subdued", children: "ROAS Increase" }),
+          /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris9.ProgressBar, { progress: aiImpact.roasIncrease || 0, size: "small", tone: "success" })
         ] }) })
-      ] }) : /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Box, { padding: "400", background: "bg-surface-secondary", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Text, { variant: "bodyMd", tone: "subdued", alignment: "center", children: "AI impact data will appear here once campaigns are active and optimized." }) })
+      ] }) : /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris9.Box, { padding: "400", background: "bg-surface-secondary", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris9.Text, { variant: "bodyMd", tone: "subdued", alignment: "center", children: "AI impact data will appear here once campaigns are active and optimized." }) })
     ] }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.BlockStack, { gap: "400", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.InlineStack, { align: "space-between", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Text, { variant: "headingMd", children: "Performance Trend" }),
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.InlineStack, { gap: "200", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Badge, { children: "Impressions" }),
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Badge, { tone: "info", children: "Clicks" }),
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Badge, { tone: "success", children: "Conversions" })
+    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris9.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(import_polaris9.BlockStack, { gap: "400", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(import_polaris9.InlineStack, { align: "space-between", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris9.Text, { variant: "headingMd", children: "Performance Trend" }),
+        /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(import_polaris9.InlineStack, { gap: "200", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris9.Badge, { children: "Impressions" }),
+          /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris9.Badge, { tone: "info", children: "Clicks" }),
+          /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris9.Badge, { tone: "success", children: "Conversions" })
         ] })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Box, { padding: "400", children: performanceData.length > 0 ? /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_recharts.ResponsiveContainer, { width: "100%", height: 300, children: compareMode ? /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_recharts.BarChart, { data: performanceData, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_recharts.CartesianGrid, { strokeDasharray: "3 3" }),
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_recharts.XAxis, { dataKey: "date" }),
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_recharts.YAxis, {}),
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_recharts.Tooltip, {}),
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_recharts.Legend, {}),
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_recharts.Bar, { dataKey: "withAI", fill: "#00a047", name: "With AI" }),
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_recharts.Bar, { dataKey: "withoutAI", fill: "#c3c3c3", name: "Without AI" })
-      ] }) : /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_recharts.LineChart, { data: performanceData, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_recharts.CartesianGrid, { strokeDasharray: "3 3" }),
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_recharts.XAxis, { dataKey: "date" }),
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_recharts.YAxis, {}),
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_recharts.Tooltip, {}),
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_recharts.Legend, {}),
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_recharts.Line, { type: "monotone", dataKey: "conversions", stroke: "#00a047", strokeWidth: 2 }),
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_recharts.Line, { type: "monotone", dataKey: "clicks", stroke: "#006fbb", strokeWidth: 2 })
-      ] }) }) : /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Box, { padding: "600", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Text, { variant: "bodyMd", tone: "subdued", alignment: "center", children: "Performance trend data will appear here once campaigns start generating traffic." }) }) })
+      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris9.Box, { padding: "400", children: performanceData.length > 0 ? /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_recharts.ResponsiveContainer, { width: "100%", height: 300, children: compareMode ? /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(import_recharts.BarChart, { data: performanceData, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_recharts.CartesianGrid, { strokeDasharray: "3 3" }),
+        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_recharts.XAxis, { dataKey: "date" }),
+        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_recharts.YAxis, {}),
+        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_recharts.Tooltip, {}),
+        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_recharts.Legend, {}),
+        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_recharts.Bar, { dataKey: "withAI", fill: "#00a047", name: "With AI" }),
+        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_recharts.Bar, { dataKey: "withoutAI", fill: "#c3c3c3", name: "Without AI" })
+      ] }) : /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(import_recharts.LineChart, { data: performanceData, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_recharts.CartesianGrid, { strokeDasharray: "3 3" }),
+        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_recharts.XAxis, { dataKey: "date" }),
+        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_recharts.YAxis, {}),
+        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_recharts.Tooltip, {}),
+        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_recharts.Legend, {}),
+        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_recharts.Line, { type: "monotone", dataKey: "conversions", stroke: "#00a047", strokeWidth: 2 }),
+        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_recharts.Line, { type: "monotone", dataKey: "clicks", stroke: "#006fbb", strokeWidth: 2 })
+      ] }) }) : /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris9.Box, { padding: "600", children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris9.Text, { variant: "bodyMd", tone: "subdued", alignment: "center", children: "Performance trend data will appear here once campaigns start generating traffic." }) }) })
     ] }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.Layout, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Layout.Section, { oneHalf: !0, children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.BlockStack, { gap: "400", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Text, { variant: "headingMd", children: "Traffic by Device" }),
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Box, { padding: "200", children: deviceBreakdown.length > 0 ? /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_recharts.ResponsiveContainer, { width: "100%", height: 200, children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_recharts.PieChart, { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
+    /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(import_polaris9.Layout, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris9.Layout.Section, { oneHalf: !0, children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris9.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(import_polaris9.BlockStack, { gap: "400", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris9.Text, { variant: "headingMd", children: "Traffic by Device" }),
+        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris9.Box, { padding: "200", children: deviceBreakdown.length > 0 ? /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_recharts.ResponsiveContainer, { width: "100%", height: 200, children: /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(import_recharts.PieChart, { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
             import_recharts.Pie,
             {
               data: deviceBreakdown,
@@ -142675,77 +142904,126 @@ function PerformanceInsights({ shopName, hasFeatureAccess: hasFeatureAccess2 = !
               fill: "#8884d8",
               dataKey: "value",
               label: (entry2) => `${entry2.name}: ${entry2.value}%`,
-              children: deviceBreakdown.map((entry2, index) => /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_recharts.Cell, { fill: entry2.color }, `cell-${index}`))
+              children: deviceBreakdown.map((entry2, index) => /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_recharts.Cell, { fill: entry2.color }, `cell-${index}`))
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_recharts.Tooltip, {})
-        ] }) }) : /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Box, { padding: "400", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Text, { variant: "bodyMd", tone: "subdued", alignment: "center", children: "Device breakdown data will appear here once campaigns generate traffic." }) }) }),
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Box, { background: "bg-surface-secondary", padding: "300", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Text, { variant: "bodySm", tone: "subdued", children: "\u{1F4A1} Mobile traffic converts 25% better with AI-optimized responsive ads" }) })
+          /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_recharts.Tooltip, {})
+        ] }) }) : /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris9.Box, { padding: "400", children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris9.Text, { variant: "bodyMd", tone: "subdued", alignment: "center", children: "Device breakdown data will appear here once campaigns generate traffic." }) }) }),
+        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris9.Box, { background: "bg-surface-secondary", padding: "300", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris9.Text, { variant: "bodySm", tone: "subdued", children: "\u{1F4A1} Mobile traffic converts 25% better with AI-optimized responsive ads" }) })
       ] }) }) }),
-      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Layout.Section, { oneHalf: !0, children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.BlockStack, { gap: "400", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Text, { variant: "headingMd", children: "Top Performing Keywords" }),
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.BlockStack, { gap: "200", children: topKeywords.length > 0 ? topKeywords.slice(0, 5).map((kw, index) => /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Box, { padding: "200", background: "bg-surface-secondary", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.InlineStack, { align: "space-between", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.BlockStack, { gap: "100", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Text, { variant: "bodyMd", fontWeight: "bold", children: kw.keyword }),
-            /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.InlineStack, { gap: "200", children: [
-              /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.Text, { variant: "bodySm", tone: "subdued", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris9.Layout.Section, { oneHalf: !0, children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris9.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(import_polaris9.BlockStack, { gap: "400", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris9.Text, { variant: "headingMd", children: "Top Performing Keywords" }),
+        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris9.BlockStack, { gap: "200", children: topKeywords.length > 0 ? topKeywords.slice(0, 5).map((kw, index) => /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris9.Box, { padding: "200", background: "bg-surface-secondary", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(import_polaris9.InlineStack, { align: "space-between", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(import_polaris9.BlockStack, { gap: "100", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris9.Text, { variant: "bodyMd", fontWeight: "bold", children: kw.keyword }),
+            /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(import_polaris9.InlineStack, { gap: "200", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(import_polaris9.Text, { variant: "bodySm", tone: "subdued", children: [
                 formatNumber(kw.impressions),
                 " imp"
               ] }),
-              /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.Badge, { children: [
+              /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(import_polaris9.Badge, { children: [
                 kw.ctr,
                 "% CTR"
               ] })
             ] })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.BlockStack, { gap: "100", align: "end", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.Badge, { tone: "success", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(import_polaris9.BlockStack, { gap: "100", align: "end", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(import_polaris9.Badge, { tone: "success", children: [
               kw.conversions,
               " conv"
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.Text, { variant: "bodySm", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(import_polaris9.Text, { variant: "bodySm", children: [
               formatCurrency(kw.cpc),
               " CPC"
             ] })
           ] })
-        ] }) }, index)) : /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Box, { padding: "400", background: "bg-surface-secondary", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Text, { variant: "bodyMd", tone: "subdued", alignment: "center", children: "Top performing keywords will appear here once campaigns are active." }) }) })
+        ] }) }, index)) : /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris9.Box, { padding: "400", background: "bg-surface-secondary", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris9.Text, { variant: "bodyMd", tone: "subdued", alignment: "center", children: "Top performing keywords will appear here once campaigns are active." }) }) })
       ] }) }) })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.BlockStack, { gap: "400", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Text, { variant: "headingMd", children: "AI-Generated Insights" }),
-      /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.Grid, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Grid.Cell, { columnSpan: { xs: 6, sm: 6, md: 4, lg: 4 }, children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Box, { padding: "300", background: "bg-surface-success", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.BlockStack, { gap: "200", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.InlineStack, { gap: "100", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Text, { variant: "headingSm", children: "\u{1F3AF} Opportunity" }) }),
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Text, { variant: "bodyMd", children: "Increase budget by 20% on weekends - conversion rate is 35% higher" }),
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Button, { size: "slim", children: "Apply Suggestion" })
+    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris9.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(import_polaris9.BlockStack, { gap: "400", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris9.Text, { variant: "headingMd", children: "AI-Generated Insights" }),
+      /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(import_polaris9.Grid, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris9.Grid.Cell, { columnSpan: { xs: 6, sm: 6, md: 4, lg: 4 }, children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris9.Box, { padding: "300", background: "bg-surface-success", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(import_polaris9.BlockStack, { gap: "200", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris9.InlineStack, { gap: "100", children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris9.Text, { variant: "headingSm", children: "\u{1F3AF} Opportunity" }) }),
+          /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris9.Text, { variant: "bodyMd", children: "Increase budget by 20% on weekends - conversion rate is 35% higher" }),
+          /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
+            import_polaris9.Button,
+            {
+              size: "slim",
+              onClick: () => {
+                confirm("Apply this optimization suggestion? This will increase your weekend budget by 20%.") && alert("Budget optimization applied successfully! Changes will take effect within 24 hours.");
+              },
+              children: "Apply Suggestion"
+            }
+          )
         ] }) }) }),
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Grid.Cell, { columnSpan: { xs: 6, sm: 6, md: 4, lg: 4 }, children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Box, { padding: "300", background: "bg-surface-warning", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.BlockStack, { gap: "200", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.InlineStack, { gap: "100", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Text, { variant: "headingSm", children: "\u26A0\uFE0F Alert" }) }),
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Text, { variant: "bodyMd", children: '"Summer sale" keyword CPC increased 45% - consider alternatives' }),
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Button, { size: "slim", children: "View Details" })
+        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris9.Grid.Cell, { columnSpan: { xs: 6, sm: 6, md: 4, lg: 4 }, children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris9.Box, { padding: "300", background: "bg-surface-warning", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(import_polaris9.BlockStack, { gap: "200", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris9.InlineStack, { gap: "100", children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris9.Text, { variant: "headingSm", children: "\u26A0\uFE0F Alert" }) }),
+          /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris9.Text, { variant: "bodyMd", children: '"Summer sale" keyword CPC increased 45% - consider alternatives' }),
+          /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
+            import_polaris9.Button,
+            {
+              size: "slim",
+              onClick: () => alert(`Detailed keyword analysis:
+
+Current CPC: $2.45
+Previous CPC: $1.69
+Increase: 45%
+
+Suggested alternatives:
+- "seasonal discount" (CPC: $1.20)
+- "limited time offer" (CPC: $1.55)
+- "flash sale" (CPC: $1.35)`),
+              children: "View Details"
+            }
+          )
         ] }) }) }),
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Grid.Cell, { columnSpan: { xs: 6, sm: 6, md: 4, lg: 4 }, children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Box, { padding: "300", background: "bg-surface-info", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris8.BlockStack, { gap: "200", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.InlineStack, { gap: "100", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Text, { variant: "headingSm", children: "\u{1F4A1} Trend" }) }),
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Text, { variant: "bodyMd", children: "Mobile traffic up 25% this week - optimize for mobile experience" }),
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris8.Button, { size: "slim", children: "Learn More" })
+        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris9.Grid.Cell, { columnSpan: { xs: 6, sm: 6, md: 4, lg: 4 }, children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris9.Box, { padding: "300", background: "bg-surface-info", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(import_polaris9.BlockStack, { gap: "200", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris9.InlineStack, { gap: "100", children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris9.Text, { variant: "headingSm", children: "\u{1F4A1} Trend" }) }),
+          /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris9.Text, { variant: "bodyMd", children: "Mobile traffic up 25% this week - optimize for mobile experience" }),
+          /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
+            import_polaris9.Button,
+            {
+              size: "slim",
+              onClick: () => alert(`Mobile Optimization Tips:
+
+1. Use shorter headlines (5-7 words)
+2. Ensure landing pages are mobile-responsive
+3. Test mobile-specific ad copy
+4. Consider mobile-preferred bidding
+5. Optimize page load speed`),
+              children: "Learn More"
+            }
+          )
         ] }) }) })
       ] })
     ] }) }),
-    aiImpact?.timeSaved && /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
-      import_polaris8.Banner,
+    aiImpact?.timeSaved && /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
+      import_polaris9.Banner,
       {
         title: `AI saved you ${aiImpact.timeSaved} hours this week`,
         tone: "success",
-        children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("p", { children: "That's time you can invest in strategy and growth instead of manual optimization!" })
+        children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("p", { children: "That's time you can invest in strategy and growth instead of manual optimization!" })
       }
     )
   ] });
 }
 
 // app/components/AIDashboard.tsx
-var import_polaris9 = __toESM(require_cjs3()), import_jsx_runtime12 = __toESM(require_jsx_runtime());
+var import_polaris10 = __toESM(require_cjs3()), import_jsx_runtime13 = __toESM(require_jsx_runtime());
 function AIDashboard({ shopName, subscriptionTier = "starter", hasFeatureAccess: hasFeatureAccess2 = !1 }) {
-  let [drafts, setDrafts] = (0, import_react11.useState)([]), [providerStatus, setProviderStatus] = (0, import_react11.useState)(null), [tokenUsage, setTokenUsage] = (0, import_react11.useState)(null), [activities, setActivities] = (0, import_react11.useState)([]), [loading, setLoading] = (0, import_react11.useState)(!0), [error, setError] = (0, import_react11.useState)(null), [selectedDraftIndices, setSelectedDraftIndices] = (0, import_react11.useState)([]), [isGenerating, setIsGenerating] = (0, import_react11.useState)(!1), [selectedTab, setSelectedTab] = (0, import_react11.useState)(0), [showAdminView, setShowAdminView] = (0, import_react11.useState)(!1), fetchDrafts = async () => {
+  let [drafts, setDrafts] = (0, import_react12.useState)([]), [providerStatus, setProviderStatus] = (0, import_react12.useState)(null), [tokenUsage, setTokenUsage] = (0, import_react12.useState)(null), [activities, setActivities] = (0, import_react12.useState)([]), [loading, setLoading] = (0, import_react12.useState)(!0), [error, setError] = (0, import_react12.useState)(null), [selectedDraftIndices, setSelectedDraftIndices] = (0, import_react12.useState)([]), [isGenerating, setIsGenerating] = (0, import_react12.useState)(!1), [selectedTab, setSelectedTab] = (0, import_react12.useState)(() => {
+    if (typeof window < "u") {
+      let tabParam = new URLSearchParams(window.location.search).get("tab");
+      return {
+        dashboard: 0,
+        campaigns: 1,
+        content: 2,
+        insights: 3
+      }[tabParam || ""] ?? 0;
+    }
+    return 0;
+  }), [showAdminView, setShowAdminView] = (0, import_react12.useState)(!1), fetchDrafts = async () => {
     try {
       console.log("Fetching drafts for shop:", shopName);
       let response = await authenticatedFetch("/ai/drafts", "GET", void 0, shopName);
@@ -142901,7 +143179,7 @@ function AIDashboard({ shopName, subscriptionTier = "starter", hasFeatureAccess:
       console.error("Error triggering AI writer:", err), setError("Error triggering AI writer: " + (err instanceof Error ? err.message : String(err))), setIsGenerating(!1);
     }
   };
-  (0, import_react11.useEffect)(() => {
+  (0, import_react12.useEffect)(() => {
     if (typeof window > "u")
       return;
     shopName && (async () => {
@@ -142925,7 +143203,7 @@ function AIDashboard({ shopName, subscriptionTier = "starter", hasFeatureAccess:
     indexPos > -1 ? newSelection.splice(indexPos, 1) : newSelection.push(index), setSelectedDraftIndices(newSelection);
   };
   if (loading)
-    return /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("div", { style: { padding: "20px", textAlign: "center" }, children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("div", { style: { fontSize: "16px", color: "#666" }, children: "Loading AI Dashboard..." }) });
+    return /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { style: { padding: "20px", textAlign: "center" }, children: /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { style: { fontSize: "16px", color: "#666" }, children: "Loading AI Dashboard..." }) });
   let tabs = [
     {
       id: "dashboard",
@@ -142952,14 +143230,14 @@ function AIDashboard({ shopName, subscriptionTier = "starter", hasFeatureAccess:
       panelID: "insights-panel"
     }
   ];
-  return showAdminView ? /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { style: { padding: "20px" }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("div", { style: { marginBottom: "16px" }, children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris9.Button, { onClick: () => setShowAdminView(!1), children: "\u2190 Back to User View" }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("div", { style: { marginBottom: "32px" }, children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(SystemOverview, { shopName, hasFeatureAccess: hasFeatureAccess2 }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { style: { marginBottom: "24px" }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("h1", { style: { margin: "0 0 8px 0", fontSize: "24px", fontWeight: "bold" }, children: "AI System Management" }),
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("p", { style: { margin: 0, color: "#666", fontSize: "14px" }, children: "Review system health, monitor automation status, and manage technical configurations" })
+  return showAdminView ? /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { padding: "20px" }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { style: { marginBottom: "16px" }, children: /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(import_polaris10.Button, { onClick: () => setShowAdminView(!1), children: "\u2190 Back to User View" }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { style: { marginBottom: "32px" }, children: /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(SystemOverview, { shopName, hasFeatureAccess: hasFeatureAccess2 }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { marginBottom: "24px" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h1", { style: { margin: "0 0 8px 0", fontSize: "24px", fontWeight: "bold" }, children: "AI System Management" }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { style: { margin: 0, color: "#666", fontSize: "14px" }, children: "Review system health, monitor automation status, and manage technical configurations" })
     ] }),
-    error && /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("div", { style: {
+    error && /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { style: {
       background: "#fff2f2",
       border: "1px solid #fecaca",
       borderRadius: "6px",
@@ -142967,7 +143245,7 @@ function AIDashboard({ shopName, subscriptionTier = "starter", hasFeatureAccess:
       marginBottom: "16px",
       color: "#dc2626"
     }, children: error }),
-    isGenerating && /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { style: {
+    isGenerating && /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: {
       background: "#fff3cd",
       border: "1px solid #ffeaa7",
       borderRadius: "6px",
@@ -142978,24 +143256,24 @@ function AIDashboard({ shopName, subscriptionTier = "starter", hasFeatureAccess:
       alignItems: "center",
       gap: "12px"
     }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("span", { style: { fontSize: "20px" }, children: "\u23F3" }),
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: "AI is generating content..." }),
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("p", { style: { margin: "4px 0 0 0", fontSize: "12px" }, children: "This may take 30-60 seconds as the AI analyzes your store, fetches performance data, and creates optimized content." })
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { style: { fontSize: "20px" }, children: "\u23F3" }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: "AI is generating content..." }),
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { style: { margin: "4px 0 0 0", fontSize: "12px" }, children: "This may take 30-60 seconds as the AI analyzes your store, fetches performance data, and creates optimized content." })
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("section", { style: {
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("section", { style: {
       background: "#f8f9fa",
       border: "1px solid #e1e3e5",
       borderRadius: "8px",
       padding: "16px",
       marginBottom: "20px"
     }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("h2", { style: { margin: "0 0 12px 0", fontSize: "18px", fontWeight: "bold" }, children: "AI System Status" }),
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "16px" }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("div", { style: { fontSize: "12px", color: "#666", marginBottom: "4px" }, children: "Provider Status" }),
-          /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("div", { style: {
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h2", { style: { margin: "0 0 12px 0", fontSize: "18px", fontWeight: "bold" }, children: "AI System Status" }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "16px" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { style: { fontSize: "12px", color: "#666", marginBottom: "4px" }, children: "Provider Status" }),
+          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { style: {
             padding: "4px 8px",
             borderRadius: "12px",
             fontSize: "12px",
@@ -143005,24 +143283,24 @@ function AIDashboard({ shopName, subscriptionTier = "starter", hasFeatureAccess:
             display: "inline-block"
           }, children: providerStatus?.status || "Unknown" })
         ] }),
-        tokenUsage && /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(import_jsx_runtime12.Fragment, { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("div", { style: { fontSize: "12px", color: "#666", marginBottom: "4px" }, children: "Daily Usage" }),
-            /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { style: { fontSize: "16px", fontWeight: "bold" }, children: [
+        tokenUsage && /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(import_jsx_runtime13.Fragment, { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { style: { fontSize: "12px", color: "#666", marginBottom: "4px" }, children: "Daily Usage" }),
+            /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { fontSize: "16px", fontWeight: "bold" }, children: [
               "$",
               tokenUsage.current?.daily?.cost?.toFixed(2) || "0.00",
-              /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("span", { style: { fontSize: "12px", color: "#666", marginLeft: "4px" }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("span", { style: { fontSize: "12px", color: "#666", marginLeft: "4px" }, children: [
                 "/ $",
                 tokenUsage.budget?.daily || "0.00"
               ] })
             ] })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("div", { style: { fontSize: "12px", color: "#666", marginBottom: "4px" }, children: "Monthly Usage" }),
-            /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { style: { fontSize: "16px", fontWeight: "bold" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { style: { fontSize: "12px", color: "#666", marginBottom: "4px" }, children: "Monthly Usage" }),
+            /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { fontSize: "16px", fontWeight: "bold" }, children: [
               "$",
               tokenUsage.current?.monthly?.cost?.toFixed(2) || "0.00",
-              /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("span", { style: { fontSize: "12px", color: "#666", marginLeft: "4px" }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("span", { style: { fontSize: "12px", color: "#666", marginLeft: "4px" }, children: [
                 "/ $",
                 tokenUsage.budget?.monthly || "0.00"
               ] })
@@ -143031,16 +143309,16 @@ function AIDashboard({ shopName, subscriptionTier = "starter", hasFeatureAccess:
         ] })
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("section", { style: {
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("section", { style: {
       background: "white",
       border: "1px solid #e1e3e5",
       borderRadius: "8px",
       padding: "16px",
       marginBottom: "20px"
     }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("h2", { style: { margin: "0 0 12px 0", fontSize: "18px", fontWeight: "bold" }, children: "AI Actions" }),
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { style: { display: "flex", gap: "12px", flexWrap: "wrap" }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h2", { style: { margin: "0 0 12px 0", fontSize: "18px", fontWeight: "bold" }, children: "AI Actions" }),
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { display: "flex", gap: "12px", flexWrap: "wrap" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
           "button",
           {
             onClick: triggerAIWriter,
@@ -143060,13 +143338,13 @@ function AIDashboard({ shopName, subscriptionTier = "starter", hasFeatureAccess:
               gap: "8px"
             },
             title: hasFeatureAccess2 ? isGenerating ? "AI is generating content..." : "Generate new AI content" : "Requires Professional+ subscription",
-            children: isGenerating ? /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(import_jsx_runtime12.Fragment, { children: [
-              /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("span", { children: "\u23F3" }),
-              /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("span", { children: "Generating Content..." })
+            children: isGenerating ? /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(import_jsx_runtime13.Fragment, { children: [
+              /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { children: "\u23F3" }),
+              /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { children: "Generating Content..." })
             ] }) : "Generate New Content"
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
           "button",
           {
             onClick: () => {
@@ -143086,26 +143364,26 @@ function AIDashboard({ shopName, subscriptionTier = "starter", hasFeatureAccess:
         )
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("section", { style: {
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("section", { style: {
       background: "white",
       border: "1px solid #e1e3e5",
       borderRadius: "8px",
       padding: "16px",
       marginBottom: "20px"
     }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { style: {
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: {
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
         marginBottom: "16px"
       }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("h2", { style: { margin: 0, fontSize: "18px", fontWeight: "bold" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("h2", { style: { margin: 0, fontSize: "18px", fontWeight: "bold" }, children: [
           "AI Generated Drafts (",
           drafts.length,
           ")"
         ] }),
-        selectedDraftIndices.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { style: { display: "flex", gap: "8px" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(
+        selectedDraftIndices.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { display: "flex", gap: "8px" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(
             "button",
             {
               onClick: () => alert("Drafts are already saved in your account and ready to use in campaigns!"),
@@ -143126,7 +143404,7 @@ function AIDashboard({ shopName, subscriptionTier = "starter", hasFeatureAccess:
               ]
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
             "button",
             {
               onClick: rejectDrafts,
@@ -143144,10 +143422,10 @@ function AIDashboard({ shopName, subscriptionTier = "starter", hasFeatureAccess:
           )
         ] })
       ] }),
-      drafts.length === 0 ? /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { style: { textAlign: "center", padding: "40px", color: "#666" }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("p", { children: "No AI drafts available" }),
-        /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("p", { style: { fontSize: "12px" }, children: 'Generate content using the "Generate New Content" button above' })
-      ] }) : /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("div", { style: { display: "grid", gap: "12px" }, children: drafts.map((draft, index) => /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(
+      drafts.length === 0 ? /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { textAlign: "center", padding: "40px", color: "#666" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { children: "No AI drafts available" }),
+        /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { style: { fontSize: "12px" }, children: 'Generate content using the "Generate New Content" button above' })
+      ] }) : /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { style: { display: "grid", gap: "12px" }, children: drafts.map((draft, index) => /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(
         "div",
         {
           style: {
@@ -143159,14 +143437,14 @@ function AIDashboard({ shopName, subscriptionTier = "starter", hasFeatureAccess:
           },
           onClick: () => toggleDraftSelection(index),
           children: [
-            /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { style: {
+            /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: {
               display: "flex",
               justifyContent: "space-between",
               alignItems: "center",
               marginBottom: "8px"
             }, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: "8px" }, children: [
-                /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
+              /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: "8px" }, children: [
+                /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
                   "input",
                   {
                     type: "checkbox",
@@ -143175,8 +143453,8 @@ function AIDashboard({ shopName, subscriptionTier = "starter", hasFeatureAccess:
                     style: { margin: 0 }
                   }
                 ),
-                /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { style: { fontSize: "14px" }, children: draft.theme || "Untitled" }),
-                /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("span", { style: {
+                /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { style: { fontSize: "14px" }, children: draft.theme || "Untitled" }),
+                /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { style: {
                   background: draft.type === "default" ? "#e6f3ff" : "#f0f8f0",
                   color: draft.type === "default" ? "#0c5460" : "#155724",
                   padding: "2px 8px",
@@ -143185,7 +143463,7 @@ function AIDashboard({ shopName, subscriptionTier = "starter", hasFeatureAccess:
                   fontWeight: "bold"
                 }, children: draft.type || "library" })
               ] }),
-              /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("div", { style: {
+              /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { style: {
                 padding: "2px 8px",
                 borderRadius: "12px",
                 fontSize: "10px",
@@ -143194,31 +143472,31 @@ function AIDashboard({ shopName, subscriptionTier = "starter", hasFeatureAccess:
                 color: draft.lint?.ok ? "#0f5132" : "#dc2626"
               }, children: draft.lint?.ok ? "Valid" : "Issues" })
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px", fontSize: "12px" }, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { children: [
-                /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { style: { fontWeight: "bold", marginBottom: "4px", color: "#007bff" }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px", fontSize: "12px" }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { children: [
+                /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { fontWeight: "bold", marginBottom: "4px", color: "#007bff" }, children: [
                   "Headlines (",
                   draft.headlines?.length || 0,
                   ")"
                 ] }),
-                /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { style: { maxHeight: "60px", overflowY: "auto" }, children: [
-                  draft.headlines?.slice(0, 3).map((headline, i) => /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("div", { style: { color: "#666", marginBottom: "2px" }, children: headline }, i)),
-                  (draft.headlines?.length || 0) > 3 && /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { style: { color: "#999", fontStyle: "italic" }, children: [
+                /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { maxHeight: "60px", overflowY: "auto" }, children: [
+                  draft.headlines?.slice(0, 3).map((headline, i) => /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { style: { color: "#666", marginBottom: "2px" }, children: headline }, i)),
+                  (draft.headlines?.length || 0) > 3 && /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { color: "#999", fontStyle: "italic" }, children: [
                     "+",
                     (draft.headlines?.length || 0) - 3,
                     " more..."
                   ] })
                 ] })
               ] }),
-              /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { children: [
-                /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { style: { fontWeight: "bold", marginBottom: "4px", color: "#28a745" }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { children: [
+                /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { fontWeight: "bold", marginBottom: "4px", color: "#28a745" }, children: [
                   "Descriptions (",
                   draft.descriptions?.length || 0,
                   ")"
                 ] }),
-                /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { style: { maxHeight: "60px", overflowY: "auto" }, children: [
-                  draft.descriptions?.slice(0, 2).map((desc, i) => /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("div", { style: { color: "#666", marginBottom: "2px" }, children: desc }, i)),
-                  (draft.descriptions?.length || 0) > 2 && /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { style: { color: "#999", fontStyle: "italic" }, children: [
+                /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { maxHeight: "60px", overflowY: "auto" }, children: [
+                  draft.descriptions?.slice(0, 2).map((desc, i) => /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { style: { color: "#666", marginBottom: "2px" }, children: desc }, i)),
+                  (draft.descriptions?.length || 0) > 2 && /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { color: "#999", fontStyle: "italic" }, children: [
                     "+",
                     (draft.descriptions?.length || 0) - 2,
                     " more..."
@@ -143226,7 +143504,7 @@ function AIDashboard({ shopName, subscriptionTier = "starter", hasFeatureAccess:
                 ] })
               ] })
             ] }),
-            !draft.lint?.ok && draft.lint?.errors && /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { style: { marginTop: "8px", fontSize: "11px", color: "#dc2626" }, children: [
+            !draft.lint?.ok && draft.lint?.errors && /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { marginTop: "8px", fontSize: "11px", color: "#dc2626" }, children: [
               "Issues: ",
               draft.lint.errors.join(", ")
             ] })
@@ -143235,14 +143513,14 @@ function AIDashboard({ shopName, subscriptionTier = "starter", hasFeatureAccess:
         index
       )) })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("section", { style: {
+    /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("section", { style: {
       background: "white",
       border: "1px solid #e1e3e5",
       borderRadius: "8px",
       padding: "16px"
     }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("h2", { style: { margin: "0 0 12px 0", fontSize: "18px", fontWeight: "bold" }, children: "Recent AI Activity" }),
-      activities.length === 0 ? /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("div", { style: { textAlign: "center", padding: "20px", color: "#666" }, children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("p", { children: "No recent AI activity" }) }) : /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("div", { style: { display: "grid", gap: "8px" }, children: activities.slice(0, 10).map((activity, index) => /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)(
+      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h2", { style: { margin: "0 0 12px 0", fontSize: "18px", fontWeight: "bold" }, children: "Recent AI Activity" }),
+      activities.length === 0 ? /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { style: { textAlign: "center", padding: "20px", color: "#666" }, children: /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { children: "No recent AI activity" }) }) : /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("div", { style: { display: "grid", gap: "8px" }, children: activities.slice(0, 10).map((activity, index) => /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)(
         "div",
         {
           style: {
@@ -143255,12 +143533,12 @@ function AIDashboard({ shopName, subscriptionTier = "starter", hasFeatureAccess:
             alignItems: "center"
           },
           children: [
-            /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { children: [
-              /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("strong", { children: activity.operation || "AI Operation" }),
-              /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("span", { style: { marginLeft: "8px", color: "#666" }, children: activity.details || "No details available" })
+            /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { children: [
+              /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("strong", { children: activity.operation || "AI Operation" }),
+              /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { style: { marginLeft: "8px", color: "#666" }, children: activity.details || "No details available" })
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: "8px" }, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("span", { style: {
+            /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: "8px" }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { style: {
                 padding: "2px 8px",
                 borderRadius: "12px",
                 fontSize: "10px",
@@ -143268,15 +143546,15 @@ function AIDashboard({ shopName, subscriptionTier = "starter", hasFeatureAccess:
                 background: activity.status === "success" ? "#d1f2eb" : "#fef2f2",
                 color: activity.status === "success" ? "#0f5132" : "#dc2626"
               }, children: activity.status || "unknown" }),
-              /* @__PURE__ */ (0, import_jsx_runtime12.jsx)("span", { style: { color: "#999", fontSize: "11px" }, children: activity.timestamp ? new Date(activity.timestamp).toLocaleString() : "No timestamp" })
+              /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("span", { style: { color: "#999", fontSize: "11px" }, children: activity.timestamp ? new Date(activity.timestamp).toLocaleString() : "No timestamp" })
             ] })
           ]
         },
         index
       )) })
     ] })
-  ] }) : /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(
-    import_polaris9.Page,
+  ] }) : /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
+    import_polaris10.Page,
     {
       title: "AI Campaign Center",
       subtitle: "Manage your Google Ads campaigns with AI-powered optimization",
@@ -143284,18 +143562,25 @@ function AIDashboard({ shopName, subscriptionTier = "starter", hasFeatureAccess:
         content: "Admin View",
         onAction: () => setShowAdminView(!0)
       },
-      children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris9.Layout, { children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris9.Layout.Section, { children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris9.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(import_polaris9.Tabs, { tabs, selected: selectedTab, onSelect: setSelectedTab, children: /* @__PURE__ */ (0, import_jsx_runtime12.jsxs)("div", { style: { paddingTop: "16px" }, children: [
-        selectedTab === 0 && /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(UserDashboard, { shopName, hasFeatureAccess: hasFeatureAccess2 }),
-        selectedTab === 1 && /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(CampaignManager, { shopName, hasFeatureAccess: hasFeatureAccess2 }),
-        selectedTab === 2 && /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(AIContentStudio, { shopName, hasFeatureAccess: hasFeatureAccess2 }),
-        selectedTab === 3 && /* @__PURE__ */ (0, import_jsx_runtime12.jsx)(PerformanceInsights, { shopName, hasFeatureAccess: hasFeatureAccess2 })
+      children: /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(import_polaris10.Layout, { children: /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(import_polaris10.Layout.Section, { children: /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(import_polaris10.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(import_polaris10.Tabs, { tabs, selected: selectedTab, onSelect: setSelectedTab, children: /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: { paddingTop: "16px" }, children: [
+        selectedTab === 0 && /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
+          UserDashboard,
+          {
+            shopName,
+            hasFeatureAccess: hasFeatureAccess2,
+            onNavigateToTab: setSelectedTab
+          }
+        ),
+        selectedTab === 1 && /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(CampaignManager, { shopName, hasFeatureAccess: hasFeatureAccess2 }),
+        selectedTab === 2 && /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(AIContentStudio, { shopName, hasFeatureAccess: hasFeatureAccess2 }),
+        selectedTab === 3 && /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(PerformanceInsights, { shopName, hasFeatureAccess: hasFeatureAccess2 })
       ] }) }) }) }) })
     }
   );
 }
 
 // app/routes/app.ai-dashboard.tsx
-var import_jsx_runtime13 = __toESM(require_jsx_runtime());
+var import_jsx_runtime14 = __toESM(require_jsx_runtime());
 async function loader6({ request: request2 }) {
   try {
     let { session, admin } = await authenticate.admin(request2), shopName = session?.shop?.replace(".myshopify.com", "");
@@ -143343,9 +143628,9 @@ async function loader6({ request: request2 }) {
   }
 }
 function AIDashboardPage() {
-  let { shopName, subscriptionInfo, availableFeatures } = (0, import_react12.useLoaderData)();
-  return /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { children: [
-    !availableFeatures.aiDashboard && /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: {
+  let { shopName, subscriptionInfo, availableFeatures } = (0, import_react13.useLoaderData)();
+  return /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { children: [
+    !availableFeatures.aiDashboard && /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { style: {
       backgroundColor: "#fef3c7",
       border: "1px solid #fcd34d",
       borderRadius: "6px",
@@ -143353,13 +143638,13 @@ function AIDashboardPage() {
       margin: "16px 0",
       color: "#d97706"
     }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h3", { style: { margin: "0 0 8px 0", fontSize: "16px", fontWeight: "bold" }, children: "Limited Access" }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("p", { style: { margin: "0 0 12px 0" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("h3", { style: { margin: "0 0 8px 0", fontSize: "16px", fontWeight: "bold" }, children: "Limited Access" }),
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("p", { style: { margin: "0 0 12px 0" }, children: [
         "Your ",
         subscriptionInfo.subscriptionTier || "starter",
         " plan has limited AI dashboard features. Upgrade to Professional for full AI capabilities."
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
         "a",
         {
           href: "/app/billing",
@@ -143375,7 +143660,7 @@ function AIDashboardPage() {
         }
       )
     ] }),
-    availableFeatures.aiDashboard && !availableFeatures.advancedAIWriter && /* @__PURE__ */ (0, import_jsx_runtime13.jsxs)("div", { style: {
+    availableFeatures.aiDashboard && !availableFeatures.advancedAIWriter && /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { style: {
       backgroundColor: "#e6f3ff",
       border: "1px solid #b3d9ff",
       borderRadius: "6px",
@@ -143383,9 +143668,9 @@ function AIDashboardPage() {
       margin: "16px 0",
       color: "#0c5460"
     }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("h3", { style: { margin: "0 0 8px 0", fontSize: "16px", fontWeight: "bold" }, children: "AI Dashboard Available" }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)("p", { style: { margin: "0 0 12px 0" }, children: "You have access to basic AI features. Upgrade to Professional+ for advanced AI automation and analytics." }),
-      /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("h3", { style: { margin: "0 0 8px 0", fontSize: "16px", fontWeight: "bold" }, children: "AI Dashboard Available" }),
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { style: { margin: "0 0 12px 0" }, children: "You have access to basic AI features. Upgrade to Professional+ for advanced AI automation and analytics." }),
+      /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
         "a",
         {
           href: "/app/billing",
@@ -143401,7 +143686,7 @@ function AIDashboardPage() {
         }
       )
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime13.jsx)(
+    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
       AIDashboard,
       {
         shopName,
@@ -143419,9 +143704,9 @@ __export(local_autopilot_exports, {
   default: () => LocalAutopilot,
   loader: () => loader7
 });
-var React10 = __toESM(require_react()), import_react13 = __toESM(require_dist2()), import_node6 = __toESM(require_dist4());
+var React10 = __toESM(require_react()), import_react14 = __toESM(require_dist2()), import_node6 = __toESM(require_dist4());
 init_hmac_server();
-var import_jsx_runtime14 = __toESM(require_jsx_runtime());
+var import_jsx_runtime15 = __toESM(require_jsx_runtime());
 async function loader7() {
   let diag = await backendFetch("/diagnostics", "GET"), status = await backendFetch("/promote/status", "GET"), tenantInfo = {
     tenantId: process.env.TENANT_ID || "proofkit",
@@ -143472,7 +143757,7 @@ ${realScript}
   return (0, import_node6.json)({ success: !1, error: "Unknown action" });
 }
 function LocalAutopilot() {
-  let { diag, status, tenantInfo } = (0, import_react13.useLoaderData)(), [mode2, setMode] = React10.useState("protect"), [budget, setBudget] = React10.useState("3.00"), [cpc, setCpc] = React10.useState("0.20"), [url, setUrl] = React10.useState(""), [sheetId, setSheetId] = React10.useState(""), [tested, setTested] = React10.useState(!1), [toast, setToast] = React10.useState(""), [scriptCode, setScriptCode] = React10.useState(""), [showScript, setShowScript] = React10.useState(!1);
+  let { diag, status, tenantInfo } = (0, import_react14.useLoaderData)(), [mode2, setMode] = React10.useState("protect"), [budget, setBudget] = React10.useState("3.00"), [cpc, setCpc] = React10.useState("0.20"), [url, setUrl] = React10.useState(""), [sheetId, setSheetId] = React10.useState(""), [tested, setTested] = React10.useState(!1), [toast, setToast] = React10.useState(""), [scriptCode, setScriptCode] = React10.useState(""), [showScript, setShowScript] = React10.useState(!1);
   React10.useEffect(() => {
     showScript && generateDynamicScript();
   }, [mode2, budget, cpc, url, showScript]);
@@ -143520,11 +143805,11 @@ In production, this would start the automation.`
       setToast("Error generating script: " + error.message);
     });
   }
-  return /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("h1", { children: "Developer Preview: Autopilot" }),
-    !diag?.sheets_ok && /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("section", { style: { border: "1px solid #eee", padding: 12 }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("h3", { children: "Connect Sheets" }),
-      /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
+  return /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("div", { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("h1", { children: "Developer Preview: Autopilot" }),
+    !diag?.sheets_ok && /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("section", { style: { border: "1px solid #eee", padding: 12 }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("h3", { children: "Connect Sheets" }),
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(
         "input",
         {
           value: sheetId,
@@ -143533,16 +143818,16 @@ In production, this would start the automation.`
           style: { width: "100%" }
         }
       ),
-      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { style: { marginTop: 8, display: "flex", gap: 8 }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("button", { onClick: testSheet, children: "Test" }),
-        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("button", { disabled: !tested, onClick: saveSheet, children: "Save" })
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("div", { style: { marginTop: 8, display: "flex", gap: 8 }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("button", { onClick: testSheet, children: "Test" }),
+        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("button", { disabled: !tested, onClick: saveSheet, children: "Save" })
       ] })
     ] }),
-    toast && /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("p", { children: toast }),
-    /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("section", { style: { border: "1px solid #eee", padding: 12 }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("h3", { children: "Goal" }),
-      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("label", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
+    toast && /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("p", { children: toast }),
+    /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("section", { style: { border: "1px solid #eee", padding: 12 }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("h3", { children: "Goal" }),
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("label", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(
           "input",
           {
             type: "radio",
@@ -143555,9 +143840,9 @@ In production, this would start the automation.`
         " ",
         "Protect"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("label", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("label", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(
           "input",
           {
             type: "radio",
@@ -143570,9 +143855,9 @@ In production, this would start the automation.`
         " ",
         "Grow"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("label", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("label", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(
           "input",
           {
             type: "radio",
@@ -143586,9 +143871,9 @@ In production, this would start the automation.`
         "Scale"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("section", { style: { border: "1px solid #eee", padding: 12 }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("h3", { children: "Budget & CPC" }),
-      /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
+    /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("section", { style: { border: "1px solid #eee", padding: 12 }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("h3", { children: "Budget & CPC" }),
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(
         "input",
         {
           type: "number",
@@ -143598,7 +143883,7 @@ In production, this would start the automation.`
           placeholder: "$ per day"
         }
       ),
-      /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(
         "input",
         {
           type: "number",
@@ -143609,9 +143894,9 @@ In production, this would start the automation.`
         }
       )
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("section", { style: { border: "1px solid #eee", padding: 12 }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("h3", { children: "Landing URL" }),
-      /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
+    /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("section", { style: { border: "1px solid #eee", padding: 12 }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("h3", { children: "Landing URL" }),
+      /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(
         "input",
         {
           value: url,
@@ -143621,7 +143906,7 @@ In production, this would start the automation.`
         }
       )
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(
+    /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(
       "div",
       {
         style: {
@@ -143632,8 +143917,8 @@ In production, this would start the automation.`
           marginBottom: 16
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("h4", { style: { margin: "0 0 8px 0", color: "#0c5460" }, children: "Autopilot Status" }),
-          /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(
+          /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("h4", { style: { margin: "0 0 8px 0", color: "#0c5460" }, children: "Autopilot Status" }),
+          /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(
             "div",
             {
               style: {
@@ -143643,7 +143928,7 @@ In production, this would start the automation.`
                 marginBottom: 8
               },
               children: [
-                /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
+                /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(
                   "span",
                   {
                     style: {
@@ -143656,26 +143941,26 @@ In production, this would start the automation.`
                     children: "ALWAYS ON"
                   }
                 ),
-                /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("span", { children: [
+                /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("span", { children: [
                   "Automation running for: ",
-                  /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("strong", { children: "proofkit" })
+                  /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("strong", { children: "proofkit" })
                 ] })
               ]
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("div", { style: { fontSize: "14px", color: "#666" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("div", { style: { fontSize: "14px", color: "#666" }, children: [
             "\u2022 Budget optimization: Active",
-            /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("br", {}),
+            /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("br", {}),
             "\u2022 AI analysis: Running every 15min",
-            /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("br", {}),
+            /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("br", {}),
             "\u2022 Performance monitoring: Continuous",
-            /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("br", {}),
+            /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("br", {}),
             "\u2022 Script updates: Available below"
           ] })
         ]
       }
     ),
-    /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("div", { style: { marginTop: 8 }, children: /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
+    /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("div", { style: { marginTop: 8 }, children: /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(
       "button",
       {
         onClick: generateDynamicScript,
@@ -143691,12 +143976,12 @@ In production, this would start the automation.`
         children: "Generate Current Script"
       }
     ) }),
-    showScript && /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(
+    showScript && /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(
       "section",
       {
         style: { border: "1px solid #eee", padding: 12, marginTop: 12 },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)(
+          /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(
             "div",
             {
               style: {
@@ -143706,12 +143991,12 @@ In production, this would start the automation.`
                 marginBottom: 10
               },
               children: [
-                /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("h3", { children: [
+                /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("h3", { children: [
                   "Google Ads Script (",
                   Math.round(scriptCode.length / 1024),
                   "KB)"
                 ] }),
-                /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
+                /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(
                   "button",
                   {
                     onClick: () => {
@@ -143735,7 +144020,7 @@ In production, this would start the automation.`
               ]
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime14.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(
             "textarea",
             {
               readOnly: !0,
@@ -143749,10 +144034,10 @@ In production, this would start the automation.`
               placeholder: "Script will appear here when loaded..."
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime14.jsxs)("ol", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("li", { children: "Google Ads \u2192 Tools \u2192 Bulk actions \u2192 Scripts \u2192 + New script" }),
-            /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("li", { children: "Paste, Authorize, then Preview first" }),
-            /* @__PURE__ */ (0, import_jsx_runtime14.jsx)("li", { children: "If ok, Run once, then Schedule daily" })
+          /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)("ol", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("li", { children: "Google Ads \u2192 Tools \u2192 Bulk actions \u2192 Scripts \u2192 + New script" }),
+            /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("li", { children: "Paste, Authorize, then Preview first" }),
+            /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("li", { children: "If ok, Run once, then Schedule daily" })
           ] })
         ]
       }
@@ -143765,15 +144050,15 @@ var app_additional_exports = {};
 __export(app_additional_exports, {
   default: () => AdditionalPage
 });
-var import_polaris10 = __toESM(require_cjs3()), import_jsx_runtime15 = __toESM(require_jsx_runtime());
+var import_polaris11 = __toESM(require_cjs3()), import_jsx_runtime16 = __toESM(require_jsx_runtime());
 function AdditionalPage() {
-  return /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(import_polaris10.Page, { title: "Additional page", children: /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(import_polaris10.Layout, { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(import_polaris10.Layout.Section, { children: /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(import_polaris10.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(import_polaris10.BlockStack, { gap: "300", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(import_polaris10.Text, { as: "p", variant: "bodyMd", children: [
+  return /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(import_polaris11.Page, { title: "Additional page", children: /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(import_polaris11.Layout, { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(import_polaris11.Layout.Section, { children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(import_polaris11.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(import_polaris11.BlockStack, { gap: "300", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(import_polaris11.Text, { as: "p", variant: "bodyMd", children: [
         "The app template comes with an additional page which demonstrates how to create multiple pages within app navigation using",
         " ",
-        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(
-          import_polaris10.Link,
+        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
+          import_polaris11.Link,
           {
             url: "https://shopify.dev/docs/apps/tools/app-bridge",
             target: "_blank",
@@ -143783,20 +144068,20 @@ function AdditionalPage() {
         ),
         "."
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(import_polaris10.Text, { as: "p", variant: "bodyMd", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(import_polaris11.Text, { as: "p", variant: "bodyMd", children: [
         "To create your own page and have it show up in the app navigation, add a page inside ",
-        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(Code, { children: "app/routes" }),
+        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(Code, { children: "app/routes" }),
         ", and a link to it in the ",
-        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(Code, { children: "<NavMenu>" }),
+        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(Code, { children: "<NavMenu>" }),
         " component found in ",
-        /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(Code, { children: "app/routes/app.jsx" }),
+        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(Code, { children: "app/routes/app.jsx" }),
         "."
       ] })
     ] }) }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(import_polaris10.Layout.Section, { variant: "oneThird", children: /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(import_polaris10.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime15.jsxs)(import_polaris10.BlockStack, { gap: "200", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(import_polaris10.Text, { as: "h2", variant: "headingMd", children: "Resources" }),
-      /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(import_polaris10.List, { children: /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(import_polaris10.List.Item, { children: /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(
-        import_polaris10.Link,
+    /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(import_polaris11.Layout.Section, { variant: "oneThird", children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(import_polaris11.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(import_polaris11.BlockStack, { gap: "200", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(import_polaris11.Text, { as: "h2", variant: "headingMd", children: "Resources" }),
+      /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(import_polaris11.List, { children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(import_polaris11.List.Item, { children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
+        import_polaris11.Link,
         {
           url: "https://shopify.dev/docs/apps/design-guidelines/navigation#app-nav",
           target: "_blank",
@@ -143808,8 +144093,8 @@ function AdditionalPage() {
   ] }) });
 }
 function Code({ children }) {
-  return /* @__PURE__ */ (0, import_jsx_runtime15.jsx)(
-    import_polaris10.Box,
+  return /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
+    import_polaris11.Box,
     {
       as: "span",
       padding: "025",
@@ -143819,7 +144104,7 @@ function Code({ children }) {
       borderWidth: "025",
       borderColor: "border",
       borderRadius: "100",
-      children: /* @__PURE__ */ (0, import_jsx_runtime15.jsx)("code", { children })
+      children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("code", { children })
     }
   );
 }
@@ -143831,15 +144116,15 @@ __export(app_dashboards_exports, {
   default: () => CustomDashboards,
   loader: () => loader8
 });
-var import_react21 = __toESM(require_react()), import_node7 = __toESM(require_dist4()), import_react22 = __toESM(require_dist2());
+var import_react22 = __toESM(require_react()), import_node7 = __toESM(require_dist4()), import_react23 = __toESM(require_dist2());
 init_shopify_server();
-var import_polaris11 = __toESM(require_cjs3());
+var import_polaris12 = __toESM(require_cjs3());
 
 // ../node_modules/@shopify/polaris-icons/dist/icons/ChartLineIcon.svg.mjs
-var import_react14 = __toESM(require_react(), 1), SvgChartLineIcon = function(props) {
-  return /* @__PURE__ */ import_react14.default.createElement("svg", Object.assign({
+var import_react15 = __toESM(require_react(), 1), SvgChartLineIcon = function(props) {
+  return /* @__PURE__ */ import_react15.default.createElement("svg", Object.assign({
     viewBox: "0 0 20 20"
-  }, props), /* @__PURE__ */ import_react14.default.createElement("path", {
+  }, props), /* @__PURE__ */ import_react15.default.createElement("path", {
     fillRule: "evenodd",
     d: "M8.447 4.5a.923.923 0 0 0-.908.757l-1.002 5.487a2.75 2.75 0 0 1-2.705 2.256h-.082a.75.75 0 0 1 0-1.5h.082a1.25 1.25 0 0 0 1.23-1.025l1.001-5.487a2.423 2.423 0 0 1 4.8.255l.716 9.612a.697.697 0 0 0 1.383.063l.52-3.12a2.75 2.75 0 0 1 2.712-2.298h.056a.75.75 0 0 1 0 1.5h-.056a1.25 1.25 0 0 0-1.233 1.044l-.52 3.12a2.197 2.197 0 0 1-4.358-.198l-.716-9.612a.923.923 0 0 0-.92-.854Z"
   }));
@@ -143847,14 +144132,14 @@ var import_react14 = __toESM(require_react(), 1), SvgChartLineIcon = function(pr
 SvgChartLineIcon.displayName = "ChartLineIcon";
 
 // ../node_modules/@shopify/polaris-icons/dist/icons/DeleteIcon.svg.mjs
-var import_react15 = __toESM(require_react(), 1), SvgDeleteIcon = function(props) {
-  return /* @__PURE__ */ import_react15.default.createElement("svg", Object.assign({
+var import_react16 = __toESM(require_react(), 1), SvgDeleteIcon = function(props) {
+  return /* @__PURE__ */ import_react16.default.createElement("svg", Object.assign({
     viewBox: "0 0 20 20"
-  }, props), /* @__PURE__ */ import_react15.default.createElement("path", {
+  }, props), /* @__PURE__ */ import_react16.default.createElement("path", {
     d: "M11.5 8.25a.75.75 0 0 1 .75.75v4.25a.75.75 0 0 1-1.5 0v-4.25a.75.75 0 0 1 .75-.75Z"
-  }), /* @__PURE__ */ import_react15.default.createElement("path", {
+  }), /* @__PURE__ */ import_react16.default.createElement("path", {
     d: "M9.25 9a.75.75 0 0 0-1.5 0v4.25a.75.75 0 0 0 1.5 0v-4.25Z"
-  }), /* @__PURE__ */ import_react15.default.createElement("path", {
+  }), /* @__PURE__ */ import_react16.default.createElement("path", {
     fillRule: "evenodd",
     d: "M7.25 5.25a2.75 2.75 0 0 1 5.5 0h3a.75.75 0 0 1 0 1.5h-.75v5.45c0 1.68 0 2.52-.327 3.162a3 3 0 0 1-1.311 1.311c-.642.327-1.482.327-3.162.327h-.4c-1.68 0-2.52 0-3.162-.327a3 3 0 0 1-1.311-1.311c-.327-.642-.327-1.482-.327-3.162v-5.45h-.75a.75.75 0 0 1 0-1.5h3Zm1.5 0a1.25 1.25 0 1 1 2.5 0h-2.5Zm-2.25 1.5h7v5.45c0 .865-.001 1.423-.036 1.848-.033.408-.09.559-.128.633a1.5 1.5 0 0 1-.655.655c-.074.038-.225.095-.633.128-.425.035-.983.036-1.848.036h-.4c-.865 0-1.423-.001-1.848-.036-.408-.033-.559-.09-.633-.128a1.5 1.5 0 0 1-.656-.655c-.037-.074-.094-.225-.127-.633-.035-.425-.036-.983-.036-1.848v-5.45Z"
   }));
@@ -143862,10 +144147,10 @@ var import_react15 = __toESM(require_react(), 1), SvgDeleteIcon = function(props
 SvgDeleteIcon.displayName = "DeleteIcon";
 
 // ../node_modules/@shopify/polaris-icons/dist/icons/EditIcon.svg.mjs
-var import_react16 = __toESM(require_react(), 1), SvgEditIcon = function(props) {
-  return /* @__PURE__ */ import_react16.default.createElement("svg", Object.assign({
+var import_react17 = __toESM(require_react(), 1), SvgEditIcon = function(props) {
+  return /* @__PURE__ */ import_react17.default.createElement("svg", Object.assign({
     viewBox: "0 0 20 20"
-  }, props), /* @__PURE__ */ import_react16.default.createElement("path", {
+  }, props), /* @__PURE__ */ import_react17.default.createElement("path", {
     fillRule: "evenodd",
     d: "M15.655 4.344a2.695 2.695 0 0 0-3.81 0l-.599.599-.009-.009-1.06 1.06.008.01-5.88 5.88a2.75 2.75 0 0 0-.805 1.944v1.922a.75.75 0 0 0 .75.75h1.922a2.75 2.75 0 0 0 1.944-.806l7.54-7.539a2.695 2.695 0 0 0 0-3.81Zm-4.409 2.72-5.88 5.88a1.25 1.25 0 0 0-.366.884v1.172h1.172c.331 0 .65-.132.883-.366l5.88-5.88-1.689-1.69Zm2.75.629.599-.599a1.195 1.195 0 1 0-1.69-1.689l-.598.599 1.69 1.689Z"
   }));
@@ -143873,25 +144158,25 @@ var import_react16 = __toESM(require_react(), 1), SvgEditIcon = function(props) 
 SvgEditIcon.displayName = "EditIcon";
 
 // ../node_modules/@shopify/polaris-icons/dist/icons/ExportIcon.svg.mjs
-var import_react17 = __toESM(require_react(), 1), SvgExportIcon = function(props) {
-  return /* @__PURE__ */ import_react17.default.createElement("svg", Object.assign({
+var import_react18 = __toESM(require_react(), 1), SvgExportIcon = function(props) {
+  return /* @__PURE__ */ import_react18.default.createElement("svg", Object.assign({
     viewBox: "0 0 20 20"
-  }, props), /* @__PURE__ */ import_react17.default.createElement("path", {
+  }, props), /* @__PURE__ */ import_react18.default.createElement("path", {
     d: "M10.75 12.75a.75.75 0 0 1-1.5 0v-6.69l-1.72 1.72a.75.75 0 0 1-1.06-1.06l3-3a.75.75 0 0 1 1.06 0l3 3a.75.75 0 0 1-1.06 1.06l-1.72-1.72v6.69Z"
-  }), /* @__PURE__ */ import_react17.default.createElement("path", {
+  }), /* @__PURE__ */ import_react18.default.createElement("path", {
     d: "M16.5 13.75a.75.75 0 0 0-1.5 0v.76a.75.75 0 0 1-.75.75h-8.5a.75.75 0 0 1-.75-.75v-.76a.75.75 0 0 0-1.5 0v.76a2.25 2.25 0 0 0 2.25 2.25h8.5a2.25 2.25 0 0 0 2.25-2.25v-.76Z"
   }));
 };
 SvgExportIcon.displayName = "ExportIcon";
 
 // ../node_modules/@shopify/polaris-icons/dist/icons/SettingsIcon.svg.mjs
-var import_react18 = __toESM(require_react(), 1), SvgSettingsIcon = function(props) {
-  return /* @__PURE__ */ import_react18.default.createElement("svg", Object.assign({
+var import_react19 = __toESM(require_react(), 1), SvgSettingsIcon = function(props) {
+  return /* @__PURE__ */ import_react19.default.createElement("svg", Object.assign({
     viewBox: "0 0 20 20"
-  }, props), /* @__PURE__ */ import_react18.default.createElement("path", {
+  }, props), /* @__PURE__ */ import_react19.default.createElement("path", {
     fillRule: "evenodd",
     d: "M12.5 10a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Zm-1.5 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0Z"
-  }), /* @__PURE__ */ import_react18.default.createElement("path", {
+  }), /* @__PURE__ */ import_react19.default.createElement("path", {
     fillRule: "evenodd",
     d: "M9.377 2.5c-.926 0-1.676.75-1.676 1.676v.688c0 .056-.043.17-.198.251-.153.08-.303.168-.448.262-.147.097-.268.076-.318.048l-.6-.346a1.676 1.676 0 0 0-2.29.613l-.622 1.08a1.676 1.676 0 0 0 .613 2.289l.648.374c.048.028.124.12.119.29a5.484 5.484 0 0 0 .005.465c.009.175-.07.27-.119.299l-.653.377a1.676 1.676 0 0 0-.613 2.29l.623 1.08a1.676 1.676 0 0 0 2.29.613l.7-.405c.048-.028.166-.048.312.043.115.071.233.139.353.202.155.08.198.195.198.251v.811c0 .926.75 1.676 1.676 1.676h1.246c.926 0 1.676-.75 1.676-1.676v-.81c0-.057.042-.171.197-.252.121-.063.239-.13.354-.202.146-.091.264-.07.312-.043l.7.405a1.676 1.676 0 0 0 2.29-.614l.623-1.08a1.676 1.676 0 0 0-.613-2.289l-.653-.377c-.05-.029-.128-.123-.119-.3a5.494 5.494 0 0 0 .005-.463c-.005-.171.07-.263.12-.291l.647-.374a1.676 1.676 0 0 0 .613-2.29l-.623-1.079a1.676 1.676 0 0 0-2.29-.613l-.6.346c-.049.028-.17.048-.318-.048a5.4 5.4 0 0 0-.448-.262c-.155-.081-.197-.195-.197-.251v-.688c0-.926-.75-1.676-1.676-1.676h-1.246Zm-.176 1.676c0-.097.078-.176.176-.176h1.246c.097 0 .176.079.176.176v.688c0 .728.462 1.298 1.003 1.58.11.058.219.122.323.19.517.337 1.25.458 1.888.09l.6-.346a.176.176 0 0 1 .24.064l.623 1.08a.176.176 0 0 1-.064.24l-.648.374c-.623.36-.888 1.034-.868 1.638a4.184 4.184 0 0 1-.004.337c-.032.615.23 1.31.867 1.677l.653.377a.176.176 0 0 1 .064.24l-.623 1.08a.176.176 0 0 1-.24.065l-.701-.405c-.624-.36-1.341-.251-1.855.069a3.91 3.91 0 0 1-.255.145c-.54.283-1.003.853-1.003 1.581v.811a.176.176 0 0 1-.176.176h-1.246a.176.176 0 0 1-.176-.176v-.81c0-.73-.462-1.3-1.003-1.582a3.873 3.873 0 0 1-.255-.146c-.514-.32-1.23-.428-1.855-.068l-.7.405a.176.176 0 0 1-.241-.065l-.623-1.08a.176.176 0 0 1 .064-.24l.653-.377c.637-.368.899-1.062.867-1.677a3.97 3.97 0 0 1-.004-.337c.02-.604-.245-1.278-.868-1.638l-.648-.374a.176.176 0 0 1-.064-.24l.623-1.08a.176.176 0 0 1 .24-.064l.6.346c.638.368 1.37.247 1.888-.09a3.85 3.85 0 0 1 .323-.19c.54-.282 1.003-.852 1.003-1.58v-.688Z"
   }));
@@ -143899,13 +144184,13 @@ var import_react18 = __toESM(require_react(), 1), SvgSettingsIcon = function(pro
 SvgSettingsIcon.displayName = "SettingsIcon";
 
 // ../node_modules/@shopify/polaris-icons/dist/icons/ViewIcon.svg.mjs
-var import_react19 = __toESM(require_react(), 1), SvgViewIcon = function(props) {
-  return /* @__PURE__ */ import_react19.default.createElement("svg", Object.assign({
+var import_react20 = __toESM(require_react(), 1), SvgViewIcon = function(props) {
+  return /* @__PURE__ */ import_react20.default.createElement("svg", Object.assign({
     viewBox: "0 0 20 20"
-  }, props), /* @__PURE__ */ import_react19.default.createElement("path", {
+  }, props), /* @__PURE__ */ import_react20.default.createElement("path", {
     fillRule: "evenodd",
     d: "M13 10a3 3 0 1 1-6 0 3 3 0 0 1 6 0Zm-1.5 0a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"
-  }), /* @__PURE__ */ import_react19.default.createElement("path", {
+  }), /* @__PURE__ */ import_react20.default.createElement("path", {
     fillRule: "evenodd",
     d: "M10 4c-2.476 0-4.348 1.23-5.577 2.532a9.266 9.266 0 0 0-1.4 1.922 5.98 5.98 0 0 0-.37.818c-.082.227-.153.488-.153.728s.071.501.152.728c.088.246.213.524.371.818.317.587.784 1.27 1.4 1.922 1.229 1.302 3.1 2.532 5.577 2.532 2.476 0 4.348-1.23 5.577-2.532a9.265 9.265 0 0 0 1.4-1.922 5.98 5.98 0 0 0 .37-.818c.082-.227.153-.488.153-.728s-.071-.501-.152-.728a5.984 5.984 0 0 0-.371-.818 9.269 9.269 0 0 0-1.4-1.922c-1.229-1.302-3.1-2.532-5.577-2.532Zm-5.999 6.002v-.004c.004-.02.017-.09.064-.223a4.5 4.5 0 0 1 .278-.608 7.768 7.768 0 0 1 1.17-1.605c1.042-1.104 2.545-2.062 4.487-2.062 1.942 0 3.445.958 4.486 2.062a7.77 7.77 0 0 1 1.17 1.605c.13.24.221.447.279.608.047.132.06.203.064.223v.004c-.004.02-.017.09-.064.223a4.503 4.503 0 0 1-.278.608 7.768 7.768 0 0 1-1.17 1.605c-1.042 1.104-2.545 2.062-4.487 2.062-1.942 0-3.445-.958-4.486-2.062a7.766 7.766 0 0 1-1.17-1.605 4.5 4.5 0 0 1-.279-.608c-.047-.132-.06-.203-.064-.223Z"
   }));
@@ -143913,10 +144198,10 @@ var import_react19 = __toESM(require_react(), 1), SvgViewIcon = function(props) 
 SvgViewIcon.displayName = "ViewIcon";
 
 // ../node_modules/@shopify/polaris-icons/dist/index.mjs
-var import_react20 = __toESM(require_react(), 1);
+var import_react21 = __toESM(require_react(), 1);
 
 // app/routes/app.dashboards.tsx
-var import_jsx_runtime16 = __toESM(require_jsx_runtime()), loader8 = async ({ request: request2 }) => {
+var import_jsx_runtime17 = __toESM(require_jsx_runtime()), loader8 = async ({ request: request2 }) => {
   try {
     let { session } = await authenticate.admin(request2), shopName = session?.shop?.replace(".myshopify.com", "");
     if (!shopName)
@@ -144024,7 +144309,7 @@ function CustomDashboards() {
     currentTier,
     shopName,
     error: loaderError
-  } = (0, import_react22.useLoaderData)(), navigate = (0, import_react22.useNavigate)(), submit = (0, import_react22.useSubmit)(), fetcher = (0, import_react22.useFetcher)(), [showCreateModal, setShowCreateModal] = (0, import_react21.useState)(!1), [showTemplateModal, setShowTemplateModal] = (0, import_react21.useState)(!1), [selectedTemplate, setSelectedTemplate] = (0, import_react21.useState)(null), [newDashboardName, setNewDashboardName] = (0, import_react21.useState)(""), [newDashboardDescription, setNewDashboardDescription] = (0, import_react21.useState)(""), [loading, setLoading] = (0, import_react21.useState)(!1), [error, setError] = (0, import_react21.useState)(loaderError || ""), [popoverActive, setPopoverActive] = (0, import_react21.useState)({}), handleCreateDashboard = (0, import_react21.useCallback)(async () => {
+  } = (0, import_react23.useLoaderData)(), navigate = (0, import_react23.useNavigate)(), submit = (0, import_react23.useSubmit)(), fetcher = (0, import_react23.useFetcher)(), [showCreateModal, setShowCreateModal] = (0, import_react22.useState)(!1), [showTemplateModal, setShowTemplateModal] = (0, import_react22.useState)(!1), [selectedTemplate, setSelectedTemplate] = (0, import_react22.useState)(null), [newDashboardName, setNewDashboardName] = (0, import_react22.useState)(""), [newDashboardDescription, setNewDashboardDescription] = (0, import_react22.useState)(""), [loading, setLoading] = (0, import_react22.useState)(!1), [error, setError] = (0, import_react22.useState)(loaderError || ""), [popoverActive, setPopoverActive] = (0, import_react22.useState)({}), handleCreateDashboard = (0, import_react22.useCallback)(async () => {
     if (!newDashboardName.trim()) {
       setError("Dashboard name is required");
       return;
@@ -144032,7 +144317,7 @@ function CustomDashboards() {
     setLoading(!0);
     let formData = new FormData();
     formData.append("action", "create_dashboard"), formData.append("dashboard_name", newDashboardName), formData.append("description", newDashboardDescription), submit(formData, { method: "post" }), setShowCreateModal(!1), setNewDashboardName(""), setNewDashboardDescription(""), setLoading(!1);
-  }, [newDashboardName, newDashboardDescription, submit]), handleCreateFromTemplate = (0, import_react21.useCallback)(async () => {
+  }, [newDashboardName, newDashboardDescription, submit]), handleCreateFromTemplate = (0, import_react22.useCallback)(async () => {
     if (!selectedTemplate || !newDashboardName.trim()) {
       setError("Template and dashboard name are required");
       return;
@@ -144040,27 +144325,27 @@ function CustomDashboards() {
     setLoading(!0);
     let formData = new FormData();
     formData.append("action", "create_from_template"), formData.append("template_id", selectedTemplate.id.toString()), formData.append("dashboard_name", newDashboardName), submit(formData, { method: "post" }), setShowTemplateModal(!1), setSelectedTemplate(null), setNewDashboardName(""), setLoading(!1);
-  }, [selectedTemplate, newDashboardName, submit]), handleDeleteDashboard = (0, import_react21.useCallback)((dashboardId) => {
+  }, [selectedTemplate, newDashboardName, submit]), handleDeleteDashboard = (0, import_react22.useCallback)((dashboardId) => {
     if (confirm("Are you sure you want to delete this dashboard? This action cannot be undone.")) {
       let formData = new FormData();
       formData.append("action", "delete_dashboard"), formData.append("dashboard_id", dashboardId.toString()), submit(formData, { method: "post" });
     }
-  }, [submit]), handleExportDashboard = (0, import_react21.useCallback)((dashboardId, format = "json") => {
+  }, [submit]), handleExportDashboard = (0, import_react22.useCallback)((dashboardId, format = "json") => {
     let formData = new FormData();
     formData.append("action", "export_dashboard"), formData.append("dashboard_id", dashboardId.toString()), formData.append("format", format), submit(formData, { method: "post" });
-  }, [submit]), togglePopover = (0, import_react21.useCallback)((dashboardId) => {
+  }, [submit]), togglePopover = (0, import_react22.useCallback)((dashboardId) => {
     setPopoverActive((prev) => ({
       ...prev,
       [dashboardId]: !prev[dashboardId]
     }));
   }, []);
-  return (0, import_react21.useEffect)(() => {
+  return (0, import_react22.useEffect)(() => {
     if (error) {
       let timer = setTimeout(() => setError(""), 5e3);
       return () => clearTimeout(timer);
     }
-  }, [error]), hasEnterpriseAccess ? /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
-    import_polaris11.Page,
+  }, [error]), hasEnterpriseAccess ? /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
+    import_polaris12.Page,
     {
       title: "Custom Dashboards",
       subtitle: `Enterprise feature \u2022 ${dashboards.length} dashboard${dashboards.length !== 1 ? "s" : ""}`,
@@ -144074,22 +144359,22 @@ function CustomDashboards() {
           onAction: () => setShowTemplateModal(!0)
         }
       ],
-      children: /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(import_polaris11.Layout, { children: [
-        error && /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(import_polaris11.Layout.Section, { children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
-          import_polaris11.Banner,
+      children: /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(import_polaris12.Layout, { children: [
+        error && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(import_polaris12.Layout.Section, { children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
+          import_polaris12.Banner,
           {
             title: "Error",
             status: "critical",
             onDismiss: () => setError(""),
-            children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("p", { children: error })
+            children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { children: error })
           }
         ) }),
-        loading && /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(import_polaris11.Layout.Section, { children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(import_polaris11.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { style: { textAlign: "center", padding: "2rem" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(import_polaris11.Spinner, { size: "large" }),
-          /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("div", { style: { marginTop: "1rem" }, children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(import_polaris11.Text, { variant: "bodyMd", children: "Processing dashboard operation..." }) })
+        loading && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(import_polaris12.Layout.Section, { children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(import_polaris12.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { style: { textAlign: "center", padding: "2rem" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(import_polaris12.Spinner, { size: "large" }),
+          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("div", { style: { marginTop: "1rem" }, children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(import_polaris12.Text, { variant: "bodyMd", children: "Processing dashboard operation..." }) })
         ] }) }) }),
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(import_polaris11.Layout.Section, { children: dashboards.length === 0 ? /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(import_polaris11.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
-          import_polaris11.EmptyState,
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(import_polaris12.Layout.Section, { children: dashboards.length === 0 ? /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(import_polaris12.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
+          import_polaris12.EmptyState,
           {
             heading: "No custom dashboards yet",
             action: {
@@ -144101,10 +144386,10 @@ function CustomDashboards() {
               onAction: () => setShowTemplateModal(!0)
             },
             image: "https://cdn.shopify.com/s/files/1/0757/9955/files/empty-state.svg",
-            children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("p", { children: "Build custom analytics dashboards tailored to your business needs. Start from scratch or choose from our pre-built templates." })
+            children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { children: "Build custom analytics dashboards tailored to your business needs. Start from scratch or choose from our pre-built templates." })
           }
-        ) }) : /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(import_polaris11.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
-          import_polaris11.ResourceList,
+        ) }) : /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(import_polaris12.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
+          import_polaris12.ResourceList,
           {
             resourceName: { singular: "dashboard", plural: "dashboards" },
             items: dashboards,
@@ -144136,14 +144421,14 @@ function CustomDashboards() {
                   onAction: () => handleDeleteDashboard(id)
                 }
               ];
-              return /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
-                import_polaris11.ResourceItem,
+              return /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
+                import_polaris12.ResourceItem,
                 {
                   id: id.toString(),
                   url: `/app/dashboards/${id}`,
                   accessibilityLabel: `View dashboard ${dashboard_name}`,
-                  media: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
-                    import_polaris11.Avatar,
+                  media: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
+                    import_polaris12.Avatar,
                     {
                       customer: !1,
                       size: "medium",
@@ -144151,32 +144436,32 @@ function CustomDashboards() {
                     }
                   ),
                   shortcutActions,
-                  children: /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(Stack, { distribution: "fill", alignment: "center", children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(Stack, { vertical: !0, spacing: "tight", children: [
-                      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(Stack, { spacing: "tight", children: [
-                        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(import_polaris11.Text, { variant: "bodyMd", fontWeight: "semibold", children: dashboard_name }),
-                        is_default && /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(import_polaris11.Badge, { status: "info", children: "Default" })
+                  children: /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(Stack, { distribution: "fill", alignment: "center", children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(Stack, { vertical: !0, spacing: "tight", children: [
+                      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(Stack, { spacing: "tight", children: [
+                        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(import_polaris12.Text, { variant: "bodyMd", fontWeight: "semibold", children: dashboard_name }),
+                        is_default && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(import_polaris12.Badge, { status: "info", children: "Default" })
                       ] }),
-                      description && /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(import_polaris11.Text, { variant: "bodySm", color: "subdued", children: description }),
-                      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(Stack, { spacing: "tight", children: [
-                        /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(import_polaris11.Text, { variant: "bodySm", color: "subdued", children: [
+                      description && /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(import_polaris12.Text, { variant: "bodySm", color: "subdued", children: description }),
+                      /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(Stack, { spacing: "tight", children: [
+                        /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(import_polaris12.Text, { variant: "bodySm", color: "subdued", children: [
                           widgets?.length || 0,
                           " widgets \u2022 ",
                           view_count,
                           " views"
                         ] }),
-                        /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(import_polaris11.Text, { variant: "bodySm", color: "subdued", children: [
+                        /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(import_polaris12.Text, { variant: "bodySm", color: "subdued", children: [
                           "Updated ",
                           new Date(updated_at).toLocaleDateString()
                         ] })
                       ] })
                     ] }),
-                    /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
-                      import_polaris11.Popover,
+                    /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
+                      import_polaris12.Popover,
                       {
                         active: popoverActive[id] || !1,
-                        activator: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
-                          import_polaris11.Button,
+                        activator: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
+                          import_polaris12.Button,
                           {
                             disclosure: !0,
                             size: "slim",
@@ -144185,8 +144470,8 @@ function CustomDashboards() {
                           }
                         ),
                         onClose: () => togglePopover(id),
-                        children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
-                          import_polaris11.ActionList,
+                        children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
+                          import_polaris12.ActionList,
                           {
                             items: [
                               {
@@ -144229,8 +144514,8 @@ function CustomDashboards() {
             }
           }
         ) }) }),
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
-          import_polaris11.Modal,
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
+          import_polaris12.Modal,
           {
             open: showCreateModal,
             onClose: () => setShowCreateModal(!1),
@@ -144246,9 +144531,9 @@ function CustomDashboards() {
                 onAction: () => setShowCreateModal(!1)
               }
             ],
-            children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(import_polaris11.Modal.Section, { children: /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(Stack, { vertical: !0, spacing: "loose", children: [
-              /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
-                import_polaris11.TextField,
+            children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(import_polaris12.Modal.Section, { children: /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(Stack, { vertical: !0, spacing: "loose", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
+                import_polaris12.TextField,
                 {
                   label: "Dashboard Name",
                   value: newDashboardName,
@@ -144257,8 +144542,8 @@ function CustomDashboards() {
                   autoComplete: "off"
                 }
               ),
-              /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
-                import_polaris11.TextField,
+              /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
+                import_polaris12.TextField,
                 {
                   label: "Description (optional)",
                   value: newDashboardDescription,
@@ -144271,8 +144556,8 @@ function CustomDashboards() {
             ] }) })
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
-          import_polaris11.Modal,
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
+          import_polaris12.Modal,
           {
             open: showTemplateModal,
             onClose: () => setShowTemplateModal(!1),
@@ -144290,9 +144575,9 @@ function CustomDashboards() {
               }
             ],
             large: !0,
-            children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(import_polaris11.Modal.Section, { children: /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(Stack, { vertical: !0, spacing: "loose", children: [
-              /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
-                import_polaris11.TextField,
+            children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(import_polaris12.Modal.Section, { children: /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(Stack, { vertical: !0, spacing: "loose", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
+                import_polaris12.TextField,
                 {
                   label: "Dashboard Name",
                   value: newDashboardName,
@@ -144301,16 +144586,16 @@ function CustomDashboards() {
                   autoComplete: "off"
                 }
               ),
-              /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(import_polaris11.Text, { variant: "headingMd", children: "Available Templates" }),
-              /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("div", { style: {
+              /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(import_polaris12.Text, { variant: "headingMd", children: "Available Templates" }),
+              /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("div", { style: {
                 display: "grid",
                 gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
                 gap: "1rem"
-              }, children: templates.map((template) => /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
-                import_polaris11.Card,
+              }, children: templates.map((template) => /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
+                import_polaris12.Card,
                 {
                   subdued: selectedTemplate?.id !== template.id,
-                  children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
+                  children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(
                     "div",
                     {
                       style: {
@@ -144319,13 +144604,13 @@ function CustomDashboards() {
                         border: selectedTemplate?.id === template.id ? "2px solid #5C6AC4" : "2px solid transparent"
                       },
                       onClick: () => setSelectedTemplate(template),
-                      children: /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(Stack, { vertical: !0, spacing: "tight", children: [
-                        /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(Stack, { distribution: "equalSpacing", children: [
-                          /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(import_polaris11.Text, { variant: "bodyMd", fontWeight: "semibold", children: template.template_name }),
-                          /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(import_polaris11.Badge, { children: template.template_category })
+                      children: /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(Stack, { vertical: !0, spacing: "tight", children: [
+                        /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(Stack, { distribution: "equalSpacing", children: [
+                          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(import_polaris12.Text, { variant: "bodyMd", fontWeight: "semibold", children: template.template_name }),
+                          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(import_polaris12.Badge, { children: template.template_category })
                         ] }),
-                        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(import_polaris11.Text, { variant: "bodySm", color: "subdued", children: template.template_description }),
-                        /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(import_polaris11.Badge, { status: "info", children: [
+                        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(import_polaris12.Text, { variant: "bodySm", color: "subdued", children: template.template_description }),
+                        /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(import_polaris12.Badge, { status: "info", children: [
                           template.tier_requirement.toUpperCase(),
                           " tier"
                         ] })
@@ -144340,8 +144625,8 @@ function CustomDashboards() {
         )
       ] })
     }
-  ) : /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(import_polaris11.Page, { title: "Custom Dashboards", children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(import_polaris11.Layout, { children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(import_polaris11.Layout.Section, { children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(import_polaris11.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(
-    import_polaris11.EmptyState,
+  ) : /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(import_polaris12.Page, { title: "Custom Dashboards", children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(import_polaris12.Layout, { children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(import_polaris12.Layout.Section, { children: /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(import_polaris12.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(
+    import_polaris12.EmptyState,
     {
       heading: "Enterprise Feature",
       action: {
@@ -144350,19 +144635,19 @@ function CustomDashboards() {
       },
       image: "https://cdn.shopify.com/s/files/1/0757/9955/files/empty-state.svg",
       children: [
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("p", { children: "Custom dashboards are available exclusively with the Enterprise plan ($199/month). Create personalized analytics views, drag-and-drop widgets, and build the perfect dashboard for your business needs." }),
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { style: { marginTop: "1rem" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(import_polaris11.Text, { variant: "bodyMd", as: "p", fontWeight: "semibold", children: "Enterprise Features Include:" }),
-          /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("ul", { style: { marginTop: "0.5rem", paddingLeft: "1rem" }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("li", { children: "Unlimited custom dashboards" }),
-            /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("li", { children: "Drag-and-drop dashboard builder" }),
-            /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("li", { children: "Custom KPI definitions" }),
-            /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("li", { children: "Advanced visualization options" }),
-            /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("li", { children: "Dashboard sharing and export" }),
-            /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("li", { children: "Real-time data updates" })
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("p", { children: "Custom dashboards are available exclusively with the Enterprise plan ($199/month). Create personalized analytics views, drag-and-drop widgets, and build the perfect dashboard for your business needs." }),
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("div", { style: { marginTop: "1rem" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(import_polaris12.Text, { variant: "bodyMd", as: "p", fontWeight: "semibold", children: "Enterprise Features Include:" }),
+          /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)("ul", { style: { marginTop: "0.5rem", paddingLeft: "1rem" }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Unlimited custom dashboards" }),
+            /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Drag-and-drop dashboard builder" }),
+            /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Custom KPI definitions" }),
+            /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Advanced visualization options" }),
+            /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Dashboard sharing and export" }),
+            /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("li", { children: "Real-time data updates" })
           ] })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("div", { style: { marginTop: "1rem" }, children: /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(import_polaris11.Badge, { status: "warning", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime17.jsx)("div", { style: { marginTop: "1rem" }, children: /* @__PURE__ */ (0, import_jsx_runtime17.jsxs)(import_polaris12.Badge, { status: "warning", children: [
           "Current Plan: ",
           currentTier.toUpperCase()
         ] }) })
@@ -144378,30 +144663,30 @@ __export(app_autopilot_exports, {
   default: () => Autopilot,
   loader: () => loader9
 });
-var React20 = __toESM(require_react()), import_react25 = __toESM(require_dist2()), import_node8 = __toESM(require_dist4());
+var React20 = __toESM(require_react()), import_react26 = __toESM(require_dist2()), import_node8 = __toESM(require_dist4());
 init_shopify_server();
 init_hmac_server();
 
 // app/components/ClientOnly.tsx
-var React18 = __toESM(require_react()), import_jsx_runtime17 = __toESM(require_jsx_runtime());
+var React18 = __toESM(require_react()), import_jsx_runtime18 = __toESM(require_jsx_runtime());
 function ClientOnly({
   children,
   fallback = null
 }) {
   let [hydrated, setHydrated] = React18.useState(!1);
-  return React18.useEffect(() => setHydrated(!0), []), hydrated ? /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(import_jsx_runtime17.Fragment, { children: children() }) : /* @__PURE__ */ (0, import_jsx_runtime17.jsx)(import_jsx_runtime17.Fragment, { children: fallback });
+  return React18.useEffect(() => setHydrated(!0), []), hydrated ? /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(import_jsx_runtime18.Fragment, { children: children() }) : /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(import_jsx_runtime18.Fragment, { children: fallback });
 }
 
 // app/routes/app.autopilot.tsx
 init_subscription_server();
 
 // app/components/CampaignSetupForm.tsx
-var import_polaris12 = __toESM(require_cjs3()), import_react23 = __toESM(require_react()), import_jsx_runtime18 = __toESM(require_jsx_runtime());
+var import_polaris13 = __toESM(require_cjs3()), import_react24 = __toESM(require_react()), import_jsx_runtime19 = __toESM(require_jsx_runtime());
 function CampaignSetupForm({
   shopName,
   onGenerate
 }) {
-  let [config, setConfig] = (0, import_react23.useState)({
+  let [config, setConfig] = (0, import_react24.useState)({
     businessName: shopName,
     businessType: "ecommerce",
     mainProducts: "",
@@ -144435,13 +144720,13 @@ function CampaignSetupForm({
     { id: "urgent", emoji: "\u{1F525}", label: "Urgent" },
     { id: "luxury", emoji: "\u{1F48E}", label: "Luxurious" }
   ];
-  return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(import_polaris12.BlockStack, { gap: "600", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(import_polaris12.Banner, { title: "Quick Campaign Setup", tone: "info", children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { children: "Answer a few simple questions to create your automated Google Ads campaign. Our AI will handle the rest!" }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(import_polaris12.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(import_polaris12.BlockStack, { gap: "400", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(import_polaris12.Text, { variant: "headingMd", as: "h2", children: "1. About Your Business" }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(import_polaris12.FormLayout, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
-          import_polaris12.TextField,
+  return /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)(import_polaris13.BlockStack, { gap: "600", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(import_polaris13.Banner, { title: "Quick Campaign Setup", tone: "info", children: /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("p", { children: "Answer a few simple questions to create your automated Google Ads campaign. Our AI will handle the rest!" }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(import_polaris13.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)(import_polaris13.BlockStack, { gap: "400", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(import_polaris13.Text, { variant: "headingMd", as: "h2", children: "1. About Your Business" }),
+      /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)(import_polaris13.FormLayout, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(
+          import_polaris13.TextField,
           {
             label: "Business name",
             value: config.businessName,
@@ -144450,8 +144735,8 @@ function CampaignSetupForm({
             disabled: !0
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
-          import_polaris12.Select,
+        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(
+          import_polaris13.Select,
           {
             label: "What type of business?",
             options: businessTypeOptions,
@@ -144459,8 +144744,8 @@ function CampaignSetupForm({
             onChange: (value) => setConfig({ ...config, businessType: value })
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
-          import_polaris12.TextField,
+        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(
+          import_polaris13.TextField,
           {
             label: "What do you sell? (e.g., baby clothes, organic coffee)",
             value: config.mainProducts,
@@ -144469,8 +144754,8 @@ function CampaignSetupForm({
             autoComplete: "off"
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
-          import_polaris12.TextField,
+        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(
+          import_polaris13.TextField,
           {
             label: "Who is your target audience?",
             value: config.targetAudience,
@@ -144481,11 +144766,11 @@ function CampaignSetupForm({
         )
       ] })
     ] }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(import_polaris12.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(import_polaris12.BlockStack, { gap: "400", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(import_polaris12.Text, { variant: "headingMd", as: "h2", children: "2. Budget & Goals" }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(import_polaris12.BlockStack, { gap: "200", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
-          import_polaris12.RangeSlider,
+    /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(import_polaris13.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)(import_polaris13.BlockStack, { gap: "400", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(import_polaris13.Text, { variant: "headingMd", as: "h2", children: "2. Budget & Goals" }),
+      /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)(import_polaris13.BlockStack, { gap: "200", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(
+          import_polaris13.RangeSlider,
           {
             label: `Daily budget: $${config.dailyBudget}`,
             value: config.dailyBudget,
@@ -144495,8 +144780,8 @@ function CampaignSetupForm({
             output: !0
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
-          import_polaris12.RangeSlider,
+        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(
+          import_polaris13.RangeSlider,
           {
             label: `Target cost per click: $${config.targetCPC.toFixed(2)}`,
             value: config.targetCPC * 100,
@@ -144507,10 +144792,10 @@ function CampaignSetupForm({
           }
         )
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(import_polaris12.BlockStack, { gap: "200", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(import_polaris12.Text, { variant: "headingSm", as: "h3", children: "What's your main goal?" }),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
-          import_polaris12.ChoiceList,
+      /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)(import_polaris13.BlockStack, { gap: "200", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(import_polaris13.Text, { variant: "headingSm", as: "h3", children: "What's your main goal?" }),
+        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(
+          import_polaris13.ChoiceList,
           {
             title: "",
             choices: goalOptions.map((opt) => ({
@@ -144523,20 +144808,20 @@ function CampaignSetupForm({
         )
       ] })
     ] }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(import_polaris12.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(import_polaris12.BlockStack, { gap: "400", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(import_polaris12.Text, { variant: "headingMd", as: "h2", children: "3. When to Show Ads" }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
-        import_polaris12.Checkbox,
+    /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(import_polaris13.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)(import_polaris13.BlockStack, { gap: "400", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(import_polaris13.Text, { variant: "headingMd", as: "h2", children: "3. When to Show Ads" }),
+      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(
+        import_polaris13.Checkbox,
         {
           label: "Show ads 24/7",
           checked: config.alwaysOn,
           onChange: (value) => setConfig({ ...config, alwaysOn: value })
         }
       ),
-      !config.alwaysOn && /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(import_polaris12.BlockStack, { gap: "200", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(import_polaris12.InlineGrid, { columns: 2, gap: "400", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
-            import_polaris12.TextField,
+      !config.alwaysOn && /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)(import_polaris13.BlockStack, { gap: "200", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)(import_polaris13.InlineGrid, { columns: 2, gap: "400", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(
+            import_polaris13.TextField,
             {
               label: "Start time",
               type: "time",
@@ -144548,8 +144833,8 @@ function CampaignSetupForm({
               autoComplete: "off"
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
-            import_polaris12.TextField,
+          /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(
+            import_polaris13.TextField,
             {
               label: "End time",
               type: "time",
@@ -144562,8 +144847,8 @@ function CampaignSetupForm({
             }
           )
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(import_polaris12.BlockStack, { gap: "100", children: ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"].map((day) => /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
-          import_polaris12.Checkbox,
+        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(import_polaris13.BlockStack, { gap: "100", children: ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"].map((day) => /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(
+          import_polaris13.Checkbox,
           {
             label: day,
             checked: config.businessHours.days.includes(day),
@@ -144579,10 +144864,10 @@ function CampaignSetupForm({
         )) })
       ] })
     ] }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(import_polaris12.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(import_polaris12.BlockStack, { gap: "400", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(import_polaris12.Text, { variant: "headingMd", as: "h2", children: "4. Keyword Strategy" }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
-        import_polaris12.ChoiceList,
+    /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(import_polaris13.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)(import_polaris13.BlockStack, { gap: "400", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(import_polaris13.Text, { variant: "headingMd", as: "h2", children: "4. Keyword Strategy" }),
+      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(
+        import_polaris13.ChoiceList,
         {
           title: "",
           choices: [
@@ -144595,8 +144880,8 @@ function CampaignSetupForm({
           onChange: (selected) => setConfig({ ...config, keywordStrategy: selected[0] })
         }
       ),
-      config.keywordStrategy === "custom" && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
-        import_polaris12.TextField,
+      config.keywordStrategy === "custom" && /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(
+        import_polaris13.TextField,
         {
           label: "Enter your keywords (comma separated)",
           value: config.customKeywords,
@@ -144607,10 +144892,10 @@ function CampaignSetupForm({
         }
       )
     ] }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(import_polaris12.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(import_polaris12.BlockStack, { gap: "400", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(import_polaris12.Text, { variant: "headingMd", as: "h2", children: "5. Ad Tone & Style" }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(import_polaris12.InlineGrid, { columns: 4, gap: "400", children: toneCards.map((tone) => /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
-        import_polaris12.Box,
+    /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(import_polaris13.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)(import_polaris13.BlockStack, { gap: "400", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(import_polaris13.Text, { variant: "headingMd", as: "h2", children: "5. Ad Tone & Style" }),
+      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(import_polaris13.InlineGrid, { columns: 4, gap: "400", children: toneCards.map((tone) => /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(
+        import_polaris13.Box,
         {
           padding: "400",
           background: config.adTone === tone.id ? "bg-surface-selected" : "bg-surface",
@@ -144618,26 +144903,26 @@ function CampaignSetupForm({
           borderWidth: "025",
           borderRadius: "200",
           onClick: () => setConfig({ ...config, adTone: tone.id }),
-          children: /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(import_polaris12.BlockStack, { gap: "200", inlineAlign: "center", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(import_polaris12.Text, { variant: "headingLg", as: "p", children: tone.emoji }),
-            /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(import_polaris12.Text, { variant: "bodyMd", as: "p", children: tone.label })
+          children: /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)(import_polaris13.BlockStack, { gap: "200", inlineAlign: "center", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(import_polaris13.Text, { variant: "headingLg", as: "p", children: tone.emoji }),
+            /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(import_polaris13.Text, { variant: "bodyMd", as: "p", children: tone.label })
           ] })
         },
         tone.id
       )) })
     ] }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(import_polaris12.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(import_polaris12.BlockStack, { gap: "400", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(import_polaris12.Text, { variant: "headingMd", as: "h2", children: "6. Special Offers (Optional)" }),
-      /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
-        import_polaris12.Checkbox,
+    /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(import_polaris13.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)(import_polaris13.BlockStack, { gap: "400", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(import_polaris13.Text, { variant: "headingMd", as: "h2", children: "6. Special Offers (Optional)" }),
+      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(
+        import_polaris13.Checkbox,
         {
           label: "I have a special offer to promote",
           checked: config.hasOffer,
           onChange: (value) => setConfig({ ...config, hasOffer: value })
         }
       ),
-      config.hasOffer && /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
-        import_polaris12.TextField,
+      config.hasOffer && /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(
+        import_polaris13.TextField,
         {
           label: "What's your offer?",
           value: config.offerText,
@@ -144647,8 +144932,8 @@ function CampaignSetupForm({
         }
       )
     ] }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(import_polaris12.Box, { padding: "400", children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
-      import_polaris12.Button,
+    /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(import_polaris13.Box, { padding: "400", children: /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(
+      import_polaris13.Button,
       {
         variant: "primary",
         size: "large",
@@ -144662,9 +144947,9 @@ function CampaignSetupForm({
 }
 
 // app/components/MLAutopilotDashboard.tsx
-var import_react24 = __toESM(require_react()), import_jsx_runtime19 = __toESM(require_jsx_runtime());
+var import_react25 = __toESM(require_react()), import_jsx_runtime20 = __toESM(require_jsx_runtime());
 function MLAutopilotDashboard({ shopName, mlState, onRefresh }) {
-  let [isLoading, setIsLoading] = (0, import_react24.useState)(!1), [lastUpdated, setLastUpdated] = (0, import_react24.useState)(""), refreshMLState = async () => {
+  let [isLoading, setIsLoading] = (0, import_react25.useState)(!1), [lastUpdated, setLastUpdated] = (0, import_react25.useState)(""), refreshMLState = async () => {
     if (onRefresh) {
       setIsLoading(!0);
       try {
@@ -144690,7 +144975,7 @@ function MLAutopilotDashboard({ shopName, mlState, onRefresh }) {
     let period = hour >= 12 ? "PM" : "AM";
     return `${hour === 0 ? 12 : hour > 12 ? hour - 12 : hour}${period}`;
   }, getDayName = (day) => ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"][day];
-  return mlState ? /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("div", { style: {
+  return mlState ? /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { style: {
     background: "white",
     border: "1px solid #e9ecef",
     borderRadius: "8px",
@@ -144698,19 +144983,19 @@ function MLAutopilotDashboard({ shopName, mlState, onRefresh }) {
     marginTop: "16px",
     boxShadow: "0 2px 4px rgba(0,0,0,0.1)"
   }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("div", { style: {
+    /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { style: {
       display: "flex",
       justifyContent: "space-between",
       alignItems: "center",
       marginBottom: "20px"
     }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("h3", { style: { margin: 0, color: "#495057" }, children: "\u{1F916} ML Autopilot Dashboard" }),
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: "12px" }, children: [
-        lastUpdated && /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("span", { style: { fontSize: "12px", color: "#6c757d" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("h3", { style: { margin: 0, color: "#495057" }, children: "\u{1F916} ML Autopilot Dashboard" }),
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: "12px" }, children: [
+        lastUpdated && /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("span", { style: { fontSize: "12px", color: "#6c757d" }, children: [
           "Updated: ",
           lastUpdated
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(
           "button",
           {
             onClick: refreshMLState,
@@ -144730,52 +145015,52 @@ function MLAutopilotDashboard({ shopName, mlState, onRefresh }) {
         )
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("div", { style: {
+    /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { style: {
       display: "grid",
       gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
       gap: "16px",
       marginBottom: "24px"
     }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("div", { style: {
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { style: {
         background: "#f8f9fa",
         border: "1px solid #e9ecef",
         borderRadius: "6px",
         padding: "12px"
       }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("div", { style: {
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("div", { style: {
           fontSize: "12px",
           color: "#6c757d",
           marginBottom: "4px"
         }, children: "ML Status" }),
-        /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("div", { style: {
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { style: {
           display: "flex",
           alignItems: "center",
           gap: "8px"
         }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("span", { style: {
+          /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("span", { style: {
             width: "8px",
             height: "8px",
             borderRadius: "50%",
             background: mlState.enabled ? "#28a745" : "#dc3545"
           } }),
-          /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("span", { style: {
+          /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("span", { style: {
             fontWeight: "bold",
             color: mlState.enabled ? "#28a745" : "#dc3545"
           }, children: mlState.enabled ? "ACTIVE" : "LEGACY MODE" })
         ] })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("div", { style: {
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { style: {
         background: "#f8f9fa",
         border: "1px solid #e9ecef",
         borderRadius: "6px",
         padding: "12px"
       }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("div", { style: {
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("div", { style: {
           fontSize: "12px",
           color: "#6c757d",
           marginBottom: "4px"
         }, children: "Confidence Score" }),
-        /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("div", { style: {
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { style: {
           fontSize: "18px",
           fontWeight: "bold",
           color: getConfidenceColor(mlState.confidence)
@@ -144784,24 +145069,24 @@ function MLAutopilotDashboard({ shopName, mlState, onRefresh }) {
           "%"
         ] })
       ] }),
-      mlState.learningState && /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("div", { style: {
+      mlState.learningState && /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { style: {
         background: "#f8f9fa",
         border: "1px solid #e9ecef",
         borderRadius: "6px",
         padding: "12px"
       }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("div", { style: {
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("div", { style: {
           fontSize: "12px",
           color: "#6c757d",
           marginBottom: "4px"
         }, children: "Learning Maturity" }),
-        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("div", { style: {
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("div", { style: {
           fontSize: "14px",
           fontWeight: "bold",
           color: getMaturityColor(mlState.learningState.maturity),
           textTransform: "uppercase"
         }, children: mlState.learningState.maturity }),
-        /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("div", { style: {
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { style: {
           fontSize: "11px",
           color: "#6c757d",
           marginTop: "2px"
@@ -144811,23 +145096,23 @@ function MLAutopilotDashboard({ shopName, mlState, onRefresh }) {
         ] })
       ] })
     ] }),
-    mlState.insights && /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("div", { style: { marginBottom: "20px" }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("h4", { style: { margin: "0 0 12px 0", color: "#495057" }, children: "\u{1F4CA} Performance Insights" }),
-      mlState.insights.timeOfDayTrends && /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("div", { style: {
+    mlState.insights && /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { style: { marginBottom: "20px" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("h4", { style: { margin: "0 0 12px 0", color: "#495057" }, children: "\u{1F4CA} Performance Insights" }),
+      mlState.insights.timeOfDayTrends && /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { style: {
         background: "#e7f3ff",
         border: "1px solid #b3d9ff",
         borderRadius: "6px",
         padding: "12px",
         marginBottom: "12px"
       }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("div", { style: {
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { style: {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
           marginBottom: "8px"
         }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("span", { style: { fontWeight: "bold", fontSize: "14px" }, children: "\u{1F552} Optimal Hours" }),
-          /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("span", { style: {
+          /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("span", { style: { fontWeight: "bold", fontSize: "14px" }, children: "\u{1F552} Optimal Hours" }),
+          /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("span", { style: {
             fontSize: "12px",
             color: "#0c5460",
             background: "#d1ecf1",
@@ -144838,26 +145123,26 @@ function MLAutopilotDashboard({ shopName, mlState, onRefresh }) {
             "% confidence"
           ] })
         ] }),
-        mlState.insights.timeOfDayTrends.highPerformanceHours?.length ? /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("div", { style: { fontSize: "13px", color: "#0c5460" }, children: [
+        mlState.insights.timeOfDayTrends.highPerformanceHours?.length ? /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { style: { fontSize: "13px", color: "#0c5460" }, children: [
           "Best performing hours: ",
           mlState.insights.timeOfDayTrends.highPerformanceHours.map(formatHour).join(", ")
-        ] }) : /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("div", { style: { fontSize: "13px", color: "#6c757d" }, children: "Analyzing time patterns..." })
+        ] }) : /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("div", { style: { fontSize: "13px", color: "#6c757d" }, children: "Analyzing time patterns..." })
       ] }),
-      mlState.insights.dayOfWeekTrends && /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("div", { style: {
+      mlState.insights.dayOfWeekTrends && /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { style: {
         background: "#fff3cd",
         border: "1px solid #ffeaa7",
         borderRadius: "6px",
         padding: "12px",
         marginBottom: "12px"
       }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("div", { style: {
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { style: {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
           marginBottom: "8px"
         }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("span", { style: { fontWeight: "bold", fontSize: "14px" }, children: "\u{1F4C5} Optimal Days" }),
-          /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("span", { style: {
+          /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("span", { style: { fontWeight: "bold", fontSize: "14px" }, children: "\u{1F4C5} Optimal Days" }),
+          /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("span", { style: {
             fontSize: "12px",
             color: "#856404",
             background: "#ffeaa7",
@@ -144868,26 +145153,26 @@ function MLAutopilotDashboard({ shopName, mlState, onRefresh }) {
             "% confidence"
           ] })
         ] }),
-        mlState.insights.dayOfWeekTrends.highPerformanceDays?.length ? /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("div", { style: { fontSize: "13px", color: "#856404" }, children: [
+        mlState.insights.dayOfWeekTrends.highPerformanceDays?.length ? /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { style: { fontSize: "13px", color: "#856404" }, children: [
           "Best performing days: ",
           mlState.insights.dayOfWeekTrends.highPerformanceDays.map(getDayName).join(", ")
-        ] }) : /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("div", { style: { fontSize: "13px", color: "#6c757d" }, children: "Analyzing day-of-week patterns..." })
+        ] }) : /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("div", { style: { fontSize: "13px", color: "#6c757d" }, children: "Analyzing day-of-week patterns..." })
       ] }),
-      mlState.insights.conversionPrediction && /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("div", { style: {
+      mlState.insights.conversionPrediction && /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { style: {
         background: "#d4edda",
         border: "1px solid #c3e6cb",
         borderRadius: "6px",
         padding: "12px",
         marginBottom: "12px"
       }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("div", { style: {
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { style: {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
           marginBottom: "8px"
         }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("span", { style: { fontWeight: "bold", fontSize: "14px" }, children: "\u{1F3AF} CPA Prediction" }),
-          /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("span", { style: {
+          /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("span", { style: { fontWeight: "bold", fontSize: "14px" }, children: "\u{1F3AF} CPA Prediction" }),
+          /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("span", { style: {
             fontSize: "12px",
             color: "#155724",
             background: "#c3e6cb",
@@ -144898,42 +145183,42 @@ function MLAutopilotDashboard({ shopName, mlState, onRefresh }) {
             "% confidence"
           ] })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("div", { style: { fontSize: "13px", color: "#155724" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { style: { fontSize: "13px", color: "#155724" }, children: [
           "Predicted CPA: $",
           mlState.insights.conversionPrediction.predictedCPA?.toFixed(2) || "N/A",
-          mlState.insights.conversionPrediction.trend && /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("span", { style: { marginLeft: "8px" }, children: [
+          mlState.insights.conversionPrediction.trend && /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("span", { style: { marginLeft: "8px" }, children: [
             "(Trend: ",
             mlState.insights.conversionPrediction.trend,
             ")"
           ] })
         ] })
       ] }),
-      mlState.insights.performanceForecasts && /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("div", { style: {
+      mlState.insights.performanceForecasts && /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { style: {
         background: "#f8d7da",
         border: "1px solid #f5c6cb",
         borderRadius: "6px",
         padding: "12px"
       }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("div", { style: { fontWeight: "bold", fontSize: "14px", marginBottom: "8px" }, children: "\u{1F4C8} Performance Forecasts" }),
-        /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }, children: [
-          mlState.insights.performanceForecasts.next7Days && /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("div", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("div", { style: { fontSize: "12px", color: "#721c24", fontWeight: "bold" }, children: "Next 7 Days" }),
-            /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("div", { style: { fontSize: "13px", color: "#721c24" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("div", { style: { fontWeight: "bold", fontSize: "14px", marginBottom: "8px" }, children: "\u{1F4C8} Performance Forecasts" }),
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }, children: [
+          mlState.insights.performanceForecasts.next7Days && /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("div", { style: { fontSize: "12px", color: "#721c24", fontWeight: "bold" }, children: "Next 7 Days" }),
+            /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { style: { fontSize: "13px", color: "#721c24" }, children: [
               "CPA: $",
               mlState.insights.performanceForecasts.next7Days.cpa?.toFixed(2) || "N/A"
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("div", { style: { fontSize: "13px", color: "#721c24" }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { style: { fontSize: "13px", color: "#721c24" }, children: [
               "Conversions: ",
               mlState.insights.performanceForecasts.next7Days.conversions?.toFixed(0) || "N/A"
             ] })
           ] }),
-          mlState.insights.performanceForecasts.next30Days && /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("div", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("div", { style: { fontSize: "12px", color: "#721c24", fontWeight: "bold" }, children: "Next 30 Days" }),
-            /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("div", { style: { fontSize: "13px", color: "#721c24" }, children: [
+          mlState.insights.performanceForecasts.next30Days && /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("div", { style: { fontSize: "12px", color: "#721c24", fontWeight: "bold" }, children: "Next 30 Days" }),
+            /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { style: { fontSize: "13px", color: "#721c24" }, children: [
               "CPA: $",
               mlState.insights.performanceForecasts.next30Days.cpa?.toFixed(2) || "N/A"
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("div", { style: { fontSize: "13px", color: "#721c24" }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { style: { fontSize: "13px", color: "#721c24" }, children: [
               "Conversions: ",
               mlState.insights.performanceForecasts.next30Days.conversions?.toFixed(0) || "N/A"
             ] })
@@ -144941,17 +145226,17 @@ function MLAutopilotDashboard({ shopName, mlState, onRefresh }) {
         ] })
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("div", { style: {
+    /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { style: {
       borderTop: "1px solid #e9ecef",
       paddingTop: "16px"
     }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("h4", { style: { margin: "0 0 12px 0", color: "#495057" }, children: "\u2699\uFE0F Manual Controls" }),
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("div", { style: {
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("h4", { style: { margin: "0 0 12px 0", color: "#495057" }, children: "\u2699\uFE0F Manual Controls" }),
+      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { style: {
         display: "grid",
         gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))",
         gap: "8px"
       }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(
           "button",
           {
             style: {
@@ -144969,7 +145254,7 @@ function MLAutopilotDashboard({ shopName, mlState, onRefresh }) {
             children: mlState.enabled ? "Switch to Legacy" : "Enable ML Mode"
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(
           "button",
           {
             style: {
@@ -144987,7 +145272,7 @@ function MLAutopilotDashboard({ shopName, mlState, onRefresh }) {
             children: "Retrain Models"
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(
           "button",
           {
             style: {
@@ -145008,20 +145293,20 @@ function MLAutopilotDashboard({ shopName, mlState, onRefresh }) {
       ] })
     ] }),
     !1
-  ] }) : /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("div", { style: {
+  ] }) : /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { style: {
     background: "#f8f9fa",
     border: "1px solid #e9ecef",
     borderRadius: "8px",
     padding: "20px",
     marginTop: "16px"
   }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("h3", { style: { margin: "0 0 12px 0", color: "#495057" }, children: "\u{1F916} ML Autopilot Dashboard" }),
-    /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("p", { style: { margin: 0, color: "#6c757d" }, children: "ML Autopilot is initializing. Run an autopilot tick to see insights." })
+    /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("h3", { style: { margin: "0 0 12px 0", color: "#495057" }, children: "\u{1F916} ML Autopilot Dashboard" }),
+    /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("p", { style: { margin: 0, color: "#6c757d" }, children: "ML Autopilot is initializing. Run an autopilot tick to see insights." })
   ] });
 }
 
 // app/routes/app.autopilot.tsx
-var import_jsx_runtime20 = __toESM(require_jsx_runtime());
+var import_jsx_runtime21 = __toESM(require_jsx_runtime());
 async function loader9({ request: request2 }) {
   try {
     let { session, admin } = await authenticate.admin(request2), shopName = session?.shop?.replace(".myshopify.com", "");
@@ -145114,8 +145399,12 @@ async function action4({ request: request2 }) {
           console.error("Failed to parse advanced config:", e);
         }
       try {
-        let realScript = await backendFetchText(
-          "/ads-script/raw",
+        let scriptParams = new URLSearchParams({
+          budget: String(budget || "20.00"),
+          cpc: String(cpc || "0.50"),
+          landing_url: String(url || "")
+        }).toString(), realScript = await backendFetchText(
+          `/ads-script/raw?${scriptParams}`,
           "GET",
           void 0,
           currentShopName
@@ -145275,7 +145564,7 @@ ${customizedScript}
   }
 }
 function Autopilot() {
-  let { config, shopName: serverShopName, campaignLimits } = (0, import_react25.useLoaderData)(), actionData = (0, import_react25.useActionData)(), navigation = (0, import_react25.useNavigation)(), [mode2, setMode] = React20.useState("protect"), [budget, setBudget] = React20.useState("20.00"), [cpc, setCpc] = React20.useState("0.50"), [url, setUrl] = React20.useState(""), [showAdvancedForm, setShowAdvancedForm] = React20.useState(!1), [toast, setToast] = React20.useState(""), [scriptCode, setScriptCode] = React20.useState(""), [showScript, setShowScript] = React20.useState(!1), [shopName, setShopName] = React20.useState(null), [generatedAds, setGeneratedAds] = React20.useState(null), [showGeneratedAds, setShowGeneratedAds] = React20.useState(!1), [isGeneratingAds, setIsGeneratingAds] = React20.useState(!1), [mlState, setMLState] = React20.useState(null), [showMLDashboard, setShowMLDashboard] = React20.useState(!1), isGeneratingScript = navigation.state === "submitting" && navigation.formData?.get("actionType") === "generateScript", generateAIAds = async () => {
+  let { config, shopName: serverShopName, campaignLimits } = (0, import_react26.useLoaderData)(), actionData = (0, import_react26.useActionData)(), navigation = (0, import_react26.useNavigation)(), [mode2, setMode] = React20.useState("protect"), [budget, setBudget] = React20.useState("20.00"), [cpc, setCpc] = React20.useState("0.50"), [url, setUrl] = React20.useState(""), [showAdvancedForm, setShowAdvancedForm] = React20.useState(!1), [toast, setToast] = React20.useState(""), [scriptCode, setScriptCode] = React20.useState(""), [showScript, setShowScript] = React20.useState(!1), [shopName, setShopName] = React20.useState(null), [generatedAds, setGeneratedAds] = React20.useState(null), [showGeneratedAds, setShowGeneratedAds] = React20.useState(!1), [isGeneratingAds, setIsGeneratingAds] = React20.useState(!1), [mlState, setMLState] = React20.useState(null), [showMLDashboard, setShowMLDashboard] = React20.useState(!1), isGeneratingScript = navigation.state === "submitting" && navigation.formData?.get("actionType") === "generateScript", generateAIAds = async () => {
     if (!shopName) {
       setToast("Error: Shop name not available");
       return;
@@ -145378,9 +145667,9 @@ ${config2}
 In production, this would start the automation.`
     ), setToast("Demo: Configuration shown (would enable in production)");
   }
-  return /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("h1", { children: "Autopilot" }),
-    campaignLimits && !campaignLimits.canCreate && /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { style: {
+  return /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("div", { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h1", { children: "Autopilot" }),
+    campaignLimits && !campaignLimits.canCreate && /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("div", { style: {
       backgroundColor: "#fef2f2",
       border: "1px solid #fecaca",
       borderRadius: "6px",
@@ -145388,8 +145677,8 @@ In production, this would start the automation.`
       margin: "16px 0",
       color: "#dc2626"
     }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("h3", { style: { margin: "0 0 8px 0", fontSize: "16px", fontWeight: "bold" }, children: "Campaign Limit Reached" }),
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("p", { style: { margin: "0 0 12px 0" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h3", { style: { margin: "0 0 8px 0", fontSize: "16px", fontWeight: "bold" }, children: "Campaign Limit Reached" }),
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("p", { style: { margin: "0 0 12px 0" }, children: [
         "Your ",
         campaignLimits.tier,
         " plan allows up to ",
@@ -145398,7 +145687,7 @@ In production, this would start the automation.`
         campaignLimits.current,
         " active campaigns."
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
         "a",
         {
           href: campaignLimits.upgradeUrl,
@@ -145414,7 +145703,7 @@ In production, this would start the automation.`
         }
       )
     ] }),
-    campaignLimits && campaignLimits.canCreate && campaignLimits.remaining <= 2 && campaignLimits.limit !== -1 && /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { style: {
+    campaignLimits && campaignLimits.canCreate && campaignLimits.remaining <= 2 && campaignLimits.limit !== -1 && /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("div", { style: {
       backgroundColor: "#fef3c7",
       border: "1px solid #fcd34d",
       borderRadius: "6px",
@@ -145422,8 +145711,8 @@ In production, this would start the automation.`
       margin: "16px 0",
       color: "#d97706"
     }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("h3", { style: { margin: "0 0 8px 0", fontSize: "16px", fontWeight: "bold" }, children: "Campaign Usage Warning" }),
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("p", { style: { margin: "0 0 12px 0" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h3", { style: { margin: "0 0 8px 0", fontSize: "16px", fontWeight: "bold" }, children: "Campaign Usage Warning" }),
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("p", { style: { margin: "0 0 12px 0" }, children: [
         "You are using ",
         campaignLimits.current,
         " of ",
@@ -145433,7 +145722,7 @@ In production, this would start the automation.`
         " plan.",
         campaignLimits.remaining > 0 && ` You have ${campaignLimits.remaining} campaigns remaining.`
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
         "a",
         {
           href: campaignLimits.upgradeUrl,
@@ -145449,8 +145738,8 @@ In production, this would start the automation.`
         }
       )
     ] }),
-    toast && /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("p", { style: { color: "#28a745", padding: "8px", background: "#d4edda", borderRadius: "4px" }, children: toast }),
-    /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("div", { style: { marginBottom: 16 }, children: /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(
+    toast && /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("p", { style: { color: "#28a745", padding: "8px", background: "#d4edda", borderRadius: "4px" }, children: toast }),
+    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("div", { style: { marginBottom: 16 }, children: /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
       "button",
       {
         onClick: () => setShowAdvancedForm(!showAdvancedForm),
@@ -145466,7 +145755,7 @@ In production, this would start the automation.`
         children: showAdvancedForm ? "Switch to Simple Mode" : "Switch to Advanced Setup"
       }
     ) }),
-    showAdvancedForm ? /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(
+    showAdvancedForm ? /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
       CampaignSetupForm,
       {
         shopName: shopName || serverShopName || "",
@@ -145490,11 +145779,11 @@ In production, this would start the automation.`
           }), document.body.appendChild(form), form.submit();
         }
       }
-    ) : /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)(import_jsx_runtime20.Fragment, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("section", { style: { border: "1px solid #eee", padding: 12 }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("h3", { children: "Goal" }),
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("label", { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(
+    ) : /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(import_jsx_runtime21.Fragment, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("section", { style: { border: "1px solid #eee", padding: 12 }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h3", { children: "Goal" }),
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("label", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
             "input",
             {
               type: "radio",
@@ -145507,9 +145796,9 @@ In production, this would start the automation.`
           " ",
           "Protect (Conservative)"
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("br", {}),
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("label", { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("br", {}),
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("label", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
             "input",
             {
               type: "radio",
@@ -145522,9 +145811,9 @@ In production, this would start the automation.`
           " ",
           "Grow (Balanced)"
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("br", {}),
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("label", { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("br", {}),
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("label", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
             "input",
             {
               type: "radio",
@@ -145538,12 +145827,12 @@ In production, this would start the automation.`
           "Scale (Aggressive)"
         ] })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("section", { style: { border: "1px solid #eee", padding: 12 }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("h3", { children: "Budget & CPC" }),
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { style: { display: "flex", gap: "12px" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { style: { flex: 1 }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("label", { style: { fontSize: "14px", color: "#666" }, children: "Daily Budget" }),
-            /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("section", { style: { border: "1px solid #eee", padding: 12 }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h3", { children: "Budget & CPC" }),
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("div", { style: { display: "flex", gap: "12px" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("div", { style: { flex: 1 }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("label", { style: { fontSize: "14px", color: "#666" }, children: "Daily Budget" }),
+            /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
               "input",
               {
                 type: "number",
@@ -145555,9 +145844,9 @@ In production, this would start the automation.`
               }
             )
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { style: { flex: 1 }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("label", { style: { fontSize: "14px", color: "#666" }, children: "Max CPC" }),
-            /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("div", { style: { flex: 1 }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("label", { style: { fontSize: "14px", color: "#666" }, children: "Max CPC" }),
+            /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
               "input",
               {
                 type: "number",
@@ -145571,9 +145860,9 @@ In production, this would start the automation.`
           ] })
         ] })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("section", { style: { border: "1px solid #eee", padding: 12 }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("h3", { children: "Landing URL" }),
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("section", { style: { border: "1px solid #eee", padding: 12 }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h3", { children: "Landing URL" }),
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
           "input",
           {
             value: url,
@@ -145584,7 +145873,7 @@ In production, this would start the automation.`
         )
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)(
+    /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(
       "div",
       {
         style: {
@@ -145595,8 +145884,8 @@ In production, this would start the automation.`
           marginBottom: 16
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("h4", { style: { margin: "0 0 8px 0", color: "#0c5460" }, children: "Autopilot Status" }),
-          /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)(
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h4", { style: { margin: "0 0 8px 0", color: "#0c5460" }, children: "Autopilot Status" }),
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(
             "div",
             {
               style: {
@@ -145606,7 +145895,7 @@ In production, this would start the automation.`
                 marginBottom: 8
               },
               children: [
-                /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(
+                /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
                   "span",
                   {
                     style: {
@@ -145619,34 +145908,34 @@ In production, this would start the automation.`
                     children: "ACTIVE"
                   }
                 ),
-                /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("span", { children: [
+                /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("span", { children: [
                   "Automation running for:",
                   " ",
-                  /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: shopName || serverShopName || "Loading..." })
+                  /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: shopName || serverShopName || "Loading..." })
                 ] })
               ]
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { style: { fontSize: "14px", color: "#666" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("div", { style: { fontSize: "14px", color: "#666" }, children: [
             "Budget optimization: Active",
-            /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("br", {}),
+            /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("br", {}),
             "AI analysis: Running every 15min",
-            /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("br", {}),
+            /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("br", {}),
             "Performance monitoring: Continuous",
-            /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("br", {}),
+            /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("br", {}),
             "Script updates: Available below"
           ] })
         ]
       }
     ),
-    !showAdvancedForm && /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("div", { style: { marginTop: 8 }, children: /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { style: { display: "flex", gap: "12px", flexWrap: "wrap" }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)(import_react25.Form, { method: "post", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("input", { type: "hidden", name: "actionType", value: "generateScript" }),
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("input", { type: "hidden", name: "mode", value: mode2 }),
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("input", { type: "hidden", name: "budget", value: budget }),
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("input", { type: "hidden", name: "cpc", value: cpc }),
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("input", { type: "hidden", name: "url", value: url }),
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(
+    !showAdvancedForm && /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("div", { style: { marginTop: 8 }, children: /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("div", { style: { display: "flex", gap: "12px", flexWrap: "wrap" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(import_react26.Form, { method: "post", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("input", { type: "hidden", name: "actionType", value: "generateScript" }),
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("input", { type: "hidden", name: "mode", value: mode2 }),
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("input", { type: "hidden", name: "budget", value: budget }),
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("input", { type: "hidden", name: "cpc", value: cpc }),
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("input", { type: "hidden", name: "url", value: url }),
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
           "button",
           {
             type: "submit",
@@ -145665,7 +145954,7 @@ In production, this would start the automation.`
           }
         )
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
         "button",
         {
           onClick: generateAIAds,
@@ -145683,7 +145972,7 @@ In production, this would start the automation.`
           children: isGeneratingAds ? "Generating AI Ads..." : "Generate AI Ads"
         }
       ),
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
         "button",
         {
           onClick: () => {
@@ -145703,23 +145992,23 @@ In production, this would start the automation.`
         }
       )
     ] }) }),
-    actionData?.success && /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { style: {
+    actionData?.success && /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("div", { style: {
       background: "#d4edda",
       border: "1px solid #c3e6cb",
       padding: "12px",
       marginTop: "12px",
       borderRadius: "4px"
     }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("h3", { children: "Script Generated Successfully!" }),
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("p", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h3", { children: "Script Generated Successfully!" }),
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("p", { children: [
         "Size: ",
         actionData.size,
         "KB for shop: ",
         actionData.shopName
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("details", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("summary", { children: "View Script (Click to expand)" }),
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("details", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("summary", { children: "View Script (Click to expand)" }),
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
           "textarea",
           {
             readOnly: !0,
@@ -145735,22 +146024,22 @@ In production, this would start the automation.`
         )
       ] })
     ] }),
-    showGeneratedAds && generatedAds && /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("section", { style: {
+    showGeneratedAds && generatedAds && /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("section", { style: {
       border: "1px solid #28a745",
       padding: 12,
       marginTop: 12,
       borderRadius: "4px",
       background: "#f8fff9"
     }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { style: {
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("div", { style: {
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center",
         marginBottom: 10
       }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("h3", { children: "AI Generated Ads" }),
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { style: { display: "flex", gap: "8px" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h3", { children: "AI Generated Ads" }),
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("div", { style: { display: "flex", gap: "8px" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
             "button",
             {
               onClick: acceptAIAds,
@@ -145765,7 +146054,7 @@ In production, this would start the automation.`
               children: "Accept & Apply"
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
             "button",
             {
               onClick: () => {
@@ -145784,52 +146073,52 @@ In production, this would start the automation.`
           )
         ] })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { style: { display: "grid", gap: "16px", gridTemplateColumns: "1fr 1fr" }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("h4", { style: { margin: "0 0 8px 0", color: "#28a745" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("div", { style: { display: "grid", gap: "16px", gridTemplateColumns: "1fr 1fr" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("div", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("h4", { style: { margin: "0 0 8px 0", color: "#28a745" }, children: [
             "Headlines (",
             generatedAds.headlines?.length || 0,
             ")"
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("div", { style: {
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("div", { style: {
             maxHeight: 200,
             overflowY: "auto",
             background: "white",
             border: "1px solid #ddd",
             borderRadius: "4px",
             padding: "8px"
-          }, children: generatedAds.headlines?.map((headline, index) => /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("div", { style: {
+          }, children: generatedAds.headlines?.map((headline, index) => /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("div", { style: {
             padding: "4px 8px",
             borderBottom: index < (generatedAds.headlines?.length || 0) - 1 ? "1px solid #eee" : "none",
             fontSize: "14px"
-          }, children: headline }, index)) || /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("p", { children: "No headlines generated" }) })
+          }, children: headline }, index)) || /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("p", { children: "No headlines generated" }) })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("h4", { style: { margin: "0 0 8px 0", color: "#28a745" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("div", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("h4", { style: { margin: "0 0 8px 0", color: "#28a745" }, children: [
             "Descriptions (",
             generatedAds.descriptions?.length || 0,
             ")"
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("div", { style: {
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("div", { style: {
             maxHeight: 200,
             overflowY: "auto",
             background: "white",
             border: "1px solid #ddd",
             borderRadius: "4px",
             padding: "8px"
-          }, children: generatedAds.descriptions?.map((description, index) => /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("div", { style: {
+          }, children: generatedAds.descriptions?.map((description, index) => /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("div", { style: {
             padding: "4px 8px",
             borderBottom: index < (generatedAds.descriptions?.length || 0) - 1 ? "1px solid #eee" : "none",
             fontSize: "14px"
-          }, children: description }, index)) || /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("p", { children: "No descriptions generated" }) })
+          }, children: description }, index)) || /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("p", { children: "No descriptions generated" }) })
         ] })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { style: { marginTop: "12px", padding: "8px", background: "#e6f7ff", borderRadius: "4px", fontSize: "12px", color: "#0c5460" }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Preview:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("div", { style: { marginTop: "12px", padding: "8px", background: "#e6f7ff", borderRadius: "4px", fontSize: "12px", color: "#0c5460" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Preview:" }),
         ' These AI-generated ads will be added to your asset library and can be used in your Google Ads campaigns. Click "Accept & Apply" to save them or "Reject" to generate new ones.'
       ] })
     ] }),
-    showMLDashboard && /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(ClientOnly, { children: /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(
+    showMLDashboard && /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(ClientOnly, { children: /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
       MLAutopilotDashboard,
       {
         shopName: shopName || serverShopName || "",
@@ -145837,12 +146126,12 @@ In production, this would start the automation.`
         onRefresh: fetchMLState
       }
     ) }),
-    showScript && /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)(
+    showScript && /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(
       "section",
       {
         style: { border: "1px solid #eee", padding: 12, marginTop: 12 },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)(
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(
             "div",
             {
               style: {
@@ -145852,13 +146141,13 @@ In production, this would start the automation.`
                 marginBottom: 10
               },
               children: [
-                /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("h3", { children: [
+                /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("h3", { children: [
                   "Google Ads Script (",
                   Math.round(scriptCode.length / 1024),
                   "KB)"
                 ] }),
-                /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { style: { display: "flex", gap: "8px" }, children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(
+                /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("div", { style: { display: "flex", gap: "8px" }, children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
                     "button",
                     {
                       onClick: () => {
@@ -145879,7 +146168,7 @@ In production, this would start the automation.`
                       children: "Copy Script"
                     }
                   ),
-                  /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(
+                  /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
                     "button",
                     {
                       onClick: () => {
@@ -145906,7 +146195,7 @@ In production, this would start the automation.`
               ]
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
             "textarea",
             {
               readOnly: !0,
@@ -145920,10 +146209,10 @@ In production, this would start the automation.`
               placeholder: "Script will appear here when loaded..."
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("ol", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("li", { children: "Google Ads \u2192 Tools \u2192 Bulk actions \u2192 Scripts \u2192 + New script" }),
-            /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("li", { children: "Paste, Authorize, then Preview first" }),
-            /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("li", { children: "If ok, Run once, then Schedule daily" })
+          /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("ol", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("li", { children: "Google Ads \u2192 Tools \u2192 Bulk actions \u2192 Scripts \u2192 + New script" }),
+            /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("li", { children: "Paste, Authorize, then Preview first" }),
+            /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("li", { children: "If ok, Run once, then Schedule daily" })
           ] })
         ]
       }
@@ -145937,12 +146226,12 @@ __export(app_intent_os_exports, {
   default: () => IntentOSComingSoon,
   loader: () => loader10
 });
-var import_node9 = __toESM(require_dist4()), import_react27 = __toESM(require_dist2());
+var import_node9 = __toESM(require_dist4()), import_react28 = __toESM(require_dist2());
 
 // app/utils/navigation.tsx
-var import_react26 = __toESM(require_dist2());
+var import_react27 = __toESM(require_dist2());
 function useShopContext() {
-  let location = (0, import_react26.useLocation)(), searchParams = new URLSearchParams(location.search), urlShop = searchParams.get("shop"), urlHost = searchParams.get("host"), fallbackShop = null;
+  let location = (0, import_react27.useLocation)(), searchParams = new URLSearchParams(location.search), urlShop = searchParams.get("shop"), urlHost = searchParams.get("host"), fallbackShop = null;
   return typeof window < "u" && (fallbackShop = document.getElementById("__shop")?.getAttribute("data-shop-name")), {
     shop: urlShop || (fallbackShop ? `${fallbackShop}.myshopify.com` : null),
     host: urlHost,
@@ -145967,13 +146256,13 @@ function buildAppUrl(path, shopContext) {
 }
 
 // app/routes/app.intent-os.tsx
-var import_jsx_runtime21 = __toESM(require_jsx_runtime()), loader10 = async ({ request: request2 }) => (0, import_node9.json)({
+var import_jsx_runtime22 = __toESM(require_jsx_runtime()), loader10 = async ({ request: request2 }) => (0, import_node9.json)({
   tenantId: process.env.TENANT_ID || "proofkit",
   launchDate: "Q1 2026"
 });
 function IntentOSComingSoon() {
-  let { tenantId, launchDate } = (0, import_react27.useLoaderData)(), shopContext = useShopContext();
-  return /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(
+  let { tenantId, launchDate } = (0, import_react28.useLoaderData)(), shopContext = useShopContext();
+  return /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(
     "div",
     {
       style: {
@@ -145983,10 +146272,10 @@ function IntentOSComingSoon() {
         textAlign: "center"
       },
       children: [
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("div", { style: { marginBottom: "3rem" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h1", { style: { fontSize: "48px", marginBottom: "1rem", color: "#333" }, children: "Smart Website Features" }),
-          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("p", { style: { fontSize: "24px", color: "#666", marginBottom: "2rem" }, children: "Advanced conversion optimization tools coming soon!" }),
-          /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("div", { style: { marginBottom: "3rem" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("h1", { style: { fontSize: "48px", marginBottom: "1rem", color: "#333" }, children: "Smart Website Features" }),
+          /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("p", { style: { fontSize: "24px", color: "#666", marginBottom: "2rem" }, children: "Advanced conversion optimization tools coming soon!" }),
+          /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(
             "div",
             {
               style: {
@@ -146006,7 +146295,7 @@ function IntentOSComingSoon() {
             }
           )
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(
           "div",
           {
             style: {
@@ -146017,8 +146306,8 @@ function IntentOSComingSoon() {
               background: "#f8f9fa"
             },
             children: [
-              /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h2", { style: { marginBottom: "2rem", color: "#333" }, children: "What's Coming" }),
-              /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(
+              /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("h2", { style: { marginBottom: "2rem", color: "#333" }, children: "What's Coming" }),
+              /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(
                 "div",
                 {
                   style: {
@@ -146028,7 +146317,7 @@ function IntentOSComingSoon() {
                     textAlign: "left"
                   },
                   children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(
+                    /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(
                       "div",
                       {
                         style: {
@@ -146038,12 +146327,12 @@ function IntentOSComingSoon() {
                           background: "#fff"
                         },
                         children: [
-                          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h3", { style: { color: "#28a745", marginBottom: "1rem" }, children: "\u23F0 Stock Urgency" }),
-                          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("p", { style: { color: "#666", fontSize: "14px" }, children: 'Automatically show "Only X left!" messages on low-stock products to create buying urgency.' })
+                          /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("h3", { style: { color: "#28a745", marginBottom: "1rem" }, children: "\u23F0 Stock Urgency" }),
+                          /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("p", { style: { color: "#666", fontSize: "14px" }, children: 'Automatically show "Only X left!" messages on low-stock products to create buying urgency.' })
                         ]
                       }
                     ),
-                    /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(
+                    /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(
                       "div",
                       {
                         style: {
@@ -146053,12 +146342,12 @@ function IntentOSComingSoon() {
                           background: "#fff"
                         },
                         children: [
-                          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h3", { style: { color: "#007bff", marginBottom: "1rem" }, children: "Welcome Offers" }),
-                          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("p", { style: { color: "#666", fontSize: "14px" }, children: "Show special discounts to first-time visitors to convert them into customers." })
+                          /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("h3", { style: { color: "#007bff", marginBottom: "1rem" }, children: "Welcome Offers" }),
+                          /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("p", { style: { color: "#666", fontSize: "14px" }, children: "Show special discounts to first-time visitors to convert them into customers." })
                         ]
                       }
                     ),
-                    /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(
+                    /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(
                       "div",
                       {
                         style: {
@@ -146068,12 +146357,12 @@ function IntentOSComingSoon() {
                           background: "#fff"
                         },
                         children: [
-                          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h3", { style: { color: "#856404", marginBottom: "1rem" }, children: "Smart Content" }),
-                          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("p", { style: { color: "#666", fontSize: "14px" }, children: "Show different headlines and messages based on how visitors found your store." })
+                          /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("h3", { style: { color: "#856404", marginBottom: "1rem" }, children: "Smart Content" }),
+                          /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("p", { style: { color: "#666", fontSize: "14px" }, children: "Show different headlines and messages based on how visitors found your store." })
                         ]
                       }
                     ),
-                    /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(
+                    /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(
                       "div",
                       {
                         style: {
@@ -146083,8 +146372,8 @@ function IntentOSComingSoon() {
                           background: "#fff"
                         },
                         children: [
-                          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h3", { style: { color: "#dc3545", marginBottom: "1rem" }, children: "\u{1F4A8} Exit Intent" }),
-                          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("p", { style: { color: "#666", fontSize: "14px" }, children: "Catch visitors before they leave with last-chance offers and incentives." })
+                          /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("h3", { style: { color: "#dc3545", marginBottom: "1rem" }, children: "\u{1F4A8} Exit Intent" }),
+                          /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("p", { style: { color: "#666", fontSize: "14px" }, children: "Catch visitors before they leave with last-chance offers and incentives." })
                         ]
                       }
                     )
@@ -146094,7 +146383,7 @@ function IntentOSComingSoon() {
             ]
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(
           "div",
           {
             style: {
@@ -146105,14 +146394,14 @@ function IntentOSComingSoon() {
               background: "#e7f3ff"
             },
             children: [
-              /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h2", { style: { color: "#0c5460", marginBottom: "1rem" }, children: "Our Current Focus" }),
-              /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("p", { style: { fontSize: "18px", color: "#0c5460", marginBottom: "2rem" }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("h2", { style: { color: "#0c5460", marginBottom: "1rem" }, children: "Our Current Focus" }),
+              /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("p", { style: { fontSize: "18px", color: "#0c5460", marginBottom: "2rem" }, children: [
                 "We're focusing on perfecting your",
                 " ",
-                /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Google Ads optimization" }),
+                /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("strong", { children: "Google Ads optimization" }),
                 " first. Once that's delivering amazing results, we'll add these website optimization features."
               ] }),
-              /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(
+              /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(
                 "div",
                 {
                   style: {
@@ -146121,8 +146410,8 @@ function IntentOSComingSoon() {
                     gap: "1rem"
                   },
                   children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
-                      import_react27.Link,
+                    /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+                      import_react28.Link,
                       {
                         to: buildAppUrl("/app/autopilot", shopContext),
                         style: {
@@ -146138,8 +146427,8 @@ function IntentOSComingSoon() {
                         children: "\u{1F916} Use Autopilot Now"
                       }
                     ),
-                    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
-                      import_react27.Link,
+                    /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+                      import_react28.Link,
                       {
                         to: "/app/advanced",
                         style: {
@@ -146155,8 +146444,8 @@ function IntentOSComingSoon() {
                         children: "Configure Settings"
                       }
                     ),
-                    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
-                      import_react27.Link,
+                    /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+                      import_react28.Link,
                       {
                         to: "/app/insights",
                         style: {
@@ -146178,7 +146467,7 @@ function IntentOSComingSoon() {
             ]
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(
           "div",
           {
             style: {
@@ -146188,29 +146477,29 @@ function IntentOSComingSoon() {
               textAlign: "left"
             },
             children: [
-              /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h3", { style: { marginBottom: "1rem", color: "#333" }, children: "Why We're Building This Step by Step" }),
-              /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("ul", { style: { color: "#666", lineHeight: "1.6", paddingLeft: "20px" }, children: [
-                /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Better Product:" }),
+              /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("h3", { style: { marginBottom: "1rem", color: "#333" }, children: "Why We're Building This Step by Step" }),
+              /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("ul", { style: { color: "#666", lineHeight: "1.6", paddingLeft: "20px" }, children: [
+                /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("li", { children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("strong", { children: "Better Product:" }),
                   " Perfect your Google Ads optimization first, then add website features"
                 ] }),
-                /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Faster Launch:" }),
+                /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("li", { children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("strong", { children: "Faster Launch:" }),
                   " Get you making money sooner with proven Google Ads automation"
                 ] }),
-                /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Customer-Driven:" }),
+                /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("li", { children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("strong", { children: "Customer-Driven:" }),
                   " Build website features based on what you actually need"
                 ] }),
-                /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)("li", { children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("strong", { children: "Quality Focus:" }),
+                /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("li", { children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("strong", { children: "Quality Focus:" }),
                   " Each feature gets our full attention instead of rushing everything"
                 ] })
               ] })
             ]
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(
           "div",
           {
             style: {
@@ -146221,9 +146510,9 @@ function IntentOSComingSoon() {
               borderRadius: "8px"
             },
             children: [
-              /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h3", { style: { marginBottom: "1rem", color: "#333" }, children: "\u{1F4EC} Want to know when Smart Website features launch?" }),
-              /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("p", { style: { color: "#666", marginBottom: "1.5rem" }, children: "We'll email you as soon as these conversion optimization tools are ready." }),
-              /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(
+              /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("h3", { style: { marginBottom: "1rem", color: "#333" }, children: "\u{1F4EC} Want to know when Smart Website features launch?" }),
+              /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("p", { style: { color: "#666", marginBottom: "1.5rem" }, children: "We'll email you as soon as these conversion optimization tools are ready." }),
+              /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(
                 "div",
                 {
                   style: {
@@ -146234,7 +146523,7 @@ function IntentOSComingSoon() {
                     flexWrap: "wrap"
                   },
                   children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
+                    /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
                       "input",
                       {
                         type: "email",
@@ -146248,7 +146537,7 @@ function IntentOSComingSoon() {
                         }
                       }
                     ),
-                    /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
+                    /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
                       "button",
                       {
                         style: {
@@ -146282,10 +146571,10 @@ __export(app_advanced_exports, {
   default: () => Advanced,
   loader: () => loader11
 });
-var React21 = __toESM(require_react()), import_node10 = __toESM(require_dist4()), import_react28 = __toESM(require_dist2());
+var React21 = __toESM(require_react()), import_node10 = __toESM(require_dist4()), import_react29 = __toESM(require_dist2());
 init_shopify_server();
 init_subscription_server();
-var import_jsx_runtime22 = __toESM(require_jsx_runtime());
+var import_jsx_runtime23 = __toESM(require_jsx_runtime());
 async function loader11({ request: request2 }) {
   let shopName;
   try {
@@ -146635,10 +146924,10 @@ async function action5({ request: request2 }) {
   }
 }
 function Advanced() {
-  let data = (0, import_react28.useLoaderData)(), actionData = (0, import_react28.useActionData)(), cfg = data?.cfg || {}, suggestions = data?.suggestions || {}, insights = data?.insights || {}, nav = (0, import_react28.useNavigation)(), caps = cfg?.CPC_CEILINGS || {}, capRows = Object.entries(caps).map(([campaign, value]) => ({
+  let data = (0, import_react29.useLoaderData)(), actionData = (0, import_react29.useActionData)(), cfg = data?.cfg || {}, suggestions = data?.suggestions || {}, insights = data?.insights || {}, nav = (0, import_react29.useNavigation)(), caps = cfg?.CPC_CEILINGS || {}, capRows = Object.entries(caps).map(([campaign, value]) => ({
     campaign,
     value
-  })), [preview, setPreview] = React21.useState([]), [toast, setToast] = React21.useState(""), [appliedSuggestions, setAppliedSuggestions] = React21.useState(/* @__PURE__ */ new Set()), [buttonFeedback, setButtonFeedback] = React21.useState({}), [showSetupBanner, setShowSetupBanner] = React21.useState(!1), revalidator = (0, import_react28.useRevalidator)();
+  })), [preview, setPreview] = React21.useState([]), [toast, setToast] = React21.useState(""), [appliedSuggestions, setAppliedSuggestions] = React21.useState(/* @__PURE__ */ new Set()), [buttonFeedback, setButtonFeedback] = React21.useState({}), [showSetupBanner, setShowSetupBanner] = React21.useState(!1), revalidator = (0, import_react29.useRevalidator)();
   React21.useEffect(() => {
     setShowSetupBanner(!1);
   }, []), React21.useEffect(() => {
@@ -146774,10 +147063,10 @@ function Advanced() {
     color: "#333",
     marginBottom: "8px"
   };
-  return /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("div", { style: { maxWidth: 920 }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("h1", { children: "Advanced Settings" }),
-    /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("p", { style: { color: "#666", marginBottom: "24px" }, children: "Fine-tune your ProofKit automation and optimize your store's performance." }),
-    data?.error && /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(
+  return /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("div", { style: { maxWidth: 920 }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("h1", { children: "Advanced Settings" }),
+    /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("p", { style: { color: "#666", marginBottom: "24px" }, children: "Fine-tune your ProofKit automation and optimize your store's performance." }),
+    data?.error && /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(
       "div",
       {
         style: {
@@ -146789,7 +147078,7 @@ function Advanced() {
           color: "#856404"
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
             "h4",
             {
               style: {
@@ -146800,8 +147089,8 @@ function Advanced() {
               children: "Configuration Issue"
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("p", { style: { margin: 0, fontSize: "14px" }, children: data.error }),
-          data.needsSetup && /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("p", { style: { margin: 0, fontSize: "14px" }, children: data.error }),
+          data.needsSetup && /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
             "p",
             {
               style: {
@@ -146815,7 +147104,7 @@ function Advanced() {
         ]
       }
     ),
-    suggestions.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(
+    suggestions.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(
       "div",
       {
         style: {
@@ -146826,7 +147115,7 @@ function Advanced() {
           marginBottom: "24px"
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(
+          /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(
             "h3",
             {
               style: {
@@ -146840,7 +147129,7 @@ function Advanced() {
               },
               children: [
                 "Personalized Recommendations",
-                /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+                /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
                   "span",
                   {
                     style: {
@@ -146855,7 +147144,7 @@ function Advanced() {
               ]
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("div", { style: { display: "grid", gap: "12px" }, children: suggestions.map((suggestion) => /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(
+          /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("div", { style: { display: "grid", gap: "12px" }, children: suggestions.map((suggestion) => /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(
             "div",
             {
               style: {
@@ -146868,8 +147157,8 @@ function Advanced() {
                 alignItems: "center"
               },
               children: [
-                /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("div", { children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+                /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("div", { children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
                     "h4",
                     {
                       style: {
@@ -146881,7 +147170,7 @@ function Advanced() {
                       children: suggestion.title
                     }
                   ),
-                  /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+                  /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
                     "p",
                     {
                       style: {
@@ -146892,7 +147181,7 @@ function Advanced() {
                       children: suggestion.description
                     }
                   ),
-                  /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(
+                  /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(
                     "span",
                     {
                       style: {
@@ -146907,7 +147196,7 @@ function Advanced() {
                     }
                   )
                 ] }),
-                /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+                /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
                   "button",
                   {
                     type: "button",
@@ -146934,7 +147223,7 @@ function Advanced() {
         ]
       }
     ),
-    insights?.kpi && /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(
+    insights?.kpi && /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(
       "div",
       {
         style: {
@@ -146945,7 +147234,7 @@ function Advanced() {
           marginBottom: "24px"
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
             "h3",
             {
               style: {
@@ -146957,7 +147246,7 @@ function Advanced() {
               children: "Current Performance (Last 7 Days)"
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(
+          /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(
             "div",
             {
               style: {
@@ -146966,8 +147255,8 @@ function Advanced() {
                 gap: "16px"
               },
               children: [
-                /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("div", { style: { textAlign: "center" }, children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+                /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("div", { style: { textAlign: "center" }, children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
                     "div",
                     {
                       style: {
@@ -146978,10 +147267,10 @@ function Advanced() {
                       children: insights.kpi.clicks || 0
                     }
                   ),
-                  /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("div", { style: { fontSize: "12px", color: "#666" }, children: "Clicks" })
+                  /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("div", { style: { fontSize: "12px", color: "#666" }, children: "Clicks" })
                 ] }),
-                /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("div", { style: { textAlign: "center" }, children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(
+                /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("div", { style: { textAlign: "center" }, children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(
                     "div",
                     {
                       style: {
@@ -146995,10 +147284,10 @@ function Advanced() {
                       ]
                     }
                   ),
-                  /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("div", { style: { fontSize: "12px", color: "#666" }, children: "Spend" })
+                  /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("div", { style: { fontSize: "12px", color: "#666" }, children: "Spend" })
                 ] }),
-                /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("div", { style: { textAlign: "center" }, children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(
+                /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("div", { style: { textAlign: "center" }, children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(
                     "div",
                     {
                       style: {
@@ -147012,10 +147301,10 @@ function Advanced() {
                       ]
                     }
                   ),
-                  /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("div", { style: { fontSize: "12px", color: "#666" }, children: "Avg CPC" })
+                  /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("div", { style: { fontSize: "12px", color: "#666" }, children: "Avg CPC" })
                 ] }),
-                /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("div", { style: { textAlign: "center" }, children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(
+                /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("div", { style: { textAlign: "center" }, children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(
                     "div",
                     {
                       style: {
@@ -147029,7 +147318,7 @@ function Advanced() {
                       ]
                     }
                   ),
-                  /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("div", { style: { fontSize: "12px", color: "#666" }, children: "CPA" })
+                  /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("div", { style: { fontSize: "12px", color: "#666" }, children: "CPA" })
                 ] })
               ]
             }
@@ -147037,13 +147326,13 @@ function Advanced() {
         ]
       }
     ),
-    /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(import_react28.Form, { method: "post", style: { display: "grid", gap: 20 }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("input", { type: "hidden", name: "shop", value: data?.shopName || "" }),
-      /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("div", { style: sectionStyle, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("h3", { style: legendStyle, children: "\u{1F552} Automation Schedule" }),
-        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("p", { style: helpStyle, children: "Choose how often ProofKit should optimize your campaigns" }),
-        /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("div", { style: { marginTop: "12px" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("div", { style: { display: "grid", gap: "8px" }, children: suggestions.schedule?.options.map((option, idx) => /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(
+    /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(import_react29.Form, { method: "post", style: { display: "grid", gap: 20 }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("input", { type: "hidden", name: "shop", value: data?.shopName || "" }),
+      /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("div", { style: sectionStyle, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("h3", { style: legendStyle, children: "\u{1F552} Automation Schedule" }),
+        /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("p", { style: helpStyle, children: "Choose how often ProofKit should optimize your campaigns" }),
+        /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("div", { style: { marginTop: "12px" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("div", { style: { display: "grid", gap: "8px" }, children: suggestions.schedule?.options.map((option, idx) => /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(
             "label",
             {
               style: {
@@ -147056,7 +147345,7 @@ function Advanced() {
                 backgroundColor: "#fafafa"
               },
               children: [
-                /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+                /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
                   "input",
                   {
                     type: "radio",
@@ -147066,9 +147355,9 @@ function Advanced() {
                     style: { marginRight: "12px" }
                   }
                 ),
-                /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("div", { children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("strong", { children: option.label }),
-                  /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+                /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("div", { children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("strong", { children: option.label }),
+                  /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
                     "div",
                     {
                       style: {
@@ -147084,18 +147373,18 @@ function Advanced() {
             },
             idx
           )) }),
-          /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("div", { style: { ...helpStyle, marginTop: "8px" }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("strong", { children: "Tip:" }),
+          /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("div", { style: { ...helpStyle, marginTop: "8px" }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("strong", { children: "Tip:" }),
             ' Start with "Daily" if you have active campaigns. You can change this anytime.'
           ] })
         ] })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("div", { style: sectionStyle, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("h3", { style: legendStyle, children: "Performance Targets" }),
-        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("p", { style: helpStyle, children: "Choose from personalized options or enter your own values" }),
-        /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("div", { style: { display: "grid", gap: "20px", marginTop: "12px" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("div", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+      /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("div", { style: sectionStyle, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("h3", { style: legendStyle, children: "Performance Targets" }),
+        /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("p", { style: helpStyle, children: "Choose from personalized options or enter your own values" }),
+        /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("div", { style: { display: "grid", gap: "20px", marginTop: "12px" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
               "label",
               {
                 style: {
@@ -147106,10 +147395,10 @@ function Advanced() {
                 children: "Target Cost Per Acquisition (CPA)"
               }
             ),
-            /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("div", { style: { ...helpStyle, marginBottom: "8px" }, children: suggestions.targetCPA?.description }),
-            /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("div", { style: { marginBottom: "8px" }, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("label", { style: { marginRight: "16px" }, children: [
-                /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+            /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("div", { style: { ...helpStyle, marginBottom: "8px" }, children: suggestions.targetCPA?.description }),
+            /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("div", { style: { marginBottom: "8px" }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("label", { style: { marginRight: "16px" }, children: [
+                /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
                   "input",
                   {
                     type: "radio",
@@ -147120,8 +147409,8 @@ function Advanced() {
                 ),
                 "Choose from suggestions"
               ] }),
-              /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("label", { children: [
-                /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+              /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("label", { children: [
+                /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
                   "input",
                   {
                     type: "radio",
@@ -147133,8 +147422,8 @@ function Advanced() {
                 "Enter manually"
               ] })
             ] }),
-            targetCPAMode === "preset" ? /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("div", { style: { display: "grid", gap: "8px" }, children: suggestions.targetCPA?.options.map(
-              (option, idx) => /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(
+            targetCPAMode === "preset" ? /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("div", { style: { display: "grid", gap: "8px" }, children: suggestions.targetCPA?.options.map(
+              (option, idx) => /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(
                 "label",
                 {
                   style: {
@@ -147147,7 +147436,7 @@ function Advanced() {
                     backgroundColor: "#fafafa"
                   },
                   children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+                    /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
                       "input",
                       {
                         type: "radio",
@@ -147157,14 +147446,14 @@ function Advanced() {
                         style: { marginRight: "12px" }
                       }
                     ),
-                    /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("div", { children: [
-                      /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("strong", { children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("div", { children: [
+                      /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("strong", { children: [
                         "$",
                         option.value
                       ] }),
                       " - ",
                       option.label,
-                      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+                      /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
                         "div",
                         {
                           style: {
@@ -147180,7 +147469,7 @@ function Advanced() {
                 },
                 idx
               )
-            ) }) : /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+            ) }) : /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
               "input",
               {
                 name: "target_cpa",
@@ -147198,8 +147487,8 @@ function Advanced() {
               }
             )
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("div", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
               "label",
               {
                 style: {
@@ -147210,10 +147499,10 @@ function Advanced() {
                 children: "Target Return on Ad Spend (ROAS)"
               }
             ),
-            /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("div", { style: { ...helpStyle, marginBottom: "8px" }, children: suggestions.targetROAS?.description }),
-            /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("div", { style: { marginBottom: "8px" }, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("label", { style: { marginRight: "16px" }, children: [
-                /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+            /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("div", { style: { ...helpStyle, marginBottom: "8px" }, children: suggestions.targetROAS?.description }),
+            /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("div", { style: { marginBottom: "8px" }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("label", { style: { marginRight: "16px" }, children: [
+                /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
                   "input",
                   {
                     type: "radio",
@@ -147224,8 +147513,8 @@ function Advanced() {
                 ),
                 "Choose from suggestions"
               ] }),
-              /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("label", { children: [
-                /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+              /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("label", { children: [
+                /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
                   "input",
                   {
                     type: "radio",
@@ -147237,8 +147526,8 @@ function Advanced() {
                 "Enter manually"
               ] })
             ] }),
-            targetROASMode === "preset" ? /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("div", { style: { display: "grid", gap: "8px" }, children: suggestions.targetROAS?.options.map(
-              (option, idx) => /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(
+            targetROASMode === "preset" ? /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("div", { style: { display: "grid", gap: "8px" }, children: suggestions.targetROAS?.options.map(
+              (option, idx) => /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(
                 "label",
                 {
                   style: {
@@ -147251,7 +147540,7 @@ function Advanced() {
                     backgroundColor: "#fafafa"
                   },
                   children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+                    /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
                       "input",
                       {
                         type: "radio",
@@ -147261,14 +147550,14 @@ function Advanced() {
                         style: { marginRight: "12px" }
                       }
                     ),
-                    /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("div", { children: [
-                      /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("strong", { children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("div", { children: [
+                      /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("strong", { children: [
                         option.value,
                         "x ROAS"
                       ] }),
                       " - ",
                       option.label,
-                      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+                      /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
                         "div",
                         {
                           style: {
@@ -147284,7 +147573,7 @@ function Advanced() {
                 },
                 idx
               )
-            ) }) : /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+            ) }) : /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
               "input",
               {
                 name: "target_roas",
@@ -147304,12 +147593,12 @@ function Advanced() {
           ] })
         ] })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("div", { style: sectionStyle, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("h3", { style: legendStyle, children: "\u{1F4B3} Maximum Bid Limits" }),
-        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("p", { style: helpStyle, children: "Set cost-per-click limits to control your ad spending" }),
-        /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("div", { style: { marginTop: "12px" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("div", { style: { marginBottom: "16px" }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+      /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("div", { style: sectionStyle, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("h3", { style: legendStyle, children: "\u{1F4B3} Maximum Bid Limits" }),
+        /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("p", { style: helpStyle, children: "Set cost-per-click limits to control your ad spending" }),
+        /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("div", { style: { marginTop: "12px" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("div", { style: { marginBottom: "16px" }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
               "h4",
               {
                 style: {
@@ -147320,8 +147609,8 @@ function Advanced() {
                 children: "Quick Setup (Recommended)"
               }
             ),
-            /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("div", { style: { display: "grid", gap: "8px" }, children: suggestions.bidCeiling?.options.map(
-              (option, idx) => /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(
+            /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("div", { style: { display: "grid", gap: "8px" }, children: suggestions.bidCeiling?.options.map(
+              (option, idx) => /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(
                 "button",
                 {
                   type: "button",
@@ -147348,14 +147637,14 @@ function Advanced() {
                     fontSize: "14px"
                   },
                   children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("div", { children: [
-                      /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("strong", { children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("div", { children: [
+                      /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("strong", { children: [
                         "$",
                         option.value,
                         " - ",
                         option.label
                       ] }),
-                      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+                      /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
                         "div",
                         {
                           style: {
@@ -147367,7 +147656,7 @@ function Advanced() {
                         }
                       )
                     ] }),
-                    /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+                    /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
                       "span",
                       {
                         style: {
@@ -147384,8 +147673,8 @@ function Advanced() {
               )
             ) })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("div", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
               "h4",
               {
                 style: {
@@ -147396,7 +147685,7 @@ function Advanced() {
                 children: "Campaign-Specific Limits (Optional)"
               }
             ),
-            /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(
+            /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(
               "div",
               {
                 style: {
@@ -147406,12 +147695,12 @@ function Advanced() {
                   marginBottom: "8px"
                 },
                 children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("strong", { children: "Campaign Name" }),
-                  /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("strong", { children: "Max CPC ($)" })
+                  /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("strong", { children: "Campaign Name" }),
+                  /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("strong", { children: "Max CPC ($)" })
                 ]
               }
             ),
-            capRows.map((row, i) => /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(
+            capRows.map((row, i) => /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(
               "div",
               {
                 style: {
@@ -147421,7 +147710,7 @@ function Advanced() {
                   marginBottom: "4px"
                 },
                 children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+                  /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
                     "input",
                     {
                       name: "caps_campaign",
@@ -147434,7 +147723,7 @@ function Advanced() {
                       }
                     }
                   ),
-                  /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+                  /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
                     "input",
                     {
                       name: "caps_value",
@@ -147452,7 +147741,7 @@ function Advanced() {
               },
               i
             )),
-            /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(
+            /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(
               "div",
               {
                 style: {
@@ -147462,7 +147751,7 @@ function Advanced() {
                   marginBottom: "8px"
                 },
                 children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+                  /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
                     "input",
                     {
                       name: "caps_campaign",
@@ -147474,7 +147763,7 @@ function Advanced() {
                       }
                     }
                   ),
-                  /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+                  /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
                     "input",
                     {
                       name: "caps_value",
@@ -147491,11 +147780,11 @@ function Advanced() {
                 ]
               }
             ),
-            /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("div", { style: helpStyle, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("strong", { children: "Examples:" }),
+            /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("div", { style: helpStyle, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("strong", { children: "Examples:" }),
               ' Use "*" for all campaigns, "Brand Campaign" for specific ones. Set to 0 to remove a limit.'
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(
+            /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(
               "div",
               {
                 style: {
@@ -147505,7 +147794,7 @@ function Advanced() {
                   marginTop: "12px"
                 },
                 children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+                  /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
                     "button",
                     {
                       type: "submit",
@@ -147524,7 +147813,7 @@ function Advanced() {
                       children: nav.state !== "idle" ? "\u23F3 Saving..." : "\u{1F4BE} Save Bid Limits"
                     }
                   ),
-                  buttonFeedback.saveCaps && /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+                  buttonFeedback.saveCaps && /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
                     "span",
                     {
                       style: {
@@ -147545,12 +147834,12 @@ function Advanced() {
           ] })
         ] })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("div", { style: sectionStyle, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("h3", { style: legendStyle, children: "SEO Optimization" }),
-        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("p", { style: helpStyle, children: "Improve your product pages for search engines" }),
-        /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("div", { style: { display: "grid", gap: 12, marginTop: "12px" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("div", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+      /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("div", { style: sectionStyle, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("h3", { style: legendStyle, children: "SEO Optimization" }),
+        /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("p", { style: helpStyle, children: "Improve your product pages for search engines" }),
+        /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("div", { style: { display: "grid", gap: 12, marginTop: "12px" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
               "label",
               {
                 style: {
@@ -147561,7 +147850,7 @@ function Advanced() {
                 children: "Product IDs or Handles"
               }
             ),
-            /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+            /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
               "textarea",
               {
                 name: "product_ids",
@@ -147577,10 +147866,10 @@ function Advanced() {
                 }
               }
             ),
-            /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("div", { style: helpStyle, children: 'Example: "12345 67890" or "t-shirt-blue, sneakers-red"' })
+            /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("div", { style: helpStyle, children: 'Example: "12345 67890" or "t-shirt-blue, sneakers-red"' })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("div", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
               "label",
               {
                 style: {
@@ -147591,8 +147880,8 @@ function Advanced() {
                 children: "SEO Strategy"
               }
             ),
-            /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("label", { style: { marginRight: "20px" }, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+            /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("label", { style: { marginRight: "20px" }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
                 "input",
                 {
                   type: "radio",
@@ -147604,8 +147893,8 @@ function Advanced() {
               ),
               "Template (Use your own patterns)"
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("label", { children: [
-              /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+            /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("label", { children: [
+              /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
                 "input",
                 {
                   type: "radio",
@@ -147617,8 +147906,8 @@ function Advanced() {
               "AI (Let AI write descriptions)"
             ] })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("div", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
               "label",
               {
                 style: {
@@ -147629,7 +147918,7 @@ function Advanced() {
                 children: "Title Template"
               }
             ),
-            /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+            /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
               "input",
               {
                 name: "template_title",
@@ -147642,7 +147931,7 @@ function Advanced() {
                 }
               }
             ),
-            /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("div", { style: helpStyle, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("div", { style: helpStyle, children: [
               "Use ",
               "{{title}}",
               " for product name, ",
@@ -147650,8 +147939,8 @@ function Advanced() {
               " for brand name"
             ] })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("div", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
               "label",
               {
                 style: {
@@ -147662,7 +147951,7 @@ function Advanced() {
                 children: "Description Template"
               }
             ),
-            /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+            /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
               "input",
               {
                 name: "template_description",
@@ -147676,7 +147965,7 @@ function Advanced() {
               }
             )
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(
+          /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(
             "div",
             {
               style: {
@@ -147686,7 +147975,7 @@ function Advanced() {
                 alignItems: "center"
               },
               children: [
-                /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+                /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
                   "button",
                   {
                     type: "submit",
@@ -147705,7 +147994,7 @@ function Advanced() {
                     children: nav.state !== "idle" ? "Loading..." : "Preview Changes"
                   }
                 ),
-                /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+                /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
                   "button",
                   {
                     type: "submit",
@@ -147724,7 +148013,7 @@ function Advanced() {
                     children: nav.state !== "idle" ? "Applying..." : "Apply to Store"
                   }
                 ),
-                buttonFeedback.seoPreview && /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+                buttonFeedback.seoPreview && /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
                   "span",
                   {
                     style: {
@@ -147739,7 +148028,7 @@ function Advanced() {
                     children: buttonFeedback.seoPreview
                   }
                 ),
-                buttonFeedback.seoApply && /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+                buttonFeedback.seoApply && /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
                   "span",
                   {
                     style: {
@@ -147759,13 +148048,13 @@ function Advanced() {
           )
         ] })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("div", { style: sectionStyle, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("h3", { style: legendStyle, children: "\u{1F511} Target Keywords" }),
-        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("p", { style: helpStyle, children: "Choose keyword categories that match your business or enter your own" }),
-        /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("div", { style: { marginTop: "12px" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("div", { style: { marginBottom: "12px" }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("label", { style: { marginRight: "16px" }, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+      /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("div", { style: sectionStyle, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("h3", { style: legendStyle, children: "\u{1F511} Target Keywords" }),
+        /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("p", { style: helpStyle, children: "Choose keyword categories that match your business or enter your own" }),
+        /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("div", { style: { marginTop: "12px" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("div", { style: { marginBottom: "12px" }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("label", { style: { marginRight: "16px" }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
                 "input",
                 {
                   type: "radio",
@@ -147776,8 +148065,8 @@ function Advanced() {
               ),
               "Choose keyword category"
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("label", { children: [
-              /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+            /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("label", { children: [
+              /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
                 "input",
                 {
                   type: "radio",
@@ -147789,8 +148078,8 @@ function Advanced() {
               "Enter my own keywords"
             ] })
           ] }),
-          keywordsMode === "preset" ? /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("div", { style: { display: "grid", gap: "12px" }, children: suggestions.keywords?.options.map(
-            (option, idx) => /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+          keywordsMode === "preset" ? /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("div", { style: { display: "grid", gap: "12px" }, children: suggestions.keywords?.options.map(
+            (option, idx) => /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
               "label",
               {
                 style: {
@@ -147801,7 +148090,7 @@ function Advanced() {
                   cursor: "pointer",
                   backgroundColor: "#fafafa"
                 },
-                children: /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(
+                children: /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(
                   "div",
                   {
                     style: {
@@ -147810,7 +148099,7 @@ function Advanced() {
                       gap: "12px"
                     },
                     children: [
-                      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+                      /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
                         "input",
                         {
                           type: "radio",
@@ -147820,9 +148109,9 @@ function Advanced() {
                           style: { marginTop: "4px" }
                         }
                       ),
-                      /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("div", { children: [
-                        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("strong", { children: option.label }),
-                        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+                      /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("div", { children: [
+                        /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("strong", { children: option.label }),
+                        /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
                           "div",
                           {
                             style: {
@@ -147834,7 +148123,7 @@ function Advanced() {
                             children: option.description
                           }
                         ),
-                        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+                        /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
                           "div",
                           {
                             style: {
@@ -147857,7 +148146,7 @@ function Advanced() {
               },
               idx
             )
-          ) }) : /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+          ) }) : /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
             "textarea",
             {
               name: "desired_keywords",
@@ -147879,16 +148168,16 @@ competitor alternatives`,
               }
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("div", { style: helpStyle, children: "These keywords help guide the autopilot's optimization decisions and negative keyword suggestions." })
+          /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("div", { style: helpStyle, children: "These keywords help guide the autopilot's optimization decisions and negative keyword suggestions." })
         ] })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("div", { style: sectionStyle, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("h3", { style: legendStyle, children: "AI Behavior Instructions" }),
-        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("p", { style: helpStyle, children: "Choose a business strategy or write custom instructions for the AI" }),
-        /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("div", { style: { marginTop: "12px" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("div", { style: { marginBottom: "12px" }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("label", { style: { marginRight: "16px" }, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+      /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("div", { style: sectionStyle, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("h3", { style: legendStyle, children: "AI Behavior Instructions" }),
+        /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("p", { style: helpStyle, children: "Choose a business strategy or write custom instructions for the AI" }),
+        /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("div", { style: { marginTop: "12px" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("div", { style: { marginBottom: "12px" }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("label", { style: { marginRight: "16px" }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
                 "input",
                 {
                   type: "radio",
@@ -147899,8 +148188,8 @@ competitor alternatives`,
               ),
               "Choose business strategy"
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("label", { children: [
-              /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+            /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("label", { children: [
+              /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
                 "input",
                 {
                   type: "radio",
@@ -147912,8 +148201,8 @@ competitor alternatives`,
               "Write custom instructions"
             ] })
           ] }),
-          aiBehaviorMode === "preset" ? /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("div", { style: { display: "grid", gap: "12px" }, children: suggestions.aiBehavior?.options.map(
-            (option, idx) => /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+          aiBehaviorMode === "preset" ? /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("div", { style: { display: "grid", gap: "12px" }, children: suggestions.aiBehavior?.options.map(
+            (option, idx) => /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
               "label",
               {
                 style: {
@@ -147924,7 +148213,7 @@ competitor alternatives`,
                   cursor: "pointer",
                   backgroundColor: "#fafafa"
                 },
-                children: /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(
+                children: /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(
                   "div",
                   {
                     style: {
@@ -147933,7 +148222,7 @@ competitor alternatives`,
                       gap: "12px"
                     },
                     children: [
-                      /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+                      /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
                         "input",
                         {
                           type: "radio",
@@ -147943,8 +148232,8 @@ competitor alternatives`,
                           style: { marginTop: "4px" }
                         }
                       ),
-                      /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("div", { style: { flex: 1 }, children: [
-                        /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(
+                      /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("div", { style: { flex: 1 }, children: [
+                        /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(
                           "div",
                           {
                             style: {
@@ -147954,8 +148243,8 @@ competitor alternatives`,
                               marginBottom: "6px"
                             },
                             children: [
-                              /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("strong", { style: { fontSize: "16px" }, children: option.label }),
-                              /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+                              /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("strong", { style: { fontSize: "16px" }, children: option.label }),
+                              /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
                                 "span",
                                 {
                                   style: {
@@ -147971,7 +148260,7 @@ competitor alternatives`,
                             ]
                           }
                         ),
-                        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+                        /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
                           "div",
                           {
                             style: {
@@ -147982,7 +148271,7 @@ competitor alternatives`,
                             children: option.description
                           }
                         ),
-                        /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(
+                        /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(
                           "div",
                           {
                             style: {
@@ -148010,7 +148299,7 @@ competitor alternatives`,
               },
               idx
             )
-          ) }) : /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+          ) }) : /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
             "textarea",
             {
               name: "playbook",
@@ -148033,10 +148322,10 @@ competitor alternatives`,
               }
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("div", { style: { ...helpStyle, marginTop: "8px" }, children: "These instructions help the AI understand your business goals and make better optimization decisions." })
+          /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("div", { style: { ...helpStyle, marginTop: "8px" }, children: "These instructions help the AI understand your business goals and make better optimization decisions." })
         ] })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(
+      /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(
         "div",
         {
           style: {
@@ -148049,7 +148338,7 @@ competitor alternatives`,
             marginTop: "20px"
           },
           children: [
-            /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+            /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
               "button",
               {
                 type: "submit",
@@ -148072,7 +148361,7 @@ competitor alternatives`,
                 children: nav.state !== "idle" ? "\u23F3 Saving & Running..." : "\u{1F4BE} Save Settings & Run Optimization"
               }
             ),
-            (buttonFeedback.saveSettings || buttonFeedback.runOptimization) && /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+            (buttonFeedback.saveSettings || buttonFeedback.runOptimization) && /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
               "span",
               {
                 style: {
@@ -148092,7 +148381,7 @@ competitor alternatives`,
         }
       )
     ] }),
-    Array.isArray(preview) && preview.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(
+    Array.isArray(preview) && preview.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(
       "div",
       {
         style: {
@@ -148103,9 +148392,9 @@ competitor alternatives`,
           border: "1px solid #e1e5e9"
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("h3", { children: "SEO Preview" }),
-          /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("p", { style: helpStyle, children: "Here's how your product pages will look after optimization:" }),
-          /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("div", { style: { overflowX: "auto", marginTop: "12px" }, children: /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(
+          /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("h3", { children: "SEO Preview" }),
+          /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("p", { style: helpStyle, children: "Here's how your product pages will look after optimization:" }),
+          /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("div", { style: { overflowX: "auto", marginTop: "12px" }, children: /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(
             "table",
             {
               style: {
@@ -148116,8 +148405,8 @@ competitor alternatives`,
                 overflow: "hidden"
               },
               children: [
-                /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("thead", { children: /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("tr", { style: { backgroundColor: "#f1f3f4" }, children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+                /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("thead", { children: /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("tr", { style: { backgroundColor: "#f1f3f4" }, children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
                     "th",
                     {
                       style: {
@@ -148128,7 +148417,7 @@ competitor alternatives`,
                       children: "Product"
                     }
                   ),
-                  /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+                  /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
                     "th",
                     {
                       style: {
@@ -148139,7 +148428,7 @@ competitor alternatives`,
                       children: "New Title"
                     }
                   ),
-                  /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+                  /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
                     "th",
                     {
                       style: {
@@ -148150,7 +148439,7 @@ competitor alternatives`,
                       children: "New Description"
                     }
                   ),
-                  /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+                  /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
                     "th",
                     {
                       style: {
@@ -148162,8 +148451,8 @@ competitor alternatives`,
                     }
                   )
                 ] }) }),
-                /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("tbody", { children: preview.map((p, i) => /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("tr", { style: { borderBottom: "1px solid #eee" }, children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
+                /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("tbody", { children: preview.map((p, i) => /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("tr", { style: { borderBottom: "1px solid #eee" }, children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
                     "td",
                     {
                       style: {
@@ -148174,9 +148463,9 @@ competitor alternatives`,
                       children: p.productId
                     }
                   ),
-                  /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("td", { style: { padding: "12px" }, children: p.title }),
-                  /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("td", { style: { padding: "12px" }, children: p.description }),
-                  /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("td", { style: { padding: "12px", fontStyle: "italic" }, children: p.images?.[0]?.altText || "(no alt text)" })
+                  /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("td", { style: { padding: "12px" }, children: p.title }),
+                  /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("td", { style: { padding: "12px" }, children: p.description }),
+                  /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("td", { style: { padding: "12px", fontStyle: "italic" }, children: p.images?.[0]?.altText || "(no alt text)" })
                 ] }, i)) })
               ]
             }
@@ -148193,19 +148482,19 @@ __export(app_insights_exports, {
   default: () => Insights,
   loader: () => loader12
 });
-var React25 = __toESM(require_react()), import_node11 = __toESM(require_dist4()), import_react32 = __toESM(require_dist2());
+var React25 = __toESM(require_react()), import_node11 = __toESM(require_dist4()), import_react33 = __toESM(require_dist2());
 
 // app/components/AnalyticsTier.tsx
-var import_react29 = __toESM(require_react()), import_polaris13 = __toESM(require_cjs3());
-var import_jsx_runtime23 = __toESM(require_jsx_runtime());
+var import_react30 = __toESM(require_react()), import_polaris14 = __toESM(require_cjs3());
+var import_jsx_runtime24 = __toESM(require_jsx_runtime());
 function AnalyticsTier({
   tenant,
   data,
   onDataRefresh,
   onUpgrade
 }) {
-  let [realTimeData, setRealTimeData] = (0, import_react29.useState)(null), [loading, setLoading] = (0, import_react29.useState)(!1), [lastUpdate, setLastUpdate] = (0, import_react29.useState)(/* @__PURE__ */ new Date()), tier = data.tierInfo?.tier || "starter", isRealTimeEnabled = data.tierInfo?.realTimeEnabled || !1, refreshInterval = data.tierInfo?.refreshInterval || 3e5;
-  (0, import_react29.useEffect)(() => {
+  let [realTimeData, setRealTimeData] = (0, import_react30.useState)(null), [loading, setLoading] = (0, import_react30.useState)(!1), [lastUpdate, setLastUpdate] = (0, import_react30.useState)(/* @__PURE__ */ new Date()), tier = data.tierInfo?.tier || "starter", isRealTimeEnabled = data.tierInfo?.realTimeEnabled || !1, refreshInterval = data.tierInfo?.refreshInterval || 3e5;
+  (0, import_react30.useEffect)(() => {
     if (!isRealTimeEnabled)
       return;
     let interval = setInterval(async () => {
@@ -148233,110 +148522,110 @@ function AnalyticsTier({
     currency: "USD"
   }).format(amount), formatNumber = (num) => new Intl.NumberFormat("en-US").format(num), renderBasicKPIs = () => {
     let { kpi } = data;
-    return /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(import_polaris13.Grid, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(import_polaris13.Grid.Cell, { columnSpan: { xs: 6, sm: 3, md: 2, lg: 2, xl: 2 }, children: /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(import_polaris13.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(import_polaris13.LegacyStack, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(import_polaris13.Text, { variant: "headingMd", children: "Clicks" }),
-        /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(import_polaris13.Text, { variant: "heading2xl", as: "h2", children: formatNumber(kpi.clicks) }),
-        /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(import_polaris13.Text, { variant: "bodyMd", color: "subdued", children: "Total clicks" })
+    return /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(import_polaris14.Grid, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_polaris14.Grid.Cell, { columnSpan: { xs: 6, sm: 3, md: 2, lg: 2, xl: 2 }, children: /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_polaris14.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(import_polaris14.LegacyStack, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_polaris14.Text, { variant: "headingMd", children: "Clicks" }),
+        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_polaris14.Text, { variant: "heading2xl", as: "h2", children: formatNumber(kpi.clicks) }),
+        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_polaris14.Text, { variant: "bodyMd", color: "subdued", children: "Total clicks" })
       ] }) }) }),
-      /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(import_polaris13.Grid.Cell, { columnSpan: { xs: 6, sm: 3, md: 2, lg: 2, xl: 2 }, children: /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(import_polaris13.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(import_polaris13.LegacyStack, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(import_polaris13.Text, { variant: "headingMd", children: "Cost" }),
-        /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(import_polaris13.Text, { variant: "heading2xl", as: "h2", children: formatCurrency(kpi.cost) }),
-        /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(import_polaris13.Text, { variant: "bodyMd", color: "subdued", children: "Total spend" })
+      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_polaris14.Grid.Cell, { columnSpan: { xs: 6, sm: 3, md: 2, lg: 2, xl: 2 }, children: /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_polaris14.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(import_polaris14.LegacyStack, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_polaris14.Text, { variant: "headingMd", children: "Cost" }),
+        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_polaris14.Text, { variant: "heading2xl", as: "h2", children: formatCurrency(kpi.cost) }),
+        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_polaris14.Text, { variant: "bodyMd", color: "subdued", children: "Total spend" })
       ] }) }) }),
-      /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(import_polaris13.Grid.Cell, { columnSpan: { xs: 6, sm: 3, md: 2, lg: 2, xl: 2 }, children: /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(import_polaris13.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(import_polaris13.LegacyStack, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(import_polaris13.Text, { variant: "headingMd", children: "Conversions" }),
-        /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(import_polaris13.Text, { variant: "heading2xl", as: "h2", children: formatNumber(kpi.conversions) }),
-        /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(import_polaris13.Text, { variant: "bodyMd", color: "subdued", children: "Total conversions" })
+      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_polaris14.Grid.Cell, { columnSpan: { xs: 6, sm: 3, md: 2, lg: 2, xl: 2 }, children: /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_polaris14.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(import_polaris14.LegacyStack, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_polaris14.Text, { variant: "headingMd", children: "Conversions" }),
+        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_polaris14.Text, { variant: "heading2xl", as: "h2", children: formatNumber(kpi.conversions) }),
+        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_polaris14.Text, { variant: "bodyMd", color: "subdued", children: "Total conversions" })
       ] }) }) }),
-      /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(import_polaris13.Grid.Cell, { columnSpan: { xs: 6, sm: 3, md: 2, lg: 2, xl: 2 }, children: /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(import_polaris13.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(import_polaris13.LegacyStack, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(import_polaris13.Text, { variant: "headingMd", children: "CTR" }),
-        /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(import_polaris13.Text, { variant: "heading2xl", as: "h2", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_polaris14.Grid.Cell, { columnSpan: { xs: 6, sm: 3, md: 2, lg: 2, xl: 2 }, children: /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_polaris14.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(import_polaris14.LegacyStack, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_polaris14.Text, { variant: "headingMd", children: "CTR" }),
+        /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(import_polaris14.Text, { variant: "heading2xl", as: "h2", children: [
           (kpi.ctr * 100).toFixed(2),
           "%"
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(import_polaris13.Text, { variant: "bodyMd", color: "subdued", children: "Click-through rate" })
+        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_polaris14.Text, { variant: "bodyMd", color: "subdued", children: "Click-through rate" })
       ] }) }) }),
-      /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(import_polaris13.Grid.Cell, { columnSpan: { xs: 6, sm: 3, md: 2, lg: 2, xl: 2 }, children: /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(import_polaris13.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(import_polaris13.LegacyStack, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(import_polaris13.Text, { variant: "headingMd", children: "CPC" }),
-        /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(import_polaris13.Text, { variant: "heading2xl", as: "h2", children: formatCurrency(kpi.cpc) }),
-        /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(import_polaris13.Text, { variant: "bodyMd", color: "subdued", children: "Cost per click" })
+      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_polaris14.Grid.Cell, { columnSpan: { xs: 6, sm: 3, md: 2, lg: 2, xl: 2 }, children: /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_polaris14.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(import_polaris14.LegacyStack, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_polaris14.Text, { variant: "headingMd", children: "CPC" }),
+        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_polaris14.Text, { variant: "heading2xl", as: "h2", children: formatCurrency(kpi.cpc) }),
+        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_polaris14.Text, { variant: "bodyMd", color: "subdued", children: "Cost per click" })
       ] }) }) }),
-      /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(import_polaris13.Grid.Cell, { columnSpan: { xs: 6, sm: 3, md: 2, lg: 2, xl: 2 }, children: /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(import_polaris13.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(import_polaris13.LegacyStack, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(import_polaris13.Text, { variant: "headingMd", children: "CPA" }),
-        /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(import_polaris13.Text, { variant: "heading2xl", as: "h2", children: formatCurrency(kpi.cpa) }),
-        /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(import_polaris13.Text, { variant: "bodyMd", color: "subdued", children: "Cost per acquisition" })
+      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_polaris14.Grid.Cell, { columnSpan: { xs: 6, sm: 3, md: 2, lg: 2, xl: 2 }, children: /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_polaris14.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(import_polaris14.LegacyStack, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_polaris14.Text, { variant: "headingMd", children: "CPA" }),
+        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_polaris14.Text, { variant: "heading2xl", as: "h2", children: formatCurrency(kpi.cpa) }),
+        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_polaris14.Text, { variant: "bodyMd", color: "subdued", children: "Cost per acquisition" })
       ] }) }) })
     ] });
   }, renderROASMetrics = () => {
     if (!data.roas?.basic)
       return null;
     let { basic, advanced } = data.roas;
-    return /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(import_polaris13.Card, { sectioned: !0, children: /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(import_polaris13.LegacyStack, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(import_polaris13.LegacyStack, { horizontal: !0, alignment: "center", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(import_polaris13.Text, { variant: "headingLg", children: "ROAS Analytics" }),
-        /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(import_polaris13.Badge, { status: getTierBadgeColor(tier), children: getTierDisplayName(tier) })
+    return /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_polaris14.Card, { sectioned: !0, children: /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(import_polaris14.LegacyStack, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(import_polaris14.LegacyStack, { horizontal: !0, alignment: "center", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_polaris14.Text, { variant: "headingLg", children: "ROAS Analytics" }),
+        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_polaris14.Badge, { status: getTierBadgeColor(tier), children: getTierDisplayName(tier) })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(import_polaris13.Grid, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(import_polaris13.Grid.Cell, { columnSpan: { xs: 6, sm: 3, md: 4, lg: 4, xl: 4 }, children: /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(import_polaris13.LegacyStack, { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(import_polaris13.Text, { variant: "headingMd", children: "Basic ROAS" }),
-          /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(import_polaris13.Text, { variant: "heading2xl", as: "h2", color: basic.roas >= 2 ? "success" : "critical", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(import_polaris14.Grid, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_polaris14.Grid.Cell, { columnSpan: { xs: 6, sm: 3, md: 4, lg: 4, xl: 4 }, children: /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(import_polaris14.LegacyStack, { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_polaris14.Text, { variant: "headingMd", children: "Basic ROAS" }),
+          /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(import_polaris14.Text, { variant: "heading2xl", as: "h2", color: basic.roas >= 2 ? "success" : "critical", children: [
             basic.roas.toFixed(2),
             "x"
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(import_polaris13.Text, { variant: "bodyMd", color: "subdued", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(import_polaris14.Text, { variant: "bodyMd", color: "subdued", children: [
             "Revenue: ",
             formatCurrency(basic.revenue)
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(import_polaris13.Text, { variant: "bodyMd", color: "subdued", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(import_polaris14.Text, { variant: "bodyMd", color: "subdued", children: [
             "Profit: ",
             formatCurrency(basic.profit)
           ] })
         ] }) }),
-        advanced && tier !== "starter" && /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(import_jsx_runtime23.Fragment, { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(import_polaris13.Grid.Cell, { columnSpan: { xs: 6, sm: 3, md: 4, lg: 4, xl: 4 }, children: /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(import_polaris13.LegacyStack, { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(import_polaris13.LegacyStack, { horizontal: !0, alignment: "center", children: [
-              /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(import_polaris13.Text, { variant: "headingMd", children: "LTV ROAS" }),
-              /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(import_polaris13.Tooltip, { content: "Lifetime Value based ROAS calculation", children: /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(import_polaris13.Button, { plain: !0, monochrome: !0, icon: SvgViewIcon }) })
+        advanced && tier !== "starter" && /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(import_jsx_runtime24.Fragment, { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_polaris14.Grid.Cell, { columnSpan: { xs: 6, sm: 3, md: 4, lg: 4, xl: 4 }, children: /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(import_polaris14.LegacyStack, { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(import_polaris14.LegacyStack, { horizontal: !0, alignment: "center", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_polaris14.Text, { variant: "headingMd", children: "LTV ROAS" }),
+              /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_polaris14.Tooltip, { content: "Lifetime Value based ROAS calculation", children: /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_polaris14.Button, { plain: !0, monochrome: !0, icon: SvgViewIcon }) })
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(import_polaris13.Text, { variant: "heading2xl", as: "h2", color: advanced.ltvRoas >= 4 ? "success" : "warning", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(import_polaris14.Text, { variant: "heading2xl", as: "h2", color: advanced.ltvRoas >= 4 ? "success" : "warning", children: [
               advanced.ltvRoas.toFixed(2),
               "x"
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(import_polaris13.Text, { variant: "bodyMd", color: "subdued", children: "Long-term profitability" })
+            /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_polaris14.Text, { variant: "bodyMd", color: "subdued", children: "Long-term profitability" })
           ] }) }),
-          /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(import_polaris13.Grid.Cell, { columnSpan: { xs: 6, sm: 3, md: 4, lg: 4, xl: 4 }, children: /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(import_polaris13.LegacyStack, { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(import_polaris13.LegacyStack, { horizontal: !0, alignment: "center", children: [
-              /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(import_polaris13.Text, { variant: "headingMd", children: "Margin ROAS" }),
-              /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(import_polaris13.Tooltip, { content: "Profit margin adjusted ROAS", children: /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(import_polaris13.Button, { plain: !0, monochrome: !0, icon: SvgChartLineIcon }) })
+          /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_polaris14.Grid.Cell, { columnSpan: { xs: 6, sm: 3, md: 4, lg: 4, xl: 4 }, children: /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(import_polaris14.LegacyStack, { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(import_polaris14.LegacyStack, { horizontal: !0, alignment: "center", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_polaris14.Text, { variant: "headingMd", children: "Margin ROAS" }),
+              /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_polaris14.Tooltip, { content: "Profit margin adjusted ROAS", children: /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_polaris14.Button, { plain: !0, monochrome: !0, icon: SvgChartLineIcon }) })
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(import_polaris13.Text, { variant: "heading2xl", as: "h2", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(import_polaris14.Text, { variant: "heading2xl", as: "h2", children: [
               advanced.marginRoas.toFixed(2),
               "x"
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(import_polaris13.Text, { variant: "bodyMd", color: "subdued", children: "After-margin profitability" })
+            /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_polaris14.Text, { variant: "bodyMd", color: "subdued", children: "After-margin profitability" })
           ] }) })
         ] })
       ] })
     ] }) });
-  }, renderRealTimeStatus = () => isRealTimeEnabled ? /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(import_polaris13.Card, { sectioned: !0, children: /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(import_polaris13.LegacyStack, { horizontal: !0, alignment: "center", distribution: "equalSpacing", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(import_polaris13.LegacyStack, { horizontal: !0, alignment: "center", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("div", { style: {
+  }, renderRealTimeStatus = () => isRealTimeEnabled ? /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_polaris14.Card, { sectioned: !0, children: /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(import_polaris14.LegacyStack, { horizontal: !0, alignment: "center", distribution: "equalSpacing", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(import_polaris14.LegacyStack, { horizontal: !0, alignment: "center", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("div", { style: {
         width: 8,
         height: 8,
         borderRadius: "50%",
         backgroundColor: "#00A47C",
         animation: "pulse 2s infinite"
       } }),
-      /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(import_polaris13.Text, { variant: "bodyMd", color: "success", children: "Real-time updates active" })
+      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_polaris14.Text, { variant: "bodyMd", color: "success", children: "Real-time updates active" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(import_polaris13.LegacyStack, { horizontal: !0, alignment: "center", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(import_polaris13.Text, { variant: "bodySm", color: "subdued", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(import_polaris14.LegacyStack, { horizontal: !0, alignment: "center", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(import_polaris14.Text, { variant: "bodySm", color: "subdued", children: [
         "Last update: ",
         lastUpdate.toLocaleTimeString()
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
-        import_polaris13.Button,
+      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(
+        import_polaris14.Button,
         {
           plain: !0,
           onClick: onDataRefresh,
@@ -148346,33 +148635,33 @@ function AnalyticsTier({
         }
       )
     ] })
-  ] }) }) : null, renderUpgradePrompts = () => !data.upgradePrompts || data.upgradePrompts.length === 0 ? null : /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(import_polaris13.LegacyStack, { sectioned: !0, children: data.upgradePrompts.map((prompt, index) => /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
-    import_polaris13.Banner,
+  ] }) }) : null, renderUpgradePrompts = () => !data.upgradePrompts || data.upgradePrompts.length === 0 ? null : /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_polaris14.LegacyStack, { sectioned: !0, children: data.upgradePrompts.map((prompt, index) => /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(
+    import_polaris14.Banner,
     {
       status: "info",
       action: {
         content: `Upgrade to ${getTierDisplayName(prompt.requiredTier)}`,
         onAction: () => onUpgrade?.(prompt.requiredTier)
       },
-      children: /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(import_polaris13.Text, { variant: "bodyMd", children: prompt.message })
+      children: /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_polaris14.Text, { variant: "bodyMd", children: prompt.message })
     },
     index
-  )) }), renderTierStatus = () => /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(import_polaris13.Card, { sectioned: !0, children: /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(import_polaris13.LegacyStack, { horizontal: !0, alignment: "center", distribution: "equalSpacing", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(import_polaris13.LegacyStack, { horizontal: !0, alignment: "center", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(import_polaris13.Text, { variant: "headingMd", children: "Analytics Tier" }),
-      /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(import_polaris13.Badge, { status: getTierBadgeColor(tier), children: getTierDisplayName(tier) })
+  )) }), renderTierStatus = () => /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_polaris14.Card, { sectioned: !0, children: /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(import_polaris14.LegacyStack, { horizontal: !0, alignment: "center", distribution: "equalSpacing", children: [
+    /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(import_polaris14.LegacyStack, { horizontal: !0, alignment: "center", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_polaris14.Text, { variant: "headingMd", children: "Analytics Tier" }),
+      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_polaris14.Badge, { status: getTierBadgeColor(tier), children: getTierDisplayName(tier) })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(import_polaris13.LegacyStack, { horizontal: !0, alignment: "center", children: [
-      tier !== "enterprise" && /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
-        import_polaris13.Button,
+    /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(import_polaris14.LegacyStack, { horizontal: !0, alignment: "center", children: [
+      tier !== "enterprise" && /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(
+        import_polaris14.Button,
         {
           primary: !0,
           onClick: () => onUpgrade?.(tier === "starter" ? "professional" : "enterprise"),
           children: tier === "starter" ? "Upgrade to Professional" : "Upgrade to Enterprise"
         }
       ),
-      /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(
-        import_polaris13.Button,
+      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(
+        import_polaris14.Button,
         {
           plain: !0,
           icon: SvgSettingsIcon,
@@ -148390,30 +148679,30 @@ function AnalyticsTier({
       professional: ["Real-time analytics", "Advanced ROAS", "Weekly reports", "Attribution modeling"],
       enterprise: ["Custom dashboards", "Custom ROAS models", "Daily reports", "Multi-touch attribution"]
     }, nextTier = tier === "starter" ? "professional" : "enterprise";
-    return /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(import_polaris13.Card, { sectioned: !0, children: /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(import_polaris13.LegacyStack, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(import_polaris13.Text, { variant: "headingMd", children: "Unlock More Analytics Features" }),
-      /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(import_polaris13.Grid, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(import_polaris13.Grid.Cell, { columnSpan: { xs: 6, sm: 6, md: 6, lg: 6, xl: 6 }, children: /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(import_polaris13.LegacyStack, { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(import_polaris13.Text, { variant: "headingXs", children: [
+    return /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_polaris14.Card, { sectioned: !0, children: /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(import_polaris14.LegacyStack, { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_polaris14.Text, { variant: "headingMd", children: "Unlock More Analytics Features" }),
+      /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(import_polaris14.Grid, { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_polaris14.Grid.Cell, { columnSpan: { xs: 6, sm: 6, md: 6, lg: 6, xl: 6 }, children: /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(import_polaris14.LegacyStack, { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(import_polaris14.Text, { variant: "headingXs", children: [
             "Current Plan: ",
             getTierDisplayName(tier)
           ] }),
-          features[tier].map((feature, index) => /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(import_polaris13.Text, { variant: "bodyMd", color: "subdued", children: [
+          features[tier].map((feature, index) => /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(import_polaris14.Text, { variant: "bodyMd", color: "subdued", children: [
             "\u2713 ",
             feature
           ] }, index))
         ] }) }),
-        /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(import_polaris13.Grid.Cell, { columnSpan: { xs: 6, sm: 6, md: 6, lg: 6, xl: 6 }, children: /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(import_polaris13.LegacyStack, { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(import_polaris13.Text, { variant: "headingXs", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_polaris14.Grid.Cell, { columnSpan: { xs: 6, sm: 6, md: 6, lg: 6, xl: 6 }, children: /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(import_polaris14.LegacyStack, { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(import_polaris14.Text, { variant: "headingXs", children: [
             getTierDisplayName(nextTier),
             " Plan"
           ] }),
-          features[nextTier].map((feature, index) => /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(import_polaris13.Text, { variant: "bodyMd", children: [
+          features[nextTier].map((feature, index) => /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(import_polaris14.Text, { variant: "bodyMd", children: [
             "\u2713 ",
             feature
           ] }, index)),
-          /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(
-            import_polaris13.Button,
+          /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(
+            import_polaris14.Button,
             {
               primary: !0,
               size: "slim",
@@ -148428,7 +148717,7 @@ function AnalyticsTier({
       ] })
     ] }) });
   };
-  return /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(import_polaris13.Layout, { children: /* @__PURE__ */ (0, import_jsx_runtime23.jsx)(import_polaris13.Layout.Section, { children: /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)(import_polaris13.LegacyStack, { children: [
+  return /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_polaris14.Layout, { children: /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(import_polaris14.Layout.Section, { children: /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(import_polaris14.LegacyStack, { children: [
     renderTierStatus(),
     renderUpgradePrompts(),
     renderRealTimeStatus(),
@@ -148439,9 +148728,9 @@ function AnalyticsTier({
 }
 
 // app/components/AIStatusIndicator.tsx
-var import_react30 = __toESM(require_react()), import_jsx_runtime24 = __toESM(require_jsx_runtime());
+var import_react31 = __toESM(require_react()), import_jsx_runtime25 = __toESM(require_jsx_runtime());
 function AIStatusIndicator({ shopName, compact = !1, showTokenUsage = !1 }) {
-  let [status, setStatus] = (0, import_react30.useState)(null), [tokenUsage, setTokenUsage] = (0, import_react30.useState)(null), [loading, setLoading] = (0, import_react30.useState)(!1), [expanded, setExpanded] = (0, import_react30.useState)(!1), fetchAIStatus = async () => {
+  let [status, setStatus] = (0, import_react31.useState)(null), [tokenUsage, setTokenUsage] = (0, import_react31.useState)(null), [loading, setLoading] = (0, import_react31.useState)(!1), [expanded, setExpanded] = (0, import_react31.useState)(!1), fetchAIStatus = async () => {
     if (shopName) {
       setLoading(!0);
       try {
@@ -148464,7 +148753,7 @@ function AIStatusIndicator({ shopName, compact = !1, showTokenUsage = !1 }) {
       }
     }
   };
-  (0, import_react30.useEffect)(() => {
+  (0, import_react31.useEffect)(() => {
     if (shopName) {
       fetchAIStatus();
       let interval = setInterval(fetchAIStatus, 3e4);
@@ -148493,7 +148782,7 @@ function AIStatusIndicator({ shopName, compact = !1, showTokenUsage = !1 }) {
     return usagePercent > 90 ? { status: "critical", color: "#dc2626", message: "Near budget limit" } : usagePercent > 70 ? { status: "warning", color: "#d97706", message: "High usage" } : { status: "normal", color: "#28a745", message: "Normal usage" };
   };
   if (loading && !status)
-    return /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("div", { style: {
+    return /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("div", { style: {
       display: "inline-flex",
       alignItems: "center",
       gap: "4px",
@@ -148504,11 +148793,11 @@ function AIStatusIndicator({ shopName, compact = !1, showTokenUsage = !1 }) {
       fontSize: compact ? "10px" : "12px",
       fontWeight: "bold"
     }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("span", { children: "\u23F3" }),
-      !compact && /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("span", { children: "Checking AI..." })
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("span", { children: "\u23F3" }),
+      !compact && /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("span", { children: "Checking AI..." })
     ] });
   if (!status)
-    return /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("div", { style: {
+    return /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("div", { style: {
       display: "inline-flex",
       alignItems: "center",
       gap: "4px",
@@ -148519,11 +148808,11 @@ function AIStatusIndicator({ shopName, compact = !1, showTokenUsage = !1 }) {
       fontSize: compact ? "10px" : "12px",
       fontWeight: "bold"
     }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("span", { children: "\u2753" }),
-      !compact && /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("span", { children: "AI Status Unknown" })
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("span", { children: "\u2753" }),
+      !compact && /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("span", { children: "AI Status Unknown" })
     ] });
   let overallStatus = getStatusColor(status.overall), activeAlerts = status.tenant?.alerts?.filter((alert2) => alert2.active) || [], tokenStatus = getTokenUsageStatus();
-  return compact ? /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)(
+  return compact ? /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)(
     "div",
     {
       style: {
@@ -148542,9 +148831,9 @@ function AIStatusIndicator({ shopName, compact = !1, showTokenUsage = !1 }) {
       onClick: () => !expanded && setExpanded(!0),
       title: `AI Status: ${status.overall} \u2022 Click for details`,
       children: [
-        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("span", { children: overallStatus.icon }),
-        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("span", { children: "AI" }),
-        activeAlerts.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("span", { style: {
+        /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("span", { children: overallStatus.icon }),
+        /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("span", { children: "AI" }),
+        activeAlerts.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("span", { style: {
           background: "#dc2626",
           color: "white",
           borderRadius: "50%",
@@ -148555,7 +148844,7 @@ function AIStatusIndicator({ shopName, compact = !1, showTokenUsage = !1 }) {
           alignItems: "center",
           justifyContent: "center"
         }, children: activeAlerts.length }),
-        expanded && /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("div", { style: {
+        expanded && /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("div", { style: {
           position: "absolute",
           top: "100%",
           right: 0,
@@ -148569,9 +148858,9 @@ function AIStatusIndicator({ shopName, compact = !1, showTokenUsage = !1 }) {
           zIndex: 1e3,
           fontSize: "11px"
         }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("strong", { children: "AI System Status" }),
-            /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("strong", { children: "AI System Status" }),
+            /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(
               "button",
               {
                 onClick: (e) => {
@@ -148588,30 +148877,30 @@ function AIStatusIndicator({ shopName, compact = !1, showTokenUsage = !1 }) {
               }
             )
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("div", { style: { display: "grid", gap: "4px", marginBottom: "8px" }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("div", { style: { display: "flex", justifyContent: "space-between" }, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("span", { children: "Overall:" }),
-              /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("span", { style: { color: overallStatus.color, fontWeight: "bold" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("div", { style: { display: "grid", gap: "4px", marginBottom: "8px" }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("div", { style: { display: "flex", justifyContent: "space-between" }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("span", { children: "Overall:" }),
+              /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("span", { style: { color: overallStatus.color, fontWeight: "bold" }, children: [
                 overallStatus.icon,
                 " ",
                 status.overall
               ] })
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("div", { style: { display: "flex", justifyContent: "space-between" }, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("span", { children: "Provider:" }),
-              /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("span", { style: { color: getStatusColor(status.services?.aiProvider?.status).color }, children: status.services?.aiProvider?.status || "unknown" })
+            /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("div", { style: { display: "flex", justifyContent: "space-between" }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("span", { children: "Provider:" }),
+              /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("span", { style: { color: getStatusColor(status.services?.aiProvider?.status).color }, children: status.services?.aiProvider?.status || "unknown" })
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("div", { style: { display: "flex", justifyContent: "space-between" }, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("span", { children: "Automation:" }),
-              /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("span", { style: { color: getStatusColor(status.services?.automation?.status).color }, children: status.services?.automation?.status || "unknown" })
+            /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("div", { style: { display: "flex", justifyContent: "space-between" }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("span", { children: "Automation:" }),
+              /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("span", { style: { color: getStatusColor(status.services?.automation?.status).color }, children: status.services?.automation?.status || "unknown" })
             ] })
           ] }),
-          showTokenUsage && tokenStatus && /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("div", { style: { marginBottom: "8px", paddingTop: "4px", borderTop: "1px solid #e1e3e5" }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center" }, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("span", { children: "Token Usage:" }),
-              /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("span", { style: { color: tokenStatus.color, fontWeight: "bold", fontSize: "10px" }, children: tokenStatus.message })
+          showTokenUsage && tokenStatus && /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("div", { style: { marginBottom: "8px", paddingTop: "4px", borderTop: "1px solid #e1e3e5" }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center" }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("span", { children: "Token Usage:" }),
+              /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("span", { style: { color: tokenStatus.color, fontWeight: "bold", fontSize: "10px" }, children: tokenStatus.message })
             ] }),
-            tokenUsage && /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("div", { style: { fontSize: "10px", color: "#666", marginTop: "2px" }, children: [
+            tokenUsage && /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("div", { style: { fontSize: "10px", color: "#666", marginTop: "2px" }, children: [
               "$",
               tokenUsage.current?.daily?.cost?.toFixed(2) || "0.00",
               " / $",
@@ -148619,17 +148908,17 @@ function AIStatusIndicator({ shopName, compact = !1, showTokenUsage = !1 }) {
               " daily"
             ] })
           ] }),
-          activeAlerts.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("div", { style: { paddingTop: "4px", borderTop: "1px solid #e1e3e5" }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("div", { style: { fontWeight: "bold", marginBottom: "4px", color: "#dc2626" }, children: [
+          activeAlerts.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("div", { style: { paddingTop: "4px", borderTop: "1px solid #e1e3e5" }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("div", { style: { fontWeight: "bold", marginBottom: "4px", color: "#dc2626" }, children: [
               "Alerts (",
               activeAlerts.length,
               "):"
             ] }),
-            activeAlerts.slice(0, 3).map((alert2, index) => /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("div", { style: { fontSize: "10px", color: "#dc2626", marginBottom: "2px" }, children: [
+            activeAlerts.slice(0, 3).map((alert2, index) => /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("div", { style: { fontSize: "10px", color: "#dc2626", marginBottom: "2px" }, children: [
               "\u2022 ",
               alert2.message
             ] }, index)),
-            activeAlerts.length > 3 && /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("div", { style: { fontSize: "10px", color: "#666", fontStyle: "italic" }, children: [
+            activeAlerts.length > 3 && /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("div", { style: { fontSize: "10px", color: "#666", fontStyle: "italic" }, children: [
               "+",
               activeAlerts.length - 3,
               " more alerts"
@@ -148638,15 +148927,15 @@ function AIStatusIndicator({ shopName, compact = !1, showTokenUsage = !1 }) {
         ] })
       ]
     }
-  ) : /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("div", { style: {
+  ) : /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("div", { style: {
     padding: "12px",
     border: "1px solid #e1e3e5",
     borderRadius: "6px",
     background: "white"
   }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("h3", { style: { margin: 0, fontSize: "14px", fontWeight: "bold" }, children: "AI System Status" }),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsx)(
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("h3", { style: { margin: 0, fontSize: "14px", fontWeight: "bold" }, children: "AI System Status" }),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(
         "button",
         {
           onClick: fetchAIStatus,
@@ -148664,10 +148953,10 @@ function AIStatusIndicator({ shopName, compact = !1, showTokenUsage = !1 }) {
         }
       )
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("div", { style: { display: "grid", gap: "8px" }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center" }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("span", { style: { fontSize: "12px" }, children: "Overall Health:" }),
-        /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("span", { style: {
+    /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("div", { style: { display: "grid", gap: "8px" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("span", { style: { fontSize: "12px" }, children: "Overall Health:" }),
+        /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("span", { style: {
           padding: "2px 8px",
           borderRadius: "12px",
           fontSize: "10px",
@@ -148680,43 +148969,43 @@ function AIStatusIndicator({ shopName, compact = !1, showTokenUsage = !1 }) {
           status.overall
         ] })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px", fontSize: "11px" }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("div", { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("div", { style: { color: "#666", marginBottom: "2px" }, children: "AI Provider" }),
-          /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("div", { style: { color: getStatusColor(status.services?.aiProvider?.status).color, fontWeight: "bold" }, children: status.services?.aiProvider?.status || "unknown" })
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px", fontSize: "11px" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("div", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("div", { style: { color: "#666", marginBottom: "2px" }, children: "AI Provider" }),
+          /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("div", { style: { color: getStatusColor(status.services?.aiProvider?.status).color, fontWeight: "bold" }, children: status.services?.aiProvider?.status || "unknown" })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("div", { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("div", { style: { color: "#666", marginBottom: "2px" }, children: "Automation" }),
-          /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("div", { style: { color: getStatusColor(status.services?.automation?.status).color, fontWeight: "bold" }, children: status.services?.automation?.status || "unknown" })
+        /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("div", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("div", { style: { color: "#666", marginBottom: "2px" }, children: "Automation" }),
+          /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("div", { style: { color: getStatusColor(status.services?.automation?.status).color, fontWeight: "bold" }, children: status.services?.automation?.status || "unknown" })
         ] })
       ] }),
-      showTokenUsage && tokenUsage && /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("div", { style: { paddingTop: "8px", borderTop: "1px solid #e1e3e5" }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("div", { style: { fontSize: "11px", color: "#666", marginBottom: "4px" }, children: "Token Usage (Daily)" }),
-        /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("div", { style: { fontSize: "12px", fontWeight: "bold" }, children: [
+      showTokenUsage && tokenUsage && /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("div", { style: { paddingTop: "8px", borderTop: "1px solid #e1e3e5" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("div", { style: { fontSize: "11px", color: "#666", marginBottom: "4px" }, children: "Token Usage (Daily)" }),
+        /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("div", { style: { fontSize: "12px", fontWeight: "bold" }, children: [
             "$",
             tokenUsage.current?.daily?.cost?.toFixed(2) || "0.00"
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("div", { style: { fontSize: "10px", color: "#666" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("div", { style: { fontSize: "10px", color: "#666" }, children: [
             "/ $",
             tokenUsage.budget?.daily || "0.00",
             " limit"
           ] })
         ] }),
-        tokenStatus && /* @__PURE__ */ (0, import_jsx_runtime24.jsx)("div", { style: { fontSize: "10px", color: tokenStatus.color, marginTop: "2px" }, children: tokenStatus.message })
+        tokenStatus && /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("div", { style: { fontSize: "10px", color: tokenStatus.color, marginTop: "2px" }, children: tokenStatus.message })
       ] }),
-      activeAlerts.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("div", { style: { paddingTop: "8px", borderTop: "1px solid #e1e3e5" }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("div", { style: { fontSize: "11px", color: "#dc2626", fontWeight: "bold", marginBottom: "4px" }, children: [
+      activeAlerts.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("div", { style: { paddingTop: "8px", borderTop: "1px solid #e1e3e5" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("div", { style: { fontSize: "11px", color: "#dc2626", fontWeight: "bold", marginBottom: "4px" }, children: [
           "Active Alerts (",
           activeAlerts.length,
           "):"
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("div", { style: { maxHeight: "60px", overflowY: "auto" }, children: [
-          activeAlerts.slice(0, 5).map((alert2, index) => /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("div", { style: { fontSize: "10px", color: "#dc2626", marginBottom: "2px" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("div", { style: { maxHeight: "60px", overflowY: "auto" }, children: [
+          activeAlerts.slice(0, 5).map((alert2, index) => /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("div", { style: { fontSize: "10px", color: "#dc2626", marginBottom: "2px" }, children: [
             "\u2022 ",
             alert2.message
           ] }, index)),
-          activeAlerts.length > 5 && /* @__PURE__ */ (0, import_jsx_runtime24.jsxs)("div", { style: { fontSize: "10px", color: "#666", fontStyle: "italic" }, children: [
+          activeAlerts.length > 5 && /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("div", { style: { fontSize: "10px", color: "#666", fontStyle: "italic" }, children: [
             "+",
             activeAlerts.length - 5,
             " more alerts"
@@ -148728,13 +149017,13 @@ function AIStatusIndicator({ shopName, compact = !1, showTokenUsage = !1 }) {
 }
 
 // app/components/AIInsights.tsx
-var React24 = __toESM(require_react()), import_react31 = __toESM(require_dist2()), import_jsx_runtime25 = __toESM(require_jsx_runtime()), priorityColors = {
+var React24 = __toESM(require_react()), import_react32 = __toESM(require_dist2()), import_jsx_runtime26 = __toESM(require_jsx_runtime()), priorityColors = {
   high: { bg: "#fee2e2", border: "#dc2626", text: "#dc2626" },
   medium: { bg: "#fef3c7", border: "#d97706", text: "#d97706" },
   low: { bg: "#e0f2fe", border: "#0369a1", text: "#0369a1" }
 };
 function AIInsights({ shopName, period, onRefresh }) {
-  let [insights, setInsights] = React24.useState(null), [loading, setLoading] = React24.useState(!1), [error, setError] = React24.useState(null), [expandedRecommendations, setExpandedRecommendations] = React24.useState(/* @__PURE__ */ new Set()), fetcher = (0, import_react31.useFetcher)();
+  let [insights, setInsights] = React24.useState(null), [loading, setLoading] = React24.useState(!1), [error, setError] = React24.useState(null), [expandedRecommendations, setExpandedRecommendations] = React24.useState(/* @__PURE__ */ new Set()), fetcher = (0, import_react32.useFetcher)();
   React24.useEffect(() => {
     shopName && period && loadInsights();
   }, [shopName, period]);
@@ -148766,7 +149055,7 @@ function AIInsights({ shopName, period, onRefresh }) {
     newExpanded.has(id) ? newExpanded.delete(id) : newExpanded.add(id), setExpandedRecommendations(newExpanded);
   };
   if (loading)
-    return /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("div", { style: {
+    return /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("div", { style: {
       background: "white",
       border: "1px solid #e3e3e3",
       borderRadius: "8px",
@@ -148774,8 +149063,8 @@ function AIInsights({ shopName, period, onRefresh }) {
       textAlign: "center",
       marginBottom: "24px"
     }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("div", { style: { color: "#666", marginBottom: "16px" }, children: "\u{1F916} Generating AI insights..." }),
-      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("div", { style: {
+      /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("div", { style: { color: "#666", marginBottom: "16px" }, children: "\u{1F916} Generating AI insights..." }),
+      /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("div", { style: {
         width: "32px",
         height: "32px",
         border: "3px solid #f3f4f6",
@@ -148786,16 +149075,16 @@ function AIInsights({ shopName, period, onRefresh }) {
       } })
     ] });
   if (error)
-    return /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("div", { style: {
+    return /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("div", { style: {
       background: "white",
       border: "1px solid #f87171",
       borderRadius: "8px",
       padding: "24px",
       marginBottom: "24px"
     }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("h3", { style: { color: "#dc2626", margin: "0 0 12px 0", fontSize: "16px", fontWeight: "600" }, children: "AI Insights Unavailable" }),
-      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("p", { style: { color: "#666", margin: "0 0 16px 0", fontSize: "14px" }, children: error }),
-      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(
+      /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("h3", { style: { color: "#dc2626", margin: "0 0 12px 0", fontSize: "16px", fontWeight: "600" }, children: "AI Insights Unavailable" }),
+      /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("p", { style: { color: "#666", margin: "0 0 16px 0", fontSize: "14px" }, children: error }),
+      /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(
         "button",
         {
           onClick: loadInsights,
@@ -148815,8 +149104,8 @@ function AIInsights({ shopName, period, onRefresh }) {
   if (!insights)
     return null;
   let highPriorityCount = insights.recommendations?.filter((r) => r.priority === "high").length || 0, totalSavings = insights.costOptimization?.totalWaste || 0;
-  return /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("div", { style: { marginBottom: "32px" }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("div", { style: {
+  return /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("div", { style: { marginBottom: "32px" }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("div", { style: {
       background: "white",
       border: "1px solid #e3e3e3",
       borderRadius: "8px",
@@ -148824,9 +149113,9 @@ function AIInsights({ shopName, period, onRefresh }) {
       marginBottom: "16px",
       boxShadow: "0 1px 0 rgba(0, 0, 0, 0.05)"
     }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("div", { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("h2", { style: {
+      /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("div", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("h2", { style: {
             fontSize: "20px",
             fontWeight: "600",
             color: "#202223",
@@ -148835,7 +149124,7 @@ function AIInsights({ shopName, period, onRefresh }) {
             alignItems: "center",
             gap: "8px"
           }, children: "\u{1F916} AI-Powered Insights" }),
-          /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("p", { style: { color: "#616161", margin: "0", fontSize: "14px" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("p", { style: { color: "#616161", margin: "0", fontSize: "14px" }, children: [
             "Generated ",
             new Date(insights.timestamp).toLocaleString(),
             " \u2022 ",
@@ -148843,7 +149132,7 @@ function AIInsights({ shopName, period, onRefresh }) {
             " period"
           ] })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(
           "button",
           {
             onClick: loadInsights,
@@ -148863,44 +149152,44 @@ function AIInsights({ shopName, period, onRefresh }) {
           }
         )
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("div", { style: {
+      /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("div", { style: {
         display: "grid",
         gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
         gap: "16px"
       }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("div", { style: {
+        /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("div", { style: {
           background: "#f6f6f7",
           padding: "16px",
           borderRadius: "6px",
           textAlign: "center"
         }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("div", { style: { fontSize: "24px", fontWeight: "700", color: "#202223", marginBottom: "4px" }, children: insights.recommendations?.length || 0 }),
-          /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("div", { style: { fontSize: "12px", color: "#616161", textTransform: "uppercase", letterSpacing: "0.5px" }, children: "Total Recommendations" })
+          /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("div", { style: { fontSize: "24px", fontWeight: "700", color: "#202223", marginBottom: "4px" }, children: insights.recommendations?.length || 0 }),
+          /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("div", { style: { fontSize: "12px", color: "#616161", textTransform: "uppercase", letterSpacing: "0.5px" }, children: "Total Recommendations" })
         ] }),
-        highPriorityCount > 0 && /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("div", { style: {
+        highPriorityCount > 0 && /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("div", { style: {
           background: "#fee2e2",
           padding: "16px",
           borderRadius: "6px",
           textAlign: "center"
         }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("div", { style: { fontSize: "24px", fontWeight: "700", color: "#dc2626", marginBottom: "4px" }, children: highPriorityCount }),
-          /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("div", { style: { fontSize: "12px", color: "#dc2626", textTransform: "uppercase", letterSpacing: "0.5px" }, children: "High Priority Issues" })
+          /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("div", { style: { fontSize: "24px", fontWeight: "700", color: "#dc2626", marginBottom: "4px" }, children: highPriorityCount }),
+          /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("div", { style: { fontSize: "12px", color: "#dc2626", textTransform: "uppercase", letterSpacing: "0.5px" }, children: "High Priority Issues" })
         ] }),
-        totalSavings > 0 && /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("div", { style: {
+        totalSavings > 0 && /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("div", { style: {
           background: "#d1eddd",
           padding: "16px",
           borderRadius: "6px",
           textAlign: "center"
         }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("div", { style: { fontSize: "24px", fontWeight: "700", color: "#28a745", marginBottom: "4px" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("div", { style: { fontSize: "24px", fontWeight: "700", color: "#28a745", marginBottom: "4px" }, children: [
             "$",
             totalSavings.toFixed(0)
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("div", { style: { fontSize: "12px", color: "#28a745", textTransform: "uppercase", letterSpacing: "0.5px" }, children: "Potential Savings" })
+          /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("div", { style: { fontSize: "12px", color: "#28a745", textTransform: "uppercase", letterSpacing: "0.5px" }, children: "Potential Savings" })
         ] })
       ] })
     ] }),
-    insights.recommendations && insights.recommendations.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("div", { style: {
+    insights.recommendations && insights.recommendations.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("div", { style: {
       background: "white",
       border: "1px solid #e3e3e3",
       borderRadius: "8px",
@@ -148908,15 +149197,15 @@ function AIInsights({ shopName, period, onRefresh }) {
       marginBottom: "16px",
       boxShadow: "0 1px 0 rgba(0, 0, 0, 0.05)"
     }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("h3", { style: {
+      /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("h3", { style: {
         fontSize: "16px",
         fontWeight: "600",
         color: "#202223",
         margin: "0 0 16px 0"
       }, children: "Actionable Recommendations" }),
-      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("div", { style: { display: "flex", flexDirection: "column", gap: "16px" }, children: insights.recommendations.slice(0, 5).map((recommendation) => {
+      /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("div", { style: { display: "flex", flexDirection: "column", gap: "16px" }, children: insights.recommendations.slice(0, 5).map((recommendation) => {
         let isExpanded = expandedRecommendations.has(recommendation.id), colors = priorityColors[recommendation.priority];
-        return /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)(
+        return /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)(
           "div",
           {
             style: {
@@ -148926,9 +149215,9 @@ function AIInsights({ shopName, period, onRefresh }) {
               background: colors.bg
             },
             children: [
-              /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "8px" }, children: [
-                /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("div", { children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("div", { style: { display: "flex", alignItems: "center", gap: "8px", marginBottom: "4px" }, children: /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("span", { style: {
+              /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "8px" }, children: [
+                /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("div", { children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("div", { style: { display: "flex", alignItems: "center", gap: "8px", marginBottom: "4px" }, children: /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("span", { style: {
                     fontSize: "12px",
                     fontWeight: "700",
                     color: colors.text,
@@ -148941,15 +149230,15 @@ function AIInsights({ shopName, period, onRefresh }) {
                     recommendation.priority,
                     " PRIORITY"
                   ] }) }),
-                  /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("h4", { style: {
+                  /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("h4", { style: {
                     fontSize: "16px",
                     fontWeight: "600",
                     color: "#202223",
                     margin: "0 0 8px 0"
                   }, children: recommendation.title }),
-                  /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("p", { style: { color: "#666", margin: "0", fontSize: "14px" }, children: recommendation.description })
+                  /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("p", { style: { color: "#666", margin: "0", fontSize: "14px" }, children: recommendation.description })
                 ] }),
-                /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(
+                /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(
                   "button",
                   {
                     onClick: () => toggleRecommendation(recommendation.id),
@@ -148967,31 +149256,31 @@ function AIInsights({ shopName, period, onRefresh }) {
                   }
                 )
               ] }),
-              isExpanded && /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("div", { style: {
+              isExpanded && /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("div", { style: {
                 background: "rgba(255, 255, 255, 0.5)",
                 padding: "16px",
                 borderRadius: "6px",
                 marginTop: "12px"
               }, children: [
-                recommendation.actions && recommendation.actions.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("div", { style: { marginBottom: "12px" }, children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("strong", { style: { color: "#202223", fontSize: "14px" }, children: "Action Items:" }),
-                  /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("ul", { style: { margin: "8px 0", paddingLeft: "20px" }, children: recommendation.actions.map((action11, index) => /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("li", { style: { color: "#666", fontSize: "14px", marginBottom: "4px" }, children: action11 }, index)) })
+                recommendation.actions && recommendation.actions.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("div", { style: { marginBottom: "12px" }, children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("strong", { style: { color: "#202223", fontSize: "14px" }, children: "Action Items:" }),
+                  /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("ul", { style: { margin: "8px 0", paddingLeft: "20px" }, children: recommendation.actions.map((action11, index) => /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("li", { style: { color: "#666", fontSize: "14px", marginBottom: "4px" }, children: action11 }, index)) })
                 ] }),
-                /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("div", { style: { display: "flex", gap: "16px", fontSize: "13px" }, children: [
-                  recommendation.impact && /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("div", { children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("strong", { style: { color: "#202223" }, children: "Impact:" }),
+                /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("div", { style: { display: "flex", gap: "16px", fontSize: "13px" }, children: [
+                  recommendation.impact && /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("div", { children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("strong", { style: { color: "#202223" }, children: "Impact:" }),
                     " ",
-                    /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("span", { style: { color: "#666" }, children: recommendation.impact })
+                    /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("span", { style: { color: "#666" }, children: recommendation.impact })
                   ] }),
-                  recommendation.effort && /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("div", { children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("strong", { style: { color: "#202223" }, children: "Effort:" }),
+                  recommendation.effort && /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("div", { children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("strong", { style: { color: "#202223" }, children: "Effort:" }),
                     " ",
-                    /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("span", { style: { color: "#666" }, children: recommendation.effort })
+                    /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("span", { style: { color: "#666" }, children: recommendation.effort })
                   ] }),
-                  recommendation.expectedSavings && /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("div", { children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("strong", { style: { color: "#28a745" }, children: "Expected Savings:" }),
+                  recommendation.expectedSavings && /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("div", { children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("strong", { style: { color: "#28a745" }, children: "Expected Savings:" }),
                     " ",
-                    /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("span", { style: { color: "#28a745" }, children: recommendation.expectedSavings })
+                    /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("span", { style: { color: "#28a745" }, children: recommendation.expectedSavings })
                   ] })
                 ] })
               ] })
@@ -149000,13 +149289,13 @@ function AIInsights({ shopName, period, onRefresh }) {
           recommendation.id
         );
       }) }),
-      insights.recommendations.length > 5 && /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("div", { style: { textAlign: "center", marginTop: "16px" }, children: /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("p", { style: { color: "#666", fontSize: "14px" }, children: [
+      insights.recommendations.length > 5 && /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("div", { style: { textAlign: "center", marginTop: "16px" }, children: /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("p", { style: { color: "#666", fontSize: "14px" }, children: [
         "Showing 5 of ",
         insights.recommendations.length,
         " recommendations"
       ] }) })
     ] }),
-    insights.performance?.insights && insights.performance.insights.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("div", { style: {
+    insights.performance?.insights && insights.performance.insights.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("div", { style: {
       background: "white",
       border: "1px solid #e3e3e3",
       borderRadius: "8px",
@@ -149014,13 +149303,13 @@ function AIInsights({ shopName, period, onRefresh }) {
       marginBottom: "16px",
       boxShadow: "0 1px 0 rgba(0, 0, 0, 0.05)"
     }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("h3", { style: {
+      /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("h3", { style: {
         fontSize: "16px",
         fontWeight: "600",
         color: "#202223",
         margin: "0 0 16px 0"
       }, children: "Performance Analysis" }),
-      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("div", { style: { display: "flex", flexDirection: "column", gap: "12px" }, children: insights.performance.insights.map((insight, index) => /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)(
+      /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("div", { style: { display: "flex", flexDirection: "column", gap: "12px" }, children: insights.performance.insights.map((insight, index) => /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)(
         "div",
         {
           style: {
@@ -149030,14 +149319,14 @@ function AIInsights({ shopName, period, onRefresh }) {
             borderLeft: "4px solid #008060"
           },
           children: [
-            /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("div", { style: {
+            /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("div", { style: {
               fontSize: "14px",
               fontWeight: "600",
               color: "#202223",
               marginBottom: "8px"
             }, children: insight.title }),
-            /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("div", { style: { color: "#666", fontSize: "14px", marginBottom: "8px" }, children: insight.description }),
-            insight.action && /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("div", { style: {
+            /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("div", { style: { color: "#666", fontSize: "14px", marginBottom: "8px" }, children: insight.description }),
+            insight.action && /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("div", { style: {
               fontSize: "13px",
               color: "#008060",
               fontWeight: "500"
@@ -149050,20 +149339,20 @@ function AIInsights({ shopName, period, onRefresh }) {
         index
       )) })
     ] }),
-    insights.costOptimization?.quickWins && insights.costOptimization.quickWins.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("div", { style: {
+    insights.costOptimization?.quickWins && insights.costOptimization.quickWins.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("div", { style: {
       background: "white",
       border: "1px solid #e3e3e3",
       borderRadius: "8px",
       padding: "24px",
       boxShadow: "0 1px 0 rgba(0, 0, 0, 0.05)"
     }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("h3", { style: {
+      /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("h3", { style: {
         fontSize: "16px",
         fontWeight: "600",
         color: "#202223",
         margin: "0 0 16px 0"
       }, children: "\u26A1 Quick Wins" }),
-      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "16px" }, children: insights.costOptimization.quickWins.map((win, index) => /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)(
+      /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "16px" }, children: insights.costOptimization.quickWins.map((win, index) => /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)(
         "div",
         {
           style: {
@@ -149073,26 +149362,26 @@ function AIInsights({ shopName, period, onRefresh }) {
             borderRadius: "6px"
           },
           children: [
-            /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("div", { style: {
+            /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("div", { style: {
               fontSize: "14px",
               fontWeight: "600",
               color: "#1976d2",
               marginBottom: "8px"
             }, children: win.title }),
-            /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("div", { style: { color: "#666", fontSize: "14px", marginBottom: "12px" }, children: win.description }),
-            /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("div", { style: { display: "flex", justifyContent: "space-between", fontSize: "12px" }, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("span", { style: { color: "#666" }, children: [
-                /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("strong", { children: "Effort:" }),
+            /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("div", { style: { color: "#666", fontSize: "14px", marginBottom: "12px" }, children: win.description }),
+            /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("div", { style: { display: "flex", justifyContent: "space-between", fontSize: "12px" }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("span", { style: { color: "#666" }, children: [
+                /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("strong", { children: "Effort:" }),
                 " ",
                 win.effort
               ] }),
-              /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("span", { style: { color: "#1976d2" }, children: [
-                /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("strong", { children: "Impact:" }),
+              /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("span", { style: { color: "#1976d2" }, children: [
+                /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("strong", { children: "Impact:" }),
                 " ",
                 win.impact
               ] }),
-              /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)("span", { style: { color: "#666" }, children: [
-                /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("strong", { children: "Time:" }),
+              /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("span", { style: { color: "#666" }, children: [
+                /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("strong", { children: "Time:" }),
                 " ",
                 win.timeToImplement
               ] })
@@ -149115,7 +149404,7 @@ if (typeof document < "u") {
 }
 
 // app/routes/app.insights.tsx
-var import_jsx_runtime26 = __toESM(require_jsx_runtime());
+var import_jsx_runtime27 = __toESM(require_jsx_runtime());
 function SimpleChart({ data }) {
   let [ChartComponent, setChartComponent] = React25.useState(null);
   return React25.useEffect(() => {
@@ -149125,7 +149414,7 @@ function SimpleChart({ data }) {
     }), () => {
       alive = !1;
     };
-  }, []), data?.length ? ChartComponent ? /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(ChartComponent, { data }) : /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(
+  }, []), data?.length ? ChartComponent ? /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(ChartComponent, { data }) : /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(
     "div",
     {
       style: {
@@ -149139,7 +149428,7 @@ function SimpleChart({ data }) {
       },
       children: "Loading chart..."
     }
-  ) : /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(
+  ) : /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(
     "div",
     {
       style: {
@@ -149320,7 +149609,7 @@ var InsightsErrorBoundary = class extends React25.Component {
     console.error("Insights page error:", error, errorInfo);
   }
   render() {
-    return this.state.hasError ? /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)(
+    return this.state.hasError ? /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)(
       "div",
       {
         style: {
@@ -149330,9 +149619,9 @@ var InsightsErrorBoundary = class extends React25.Component {
           backgroundColor: "#fed7d7"
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("h2", { children: "Something went wrong" }),
-          /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("p", { children: "The insights page encountered an error. Please refresh the page." }),
-          /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("h2", { children: "Something went wrong" }),
+          /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("p", { children: "The insights page encountered an error. Please refresh the page." }),
+          /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(
             "button",
             {
               onClick: () => window.location.reload(),
@@ -149346,7 +149635,7 @@ var InsightsErrorBoundary = class extends React25.Component {
   }
 };
 function InsightsContent() {
-  let data = (0, import_react32.useLoaderData)(), [sp] = (0, import_react32.useSearchParams)(), nav = (0, import_react32.useNavigation)(), fetcher = (0, import_react32.useFetcher)(), revalidator = (0, import_react32.useRevalidator)(), [toast, setToast] = React25.useState(""), [isApplying, setIsApplying] = React25.useState(!1), [realTimeEnabled, setRealTimeEnabled] = React25.useState(!1), w = React25.useMemo(() => {
+  let data = (0, import_react33.useLoaderData)(), [sp] = (0, import_react33.useSearchParams)(), nav = (0, import_react33.useNavigation)(), fetcher = (0, import_react33.useFetcher)(), revalidator = (0, import_react33.useRevalidator)(), [toast, setToast] = React25.useState(""), [isApplying, setIsApplying] = React25.useState(!1), [realTimeEnabled, setRealTimeEnabled] = React25.useState(!1), w = React25.useMemo(() => {
     try {
       let param = sp.get("w");
       return ["24h", "7d", "30d", "90d"].includes(param) ? param : data?.w || "7d";
@@ -149433,38 +149722,38 @@ function InsightsContent() {
   }, []), handleDataRefresh = React25.useCallback(() => {
     revalidator.revalidate();
   }, [revalidator]);
-  return /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("div", { style: {
+  return /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("div", { style: {
     background: "#f6f6f7",
     minHeight: "100vh",
     padding: "0"
   }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("div", { style: {
+    /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("div", { style: {
       background: "white",
       borderBottom: "1px solid #e3e3e3",
       padding: "20px 24px"
-    }, children: /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("div", { style: {
+    }, children: /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("div", { style: {
       display: "flex",
       justifyContent: "space-between",
       alignItems: "center",
       maxWidth: "1200px",
       margin: "0 auto"
     }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: "16px" }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("div", { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("h1", { style: {
+      /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: "16px" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("div", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("h1", { style: {
             fontSize: "24px",
             fontWeight: "600",
             color: "#202223",
             margin: "0"
           }, children: "Analytics Dashboard" }),
-          /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("p", { style: {
+          /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("p", { style: {
             margin: "4px 0 0 0",
             color: "#616161",
             fontSize: "14px",
             fontWeight: "400"
           }, children: "Real-time insights and performance metrics" })
         ] }),
-        tierStatus?.tier && /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("div", { style: {
+        tierStatus?.tier && /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("div", { style: {
           background: tierStatus.tier === "enterprise" ? "#6f42c1" : tierStatus.tier === "professional" ? "#007bff" : "#28a745",
           color: "white",
           padding: "6px 12px",
@@ -149477,7 +149766,7 @@ function InsightsContent() {
           tierStatus.tier,
           " TIER"
         ] }),
-        dataSource !== "none" && /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("div", { style: {
+        dataSource !== "none" && /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("div", { style: {
           display: "flex",
           alignItems: "center",
           gap: "6px",
@@ -149488,7 +149777,7 @@ function InsightsContent() {
           fontSize: "12px",
           color: dataSource === "supabase" ? "#1976d2" : "#856404"
         }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("span", { style: {
+          /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("span", { style: {
             width: "8px",
             height: "8px",
             borderRadius: "50%",
@@ -149499,9 +149788,9 @@ function InsightsContent() {
           dataSource === "supabase" ? "Supabase" : dataSource === "sheets" ? "Google Sheets" : "Legacy"
         ] })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("div", { style: { display: "flex", gap: "12px", alignItems: "center" }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(AIStatusIndicator, { shopName: k, compact: !0, showTokenUsage: !0 }),
-        /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(
+      /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("div", { style: { display: "flex", gap: "12px", alignItems: "center" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(AIStatusIndicator, { shopName: k, compact: !0, showTokenUsage: !0 }),
+        /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(
           "button",
           {
             onClick: async () => {
@@ -149535,7 +149824,7 @@ function InsightsContent() {
             children: "\u{1F916} AI Summary"
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("div", { style: {
+        /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("div", { style: {
           display: "flex",
           gap: "4px",
           background: "white",
@@ -149543,7 +149832,7 @@ function InsightsContent() {
           borderRadius: "6px",
           padding: "2px"
         }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(import_react32.Link, { to: "/app/insights?w=24h", style: { textDecoration: "none" }, children: /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(import_react33.Link, { to: "/app/insights?w=24h", style: { textDecoration: "none" }, children: /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(
             "button",
             {
               disabled: w === "24h" || nav.state !== "idle",
@@ -149562,7 +149851,7 @@ function InsightsContent() {
               children: "24h"
             }
           ) }),
-          /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(import_react32.Link, { to: "/app/insights?w=7d", style: { textDecoration: "none" }, children: /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(import_react33.Link, { to: "/app/insights?w=7d", style: { textDecoration: "none" }, children: /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(
             "button",
             {
               disabled: w === "7d" || nav.state !== "idle",
@@ -149581,7 +149870,7 @@ function InsightsContent() {
               children: "7d"
             }
           ) }),
-          (tierStatus?.tier === "professional" || tierStatus?.tier === "enterprise") && /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(import_react32.Link, { to: "/app/insights?w=30d", style: { textDecoration: "none" }, children: /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(
+          (tierStatus?.tier === "professional" || tierStatus?.tier === "enterprise") && /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(import_react33.Link, { to: "/app/insights?w=30d", style: { textDecoration: "none" }, children: /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(
             "button",
             {
               disabled: w === "30d" || nav.state !== "idle",
@@ -149600,7 +149889,7 @@ function InsightsContent() {
               children: "30d"
             }
           ) }),
-          tierStatus?.tier === "enterprise" && /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(import_react32.Link, { to: "/app/insights?w=90d", style: { textDecoration: "none" }, children: /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(
+          tierStatus?.tier === "enterprise" && /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(import_react33.Link, { to: "/app/insights?w=90d", style: { textDecoration: "none" }, children: /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(
             "button",
             {
               disabled: w === "90d" || nav.state !== "idle",
@@ -149622,12 +149911,12 @@ function InsightsContent() {
         ] })
       ] })
     ] }) }),
-    tierStatus?.subscriptionInfo && /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("div", { style: {
+    tierStatus?.subscriptionInfo && /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("div", { style: {
       padding: "0 24px",
       maxWidth: "1200px",
       margin: "16px auto 0 auto"
     }, children: [
-      tierStatus.subscriptionInfo.isInTrial && /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("div", { style: {
+      tierStatus.subscriptionInfo.isInTrial && /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("div", { style: {
         background: "#fff3cd",
         border: "1px solid #ffc107",
         borderRadius: "8px",
@@ -149636,18 +149925,18 @@ function InsightsContent() {
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center"
-      }, children: /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("div", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("h3", { style: { margin: "0", fontSize: "14px", color: "#856404", fontWeight: "600" }, children: [
+      }, children: /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("div", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("h3", { style: { margin: "0", fontSize: "14px", color: "#856404", fontWeight: "600" }, children: [
           "Free Trial Active - ",
           tierStatus.tier?.toUpperCase(),
           " Plan"
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("p", { style: { margin: "4px 0 0 0", fontSize: "13px", color: "#856404" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("p", { style: { margin: "4px 0 0 0", fontSize: "13px", color: "#856404" }, children: [
           tierStatus.subscriptionInfo.trialDaysRemaining,
           " days remaining \u2022 Full access to all features"
         ] })
       ] }) }),
-      tierStatus.subscriptionInfo.hasActivePayment && !tierStatus.subscriptionInfo.isInTrial && /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("div", { style: {
+      tierStatus.subscriptionInfo.hasActivePayment && !tierStatus.subscriptionInfo.isInTrial && /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("div", { style: {
         background: "#d1eddd",
         border: "1px solid #28a745",
         borderRadius: "8px",
@@ -149656,12 +149945,12 @@ function InsightsContent() {
         display: "flex",
         justifyContent: "space-between",
         alignItems: "center"
-      }, children: /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("div", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("h3", { style: { margin: "0", fontSize: "14px", color: "#155724", fontWeight: "600" }, children: [
+      }, children: /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("div", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("h3", { style: { margin: "0", fontSize: "14px", color: "#155724", fontWeight: "600" }, children: [
           tierStatus.tier?.toUpperCase(),
           " Plan Active"
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("p", { style: { margin: "4px 0 0 0", fontSize: "13px", color: "#155724" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("p", { style: { margin: "4px 0 0 0", fontSize: "13px", color: "#155724" }, children: [
           "Full access to all ",
           tierStatus.tier,
           " features \u2022 Data retention: ",
@@ -149670,12 +149959,12 @@ function InsightsContent() {
         ] })
       ] }) })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("div", { style: {
+    /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("div", { style: {
       maxWidth: "1200px",
       margin: "0 auto",
       padding: "20px"
     }, children: [
-      !hasRealData && dataSource === "none" && /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("div", { style: {
+      !hasRealData && dataSource === "none" && /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("div", { style: {
         background: "white",
         borderRadius: "8px",
         padding: "48px",
@@ -149683,9 +149972,9 @@ function InsightsContent() {
         marginBottom: "32px",
         border: "1px solid #e3e3e3"
       }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("h2", { style: { color: "#202223", marginBottom: "16px" }, children: "No Analytics Data Available" }),
-        /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("p", { style: { color: "#616161", marginBottom: "24px" }, children: "Run the Google Ads script to start collecting campaign metrics. Data will appear here after the first successful script execution." }),
-        /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("div", { style: {
+        /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("h2", { style: { color: "#202223", marginBottom: "16px" }, children: "No Analytics Data Available" }),
+        /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("p", { style: { color: "#616161", marginBottom: "24px" }, children: "Run the Google Ads script to start collecting campaign metrics. Data will appear here after the first successful script execution." }),
+        /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("div", { style: {
           display: "inline-block",
           padding: "12px 24px",
           background: "#f6f6f7",
@@ -149693,17 +149982,17 @@ function InsightsContent() {
           fontSize: "14px",
           color: "#202223"
         }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("strong", { children: "Next steps:" }),
-          /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("ol", { style: { textAlign: "left", margin: "12px 0 0 0", paddingLeft: "20px" }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("li", { children: "Copy the Google Ads script from the Setup page" }),
-            /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("li", { children: "Add it to your Google Ads account" }),
-            /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("li", { children: "Run the script or schedule it to run daily" }),
-            /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("li", { children: "Check back here in 5-10 minutes" })
+          /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("strong", { children: "Next steps:" }),
+          /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("ol", { style: { textAlign: "left", margin: "12px 0 0 0", paddingLeft: "20px" }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("li", { children: "Copy the Google Ads script from the Setup page" }),
+            /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("li", { children: "Add it to your Google Ads account" }),
+            /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("li", { children: "Run the script or schedule it to run daily" }),
+            /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("li", { children: "Check back here in 5-10 minutes" })
           ] })
         ] })
       ] }),
-      (hasRealData || dataSource !== "none") && /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("div", { style: { marginBottom: "32px" }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(
+      (hasRealData || dataSource !== "none") && /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("div", { style: { marginBottom: "32px" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(
           AnalyticsTier,
           {
             tenant: shopName,
@@ -149722,7 +150011,7 @@ function InsightsContent() {
             onUpgrade: handleUpgrade
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(
           AIInsights,
           {
             shopName,
@@ -149731,7 +150020,7 @@ function InsightsContent() {
           }
         )
       ] }),
-      retention && /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)(
+      retention && /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)(
         "div",
         {
           style: {
@@ -149743,7 +150032,7 @@ function InsightsContent() {
             boxShadow: "0 8px 32px rgba(0, 0, 0, 0.1)"
           },
           children: [
-            /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("div", { style: { fontWeight: "bold", marginBottom: 12, fontSize: 16 }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("div", { style: { fontWeight: "bold", marginBottom: 12, fontSize: 16 }, children: [
               retention.tier === "starter" ? "\u26A0\uFE0F" : retention.tier === "professional" ? "\u2139\uFE0F" : "\u2705",
               " Data Retention: ",
               retention.description,
@@ -149751,13 +150040,13 @@ function InsightsContent() {
               retention.tier.toUpperCase(),
               " plan)"
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("div", { style: { color: "#6b7280", fontSize: 14, marginBottom: 16 }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("div", { style: { color: "#6b7280", fontSize: 14, marginBottom: 16 }, children: [
               "Data older than ",
               retention.cutoffDate,
               " is not shown"
             ] }),
-            retention.upgradeMessage && /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(
-              import_react32.Link,
+            retention.upgradeMessage && /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(
+              import_react33.Link,
               {
                 to: "/app/billing",
                 style: {
@@ -149784,7 +150073,7 @@ function InsightsContent() {
           ]
         }
       ),
-      /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)(
+      /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)(
         "div",
         {
           style: {
@@ -149794,7 +150083,7 @@ function InsightsContent() {
             marginBottom: 24
           },
           children: [
-            /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)(
+            /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)(
               "div",
               {
                 style: {
@@ -149805,17 +150094,17 @@ function InsightsContent() {
                   boxShadow: "0 1px 0 rgba(0, 0, 0, 0.05)"
                 },
                 children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("h3", { style: { margin: "0 0 16px 0", fontSize: 16, fontWeight: "600", color: "#202223" }, children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("h3", { style: { margin: "0 0 16px 0", fontSize: 16, fontWeight: "600", color: "#202223" }, children: [
                     "Trend (",
                     w,
                     ")",
                     retention ? ` - ${retention.description}` : ""
                   ] }),
-                  /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(SimpleChart, { data: series })
+                  /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(SimpleChart, { data: series })
                 ]
               }
             ),
-            /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)(
+            /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)(
               "div",
               {
                 style: {
@@ -149826,7 +150115,7 @@ function InsightsContent() {
                   boxShadow: "0 1px 0 rgba(0, 0, 0, 0.05)"
                 },
                 children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)(
+                  /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)(
                     "div",
                     {
                       style: {
@@ -149836,12 +150125,12 @@ function InsightsContent() {
                         marginBottom: 16
                       },
                       children: [
-                        /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("h3", { style: { margin: 0, fontSize: 16, fontWeight: "600", color: "#202223" }, children: [
+                        /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("h3", { style: { margin: 0, fontSize: 16, fontWeight: "600", color: "#202223" }, children: [
                           "Top search terms (",
                           w,
                           ")"
                         ] }),
-                        /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(import_react32.Link, { to: `/app/insights/terms?w=${w}`, style: { textDecoration: "none" }, children: /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(
+                        /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(import_react33.Link, { to: `/app/insights/terms?w=${w}`, style: { textDecoration: "none" }, children: /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(
                           "button",
                           {
                             style: {
@@ -149861,7 +150150,7 @@ function InsightsContent() {
                       ]
                     }
                   ),
-                  /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("div", { style: { maxHeight: 200, overflowY: "auto" }, children: terms.length > 0 ? terms.slice(0, 5).map((term, i) => /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)(
+                  /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("div", { style: { maxHeight: 200, overflowY: "auto" }, children: terms.length > 0 ? terms.slice(0, 5).map((term, i) => /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)(
                     "div",
                     {
                       style: {
@@ -149872,17 +150161,17 @@ function InsightsContent() {
                         borderBottom: i < terms.slice(0, 5).length - 1 ? "1px solid #f3f4f6" : "none"
                       },
                       children: [
-                        /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("span", { style: { fontWeight: "600", color: "#1f2937" }, children: term.term }),
-                        /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("div", { style: { display: "flex", gap: 16, fontSize: 14 }, children: [
-                          /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("span", { style: { color: "#6b7280" }, children: [
+                        /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("span", { style: { fontWeight: "600", color: "#1f2937" }, children: term.term }),
+                        /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("div", { style: { display: "flex", gap: 16, fontSize: 14 }, children: [
+                          /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("span", { style: { color: "#6b7280" }, children: [
                             term.clicks,
                             " clicks"
                           ] }),
-                          /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("span", { style: { color: "#6b7280" }, children: [
+                          /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("span", { style: { color: "#6b7280" }, children: [
                             "$",
                             term.cost?.toFixed(2)
                           ] }),
-                          /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("span", { style: { color: "#6b7280" }, children: [
+                          /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("span", { style: { color: "#6b7280" }, children: [
                             term.conv,
                             " conv."
                           ] })
@@ -149890,14 +150179,14 @@ function InsightsContent() {
                       ]
                     },
                     i
-                  )) : /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("div", { style: { color: "#6b7280", textAlign: "center", padding: 20 }, children: "No search terms data available" }) })
+                  )) : /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("div", { style: { color: "#6b7280", textAlign: "center", padding: 20 }, children: "No search terms data available" }) })
                 ]
               }
             )
           ]
         }
       ),
-      /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)(
+      /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)(
         "div",
         {
           style: {
@@ -149907,7 +150196,7 @@ function InsightsContent() {
             marginBottom: 24
           },
           children: [
-            /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)(
+            /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)(
               "div",
               {
                 style: {
@@ -149918,8 +150207,8 @@ function InsightsContent() {
                   boxShadow: "0 1px 0 rgba(0, 0, 0, 0.05)"
                 },
                 children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("h3", { style: { margin: "0 0 16px 0", fontSize: 16, fontWeight: "600", color: "#202223" }, children: "Activity (last 10)" }),
-                  /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("div", { style: { maxHeight: 200, overflowY: "auto" }, children: logs.length > 0 ? logs.map((l, i) => !l || typeof l != "object" ? null : /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)(
+                  /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("h3", { style: { margin: "0 0 16px 0", fontSize: 16, fontWeight: "600", color: "#202223" }, children: "Activity (last 10)" }),
+                  /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("div", { style: { maxHeight: 200, overflowY: "auto" }, children: logs.length > 0 ? logs.map((l, i) => !l || typeof l != "object" ? null : /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)(
                     "div",
                     {
                       style: {
@@ -149928,18 +150217,18 @@ function InsightsContent() {
                         fontSize: 14
                       },
                       children: [
-                        /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("span", { style: { color: "#6b7280" }, children: l.timestamp || "No timestamp" }),
+                        /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("span", { style: { color: "#6b7280" }, children: l.timestamp || "No timestamp" }),
                         " ",
                         "\u2014 ",
-                        /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("span", { style: { color: "#1f2937" }, children: l.message || "No message" })
+                        /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("span", { style: { color: "#1f2937" }, children: l.message || "No message" })
                       ]
                     },
                     `log-${i}-${l.timestamp || i}`
-                  )) : /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("div", { style: { color: "#6b7280", textAlign: "center", padding: 20 }, children: "No recent activity." }) })
+                  )) : /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("div", { style: { color: "#6b7280", textAlign: "center", padding: 20 }, children: "No recent activity." }) })
                 ]
               }
             ),
-            /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)(
+            /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)(
               "div",
               {
                 style: {
@@ -149950,9 +150239,9 @@ function InsightsContent() {
                   boxShadow: "0 1px 0 rgba(0, 0, 0, 0.05)"
                 },
                 children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("h3", { style: { margin: "0 0 16px 0", fontSize: 16, fontWeight: "600", color: "#202223" }, children: "Term Details" }),
-                  terms.length > 0 ? /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("div", { children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(
+                  /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("h3", { style: { margin: "0 0 16px 0", fontSize: 16, fontWeight: "600", color: "#202223" }, children: "Term Details" }),
+                  terms.length > 0 ? /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("div", { children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(
                       "div",
                       {
                         style: {
@@ -149962,34 +150251,34 @@ function InsightsContent() {
                           padding: "16px 0",
                           borderBottom: "1px solid #f3f4f6"
                         },
-                        children: /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("span", { style: { fontWeight: "700", fontSize: 18, color: "#1f2937" }, children: terms[0].term })
+                        children: /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("span", { style: { fontWeight: "700", fontSize: 18, color: "#1f2937" }, children: terms[0].term })
                       }
                     ),
-                    /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("div", { style: { display: "flex", gap: 32, marginTop: 16 }, children: [
-                      /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("div", { children: [
-                        /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("div", { style: { color: "#6b7280", fontSize: 12, marginBottom: 8, fontWeight: "500" }, children: "Clicks" }),
-                        /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("div", { style: { fontSize: 24, fontWeight: "700", color: "#1f2937" }, children: terms[0].clicks })
+                    /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("div", { style: { display: "flex", gap: 32, marginTop: 16 }, children: [
+                      /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("div", { children: [
+                        /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("div", { style: { color: "#6b7280", fontSize: 12, marginBottom: 8, fontWeight: "500" }, children: "Clicks" }),
+                        /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("div", { style: { fontSize: 24, fontWeight: "700", color: "#1f2937" }, children: terms[0].clicks })
                       ] }),
-                      /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("div", { children: [
-                        /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("div", { style: { color: "#6b7280", fontSize: 12, marginBottom: 8, fontWeight: "500" }, children: "Cost" }),
-                        /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("div", { style: { fontSize: 24, fontWeight: "700", color: "#1f2937" }, children: [
+                      /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("div", { children: [
+                        /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("div", { style: { color: "#6b7280", fontSize: 12, marginBottom: 8, fontWeight: "500" }, children: "Cost" }),
+                        /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("div", { style: { fontSize: 24, fontWeight: "700", color: "#1f2937" }, children: [
                           "$",
                           terms[0].cost?.toFixed(2)
                         ] })
                       ] }),
-                      /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("div", { children: [
-                        /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("div", { style: { color: "#6b7280", fontSize: 12, marginBottom: 8, fontWeight: "500" }, children: "Conv." }),
-                        /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("div", { style: { fontSize: 24, fontWeight: "700", color: "#1f2937" }, children: terms[0].conversions || 0 })
+                      /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("div", { children: [
+                        /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("div", { style: { color: "#6b7280", fontSize: 12, marginBottom: 8, fontWeight: "500" }, children: "Conv." }),
+                        /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("div", { style: { fontSize: 24, fontWeight: "700", color: "#1f2937" }, children: terms[0].conversions || 0 })
                       ] })
                     ] })
-                  ] }) : /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("div", { style: { color: "#6b7280", textAlign: "center", padding: 20 }, children: "Not enough data yet." })
+                  ] }) : /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("div", { style: { color: "#6b7280", textAlign: "center", padding: 20 }, children: "Not enough data yet." })
                 ]
               }
             )
           ]
         }
       ),
-      explain.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)(
+      explain.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)(
         "div",
         {
           style: {
@@ -150001,12 +150290,12 @@ function InsightsContent() {
             marginBottom: 24
           },
           children: [
-            /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("h3", { style: { margin: "0 0 16px 0", fontSize: 16, fontWeight: "600", color: "#202223" }, children: "Explain my spend" }),
+            /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("h3", { style: { margin: "0 0 16px 0", fontSize: 16, fontWeight: "600", color: "#202223" }, children: "Explain my spend" }),
             explain.map((e, i) => {
               if (!e || typeof e != "object")
                 return null;
               let disabled = fetcher.state !== "idle" || isApplying;
-              return /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)(
+              return /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)(
                 "div",
                 {
                   style: {
@@ -150017,16 +150306,16 @@ function InsightsContent() {
                     borderBottom: i < explain.length - 1 ? "1px solid #f3f4f6" : "none"
                   },
                   children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("div", { children: [
-                      /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("div", { style: { fontWeight: "600", marginBottom: 8, fontSize: 16, color: "#1f2937" }, children: e.label || "Unknown" }),
-                      /* @__PURE__ */ (0, import_jsx_runtime26.jsxs)("div", { style: { color: "#6b7280", fontSize: 14 }, children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("div", { children: [
+                      /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("div", { style: { fontWeight: "600", marginBottom: 8, fontSize: 16, color: "#1f2937" }, children: e.label || "Unknown" }),
+                      /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("div", { style: { color: "#6b7280", fontSize: 14 }, children: [
                         e.reason || "No reason provided",
                         ". Suggest: ",
-                        /* @__PURE__ */ (0, import_jsx_runtime26.jsx)("code", { style: { background: "#f3f4f6", padding: "2px 6px", borderRadius: 4 }, children: e.action || "none" }),
+                        /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("code", { style: { background: "#f3f4f6", padding: "2px 6px", borderRadius: 4 }, children: e.action || "none" }),
                         e.target ? ` (${e.target})` : ""
                       ] })
                     ] }),
-                    /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(
+                    /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(
                       "button",
                       {
                         onClick: () => handleApplyAction(e.action, e.target),
@@ -150054,7 +150343,7 @@ function InsightsContent() {
           ]
         }
       ),
-      !!toast && /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(
+      !!toast && /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(
         "div",
         {
           style: {
@@ -150077,7 +150366,7 @@ function InsightsContent() {
   ] });
 }
 function Insights() {
-  return /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(InsightsErrorBoundary, { children: /* @__PURE__ */ (0, import_jsx_runtime26.jsx)(InsightsContent, {}) });
+  return /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(InsightsErrorBoundary, { children: /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(InsightsContent, {}) });
 }
 
 // app/routes/api.proxy.$.tsx
@@ -150199,9 +150488,9 @@ __export(app_billing_exports, {
   default: () => Billing,
   loader: () => loader14
 });
-var import_react33 = __toESM(require_react()), import_node13 = __toESM(require_dist4()), import_react34 = __toESM(require_dist2());
+var import_react34 = __toESM(require_react()), import_node13 = __toESM(require_dist4()), import_react35 = __toESM(require_dist2());
 init_shopify_server();
-var import_jsx_runtime27 = __toESM(require_jsx_runtime()), PRICING_TIERS = {
+var import_jsx_runtime28 = __toESM(require_jsx_runtime()), PRICING_TIERS = {
   STARTER: {
     id: "starter",
     name: "Starter Plan",
@@ -150366,8 +150655,8 @@ function Billing() {
     pricingTiers,
     appHandle,
     shouldRedirectToPlans: shouldRedirectToPlans3
-  } = (0, import_react34.useLoaderData)(), actionData = (0, import_react34.useActionData)(), isSubmitting = (0, import_react34.useNavigation)().state === "submitting";
-  import_react33.default.useEffect(() => {
+  } = (0, import_react35.useLoaderData)(), actionData = (0, import_react35.useActionData)(), isSubmitting = (0, import_react35.useNavigation)().state === "submitting";
+  import_react34.default.useEffect(() => {
     actionData?.success && actionData?.redirectUrl && window.top?.location.assign(actionData.redirectUrl);
   }, [actionData]);
   let redirectToManagedPricing = () => {
@@ -150380,19 +150669,19 @@ Settings \u2192 Apps \u2192 ProofKit
 
 Or visit: ${managedPricingUrl}`);
     }
-  }, formatPrice = (price) => price === "Unlimited" ? price : typeof price == "number" ? `$${price.toLocaleString()}` : price, renderFeatureList = (features) => /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("ul", { style: { margin: 0, paddingLeft: "20px" }, children: features.map((feature, index) => /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("li", { style: { marginBottom: "8px", fontSize: "14px" }, children: [
+  }, formatPrice = (price) => price === "Unlimited" ? price : typeof price == "number" ? `$${price.toLocaleString()}` : price, renderFeatureList = (features) => /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("ul", { style: { margin: 0, paddingLeft: "20px" }, children: features.map((feature, index) => /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("li", { style: { marginBottom: "8px", fontSize: "14px" }, children: [
     "\u2713 ",
     feature
   ] }, index)) });
-  return /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("div", { style: { padding: "24px", maxWidth: "1200px", margin: "0 auto" }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("h1", { children: "Billing & Subscription" }),
-    /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("p", { style: { color: "#666", marginBottom: "32px" }, children: [
+  return /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("div", { style: { padding: "24px", maxWidth: "1200px", margin: "0 auto" }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("h1", { children: "Billing & Subscription" }),
+    /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("p", { style: { color: "#666", marginBottom: "32px" }, children: [
       "Manage your ProofKit subscription for ",
       shopName
     ] }),
     (() => {
       if (!hasActivePayment && !isInTrial)
-        return /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("div", { style: {
+        return /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("div", { style: {
           background: "#fff2cc",
           border: "1px solid #ffc107",
           padding: "24px",
@@ -150400,9 +150689,9 @@ Or visit: ${managedPricingUrl}`);
           marginBottom: "32px",
           textAlign: "center"
         }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("h3", { style: { margin: "0 0 16px 0" }, children: "Choose Your Plan" }),
-          /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("p", { style: { margin: "0 0 20px 0", fontSize: "16px" }, children: "Start your 14-day free trial to access ProofKit's powerful features." }),
-          /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("h3", { style: { margin: "0 0 16px 0" }, children: "Choose Your Plan" }),
+          /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("p", { style: { margin: "0 0 20px 0", fontSize: "16px" }, children: "Start your 14-day free trial to access ProofKit's powerful features." }),
+          /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(
             "button",
             {
               onClick: redirectToManagedPricing,
@@ -150422,35 +150711,35 @@ Or visit: ${managedPricingUrl}`);
         ] });
       if (isInTrial) {
         let tier = subscriptionTier ? pricingTiers[subscriptionTier.toUpperCase()] : null;
-        return /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("div", { style: {
+        return /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("div", { style: {
           background: "#e8f5e8",
           border: "1px solid #4caf50",
           padding: "24px",
           borderRadius: "8px",
           marginBottom: "32px"
         }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("h3", { style: { margin: "0 0 16px 0" }, children: "\u{1F389} Free Trial Active" }),
-          /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("div", { style: { marginBottom: "16px" }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("p", { style: { margin: "0 0 8px 0", fontSize: "16px" }, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("strong", { children: "Current Plan:" }),
+          /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("h3", { style: { margin: "0 0 16px 0" }, children: "\u{1F389} Free Trial Active" }),
+          /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("div", { style: { marginBottom: "16px" }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("p", { style: { margin: "0 0 8px 0", fontSize: "16px" }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("strong", { children: "Current Plan:" }),
               " ",
               tier?.name || "Unknown",
               " ($",
               tier?.price,
               "/month)"
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("p", { style: { margin: "0 0 8px 0", fontSize: "16px" }, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("strong", { children: "Trial Days Remaining:" }),
+            /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("p", { style: { margin: "0 0 8px 0", fontSize: "16px" }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("strong", { children: "Trial Days Remaining:" }),
               " ",
               trialDaysRemaining,
               " days"
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("p", { style: { margin: "0", fontSize: "14px", color: "#666" }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("p", { style: { margin: "0", fontSize: "14px", color: "#666" }, children: [
               "Trial ends: ",
               new Date(new Date(currentSubscription.createdAt).getTime() + currentSubscription.trialDays * 24 * 60 * 60 * 1e3).toLocaleDateString()
             ] })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(
             "button",
             {
               onClick: redirectToManagedPricing,
@@ -150470,34 +150759,34 @@ Or visit: ${managedPricingUrl}`);
       }
       if (hasActivePayment) {
         let tier = subscriptionTier ? pricingTiers[subscriptionTier.toUpperCase()] : null;
-        return /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("div", { style: {
+        return /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("div", { style: {
           background: "#e8f5e8",
           border: "1px solid #4caf50",
           padding: "24px",
           borderRadius: "8px",
           marginBottom: "32px"
         }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("h3", { style: { margin: "0 0 16px 0" }, children: "Active Subscription" }),
-          /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("div", { style: { marginBottom: "16px" }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("p", { style: { margin: "0 0 8px 0", fontSize: "16px" }, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("strong", { children: "Current Plan:" }),
+          /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("h3", { style: { margin: "0 0 16px 0" }, children: "Active Subscription" }),
+          /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("div", { style: { marginBottom: "16px" }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("p", { style: { margin: "0 0 8px 0", fontSize: "16px" }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("strong", { children: "Current Plan:" }),
               " ",
               tier?.name || "Unknown",
               " ($",
               tier?.price,
               "/month)"
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("p", { style: { margin: "0 0 8px 0", fontSize: "16px" }, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("strong", { children: "Status:" }),
+            /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("p", { style: { margin: "0 0 8px 0", fontSize: "16px" }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("strong", { children: "Status:" }),
               " ",
               currentSubscription.status
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("p", { style: { margin: "0", fontSize: "14px", color: "#666" }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("p", { style: { margin: "0", fontSize: "14px", color: "#666" }, children: [
               "Next billing: ",
               new Date(currentSubscription.currentPeriodEnd).toLocaleDateString()
             ] })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(
             "button",
             {
               onClick: redirectToManagedPricing,
@@ -150515,7 +150804,7 @@ Or visit: ${managedPricingUrl}`);
           )
         ] });
       }
-      return /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("div", { style: {
+      return /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("div", { style: {
         background: "#f8f9fa",
         border: "1px solid #dee2e6",
         padding: "24px",
@@ -150523,8 +150812,8 @@ Or visit: ${managedPricingUrl}`);
         marginBottom: "32px",
         textAlign: "center"
       }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("h3", { style: { margin: "0 0 16px 0" }, children: "Subscription Status Unknown" }),
-        /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("h3", { style: { margin: "0 0 16px 0" }, children: "Subscription Status Unknown" }),
+        /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(
           "button",
           {
             onClick: redirectToManagedPricing,
@@ -150542,30 +150831,30 @@ Or visit: ${managedPricingUrl}`);
         )
       ] });
     })(),
-    actionData?.error && /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("div", { style: {
+    actionData?.error && /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("div", { style: {
       background: "#ffebee",
       border: "1px solid #f44336",
       padding: "16px",
       borderRadius: "8px",
       marginBottom: "24px"
-    }, children: /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("p", { style: { margin: 0, color: "#d32f2f" }, children: actionData.error }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("div", { style: { marginBottom: "32px" }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("h2", { children: "Available Plans" }),
-      /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("p", { style: { color: "#666", marginBottom: "24px" }, children: "All plans include a 14-day free trial. Pricing and subscriptions are managed by Shopify." }),
-      /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("div", { style: {
+    }, children: /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("p", { style: { margin: 0, color: "#d32f2f" }, children: actionData.error }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("div", { style: { marginBottom: "32px" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("h2", { children: "Available Plans" }),
+      /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("p", { style: { color: "#666", marginBottom: "24px" }, children: "All plans include a 14-day free trial. Pricing and subscriptions are managed by Shopify." }),
+      /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("div", { style: {
         display: "grid",
         gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
         gap: "20px"
-      }, children: Object.values(pricingTiers).map((tier) => /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("div", { style: {
+      }, children: Object.values(pricingTiers).map((tier) => /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("div", { style: {
         border: "1px solid #e0e0e0",
         borderRadius: "8px",
         padding: "24px",
         backgroundColor: "white"
       }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("div", { style: { marginBottom: "16px" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("h3", { style: { margin: 0 }, children: tier.name }),
-            tier.badge && /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("span", { style: {
+        /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("div", { style: { marginBottom: "16px" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("div", { style: { display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "8px" }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("h3", { style: { margin: 0 }, children: tier.name }),
+            tier.badge && /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("span", { style: {
               background: "#4caf50",
               color: "white",
               padding: "4px 8px",
@@ -150573,56 +150862,56 @@ Or visit: ${managedPricingUrl}`);
               fontSize: "12px"
             }, children: tier.badge })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("div", { style: { display: "flex", alignItems: "baseline", gap: "8px" }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("span", { style: { fontSize: "32px", fontWeight: "bold" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("div", { style: { display: "flex", alignItems: "baseline", gap: "8px" }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("span", { style: { fontSize: "32px", fontWeight: "bold" }, children: [
               "$",
               tier.price
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("span", { style: { color: "#666" }, children: "/month" })
+            /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("span", { style: { color: "#666" }, children: "/month" })
           ] })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("hr", { style: { border: "none", borderTop: "1px solid #e0e0e0", margin: "16px 0" } }),
-        /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("div", { style: { marginBottom: "16px" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("h4", { style: { margin: "0 0 12px 0" }, children: "Features:" }),
+        /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("hr", { style: { border: "none", borderTop: "1px solid #e0e0e0", margin: "16px 0" } }),
+        /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("div", { style: { marginBottom: "16px" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("h4", { style: { margin: "0 0 12px 0" }, children: "Features:" }),
           renderFeatureList(tier.features.slice(0, 5)),
-          tier.features.length > 5 && /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("p", { style: { color: "#666", fontSize: "14px", margin: "8px 0 0 0" }, children: [
+          tier.features.length > 5 && /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("p", { style: { color: "#666", fontSize: "14px", margin: "8px 0 0 0" }, children: [
             "+ ",
             tier.features.length - 5,
             " more features"
           ] })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("hr", { style: { border: "none", borderTop: "1px solid #e0e0e0", margin: "16px 0" } }),
-        /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("div", { style: { marginBottom: "24px" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("h4", { style: { margin: "0 0 12px 0" }, children: "Limits:" }),
-          /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("ul", { style: { margin: 0, paddingLeft: "20px" }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("hr", { style: { border: "none", borderTop: "1px solid #e0e0e0", margin: "16px 0" } }),
+        /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("div", { style: { marginBottom: "24px" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("h4", { style: { margin: "0 0 12px 0" }, children: "Limits:" }),
+          /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("ul", { style: { margin: 0, paddingLeft: "20px" }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("li", { children: [
               "Campaigns: ",
               tier.limits.campaigns
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("li", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("li", { children: [
               "Ad Groups: ",
               tier.limits.adGroups
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("li", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("li", { children: [
               "Keywords: ",
               tier.limits.keywords
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("li", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("li", { children: [
               "Monthly Spend: ",
               formatPrice(tier.limits.monthlySpend)
             ] })
           ] })
         ] })
       ] }, tier.id)) }),
-      /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("div", { style: {
+      /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("div", { style: {
         textAlign: "center",
         marginTop: "24px",
         padding: "20px",
         backgroundColor: "#f8f9fa",
         borderRadius: "8px"
       }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("p", { style: { margin: "0 0 16px 0", fontSize: "16px" }, children: "Ready to select your plan?" }),
-        /* @__PURE__ */ (0, import_jsx_runtime27.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("p", { style: { margin: "0 0 16px 0", fontSize: "16px" }, children: "Ready to select your plan?" }),
+        /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(
           "button",
           {
             onClick: redirectToManagedPricing,
@@ -150641,61 +150930,61 @@ Or visit: ${managedPricingUrl}`);
         )
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("div", { style: {
+    /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("div", { style: {
       border: "1px solid #e0e0e0",
       borderRadius: "8px",
       padding: "24px",
       backgroundColor: "white"
     }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("h3", { children: "Billing Information" }),
-      /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("ul", { style: { paddingLeft: "20px" }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("li", { children: "All subscriptions are managed through Shopify" }),
-        /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("li", { children: "Charges appear on your Shopify Partner account" }),
-        /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("li", { children: "Cancel or modify anytime through your Partner Dashboard" }),
-        /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("li", { children: "14-day free trial on all plans" })
+      /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("h3", { children: "Billing Information" }),
+      /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("ul", { style: { paddingLeft: "20px" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("li", { children: "All subscriptions are managed through Shopify" }),
+        /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("li", { children: "Charges appear on your Shopify Partner account" }),
+        /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("li", { children: "Cancel or modify anytime through your Partner Dashboard" }),
+        /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("li", { children: "14-day free trial on all plans" })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("div", { style: { marginTop: "16px", padding: "16px", backgroundColor: "#f0f0f0", borderRadius: "4px", fontSize: "12px" }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("h4", { children: "Debug Info:" }),
-        /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("p", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("div", { style: { marginTop: "16px", padding: "16px", backgroundColor: "#f0f0f0", borderRadius: "4px", fontSize: "12px" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("h4", { children: "Debug Info:" }),
+        /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("p", { children: [
           "App Handle: ",
           appHandle
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("p", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("p", { children: [
           "Shop: ",
           shopName
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("p", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("p", { children: [
           "Has Active Payment: ",
           hasActivePayment ? "Yes" : "No"
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("p", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("p", { children: [
           "Subscription Tier: ",
           subscriptionTier || "None"
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("p", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("p", { children: [
           "In Trial: ",
           isInTrial ? "Yes" : "No"
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("p", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("p", { children: [
           "Trial Days Remaining: ",
           trialDaysRemaining || "N/A"
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("p", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("p", { children: [
           "Should Redirect to Plans: ",
           shouldRedirectToPlans3 ? "Yes" : "No"
         ] }),
-        currentSubscription && /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("p", { children: [
+        currentSubscription && /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("p", { children: [
           "Subscription ID: ",
           currentSubscription.id
         ] })
       ] }),
-      currentSubscription && /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("div", { style: { marginTop: "16px", padding: "16px", backgroundColor: "#f5f5f5", borderRadius: "4px" }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("h4", { children: "Current Subscription Details:" }),
-        /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("p", { children: [
+      currentSubscription && /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("div", { style: { marginTop: "16px", padding: "16px", backgroundColor: "#f5f5f5", borderRadius: "4px" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("h4", { children: "Current Subscription Details:" }),
+        /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("p", { children: [
           "Subscription ID: ",
           currentSubscription.id
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("p", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("p", { children: [
           "Next billing: ",
           new Date(currentSubscription.currentPeriodEnd).toLocaleDateString()
         ] })
@@ -150704,9 +150993,9 @@ Or visit: ${managedPricingUrl}`);
   ] });
 }
 function ErrorBoundary2({ error }) {
-  return console.error("Billing page error:", error), /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("div", { style: { padding: "2rem", background: "#fee", border: "1px solid #fcc" }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime27.jsx)("h2", { children: "Billing Error" }),
-    /* @__PURE__ */ (0, import_jsx_runtime27.jsxs)("p", { children: [
+  return console.error("Billing page error:", error), /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("div", { style: { padding: "2rem", background: "#fee", border: "1px solid #fcc" }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("h2", { children: "Billing Error" }),
+    /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("p", { children: [
       "Something went wrong with the billing page: ",
       error?.message
     ] })
@@ -150721,9 +151010,9 @@ __export(app_reports_exports, {
   default: () => ReportsPage,
   loader: () => loader15
 });
-var import_react35 = __toESM(require_react()), import_node14 = __toESM(require_dist4()), import_react36 = __toESM(require_dist2());
+var import_react36 = __toESM(require_react()), import_node14 = __toESM(require_dist4()), import_react37 = __toESM(require_dist2());
 init_shopify_server();
-var import_jsx_runtime28 = __toESM(require_jsx_runtime()), loader15 = async ({ request: request2 }) => {
+var import_jsx_runtime29 = __toESM(require_jsx_runtime()), loader15 = async ({ request: request2 }) => {
   let { session } = await authenticate.admin(request2), shop = session.shop.replace(".myshopify.com", "");
   try {
     let settingsData = await (await fetch(
@@ -150832,8 +151121,8 @@ var import_jsx_runtime28 = __toESM(require_jsx_runtime()), loader15 = async ({ r
   }
 };
 function ReportsPage() {
-  let { settings, history, schedulerStatus, tenant, error } = (0, import_react36.useLoaderData)(), actionData = (0, import_react36.useActionData)(), navigation = (0, import_react36.useNavigation)(), revalidator = (0, import_react36.useRevalidator)(), generateFetcher = (0, import_react36.useFetcher)(), [testEmail, setTestEmail] = (0, import_react35.useState)(""), [generateEmail, setGenerateEmail] = (0, import_react35.useState)("");
-  (0, import_react35.useEffect)(() => {
+  let { settings, history, schedulerStatus, tenant, error } = (0, import_react37.useLoaderData)(), actionData = (0, import_react37.useActionData)(), navigation = (0, import_react37.useNavigation)(), revalidator = (0, import_react37.useRevalidator)(), generateFetcher = (0, import_react37.useFetcher)(), [testEmail, setTestEmail] = (0, import_react36.useState)(""), [generateEmail, setGenerateEmail] = (0, import_react36.useState)("");
+  (0, import_react36.useEffect)(() => {
     let interval = setInterval(() => {
       revalidator.revalidate();
     }, 3e4);
@@ -150844,20 +151133,20 @@ function ReportsPage() {
     professional: "#007bff",
     enterprise: "#ffc107"
   };
-  return error ? /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("div", { style: { padding: "20px" }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("div", { style: {
+  return error ? /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)("div", { style: { padding: "20px" }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)("div", { style: {
       background: "#f8d7da",
       color: "#721c24",
       padding: "15px",
       borderRadius: "4px",
       marginBottom: "20px"
     }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("strong", { children: "Error:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("strong", { children: "Error:" }),
       " ",
       error
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(
-      import_react36.Link,
+    /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(
+      import_react37.Link,
       {
         to: "/app",
         style: {
@@ -150867,11 +151156,11 @@ function ReportsPage() {
         children: "\u2190 Back to Dashboard"
       }
     )
-  ] }) : /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("div", { style: { padding: "20px", maxWidth: "1200px" }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("div", { style: { marginBottom: "30px" }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("h1", { children: "Automated Reports" }),
-      /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("p", { style: { color: "#666", marginBottom: "20px" }, children: "Manage your automated insights reports and delivery settings" }),
-      /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)(
+  ] }) : /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)("div", { style: { padding: "20px", maxWidth: "1200px" }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)("div", { style: { marginBottom: "30px" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("h1", { children: "Automated Reports" }),
+      /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("p", { style: { color: "#666", marginBottom: "20px" }, children: "Manage your automated insights reports and delivery settings" }),
+      /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)(
         "div",
         {
           style: {
@@ -150892,7 +151181,7 @@ function ReportsPage() {
         }
       )
     ] }),
-    actionData && /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)(
+    actionData && /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)(
       "div",
       {
         style: {
@@ -150904,25 +151193,25 @@ function ReportsPage() {
           border: `1px solid ${actionData.success ? "#c3e6cb" : "#f5c6cb"}`
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("strong", { children: actionData.success ? "Success:" : "Error:" }),
+          /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("strong", { children: actionData.success ? "Success:" : "Error:" }),
           " ",
           actionData.message
         ]
       }
     ),
-    /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "30px" }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("div", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("div", { style: {
+    /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "30px" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)("div", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)("div", { style: {
           background: "white",
           border: "1px solid #ddd",
           borderRadius: "8px",
           padding: "20px",
           marginBottom: "20px"
         }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("h2", { style: { marginTop: 0, marginBottom: "15px" }, children: "Report Settings" }),
-          /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("div", { style: { marginBottom: "15px" }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("strong", { children: "Current Frequency:" }),
-            /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("span", { style: {
+          /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("h2", { style: { marginTop: 0, marginBottom: "15px" }, children: "Report Settings" }),
+          /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)("div", { style: { marginBottom: "15px" }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("strong", { children: "Current Frequency:" }),
+            /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("span", { style: {
               background: "#e9ecef",
               padding: "2px 8px",
               borderRadius: "4px",
@@ -150930,34 +151219,34 @@ function ReportsPage() {
               textTransform: "capitalize"
             }, children: settings.frequency?.current || "Not set" })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("div", { style: { marginBottom: "15px" }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("strong", { children: "Next Scheduled:" }),
-            /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("span", { style: { marginLeft: "8px", color: "#666" }, children: settings.frequency?.nextScheduled ? new Date(settings.frequency.nextScheduled).toLocaleString() : "Not scheduled" })
+          /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)("div", { style: { marginBottom: "15px" }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("strong", { children: "Next Scheduled:" }),
+            /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("span", { style: { marginLeft: "8px", color: "#666" }, children: settings.frequency?.nextScheduled ? new Date(settings.frequency.nextScheduled).toLocaleString() : "Not scheduled" })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("div", { style: { marginBottom: "15px" }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("strong", { children: "Available Features:" }),
-            /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("div", { style: { marginTop: "8px" }, children: settings.features && Object.entries(settings.features).map(([key, value]) => /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("div", { style: { marginBottom: "4px" }, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("span", { style: {
+          /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)("div", { style: { marginBottom: "15px" }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("strong", { children: "Available Features:" }),
+            /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("div", { style: { marginTop: "8px" }, children: settings.features && Object.entries(settings.features).map(([key, value]) => /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)("div", { style: { marginBottom: "4px" }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("span", { style: {
                 color: value ? "#28a745" : "#dc3545",
                 marginRight: "8px"
               }, children: value ? "\u2713" : "\u2717" }),
-              /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("span", { style: { textTransform: "capitalize" }, children: key.replace(/([A-Z])/g, " $1").toLowerCase() })
+              /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("span", { style: { textTransform: "capitalize" }, children: key.replace(/([A-Z])/g, " $1").toLowerCase() })
             ] }, key)) })
           ] })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("div", { style: {
+        /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)("div", { style: {
           background: "white",
           border: "1px solid #ddd",
           borderRadius: "8px",
           padding: "20px",
           marginBottom: "20px"
         }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("h2", { style: { marginTop: 0, marginBottom: "15px" }, children: "Generate Report Now" }),
-          /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)(import_react36.Form, { method: "post", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("input", { type: "hidden", name: "action", value: "generate" }),
-            /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("div", { style: { marginBottom: "15px" }, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("label", { style: { display: "block", marginBottom: "5px", fontWeight: "500" }, children: "Report Type:" }),
-              /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)(
+          /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("h2", { style: { marginTop: 0, marginBottom: "15px" }, children: "Generate Report Now" }),
+          /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)(import_react37.Form, { method: "post", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("input", { type: "hidden", name: "action", value: "generate" }),
+            /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)("div", { style: { marginBottom: "15px" }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("label", { style: { display: "block", marginBottom: "5px", fontWeight: "500" }, children: "Report Type:" }),
+              /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)(
                 "select",
                 {
                   name: "reportType",
@@ -150968,15 +151257,15 @@ function ReportsPage() {
                     borderRadius: "4px"
                   },
                   children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("option", { value: "insights", children: "Insights Report" }),
-                    settings.reportTypes?.custom && /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("option", { value: "custom", children: "Custom Report" })
+                    /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("option", { value: "insights", children: "Insights Report" }),
+                    settings.reportTypes?.custom && /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("option", { value: "custom", children: "Custom Report" })
                   ]
                 }
               )
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("div", { style: { marginBottom: "15px" }, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("label", { style: { display: "block", marginBottom: "5px", fontWeight: "500" }, children: "Email Address:" }),
-              /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(
+            /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)("div", { style: { marginBottom: "15px" }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("label", { style: { display: "block", marginBottom: "5px", fontWeight: "500" }, children: "Email Address:" }),
+              /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(
                 "input",
                 {
                   type: "email",
@@ -150993,7 +151282,7 @@ function ReportsPage() {
                 }
               )
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(
+            /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(
               "button",
               {
                 type: "submit",
@@ -151012,19 +151301,19 @@ function ReportsPage() {
             )
           ] })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("div", { style: {
+        /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)("div", { style: {
           background: "white",
           border: "1px solid #ddd",
           borderRadius: "8px",
           padding: "20px"
         }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("h2", { style: { marginTop: 0, marginBottom: "15px" }, children: "Test Email Delivery" }),
-          /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("p", { style: { color: "#666", marginBottom: "15px", fontSize: "14px" }, children: "Send a test report to verify email delivery is working properly." }),
-          /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)(import_react36.Form, { method: "post", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("input", { type: "hidden", name: "action", value: "test" }),
-            /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("div", { style: { marginBottom: "15px" }, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("label", { style: { display: "block", marginBottom: "5px", fontWeight: "500" }, children: "Test Email Address:" }),
-              /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("h2", { style: { marginTop: 0, marginBottom: "15px" }, children: "Test Email Delivery" }),
+          /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("p", { style: { color: "#666", marginBottom: "15px", fontSize: "14px" }, children: "Send a test report to verify email delivery is working properly." }),
+          /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)(import_react37.Form, { method: "post", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("input", { type: "hidden", name: "action", value: "test" }),
+            /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)("div", { style: { marginBottom: "15px" }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("label", { style: { display: "block", marginBottom: "5px", fontWeight: "500" }, children: "Test Email Address:" }),
+              /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(
                 "input",
                 {
                   type: "email",
@@ -151042,7 +151331,7 @@ function ReportsPage() {
                 }
               )
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(
+            /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(
               "button",
               {
                 type: "submit",
@@ -151062,48 +151351,48 @@ function ReportsPage() {
           ] })
         ] })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("div", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("div", { style: {
+      /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)("div", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)("div", { style: {
           background: "white",
           border: "1px solid #ddd",
           borderRadius: "8px",
           padding: "20px",
           marginBottom: "20px"
         }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("h2", { style: { marginTop: 0, marginBottom: "15px" }, children: "Scheduler Status" }),
-          /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("div", { style: { marginBottom: "10px" }, children: [
-            /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("strong", { children: "Status:" }),
-            /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("span", { style: {
+          /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("h2", { style: { marginTop: 0, marginBottom: "15px" }, children: "Scheduler Status" }),
+          /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)("div", { style: { marginBottom: "10px" }, children: [
+            /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("strong", { children: "Status:" }),
+            /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("span", { style: {
               color: schedulerStatus.status === "running" ? "#28a745" : "#dc3545",
               marginLeft: "8px",
               fontWeight: "500"
             }, children: schedulerStatus.status === "running" ? "Active" : "Inactive" })
           ] }),
-          schedulerStatus.metrics && /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("div", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("div", { style: { marginBottom: "5px" }, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("strong", { children: "Reports Generated:" }),
+          schedulerStatus.metrics && /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)("div", { style: { marginBottom: "5px" }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("strong", { children: "Reports Generated:" }),
               " ",
               schedulerStatus.metrics.reportsGenerated || 0
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("div", { style: { marginBottom: "5px" }, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("strong", { children: "Emails Sent:" }),
+            /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)("div", { style: { marginBottom: "5px" }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("strong", { children: "Emails Sent:" }),
               " ",
               schedulerStatus.metrics.emailsSent || 0
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("div", { style: { marginBottom: "5px" }, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("strong", { children: "Last Execution:" }),
-              /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("span", { style: { marginLeft: "4px", fontSize: "14px", color: "#666" }, children: schedulerStatus.metrics.lastExecution ? new Date(schedulerStatus.metrics.lastExecution).toLocaleString() : "Never" })
+            /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)("div", { style: { marginBottom: "5px" }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("strong", { children: "Last Execution:" }),
+              /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("span", { style: { marginLeft: "4px", fontSize: "14px", color: "#666" }, children: schedulerStatus.metrics.lastExecution ? new Date(schedulerStatus.metrics.lastExecution).toLocaleString() : "Never" })
             ] })
           ] })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("div", { style: {
+        /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)("div", { style: {
           background: "white",
           border: "1px solid #ddd",
           borderRadius: "8px",
           padding: "20px"
         }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("h2", { style: { marginTop: 0, marginBottom: "15px" }, children: "Recent Reports" }),
-          history.length === 0 ? /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("p", { style: { color: "#666", fontStyle: "italic" }, children: "No reports generated yet" }) : /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("div", { children: history.map((report) => /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)(
+          /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("h2", { style: { marginTop: 0, marginBottom: "15px" }, children: "Recent Reports" }),
+          history.length === 0 ? /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("p", { style: { color: "#666", fontStyle: "italic" }, children: "No reports generated yet" }) : /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("div", { children: history.map((report) => /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)(
             "div",
             {
               style: {
@@ -151114,20 +151403,20 @@ function ReportsPage() {
                 background: "#f8f9fa"
               },
               children: [
-                /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("div", { style: {
+                /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)("div", { style: {
                   display: "flex",
                   justifyContent: "space-between",
                   alignItems: "flex-start",
                   marginBottom: "8px"
                 }, children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("span", { style: {
+                  /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)("span", { style: {
                     fontWeight: "500",
                     textTransform: "capitalize"
                   }, children: [
                     report.type,
                     " Report"
                   ] }),
-                  /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("span", { style: {
+                  /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("span", { style: {
                     background: report.status === "completed" ? "#d4edda" : "#f8d7da",
                     color: report.status === "completed" ? "#155724" : "#721c24",
                     padding: "2px 6px",
@@ -151136,19 +151425,19 @@ function ReportsPage() {
                     textTransform: "capitalize"
                   }, children: report.status })
                 ] }),
-                /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("div", { style: { fontSize: "14px", color: "#666" }, children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("div", { children: [
+                /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)("div", { style: { fontSize: "14px", color: "#666" }, children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)("div", { children: [
                     "Generated: ",
                     new Date(report.generatedAt).toLocaleString()
                   ] }),
-                  /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("div", { children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)("div", { children: [
                     "Generation Time: ",
                     report.generationTime,
                     "ms"
                   ] }),
-                  /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("div", { children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)("div", { children: [
                     "Email: ",
-                    report.emailSent ? /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("span", { style: { color: "#28a745" }, children: "\u2713 Sent" }) : /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("span", { style: { color: "#dc3545" }, children: "\u2717 Failed" })
+                    report.emailSent ? /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("span", { style: { color: "#28a745" }, children: "\u2713 Sent" }) : /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("span", { style: { color: "#dc3545" }, children: "\u2717 Failed" })
                   ] })
                 ] })
               ]
@@ -151158,7 +151447,7 @@ function ReportsPage() {
         ] })
       ] })
     ] }),
-    settings.tier === "starter" && /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("div", { style: {
+    settings.tier === "starter" && /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)("div", { style: {
       background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
       color: "white",
       padding: "20px",
@@ -151166,10 +151455,10 @@ function ReportsPage() {
       marginTop: "30px",
       textAlign: "center"
     }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("h3", { style: { marginTop: 0 }, children: "Upgrade to Professional" }),
-      /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("p", { style: { marginBottom: "15px" }, children: "Get weekly reports, real-time analytics, and advanced ROAS tracking" }),
-      /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(
-        import_react36.Link,
+      /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("h3", { style: { marginTop: 0 }, children: "Upgrade to Professional" }),
+      /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("p", { style: { marginBottom: "15px" }, children: "Get weekly reports, real-time analytics, and advanced ROAS tracking" }),
+      /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(
+        import_react37.Link,
         {
           to: "/app/billing",
           style: {
@@ -151185,20 +151474,20 @@ function ReportsPage() {
         }
       )
     ] }),
-    settings.tier === "enterprise" && /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("div", { style: {
+    settings.tier === "enterprise" && /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)("div", { style: {
       background: "white",
       border: "1px solid #ddd",
       borderRadius: "8px",
       padding: "20px",
       marginTop: "30px"
     }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("h2", { style: { marginTop: 0, marginBottom: "15px" }, children: "Enterprise Custom Reports" }),
-      /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("p", { style: { color: "#666", marginBottom: "15px" }, children: "Create custom reports with advanced analytics and forecasting" }),
-      /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", gap: "15px" }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("div", { style: { border: "1px solid #eee", padding: "15px", borderRadius: "4px" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("h4", { style: { marginTop: 0, marginBottom: "8px" }, children: "Executive Summary" }),
-          /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("p", { style: { fontSize: "14px", color: "#666", marginBottom: "10px" }, children: "High-level KPIs and strategic insights" }),
-          /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("button", { style: {
+      /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("h2", { style: { marginTop: 0, marginBottom: "15px" }, children: "Enterprise Custom Reports" }),
+      /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("p", { style: { color: "#666", marginBottom: "15px" }, children: "Create custom reports with advanced analytics and forecasting" }),
+      /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))", gap: "15px" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)("div", { style: { border: "1px solid #eee", padding: "15px", borderRadius: "4px" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("h4", { style: { marginTop: 0, marginBottom: "8px" }, children: "Executive Summary" }),
+          /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("p", { style: { fontSize: "14px", color: "#666", marginBottom: "10px" }, children: "High-level KPIs and strategic insights" }),
+          /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("button", { style: {
             background: "#ffc107",
             color: "#212529",
             border: "none",
@@ -151208,10 +151497,10 @@ function ReportsPage() {
             cursor: "pointer"
           }, children: "Generate" })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("div", { style: { border: "1px solid #eee", padding: "15px", borderRadius: "4px" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("h4", { style: { marginTop: 0, marginBottom: "8px" }, children: "Customer Lifecycle" }),
-          /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("p", { style: { fontSize: "14px", color: "#666", marginBottom: "10px" }, children: "Detailed customer journey and lifetime value analysis" }),
-          /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("button", { style: {
+        /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)("div", { style: { border: "1px solid #eee", padding: "15px", borderRadius: "4px" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("h4", { style: { marginTop: 0, marginBottom: "8px" }, children: "Customer Lifecycle" }),
+          /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("p", { style: { fontSize: "14px", color: "#666", marginBottom: "10px" }, children: "Detailed customer journey and lifetime value analysis" }),
+          /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("button", { style: {
             background: "#ffc107",
             color: "#212529",
             border: "none",
@@ -151221,10 +151510,10 @@ function ReportsPage() {
             cursor: "pointer"
           }, children: "Generate" })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("div", { style: { border: "1px solid #eee", padding: "15px", borderRadius: "4px" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("h4", { style: { marginTop: 0, marginBottom: "8px" }, children: "Performance Benchmarks" }),
-          /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("p", { style: { fontSize: "14px", color: "#666", marginBottom: "10px" }, children: "Compare performance against industry benchmarks" }),
-          /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("button", { style: {
+        /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)("div", { style: { border: "1px solid #eee", padding: "15px", borderRadius: "4px" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("h4", { style: { marginTop: 0, marginBottom: "8px" }, children: "Performance Benchmarks" }),
+          /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("p", { style: { fontSize: "14px", color: "#666", marginBottom: "10px" }, children: "Compare performance against industry benchmarks" }),
+          /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("button", { style: {
             background: "#ffc107",
             color: "#212529",
             border: "none",
@@ -151236,8 +151525,8 @@ function ReportsPage() {
         ] })
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("div", { style: { marginTop: "30px", textAlign: "center" }, children: /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(
-      import_react36.Link,
+    /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("div", { style: { marginTop: "30px", textAlign: "center" }, children: /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(
+      import_react37.Link,
       {
         to: "/app",
         style: {
@@ -151251,9 +151540,9 @@ function ReportsPage() {
   ] });
 }
 function ErrorBoundary3({ error }) {
-  return console.error("Reports page error:", error), /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("div", { style: { padding: "2rem", background: "#fee", border: "1px solid #fcc" }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("h2", { children: "Reports Error" }),
-    /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("p", { children: [
+  return console.error("Reports page error:", error), /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)("div", { style: { padding: "2rem", background: "#fee", border: "1px solid #fcc" }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("h2", { children: "Reports Error" }),
+    /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)("p", { children: [
       "Something went wrong with the reports page: ",
       error?.message
     ] })
@@ -151268,7 +151557,7 @@ __export(app_support_exports, {
   loader: () => loader16,
   meta: () => meta
 });
-var import_node15 = __toESM(require_dist4()), import_react37 = __toESM(require_dist2()), import_react38 = __toESM(require_react()), import_polaris14 = __toESM(require_cjs3()), import_jsx_runtime29 = __toESM(require_jsx_runtime()), meta = () => [
+var import_node15 = __toESM(require_dist4()), import_react38 = __toESM(require_dist2()), import_react39 = __toESM(require_react()), import_polaris15 = __toESM(require_cjs3()), import_jsx_runtime30 = __toESM(require_jsx_runtime()), meta = () => [
   { title: "Support - Ads Autopilot AI" },
   { name: "description", content: "In-app support center with tier-based assistance" }
 ], loader16 = async ({ request: request2 }) => {
@@ -151336,7 +151625,7 @@ var import_node15 = __toESM(require_dist4()), import_react37 = __toESM(require_d
   return (0, import_node15.json)({ success: !1, message: "Unknown action" });
 };
 function AppSupport() {
-  let { tier, contactMethods, tickets, tenant } = (0, import_react37.useLoaderData)(), actionData = (0, import_react37.useActionData)(), navigation = (0, import_react37.useNavigation)(), [showCreateForm, setShowCreateForm] = (0, import_react38.useState)(!1), [selectedTicket, setSelectedTicket] = (0, import_react38.useState)(null), [formData, setFormData] = (0, import_react38.useState)({
+  let { tier, contactMethods, tickets, tenant } = (0, import_react38.useLoaderData)(), actionData = (0, import_react38.useActionData)(), navigation = (0, import_react38.useNavigation)(), [showCreateForm, setShowCreateForm] = (0, import_react39.useState)(!1), [selectedTicket, setSelectedTicket] = (0, import_react39.useState)(null), [formData, setFormData] = (0, import_react39.useState)({
     subject: "",
     description: "",
     category: "general",
@@ -151345,7 +151634,7 @@ function AppSupport() {
     customer_email: "",
     customer_phone: ""
   }), isSubmitting = navigation.state === "submitting";
-  (0, import_react38.useEffect)(() => {
+  (0, import_react39.useEffect)(() => {
     actionData?.success && (setShowCreateForm(!1), setFormData({
       subject: "",
       description: "",
@@ -151380,12 +151669,12 @@ function AppSupport() {
   }), ticketRows = tickets.map((ticket) => [
     ticket.ticket_number,
     ticket.subject,
-    /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(import_polaris14.Badge, { ...getStatusBadge(ticket.status), children: getStatusBadge(ticket.status).label }, ticket.id),
-    /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(import_polaris14.Badge, { ...getPriorityBadge(ticket.priority), children: getPriorityBadge(ticket.priority).label }, `priority-${ticket.id}`),
+    /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(import_polaris15.Badge, { ...getStatusBadge(ticket.status), children: getStatusBadge(ticket.status).label }, ticket.id),
+    /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(import_polaris15.Badge, { ...getPriorityBadge(ticket.priority), children: getPriorityBadge(ticket.priority).label }, `priority-${ticket.id}`),
     ticket.category,
     formatDate(ticket.created_at),
-    /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(
-      import_polaris14.Button,
+    /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(
+      import_polaris15.Button,
       {
         size: "slim",
         onClick: () => setSelectedTicket(ticket.id),
@@ -151394,73 +151683,73 @@ function AppSupport() {
       `view-${ticket.id}`
     )
   ]);
-  return /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)(
-    import_polaris14.Page,
+  return /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(
+    import_polaris15.Page,
     {
       title: "Support Center",
       subtitle: `${getTierDisplayName(tier)} - Get help when you need it`,
       children: [
-        actionData?.success && /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)(
-          import_polaris14.Banner,
+        actionData?.success && /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(
+          import_polaris15.Banner,
           {
             title: "Success",
             status: "success",
             onDismiss: () => {
             },
             children: [
-              /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("p", { children: actionData.message }),
-              actionData.ticket_number && /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)("p", { children: [
+              /* @__PURE__ */ (0, import_jsx_runtime30.jsx)("p", { children: actionData.message }),
+              actionData.ticket_number && /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)("p", { children: [
                 "Ticket number: ",
-                /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("strong", { children: actionData.ticket_number })
+                /* @__PURE__ */ (0, import_jsx_runtime30.jsx)("strong", { children: actionData.ticket_number })
               ] })
             ]
           }
         ),
-        actionData?.success === !1 && /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(
-          import_polaris14.Banner,
+        actionData?.success === !1 && /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(
+          import_polaris15.Banner,
           {
             title: "Error",
             status: "critical",
             onDismiss: () => {
             },
-            children: /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("p", { children: actionData.message })
+            children: /* @__PURE__ */ (0, import_jsx_runtime30.jsx)("p", { children: actionData.message })
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)(import_polaris14.Layout, { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(import_polaris14.Layout.Section, { children: /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(import_polaris14.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("div", { style: { padding: "1.5rem" }, children: /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)(Stack, { vertical: !0, spacing: "loose", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)(Stack, { alignment: "center", children: [
-              /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(Stack.Item, { fill: !0, children: /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(import_polaris14.Text, { variant: "headingLg", as: "h2", children: "Your Support Level" }) }),
-              /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(import_polaris14.Badge, { status: getTierBadgeStatus(tier), children: getTierDisplayName(tier) })
+        /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(import_polaris15.Layout, { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(import_polaris15.Layout.Section, { children: /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(import_polaris15.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime30.jsx)("div", { style: { padding: "1.5rem" }, children: /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(Stack, { vertical: !0, spacing: "loose", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(Stack, { alignment: "center", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(Stack.Item, { fill: !0, children: /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(import_polaris15.Text, { variant: "headingLg", as: "h2", children: "Your Support Level" }) }),
+              /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(import_polaris15.Badge, { status: getTierBadgeStatus(tier), children: getTierDisplayName(tier) })
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)(Stack, { distribution: "fillEvenly", spacing: "loose", children: [
-              contactMethods.email_support && /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)(Stack, { vertical: !0, spacing: "tight", children: [
-                /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(EmailMajor, {}),
-                /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(import_polaris14.Text, { variant: "bodyMd", fontWeight: "semibold", children: "Email Support" }),
-                /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)(import_polaris14.Text, { variant: "bodySm", color: "subdued", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(Stack, { distribution: "fillEvenly", spacing: "loose", children: [
+              contactMethods.email_support && /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(Stack, { vertical: !0, spacing: "tight", children: [
+                /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(EmailMajor, {}),
+                /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(import_polaris15.Text, { variant: "bodyMd", fontWeight: "semibold", children: "Email Support" }),
+                /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(import_polaris15.Text, { variant: "bodySm", color: "subdued", children: [
                   "Response within ",
                   contactMethods.guaranteed_response_hours,
                   "h"
                 ] })
               ] }),
-              contactMethods.phone_support && /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)(Stack, { vertical: !0, spacing: "tight", children: [
-                /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(PhoneMajor, {}),
-                /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(import_polaris14.Text, { variant: "bodyMd", fontWeight: "semibold", children: "Phone Support" }),
-                /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(import_polaris14.Text, { variant: "bodySm", color: "subdued", children: contactMethods.support_phone })
+              contactMethods.phone_support && /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(Stack, { vertical: !0, spacing: "tight", children: [
+                /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(PhoneMajor, {}),
+                /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(import_polaris15.Text, { variant: "bodyMd", fontWeight: "semibold", children: "Phone Support" }),
+                /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(import_polaris15.Text, { variant: "bodySm", color: "subdued", children: contactMethods.support_phone })
               ] }),
-              contactMethods.priority_routing && /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)(Stack, { vertical: !0, spacing: "tight", children: [
-                /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(AlertMajor, {}),
-                /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(import_polaris14.Text, { variant: "bodyMd", fontWeight: "semibold", children: "Priority Routing" }),
-                /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(import_polaris14.Text, { variant: "bodySm", color: "subdued", children: "Fast-tracked support" })
+              contactMethods.priority_routing && /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(Stack, { vertical: !0, spacing: "tight", children: [
+                /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(AlertMajor, {}),
+                /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(import_polaris15.Text, { variant: "bodyMd", fontWeight: "semibold", children: "Priority Routing" }),
+                /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(import_polaris15.Text, { variant: "bodySm", color: "subdued", children: "Fast-tracked support" })
               ] }),
-              contactMethods.dedicated_manager && /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)(Stack, { vertical: !0, spacing: "tight", children: [
-                /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(CustomersMajor, {}),
-                /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(import_polaris14.Text, { variant: "bodyMd", fontWeight: "semibold", children: "Account Manager" }),
-                /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(import_polaris14.Text, { variant: "bodySm", color: "subdued", children: "Dedicated support contact" })
+              contactMethods.dedicated_manager && /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(Stack, { vertical: !0, spacing: "tight", children: [
+                /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(CustomersMajor, {}),
+                /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(import_polaris15.Text, { variant: "bodyMd", fontWeight: "semibold", children: "Account Manager" }),
+                /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(import_polaris15.Text, { variant: "bodySm", color: "subdued", children: "Dedicated support contact" })
               ] })
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)(import_polaris14.ButtonGroup, { children: [
-              /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(
-                import_polaris14.Button,
+            /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(import_polaris15.ButtonGroup, { children: [
+              /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(
+                import_polaris15.Button,
                 {
                   primary: !0,
                   icon: TicketMajor,
@@ -151468,8 +151757,8 @@ function AppSupport() {
                   children: "Create Support Ticket"
                 }
               ),
-              /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(
-                import_polaris14.Button,
+              /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(
+                import_polaris15.Button,
                 {
                   url: `mailto:${contactMethods.support_email}`,
                   external: !0,
@@ -151477,8 +151766,8 @@ function AppSupport() {
                   children: "Email Support"
                 }
               ),
-              contactMethods.phone_support && /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(
-                import_polaris14.Button,
+              contactMethods.phone_support && /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(
+                import_polaris15.Button,
                 {
                   url: `tel:${contactMethods.support_phone}`,
                   external: !0,
@@ -151488,10 +151777,10 @@ function AppSupport() {
               )
             ] })
           ] }) }) }) }),
-          /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(import_polaris14.Layout.Section, { children: /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(import_polaris14.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("div", { style: { padding: "1.5rem" }, children: /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)(Stack, { vertical: !0, spacing: "loose", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(import_polaris14.Text, { variant: "headingLg", as: "h2", children: "Your Support Tickets" }),
-            tickets.length > 0 ? /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(
-              import_polaris14.DataTable,
+          /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(import_polaris15.Layout.Section, { children: /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(import_polaris15.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime30.jsx)("div", { style: { padding: "1.5rem" }, children: /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(Stack, { vertical: !0, spacing: "loose", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(import_polaris15.Text, { variant: "headingLg", as: "h2", children: "Your Support Tickets" }),
+            tickets.length > 0 ? /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(
+              import_polaris15.DataTable,
               {
                 columnContentTypes: [
                   "text",
@@ -151514,15 +151803,15 @@ function AppSupport() {
                 rows: ticketRows,
                 footerContent: `Showing ${tickets.length} of ${tickets.length} tickets`
               }
-            ) : /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)(
-              import_polaris14.EmptyState,
+            ) : /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(
+              import_polaris15.EmptyState,
               {
                 heading: "No support tickets yet",
                 image: "https://cdn.shopify.com/s/files/1/0262/4071/2726/files/emptystate-files.png",
                 children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("p", { children: "When you create support tickets, they'll appear here." }),
-                  /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(
-                    import_polaris14.Button,
+                  /* @__PURE__ */ (0, import_jsx_runtime30.jsx)("p", { children: "When you create support tickets, they'll appear here." }),
+                  /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(
+                    import_polaris15.Button,
                     {
                       primary: !0,
                       onClick: () => setShowCreateForm(!0),
@@ -151533,37 +151822,37 @@ function AppSupport() {
               }
             )
           ] }) }) }) }),
-          /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(import_polaris14.Layout.Section, { secondary: !0, children: /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(import_polaris14.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("div", { style: { padding: "1.5rem" }, children: /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)(Stack, { vertical: !0, spacing: "loose", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(import_polaris14.Text, { variant: "headingMd", as: "h3", children: "Service Level Agreement" }),
-            /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)(Stack, { vertical: !0, spacing: "tight", children: [
-              /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)(Stack, { alignment: "center", children: [
-                /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(ClockMajor, {}),
-                /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)(import_polaris14.Text, { variant: "bodyMd", children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("strong", { children: "Response Time:" }),
+          /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(import_polaris15.Layout.Section, { secondary: !0, children: /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(import_polaris15.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime30.jsx)("div", { style: { padding: "1.5rem" }, children: /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(Stack, { vertical: !0, spacing: "loose", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(import_polaris15.Text, { variant: "headingMd", as: "h3", children: "Service Level Agreement" }),
+            /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(Stack, { vertical: !0, spacing: "tight", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(Stack, { alignment: "center", children: [
+                /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(ClockMajor, {}),
+                /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(import_polaris15.Text, { variant: "bodyMd", children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime30.jsx)("strong", { children: "Response Time:" }),
                   " ",
                   contactMethods.guaranteed_response_hours,
                   " hours"
                 ] })
               ] }),
-              contactMethods.guaranteed_resolution_hours && /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)(Stack, { alignment: "center", children: [
-                /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(ClockMajor, {}),
-                /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)(import_polaris14.Text, { variant: "bodyMd", children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("strong", { children: "Resolution Time:" }),
+              contactMethods.guaranteed_resolution_hours && /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(Stack, { alignment: "center", children: [
+                /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(ClockMajor, {}),
+                /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(import_polaris15.Text, { variant: "bodyMd", children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime30.jsx)("strong", { children: "Resolution Time:" }),
                   " ",
                   contactMethods.guaranteed_resolution_hours,
                   " hours"
                 ] })
               ] })
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)(import_polaris14.Text, { variant: "bodySm", color: "subdued", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(import_polaris15.Text, { variant: "bodySm", color: "subdued", children: [
               "All times are calculated during business hours (Monday-Friday, 9 AM - 6 PM EST).",
               tier !== "starter" && " Priority routing ensures your tickets are handled by senior support staff."
             ] }),
-            tier === "starter" && /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(import_polaris14.Banner, { status: "info", children: /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("p", { children: "Upgrade to Professional or Enterprise for faster response times and additional support channels." }) })
+            tier === "starter" && /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(import_polaris15.Banner, { status: "info", children: /* @__PURE__ */ (0, import_jsx_runtime30.jsx)("p", { children: "Upgrade to Professional or Enterprise for faster response times and additional support channels." }) })
           ] }) }) }) })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(
-          import_polaris14.Modal,
+        /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(
+          import_polaris15.Modal,
           {
             open: showCreateForm,
             onClose: () => setShowCreateForm(!1),
@@ -151583,12 +151872,12 @@ function AppSupport() {
               }
             ],
             large: !0,
-            children: /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(import_polaris14.Modal.Section, { children: /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)(import_react37.Form, { method: "post", id: "support-ticket-form", children: [
-              /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("input", { type: "hidden", name: "intent", value: "create_ticket" }),
-              /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("input", { type: "hidden", name: "tenant", value: tenant }),
-              /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)(Stack, { vertical: !0, spacing: "loose", children: [
-                /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(
-                  import_polaris14.TextField,
+            children: /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(import_polaris15.Modal.Section, { children: /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(import_react38.Form, { method: "post", id: "support-ticket-form", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime30.jsx)("input", { type: "hidden", name: "intent", value: "create_ticket" }),
+              /* @__PURE__ */ (0, import_jsx_runtime30.jsx)("input", { type: "hidden", name: "tenant", value: tenant }),
+              /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(Stack, { vertical: !0, spacing: "loose", children: [
+                /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(
+                  import_polaris15.TextField,
                   {
                     label: "Your Name",
                     value: formData.customer_name,
@@ -151598,8 +151887,8 @@ function AppSupport() {
                     required: !0
                   }
                 ),
-                /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(
-                  import_polaris14.TextField,
+                /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(
+                  import_polaris15.TextField,
                   {
                     label: "Email Address",
                     type: "email",
@@ -151610,8 +151899,8 @@ function AppSupport() {
                     required: !0
                   }
                 ),
-                tier === "enterprise" && /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(
-                  import_polaris14.TextField,
+                tier === "enterprise" && /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(
+                  import_polaris15.TextField,
                   {
                     label: "Phone Number (for phone support callback)",
                     type: "tel",
@@ -151622,9 +151911,9 @@ function AppSupport() {
                     helpText: "Enterprise customers can request a phone callback for urgent issues"
                   }
                 ),
-                /* @__PURE__ */ (0, import_jsx_runtime29.jsxs)(Stack, { distribution: "fillEvenly", children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(Stack.Item, { fill: !0, children: /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(
-                    import_polaris14.Select,
+                /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)(Stack, { distribution: "fillEvenly", children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(Stack.Item, { fill: !0, children: /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(
+                    import_polaris15.Select,
                     {
                       label: "Category",
                       options: [
@@ -151638,8 +151927,8 @@ function AppSupport() {
                       name: "category"
                     }
                   ) }),
-                  /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(Stack.Item, { fill: !0, children: /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(
-                    import_polaris14.Select,
+                  /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(Stack.Item, { fill: !0, children: /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(
+                    import_polaris15.Select,
                     {
                       label: "Priority",
                       options: [
@@ -151654,8 +151943,8 @@ function AppSupport() {
                     }
                   ) })
                 ] }),
-                /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(
-                  import_polaris14.TextField,
+                /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(
+                  import_polaris15.TextField,
                   {
                     label: "Subject",
                     value: formData.subject,
@@ -151665,8 +151954,8 @@ function AppSupport() {
                     required: !0
                   }
                 ),
-                /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(
-                  import_polaris14.TextField,
+                /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(
+                  import_polaris15.TextField,
                   {
                     label: "Description",
                     value: formData.description,
@@ -151678,8 +151967,8 @@ function AppSupport() {
                     required: !0
                   }
                 ),
-                tier === "starter" && (formData.priority === "high" || formData.priority === "urgent") && /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(import_polaris14.Banner, { status: "info", children: /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("p", { children: "High and Urgent priorities are available for Professional and Enterprise customers. Your ticket will be processed as Normal priority." }) }),
-                tier !== "enterprise" && formData.category === "urgent" && /* @__PURE__ */ (0, import_jsx_runtime29.jsx)(import_polaris14.Banner, { status: "info", children: /* @__PURE__ */ (0, import_jsx_runtime29.jsx)("p", { children: "Urgent category is available for Enterprise customers only. Your ticket will be processed as Technical category." }) })
+                tier === "starter" && (formData.priority === "high" || formData.priority === "urgent") && /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(import_polaris15.Banner, { status: "info", children: /* @__PURE__ */ (0, import_jsx_runtime30.jsx)("p", { children: "High and Urgent priorities are available for Professional and Enterprise customers. Your ticket will be processed as Normal priority." }) }),
+                tier !== "enterprise" && formData.category === "urgent" && /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(import_polaris15.Banner, { status: "info", children: /* @__PURE__ */ (0, import_jsx_runtime30.jsx)("p", { children: "Urgent category is available for Enterprise customers only. Your ticket will be processed as Technical category." }) })
               ] })
             ] }) })
           }
@@ -151695,18 +151984,18 @@ __export(app_index_exports, {
   default: () => AppIndex,
   loader: () => loader17
 });
-var import_react40 = __toESM(require_react()), import_node16 = __toESM(require_dist4()), import_react41 = __toESM(require_dist2());
+var import_react41 = __toESM(require_react()), import_node16 = __toESM(require_dist4()), import_react42 = __toESM(require_dist2());
 init_shopify_server();
 init_subscription_server();
 
 // app/components/LoadingStates.tsx
-var import_react39 = __toESM(require_react()), import_jsx_runtime30 = __toESM(require_jsx_runtime());
+var import_react40 = __toESM(require_react()), import_jsx_runtime31 = __toESM(require_jsx_runtime());
 function SkeletonText({
   lines = 1,
   width = "100%",
   height = "16px"
 }) {
-  let skeletonItems = Array.from({ length: lines }, (_, i) => /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(
+  let skeletonItems = Array.from({ length: lines }, (_, i) => /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(
     "div",
     {
       style: {
@@ -151721,9 +152010,9 @@ function SkeletonText({
     },
     i
   ));
-  return /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)("div", { children: [
+  return /* @__PURE__ */ (0, import_jsx_runtime31.jsxs)("div", { children: [
     skeletonItems,
-    /* @__PURE__ */ (0, import_jsx_runtime30.jsx)("style", { dangerouslySetInnerHTML: {
+    /* @__PURE__ */ (0, import_jsx_runtime31.jsx)("style", { dangerouslySetInnerHTML: {
       __html: `
           @keyframes shimmer {
             0% { background-position: -200% 0; }
@@ -151734,15 +152023,15 @@ function SkeletonText({
   ] });
 }
 function SkeletonCard() {
-  return /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)("div", { style: {
+  return /* @__PURE__ */ (0, import_jsx_runtime31.jsxs)("div", { style: {
     border: "1px solid #ddd",
     borderRadius: "8px",
     padding: "1.5rem",
     background: "#f8f9fa"
   }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(SkeletonText, { width: "60%", height: "20px" }),
-    /* @__PURE__ */ (0, import_jsx_runtime30.jsx)("div", { style: { marginTop: "12px", marginBottom: "16px" }, children: /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(SkeletonText, { lines: 2, width: "90%", height: "14px" }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime30.jsx)("div", { style: {
+    /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(SkeletonText, { width: "60%", height: "20px" }),
+    /* @__PURE__ */ (0, import_jsx_runtime31.jsx)("div", { style: { marginTop: "12px", marginBottom: "16px" }, children: /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(SkeletonText, { lines: 2, width: "90%", height: "14px" }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime31.jsx)("div", { style: {
       width: "120px",
       height: "40px",
       background: "linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%)",
@@ -151750,7 +152039,7 @@ function SkeletonCard() {
       animation: "shimmer 2s infinite",
       borderRadius: "6px"
     } }),
-    /* @__PURE__ */ (0, import_jsx_runtime30.jsx)("style", { dangerouslySetInnerHTML: {
+    /* @__PURE__ */ (0, import_jsx_runtime31.jsx)("style", { dangerouslySetInnerHTML: {
       __html: `
           @keyframes shimmer {
             0% { background-position: -200% 0; }
@@ -151767,7 +152056,7 @@ function Toast({
   onClose,
   duration = 4e3
 }) {
-  if (import_react39.default.useEffect(() => {
+  if (import_react40.default.useEffect(() => {
     if (isVisible && duration > 0) {
       let timer = setTimeout(() => {
         onClose();
@@ -151782,7 +152071,7 @@ function Toast({
     warning: { bg: "#fff3cd", border: "#ffc107", text: "#856404" },
     info: { bg: "#e7f3ff", border: "#007bff", text: "#004085" }
   }[type];
-  return /* @__PURE__ */ (0, import_jsx_runtime30.jsxs)("div", { style: {
+  return /* @__PURE__ */ (0, import_jsx_runtime31.jsxs)("div", { style: {
     position: "fixed",
     top: "20px",
     right: "20px",
@@ -151802,8 +152091,8 @@ function Toast({
     gap: "12px",
     animation: "slideIn 0.3s ease-out"
   }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime30.jsx)("span", { children: message2 }),
-    /* @__PURE__ */ (0, import_jsx_runtime30.jsx)(
+    /* @__PURE__ */ (0, import_jsx_runtime31.jsx)("span", { children: message2 }),
+    /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(
       "button",
       {
         onClick: onClose,
@@ -151821,7 +152110,7 @@ function Toast({
         children: "\u2715"
       }
     ),
-    /* @__PURE__ */ (0, import_jsx_runtime30.jsx)("style", { dangerouslySetInnerHTML: {
+    /* @__PURE__ */ (0, import_jsx_runtime31.jsx)("style", { dangerouslySetInnerHTML: {
       __html: `
           @keyframes slideIn {
             from {
@@ -151839,7 +152128,7 @@ function Toast({
 }
 
 // app/routes/app._index.tsx
-var import_jsx_runtime31 = __toESM(require_jsx_runtime()), loader17 = async ({ request: request2 }) => {
+var import_jsx_runtime32 = __toESM(require_jsx_runtime()), loader17 = async ({ request: request2 }) => {
   try {
     let { session, admin } = await authenticate.admin(request2), shopName = session?.shop?.replace(".myshopify.com", "");
     if (!shopName)
@@ -151858,13 +152147,34 @@ var import_jsx_runtime31 = __toESM(require_jsx_runtime()), loader17 = async ({ r
       needsSubscription: !0
     };
     try {
-      subscriptionInfo = await checkSubscriptionStatus(admin), console.log(`Subscription check for ${shopName}:`, {
+      if (subscriptionInfo = await checkSubscriptionStatus(admin), console.log(`Subscription check for ${shopName}:`, {
         hasActivePayment: subscriptionInfo.hasActivePayment,
         isInTrial: subscriptionInfo.isInTrial,
         tier: subscriptionInfo.subscriptionTier,
         needsSubscription: subscriptionInfo.needsSubscription,
         isPostSubscription
-      }), subscriptionInfo.needsSubscription && !isPostSubscription ? console.log(`Redirecting ${shopName} to plan selection - no subscription found`) : isPostSubscription && console.log(`Post-subscription: Allowing app access for ${shopName} (subscription may be processing)`);
+      }), session?.accessToken && shopName)
+        try {
+          let backendUrl = process.env.BACKEND_PUBLIC_URL || "http://localhost:3005/api", syncResponse = await fetch(`${backendUrl}/billing/shopify/sync-tier`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "X-Tenant-ID": shopName
+            },
+            body: JSON.stringify({
+              shop: session.shop,
+              accessToken: session.accessToken
+            })
+          });
+          if (syncResponse.ok) {
+            let tierData = await syncResponse.json();
+            console.log(`\u2705 Tier synced with backend for ${shopName}:`, tierData.tier);
+          } else
+            console.warn(`Failed to sync tier for ${shopName}:`, syncResponse.status);
+        } catch (tierSyncError) {
+          console.error(`Tier sync error for ${shopName}:`, tierSyncError);
+        }
+      subscriptionInfo.needsSubscription && !isPostSubscription ? console.log(`Redirecting ${shopName} to plan selection - no subscription found`) : isPostSubscription && console.log(`Post-subscription: Allowing app access for ${shopName} (subscription may be processing)`);
     } catch (subscriptionError) {
       console.error("Subscription check failed, allowing app access:", subscriptionError);
     }
@@ -151886,12 +152196,12 @@ var import_jsx_runtime31 = __toESM(require_jsx_runtime()), loader17 = async ({ r
   }
 };
 function AppIndex() {
-  let { message: message2, timestamp, shopName, subscriptionInfo, planSelectionUrl } = (0, import_react41.useLoaderData)(), shopContext = useShopContext(), [isInitialLoad, setIsInitialLoad] = (0, import_react40.useState)(!0), [toast, setToast] = (0, import_react40.useState)({
+  let { message: message2, timestamp, shopName, subscriptionInfo, planSelectionUrl } = (0, import_react42.useLoaderData)(), shopContext = useShopContext(), [isInitialLoad, setIsInitialLoad] = (0, import_react41.useState)(!0), [toast, setToast] = (0, import_react41.useState)({
     message: "",
     type: "success",
     visible: !1
   });
-  import_react40.default.useEffect(() => {
+  import_react41.default.useEffect(() => {
     let timer = setTimeout(() => {
       setIsInitialLoad(!1), (subscriptionInfo?.hasActivePayment || subscriptionInfo?.isInTrial) && setToast({
         message: `Welcome back! Your ${subscriptionInfo.subscriptionTier?.toUpperCase()} plan is active.`,
@@ -151900,7 +152210,7 @@ function AppIndex() {
       });
     }, 800);
     return () => clearTimeout(timer);
-  }, [subscriptionInfo]), import_react40.default.useEffect(() => {
+  }, [subscriptionInfo]), import_react41.default.useEffect(() => {
     let chargeId = new URLSearchParams(window.location.search).get("charge_id"), isPostSubscription = !!chargeId;
     if (subscriptionInfo?.needsSubscription && planSelectionUrl && !isPostSubscription) {
       console.log("Client-side redirect to plan selection:", planSelectionUrl);
@@ -151916,39 +152226,39 @@ function AppIndex() {
     } else
       isPostSubscription && console.log(`Post-subscription detected, staying on dashboard (charge_id: ${chargeId})`);
   }, [subscriptionInfo, planSelectionUrl]);
-  let renderSubscriptionBanner = () => subscriptionInfo ? subscriptionInfo.isInTrial ? /* @__PURE__ */ (0, import_jsx_runtime31.jsxs)("div", { style: {
+  let renderSubscriptionBanner = () => subscriptionInfo ? subscriptionInfo.isInTrial ? /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)("div", { style: {
     background: "#fff3cd",
     border: "1px solid #ffc107",
     borderRadius: "8px",
     padding: "16px",
     marginBottom: "24px"
   }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime31.jsxs)("h3", { style: { margin: "0 0 8px 0", fontSize: "16px", color: "#856404" }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)("h3", { style: { margin: "0 0 8px 0", fontSize: "16px", color: "#856404" }, children: [
       "Free Trial Active - ",
       subscriptionInfo.subscriptionTier?.toUpperCase(),
       " Plan"
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime31.jsxs)("p", { style: { margin: "0", fontSize: "14px", color: "#856404" }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)("p", { style: { margin: "0", fontSize: "14px", color: "#856404" }, children: [
       subscriptionInfo.trialDaysRemaining,
       " days remaining in your trial"
     ] })
-  ] }) : subscriptionInfo.hasActivePayment ? /* @__PURE__ */ (0, import_jsx_runtime31.jsxs)("div", { style: {
+  ] }) : subscriptionInfo.hasActivePayment ? /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)("div", { style: {
     background: "#d1eddd",
     border: "1px solid #28a745",
     borderRadius: "8px",
     padding: "16px",
     marginBottom: "24px"
   }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime31.jsxs)("h3", { style: { margin: "0 0 8px 0", fontSize: "16px", color: "#155724" }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)("h3", { style: { margin: "0 0 8px 0", fontSize: "16px", color: "#155724" }, children: [
       subscriptionInfo.subscriptionTier?.toUpperCase(),
       " Plan Active"
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime31.jsx)("p", { style: { margin: "0", fontSize: "14px", color: "#155724" }, children: "Full access to all features" })
+    /* @__PURE__ */ (0, import_jsx_runtime32.jsx)("p", { style: { margin: "0", fontSize: "14px", color: "#155724" }, children: "Full access to all features" })
   ] }) : null : null, renderDataRetentionInfo = () => {
     if (!subscriptionInfo?.subscriptionTier)
       return null;
     let tier = subscriptionInfo.subscriptionTier.toLowerCase(), retentionDays = tier === "starter" ? 7 : tier === "professional" ? 30 : 90, upgradeMessage = tier === "starter" ? "Upgrade to Professional for 30-day retention" : tier === "professional" ? "Upgrade to Enterprise for 90-day retention" : null;
-    return /* @__PURE__ */ (0, import_jsx_runtime31.jsxs)("div", { style: {
+    return /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)("div", { style: {
       background: tier === "starter" ? "#fff3cd" : tier === "professional" ? "#e7f3ff" : "#f8f9fa",
       border: tier === "starter" ? "1px solid #ffc107" : tier === "professional" ? "1px solid #007bff" : "1px solid #dee2e6",
       borderRadius: "8px",
@@ -151958,13 +152268,13 @@ function AppIndex() {
       justifyContent: "space-between",
       alignItems: "center"
     }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime31.jsxs)("div", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime31.jsxs)("h4", { style: { margin: "0 0 4px 0", fontSize: "16px", color: tier === "starter" ? "#856404" : tier === "professional" ? "#004085" : "#495057" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)("div", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)("h4", { style: { margin: "0 0 4px 0", fontSize: "16px", color: tier === "starter" ? "#856404" : tier === "professional" ? "#004085" : "#495057" }, children: [
           "Data Retention: ",
           retentionDays,
           " days"
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime31.jsxs)("p", { style: { margin: "0", fontSize: "14px", color: tier === "starter" ? "#856404" : tier === "professional" ? "#004085" : "#6c757d" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)("p", { style: { margin: "0", fontSize: "14px", color: tier === "starter" ? "#856404" : tier === "professional" ? "#004085" : "#6c757d" }, children: [
           "Your ",
           tier.toUpperCase(),
           " plan shows data from the last ",
@@ -151972,8 +152282,8 @@ function AppIndex() {
           " days. Older data is automatically filtered."
         ] })
       ] }),
-      upgradeMessage && /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(
-        import_react41.Link,
+      upgradeMessage && /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(
+        import_react42.Link,
         {
           to: planSelectionUrl,
           style: {
@@ -151991,10 +152301,10 @@ function AppIndex() {
       )
     ] });
   };
-  return /* @__PURE__ */ (0, import_jsx_runtime31.jsxs)("div", { style: { padding: "2rem" }, children: [
+  return /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)("div", { style: { padding: "2rem" }, children: [
     renderSubscriptionBanner(),
     renderDataRetentionInfo(),
-    /* @__PURE__ */ (0, import_jsx_runtime31.jsxs)(
+    /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)(
       "div",
       {
         style: {
@@ -152008,7 +152318,7 @@ function AppIndex() {
           gap: "12px"
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime31.jsx)("div", { style: {
+          /* @__PURE__ */ (0, import_jsx_runtime32.jsx)("div", { style: {
             width: "24px",
             height: "24px",
             background: "#007bff",
@@ -152020,20 +152330,20 @@ function AppIndex() {
             fontSize: "12px",
             fontWeight: "bold"
           }, children: "\u2713" }),
-          /* @__PURE__ */ (0, import_jsx_runtime31.jsxs)("div", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime31.jsxs)("h3", { style: { margin: "0", fontSize: "16px", color: "#0066cc" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)("h3", { style: { margin: "0", fontSize: "16px", color: "#0066cc" }, children: [
               "Connected to ",
               shopName,
               ".myshopify.com"
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime31.jsx)("p", { style: { margin: "4px 0 0 0", fontSize: "14px", color: "#666" }, children: "Your shop is automatically detected and configured" })
+            /* @__PURE__ */ (0, import_jsx_runtime32.jsx)("p", { style: { margin: "4px 0 0 0", fontSize: "14px", color: "#666" }, children: "Your shop is automatically detected and configured" })
           ] })
         ]
       }
     ),
-    /* @__PURE__ */ (0, import_jsx_runtime31.jsx)("h1", { children: "Ads Autopilot AI Dashboard" }),
-    /* @__PURE__ */ (0, import_jsx_runtime31.jsx)("p", { children: message2 }),
-    /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(
+    /* @__PURE__ */ (0, import_jsx_runtime32.jsx)("h1", { children: "Ads Autopilot AI Dashboard" }),
+    /* @__PURE__ */ (0, import_jsx_runtime32.jsx)("p", { children: message2 }),
+    /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(
       "div",
       {
         style: {
@@ -152044,17 +152354,17 @@ function AppIndex() {
         },
         children: isInitialLoad ? (
           // Show skeleton loading states
-          /* @__PURE__ */ (0, import_jsx_runtime31.jsxs)(import_jsx_runtime31.Fragment, { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(SkeletonCard, {}),
-            /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(SkeletonCard, {}),
-            /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(SkeletonCard, {}),
-            /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(SkeletonCard, {}),
-            /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(SkeletonCard, {})
+          /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)(import_jsx_runtime32.Fragment, { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(SkeletonCard, {}),
+            /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(SkeletonCard, {}),
+            /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(SkeletonCard, {}),
+            /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(SkeletonCard, {}),
+            /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(SkeletonCard, {})
           ] })
         ) : (
           // Show actual content
-          /* @__PURE__ */ (0, import_jsx_runtime31.jsxs)(import_jsx_runtime31.Fragment, { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime31.jsxs)(
+          /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)(import_jsx_runtime32.Fragment, { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)(
               "div",
               {
                 style: {
@@ -152071,10 +152381,10 @@ function AppIndex() {
                   e.currentTarget.style.transform = "translateY(0)", e.currentTarget.style.boxShadow = "none";
                 },
                 children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime31.jsx)("h3", { children: "Autopilot" }),
-                  /* @__PURE__ */ (0, import_jsx_runtime31.jsx)("p", { children: "Automated campaign management and optimization" }),
-                  /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(
-                    import_react41.Link,
+                  /* @__PURE__ */ (0, import_jsx_runtime32.jsx)("h3", { children: "Autopilot" }),
+                  /* @__PURE__ */ (0, import_jsx_runtime32.jsx)("p", { children: "Automated campaign management and optimization" }),
+                  /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(
+                    import_react42.Link,
                     {
                       to: buildAppUrl("/app/autopilot", shopContext),
                       style: {
@@ -152101,7 +152411,7 @@ function AppIndex() {
                 ]
               }
             ),
-            /* @__PURE__ */ (0, import_jsx_runtime31.jsxs)(
+            /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)(
               "div",
               {
                 style: {
@@ -152111,10 +152421,10 @@ function AppIndex() {
                   background: "#f8f9fa"
                 },
                 children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime31.jsx)("h3", { children: "Insights" }),
-                  /* @__PURE__ */ (0, import_jsx_runtime31.jsx)("p", { children: "Performance analytics and campaign insights" }),
-                  /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(
-                    import_react41.Link,
+                  /* @__PURE__ */ (0, import_jsx_runtime32.jsx)("h3", { children: "Insights" }),
+                  /* @__PURE__ */ (0, import_jsx_runtime32.jsx)("p", { children: "Performance analytics and campaign insights" }),
+                  /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(
+                    import_react42.Link,
                     {
                       to: "/app/insights",
                       style: {
@@ -152135,7 +152445,7 @@ function AppIndex() {
                 ]
               }
             ),
-            /* @__PURE__ */ (0, import_jsx_runtime31.jsxs)(
+            /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)(
               "div",
               {
                 style: {
@@ -152146,9 +152456,9 @@ function AppIndex() {
                   position: "relative"
                 },
                 children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime31.jsx)("h3", { children: "Custom Dashboards" }),
-                  /* @__PURE__ */ (0, import_jsx_runtime31.jsx)("p", { children: "Enterprise-exclusive custom analytics dashboards" }),
-                  /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(
+                  /* @__PURE__ */ (0, import_jsx_runtime32.jsx)("h3", { children: "Custom Dashboards" }),
+                  /* @__PURE__ */ (0, import_jsx_runtime32.jsx)("p", { children: "Enterprise-exclusive custom analytics dashboards" }),
+                  /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(
                     "div",
                     {
                       style: {
@@ -152165,8 +152475,8 @@ function AppIndex() {
                       children: "ENTERPRISE"
                     }
                   ),
-                  /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(
-                    import_react41.Link,
+                  /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(
+                    import_react42.Link,
                     {
                       to: "/app/dashboards",
                       style: {
@@ -152187,7 +152497,7 @@ function AppIndex() {
                 ]
               }
             ),
-            /* @__PURE__ */ (0, import_jsx_runtime31.jsxs)(
+            /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)(
               "div",
               {
                 style: {
@@ -152199,9 +152509,9 @@ function AppIndex() {
                   position: "relative"
                 },
                 children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime31.jsx)("h3", { children: "Smart Website Features" }),
-                  /* @__PURE__ */ (0, import_jsx_runtime31.jsx)("p", { children: "Advanced conversion optimization tools" }),
-                  /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(
+                  /* @__PURE__ */ (0, import_jsx_runtime32.jsx)("h3", { children: "Smart Website Features" }),
+                  /* @__PURE__ */ (0, import_jsx_runtime32.jsx)("p", { children: "Advanced conversion optimization tools" }),
+                  /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(
                     "div",
                     {
                       style: {
@@ -152218,8 +152528,8 @@ function AppIndex() {
                       children: "Coming Q1 2026"
                     }
                   ),
-                  /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(
-                    import_react41.Link,
+                  /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(
+                    import_react42.Link,
                     {
                       to: "/app/intent-os",
                       style: {
@@ -152240,7 +152550,7 @@ function AppIndex() {
                 ]
               }
             ),
-            /* @__PURE__ */ (0, import_jsx_runtime31.jsxs)(
+            /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)(
               "div",
               {
                 style: {
@@ -152250,10 +152560,10 @@ function AppIndex() {
                   background: "#f8f9fa"
                 },
                 children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime31.jsx)("h3", { children: "Advanced" }),
-                  /* @__PURE__ */ (0, import_jsx_runtime31.jsx)("p", { children: "Advanced settings and configuration" }),
-                  /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(
-                    import_react41.Link,
+                  /* @__PURE__ */ (0, import_jsx_runtime32.jsx)("h3", { children: "Advanced" }),
+                  /* @__PURE__ */ (0, import_jsx_runtime32.jsx)("p", { children: "Advanced settings and configuration" }),
+                  /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(
+                    import_react42.Link,
                     {
                       to: "/app/advanced",
                       style: {
@@ -152274,7 +152584,7 @@ function AppIndex() {
                 ]
               }
             ),
-            /* @__PURE__ */ (0, import_jsx_runtime31.jsxs)(
+            /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)(
               "div",
               {
                 style: {
@@ -152285,11 +152595,11 @@ function AppIndex() {
                   position: "relative"
                 },
                 children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime31.jsx)("div", { style: { position: "absolute", top: "8px", right: "8px" }, children: /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(AIStatusIndicator, { shopName, compact: !0 }) }),
-                  /* @__PURE__ */ (0, import_jsx_runtime31.jsx)("h3", { children: "\u{1F916} AI Dashboard" }),
-                  /* @__PURE__ */ (0, import_jsx_runtime31.jsx)("p", { children: "Manage AI-generated content and monitor automation" }),
-                  /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(
-                    import_react41.Link,
+                  /* @__PURE__ */ (0, import_jsx_runtime32.jsx)("div", { style: { position: "absolute", top: "8px", right: "8px" }, children: /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(AIStatusIndicator, { shopName, compact: !0 }) }),
+                  /* @__PURE__ */ (0, import_jsx_runtime32.jsx)("h3", { children: "\u{1F916} AI Dashboard" }),
+                  /* @__PURE__ */ (0, import_jsx_runtime32.jsx)("p", { children: "Manage AI-generated content and monitor automation" }),
+                  /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(
+                    import_react42.Link,
                     {
                       to: "/app/ai-dashboard",
                       style: {
@@ -152314,7 +152624,7 @@ function AppIndex() {
         )
       }
     ),
-    /* @__PURE__ */ (0, import_jsx_runtime31.jsxs)(
+    /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)(
       "div",
       {
         style: {
@@ -152326,14 +152636,14 @@ function AppIndex() {
           color: "#666"
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime31.jsx)("strong", { children: "Status:" }),
+          /* @__PURE__ */ (0, import_jsx_runtime32.jsx)("strong", { children: "Status:" }),
           " Connected to backend \u2022 Last updated:",
           " ",
           new Date(timestamp).toLocaleString()
         ]
       }
     ),
-    /* @__PURE__ */ (0, import_jsx_runtime31.jsx)(
+    /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(
       Toast,
       {
         message: toast.message,
@@ -152352,7 +152662,7 @@ __export(app_setup_exports, {
   default: () => Setup,
   loader: () => loader18
 });
-var import_node17 = __toESM(require_dist4()), import_react42 = __toESM(require_dist2());
+var import_node17 = __toESM(require_dist4()), import_react43 = __toESM(require_dist2());
 init_shopify_server();
 
 // app/utils/database.server.ts
@@ -152443,7 +152753,7 @@ async function markSetupCompleted(tenantId) {
 }
 
 // app/routes/app.setup.tsx
-var import_jsx_runtime32 = __toESM(require_jsx_runtime());
+var import_jsx_runtime33 = __toESM(require_jsx_runtime());
 async function loader18({ request: request2 }) {
   try {
     let { session } = await authenticate.admin(request2), shopName = session?.shop?.replace(".myshopify.com", "") || "";
@@ -152468,9 +152778,9 @@ async function action10({ request: request2 }) {
   }
 }
 function Setup() {
-  let data = (0, import_react42.useLoaderData)(), actionData = (0, import_react42.useActionData)(), isSubmitting = (0, import_react42.useNavigation)().state !== "idle";
-  return /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)("div", { style: { maxWidth: 600, margin: "0 auto", padding: 20 }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)(
+  let data = (0, import_react43.useLoaderData)(), actionData = (0, import_react43.useActionData)(), isSubmitting = (0, import_react43.useNavigation)().state !== "idle";
+  return /* @__PURE__ */ (0, import_jsx_runtime33.jsxs)("div", { style: { maxWidth: 600, margin: "0 auto", padding: 20 }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime33.jsxs)(
       "div",
       {
         style: {
@@ -152482,16 +152792,16 @@ function Setup() {
           textAlign: "center"
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime32.jsx)("h1", { style: { margin: "0 0 16px 0", fontSize: "28px", color: "#333" }, children: "Welcome to ProofKit!" }),
-          /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)("p", { style: { margin: "0 0 8px 0", fontSize: "18px", color: "#666" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime33.jsx)("h1", { style: { margin: "0 0 16px 0", fontSize: "28px", color: "#333" }, children: "Welcome to ProofKit!" }),
+          /* @__PURE__ */ (0, import_jsx_runtime33.jsxs)("p", { style: { margin: "0 0 8px 0", fontSize: "18px", color: "#666" }, children: [
             "Setting up for: ",
-            /* @__PURE__ */ (0, import_jsx_runtime32.jsx)("strong", { children: data.shopDomain })
+            /* @__PURE__ */ (0, import_jsx_runtime33.jsx)("strong", { children: data.shopDomain })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime32.jsx)("p", { style: { margin: "0", fontSize: "14px", color: "#888" }, children: "This quick setup will only take 2 minutes" })
+          /* @__PURE__ */ (0, import_jsx_runtime33.jsx)("p", { style: { margin: "0", fontSize: "14px", color: "#888" }, children: "This quick setup will only take 2 minutes" })
         ]
       }
     ),
-    actionData?.error && /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)(
+    actionData?.error && /* @__PURE__ */ (0, import_jsx_runtime33.jsxs)(
       "div",
       {
         style: {
@@ -152503,13 +152813,13 @@ function Setup() {
           color: "#c53030"
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime32.jsx)("h4", { style: { margin: "0 0 8px 0" }, children: "Setup Error" }),
-          /* @__PURE__ */ (0, import_jsx_runtime32.jsx)("p", { style: { margin: 0 }, children: actionData.error })
+          /* @__PURE__ */ (0, import_jsx_runtime33.jsx)("h4", { style: { margin: "0 0 8px 0" }, children: "Setup Error" }),
+          /* @__PURE__ */ (0, import_jsx_runtime33.jsx)("p", { style: { margin: 0 }, children: actionData.error })
         ]
       }
     ),
-    /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)(
-      import_react42.Form,
+    /* @__PURE__ */ (0, import_jsx_runtime33.jsxs)(
+      import_react43.Form,
       {
         method: "post",
         style: {
@@ -152518,7 +152828,7 @@ function Setup() {
           alignItems: "center"
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)(
+          /* @__PURE__ */ (0, import_jsx_runtime33.jsxs)(
             "div",
             {
               style: {
@@ -152531,7 +152841,7 @@ function Setup() {
                 marginBottom: "32px"
               },
               children: [
-                /* @__PURE__ */ (0, import_jsx_runtime32.jsx)("div", { style: {
+                /* @__PURE__ */ (0, import_jsx_runtime33.jsx)("div", { style: {
                   width: "64px",
                   height: "64px",
                   background: "linear-gradient(135deg, #007bff, #0056b3)",
@@ -152543,8 +152853,8 @@ function Setup() {
                   fontSize: "24px",
                   color: "white"
                 }, children: "\u2713" }),
-                /* @__PURE__ */ (0, import_jsx_runtime32.jsx)("h2", { style: { margin: "0 0 16px 0", fontSize: "24px", color: "#333" }, children: "You're All Set!" }),
-                /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)(
+                /* @__PURE__ */ (0, import_jsx_runtime33.jsx)("h2", { style: { margin: "0 0 16px 0", fontSize: "24px", color: "#333" }, children: "You're All Set!" }),
+                /* @__PURE__ */ (0, import_jsx_runtime33.jsxs)(
                   "p",
                   {
                     style: {
@@ -152555,15 +152865,15 @@ function Setup() {
                     },
                     children: [
                       "ProofKit is now connected to your ",
-                      /* @__PURE__ */ (0, import_jsx_runtime32.jsx)("strong", { children: data.shopDomain }),
+                      /* @__PURE__ */ (0, import_jsx_runtime33.jsx)("strong", { children: data.shopDomain }),
                       " ",
                       "store.",
-                      /* @__PURE__ */ (0, import_jsx_runtime32.jsx)("br", {}),
+                      /* @__PURE__ */ (0, import_jsx_runtime33.jsx)("br", {}),
                       "Your AI-powered Google Ads optimization is ready to begin!"
                     ]
                   }
                 ),
-                /* @__PURE__ */ (0, import_jsx_runtime32.jsxs)(
+                /* @__PURE__ */ (0, import_jsx_runtime33.jsxs)(
                   "div",
                   {
                     style: {
@@ -152575,12 +152885,12 @@ function Setup() {
                       color: "#495057"
                     },
                     children: [
-                      /* @__PURE__ */ (0, import_jsx_runtime32.jsx)("strong", { children: "Next steps:" }),
-                      /* @__PURE__ */ (0, import_jsx_runtime32.jsx)("br", {}),
+                      /* @__PURE__ */ (0, import_jsx_runtime33.jsx)("strong", { children: "Next steps:" }),
+                      /* @__PURE__ */ (0, import_jsx_runtime33.jsx)("br", {}),
                       "\u2022 Configure your campaign settings in Advanced Settings",
-                      /* @__PURE__ */ (0, import_jsx_runtime32.jsx)("br", {}),
+                      /* @__PURE__ */ (0, import_jsx_runtime33.jsx)("br", {}),
                       "\u2022 Set up your automation schedule",
-                      /* @__PURE__ */ (0, import_jsx_runtime32.jsx)("br", {}),
+                      /* @__PURE__ */ (0, import_jsx_runtime33.jsx)("br", {}),
                       "\u2022 Review performance insights as data flows in"
                     ]
                   }
@@ -152588,7 +152898,7 @@ function Setup() {
               ]
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime32.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime33.jsx)(
             "button",
             {
               type: "submit",
@@ -152620,9 +152930,9 @@ __export(health_exports, {
   default: () => Health,
   loader: () => loader19
 });
-var import_node18 = __toESM(require_dist4()), import_jsx_runtime33 = __toESM(require_jsx_runtime()), loader19 = () => (0, import_node18.json)({ ok: !0 });
+var import_node18 = __toESM(require_dist4()), import_jsx_runtime34 = __toESM(require_jsx_runtime()), loader19 = () => (0, import_node18.json)({ ok: !0 });
 function Health() {
-  return /* @__PURE__ */ (0, import_jsx_runtime33.jsx)("pre", { children: "OK" });
+  return /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("pre", { children: "OK" });
 }
 
 // app/routes/install.tsx
@@ -152691,288 +153001,288 @@ __export(privacy_exports, {
   default: () => Privacy,
   meta: () => meta2
 });
-var import_jsx_runtime34 = __toESM(require_jsx_runtime()), meta2 = () => [
+var import_jsx_runtime35 = __toESM(require_jsx_runtime()), meta2 = () => [
   { title: "Privacy Policy - Ads Autopilot AI" },
   { name: "description", content: "Ads Autopilot AI Privacy Policy - Privacy-first conversion optimization for Shopify stores" }
 ];
 function Privacy() {
-  return /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)("div", { style: { fontFamily: "system-ui, sans-serif", lineHeight: "1.8", maxWidth: "800px", margin: "0 auto", padding: "2rem" }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("h1", { children: "Ads Autopilot AI Privacy Policy" }),
-    /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)("p", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("strong", { children: "Effective Date:" }),
+  return /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("div", { style: { fontFamily: "system-ui, sans-serif", lineHeight: "1.8", maxWidth: "800px", margin: "0 auto", padding: "2rem" }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("h1", { children: "Ads Autopilot AI Privacy Policy" }),
+    /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("p", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Effective Date:" }),
       " August 25, 2025",
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("strong", { children: "Last Updated:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Last Updated:" }),
       " August 25, 2025",
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("strong", { children: "Version:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Version:" }),
       " 1.0"
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("h2", { children: "Executive Summary" }),
-    /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("p", { children: "Ads Autopilot AI is committed to protecting your privacy and maintaining the highest standards of data protection. This Privacy Policy explains our privacy-by-design approach, minimal data collection practices, and your rights regarding any information we process." }),
-    /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("h3", { children: "Key Privacy Principles:" }),
-    /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("strong", { children: "Data Minimization:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("h2", { children: "Executive Summary" }),
+    /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("p", { children: "Ads Autopilot AI is committed to protecting your privacy and maintaining the highest standards of data protection. This Privacy Policy explains our privacy-by-design approach, minimal data collection practices, and your rights regarding any information we process." }),
+    /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("h3", { children: "Key Privacy Principles:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Data Minimization:" }),
         " We collect only what's absolutely necessary"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("strong", { children: "No Customer PII:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "No Customer PII:" }),
         " We don't collect personal information from your customers"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("strong", { children: "Merchant Control:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Merchant Control:" }),
         " You maintain full control over your data"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("strong", { children: "Transparency:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Transparency:" }),
         " Clear documentation of all data handling practices"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("strong", { children: "Compliance:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Compliance:" }),
         " GDPR, CCPA, and global privacy regulation compliance"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("h2", { children: "Information We Collect" }),
-    /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("h3", { children: "Merchant Account Information" }),
-    /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("strong", { children: "When You Install Ads Autopilot AI:" }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("strong", { children: "Store Information:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("h2", { children: "Information We Collect" }),
+    /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("h3", { children: "Merchant Account Information" }),
+    /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "When You Install Ads Autopilot AI:" }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Store Information:" }),
         " Store name, domain, Shopify store ID"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("strong", { children: "Contact Details:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Contact Details:" }),
         " Email address for support and notifications"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("strong", { children: "Authentication Data:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Authentication Data:" }),
         " OAuth tokens for secure API access"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("strong", { children: "App Configuration:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "App Configuration:" }),
         " Settings and preferences you configure in Ads Autopilot AI"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)("p", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("strong", { children: "Purpose:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("p", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Purpose:" }),
       " To provide app functionality and support services",
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("strong", { children: "Legal Basis:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Legal Basis:" }),
       " Legitimate business interest and contractual necessity",
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("strong", { children: "Retention:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Retention:" }),
       " Duration of your Ads Autopilot AI subscription plus 30 days"
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("h3", { children: "Product Catalog Data (Read-Only)" }),
-    /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("strong", { children: "What We Access:" }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("strong", { children: "Product Information:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("h3", { children: "Product Catalog Data (Read-Only)" }),
+    /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "What We Access:" }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Product Information:" }),
         " Product titles, descriptions, categories, and variants"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("strong", { children: "Collection Data:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Collection Data:" }),
         " Product collection organization and structure"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("strong", { children: "Metafield Data:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Metafield Data:" }),
         " Custom product attributes (when used for optimization)"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("strong", { children: "How We Use It:" }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("li", { children: "Display products in Ads Autopilot AI configuration interface" }),
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("li", { children: "Generate conversion optimization recommendations" }),
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("li", { children: "Configure product-specific advertising campaigns" })
+    /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "How We Use It:" }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("li", { children: "Display products in Ads Autopilot AI configuration interface" }),
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("li", { children: "Generate conversion optimization recommendations" }),
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("li", { children: "Configure product-specific advertising campaigns" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("strong", { children: "What We DON'T Do:" }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("li", { children: "Store product data outside of your store" }),
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("li", { children: "Share product information with third parties" }),
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("li", { children: "Modify or update your product information" }),
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("li", { children: "Use product data for competitive analysis" })
+    /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "What We DON'T Do:" }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("li", { children: "Store product data outside of your store" }),
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("li", { children: "Share product information with third parties" }),
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("li", { children: "Modify or update your product information" }),
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("li", { children: "Use product data for competitive analysis" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("h2", { children: "Information We DON'T Collect" }),
-    /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("h3", { children: "Customer Personal Information" }),
-    /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("strong", { children: "We Explicitly Do NOT Collect:" }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("li", { children: "Customer names, emails, or contact information" }),
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("li", { children: "Customer addresses or shipping information" }),
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("li", { children: "Phone numbers or personal identifiers" }),
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("li", { children: "Payment or credit card information" }),
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("li", { children: "Purchase history or order details" }),
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("li", { children: "Customer browsing behavior or preferences" }),
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("li", { children: "Individual customer demographic data" })
+    /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("h2", { children: "Information We DON'T Collect" }),
+    /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("h3", { children: "Customer Personal Information" }),
+    /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "We Explicitly Do NOT Collect:" }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("li", { children: "Customer names, emails, or contact information" }),
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("li", { children: "Customer addresses or shipping information" }),
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("li", { children: "Phone numbers or personal identifiers" }),
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("li", { children: "Payment or credit card information" }),
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("li", { children: "Purchase history or order details" }),
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("li", { children: "Customer browsing behavior or preferences" }),
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("li", { children: "Individual customer demographic data" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("h2", { children: "How We Protect Your Information" }),
-    /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("h3", { children: "Technical Security Measures" }),
-    /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("strong", { children: "Encryption & Transport Security:" }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("strong", { children: "HTTPS Everywhere:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("h2", { children: "How We Protect Your Information" }),
+    /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("h3", { children: "Technical Security Measures" }),
+    /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Encryption & Transport Security:" }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "HTTPS Everywhere:" }),
         " All data transmission encrypted with TLS 1.3"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("strong", { children: "API Security:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "API Security:" }),
         " HMAC validation for all requests"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("strong", { children: "Token Security:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Token Security:" }),
         " OAuth tokens encrypted and securely stored"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("strong", { children: "Database Encryption:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Database Encryption:" }),
         " All stored data encrypted at rest"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("h2", { children: "Your Privacy Rights" }),
-    /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("h3", { children: "Data Access & Control" }),
-    /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("strong", { children: "Right to Access:" }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("li", { children: "Request a copy of all data we have about your store" }),
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("li", { children: "Understand how your data is being used" }),
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("li", { children: "Receive data in a portable format (JSON/CSV)" }),
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("li", { children: "Access detailed data processing logs" })
+    /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("h2", { children: "Your Privacy Rights" }),
+    /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("h3", { children: "Data Access & Control" }),
+    /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Right to Access:" }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("li", { children: "Request a copy of all data we have about your store" }),
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("li", { children: "Understand how your data is being used" }),
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("li", { children: "Receive data in a portable format (JSON/CSV)" }),
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("li", { children: "Access detailed data processing logs" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("strong", { children: "Right to Deletion:" }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("li", { children: "Request deletion of all your data when uninstalling the app" }),
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("li", { children: "Selective deletion of specific data categories" }),
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("li", { children: "Immediate deletion upon request (no retention period)" }),
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("li", { children: "Confirmation of deletion completion" })
+    /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Right to Deletion:" }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("li", { children: "Request deletion of all your data when uninstalling the app" }),
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("li", { children: "Selective deletion of specific data categories" }),
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("li", { children: "Immediate deletion upon request (no retention period)" }),
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("li", { children: "Confirmation of deletion completion" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("h2", { children: "Third-Party Integrations" }),
-    /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("h3", { children: "Google Services Integration" }),
-    /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("strong", { children: "Google Sheets API:" }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("strong", { children: "Purpose:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("h2", { children: "Third-Party Integrations" }),
+    /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("h3", { children: "Google Services Integration" }),
+    /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Google Sheets API:" }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Purpose:" }),
         " Store campaign configurations and export data"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("strong", { children: "Data Shared:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Data Shared:" }),
         " Campaign settings, audience configurations"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("strong", { children: "Merchant Control:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Merchant Control:" }),
         " You control access and can revoke permissions anytime"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("strong", { children: "Data Location:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Data Location:" }),
         " Stored in your Google Sheets (your Google account)"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("strong", { children: "Google Ads API:" }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("strong", { children: "Purpose:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Google Ads API:" }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Purpose:" }),
         " Optimize advertising campaigns based on Ads Autopilot AI insights"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("strong", { children: "Data Shared:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Data Shared:" }),
         " Campaign optimization scripts and audience segments"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("strong", { children: "Merchant Control:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Merchant Control:" }),
         " You control Google Ads account access"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("strong", { children: "Data Processing:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Data Processing:" }),
         " Scripts run in your Google Ads account"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("h2", { children: "International Data Transfers" }),
-    /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("h3", { children: "Regional Compliance" }),
-    /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("strong", { children: "GDPR Compliance (EU/UK):" }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("strong", { children: "Legal Basis:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("h2", { children: "International Data Transfers" }),
+    /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("h3", { children: "Regional Compliance" }),
+    /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "GDPR Compliance (EU/UK):" }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Legal Basis:" }),
         " Legitimate interest and contractual necessity"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("strong", { children: "Data Subject Rights:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Data Subject Rights:" }),
         " Full implementation of all GDPR rights"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("strong", { children: "Data Protection Officer:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Data Protection Officer:" }),
         " Available for privacy-related inquiries"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("strong", { children: "Supervisory Authority:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Supervisory Authority:" }),
         " Cooperation with relevant data protection authorities"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("strong", { children: "CCPA Compliance (California):" }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("strong", { children: "Consumer Rights:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "CCPA Compliance (California):" }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Consumer Rights:" }),
         " Full implementation of CCPA rights"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("strong", { children: "Do Not Sell:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Do Not Sell:" }),
         " We do not sell personal information"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("strong", { children: "Opt-Out Rights:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Opt-Out Rights:" }),
         " Comprehensive opt-out mechanisms"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("strong", { children: "Data Categories:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Data Categories:" }),
         " Clear disclosure of all data categories collected"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("h2", { children: "Children's Privacy" }),
-    /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("p", { children: "Ads Autopilot AI is not intended for use by individuals under 13 years of age. We do not knowingly collect personal information from children. If you believe we have inadvertently collected such information, please contact us immediately." }),
-    /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("h2", { children: "Privacy Policy Updates" }),
-    /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("p", { children: "We may update this Privacy Policy from time to time. We will notify you of any material changes by email and through the Ads Autopilot AI app. Your continued use of Ads Autopilot AI after such modifications constitutes your acceptance of the updated Privacy Policy." }),
-    /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("h2", { children: "Contact Information" }),
-    /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)("p", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("strong", { children: "Privacy Questions:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("h2", { children: "Children's Privacy" }),
+    /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("p", { children: "Ads Autopilot AI is not intended for use by individuals under 13 years of age. We do not knowingly collect personal information from children. If you believe we have inadvertently collected such information, please contact us immediately." }),
+    /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("h2", { children: "Privacy Policy Updates" }),
+    /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("p", { children: "We may update this Privacy Policy from time to time. We will notify you of any material changes by email and through the Ads Autopilot AI app. Your continued use of Ads Autopilot AI after such modifications constitutes your acceptance of the updated Privacy Policy." }),
+    /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("h2", { children: "Contact Information" }),
+    /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("p", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Privacy Questions:" }),
       " atanrikulu@e-listele.com",
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("strong", { children: "Data Subject Requests:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Data Subject Requests:" }),
       " atanrikulu@e-listele.com",
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("strong", { children: "Security Incidents:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Security Incidents:" }),
       " atanrikulu@e-listele.com",
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("strong", { children: "General Support:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "General Support:" }),
       " atanrikulu@e-listele.com"
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("h3", { children: "Data Subject Request Timeline:" }),
-    /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("strong", { children: "Acknowledgment:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("h3", { children: "Data Subject Request Timeline:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Acknowledgment:" }),
         " Within 48 hours"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("strong", { children: "Processing:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Processing:" }),
         " Within 30 days (GDPR) or 45 days (CCPA)"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("strong", { children: "Complex Requests:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Complex Requests:" }),
         " Up to 60-90 days with regular updates"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("strong", { children: "Verification:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Verification:" }),
         " Identity verification required for sensitive requests"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("hr", { style: { margin: "3rem 0" } }),
-    /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("p", { style: { textAlign: "center", color: "#666" }, children: /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("strong", { children: "This Privacy Policy is effective as of August 25, 2025, and will remain in effect except with respect to any changes in its provisions in the future, which will be in effect immediately after being posted on this page." }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime34.jsxs)("p", { style: { textAlign: "center", marginTop: "2rem" }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("strong", { children: "Contact Information:" }),
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("strong", { children: "Email:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("hr", { style: { margin: "3rem 0" } }),
+    /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("p", { style: { textAlign: "center", color: "#666" }, children: /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "This Privacy Policy is effective as of August 25, 2025, and will remain in effect except with respect to any changes in its provisions in the future, which will be in effect immediately after being posted on this page." }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("p", { style: { textAlign: "center", marginTop: "2rem" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Contact Information:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Email:" }),
       " atanrikulu@e-listele.com",
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("strong", { children: "Support:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Support:" }),
       " atanrikulu@e-listele.com",
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("strong", { children: "Website:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Website:" }),
       " ",
-      /* @__PURE__ */ (0, import_jsx_runtime34.jsx)("a", { href: "https://proofkit-saas.vercel.app/privacy", children: "https://proofkit-saas.vercel.app/privacy" })
+      /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("a", { href: "https://proofkit-saas.vercel.app/privacy", children: "https://proofkit-saas.vercel.app/privacy" })
     ] })
   ] });
 }
@@ -152984,7 +153294,7 @@ __export(support_exports, {
   loader: () => loader21,
   meta: () => meta3
 });
-var import_node20 = __toESM(require_dist4()), import_react43 = __toESM(require_dist2()), import_react44 = __toESM(require_react()), import_jsx_runtime35 = __toESM(require_jsx_runtime()), meta3 = () => [
+var import_node20 = __toESM(require_dist4()), import_react44 = __toESM(require_dist2()), import_react45 = __toESM(require_react()), import_jsx_runtime36 = __toESM(require_jsx_runtime()), meta3 = () => [
   { title: "Support - Ads Autopilot AI" },
   { name: "description", content: "Get tier-based support for Ads Autopilot AI - Email, priority, and phone support options" }
 ], loader21 = async ({ request: request2 }) => {
@@ -153032,7 +153342,7 @@ var import_node20 = __toESM(require_dist4()), import_react43 = __toESM(require_d
   }
 };
 function Support() {
-  let { tier, contactMethods } = (0, import_react43.useLoaderData)(), [showContactForm, setShowContactForm] = (0, import_react44.useState)(!1), [formData, setFormData] = (0, import_react44.useState)({
+  let { tier, contactMethods } = (0, import_react44.useLoaderData)(), [showContactForm, setShowContactForm] = (0, import_react45.useState)(!1), [formData, setFormData] = (0, import_react45.useState)({
     subject: "",
     description: "",
     category: "general",
@@ -153040,7 +153350,7 @@ function Support() {
     customer_name: "",
     customer_email: "",
     customer_phone: ""
-  }), [isSubmitting, setIsSubmitting] = (0, import_react44.useState)(!1), [submitResult, setSubmitResult] = (0, import_react44.useState)(null), handleInputChange = (e) => {
+  }), [isSubmitting, setIsSubmitting] = (0, import_react45.useState)(!1), [submitResult, setSubmitResult] = (0, import_react45.useState)(null), handleInputChange = (e) => {
     let { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   }, handleSubmit = async (e) => {
@@ -153093,50 +153403,50 @@ function Support() {
     };
     return supportLevels[tier2] || supportLevels.starter;
   })(tier);
-  return /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("div", { style: { fontFamily: "system-ui, sans-serif", lineHeight: "1.8", maxWidth: "800px", margin: "0 auto", padding: "2rem" }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("h1", { children: "Ads Autopilot AI Support" }),
-    /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("p", { children: "Get help with Ads Autopilot AI - your AI-powered Google Ads optimization tool for Shopify stores." }),
-    /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("div", { style: {
+  return /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("div", { style: { fontFamily: "system-ui, sans-serif", lineHeight: "1.8", maxWidth: "800px", margin: "0 auto", padding: "2rem" }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("h1", { children: "Ads Autopilot AI Support" }),
+    /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("p", { children: "Get help with Ads Autopilot AI - your AI-powered Google Ads optimization tool for Shopify stores." }),
+    /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("div", { style: {
       padding: "1.5rem",
       background: tier === "enterprise" ? "#fef3e3" : tier === "professional" ? "#f0f9ff" : "#f8fafc",
       border: `2px solid ${tier === "enterprise" ? "#f59e0b" : tier === "professional" ? "#3b82f6" : "#64748b"}`,
       borderRadius: "8px",
       marginBottom: "2rem"
     }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("h2", { style: {
+      /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("h2", { style: {
         margin: "0 0 1rem 0",
         color: tier === "enterprise" ? "#92400e" : tier === "professional" ? "#1e40af" : "#475569"
       }, children: [
         "Your Support Level: ",
         getTierDisplayName(tier)
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("div", { style: { display: "grid", gridTemplateColumns: "1fr 2fr", gap: "1rem", alignItems: "start" }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("div", { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("p", { style: { margin: "0 0 0.5rem 0", fontWeight: "bold", fontSize: "1.1rem" }, children: supportLevel.type }),
-          /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("p", { style: { margin: "0 0 0.5rem 0", color: "#6b7280" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("div", { style: { display: "grid", gridTemplateColumns: "1fr 2fr", gap: "1rem", alignItems: "start" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("div", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("p", { style: { margin: "0 0 0.5rem 0", fontWeight: "bold", fontSize: "1.1rem" }, children: supportLevel.type }),
+          /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("p", { style: { margin: "0 0 0.5rem 0", color: "#6b7280" }, children: [
             "Response within ",
             supportLevel.response
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("p", { style: { margin: "0", color: "#6b7280", fontSize: "0.9rem" }, children: supportLevel.description })
+          /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("p", { style: { margin: "0", color: "#6b7280", fontSize: "0.9rem" }, children: supportLevel.description })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("div", { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("p", { style: { margin: "0 0 0.5rem 0", fontWeight: "bold" }, children: "Included Features:" }),
-          /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("ul", { style: { margin: "0", paddingLeft: "1.5rem" }, children: supportLevel.features.map((feature, index) => /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("li", { style: { color: "#374151", marginBottom: "0.25rem" }, children: feature }, index)) })
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("div", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("p", { style: { margin: "0 0 0.5rem 0", fontWeight: "bold" }, children: "Included Features:" }),
+          /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("ul", { style: { margin: "0", paddingLeft: "1.5rem" }, children: supportLevel.features.map((feature, index) => /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("li", { style: { color: "#374151", marginBottom: "0.25rem" }, children: feature }, index)) })
         ] })
       ] })
     ] }),
-    showContactForm ? /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("div", { style: {
+    showContactForm ? /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("div", { style: {
       padding: "1.5rem",
       border: "1px solid #e5e7eb",
       borderRadius: "8px",
       marginBottom: "2rem",
       backgroundColor: "#fafafa"
     }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("h3", { children: "Create Support Ticket" }),
-      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("form", { onSubmit: handleSubmit, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("div", { style: { marginBottom: "1rem" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("label", { style: { display: "block", marginBottom: "0.5rem", fontWeight: "bold" }, children: "Your Name *" }),
-          /* @__PURE__ */ (0, import_jsx_runtime35.jsx)(
+      /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("h3", { children: "Create Support Ticket" }),
+      /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("form", { onSubmit: handleSubmit, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("div", { style: { marginBottom: "1rem" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("label", { style: { display: "block", marginBottom: "0.5rem", fontWeight: "bold" }, children: "Your Name *" }),
+          /* @__PURE__ */ (0, import_jsx_runtime36.jsx)(
             "input",
             {
               type: "text",
@@ -153148,9 +153458,9 @@ function Support() {
             }
           )
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("div", { style: { marginBottom: "1rem" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("label", { style: { display: "block", marginBottom: "0.5rem", fontWeight: "bold" }, children: "Email Address *" }),
-          /* @__PURE__ */ (0, import_jsx_runtime35.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("div", { style: { marginBottom: "1rem" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("label", { style: { display: "block", marginBottom: "0.5rem", fontWeight: "bold" }, children: "Email Address *" }),
+          /* @__PURE__ */ (0, import_jsx_runtime36.jsx)(
             "input",
             {
               type: "email",
@@ -153162,9 +153472,9 @@ function Support() {
             }
           )
         ] }),
-        tier === "enterprise" && /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("div", { style: { marginBottom: "1rem" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("label", { style: { display: "block", marginBottom: "0.5rem", fontWeight: "bold" }, children: "Phone Number (for phone support)" }),
-          /* @__PURE__ */ (0, import_jsx_runtime35.jsx)(
+        tier === "enterprise" && /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("div", { style: { marginBottom: "1rem" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("label", { style: { display: "block", marginBottom: "0.5rem", fontWeight: "bold" }, children: "Phone Number (for phone support)" }),
+          /* @__PURE__ */ (0, import_jsx_runtime36.jsx)(
             "input",
             {
               type: "tel",
@@ -153175,10 +153485,10 @@ function Support() {
             }
           )
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem", marginBottom: "1rem" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("div", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("label", { style: { display: "block", marginBottom: "0.5rem", fontWeight: "bold" }, children: "Category *" }),
-            /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)(
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem", marginBottom: "1rem" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("label", { style: { display: "block", marginBottom: "0.5rem", fontWeight: "bold" }, children: "Category *" }),
+            /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)(
               "select",
               {
                 name: "category",
@@ -153187,17 +153497,17 @@ function Support() {
                 required: !0,
                 style: { width: "100%", padding: "0.75rem", border: "1px solid #d1d5db", borderRadius: "4px" },
                 children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("option", { value: "general", children: "General" }),
-                  /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("option", { value: "technical", children: "Technical" }),
-                  /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("option", { value: "billing", children: "Billing" }),
-                  tier === "enterprise" && /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("option", { value: "urgent", children: "Urgent" })
+                  /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("option", { value: "general", children: "General" }),
+                  /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("option", { value: "technical", children: "Technical" }),
+                  /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("option", { value: "billing", children: "Billing" }),
+                  tier === "enterprise" && /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("option", { value: "urgent", children: "Urgent" })
                 ]
               }
             )
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("div", { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("label", { style: { display: "block", marginBottom: "0.5rem", fontWeight: "bold" }, children: "Priority *" }),
-            /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)(
+          /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("div", { children: [
+            /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("label", { style: { display: "block", marginBottom: "0.5rem", fontWeight: "bold" }, children: "Priority *" }),
+            /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)(
               "select",
               {
                 name: "priority",
@@ -153206,18 +153516,18 @@ function Support() {
                 required: !0,
                 style: { width: "100%", padding: "0.75rem", border: "1px solid #d1d5db", borderRadius: "4px" },
                 children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("option", { value: "low", children: "Low" }),
-                  /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("option", { value: "normal", children: "Normal" }),
-                  ["professional", "enterprise"].includes(tier) && /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("option", { value: "high", children: "High" }),
-                  tier === "enterprise" && /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("option", { value: "urgent", children: "Urgent" })
+                  /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("option", { value: "low", children: "Low" }),
+                  /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("option", { value: "normal", children: "Normal" }),
+                  ["professional", "enterprise"].includes(tier) && /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("option", { value: "high", children: "High" }),
+                  tier === "enterprise" && /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("option", { value: "urgent", children: "Urgent" })
                 ]
               }
             )
           ] })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("div", { style: { marginBottom: "1rem" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("label", { style: { display: "block", marginBottom: "0.5rem", fontWeight: "bold" }, children: "Subject *" }),
-          /* @__PURE__ */ (0, import_jsx_runtime35.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("div", { style: { marginBottom: "1rem" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("label", { style: { display: "block", marginBottom: "0.5rem", fontWeight: "bold" }, children: "Subject *" }),
+          /* @__PURE__ */ (0, import_jsx_runtime36.jsx)(
             "input",
             {
               type: "text",
@@ -153230,9 +153540,9 @@ function Support() {
             }
           )
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("div", { style: { marginBottom: "1rem" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("label", { style: { display: "block", marginBottom: "0.5rem", fontWeight: "bold" }, children: "Description *" }),
-          /* @__PURE__ */ (0, import_jsx_runtime35.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("div", { style: { marginBottom: "1rem" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("label", { style: { display: "block", marginBottom: "0.5rem", fontWeight: "bold" }, children: "Description *" }),
+          /* @__PURE__ */ (0, import_jsx_runtime36.jsx)(
             "textarea",
             {
               name: "description",
@@ -153245,8 +153555,8 @@ function Support() {
             }
           )
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("div", { style: { display: "flex", gap: "1rem" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime35.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("div", { style: { display: "flex", gap: "1rem" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime36.jsx)(
             "button",
             {
               type: "submit",
@@ -153265,7 +153575,7 @@ function Support() {
               children: isSubmitting ? "Creating Ticket..." : "Create Ticket"
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime35.jsx)(
+          /* @__PURE__ */ (0, import_jsx_runtime36.jsx)(
             "button",
             {
               type: "button",
@@ -153284,8 +153594,8 @@ function Support() {
           )
         ] })
       ] })
-    ] }) : /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("div", { style: { textAlign: "center", margin: "2rem 0" }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime35.jsx)(
+    ] }) : /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("div", { style: { textAlign: "center", margin: "2rem 0" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime36.jsx)(
         "button",
         {
           onClick: () => setShowContactForm(!0),
@@ -153302,418 +153612,418 @@ function Support() {
           children: "Create Support Ticket"
         }
       ),
-      /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("p", { style: { marginTop: "1rem", color: "#6b7280" }, children: "Get help with technical issues, billing questions, or general support" })
+      /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("p", { style: { marginTop: "1rem", color: "#6b7280" }, children: "Get help with technical issues, billing questions, or general support" })
     ] }),
-    submitResult && /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("div", { style: {
+    submitResult && /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("div", { style: {
       padding: "1rem",
       backgroundColor: submitResult.success ? "#dcfce7" : "#fee2e2",
       border: `1px solid ${submitResult.success ? "#16a34a" : "#dc2626"}`,
       borderRadius: "4px",
       marginBottom: "2rem"
-    }, children: /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("p", { style: {
+    }, children: /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("p", { style: {
       margin: "0",
       color: submitResult.success ? "#166534" : "#991b1b",
       fontWeight: "bold"
     }, children: submitResult.message }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("h2", { children: "Direct Contact Information" }),
-    /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("div", { style: { display: "grid", gridTemplateColumns: tier === "enterprise" ? "1fr 1fr 1fr" : "1fr 1fr", gap: "2rem", margin: "2rem 0" }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("div", { style: { padding: "1.5rem", border: "1px solid #e5e7eb", borderRadius: "8px" }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("h3", { children: "Email Support" }),
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("p", { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Email:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("h2", { children: "Direct Contact Information" }),
+    /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("div", { style: { display: "grid", gridTemplateColumns: tier === "enterprise" ? "1fr 1fr 1fr" : "1fr 1fr", gap: "2rem", margin: "2rem 0" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("div", { style: { padding: "1.5rem", border: "1px solid #e5e7eb", borderRadius: "8px" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("h3", { children: "Email Support" }),
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("p", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("strong", { children: "Email:" }),
           " ",
           contactMethods.support_email,
-          /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("br", {}),
-          /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Response Time:" }),
+          /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("br", {}),
+          /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("strong", { children: "Response Time:" }),
           " ",
           contactMethods.guaranteed_response_hours,
           " hours",
-          /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("br", {}),
-          /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Hours:" }),
+          /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("br", {}),
+          /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("strong", { children: "Hours:" }),
           " Monday-Friday, 9 AM - 6 PM EST"
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("p", { children: "For all general inquiries, technical support, and account questions." })
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("p", { children: "For all general inquiries, technical support, and account questions." })
       ] }),
-      tier === "enterprise" && /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("div", { style: { padding: "1.5rem", border: "2px solid #f59e0b", borderRadius: "8px", backgroundColor: "#fef3e3" }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("h3", { children: "Phone Support" }),
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("p", { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Phone:" }),
+      tier === "enterprise" && /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("div", { style: { padding: "1.5rem", border: "2px solid #f59e0b", borderRadius: "8px", backgroundColor: "#fef3e3" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("h3", { children: "Phone Support" }),
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("p", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("strong", { children: "Phone:" }),
           " (307) 395-9830",
-          /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("br", {}),
-          /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Response Time:" }),
+          /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("br", {}),
+          /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("strong", { children: "Response Time:" }),
           " Immediate",
-          /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("br", {}),
-          /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Hours:" }),
+          /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("br", {}),
+          /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("strong", { children: "Hours:" }),
           " Monday-Friday, 9 AM - 6 PM EST"
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("p", { children: "Priority phone support for urgent issues and dedicated account management." })
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("p", { children: "Priority phone support for urgent issues and dedicated account management." })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("div", { style: { padding: "1.5rem", border: "1px solid #e5e7eb", borderRadius: "8px" }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("h3", { children: "Billing & Accounts" }),
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("p", { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Email:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("div", { style: { padding: "1.5rem", border: "1px solid #e5e7eb", borderRadius: "8px" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("h3", { children: "Billing & Accounts" }),
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("p", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("strong", { children: "Email:" }),
           " billing@proofkit.com",
-          /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("br", {}),
-          /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Response Time:" }),
+          /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("br", {}),
+          /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("strong", { children: "Response Time:" }),
           " ",
           tier === "enterprise" ? "4" : tier === "professional" ? "6" : "24",
           " hours",
-          /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("br", {}),
-          /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Hours:" }),
+          /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("br", {}),
+          /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("strong", { children: "Hours:" }),
           " Monday-Friday, 9 AM - 6 PM EST"
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("p", { children: "For subscription issues, billing questions, refund requests, and plan changes." })
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("p", { children: "For subscription issues, billing questions, refund requests, and plan changes." })
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("h2", { children: "Getting Started" }),
-    /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("h3", { children: "Quick Setup Guide (5 Minutes)" }),
-    /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("ol", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Install the App:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("h2", { children: "Getting Started" }),
+    /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("h3", { children: "Quick Setup Guide (5 Minutes)" }),
+    /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("ol", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("strong", { children: "Install the App:" }),
         " Install Ads Autopilot AI from the Shopify App Store"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Connect Google Ads:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("strong", { children: "Connect Google Ads:" }),
         " Authorize your Google Ads account integration"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Configure Audiences:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("strong", { children: "Configure Audiences:" }),
         " Set up your customer segmentation preferences"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Enable Autopilot:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("strong", { children: "Enable Autopilot:" }),
         " Turn on automated campaign optimization"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Monitor Results:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("strong", { children: "Monitor Results:" }),
         " Track your conversion rate improvements"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("h3", { children: "Key Features" }),
-    /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "AI-Powered Optimization:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("h3", { children: "Key Features" }),
+    /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("strong", { children: "AI-Powered Optimization:" }),
         " Automated Google Ads campaign management"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Smart Audience Targeting:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("strong", { children: "Smart Audience Targeting:" }),
         " Anonymous customer segmentation without PII"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Performance Analytics:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("strong", { children: "Performance Analytics:" }),
         " Real-time conversion tracking and insights"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Google Sheets Integration:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("strong", { children: "Google Sheets Integration:" }),
         " Export data and manage campaigns"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Privacy-First:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("strong", { children: "Privacy-First:" }),
         " GDPR & CCPA compliant, no customer data collection"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("h2", { children: "Documentation & Resources" }),
-    /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("h3", { children: "Setup Guides" }),
-    /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Initial Setup:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("h2", { children: "Documentation & Resources" }),
+    /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("h3", { children: "Setup Guides" }),
+    /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("strong", { children: "Initial Setup:" }),
         " Complete walkthrough of app installation and configuration"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Google Ads Integration:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("strong", { children: "Google Ads Integration:" }),
         " Step-by-step guide to connect your Google Ads account"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Audience Configuration:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("strong", { children: "Audience Configuration:" }),
         " How to set up customer segmentation and targeting"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Campaign Optimization:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("strong", { children: "Campaign Optimization:" }),
         " Best practices for automated campaign management"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("h3", { children: "Troubleshooting" }),
-    /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Connection Issues:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("h3", { children: "Troubleshooting" }),
+    /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("strong", { children: "Connection Issues:" }),
         " Resolving Google Ads and Shopify integration problems"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Performance Questions:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("strong", { children: "Performance Questions:" }),
         " Understanding campaign optimization metrics"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Billing Issues:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("strong", { children: "Billing Issues:" }),
         " Common subscription and payment questions"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Account Problems:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("strong", { children: "Account Problems:" }),
         " Login, access, and configuration troubleshooting"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("h2", { children: "Pricing & Plans" }),
-    /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "1rem", margin: "2rem 0" }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("div", { style: { padding: "1.5rem", border: "1px solid #e5e7eb", borderRadius: "8px", textAlign: "center" }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("h3", { children: "Free Plan" }),
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("p", { style: { fontSize: "2rem", fontWeight: "bold", color: "#10b981" }, children: "$0" }),
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("p", { children: "per month" }),
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("ul", { style: { textAlign: "left", marginTop: "1rem" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("li", { children: "Up to 1,000 monthly sessions" }),
-          /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("li", { children: "Basic campaign optimization" }),
-          /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("li", { children: "Email support" }),
-          /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("li", { children: "Standard analytics" })
+    /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("h2", { children: "Pricing & Plans" }),
+    /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "1rem", margin: "2rem 0" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("div", { style: { padding: "1.5rem", border: "1px solid #e5e7eb", borderRadius: "8px", textAlign: "center" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("h3", { children: "Free Plan" }),
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("p", { style: { fontSize: "2rem", fontWeight: "bold", color: "#10b981" }, children: "$0" }),
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("p", { children: "per month" }),
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("ul", { style: { textAlign: "left", marginTop: "1rem" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("li", { children: "Up to 1,000 monthly sessions" }),
+          /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("li", { children: "Basic campaign optimization" }),
+          /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("li", { children: "Email support" }),
+          /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("li", { children: "Standard analytics" })
         ] })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("div", { style: { padding: "1.5rem", border: "2px solid #3b82f6", borderRadius: "8px", textAlign: "center", position: "relative" }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("div", { style: { position: "absolute", top: "-10px", left: "50%", transform: "translateX(-50%)", backgroundColor: "#3b82f6", color: "white", padding: "0.25rem 1rem", borderRadius: "12px", fontSize: "0.875rem" }, children: "Popular" }),
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("h3", { children: "Pro Plan" }),
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("p", { style: { fontSize: "2rem", fontWeight: "bold", color: "#3b82f6" }, children: "$29" }),
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("p", { children: "per month" }),
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("ul", { style: { textAlign: "left", marginTop: "1rem" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("li", { children: "Unlimited sessions" }),
-          /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("li", { children: "Advanced AI optimization" }),
-          /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("li", { children: "Priority support" }),
-          /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("li", { children: "Advanced analytics" }),
-          /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("li", { children: "Google Sheets integration" })
+      /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("div", { style: { padding: "1.5rem", border: "2px solid #3b82f6", borderRadius: "8px", textAlign: "center", position: "relative" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("div", { style: { position: "absolute", top: "-10px", left: "50%", transform: "translateX(-50%)", backgroundColor: "#3b82f6", color: "white", padding: "0.25rem 1rem", borderRadius: "12px", fontSize: "0.875rem" }, children: "Popular" }),
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("h3", { children: "Pro Plan" }),
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("p", { style: { fontSize: "2rem", fontWeight: "bold", color: "#3b82f6" }, children: "$29" }),
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("p", { children: "per month" }),
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("ul", { style: { textAlign: "left", marginTop: "1rem" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("li", { children: "Unlimited sessions" }),
+          /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("li", { children: "Advanced AI optimization" }),
+          /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("li", { children: "Priority support" }),
+          /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("li", { children: "Advanced analytics" }),
+          /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("li", { children: "Google Sheets integration" })
         ] })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("div", { style: { padding: "1.5rem", border: "1px solid #e5e7eb", borderRadius: "8px", textAlign: "center" }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("h3", { children: "Enterprise" }),
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("p", { style: { fontSize: "2rem", fontWeight: "bold", color: "#8b5cf6" }, children: "$99" }),
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("p", { children: "per month" }),
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("ul", { style: { textAlign: "left", marginTop: "1rem" }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("li", { children: "Everything in Pro" }),
-          /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("li", { children: "Multiple store management" }),
-          /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("li", { children: "Dedicated account manager" }),
-          /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("li", { children: "Custom integrations" }),
-          /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("li", { children: "SLA guarantees" })
+      /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("div", { style: { padding: "1.5rem", border: "1px solid #e5e7eb", borderRadius: "8px", textAlign: "center" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("h3", { children: "Enterprise" }),
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("p", { style: { fontSize: "2rem", fontWeight: "bold", color: "#8b5cf6" }, children: "$99" }),
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("p", { children: "per month" }),
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("ul", { style: { textAlign: "left", marginTop: "1rem" }, children: [
+          /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("li", { children: "Everything in Pro" }),
+          /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("li", { children: "Multiple store management" }),
+          /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("li", { children: "Dedicated account manager" }),
+          /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("li", { children: "Custom integrations" }),
+          /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("li", { children: "SLA guarantees" })
         ] })
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("h2", { children: "Technical Support" }),
-    /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("h3", { children: "System Requirements" }),
-    /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Shopify Plan:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("h2", { children: "Technical Support" }),
+    /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("h3", { children: "System Requirements" }),
+    /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("strong", { children: "Shopify Plan:" }),
         " Any Shopify plan (Basic, Shopify, Advanced, Plus)"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Google Ads Account:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("strong", { children: "Google Ads Account:" }),
         " Active Google Ads account with API access"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Browser:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("strong", { children: "Browser:" }),
         " Modern browser (Chrome, Firefox, Safari, Edge)"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Permissions:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("strong", { children: "Permissions:" }),
         " Shopify admin access to install apps"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("h3", { children: "Common Integration Questions" }),
-    /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Google Ads API:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("h3", { children: "Common Integration Questions" }),
+    /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("strong", { children: "Google Ads API:" }),
         " We use read/write access to optimize your campaigns"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Google Sheets:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("strong", { children: "Google Sheets:" }),
         " Optional integration for data export and management"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Shopify Data:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("strong", { children: "Shopify Data:" }),
         " We only read product catalog data (no customer PII)"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Privacy Compliance:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("strong", { children: "Privacy Compliance:" }),
         " Fully GDPR and CCPA compliant by design"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("h2", { children: "Privacy & Security" }),
-    /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("h3", { children: "Data Protection" }),
-    /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "No Customer PII:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("h2", { children: "Privacy & Security" }),
+    /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("h3", { children: "Data Protection" }),
+    /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("strong", { children: "No Customer PII:" }),
         " We never collect personal information from your customers"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Minimal Data Collection:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("strong", { children: "Minimal Data Collection:" }),
         " Only store configuration and campaign settings"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Your Data Control:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("strong", { children: "Your Data Control:" }),
         " You own and control all your optimization data"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Secure Infrastructure:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("strong", { children: "Secure Infrastructure:" }),
         " Enterprise-grade security with encryption"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("h3", { children: "Compliance" }),
-    /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "GDPR Compliant:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("h3", { children: "Compliance" }),
+    /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("strong", { children: "GDPR Compliant:" }),
         " Full compliance with EU privacy regulations"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "CCPA Compliant:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("strong", { children: "CCPA Compliant:" }),
         " California privacy law compliance"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "SOC 2 Type II:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("strong", { children: "SOC 2 Type II:" }),
         " Audited security and privacy controls"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Data Processing Agreements:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("strong", { children: "Data Processing Agreements:" }),
         " Available for enterprise customers"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("h2", { children: "Performance & Optimization" }),
-    /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("h3", { children: "Expected Results" }),
-    /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Conversion Rate:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("h2", { children: "Performance & Optimization" }),
+    /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("h3", { children: "Expected Results" }),
+    /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("strong", { children: "Conversion Rate:" }),
         " Average 15-25% improvement in first 30 days"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Setup Time:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("strong", { children: "Setup Time:" }),
         " Complete setup in under 5 minutes"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Time to Value:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("strong", { children: "Time to Value:" }),
         " See optimization results within 24 hours"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Campaign Management:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("strong", { children: "Campaign Management:" }),
         " Automated optimization saves 5-10 hours/week"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("h3", { children: "Best Practices" }),
-    /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Audience Segmentation:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("h3", { children: "Best Practices" }),
+    /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("strong", { children: "Audience Segmentation:" }),
         " Set up detailed customer segments for better targeting"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Campaign Budgets:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("strong", { children: "Campaign Budgets:" }),
         " Start with conservative budgets and scale based on performance"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Regular Monitoring:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("strong", { children: "Regular Monitoring:" }),
         " Review optimization reports weekly"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "A/B Testing:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("strong", { children: "A/B Testing:" }),
         " Use built-in testing features to optimize campaigns"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("h2", { children: "Training & Onboarding" }),
-    /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("h3", { children: "Available Resources" }),
-    /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Video Tutorials:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("h2", { children: "Training & Onboarding" }),
+    /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("h3", { children: "Available Resources" }),
+    /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("strong", { children: "Video Tutorials:" }),
         " Step-by-step setup and optimization guides"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Webinar Series:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("strong", { children: "Webinar Series:" }),
         " Monthly training sessions with Q&A"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Best Practices Guide:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("strong", { children: "Best Practices Guide:" }),
         " Comprehensive optimization strategies"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Case Studies:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("strong", { children: "Case Studies:" }),
         " Real customer success stories and results"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("h3", { children: "Enterprise Support" }),
-    /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("p", { children: "Enterprise customers receive:" }),
-    /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Dedicated Account Manager:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("h3", { children: "Enterprise Support" }),
+    /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("p", { children: "Enterprise customers receive:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("strong", { children: "Dedicated Account Manager:" }),
         " Personal support and optimization guidance"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Custom Training:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("strong", { children: "Custom Training:" }),
         " Tailored training sessions for your team"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Implementation Support:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("strong", { children: "Implementation Support:" }),
         " Hands-on help with complex setups"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Performance Reviews:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("strong", { children: "Performance Reviews:" }),
         " Regular optimization strategy sessions"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("h2", { children: "Updates & Maintenance" }),
-    /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("h3", { children: "Service Updates" }),
-    /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Automatic Updates:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("h2", { children: "Updates & Maintenance" }),
+    /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("h3", { children: "Service Updates" }),
+    /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("strong", { children: "Automatic Updates:" }),
         " New features and improvements deployed continuously"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Maintenance Windows:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("strong", { children: "Maintenance Windows:" }),
         " Scheduled maintenance with advance notice"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Security Patches:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("strong", { children: "Security Patches:" }),
         " Immediate deployment of critical updates"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Feature Announcements:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("strong", { children: "Feature Announcements:" }),
         " Email notifications for major new features"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("h3", { children: "Service Status" }),
-    /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Uptime Target:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("h3", { children: "Service Status" }),
+    /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("strong", { children: "Uptime Target:" }),
         " 99.9% service availability"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Status Page:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("strong", { children: "Status Page:" }),
         " Real-time service status and incident reports"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Performance Monitoring:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("strong", { children: "Performance Monitoring:" }),
         " 24/7 monitoring of all systems"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Incident Response:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("strong", { children: "Incident Response:" }),
         " Rapid response to any service issues"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("hr", { style: { margin: "3rem 0" } }),
-    /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("div", { style: { textAlign: "center", backgroundColor: "#f3f4f6", padding: "2rem", borderRadius: "8px" }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("h3", { children: "Need Help Right Now?" }),
-      /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("p", { style: { marginBottom: "1rem" }, children: "Contact our support team for immediate assistance" }),
-      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("p", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Email:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("hr", { style: { margin: "3rem 0" } }),
+    /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("div", { style: { textAlign: "center", backgroundColor: "#f3f4f6", padding: "2rem", borderRadius: "8px" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("h3", { children: "Need Help Right Now?" }),
+      /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("p", { style: { marginBottom: "1rem" }, children: "Contact our support team for immediate assistance" }),
+      /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("p", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("strong", { children: "Email:" }),
         " ",
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("a", { href: "mailto:atanrikulu@e-listele.com", children: "atanrikulu@e-listele.com" }),
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("br", {}),
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Response Time:" }),
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("a", { href: "mailto:atanrikulu@e-listele.com", children: "atanrikulu@e-listele.com" }),
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("br", {}),
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("strong", { children: "Response Time:" }),
         " 24 hours",
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("br", {}),
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Available:" }),
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("br", {}),
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("strong", { children: "Available:" }),
         " Monday-Friday, 9 AM - 6 PM EST"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("div", { style: { marginTop: "2rem" }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("h4", { children: "Emergency Support" }),
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("p", { children: "For critical issues affecting your campaigns:" }),
-        /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("p", { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Priority Email:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("div", { style: { marginTop: "2rem" }, children: [
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("h4", { children: "Emergency Support" }),
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("p", { children: "For critical issues affecting your campaigns:" }),
+        /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("p", { children: [
+          /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("strong", { children: "Priority Email:" }),
           " ",
-          /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("a", { href: "mailto:atanrikulu@e-listele.com", children: "atanrikulu@e-listele.com" })
+          /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("a", { href: "mailto:atanrikulu@e-listele.com", children: "atanrikulu@e-listele.com" })
         ] })
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime35.jsxs)("p", { style: { textAlign: "center", marginTop: "2rem", color: "#666" }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("strong", { children: "Ads Autopilot AI Support Team" }),
-      /* @__PURE__ */ (0, import_jsx_runtime35.jsx)("br", {}),
+    /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("p", { style: { textAlign: "center", marginTop: "2rem", color: "#666" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("strong", { children: "Ads Autopilot AI Support Team" }),
+      /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("br", {}),
       "Helping you optimize your Google Ads campaigns with AI-powered automation"
     ] })
   ] });
@@ -153725,18 +154035,18 @@ __export(index_exports, {
   default: () => Index,
   loader: () => loader22
 });
-var import_node21 = __toESM(require_dist4()), import_jsx_runtime36 = __toESM(require_jsx_runtime());
+var import_node21 = __toESM(require_dist4()), import_jsx_runtime37 = __toESM(require_jsx_runtime());
 async function loader22({ request: request2 }) {
   let url = new URL(request2.url), isEmbedded = url.searchParams.get("embedded") === "1", hasHmac = url.searchParams.has("hmac"), hasHost = url.searchParams.has("host");
   return isEmbedded && hasHmac && hasHost ? (0, import_node21.redirect)(`/app/${url.search}`) : null;
 }
 function Index() {
-  return /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("html", { children: [
-    /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("head", { children: /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("title", { children: "ProofKit - Shopify App" }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime36.jsxs)("body", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("h1", { children: "ProofKit Shopify App" }),
-      /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("p", { children: "This app should be accessed through the Shopify Admin panel." }),
-      /* @__PURE__ */ (0, import_jsx_runtime36.jsx)("p", { children: "If you're seeing this page, please install the app through Shopify." })
+  return /* @__PURE__ */ (0, import_jsx_runtime37.jsxs)("html", { children: [
+    /* @__PURE__ */ (0, import_jsx_runtime37.jsx)("head", { children: /* @__PURE__ */ (0, import_jsx_runtime37.jsx)("title", { children: "ProofKit - Shopify App" }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime37.jsxs)("body", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime37.jsx)("h1", { children: "ProofKit Shopify App" }),
+      /* @__PURE__ */ (0, import_jsx_runtime37.jsx)("p", { children: "This app should be accessed through the Shopify Admin panel." }),
+      /* @__PURE__ */ (0, import_jsx_runtime37.jsx)("p", { children: "If you're seeing this page, please install the app through Shopify." })
     ] })
   ] });
 }
@@ -153780,9 +154090,9 @@ __export(health_exports2, {
   default: () => Health2,
   loader: () => loader24
 });
-var import_node23 = __toESM(require_dist4()), import_jsx_runtime37 = __toESM(require_jsx_runtime()), loader24 = () => (0, import_node23.json)({ ok: !0 });
+var import_node23 = __toESM(require_dist4()), import_jsx_runtime38 = __toESM(require_jsx_runtime()), loader24 = () => (0, import_node23.json)({ ok: !0 });
 function Health2() {
-  return /* @__PURE__ */ (0, import_jsx_runtime37.jsx)("pre", { children: "OK" });
+  return /* @__PURE__ */ (0, import_jsx_runtime38.jsx)("pre", { children: "OK" });
 }
 
 // app/routes/debug.tsx
@@ -153791,7 +154101,7 @@ __export(debug_exports, {
   default: () => Debug,
   loader: () => loader25
 });
-var import_node24 = __toESM(require_dist4()), import_jsx_runtime38 = __toESM(require_jsx_runtime());
+var import_node24 = __toESM(require_dist4()), import_jsx_runtime39 = __toESM(require_jsx_runtime());
 async function loader25() {
   return (0, import_node24.json)({
     env: {
@@ -153805,7 +154115,7 @@ async function loader25() {
   });
 }
 function Debug() {
-  return /* @__PURE__ */ (0, import_jsx_runtime38.jsx)("div", { children: "Debug route - check logs for environment info" });
+  return /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("div", { children: "Debug route - check logs for environment info" });
 }
 
 // app/routes/terms.tsx
@@ -153814,386 +154124,386 @@ __export(terms_exports, {
   default: () => Terms,
   meta: () => meta4
 });
-var import_jsx_runtime39 = __toESM(require_jsx_runtime()), meta4 = () => [
+var import_jsx_runtime40 = __toESM(require_jsx_runtime()), meta4 = () => [
   { title: "Terms of Service - Ads Autopilot AI" },
   { name: "description", content: "Ads Autopilot AI Terms of Service - Legal terms for our Shopify conversion optimization app" }
 ];
 function Terms() {
-  return /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)("div", { style: { fontFamily: "system-ui, sans-serif", lineHeight: "1.8", maxWidth: "800px", margin: "0 auto", padding: "2rem" }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("h1", { children: "Ads Autopilot AI Terms of Service" }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)("p", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("strong", { children: "Effective Date:" }),
+  return /* @__PURE__ */ (0, import_jsx_runtime40.jsxs)("div", { style: { fontFamily: "system-ui, sans-serif", lineHeight: "1.8", maxWidth: "800px", margin: "0 auto", padding: "2rem" }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("h1", { children: "Ads Autopilot AI Terms of Service" }),
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsxs)("p", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("strong", { children: "Effective Date:" }),
       " August 25, 2025",
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("strong", { children: "Last Updated:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("strong", { children: "Last Updated:" }),
       " August 25, 2025",
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("strong", { children: "Version:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("strong", { children: "Version:" }),
       " 1.0"
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("h2", { children: "Agreement Overview" }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("p", { children: 'These Terms of Service ("Terms") govern your use of Ads Autopilot AI ("the App", "the Service") provided by the Ads Autopilot AI team ("we", "us", "our"). By installing, accessing, or using Ads Autopilot AI, you ("Merchant", "you", "your") agree to be bound by these Terms.' }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("h2", { children: "Service Description" }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("h3", { children: "What Ads Autopilot AI Does" }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("p", { children: "Ads Autopilot AI is a Shopify app that provides:" }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("strong", { children: "AI-Powered Campaign Optimization:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("h2", { children: "Agreement Overview" }),
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("p", { children: 'These Terms of Service ("Terms") govern your use of Ads Autopilot AI ("the App", "the Service") provided by the Ads Autopilot AI team ("we", "us", "our"). By installing, accessing, or using Ads Autopilot AI, you ("Merchant", "you", "your") agree to be bound by these Terms.' }),
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("h2", { children: "Service Description" }),
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("h3", { children: "What Ads Autopilot AI Does" }),
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("p", { children: "Ads Autopilot AI is a Shopify app that provides:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("strong", { children: "AI-Powered Campaign Optimization:" }),
         " Automated Google Ads campaign management and optimization"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("strong", { children: "Audience Management:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("strong", { children: "Audience Management:" }),
         " Anonymous customer segmentation and targeting"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("strong", { children: "Performance Analytics:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("strong", { children: "Performance Analytics:" }),
         " Conversion rate tracking and optimization insights"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("strong", { children: "Google Sheets Integration:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("strong", { children: "Google Sheets Integration:" }),
         " Data export and campaign configuration management"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("h3", { children: "Service Availability" }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("strong", { children: "Uptime Target:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("h3", { children: "Service Availability" }),
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("strong", { children: "Uptime Target:" }),
         " 99.9% service availability"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("strong", { children: "Maintenance Windows:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("strong", { children: "Maintenance Windows:" }),
         " Scheduled maintenance with advance notice"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("strong", { children: "Support Hours:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("strong", { children: "Support Hours:" }),
         " Business hours EST with 24-hour response SLA"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("strong", { children: "Geographic Availability:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("strong", { children: "Geographic Availability:" }),
         " Global service with regional data compliance"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("h2", { children: "Account Terms" }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("h3", { children: "Eligibility" }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("p", { children: "To use Ads Autopilot AI, you must:" }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("li", { children: "Be at least 18 years old or the age of majority in your jurisdiction" }),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("li", { children: "Have a valid Shopify store and merchant account" }),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("li", { children: "Provide accurate and complete registration information" }),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("li", { children: "Comply with all applicable laws and regulations" })
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("h2", { children: "Account Terms" }),
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("h3", { children: "Eligibility" }),
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("p", { children: "To use Ads Autopilot AI, you must:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("li", { children: "Be at least 18 years old or the age of majority in your jurisdiction" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("li", { children: "Have a valid Shopify store and merchant account" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("li", { children: "Provide accurate and complete registration information" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("li", { children: "Comply with all applicable laws and regulations" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("h3", { children: "Account Responsibilities" }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("p", { children: "You are responsible for:" }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("li", { children: "Maintaining the security of your account credentials" }),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("li", { children: "All activities that occur under your account" }),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("li", { children: "Promptly notifying us of any unauthorized use" }),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("li", { children: "Keeping your contact information current and accurate" })
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("h3", { children: "Account Responsibilities" }),
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("p", { children: "You are responsible for:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("li", { children: "Maintaining the security of your account credentials" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("li", { children: "All activities that occur under your account" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("li", { children: "Promptly notifying us of any unauthorized use" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("li", { children: "Keeping your contact information current and accurate" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("h2", { children: "Pricing and Billing" }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("h3", { children: "Subscription Plans" }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("strong", { children: "Free Plan:" }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("li", { children: "Basic features and limited usage" }),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("li", { children: "Up to 1,000 monthly sessions" }),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("li", { children: "Community support" })
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("h2", { children: "Pricing and Billing" }),
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("h3", { children: "Subscription Plans" }),
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("strong", { children: "Free Plan:" }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("li", { children: "Basic features and limited usage" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("li", { children: "Up to 1,000 monthly sessions" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("li", { children: "Community support" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("strong", { children: "Pro Plan ($29/month):" }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("li", { children: "Full feature access" }),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("li", { children: "Unlimited sessions" }),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("li", { children: "Priority support" }),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("li", { children: "Advanced analytics" })
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("strong", { children: "Pro Plan ($29/month):" }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("li", { children: "Full feature access" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("li", { children: "Unlimited sessions" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("li", { children: "Priority support" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("li", { children: "Advanced analytics" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("strong", { children: "Enterprise Plan ($99/month):" }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("li", { children: "Everything in Pro" }),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("li", { children: "Multiple store management" }),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("li", { children: "Dedicated account manager" }),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("li", { children: "Custom integrations" })
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("p", { children: /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("strong", { children: "Enterprise Plan ($99/month):" }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("li", { children: "Everything in Pro" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("li", { children: "Multiple store management" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("li", { children: "Dedicated account manager" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("li", { children: "Custom integrations" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("h3", { children: "Billing Terms" }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("strong", { children: "Billing Cycle:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("h3", { children: "Billing Terms" }),
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("strong", { children: "Billing Cycle:" }),
         " Monthly subscription billing through Shopify"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("strong", { children: "Payment Method:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("strong", { children: "Payment Method:" }),
         " Charged to your Shopify account"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("strong", { children: "Auto-Renewal:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("strong", { children: "Auto-Renewal:" }),
         " Subscriptions automatically renew unless cancelled"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("strong", { children: "Price Changes:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("strong", { children: "Price Changes:" }),
         " 30-day advance notice for any price changes"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("h2", { children: "Data and Privacy" }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("h3", { children: "Data Handling" }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("p", { children: "Ads Autopilot AI follows strict data minimization principles:" }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("strong", { children: "No Customer PII:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("h2", { children: "Data and Privacy" }),
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("h3", { children: "Data Handling" }),
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("p", { children: "Ads Autopilot AI follows strict data minimization principles:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("strong", { children: "No Customer PII:" }),
         " We do not collect personal information from your customers"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("strong", { children: "Merchant Data Only:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("strong", { children: "Merchant Data Only:" }),
         " We only access store configuration and product catalog data"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("strong", { children: "Your Control:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("strong", { children: "Your Control:" }),
         " You control all integrations and can revoke access anytime"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("strong", { children: "Secure Storage:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("strong", { children: "Secure Storage:" }),
         " All data encrypted in transit and at rest"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("h3", { children: "Third-Party Integrations" }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("p", { children: "By using Ads Autopilot AI, you authorize us to:" }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("li", { children: "Access your Google Sheets (when you connect them)" }),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("li", { children: "Integrate with Google Ads (when you authorize it)" }),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("li", { children: "Read your Shopify product catalog" }),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("li", { children: "Process campaign optimization data" })
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("h3", { children: "Third-Party Integrations" }),
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("p", { children: "By using Ads Autopilot AI, you authorize us to:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("li", { children: "Access your Google Sheets (when you connect them)" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("li", { children: "Integrate with Google Ads (when you authorize it)" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("li", { children: "Read your Shopify product catalog" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("li", { children: "Process campaign optimization data" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("h2", { children: "Acceptable Use" }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("h3", { children: "Permitted Uses" }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("p", { children: "You may use Ads Autopilot AI to:" }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("li", { children: "Optimize your Google Ads campaigns" }),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("li", { children: "Manage audience segmentation for your store" }),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("li", { children: "Analyze conversion performance" }),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("li", { children: "Export campaign data to Google Sheets" })
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("h2", { children: "Acceptable Use" }),
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("h3", { children: "Permitted Uses" }),
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("p", { children: "You may use Ads Autopilot AI to:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("li", { children: "Optimize your Google Ads campaigns" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("li", { children: "Manage audience segmentation for your store" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("li", { children: "Analyze conversion performance" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("li", { children: "Export campaign data to Google Sheets" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("h3", { children: "Prohibited Uses" }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("p", { children: "You may not use Ads Autopilot AI to:" }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("li", { children: "Violate any applicable laws or regulations" }),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("li", { children: "Infringe on intellectual property rights" }),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("li", { children: "Attempt to reverse engineer the service" }),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("li", { children: "Use the service for malicious or fraudulent purposes" }),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("li", { children: "Interfere with service operations or security" }),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("li", { children: "Share access credentials with unauthorized parties" })
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("h3", { children: "Prohibited Uses" }),
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("p", { children: "You may not use Ads Autopilot AI to:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("li", { children: "Violate any applicable laws or regulations" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("li", { children: "Infringe on intellectual property rights" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("li", { children: "Attempt to reverse engineer the service" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("li", { children: "Use the service for malicious or fraudulent purposes" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("li", { children: "Interfere with service operations or security" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("li", { children: "Share access credentials with unauthorized parties" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("h2", { children: "Service Limitations" }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("h3", { children: "Technical Limitations" }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("strong", { children: "Google API Quotas:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("h2", { children: "Service Limitations" }),
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("h3", { children: "Technical Limitations" }),
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("strong", { children: "Google API Quotas:" }),
         " Subject to Google Ads and Sheets API rate limits"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("strong", { children: "Shopify Limits:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("strong", { children: "Shopify Limits:" }),
         " Bound by Shopify platform limitations"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("strong", { children: "Data Processing:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("strong", { children: "Data Processing:" }),
         " Processing times may vary based on data volume"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("strong", { children: "Feature Availability:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("strong", { children: "Feature Availability:" }),
         " Some features may require specific plan tiers"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("h3", { children: "Service Dependencies" }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("p", { children: "Ads Autopilot AI depends on third-party services:" }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("strong", { children: "Shopify Platform:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("h3", { children: "Service Dependencies" }),
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("p", { children: "Ads Autopilot AI depends on third-party services:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("strong", { children: "Shopify Platform:" }),
         " Core functionality requires active Shopify store"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("strong", { children: "Google Services:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("strong", { children: "Google Services:" }),
         " Integrations subject to Google service availability"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("strong", { children: "Internet Connectivity:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("strong", { children: "Internet Connectivity:" }),
         " Reliable internet connection required"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("h2", { children: "Support and Maintenance" }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("h3", { children: "Support Services" }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("strong", { children: "Response Time:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("h2", { children: "Support and Maintenance" }),
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("h3", { children: "Support Services" }),
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("strong", { children: "Response Time:" }),
         " 24-hour response for all support requests"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("strong", { children: "Support Channels:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("strong", { children: "Support Channels:" }),
         " Email support and help documentation"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("strong", { children: "Business Hours:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("strong", { children: "Business Hours:" }),
         " Monday-Friday, 9 AM - 6 PM EST"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("strong", { children: "Languages:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("strong", { children: "Languages:" }),
         " English (primary), Spanish, French"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("h3", { children: "Maintenance and Updates" }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("strong", { children: "Regular Updates:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("h3", { children: "Maintenance and Updates" }),
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("strong", { children: "Regular Updates:" }),
         " Continuous service improvements and bug fixes"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("strong", { children: "Scheduled Maintenance:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("strong", { children: "Scheduled Maintenance:" }),
         " Advance notice for planned downtime"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("strong", { children: "Security Updates:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("strong", { children: "Security Updates:" }),
         " Immediate deployment of critical security patches"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("strong", { children: "Feature Updates:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("strong", { children: "Feature Updates:" }),
         " New features rolled out with documentation"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("h2", { children: "Liability and Disclaimers" }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("h3", { children: "Service Warranty" }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("p", { children: 'Ads Autopilot AI is provided "as is" with the following disclaimers:' }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("strong", { children: "No Revenue Guarantees:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("h2", { children: "Liability and Disclaimers" }),
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("h3", { children: "Service Warranty" }),
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("p", { children: 'Ads Autopilot AI is provided "as is" with the following disclaimers:' }),
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("strong", { children: "No Revenue Guarantees:" }),
         " We do not guarantee specific conversion rate improvements"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("strong", { children: "Third-Party Dependencies:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("strong", { children: "Third-Party Dependencies:" }),
         " Performance may be affected by external services"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("strong", { children: "Compliance Responsibility:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("strong", { children: "Compliance Responsibility:" }),
         " You are responsible for compliance with advertising regulations"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("h3", { children: "Limitation of Liability" }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("p", { children: "Our liability is limited to:" }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("strong", { children: "Direct Damages:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("h3", { children: "Limitation of Liability" }),
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("p", { children: "Our liability is limited to:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("strong", { children: "Direct Damages:" }),
         " Maximum liability limited to subscription fees paid"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("strong", { children: "Indirect Damages:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("strong", { children: "Indirect Damages:" }),
         " Not liable for lost profits or consequential damages"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("strong", { children: "Service Interruptions:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("strong", { children: "Service Interruptions:" }),
         " Service credits for extended downtime"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("h2", { children: "Termination" }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("h3", { children: "Termination by You" }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("p", { children: "You may terminate your subscription at any time by:" }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("li", { children: "Uninstalling the app from your Shopify admin" }),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("li", { children: "Contacting support to cancel your subscription" }),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("li", { children: "Cancelling through your Shopify billing settings" })
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("h2", { children: "Termination" }),
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("h3", { children: "Termination by You" }),
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("p", { children: "You may terminate your subscription at any time by:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("li", { children: "Uninstalling the app from your Shopify admin" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("li", { children: "Contacting support to cancel your subscription" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("li", { children: "Cancelling through your Shopify billing settings" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("h3", { children: "Termination by Us" }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("p", { children: "We may terminate or suspend your access if:" }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("li", { children: "You violate these Terms of Service" }),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("li", { children: "You fail to pay subscription fees" }),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("li", { children: "We detect fraudulent or malicious activity" }),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("li", { children: "Required by law or legal process" })
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("h3", { children: "Termination by Us" }),
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("p", { children: "We may terminate or suspend your access if:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("li", { children: "You violate these Terms of Service" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("li", { children: "You fail to pay subscription fees" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("li", { children: "We detect fraudulent or malicious activity" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("li", { children: "Required by law or legal process" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("h3", { children: "Effect of Termination" }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("p", { children: "Upon termination:" }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("li", { children: "Your access to the service will be immediately suspended" }),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("li", { children: "Your data will be deleted within 30 days" }),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("li", { children: "You can export your data before termination" }),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("li", { children: "No refunds for partial billing periods" })
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("h3", { children: "Effect of Termination" }),
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("p", { children: "Upon termination:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("li", { children: "Your access to the service will be immediately suspended" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("li", { children: "Your data will be deleted within 30 days" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("li", { children: "You can export your data before termination" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("li", { children: "No refunds for partial billing periods" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("h2", { children: "Legal Terms" }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("h3", { children: "Intellectual Property" }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("strong", { children: "Our Rights:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("h2", { children: "Legal Terms" }),
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("h3", { children: "Intellectual Property" }),
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("strong", { children: "Our Rights:" }),
         " We retain all rights to Ads Autopilot AI software and content"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("strong", { children: "Your Rights:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("strong", { children: "Your Rights:" }),
         " You retain all rights to your store data and content"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("strong", { children: "License:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("strong", { children: "License:" }),
         " We grant you a limited license to use the service"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("strong", { children: "Restrictions:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("strong", { children: "Restrictions:" }),
         " You may not copy, modify, or distribute our software"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("h3", { children: "Governing Law" }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("strong", { children: "Jurisdiction:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("h3", { children: "Governing Law" }),
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("strong", { children: "Jurisdiction:" }),
         " These terms are governed by Delaware law"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("strong", { children: "Disputes:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("strong", { children: "Disputes:" }),
         " Disputes resolved through binding arbitration"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)("li", { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("strong", { children: "Class Action Waiver:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsxs)("li", { children: [
+        /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("strong", { children: "Class Action Waiver:" }),
         " No class action lawsuits permitted"
       ] })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("h2", { children: "Changes to Terms" }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("p", { children: "We may update these Terms of Service from time to time. We will:" }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)("ul", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("li", { children: "Provide 30-day advance notice of material changes" }),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("li", { children: "Email notification to all active users" }),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("li", { children: "Post updates prominently in the app" }),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("li", { children: "Maintain version history of all changes" })
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("h2", { children: "Changes to Terms" }),
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("p", { children: "We may update these Terms of Service from time to time. We will:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsxs)("ul", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("li", { children: "Provide 30-day advance notice of material changes" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("li", { children: "Email notification to all active users" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("li", { children: "Post updates prominently in the app" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("li", { children: "Maintain version history of all changes" })
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("h2", { children: "Contact Information" }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)("p", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("strong", { children: "General Support:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("h2", { children: "Contact Information" }),
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsxs)("p", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("strong", { children: "General Support:" }),
       " atanrikulu@e-listele.com",
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("strong", { children: "Legal Questions:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("strong", { children: "Legal Questions:" }),
       " atanrikulu@e-listele.com",
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("strong", { children: "Billing Issues:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("strong", { children: "Billing Issues:" }),
       " atanrikulu@e-listele.com",
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("strong", { children: "Privacy Concerns:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("strong", { children: "Privacy Concerns:" }),
       " atanrikulu@e-listele.com"
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("h3", { children: "Business Information" }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)("p", { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("strong", { children: "Company:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("h3", { children: "Business Information" }),
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsxs)("p", { children: [
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("strong", { children: "Company:" }),
       " Ads Autopilot AI LLC",
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("strong", { children: "Support Hours:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("strong", { children: "Support Hours:" }),
       " Monday-Friday, 9 AM - 6 PM EST",
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("strong", { children: "Response Time:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("strong", { children: "Response Time:" }),
       " 24 hours for all inquiries"
     ] }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("hr", { style: { margin: "3rem 0" } }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("p", { style: { textAlign: "center", color: "#666" }, children: /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("strong", { children: "These Terms of Service are effective as of August 25, 2025, and will remain in effect except with respect to any changes in their provisions in the future, which will be in effect immediately after being posted on this page." }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("p", { style: { textAlign: "center", marginTop: "2rem" }, children: /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("strong", { children: "By installing or using Ads Autopilot AI, you acknowledge that you have read, understood, and agree to be bound by these Terms of Service." }) }),
-    /* @__PURE__ */ (0, import_jsx_runtime39.jsxs)("p", { style: { textAlign: "center", marginTop: "2rem" }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("strong", { children: "Contact Information:" }),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("strong", { children: "Email:" }),
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("hr", { style: { margin: "3rem 0" } }),
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("p", { style: { textAlign: "center", color: "#666" }, children: /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("strong", { children: "These Terms of Service are effective as of August 25, 2025, and will remain in effect except with respect to any changes in their provisions in the future, which will be in effect immediately after being posted on this page." }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("p", { style: { textAlign: "center", marginTop: "2rem" }, children: /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("strong", { children: "By installing or using Ads Autopilot AI, you acknowledge that you have read, understood, and agree to be bound by these Terms of Service." }) }),
+    /* @__PURE__ */ (0, import_jsx_runtime40.jsxs)("p", { style: { textAlign: "center", marginTop: "2rem" }, children: [
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("strong", { children: "Contact Information:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("strong", { children: "Email:" }),
       " atanrikulu@e-listele.com",
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("strong", { children: "Support:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("strong", { children: "Support:" }),
       " atanrikulu@e-listele.com",
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("br", {}),
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("strong", { children: "Website:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("br", {}),
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("strong", { children: "Website:" }),
       " ",
-      /* @__PURE__ */ (0, import_jsx_runtime39.jsx)("a", { href: "https://proofkit-saas.vercel.app/terms", children: "https://proofkit-saas.vercel.app/terms" })
+      /* @__PURE__ */ (0, import_jsx_runtime40.jsx)("a", { href: "https://proofkit-saas.vercel.app/terms", children: "https://proofkit-saas.vercel.app/terms" })
     ] })
   ] });
 }
@@ -154207,11 +154517,11 @@ __export(app_exports, {
   links: () => links2,
   loader: () => loader26
 });
-var import_node25 = __toESM(require_dist4()), import_react51 = __toESM(require_dist2());
+var import_node25 = __toESM(require_dist4()), import_react52 = __toESM(require_dist2());
 init_server();
 
 // node_modules/@shopify/shopify-app-remix/dist/esm/react/components/AppProvider/AppProvider.mjs
-var import_jsx_runtime41 = __toESM(require_jsx_runtime(), 1), import_polaris15 = __toESM(require_cjs3(), 1);
+var import_jsx_runtime42 = __toESM(require_jsx_runtime(), 1), import_polaris16 = __toESM(require_cjs3(), 1);
 
 // ../node_modules/@shopify/polaris/locales/en.json
 var en_default = {
@@ -154627,28 +154937,28 @@ var en_default = {
 var APP_BRIDGE_URL2 = "https://cdn.shopify.com/shopifycloud/app-bridge.js";
 
 // node_modules/@shopify/shopify-app-remix/dist/esm/react/components/RemixPolarisLink.mjs
-var import_jsx_runtime40 = __toESM(require_jsx_runtime(), 1), import_react45 = __toESM(require_react(), 1), import_react46 = __toESM(require_dist2(), 1), RemixPolarisLink = import_react45.default.forwardRef((props, ref) => (0, import_jsx_runtime40.jsx)(import_react46.Link, { ...props, to: props.url ?? props.to, ref }));
+var import_jsx_runtime41 = __toESM(require_jsx_runtime(), 1), import_react46 = __toESM(require_react(), 1), import_react47 = __toESM(require_dist2(), 1), RemixPolarisLink = import_react46.default.forwardRef((props, ref) => (0, import_jsx_runtime41.jsx)(import_react47.Link, { ...props, to: props.url ?? props.to, ref }));
 
 // node_modules/@shopify/shopify-app-remix/dist/esm/react/components/AppProvider/AppProvider.mjs
 function AppProvider2(props) {
   let { children, apiKey, i18n, isEmbeddedApp = !0, __APP_BRIDGE_URL = APP_BRIDGE_URL2, ...polarisProps } = props;
-  return (0, import_jsx_runtime41.jsxs)(import_jsx_runtime41.Fragment, { children: [isEmbeddedApp && (0, import_jsx_runtime41.jsx)("script", { src: __APP_BRIDGE_URL, "data-api-key": apiKey }), (0, import_jsx_runtime41.jsx)(import_polaris15.AppProvider, { ...polarisProps, linkComponent: RemixPolarisLink, i18n: i18n || en_default, children })] });
+  return (0, import_jsx_runtime42.jsxs)(import_jsx_runtime42.Fragment, { children: [isEmbeddedApp && (0, import_jsx_runtime42.jsx)("script", { src: __APP_BRIDGE_URL, "data-api-key": apiKey }), (0, import_jsx_runtime42.jsx)(import_polaris16.AppProvider, { ...polarisProps, linkComponent: RemixPolarisLink, i18n: i18n || en_default, children })] });
 }
 
 // node_modules/@shopify/shopify-app-remix/dist/esm/react/components/AppProxyProvider/AppProxyProvider.mjs
-var import_jsx_runtime42 = __toESM(require_jsx_runtime(), 1), import_react47 = __toESM(require_react(), 1), AppProxyProviderContext = (0, import_react47.createContext)(null);
+var import_jsx_runtime43 = __toESM(require_jsx_runtime(), 1), import_react48 = __toESM(require_react(), 1), AppProxyProviderContext = (0, import_react48.createContext)(null);
 
 // node_modules/@shopify/shopify-app-remix/dist/esm/react/components/AppProxyForm/AppProxyForm.mjs
-var import_jsx_runtime43 = __toESM(require_jsx_runtime(), 1), import_react48 = __toESM(require_react(), 1);
+var import_jsx_runtime44 = __toESM(require_jsx_runtime(), 1), import_react49 = __toESM(require_react(), 1);
 
 // node_modules/@shopify/shopify-app-remix/dist/esm/react/components/AppProxyLink/AppProxyLink.mjs
-var import_jsx_runtime44 = __toESM(require_jsx_runtime(), 1), import_react49 = __toESM(require_react(), 1);
+var import_jsx_runtime45 = __toESM(require_jsx_runtime(), 1), import_react50 = __toESM(require_react(), 1);
 
 // app/routes/app.tsx
 init_shopify_server();
 
 // app/components/ErrorBoundary.tsx
-var import_react50 = __toESM(require_react()), import_jsx_runtime45 = __toESM(require_jsx_runtime()), ErrorBoundary4 = class extends import_react50.default.Component {
+var import_react51 = __toESM(require_react()), import_jsx_runtime46 = __toESM(require_jsx_runtime()), ErrorBoundary4 = class extends import_react51.default.Component {
   constructor(props) {
     super(props);
     this.reset = () => {
@@ -154666,9 +154976,9 @@ var import_react50 = __toESM(require_react()), import_jsx_runtime45 = __toESM(re
     if (this.state.hasError) {
       if (this.props.fallback) {
         let FallbackComponent = this.props.fallback;
-        return /* @__PURE__ */ (0, import_jsx_runtime45.jsx)(FallbackComponent, { error: this.state.error, reset: this.reset });
+        return /* @__PURE__ */ (0, import_jsx_runtime46.jsx)(FallbackComponent, { error: this.state.error, reset: this.reset });
       }
-      return /* @__PURE__ */ (0, import_jsx_runtime45.jsxs)(
+      return /* @__PURE__ */ (0, import_jsx_runtime46.jsxs)(
         "div",
         {
           style: {
@@ -154679,13 +154989,13 @@ var import_react50 = __toESM(require_react()), import_jsx_runtime45 = __toESM(re
             margin: "1rem"
           },
           children: [
-            /* @__PURE__ */ (0, import_jsx_runtime45.jsx)("h2", { children: "Application Error" }),
-            /* @__PURE__ */ (0, import_jsx_runtime45.jsx)("p", { children: "We're sorry, but something went wrong while loading this page. Please try refreshing the page or contact support if the problem persists." }),
-            /* @__PURE__ */ (0, import_jsx_runtime45.jsxs)("details", { style: { marginTop: "1rem" }, children: [
-              /* @__PURE__ */ (0, import_jsx_runtime45.jsx)("summary", { children: "Error Details" }),
-              /* @__PURE__ */ (0, import_jsx_runtime45.jsx)("pre", { style: { fontSize: "12px", overflow: "auto" }, children: this.state.error?.message || "Unknown error" })
+            /* @__PURE__ */ (0, import_jsx_runtime46.jsx)("h2", { children: "Application Error" }),
+            /* @__PURE__ */ (0, import_jsx_runtime46.jsx)("p", { children: "We're sorry, but something went wrong while loading this page. Please try refreshing the page or contact support if the problem persists." }),
+            /* @__PURE__ */ (0, import_jsx_runtime46.jsxs)("details", { style: { marginTop: "1rem" }, children: [
+              /* @__PURE__ */ (0, import_jsx_runtime46.jsx)("summary", { children: "Error Details" }),
+              /* @__PURE__ */ (0, import_jsx_runtime46.jsx)("pre", { style: { fontSize: "12px", overflow: "auto" }, children: this.state.error?.message || "Unknown error" })
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime45.jsx)(
+            /* @__PURE__ */ (0, import_jsx_runtime46.jsx)(
               "button",
               {
                 onClick: this.reset,
@@ -154701,7 +155011,7 @@ var import_react50 = __toESM(require_react()), import_jsx_runtime45 = __toESM(re
                 children: "Try Again"
               }
             ),
-            /* @__PURE__ */ (0, import_jsx_runtime45.jsx)(
+            /* @__PURE__ */ (0, import_jsx_runtime46.jsx)(
               "button",
               {
                 onClick: () => window.location.href = "/app",
@@ -154727,7 +155037,7 @@ var import_react50 = __toESM(require_react()), import_jsx_runtime45 = __toESM(re
 };
 
 // app/routes/app.tsx
-var import_jsx_runtime46 = __toESM(require_jsx_runtime()), links2 = () => [{ rel: "stylesheet", href: styles_default }], loader26 = async ({ request: request2 }) => {
+var import_jsx_runtime47 = __toESM(require_jsx_runtime()), links2 = () => [{ rel: "stylesheet", href: styles_default }], loader26 = async ({ request: request2 }) => {
   try {
     console.log(`\u{1F3EA} Dashboard loaded for shop: ${new URL(request2.url).searchParams.get("shop") || "unknown"}`);
     let { session } = await authenticate.admin(request2), shopName = session?.shop?.replace(".myshopify.com", "");
@@ -154747,8 +155057,8 @@ var import_jsx_runtime46 = __toESM(require_jsx_runtime()), links2 = () => [{ rel
   }
 };
 function App2() {
-  let { apiKey, shopName } = (0, import_react51.useLoaderData)();
-  return /* @__PURE__ */ (0, import_jsx_runtime46.jsx)(AppProvider2, { isEmbeddedApp: !0, apiKey, children: /* @__PURE__ */ (0, import_jsx_runtime46.jsx)(ErrorBoundary4, { children: /* @__PURE__ */ (0, import_jsx_runtime46.jsxs)(
+  let { apiKey, shopName } = (0, import_react52.useLoaderData)();
+  return /* @__PURE__ */ (0, import_jsx_runtime47.jsx)(AppProvider2, { isEmbeddedApp: !0, apiKey, children: /* @__PURE__ */ (0, import_jsx_runtime47.jsx)(ErrorBoundary4, { children: /* @__PURE__ */ (0, import_jsx_runtime47.jsxs)(
     "div",
     {
       style: {
@@ -154757,7 +155067,7 @@ function App2() {
         padding: "0"
       },
       children: [
-        /* @__PURE__ */ (0, import_jsx_runtime46.jsx)(
+        /* @__PURE__ */ (0, import_jsx_runtime47.jsx)(
           "div",
           {
             id: "__shop",
@@ -154765,7 +155075,7 @@ function App2() {
             style: { display: "none" }
           }
         ),
-        /* @__PURE__ */ (0, import_jsx_runtime46.jsx)(import_react51.Outlet, {})
+        /* @__PURE__ */ (0, import_jsx_runtime47.jsx)(import_react52.Outlet, {})
       ]
     }
   ) }) });
@@ -154773,7 +155083,7 @@ function App2() {
 var ErrorBoundary5 = boundary.error, headers = (headersArgs) => boundary.headers(headersArgs);
 
 // server-assets-manifest:@remix-run/dev/assets-manifest
-var assets_manifest_default = { entry: { module: "/assets/entry.client-4E766NIO.js", imports: ["/assets/_shared/chunk-WY7IKIQJ.js", "/assets/_shared/chunk-TCUG7HAW.js", "/assets/_shared/chunk-6U5IYNIC.js", "/assets/_shared/chunk-FN6342HM.js", "/assets/_shared/chunk-P23QBOGJ.js"] }, routes: { root: { id: "root", parentId: void 0, path: "", index: void 0, caseSensitive: void 0, module: "/assets/root-TJUX36CD.js", imports: ["/assets/_shared/chunk-LXK74B4C.js", "/assets/_shared/chunk-BFLBF2N2.js", "/assets/_shared/chunk-NAVXS3X4.js"], hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/_health": { id: "routes/_health", parentId: "root", path: void 0, index: void 0, caseSensitive: void 0, module: "/assets/routes/_health-4HY4KIMX.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/_index": { id: "routes/_index", parentId: "root", path: void 0, index: !0, caseSensitive: void 0, module: "/assets/routes/_index-ZZUWPXAO.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/api.generate-script": { id: "routes/api.generate-script", parentId: "root", path: "api/generate-script", index: void 0, caseSensitive: void 0, module: "/assets/routes/api.generate-script-3DUZY66Z.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/api.proxy.$": { id: "routes/api.proxy.$", parentId: "root", path: "api/proxy/*", index: void 0, caseSensitive: void 0, module: "/assets/routes/api.proxy.$-44OW55O3.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/api.script-proxy": { id: "routes/api.script-proxy", parentId: "root", path: "api/script-proxy", index: void 0, caseSensitive: void 0, module: "/assets/routes/api.script-proxy-D7CGEASX.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app": { id: "routes/app", parentId: "root", path: "app", index: void 0, caseSensitive: void 0, module: "/assets/routes/app-AZZ4HY7I.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js", "/assets/_shared/chunk-X5HD2HZ6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/app._index": { id: "routes/app._index", parentId: "routes/app", path: void 0, index: !0, caseSensitive: void 0, module: "/assets/routes/app._index-ABUR7YP3.js", imports: ["/assets/_shared/chunk-DPE4B4HP.js", "/assets/_shared/chunk-RI76R3JA.js", "/assets/_shared/chunk-LO4KQJF7.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.additional": { id: "routes/app.additional", parentId: "routes/app", path: "additional", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.additional-MGMQHYQZ.js", imports: ["/assets/_shared/chunk-BFLBF2N2.js", "/assets/_shared/chunk-NAVXS3X4.js"], hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.advanced": { id: "routes/app.advanced", parentId: "routes/app", path: "advanced", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.advanced-FXTCZ27W.js", imports: ["/assets/_shared/chunk-LO4KQJF7.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.ai-dashboard": { id: "routes/app.ai-dashboard", parentId: "routes/app", path: "ai-dashboard", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.ai-dashboard-YXJWFJ3P.js", imports: ["/assets/_shared/chunk-6JJH7K45.js", "/assets/_shared/chunk-LO4KQJF7.js", "/assets/_shared/chunk-BFLBF2N2.js", "/assets/_shared/chunk-NAVXS3X4.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.autopilot": { id: "routes/app.autopilot", parentId: "routes/app", path: "autopilot", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.autopilot-PBWUC7W3.js", imports: ["/assets/_shared/chunk-YO2XKRKB.js", "/assets/_shared/chunk-LO4KQJF7.js", "/assets/_shared/chunk-BFLBF2N2.js", "/assets/_shared/chunk-NAVXS3X4.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.billing": { id: "routes/app.billing", parentId: "routes/app", path: "billing", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.billing-CEUF7B2E.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/app.dashboards": { id: "routes/app.dashboards", parentId: "routes/app", path: "dashboards", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.dashboards-IJVYQFHR.js", imports: ["/assets/_shared/chunk-BFLBF2N2.js", "/assets/_shared/chunk-NAVXS3X4.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.insights": { id: "routes/app.insights", parentId: "routes/app", path: "insights", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.insights-7VH7UMCK.js", imports: ["/assets/_shared/chunk-RI76R3JA.js", "/assets/_shared/chunk-BFLBF2N2.js", "/assets/_shared/chunk-NAVXS3X4.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.insights.terms": { id: "routes/app.insights.terms", parentId: "routes/app.insights", path: "terms", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.insights.terms-3O7IYDZJ.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.insights.terms.csv": { id: "routes/app.insights.terms.csv", parentId: "routes/app.insights.terms", path: "csv", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.insights.terms.csv-4VGC3PNS.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.intent-os": { id: "routes/app.intent-os", parentId: "routes/app", path: "intent-os", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.intent-os-LASFPMEU.js", imports: ["/assets/_shared/chunk-DPE4B4HP.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.reports": { id: "routes/app.reports", parentId: "routes/app", path: "reports", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.reports-BQQCJBU4.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/app.setup": { id: "routes/app.setup", parentId: "routes/app", path: "setup", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.setup-MHVH5W4D.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.support": { id: "routes/app.support", parentId: "routes/app", path: "support", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.support-YZNCQLP5.js", imports: ["/assets/_shared/chunk-BFLBF2N2.js", "/assets/_shared/chunk-NAVXS3X4.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/auth.$": { id: "routes/auth.$", parentId: "root", path: "auth/*", index: void 0, caseSensitive: void 0, module: "/assets/routes/auth.$-D4HZOJGU.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/auth.session-token": { id: "routes/auth.session-token", parentId: "root", path: "auth/session-token", index: void 0, caseSensitive: void 0, module: "/assets/routes/auth.session-token-T2WMLCN4.js", imports: ["/assets/_shared/chunk-X5HD2HZ6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/debug": { id: "routes/debug", parentId: "root", path: "debug", index: void 0, caseSensitive: void 0, module: "/assets/routes/debug-NPQ5YZI3.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/health": { id: "routes/health", parentId: "root", path: "health", index: void 0, caseSensitive: void 0, module: "/assets/routes/health-GI3SP7O7.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/install": { id: "routes/install", parentId: "root", path: "install", index: void 0, caseSensitive: void 0, module: "/assets/routes/install-YL2XNGMC.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/local.autopilot": { id: "routes/local.autopilot", parentId: "root", path: "local/autopilot", index: void 0, caseSensitive: void 0, module: "/assets/routes/local.autopilot-SWIWHUMA.js", imports: ["/assets/_shared/chunk-YO2XKRKB.js", "/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/privacy": { id: "routes/privacy", parentId: "root", path: "privacy", index: void 0, caseSensitive: void 0, module: "/assets/routes/privacy-II7HDWDA.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/support": { id: "routes/support", parentId: "root", path: "support", index: void 0, caseSensitive: void 0, module: "/assets/routes/support-DRB7AZM3.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/terms": { id: "routes/terms", parentId: "root", path: "terms", index: void 0, caseSensitive: void 0, module: "/assets/routes/terms-PKGZYJCD.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 } }, version: "70bf6007", hmr: void 0, url: "/assets/manifest-70BF6007.js" };
+var assets_manifest_default = { entry: { module: "/assets/entry.client-4E766NIO.js", imports: ["/assets/_shared/chunk-WY7IKIQJ.js", "/assets/_shared/chunk-TCUG7HAW.js", "/assets/_shared/chunk-6U5IYNIC.js", "/assets/_shared/chunk-FN6342HM.js", "/assets/_shared/chunk-P23QBOGJ.js"] }, routes: { root: { id: "root", parentId: void 0, path: "", index: void 0, caseSensitive: void 0, module: "/assets/root-PIIGG7G7.js", imports: ["/assets/_shared/chunk-LXK74B4C.js", "/assets/_shared/chunk-MADGPRDQ.js", "/assets/_shared/chunk-NAVXS3X4.js"], hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/_health": { id: "routes/_health", parentId: "root", path: void 0, index: void 0, caseSensitive: void 0, module: "/assets/routes/_health-4HY4KIMX.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/_index": { id: "routes/_index", parentId: "root", path: void 0, index: !0, caseSensitive: void 0, module: "/assets/routes/_index-ZZUWPXAO.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/api.generate-script": { id: "routes/api.generate-script", parentId: "root", path: "api/generate-script", index: void 0, caseSensitive: void 0, module: "/assets/routes/api.generate-script-3DUZY66Z.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/api.proxy.$": { id: "routes/api.proxy.$", parentId: "root", path: "api/proxy/*", index: void 0, caseSensitive: void 0, module: "/assets/routes/api.proxy.$-44OW55O3.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/api.script-proxy": { id: "routes/api.script-proxy", parentId: "root", path: "api/script-proxy", index: void 0, caseSensitive: void 0, module: "/assets/routes/api.script-proxy-D7CGEASX.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app": { id: "routes/app", parentId: "root", path: "app", index: void 0, caseSensitive: void 0, module: "/assets/routes/app-PJKXXWI7.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js", "/assets/_shared/chunk-X5HD2HZ6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/app._index": { id: "routes/app._index", parentId: "routes/app", path: void 0, index: !0, caseSensitive: void 0, module: "/assets/routes/app._index-BALM64J7.js", imports: ["/assets/_shared/chunk-DPE4B4HP.js", "/assets/_shared/chunk-RI76R3JA.js", "/assets/_shared/chunk-LO4KQJF7.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.additional": { id: "routes/app.additional", parentId: "routes/app", path: "additional", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.additional-SY6PG6DY.js", imports: ["/assets/_shared/chunk-MADGPRDQ.js", "/assets/_shared/chunk-NAVXS3X4.js"], hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.advanced": { id: "routes/app.advanced", parentId: "routes/app", path: "advanced", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.advanced-FXTCZ27W.js", imports: ["/assets/_shared/chunk-LO4KQJF7.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.ai-dashboard": { id: "routes/app.ai-dashboard", parentId: "routes/app", path: "ai-dashboard", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.ai-dashboard-HV72XQ7H.js", imports: ["/assets/_shared/chunk-6JJH7K45.js", "/assets/_shared/chunk-LO4KQJF7.js", "/assets/_shared/chunk-MADGPRDQ.js", "/assets/_shared/chunk-NAVXS3X4.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.autopilot": { id: "routes/app.autopilot", parentId: "routes/app", path: "autopilot", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.autopilot-YJZV5IYR.js", imports: ["/assets/_shared/chunk-YO2XKRKB.js", "/assets/_shared/chunk-LO4KQJF7.js", "/assets/_shared/chunk-MADGPRDQ.js", "/assets/_shared/chunk-NAVXS3X4.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.billing": { id: "routes/app.billing", parentId: "routes/app", path: "billing", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.billing-CEUF7B2E.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/app.dashboards": { id: "routes/app.dashboards", parentId: "routes/app", path: "dashboards", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.dashboards-A4XZAP6U.js", imports: ["/assets/_shared/chunk-MADGPRDQ.js", "/assets/_shared/chunk-NAVXS3X4.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.insights": { id: "routes/app.insights", parentId: "routes/app", path: "insights", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.insights-WLPCQMXM.js", imports: ["/assets/_shared/chunk-RI76R3JA.js", "/assets/_shared/chunk-MADGPRDQ.js", "/assets/_shared/chunk-NAVXS3X4.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.insights.terms": { id: "routes/app.insights.terms", parentId: "routes/app.insights", path: "terms", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.insights.terms-3O7IYDZJ.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.insights.terms.csv": { id: "routes/app.insights.terms.csv", parentId: "routes/app.insights.terms", path: "csv", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.insights.terms.csv-4VGC3PNS.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.intent-os": { id: "routes/app.intent-os", parentId: "routes/app", path: "intent-os", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.intent-os-LASFPMEU.js", imports: ["/assets/_shared/chunk-DPE4B4HP.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.reports": { id: "routes/app.reports", parentId: "routes/app", path: "reports", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.reports-BQQCJBU4.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/app.setup": { id: "routes/app.setup", parentId: "routes/app", path: "setup", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.setup-MHVH5W4D.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.support": { id: "routes/app.support", parentId: "routes/app", path: "support", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.support-QHJSOMB5.js", imports: ["/assets/_shared/chunk-MADGPRDQ.js", "/assets/_shared/chunk-NAVXS3X4.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/auth.$": { id: "routes/auth.$", parentId: "root", path: "auth/*", index: void 0, caseSensitive: void 0, module: "/assets/routes/auth.$-D4HZOJGU.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/auth.session-token": { id: "routes/auth.session-token", parentId: "root", path: "auth/session-token", index: void 0, caseSensitive: void 0, module: "/assets/routes/auth.session-token-T2WMLCN4.js", imports: ["/assets/_shared/chunk-X5HD2HZ6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/debug": { id: "routes/debug", parentId: "root", path: "debug", index: void 0, caseSensitive: void 0, module: "/assets/routes/debug-NPQ5YZI3.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/health": { id: "routes/health", parentId: "root", path: "health", index: void 0, caseSensitive: void 0, module: "/assets/routes/health-GI3SP7O7.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/install": { id: "routes/install", parentId: "root", path: "install", index: void 0, caseSensitive: void 0, module: "/assets/routes/install-YL2XNGMC.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/local.autopilot": { id: "routes/local.autopilot", parentId: "root", path: "local/autopilot", index: void 0, caseSensitive: void 0, module: "/assets/routes/local.autopilot-SWIWHUMA.js", imports: ["/assets/_shared/chunk-YO2XKRKB.js", "/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/privacy": { id: "routes/privacy", parentId: "root", path: "privacy", index: void 0, caseSensitive: void 0, module: "/assets/routes/privacy-II7HDWDA.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/support": { id: "routes/support", parentId: "root", path: "support", index: void 0, caseSensitive: void 0, module: "/assets/routes/support-DRB7AZM3.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/terms": { id: "routes/terms", parentId: "root", path: "terms", index: void 0, caseSensitive: void 0, module: "/assets/routes/terms-PKGZYJCD.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 } }, version: "1ed8192d", hmr: void 0, url: "/assets/manifest-1ED8192D.js" };
 
 // server-entry-module:@remix-run/dev/server-build
 var mode = "production", assetsBuildDirectory = "public/assets", future = { v3_fetcherPersist: !1, v3_relativeSplatPath: !1, v3_throwAbortReason: !1, v3_routeConfig: !1, v3_singleFetch: !1, v3_lazyRouteDiscovery: !1, unstable_optimizeDeps: !1 }, publicPath = "/assets/", entry = { module: entry_server_exports }, routes = {
