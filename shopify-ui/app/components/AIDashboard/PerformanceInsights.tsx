@@ -31,6 +31,7 @@ export function PerformanceInsights({ shopName, hasFeatureAccess = false }: Perf
   const [deviceBreakdown, setDeviceBreakdown] = useState<any[]>([]);
   const [topKeywords, setTopKeywords] = useState<any[]>([]);
   const [aiImpact, setAiImpact] = useState<any>(null);
+  const [summary, setSummary] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [hasData, setHasData] = useState(false);
@@ -63,16 +64,22 @@ export function PerformanceInsights({ shopName, hasFeatureAccess = false }: Perf
           setDeviceBreakdown(data.deviceBreakdown || []);
           setTopKeywords(data.topKeywords || []);
           setAiImpact(data.aiImpact || null);
+          setSummary(data.summary || null);
           const dataAvailable = Boolean((data.performanceData && data.performanceData.length) || (data.deviceBreakdown && data.deviceBreakdown.length) || (data.topKeywords && data.topKeywords.length));
-          setHasData(dataAvailable);
+          const summaryMetrics = data.summary || {};
+          const summaryHasActivity = ['impressions', 'clicks', 'conversions', 'cost']
+            .some((key) => Number(summaryMetrics?.[key] || 0) > 0);
+          setHasData(dataAvailable || summaryHasActivity);
         } else {
           setPerformanceData([]);
           setDeviceBreakdown([]);
           setTopKeywords([]);
           setAiImpact(null);
+          setSummary(null);
           setHasData(false);
         }
       } else {
+        setSummary(null);
         setHasData(false);
       }
     } catch (err) {
@@ -82,6 +89,7 @@ export function PerformanceInsights({ shopName, hasFeatureAccess = false }: Perf
       setDeviceBreakdown([]);
       setTopKeywords([]);
       setAiImpact(null);
+      setSummary(null);
       setHasData(false);
     }
   }, [shopName, timeRange]);
@@ -224,6 +232,33 @@ export function PerformanceInsights({ shopName, hasFeatureAccess = false }: Perf
           </InlineStack>
         </InlineStack>
       </Card>
+
+      {summary && (
+        <Card>
+          <InlineStack gap="400">
+            <BlockStack gap="100">
+              <Text variant="headingSm" tone="subdued">Impressions</Text>
+              <Text variant="headingLg">{formatNumber(summary.impressions || 0)}</Text>
+            </BlockStack>
+            <BlockStack gap="100">
+              <Text variant="headingSm" tone="subdued">Clicks</Text>
+              <Text variant="headingLg">{formatNumber(summary.clicks || 0)}</Text>
+            </BlockStack>
+            <BlockStack gap="100">
+              <Text variant="headingSm" tone="subdued">Conversions</Text>
+              <Text variant="headingLg">{formatNumber(summary.conversions || 0)}</Text>
+            </BlockStack>
+            <BlockStack gap="100">
+              <Text variant="headingSm" tone="subdued">Spend</Text>
+              <Text variant="headingLg">{formatCurrency(summary.cost || 0)}</Text>
+            </BlockStack>
+            <BlockStack gap="100">
+              <Text variant="headingSm" tone="subdued">ROAS</Text>
+              <Text variant="headingLg">{Number(summary.roas || 0).toFixed(2)}x</Text>
+            </BlockStack>
+          </InlineStack>
+        </Card>
+      )}
 
       {/* AI Impact Summary */}
       <Card>

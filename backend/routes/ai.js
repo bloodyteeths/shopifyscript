@@ -175,6 +175,7 @@ router.get("/stats/quick", async (req, res) => {
       .from('tenant_metrics')
       .select('clicks, cost_micros, conversions, impressions, ctr, date, entity_type')
       .eq('tenant_id', tenant)
+      .eq('period', queryPeriod)
       .in('entity_type', ['campaign', 'ad_group', 'keyword'])  // Get granular data only
       .gte('date', startDateStr)
       .order('date', { ascending: false });
@@ -191,6 +192,7 @@ router.get("/stats/quick", async (req, res) => {
         .from('campaign_metrics')
         .select('clicks, cost, conversions, impressions, ctr, date')
         .eq('tenant_id', tenant)
+        .eq('period', queryPeriod)
         .gte('date', startDateStr)
         .order('date', { ascending: false });
 
@@ -209,6 +211,7 @@ router.get("/stats/quick", async (req, res) => {
           .from('ad_group_metrics')
           .select('clicks, cost, conversions, impressions, ctr, date')
           .eq('tenant_id', tenant)
+          .eq('period', queryPeriod)
           .gte('date', startDateStr)
           .order('date', { ascending: false });
 
@@ -3363,7 +3366,7 @@ router.get("/campaigns", async (req, res) => {
 
 // GET /api/ai/performance/insights - Get AI performance insights
 router.get("/performance/insights", async (req, res) => {
-  const { tenant, sig } = req.query;
+  const { tenant, sig, period = 'LAST_7_DAYS' } = req.query;
   const payload = `GET:${tenant}:ai_performance_insights`;
 
   if (!tenant || !verify(sig, payload)) {
@@ -3397,6 +3400,7 @@ router.get("/performance/insights", async (req, res) => {
         .from('tenant_metrics')
         .select('*')
         .eq('tenant_id', tenant)
+        .eq('period', period)
         .gte('date', new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString())
         .order('date', { ascending: true });
 
@@ -3425,6 +3429,7 @@ router.get("/performance/insights", async (req, res) => {
           .from('campaign_metrics')
           .select('*')
           .eq('tenant_id', tenant)
+          .eq('period', period)
           .gte('date', new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString())
           .order('date', { ascending: true });
 

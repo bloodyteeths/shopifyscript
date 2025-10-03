@@ -17,6 +17,11 @@ const INLINE_WRITER_SKIP_COMPETITORS = (
   process.env.VERCEL === '1' ||
   process.env.VERCEL === 'true'
 );
+const INLINE_WRITER_SKIP_WEBSITE = (
+  process.env.AI_WRITER_SKIP_WEBSITE === 'true' ||
+  process.env.VERCEL === '1' ||
+  process.env.VERCEL === 'true'
+);
 
 /**
  * Get Supabase client
@@ -153,8 +158,13 @@ async function getBusinessContext(tenant, supabase) {
   // Initialize advanced services (with timeout protection for Vercel)
   let websiteScraper, competitorIntel;
   try {
-    websiteScraper = new WebsiteScraperService();
-    console.log('✅ WebsiteScraperService initialized');
+    if (INLINE_WRITER_SKIP_WEBSITE) {
+      console.log('⏭️  Skipping website scraper for inline writer');
+      websiteScraper = null;
+    } else {
+      websiteScraper = new WebsiteScraperService();
+      console.log('✅ WebsiteScraperService initialized');
+    }
   } catch (err) {
     console.error('❌ WebsiteScraperService init failed:', err.message, err.stack);
     websiteScraper = null;
@@ -184,8 +194,8 @@ async function getBusinessContext(tenant, supabase) {
             extractTestimonials: true,
             extractOffers: true,
             extractUSPs: true,
-            depth: 2,
-            maxPages: 10
+            depth: 1,
+            maxPages: 2
           }))
           .then(analysis => {
             console.log('📊 Website analysis complete:', {
@@ -197,13 +207,13 @@ async function getBusinessContext(tenant, supabase) {
             return analysis;
           }),
         new Promise((_, reject) =>
-          setTimeout(() => reject(new Error('Website scraper timeout')), 8000)
+          setTimeout(() => reject(new Error('Website scraper timeout')), 5000)
         )
       ]).catch(err => {
         console.warn('⚠️ Website scraper failed, using basic fetch:', err.message);
         return fetchWebsiteContext(tenant);
       })
-    : fetchWebsiteContext(tenant);
+    : (INLINE_WRITER_SKIP_WEBSITE ? Promise.resolve({ websiteAvailable: false }) : fetchWebsiteContext(tenant));
 
   try {
     // Try to get config from tenant service
