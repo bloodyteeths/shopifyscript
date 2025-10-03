@@ -630,6 +630,7 @@ Return ONLY valid JSON: {"headlines": [...], "descriptions": [...]}`;
     }
 
     return {
+      ok: true,
       success: true,
       results,
       wrote: results.filter(r => r.written).length,
@@ -671,6 +672,7 @@ function generateFallbackContent(tenant, limit) {
   }));
 
   return {
+    ok: true,
     success: true,
     results,
     wrote: 0,

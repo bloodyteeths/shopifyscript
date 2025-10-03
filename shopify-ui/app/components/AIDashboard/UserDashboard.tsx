@@ -247,7 +247,7 @@ export function UserDashboard({ shopName, hasFeatureAccess = false, onNavigateTo
         <Layout.Section oneThird>
           <Card>
             <BlockStack gap="300">
-              <Text variant="headingMd" as="h3">Today's Performance</Text>
+              <Text variant="headingMd" as="h3">{getPeriodLabel(selectedPeriod)} Performance</Text>
               <Divider />
 
               <BlockStack gap="300">
