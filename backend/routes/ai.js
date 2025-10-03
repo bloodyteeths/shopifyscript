@@ -1268,7 +1268,7 @@ router.post("/accept", async (req, res) => {
   }
 });
 
-// POST /api/jobs/ai_writer - Trigger AI writer job
+// POST /api/jobs/ai_writer - Trigger AI writer job (Vercel serverless compatible)
 router.post("/jobs/ai_writer", async (req, res) => {
   const { tenant, sig } = req.query;
   const { nonce = Date.now(), dryRun = true, limit = 5 } = req.body || {};
@@ -1284,9 +1284,10 @@ router.post("/jobs/ai_writer", async (req, res) => {
       return res.status(400).json({ ok: false, error: "OPENAI_KEY missing" });
     }
     if (provider === "anthropic" && !process.env.ANTHROPIC_KEY) {
-      return res
-        .status(400)
-        .json({ ok: false, error: "ANTHROPIC_KEY missing" });
+      return res.status(400).json({ ok: false, error: "ANTHROPIC_KEY missing" });
+    }
+    if (provider === "google" && !process.env.GEMINI_API_KEY && !process.env.GOOGLE_API_KEY) {
+      return res.status(400).json({ ok: false, error: "GEMINI_API_KEY missing" });
     }
 
     if (dryRun) {
@@ -1302,27 +1303,70 @@ router.post("/jobs/ai_writer", async (req, res) => {
       return res.json({ ok: true, dryRun: true, limit });
     }
 
-    // Shell out to node job to avoid ESM interop here
-    const { spawn } = await import("child_process");
-    const p = spawn(
-      "node",
-      [`backend/jobs/ai_writer.js`, `--tenant=${tenant}`, `--limit=${limit}`],
-      { shell: true, env: process.env },
-    );
+    // Use inline execution for Vercel serverless compatibility
+    const { handleInlineAIWriter } = await import("../api/ai-writer-inline.js");
 
-    p.on("close", async (code) => {
+    console.log(`Starting inline AI writer for ${tenant} with limit ${limit}`);
+
+    // For Vercel, we need to wait for the AI generation to complete
+    // But we'll limit to just 2 themes for speed and use a timeout
+    const safeLimit = Math.min(limit, 2); // Process 2 themes max
+
+    try {
+      // Use a race between AI generation and timeout
+      const result = await Promise.race([
+        handleInlineAIWriter(tenant, safeLimit),
+        new Promise((resolve) =>
+          setTimeout(() => resolve({
+            ok: true,
+            wrote: 0,
+            timeout: true,
+            message: "Generation is taking longer than expected. Check back in a minute."
+          }), 25000) // 25 second timeout
+        )
+      ]);
+
+      // Log result
       try {
         const { appendRows } = await getSheetOperations();
         await appendRows(
           tenant,
           "RUN_LOGS",
           ["timestamp", "message"],
-          [[new Date().toISOString(), `ai_writer_exit:${code}`]],
+          [[new Date().toISOString(), result.timeout ?
+            `ai_writer_timeout: generation in progress` :
+            `ai_writer_completed: ${result.wrote} themes`]],
         );
       } catch {}
-    });
 
-    res.json({ ok: true, started: true });
+      // Send response
+      if (result.timeout) {
+        res.json({
+          ok: true,
+          status: "processing",
+          message: "AI generation started. It's taking longer than usual, please refresh in 30 seconds.",
+          limitReduced: safeLimit < limit
+        });
+      } else {
+        res.json({
+          ok: true,
+          ...result,
+          limitReduced: safeLimit < limit,
+          message: safeLimit < limit ?
+            `Generated ${safeLimit} themes (reduced from ${limit} for speed). Run again for more.` :
+            `Successfully generated ${result.wrote} themes.`
+        });
+      }
+
+    } catch (error) {
+      console.error(`AI writer error for ${tenant}:`, error);
+
+      res.json({
+        ok: false,
+        error: error.message || "AI generation failed",
+        message: "Failed to generate content. Please try again."
+      });
+    }
   } catch (e) {
     res.status(500).json({ ok: false, error: String(e) });
   }
