@@ -624,96 +624,110 @@ function collectPerf_() {
       log_("Enabled " + enabledCount + " paused campaigns");
     }
 
-    var periods = ["TODAY", "YESTERDAY", "LAST_7_DAYS", "LAST_14_DAYS", "LAST_30_DAYS", "ALL_TIME"];
+    log_("Collecting metrics for 6 time periods using GAQL...");
 
-    log_("Collecting metrics for " + periods.length + " time periods...");
+    // Use GAQL for TODAY and YESTERDAY (Legacy API has data delay)
+    var today = Utilities.formatDate(new Date(), AdsApp.currentAccount().getTimeZone(), "yyyy-MM-dd");
+    var yesterday = Utilities.formatDate(new Date(Date.now() - 86400000), AdsApp.currentAccount().getTimeZone(), "yyyy-MM-dd");
 
-    var campaigns = AdsApp.campaigns()
-      .withCondition("AdvertisingChannelType = SEARCH")
-      .withCondition("Status IN ['ENABLED', 'PAUSED']")
-      .get();
+    var periodQueries = [
+      { period: "TODAY", query: "SELECT campaign.id, campaign.name, metrics.clicks, metrics.cost_micros, metrics.conversions, metrics.impressions, metrics.ctr FROM campaign WHERE segments.date = '" + today + "' AND campaign.advertising_channel_type = SEARCH AND campaign.status IN ('ENABLED', 'PAUSED')" },
+      { period: "YESTERDAY", query: "SELECT campaign.id, campaign.name, metrics.clicks, metrics.cost_micros, metrics.conversions, metrics.impressions, metrics.ctr FROM campaign WHERE segments.date = '" + yesterday + "' AND campaign.advertising_channel_type = SEARCH AND campaign.status IN ('ENABLED', 'PAUSED')" },
+      { period: "LAST_7_DAYS", query: "SELECT campaign.id, campaign.name, metrics.clicks, metrics.cost_micros, metrics.conversions, metrics.impressions, metrics.ctr FROM campaign WHERE segments.date DURING LAST_7_DAYS AND campaign.advertising_channel_type = SEARCH AND campaign.status IN ('ENABLED', 'PAUSED')" },
+      { period: "LAST_14_DAYS", query: "SELECT campaign.id, campaign.name, metrics.clicks, metrics.cost_micros, metrics.conversions, metrics.impressions, metrics.ctr FROM campaign WHERE segments.date DURING LAST_14_DAYS AND campaign.advertising_channel_type = SEARCH AND campaign.status IN ('ENABLED', 'PAUSED')" },
+      { period: "LAST_30_DAYS", query: "SELECT campaign.id, campaign.name, metrics.clicks, metrics.cost_micros, metrics.conversions, metrics.impressions, metrics.ctr FROM campaign WHERE segments.date DURING LAST_30_DAYS AND campaign.advertising_channel_type = SEARCH AND campaign.status IN ('ENABLED', 'PAUSED')" },
+      { period: "ALL_TIME", query: "SELECT campaign.id, campaign.name, metrics.clicks, metrics.cost_micros, metrics.conversions, metrics.impressions, metrics.ctr FROM campaign WHERE campaign.advertising_channel_type = SEARCH AND campaign.status IN ('ENABLED', 'PAUSED')" }
+    ];
 
-    while (campaigns.hasNext()) {
-      var campaign = campaigns.next();
-      var campaignId = campaign.getId();
-      var campaignName = campaign.getName();
-      var campaignStatus = campaign.isEnabled() ? "ENABLED" : "PAUSED";
+    for (var pq = 0; pq < periodQueries.length; pq++) {
+      var periodData = periodQueries[pq];
+      var period = periodData.period;
 
-      // ✅ NEW: Collect stats for EACH period separately
-      for (var p = 0; p < periods.length; p++) {
-        var period = periods[p];
+      try {
+        var report = AdsApp.report(periodData.query);
+        var reportRows = report.rows();
 
-        try {
-          var stats = campaign.getStatsFor(period);
-          var impressions = stats.getImpressions();
-          var clicks = stats.getClicks();
-          var cost = stats.getCost();
+        while (reportRows.hasNext()) {
+          var row = reportRows.next();
+          var impressions = parseInt(row["metrics.impressions"]) || 0;
+          var clicks = parseInt(row["metrics.clicks"]) || 0;
+          var costMicros = parseInt(row["metrics.cost_micros"]) || 0;
+          var cost = costMicros / 1000000;
+          var conversions = parseFloat(row["metrics.conversions"]) || 0;
+          var ctr = parseFloat(row["metrics.ctr"]) || 0;
+          var campaignId = row["campaign.id"];
+          var campaignName = row["campaign.name"];
 
-          // Log ALL periods for debugging
           log_("Campaign [" + period + "] " + campaignName + " - Impr: " + impressions + ", Clicks: " + clicks + ", Cost: $" + cost.toFixed(2));
 
-          // Only record if there's actual data for this period
           if (impressions > 0 || clicks > 0 || cost > 0) {
-            // ✅ NEW: Add period as the FIRST field in the row
             rows.push([
-              period,                      // Period label (NEW!)
-              new Date(),                  // date
-              'campaign',                  // level
-              campaignName,                // campaign
-              '',                          // ad_group
-              campaignId,                  // id
-              campaignName,                // name
-              clicks,                      // clicks
-              cost,                        // cost
-              stats.getConversions(),      // conversions
-              impressions,                 // impr
-              stats.getCtr()               // ctr
+              period,
+              new Date(),
+              'campaign',
+              campaignName,
+              '',
+              campaignId,
+              campaignName,
+              clicks,
+              cost,
+              conversions,
+              impressions,
+              ctr
             ]);
           }
-        } catch (e) {
-          // Log ALL errors, not just TODAY
-          log_("Error getting " + period + " stats for " + campaignName + ": " + e);
         }
+      } catch (e) {
+        log_("Error getting " + period + " stats: " + e);
       }
+    }
 
-      // Get ad groups for this campaign
-      var adGroups = campaign.adGroups()
-        .withCondition("Status IN ['ENABLED', 'PAUSED']")
-        .get();
+    // Collect ad group metrics using GAQL
+    log_("Collecting ad group metrics for 6 time periods...");
 
-      while (adGroups.hasNext()) {
-        var adGroup = adGroups.next();
-        var adGroupId = adGroup.getId();
-        var adGroupName = adGroup.getName();
+    var adGroupQueries = [
+      { period: "TODAY", query: "SELECT campaign.name, ad_group.id, ad_group.name, metrics.clicks, metrics.cost_micros, metrics.conversions, metrics.impressions, metrics.ctr FROM ad_group WHERE segments.date = '" + today + "' AND campaign.advertising_channel_type = SEARCH AND ad_group.status IN ('ENABLED', 'PAUSED')" },
+      { period: "YESTERDAY", query: "SELECT campaign.name, ad_group.id, ad_group.name, metrics.clicks, metrics.cost_micros, metrics.conversions, metrics.impressions, metrics.ctr FROM ad_group WHERE segments.date = '" + yesterday + "' AND campaign.advertising_channel_type = SEARCH AND ad_group.status IN ('ENABLED', 'PAUSED')" },
+      { period: "LAST_7_DAYS", query: "SELECT campaign.name, ad_group.id, ad_group.name, metrics.clicks, metrics.cost_micros, metrics.conversions, metrics.impressions, metrics.ctr FROM ad_group WHERE segments.date DURING LAST_7_DAYS AND campaign.advertising_channel_type = SEARCH AND ad_group.status IN ('ENABLED', 'PAUSED')" },
+      { period: "LAST_14_DAYS", query: "SELECT campaign.name, ad_group.id, ad_group.name, metrics.clicks, metrics.cost_micros, metrics.conversions, metrics.impressions, metrics.ctr FROM ad_group WHERE segments.date DURING LAST_14_DAYS AND campaign.advertising_channel_type = SEARCH AND ad_group.status IN ('ENABLED', 'PAUSED')" },
+      { period: "LAST_30_DAYS", query: "SELECT campaign.name, ad_group.id, ad_group.name, metrics.clicks, metrics.cost_micros, metrics.conversions, metrics.impressions, metrics.ctr FROM ad_group WHERE segments.date DURING LAST_30_DAYS AND campaign.advertising_channel_type = SEARCH AND ad_group.status IN ('ENABLED', 'PAUSED')" },
+      { period: "ALL_TIME", query: "SELECT campaign.name, ad_group.id, ad_group.name, metrics.clicks, metrics.cost_micros, metrics.conversions, metrics.impressions, metrics.ctr FROM ad_group WHERE campaign.advertising_channel_type = SEARCH AND ad_group.status IN ('ENABLED', 'PAUSED')" }
+    ];
 
-        // ✅ NEW: Collect ad group stats for EACH period
-        for (var p = 0; p < periods.length; p++) {
-          var period = periods[p];
+    for (var agq = 0; agq < adGroupQueries.length; agq++) {
+      var agData = adGroupQueries[agq];
+      var period = agData.period;
 
-          try {
-            var agStats = adGroup.getStatsFor(period);
+      try {
+        var report = AdsApp.report(agData.query);
+        var reportRows = report.rows();
 
-            if (agStats.getImpressions() > 0 || agStats.getClicks() > 0) {
-              // ✅ NEW: Add period as the FIRST field
-              rows.push([
-                period,                      // Period label (NEW!)
-                new Date(),                  // date
-                'ad_group',                  // level
-                campaignName,                // campaign
-                adGroupName,                 // ad_group
-                adGroupId,                   // id
-                adGroupName,                 // name
-                agStats.getClicks(),         // clicks
-                agStats.getCost(),           // cost
-                agStats.getConversions(),    // conversions
-                agStats.getImpressions(),    // impr
-                agStats.getCtr()             // ctr
-              ]);
-            }
-          } catch (e) {
-            // Continue to next period
+        while (reportRows.hasNext()) {
+          var row = reportRows.next();
+          var impressions = parseInt(row["metrics.impressions"]) || 0;
+          var clicks = parseInt(row["metrics.clicks"]) || 0;
+          var costMicros = parseInt(row["metrics.cost_micros"]) || 0;
+          var cost = costMicros / 1000000;
+
+          if (impressions > 0 || clicks > 0 || cost > 0) {
+            rows.push([
+              period,
+              new Date(),
+              'ad_group',
+              row["campaign.name"],
+              row["ad_group.name"],
+              row["ad_group.id"],
+              row["ad_group.name"],
+              clicks,
+              cost,
+              parseFloat(row["metrics.conversions"]) || 0,
+              impressions,
+              parseFloat(row["metrics.ctr"]) || 0
+            ]);
           }
         }
+      } catch (e) {
+        log_("Error getting " + period + " ad group stats: " + e);
       }
     }
 
