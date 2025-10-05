@@ -647,9 +647,14 @@ function collectPerf_() {
         try {
           var stats = campaign.getStatsFor(period);
           var impressions = stats.getImpressions();
+          var clicks = stats.getClicks();
+          var cost = stats.getCost();
+
+          // Log ALL periods for debugging
+          log_("Campaign [" + period + "] " + campaignName + " - Impr: " + impressions + ", Clicks: " + clicks + ", Cost: $" + cost.toFixed(2));
 
           // Only record if there's actual data for this period
-          if (impressions > 0 || stats.getClicks() > 0 || stats.getCost() > 0) {
+          if (impressions > 0 || clicks > 0 || cost > 0) {
             // ✅ NEW: Add period as the FIRST field in the row
             rows.push([
               period,                      // Period label (NEW!)
@@ -659,21 +664,16 @@ function collectPerf_() {
               '',                          // ad_group
               campaignId,                  // id
               campaignName,                // name
-              stats.getClicks(),           // clicks
-              stats.getCost(),             // cost
+              clicks,                      // clicks
+              cost,                        // cost
               stats.getConversions(),      // conversions
-              stats.getImpressions(),      // impr
+              impressions,                 // impr
               stats.getCtr()               // ctr
             ]);
-
-            log_("Campaign [" + period + "] " + campaignName + " - Impr: " + impressions + ", Clicks: " + stats.getClicks());
           }
         } catch (e) {
-          // Period may not have data yet, that's OK
-          if (period === "TODAY") {
-            // TODAY should always be attempted, log if it fails
-            log_("Error getting " + period + " stats for " + campaignName + ": " + e);
-          }
+          // Log ALL errors, not just TODAY
+          log_("Error getting " + period + " stats for " + campaignName + ": " + e);
         }
       }
 
