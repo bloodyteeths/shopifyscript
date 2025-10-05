@@ -174,10 +174,81 @@ function applyWasteNegs_(cfg, map){
   }
 }
 function collectPerf_(){
-  var rows=[], q1="SELECT campaign.id, campaign.name, metrics.clicks, metrics.cost_micros, metrics.conversions, metrics.impressions, metrics.ctr FROM campaign WHERE segments.date DURING LAST_7_DAYS AND campaign.advertising_channel_type = SEARCH";
-  var it1=AdsApp.search(q1); while(it1.hasNext()){ var r=it1.next(); rows.push([new Date(),'campaign',r.campaign.name,'',r.campaign.id,r.campaign.name,(r.metrics.clicks||0),((r.metrics.costMicros||0)/1e6),(r.metrics.conversions||0),(r.metrics.impressions||0),(r.metrics.ctr||0)]); }
-  var q2="SELECT campaign.name, ad_group.id, ad_group.name, metrics.clicks, metrics.cost_micros, metrics.conversions, metrics.impressions, metrics.ctr FROM ad_group WHERE segments.date DURING LAST_7_DAYS AND campaign.advertising_channel_type = SEARCH";
-  var it2=AdsApp.search(q2); while(it2.hasNext()){ var r2=it2.next(); rows.push([new Date(),'ad_group',r2.campaign.name,r2.adGroup.name,r2.adGroup.id,r2.adGroup.name,(r2.metrics.clicks||0),((r2.metrics.costMicros||0)/1e6),(r2.metrics.conversions||0),(r2.metrics.impressions||0),(r2.metrics.ctr||0)]); }
+  var rows=[];
+
+  // Use Legacy API for TODAY and YESTERDAY (more reliable for recent data)
+  var periods = ["TODAY", "YESTERDAY"];
+  var campaigns = AdsApp.campaigns()
+    .withCondition("campaign.advertising_channel_type = SEARCH")
+    .withCondition("campaign.status IN ('ENABLED','PAUSED')")
+    .get();
+
+  var periodCounts = {TODAY: 0, YESTERDAY: 0};
+
+  while(campaigns.hasNext()){
+    var campaign = campaigns.next();
+    var campaignId = campaign.getId();
+    var campaignName = campaign.getName();
+
+    for(var p = 0; p < periods.length; p++){
+      var period = periods[p];
+      try{
+        var stats = campaign.getStatsFor(period);
+        var impr = stats.getImpressions();
+        if(impr > 0 || stats.getClicks() > 0 || stats.getCost() > 0){
+          rows.push([period, new Date(), 'campaign', campaignName, '', campaignId, campaignName, stats.getClicks(), stats.getCost(), stats.getConversions(), impr, stats.getCtr()]);
+          periodCounts[period]++;
+        }
+      }catch(e){}
+    }
+  }
+
+  if(periodCounts.TODAY > 0) log_('• TODAY: Collected '+periodCounts.TODAY+' campaigns with data');
+  if(periodCounts.YESTERDAY > 0) log_('• YESTERDAY: Collected '+periodCounts.YESTERDAY+' campaigns with data');
+
+  // Collect LAST_7_DAYS metrics
+  var q1Week="SELECT campaign.id, campaign.name, metrics.clicks, metrics.cost_micros, metrics.conversions, metrics.impressions, metrics.ctr FROM campaign WHERE segments.date DURING LAST_7_DAYS AND campaign.advertising_channel_type = SEARCH";
+  var it3=AdsApp.search(q1Week);
+  while(it3.hasNext()){
+    var r3=it3.next();
+    rows.push(['LAST_7_DAYS',new Date(),'campaign',r3.campaign.name,'',r3.campaign.id,r3.campaign.name,(r3.metrics.clicks||0),((r3.metrics.costMicros||0)/1e6),(r3.metrics.conversions||0),(r3.metrics.impressions||0),(r3.metrics.ctr||0)]);
+  }
+  var q2Week="SELECT campaign.name, ad_group.id, ad_group.name, metrics.clicks, metrics.cost_micros, metrics.conversions, metrics.impressions, metrics.ctr FROM ad_group WHERE segments.date DURING LAST_7_DAYS AND campaign.advertising_channel_type = SEARCH";
+  var it4=AdsApp.search(q2Week);
+  while(it4.hasNext()){
+    var r4=it4.next();
+    rows.push(['LAST_7_DAYS',new Date(),'ad_group',r4.campaign.name,r4.adGroup.name,r4.adGroup.id,r4.adGroup.name,(r4.metrics.clicks||0),((r4.metrics.costMicros||0)/1e6),(r4.metrics.conversions||0),(r4.metrics.impressions||0),(r4.metrics.ctr||0)]);
+  }
+
+  // Collect LAST_30_DAYS metrics
+  var q1Month="SELECT campaign.id, campaign.name, metrics.clicks, metrics.cost_micros, metrics.conversions, metrics.impressions, metrics.ctr FROM campaign WHERE segments.date DURING LAST_30_DAYS AND campaign.advertising_channel_type = SEARCH";
+  var it5=AdsApp.search(q1Month);
+  while(it5.hasNext()){
+    var r5=it5.next();
+    rows.push(['LAST_30_DAYS',new Date(),'campaign',r5.campaign.name,'',r5.campaign.id,r5.campaign.name,(r5.metrics.clicks||0),((r5.metrics.costMicros||0)/1e6),(r5.metrics.conversions||0),(r5.metrics.impressions||0),(r5.metrics.ctr||0)]);
+  }
+  var q2Month="SELECT campaign.name, ad_group.id, ad_group.name, metrics.clicks, metrics.cost_micros, metrics.conversions, metrics.impressions, metrics.ctr FROM ad_group WHERE segments.date DURING LAST_30_DAYS AND campaign.advertising_channel_type = SEARCH";
+  var it6=AdsApp.search(q2Month);
+  while(it6.hasNext()){
+    var r6=it6.next();
+    rows.push(['LAST_30_DAYS',new Date(),'ad_group',r6.campaign.name,r6.adGroup.name,r6.adGroup.id,r6.adGroup.name,(r6.metrics.clicks||0),((r6.metrics.costMicros||0)/1e6),(r6.metrics.conversions||0),(r6.metrics.impressions||0),(r6.metrics.ctr||0)]);
+  }
+
+  // Collect LAST_90_DAYS metrics (Enterprise tier)
+  var q1Quarter="SELECT campaign.id, campaign.name, metrics.clicks, metrics.cost_micros, metrics.conversions, metrics.impressions, metrics.ctr FROM campaign WHERE segments.date DURING LAST_90_DAYS AND campaign.advertising_channel_type = SEARCH";
+  var it7=AdsApp.search(q1Quarter);
+  while(it7.hasNext()){
+    var r7=it7.next();
+    rows.push(['LAST_90_DAYS',new Date(),'campaign',r7.campaign.name,'',r7.campaign.id,r7.campaign.name,(r7.metrics.clicks||0),((r7.metrics.costMicros||0)/1e6),(r7.metrics.conversions||0),(r7.metrics.impressions||0),(r7.metrics.ctr||0)]);
+  }
+  var q2Quarter="SELECT campaign.name, ad_group.id, ad_group.name, metrics.clicks, metrics.cost_micros, metrics.conversions, metrics.impressions, metrics.ctr FROM ad_group WHERE segments.date DURING LAST_90_DAYS AND campaign.advertising_channel_type = SEARCH";
+  var it8=AdsApp.search(q2Quarter);
+  while(it8.hasNext()){
+    var r8=it8.next();
+    rows.push(['LAST_90_DAYS',new Date(),'ad_group',r8.campaign.name,r8.adGroup.name,r8.adGroup.id,r8.adGroup.name,(r8.metrics.clicks||0),((r8.metrics.costMicros||0)/1e6),(r8.metrics.conversions||0),(r8.metrics.impressions||0),(r8.metrics.ctr||0)]);
+  }
+
+  log_('• Collected '+rows.length+' metric rows across all periods');
   return rows;
 }
 function autoNegateAndCollectST_(cfg, lookback, minClicks, minCost){
