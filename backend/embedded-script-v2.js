@@ -624,8 +624,8 @@ function collectPerf_() {
       log_("Enabled " + enabledCount + " paused campaigns");
     }
 
-    // ✅ FIX: Collect data for EACH period separately
-    var periods = ["TODAY", "YESTERDAY", "LAST_7_DAYS", "LAST_30_DAYS"];
+    // ✅ FIX: Collect data for EACH period separately (including LAST_90_DAYS for Enterprise tier)
+    var periods = ["TODAY", "YESTERDAY", "LAST_7_DAYS", "LAST_30_DAYS", "LAST_90_DAYS"];
 
     log_("Collecting metrics for " + periods.length + " time periods...");
 
