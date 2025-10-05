@@ -176,8 +176,7 @@ router.get("/stats/quick", async (req, res) => {
       .select('clicks, cost_micros, conversions, impressions, ctr, date, entity_type')
       .eq('tenant_id', tenant)
       .eq('period', queryPeriod)
-      .in('entity_type', ['campaign', 'ad_group', 'keyword'])  // Get granular data only
-      .gte('date', startDateStr)
+      .in('entity_type', ['campaign', 'ad_group', 'keyword'])
       .order('date', { ascending: false });
 
     if (!tenantMetricsError && tenantMetricsData && tenantMetricsData.length > 0) {
@@ -193,7 +192,6 @@ router.get("/stats/quick", async (req, res) => {
         .select('clicks, cost, conversions, impressions, ctr, date')
         .eq('tenant_id', tenant)
         .eq('period', queryPeriod)
-        .gte('date', startDateStr)
         .order('date', { ascending: false });
 
       if (!campaignError && campaignData && campaignData.length > 0) {
@@ -212,7 +210,6 @@ router.get("/stats/quick", async (req, res) => {
           .select('clicks, cost, conversions, impressions, ctr, date')
           .eq('tenant_id', tenant)
           .eq('period', queryPeriod)
-          .gte('date', startDateStr)
           .order('date', { ascending: false });
 
         if (!adGroupError && adGroupData && adGroupData.length > 0) {
