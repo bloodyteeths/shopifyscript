@@ -227,23 +227,6 @@ export default function App() {
                 </li>
                 <li>
                   <NavLink
-                    to="/app/insights"
-                    style={{
-                      display: "block",
-                      padding: "8px 12px",
-                      borderRadius: "6px",
-                      textDecoration: "none",
-                      fontSize: "14px",
-                      fontWeight: "500",
-                      color: "#202223",
-                      transition: "all 0.2s ease",
-                    }}
-                  >
-                    Insights
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink
                     to="/app/advanced"
                     style={{
                       display: "block",
@@ -393,24 +376,6 @@ export default function App() {
                       }}
                     >
                       Autopilot
-                    </NavLink>
-                  </li>
-                  <li>
-                    <NavLink
-                      to="/app/insights"
-                      onClick={() => setMobileMenuOpen(false)}
-                      style={{
-                        display: "block",
-                        padding: "12px 16px",
-                        borderRadius: "6px",
-                        textDecoration: "none",
-                        fontSize: "16px",
-                        fontWeight: "500",
-                        color: "#202223",
-                        transition: "all 0.2s ease",
-                      }}
-                    >
-                      Insights
                     </NavLink>
                   </li>
                   <li>
