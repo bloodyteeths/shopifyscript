@@ -167,10 +167,10 @@ const WIDGET_TYPES = {
 };
 
 const DATA_SOURCES = {
-  metrics: { name: 'Performance Metrics', icon: '📈' },
-  campaigns: { name: 'Campaign Data', icon: '📢' },
-  search_terms: { name: 'Search Terms', icon: '🔍' },
-  kpis: { name: 'Custom KPIs', icon: '🎯' }
+  metrics: { name: 'Performance Metrics', icon: '' },
+  campaigns: { name: 'Campaign Data', icon: '' },
+  search_terms: { name: 'Search Terms', icon: '' },
+  kpis: { name: 'Custom KPIs', icon: '' }
 };
 
 // Default theme

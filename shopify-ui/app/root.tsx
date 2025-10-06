@@ -256,7 +256,7 @@ export default function App() {
                       transition: "all 0.2s ease",
                     }}
                   >
-                    🤖 AI Dashboard
+                    AI Dashboard
                   </NavLink>
                 </li>
                 <li
@@ -410,8 +410,8 @@ export default function App() {
                         color: "#202223",
                         transition: "all 0.2s ease",
                       }}
-                    >
-                      🤖 AI Dashboard
+                      >
+                      AI Dashboard
                     </NavLink>
                   </li>
                   <li

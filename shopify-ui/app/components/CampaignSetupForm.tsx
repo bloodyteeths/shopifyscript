@@ -67,23 +67,23 @@ export function CampaignSetupForm({
   });
 
   const businessTypeOptions = [
-    { label: '🛍️ E-commerce Store', value: 'ecommerce' },
-    { label: '🏢 Service Business', value: 'service' },
-    { label: '📍 Local Business', value: 'local' },
-    { label: '💼 B2B Company', value: 'b2b' }
+    { label: 'E-commerce Store', value: 'ecommerce' },
+    { label: 'Service Business', value: 'service' },
+    { label: 'Local Business', value: 'local' },
+    { label: 'B2B Company', value: 'b2b' }
   ];
 
   const goalOptions = [
-    { label: '💰 Get more sales', value: 'sales' },
-    { label: '🚀 Increase website traffic', value: 'traffic' },
-    { label: '📧 Generate leads', value: 'leads' }
+    { label: 'Get more sales', value: 'sales' },
+    { label: 'Increase website traffic', value: 'traffic' },
+    { label: 'Generate leads', value: 'leads' }
   ];
 
   const toneCards = [
-    { id: 'professional', emoji: '👔', label: 'Professional' },
-    { id: 'friendly', emoji: '😊', label: 'Friendly' },
-    { id: 'urgent', emoji: '🔥', label: 'Urgent' },
-    { id: 'luxury', emoji: '💎', label: 'Luxurious' }
+    { id: 'professional', label: 'Professional' },
+    { id: 'friendly', label: 'Friendly' },
+    { id: 'urgent', label: 'Urgent' },
+    { id: 'luxury', label: 'Luxurious' }
   ];
 
   return (
@@ -250,10 +250,10 @@ export function CampaignSetupForm({
           <ChoiceList
             title=""
             choices={[
-              { label: '🤖 Let AI suggest keywords (Recommended)', value: 'auto' },
-              { label: '🏷️ Focus on my brand name', value: 'brand' },
-              { label: '🎯 Target competitor keywords', value: 'competitor' },
-              { label: '✏️ Use custom keywords', value: 'custom' }
+              { label: 'Let AI suggest keywords (Recommended)', value: 'auto' },
+              { label: 'Focus on my brand name', value: 'brand' },
+              { label: 'Target competitor keywords', value: 'competitor' },
+              { label: 'Use custom keywords', value: 'custom' }
             ]}
             selected={[config.keywordStrategy]}
             onChange={(selected) => setConfig({...config, keywordStrategy: selected[0]})}
@@ -291,7 +291,6 @@ export function CampaignSetupForm({
                 onClick={() => setConfig({...config, adTone: tone.id})}
               >
                 <BlockStack gap="200" inlineAlign="center">
-                  <Text variant="headingLg" as="p">{tone.emoji}</Text>
                   <Text variant="bodyMd" as="p">{tone.label}</Text>
                 </BlockStack>
               </Box>

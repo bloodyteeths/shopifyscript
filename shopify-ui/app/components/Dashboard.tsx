@@ -312,15 +312,15 @@ const RecentActivity: React.FC<{
   const getActivityIcon = (type: string) => {
     switch (type) {
       case "campaign":
-        return "📢";
+        return "";
       case "audience":
-        return "👥";
+        return "";
       case "conversion":
-        return "💰";
+        return "";
       case "optimization":
         return "⚡";
       default:
-        return "📊";
+        return "";
     }
   };
 

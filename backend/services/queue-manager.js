@@ -43,7 +43,8 @@ export const JOB_TYPES = {
   WEEKLY_SUMMARY: 'weekly_summary',
   HEALTH_CHECK: 'health_check',
   DATA_EXPORT: 'data_export',
-  BACKUP: 'backup'
+  BACKUP: 'backup',
+  AI_WRITER_GENERATE: 'ai_writer_generate'
 };
 
 /**
@@ -814,6 +815,9 @@ export function createQueueManager() {
 }
 
 export function getQueueManager() {
+  if (!queueManagerInstance) {
+    queueManagerInstance = new QueueManager();
+  }
   return queueManagerInstance;
 }
 

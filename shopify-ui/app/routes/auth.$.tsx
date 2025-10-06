@@ -51,7 +51,9 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
       }
     }
 
-    console.log(`🔐 Shopify OAuth request for shop: ${shopName || "unknown"}`);
+    if (process.env.NODE_ENV !== 'production') {
+      console.log(`🔐 Shopify OAuth request for shop: ${shopName || "unknown"}`);
+    }
 
     // If we still don't have required params for Remix auth, construct a clean auth URL
     if (!host || !url.searchParams.get("id")) {
@@ -68,7 +70,11 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     }
     return null;
   } catch (error) {
-    console.error("🚨 Auth route error:", error);
+    if (process.env.NODE_ENV !== 'production') {
+      console.error("🚨 Auth route error:", error);
+    } else {
+      console.error("Auth route error:", error);
+    }
     console.error("Request URL:", request.url);
     console.error("Request headers:", Object.fromEntries(request.headers.entries()));
     

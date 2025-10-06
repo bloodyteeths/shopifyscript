@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback, useRef, useMemo } from "react";
 import {
   Card,
   Text,
@@ -19,7 +19,11 @@ import {
   Divider,
   Icon,
   Thumbnail,
+  Spinner,
+  SkeletonBodyText,
+  SkeletonDisplayText,
 } from "@shopify/polaris";
+import { RefreshIcon } from "@shopify/polaris-icons";
 import { authenticatedFetch } from "../../utils/ai-client";
 
 interface AdDraft {
@@ -45,9 +49,16 @@ export function AIContentStudio({ shopName, hasFeatureAccess = false }: AIConten
   const [drafts, setDrafts] = useState<AdDraft[]>([]);
   const [selectedDrafts, setSelectedDrafts] = useState<string[]>([]);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [activeJob, setActiveJob] = useState<{ id: string; state: string; result?: any } | null>(null);
+  const pollingRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const [statusBanner, setStatusBanner] = useState<{ tone: "info" | "critical" | "success"; message: string } | null>(null);
   const [generationModal, setGenerationModal] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
+  const [filterTheme, setFilterTheme] = useState<string>('all');
+  const [searchQuery, setSearchQuery] = useState<string>('');
 
   // Generation form state
   const [theme, setTheme] = useState('');
@@ -56,13 +67,8 @@ export function AIContentStudio({ shopName, hasFeatureAccess = false }: AIConten
   const [aiMode, setAIMode] = useState('creative');
   const [numberOfVariants, setNumberOfVariants] = useState('5');
 
-  useEffect(() => {
-    fetchDrafts();
-  }, [shopName]);
-
-  const fetchDrafts = async () => {
+  const fetchDrafts = useCallback(async () => {
     try {
-      setLoading(true);
       setError(null);
       const response = await authenticatedFetch("/ai/drafts", "GET", undefined, shopName);
       if (response.ok) {
@@ -89,20 +95,124 @@ export function AIContentStudio({ shopName, hasFeatureAccess = false }: AIConten
             })),
           ];
           setDrafts(formattedDrafts);
+          setLastUpdated(new Date());
         } else {
           setDrafts([]);
         }
       } else {
-        setError("Failed to load ad drafts");
-        setDrafts([]);
+        throw new Error(`Failed to load ad drafts: ${response.status}`);
       }
     } catch (err) {
       console.error("Failed to fetch drafts:", err);
-      setError("Failed to load ad drafts");
+      setError(err instanceof Error ? err.message : "Failed to load ad drafts");
       setDrafts([]);
-    } finally {
-      setLoading(false);
     }
+  }, [shopName]);
+
+  useEffect(() => {
+    const loadData = async () => {
+      setLoading(true);
+      await fetchDrafts();
+      setLoading(false);
+    };
+    loadData();
+  }, [fetchDrafts]);
+
+  // Poll job status when a job is active
+  useEffect(() => {
+    if (!activeJob?.id) return;
+
+    // Clear any existing interval
+    if (pollingRef.current) {
+      clearInterval(pollingRef.current as any);
+      pollingRef.current = null;
+    }
+
+    const poll = async () => {
+      try {
+        const resp = await authenticatedFetch(`/jobs/status?jobId=${encodeURIComponent(activeJob.id)}`, 'GET', undefined, shopName);
+        if (!resp.ok) return;
+        const data = await resp.json();
+        if (data?.ok && data.job) {
+          const { state, result, error } = data.job;
+          if (state === 'completed') {
+            if (pollingRef.current) {
+              clearInterval(pollingRef.current as any);
+              pollingRef.current = null;
+            }
+            setActiveJob(null);
+            setStatusBanner({ tone: 'success', message: 'AI copy ready. Library refreshed.' });
+            // Refresh drafts to show new content
+            fetchDrafts();
+          } else if (state === 'failed' || state === 'dead') {
+            if (pollingRef.current) {
+              clearInterval(pollingRef.current as any);
+              pollingRef.current = null;
+            }
+            setActiveJob(null);
+            setStatusBanner({ tone: 'critical', message: `AI generation failed${error ? `: ${String(error)}` : ''}` });
+          }
+        }
+      } catch (e) {
+        // Non-fatal; continue polling
+      }
+    };
+
+    // Initial poll and interval
+    poll();
+    pollingRef.current = setInterval(poll, 3000) as any;
+
+    return () => {
+      if (pollingRef.current) {
+        clearInterval(pollingRef.current as any);
+        pollingRef.current = null;
+      }
+    };
+  }, [activeJob, shopName, fetchDrafts]);
+
+  // Manual refresh handler
+  const handleRefresh = useCallback(async () => {
+    setRefreshing(true);
+    await fetchDrafts();
+    setRefreshing(false);
+  }, [fetchDrafts]);
+
+  // Compute filtered + sorted drafts for library view
+  const visibleDrafts = useMemo(() => {
+    const lower = searchQuery.trim().toLowerCase();
+    const list = drafts.filter(d => {
+      const themeOk = filterTheme === 'all' || d.theme === filterTheme;
+      if (!themeOk) return false;
+      if (!lower) return true;
+      const text = `${d.theme} ${d.headlines.join(' ')} ${d.descriptions.join(' ')}`.toLowerCase();
+      return text.includes(lower);
+    });
+    // Sort by createdAt desc for history
+    return list.sort((a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  }, [drafts, filterTheme, searchQuery]);
+
+  // Copy helpers
+  const copyToClipboard = async (text: string, successMsg = 'Copied to clipboard') => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setStatusBanner({ tone: 'success', message: successMsg });
+      setTimeout(() => setStatusBanner(null), 1500);
+    } catch (e) {
+      setStatusBanner({ tone: 'critical', message: 'Failed to copy' });
+    }
+  };
+  const copyFullAd = (d: AdDraft) => copyToClipboard(`Theme: ${d.theme}\n\nHeadlines:\n- ${d.headlines.join('\n- ')}\n\nDescriptions:\n- ${d.descriptions.join('\n- ')}`, 'Ad copied');
+
+  const formatTimeAgo = (timestamp: Date) => {
+    const now = new Date();
+    const diffMs = now.getTime() - timestamp.getTime();
+    const diffMinutes = Math.floor(diffMs / (1000 * 60));
+
+    if (diffMinutes < 1) return "Just now";
+    if (diffMinutes < 60) return `${diffMinutes}m ago`;
+    const diffHours = Math.floor(diffMinutes / 60);
+    if (diffHours < 24) return `${diffHours}h ago`;
+    return `${Math.floor(diffHours / 24)}d ago`;
   };
 
   const handleGenerateAds = async () => {
@@ -115,6 +225,7 @@ export function AIContentStudio({ shopName, hasFeatureAccess = false }: AIConten
     setError(null);
 
     try {
+      setStatusBanner(null);
       // Call the actual AI writer endpoint
       const response = await authenticatedFetch("/jobs/ai_writer", "POST", {
         dryRun: false,
@@ -127,41 +238,44 @@ export function AIContentStudio({ shopName, hasFeatureAccess = false }: AIConten
       if (response.ok) {
         const data = await response.json();
         if (data.ok) {
-          // Check if still processing (comprehensive analysis takes time)
-          if (data.processing || data.status === 'processing') {
-            setError(null);
-            // Show processing message - keep loading state
-            console.log('AI generation in progress:', data.message);
-            // Keep modal open with loading state to show progress
-            // The comprehensive analysis is running
-            setTimeout(() => {
-              fetchDrafts();
-              setIsGenerating(false);
-              setGenerationModal(false);
-            }, 10000); // Check again in 10 seconds
-          } else {
-            // Generation complete
+          if (data.queued || data.processing || data.status === 'queued') {
             setGenerationModal(false);
             setIsGenerating(false);
-            // Wait a bit for drafts to be written to database
+            if (data.jobId) {
+              setActiveJob({ id: data.jobId, state: data.status || 'queued' });
+              setStatusBanner({
+                tone: 'info',
+                message: data.message || 'AI writer job queued. We will notify you when ads are ready.'
+              });
+            } else {
+              setStatusBanner({ tone: 'info', message: data.message || 'AI generation in progress.' });
+            }
+          } else if (data.status === 'processing') {
+            setGenerationModal(false);
+            setIsGenerating(false);
+            setStatusBanner({ tone: 'info', message: data.message || 'AI generation in progress. Refresh shortly.' });
+          } else {
+            setGenerationModal(false);
+            setIsGenerating(false);
+            setStatusBanner({ tone: 'success', message: data.message || 'AI ads generated successfully.' });
             setTimeout(() => {
               fetchDrafts();
-            }, 2000);
+            }, 1500);
           }
         } else {
           setError(data.error || "Failed to generate ads");
           setIsGenerating(false);
         }
       } else {
-        setError("Failed to generate ads. Please try again.");
-        setIsGenerating(false);
-      }
-    } catch (err) {
-      console.error("Error generating ads:", err);
-      setError("Error generating ads: " + (err instanceof Error ? err.message : String(err)));
+      setStatusBanner({ tone: 'critical', message: 'Failed to submit AI generation request. Please try again.' });
       setIsGenerating(false);
     }
-  };
+  } catch (err) {
+    console.error("Error generating ads:", err);
+    setStatusBanner({ tone: 'critical', message: `AI generation failed: ${err instanceof Error ? err.message : String(err)}` });
+    setIsGenerating(false);
+  }
+};
 
   const getPerformanceBadge = (status: string) => {
     const config: Record<string, { tone: any; label: string }> = {
@@ -195,51 +309,92 @@ export function AIContentStudio({ shopName, hasFeatureAccess = false }: AIConten
     },
   ];
 
+  // Loading skeleton
+  const LoadingSkeleton = () => (
+    <Grid.Cell columnSpan={{ xs: 6, sm: 6, md: 4, lg: 4 }}>
+      <Card>
+        <BlockStack gap="300">
+          <SkeletonDisplayText size="small" />
+          <SkeletonBodyText lines={4} />
+          <SkeletonBodyText lines={2} />
+        </BlockStack>
+      </Card>
+    </Grid.Cell>
+  );
+
   if (loading) {
     return (
-      <BlockStack gap="400">
+      <BlockStack gap="600">
         <Card>
-          <BlockStack gap="400">
-            <Text variant="headingLg" as="h2">AI Content Studio</Text>
-            <Box padding="600">
-              <Text variant="bodyMd" alignment="center">Loading ad drafts...</Text>
-            </Box>
-          </BlockStack>
+          <InlineStack align="space-between" blockAlign="center">
+            <BlockStack gap="200">
+              <Text variant="headingLg" as="h2">AI Content Studio</Text>
+              <Text variant="bodyMd" tone="subdued">Loading ad drafts...</Text>
+            </BlockStack>
+            <Spinner size="small" />
+          </InlineStack>
         </Card>
-      </BlockStack>
-    );
-  }
-
-  if (error) {
-    return (
-      <BlockStack gap="400">
-        <Card>
-          <BlockStack gap="400">
-            <Text variant="headingLg" as="h2">AI Content Studio</Text>
-            <Banner tone="critical" title="Error loading ad drafts">
-              <p>{error}. Please try again later.</p>
-            </Banner>
-          </BlockStack>
-        </Card>
+        <Grid>
+          <LoadingSkeleton />
+          <LoadingSkeleton />
+          <LoadingSkeleton />
+        </Grid>
       </BlockStack>
     );
   }
 
   return (
     <BlockStack gap="600">
+      {/* Error Banner */}
+      {error && (
+        <Banner tone="critical" title="Error loading ad drafts">
+          <p>{error}</p>
+          <Box paddingBlockStart="200">
+            <Button onClick={handleRefresh}>Retry</Button>
+          </Box>
+        </Banner>
+      )}
+
+      {/* Status Banner */}
+      {statusBanner && (
+        <Banner tone={statusBanner.tone} onDismiss={() => setStatusBanner(null)}>
+          <p>{statusBanner.message}</p>
+        </Banner>
+      )}
+
       {/* Header */}
       <Card>
         <BlockStack gap="400">
           <InlineStack align="space-between">
             <BlockStack gap="200">
               <Text variant="headingLg" as="h2">AI Content Studio</Text>
-              <Text variant="bodyMd" tone="subdued">
-                Create, test, and optimize ad content with AI
-              </Text>
+              <InlineStack gap="200" blockAlign="center">
+                <Text variant="bodyMd" tone="subdued">
+                  Create, test, and optimize ad content with AI
+                </Text>
+                {lastUpdated && (
+                  <>
+                    <Text variant="bodyMd" tone="subdued">•</Text>
+                    <Text variant="bodySm" tone="subdued">
+                      Updated {formatTimeAgo(lastUpdated)}
+                    </Text>
+                  </>
+                )}
+              </InlineStack>
             </BlockStack>
-            <Button variant="primary" onClick={() => setGenerationModal(true)}>
-              Generate New Ads
-            </Button>
+            <InlineStack gap="200">
+              <Button
+                icon={RefreshIcon}
+                onClick={handleRefresh}
+                loading={refreshing}
+                accessibilityLabel="Refresh ad drafts"
+              >
+                Refresh
+              </Button>
+              <Button variant="primary" onClick={() => setGenerationModal(true)}>
+                Generate New Ads
+              </Button>
+            </InlineStack>
           </InlineStack>
 
           <Tabs tabs={tabs} selected={selectedTab} onSelect={setSelectedTab} />
@@ -261,14 +416,14 @@ export function AIContentStudio({ shopName, hasFeatureAccess = false }: AIConten
                     { label: 'New Arrivals', value: 'new' },
                     { label: 'Sale Items', value: 'sale' },
                   ]}
-                  value="all"
-                  onChange={(value) => console.log('Filter by theme:', value)}
+                  value={filterTheme}
+                  onChange={setFilterTheme}
                 />
                 <TextField
                   label=""
                   placeholder="Search ads..."
-                  value=""
-                  onChange={(value) => console.log('Search:', value)}
+                  value={searchQuery}
+                  onChange={setSearchQuery}
                   autoComplete="off"
                 />
               </InlineStack>
@@ -294,9 +449,15 @@ export function AIContentStudio({ shopName, hasFeatureAccess = false }: AIConten
             </InlineStack>
           </Card>
 
-{drafts.length > 0 ? (
+{refreshing ? (
             <Grid>
-              {drafts.slice(0, 6).map((draft) => (
+              <LoadingSkeleton />
+              <LoadingSkeleton />
+              <LoadingSkeleton />
+            </Grid>
+          ) : visibleDrafts.length > 0 ? (
+            <Grid>
+              {visibleDrafts.map((draft) => (
                 <Grid.Cell key={draft.id} columnSpan={{ xs: 6, sm: 6, md: 4, lg: 4 }}>
                   <Card>
                     <BlockStack gap="300">
@@ -367,6 +528,16 @@ export function AIContentStudio({ shopName, hasFeatureAccess = false }: AIConten
                           variant="plain"
                           onClick={(e) => {
                             e.stopPropagation();
+                            copyFullAd(draft);
+                          }}
+                        >
+                          Copy
+                        </Button>
+                        <Button
+                          size="slim"
+                          variant="plain"
+                          onClick={(e) => {
+                            e.stopPropagation();
                             alert('Edit functionality coming soon');
                           }}
                         >
@@ -389,17 +560,27 @@ export function AIContentStudio({ shopName, hasFeatureAccess = false }: AIConten
               ))}
             </Grid>
           ) : (
-            <Box padding="600">
-              <BlockStack gap="400" align="center">
-                <Text variant="headingMd" alignment="center">No ad drafts found</Text>
-                <Text variant="bodyMd" alignment="center" tone="subdued">
-                  Create your first AI-generated ad variations to get started.
-                </Text>
-                <Button variant="primary" onClick={() => setGenerationModal(true)}>
-                  Generate First Ads
-                </Button>
-              </BlockStack>
-            </Box>
+            <Card>
+              <Box padding="600">
+                <BlockStack gap="400" align="center">
+                  <Text variant="headingMd" alignment="center">No ad drafts found</Text>
+                  <Text variant="bodyMd" alignment="center" tone="subdued">
+                    Create your first AI-generated ad variations to get started.
+                  </Text>
+                  <Text variant="bodySm" alignment="center" tone="subdued">
+                    AI will analyze your business and create compelling ad copy in under 60 seconds.
+                  </Text>
+                  <InlineStack gap="200">
+                    <Button variant="primary" onClick={() => setGenerationModal(true)}>
+                      Generate First Ads
+                    </Button>
+                    {hasFeatureAccess === false && (
+                      <Badge tone="attention">Requires Professional+ Plan</Badge>
+                    )}
+                  </InlineStack>
+                </BlockStack>
+              </Box>
+            </Card>
           )}
         </BlockStack>
       )}
@@ -578,17 +759,17 @@ export function AIContentStudio({ shopName, hasFeatureAccess = false }: AIConten
                 <BlockStack gap="200">
                   <Box padding="200" background="bg-surface-warning" borderRadius="200">
                     <Text variant="bodySm">
-                      💡 Try emphasizing sustainability - competitors seeing 25% better engagement
+                      Try emphasizing sustainability - competitors seeing 25% better engagement
                     </Text>
                   </Box>
                   <Box padding="200" background="bg-surface-warning" borderRadius="200">
                     <Text variant="bodySm">
-                      💡 Test shorter headlines (5-7 words) for mobile optimization
+                      Test shorter headlines (5-7 words) for mobile optimization
                     </Text>
                   </Box>
                   <Box padding="200" background="bg-surface-warning" borderRadius="200">
                     <Text variant="bodySm">
-                      💡 Include customer testimonials in descriptions for trust signals
+                      Include customer testimonials in descriptions for trust signals
                     </Text>
                   </Box>
                 </BlockStack>

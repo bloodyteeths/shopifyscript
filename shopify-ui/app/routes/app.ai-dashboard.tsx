@@ -85,6 +85,66 @@ export default function AIDashboardPage() {
 
   return (
     <div>
+      {/* Trial status banner */}
+      {subscriptionInfo?.isInTrial && (
+        <div style={{
+          backgroundColor: (subscriptionInfo.trialDaysRemaining || 0) <= 3 ? '#fff4e5' : '#e8f5e9',
+          border: (subscriptionInfo.trialDaysRemaining || 0) <= 3 ? '1px solid #ff9800' : '1px solid #4caf50',
+          borderRadius: '6px',
+          padding: '14px',
+          margin: '12px 0'
+        }}>
+          <p style={{ margin: 0, fontSize: '14px' }}>
+            <strong>{(subscriptionInfo.trialDaysRemaining || 0) <= 3 ? 'Trial Ending Soon' : 'Free Trial Active'}:</strong>
+            {' '}Your trial ends in {subscriptionInfo.trialDaysRemaining} day(s).
+            {' '}Manage your subscription to avoid interruption.
+          </p>
+          <a
+            href="/app/billing"
+            style={{
+              backgroundColor: (subscriptionInfo.trialDaysRemaining || 0) <= 3 ? '#ff9800' : '#4caf50',
+              color: 'white',
+              padding: '8px 14px',
+              borderRadius: '4px',
+              textDecoration: 'none',
+              display: 'inline-block',
+              marginTop: '8px'
+            }}
+          >
+            Manage Subscription
+          </a>
+        </div>
+      )}
+
+      {/* No subscription banner */}
+      {!subscriptionInfo?.hasActivePayment && !subscriptionInfo?.isInTrial && (
+        <div style={{
+          backgroundColor: '#fff8e1',
+          border: '1px solid #ffca28',
+          borderRadius: '6px',
+          padding: '14px',
+          margin: '12px 0'
+        }}>
+          <p style={{ margin: 0, fontSize: '14px' }}>
+            <strong>Start Your Free Trial:</strong>
+            {' '}Get full access to Ads Autopilot AI for 14 days. No commitment.
+          </p>
+          <a
+            href="/app/billing"
+            style={{
+              backgroundColor: '#ffb300',
+              color: 'white',
+              padding: '8px 14px',
+              borderRadius: '4px',
+              textDecoration: 'none',
+              display: 'inline-block',
+              marginTop: '8px'
+            }}
+          >
+            Start Free Trial
+          </a>
+        </div>
+      )}
       {/* Subscription tier notice for limited access */}
       {!availableFeatures.aiDashboard && (
         <div style={{

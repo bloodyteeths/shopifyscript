@@ -72,7 +72,9 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
           if (syncResponse.ok) {
             const tierData = await syncResponse.json();
-            console.log(`✅ Tier synced with backend for ${shopName}:`, tierData.tier);
+            if (process.env.NODE_ENV !== 'production') {
+              console.log(`✅ Tier synced with backend for ${shopName}:`, tierData.tier);
+            }
           } else {
             console.warn(`Failed to sync tier for ${shopName}:`, syncResponse.status);
           }
@@ -515,7 +517,7 @@ export default function AppIndex() {
           <div style={{ position: "absolute", top: "8px", right: "8px" }}>
             <AIStatusIndicator shopName={shopName} compact={true} />
           </div>
-          <h3>🤖 AI Dashboard</h3>
+          <h3>AI Dashboard</h3>
           <p>Manage AI-generated content and monitor automation</p>
           <Link
             to="/app/ai-dashboard"

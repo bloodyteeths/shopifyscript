@@ -14,10 +14,14 @@ import {
   Banner,
   Icon,
   Layout,
+  Spinner,
+  SkeletonBodyText,
+  SkeletonDisplayText,
 } from "@shopify/polaris";
+import { RefreshIcon } from "@shopify/polaris-icons";
 import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { authenticatedFetch } from "../../utils/ai-client";
-import { TimePeriod } from "../TimeRangeSelector";
+import { TimePeriod, TimeRangeSelector, getPeriodLabel } from "../TimeRangeSelector";
 
 interface PerformanceInsightsProps {
   shopName: string;
@@ -31,9 +35,15 @@ export function PerformanceInsights({ shopName, hasFeatureAccess = false }: Perf
   const [deviceBreakdown, setDeviceBreakdown] = useState<any[]>([]);
   const [topKeywords, setTopKeywords] = useState<any[]>([]);
   const [aiImpact, setAiImpact] = useState<any>(null);
+  const [recommendations, setRecommendations] = useState<any[]>([]);
+  const [insightTemplates, setInsightTemplates] = useState<any[]>([]);
+  const [applyModal, setApplyModal] = useState<{ open: boolean; recommendation: any | null }>(() => ({ open: false, recommendation: null }));
+  const [applying, setApplying] = useState(false);
   const [summary, setSummary] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
   const [hasData, setHasData] = useState(false);
 
   // Convert timeRange to period for API call
@@ -42,6 +52,9 @@ export function PerformanceInsights({ shopName, hasFeatureAccess = false }: Perf
       case '1d': return 'TODAY';
       case '7d': return 'LAST_7_DAYS';
       case '30d': return 'LAST_30_DAYS';
+      case '90d': return 'LAST_90_DAYS';
+      case 'month': return 'LAST_30_DAYS';
+      case 'year': return 'ALL_TIME';
       case 'all': return 'ALL_TIME';
       default: return 'LAST_7_DAYS';
     }
@@ -50,6 +63,7 @@ export function PerformanceInsights({ shopName, hasFeatureAccess = false }: Perf
   // Fetch performance data from API
   const fetchPerformanceData = useCallback(async () => {
     try {
+      setError(null);
       const period = getPeriodFromTimeRange(timeRange);
       const response = await authenticatedFetch(
         `/ai/performance/insights?period=${period}`,
@@ -70,6 +84,7 @@ export function PerformanceInsights({ shopName, hasFeatureAccess = false }: Perf
           const summaryHasActivity = ['impressions', 'clicks', 'conversions', 'cost']
             .some((key) => Number(summaryMetrics?.[key] || 0) > 0);
           setHasData(dataAvailable || summaryHasActivity);
+          setLastUpdated(new Date());
         } else {
           setPerformanceData([]);
           setDeviceBreakdown([]);
@@ -79,12 +94,11 @@ export function PerformanceInsights({ shopName, hasFeatureAccess = false }: Perf
           setHasData(false);
         }
       } else {
-        setSummary(null);
-        setHasData(false);
+        throw new Error(`Failed to fetch performance data: ${response.status}`);
       }
     } catch (err) {
       console.error("Failed to fetch performance data:", err);
-      setError("Failed to load performance insights");
+      setError(err instanceof Error ? err.message : "Failed to load performance insights");
       setPerformanceData([]);
       setDeviceBreakdown([]);
       setTopKeywords([]);
@@ -94,15 +108,73 @@ export function PerformanceInsights({ shopName, hasFeatureAccess = false }: Perf
     }
   }, [shopName, timeRange]);
 
+  // Fetch recommendations from backend
+  const fetchRecommendations = useCallback(async () => {
+    try {
+      const period = getPeriodFromTimeRange(timeRange);
+      const response = await authenticatedFetch(`/ai/recommendations?period=${period}`, 'GET', undefined, shopName);
+      if (response.ok) {
+        const data = await response.json();
+        if (data.ok) {
+          setRecommendations(data.recommendations || []);
+        } else {
+          setRecommendations([]);
+        }
+      }
+    } catch (e) {
+      setRecommendations([]);
+    }
+  }, [shopName, timeRange]);
+
+  // Fetch AI insight templates
+  const fetchInsightTemplates = useCallback(async () => {
+    try {
+      const period = getPeriodFromTimeRange(timeRange);
+      // Optional: pass daily_budget when available
+      const response = await authenticatedFetch(`/ai/insights/templates?period=${period}`, 'GET', undefined, shopName);
+      if (response.ok) {
+        const data = await response.json();
+        if (data.ok) {
+          setInsightTemplates(data.insights || []);
+        } else {
+          setInsightTemplates([]);
+        }
+      }
+    } catch (e) {
+      setInsightTemplates([]);
+    }
+  }, [shopName, timeRange]);
+
+  // Apply recommendation (with preview/diff)
+  const openApplyModal = (rec: any) => setApplyModal({ open: true, recommendation: rec });
+  const closeApplyModal = () => setApplyModal({ open: false, recommendation: null });
+  const confirmApply = useCallback(async () => {
+    if (!applyModal.recommendation) return;
+    try {
+      setApplying(true);
+      const nonce = Date.now();
+      const resp = await authenticatedFetch(`/ai/automation/apply`, 'POST', {
+        nonce,
+        recommendation: applyModal.recommendation,
+        simulate: true
+      }, shopName);
+      if (resp.ok) {
+        setApplyModal({ open: false, recommendation: null });
+      }
+    } finally {
+      setApplying(false);
+    }
+  }, [applyModal, shopName]);
+
   useEffect(() => {
     const loadData = async () => {
       setLoading(true);
       setError(null);
-      await fetchPerformanceData();
+      await Promise.all([fetchPerformanceData(), fetchRecommendations(), fetchInsightTemplates()]);
       setLoading(false);
     };
     loadData();
-  }, [fetchPerformanceData]);
+  }, [fetchPerformanceData, fetchRecommendations, fetchInsightTemplates]);
 
   const formatCurrency = (amount: number) => {
     return new Intl.NumberFormat('en-US', {
@@ -118,48 +190,55 @@ export function PerformanceInsights({ shopName, hasFeatureAccess = false }: Perf
     return num.toString();
   };
 
+  // Manual refresh handler
+  const handleRefresh = useCallback(async () => {
+    setRefreshing(true);
+    await fetchPerformanceData();
+    setRefreshing(false);
+  }, [fetchPerformanceData]);
+
+  const formatTimeAgo = (timestamp: Date) => {
+    const now = new Date();
+    const diffMs = now.getTime() - timestamp.getTime();
+    const diffMinutes = Math.floor(diffMs / (1000 * 60));
+
+    if (diffMinutes < 1) return "Just now";
+    if (diffMinutes < 60) return `${diffMinutes}m ago`;
+    const diffHours = Math.floor(diffMinutes / 60);
+    if (diffHours < 24) return `${diffHours}h ago`;
+    return `${Math.floor(diffHours / 24)}d ago`;
+  };
+
+  // Loading skeleton
+  const LoadingSkeleton = () => (
+    <Card>
+      <BlockStack gap="400">
+        <SkeletonDisplayText size="medium" />
+        <SkeletonBodyText lines={5} />
+      </BlockStack>
+    </Card>
+  );
+
   if (loading) {
-    return (
-      <BlockStack gap="400">
-        <Card>
-          <BlockStack gap="400">
+  return (
+    <BlockStack gap="400">
+      {/* Header with period selector and refresh */}
+      <Card>
+        <InlineStack align="space-between" blockAlign="center">
+          <BlockStack gap="200">
             <Text variant="headingLg" as="h2">Performance Insights</Text>
-            <Box padding="600">
-              <Text variant="bodyMd" alignment="center">Loading performance insights...</Text>
-            </Box>
+            <InlineStack gap="200" blockAlign="center">
+              <Text variant="bodyMd" tone="subdued">Showing data for: {getPeriodFromTimeRange(timeRange)}</Text>
+              {lastUpdated && (
+                <>
+                  <Text variant="bodyMd" tone="subdued">•</Text>
+                  <Text variant="bodySm" tone="subdued">Updated {formatTimeAgo(lastUpdated)}</Text>
+                </>
+              )}
+            </InlineStack>
           </BlockStack>
-        </Card>
-      </BlockStack>
-    );
-  }
-
-  if (error) {
-    return (
-      <BlockStack gap="400">
-        <Card>
-          <BlockStack gap="400">
-            <Text variant="headingLg" as="h2">Performance Insights</Text>
-            <Banner tone="critical" title="Error loading performance data">
-              <p>{error}. Please try again later.</p>
-            </Banner>
-          </BlockStack>
-        </Card>
-      </BlockStack>
-    );
-  }
-
-  if (!hasData) {
-    return (
-      <BlockStack gap="600">
-        <Card>
-          <InlineStack align="space-between">
-            <BlockStack gap="200">
-              <Text variant="headingLg" as="h2">Performance Insights</Text>
-              <Text variant="bodyMd" tone="subdued">
-                Deep analytics and AI performance tracking
-              </Text>
-            </BlockStack>
-            <InlineStack gap="200">
+          <InlineStack gap="200">
+            <Box minWidth="200px">
               <Select
                 label=""
                 options={[
@@ -172,40 +251,83 @@ export function PerformanceInsights({ shopName, hasFeatureAccess = false }: Perf
                 value={timeRange}
                 onChange={setTimeRange}
               />
-              <Button
-                pressed={compareMode}
-                onClick={() => setCompareMode(!compareMode)}
-              >
-                Compare with/without AI
-              </Button>
-              <Button onClick={() => alert('Export report functionality coming soon')}>
-                Export Report
-              </Button>
-            </InlineStack>
+            </Box>
+            <Button icon={RefreshIcon} onClick={handleRefresh} loading={refreshing}>Refresh</Button>
+          </InlineStack>
+        </InlineStack>
+      </Card>
+        <Card>
+          <InlineStack align="space-between" blockAlign="center">
+            <BlockStack gap="200">
+              <Text variant="headingLg" as="h2">Performance Insights</Text>
+              <Text variant="bodyMd" tone="subdued">Loading performance insights...</Text>
+            </BlockStack>
+            <Spinner size="small" />
           </InlineStack>
         </Card>
-        <Card>
-          <BlockStack gap="300">
-            <Text variant="headingMd">No performance data yet</Text>
-            <Text tone="subdued">
-              We haven’t received impressions or clicks for this period. Try a longer range or check back once your Google Ads campaigns have activity.
-            </Text>
-          </BlockStack>
-        </Card>
+        <Grid>
+          <Grid.Cell columnSpan={{ xs: 6, sm: 6, md: 6, lg: 6 }}>
+            <LoadingSkeleton />
+          </Grid.Cell>
+          <Grid.Cell columnSpan={{ xs: 6, sm: 6, md: 6, lg: 6 }}>
+            <LoadingSkeleton />
+          </Grid.Cell>
+        </Grid>
       </BlockStack>
     );
   }
 
+  // Empty state component
+  const EmptyState = () => (
+    <Card>
+      <Box padding="600">
+        <BlockStack gap="400" align="center">
+          <Text variant="headingMd" alignment="center">No performance data yet</Text>
+          <Text variant="bodyMd" tone="subdued" alignment="center">
+            We haven't received impressions or clicks for this period. Try a longer range or check back once your Google Ads campaigns have activity.
+          </Text>
+          <Button onClick={handleRefresh} loading={refreshing}>
+            Refresh Data
+          </Button>
+        </BlockStack>
+      </Box>
+    </Card>
+  );
+
   return (
     <BlockStack gap="600">
+      {/* Error Banner */}
+      {error && (
+        <Banner tone="critical" title="Error loading performance data">
+          <p>{error}</p>
+          <Box paddingBlockStart="200">
+            <Button onClick={handleRefresh}>Retry</Button>
+          </Box>
+        </Banner>
+      )}
+
       {/* Header */}
       <Card>
         <InlineStack align="space-between">
           <BlockStack gap="200">
             <Text variant="headingLg" as="h2">Performance Insights</Text>
-            <Text variant="bodyMd" tone="subdued">
-              Deep analytics and AI performance tracking
-            </Text>
+            <InlineStack gap="200" blockAlign="center">
+              <Text variant="bodyMd" tone="subdued">
+                Deep analytics and AI performance tracking
+              </Text>
+              <Text variant="bodyMd" tone="subdued">•</Text>
+              <Text variant="bodySm" tone="subdued">
+                Showing data for: {getPeriodFromTimeRange(timeRange)}
+              </Text>
+              {lastUpdated && (
+                <>
+                  <Text variant="bodyMd" tone="subdued">•</Text>
+                  <Text variant="bodySm" tone="subdued">
+                    Updated {formatTimeAgo(lastUpdated)}
+                  </Text>
+                </>
+              )}
+            </InlineStack>
           </BlockStack>
           <InlineStack gap="200">
             <Select
@@ -226,6 +348,14 @@ export function PerformanceInsights({ shopName, hasFeatureAccess = false }: Perf
             >
               Compare with/without AI
             </Button>
+            <Button
+              icon={RefreshIcon}
+              onClick={handleRefresh}
+              loading={refreshing}
+              accessibilityLabel="Refresh data"
+            >
+              Refresh
+            </Button>
             <Button onClick={() => alert('Export report functionality coming soon')}>
               Export Report
             </Button>
@@ -233,7 +363,11 @@ export function PerformanceInsights({ shopName, hasFeatureAccess = false }: Perf
         </InlineStack>
       </Card>
 
-      {summary && (
+      {/* Show empty state if no data */}
+      {!hasData && !loading && <EmptyState />}
+
+      {/* Only show data sections if we have data */}
+      {hasData && summary && (
         <Card>
           <InlineStack gap="400">
             <BlockStack gap="100">
@@ -261,6 +395,7 @@ export function PerformanceInsights({ shopName, hasFeatureAccess = false }: Perf
       )}
 
       {/* AI Impact Summary */}
+      {hasData && (
       <Card>
         <BlockStack gap="400">
           <Text variant="headingMd">AI Optimization Impact</Text>
@@ -312,8 +447,10 @@ export function PerformanceInsights({ shopName, hasFeatureAccess = false }: Perf
           )}
         </BlockStack>
       </Card>
+      )}
 
       {/* Performance Chart */}
+      {hasData && (
       <Card>
         <BlockStack gap="400">
           <InlineStack align="space-between">
@@ -360,7 +497,9 @@ export function PerformanceInsights({ shopName, hasFeatureAccess = false }: Perf
           </Box>
         </BlockStack>
       </Card>
+      )}
 
+      {hasData && (
       <Layout>
         {/* Device Breakdown */}
         <Layout.Section oneHalf>
@@ -397,7 +536,7 @@ export function PerformanceInsights({ shopName, hasFeatureAccess = false }: Perf
               </Box>
               <Box background="bg-surface-secondary" padding="300" borderRadius="200">
                 <Text variant="bodySm" tone="subdued">
-                  💡 Mobile traffic converts 25% better with AI-optimized responsive ads
+                  Mobile traffic converts 25% better with AI-optimized responsive ads
                 </Text>
               </Box>
             </BlockStack>
@@ -442,76 +581,99 @@ export function PerformanceInsights({ shopName, hasFeatureAccess = false }: Perf
           </Card>
         </Layout.Section>
       </Layout>
+      )}
 
-      {/* Insights and Recommendations */}
+      {/* Data-backed AI Recommendations */}
       <Card>
         <BlockStack gap="400">
-          <Text variant="headingMd">AI-Generated Insights</Text>
-          <Grid>
-            <Grid.Cell columnSpan={{ xs: 6, sm: 6, md: 4, lg: 4 }}>
-              <Box padding="300" background="bg-surface-success" borderRadius="200">
-                <BlockStack gap="200">
-                  <InlineStack gap="100">
-                    <Text variant="headingSm">🎯 Opportunity</Text>
-                  </InlineStack>
-                  <Text variant="bodyMd">
-                    Increase budget by 20% on weekends - conversion rate is 35% higher
-                  </Text>
-                  <Button
-                    size="slim"
-                    onClick={() => {
-                      if (confirm('Apply this optimization suggestion? This will increase your weekend budget by 20%.')) {
-                        alert('Budget optimization applied successfully! Changes will take effect within 24 hours.');
-                      }
-                    }}
-                  >
-                    Apply Suggestion
-                  </Button>
-                </BlockStack>
-              </Box>
-            </Grid.Cell>
-            <Grid.Cell columnSpan={{ xs: 6, sm: 6, md: 4, lg: 4 }}>
-              <Box padding="300" background="bg-surface-warning" borderRadius="200">
-                <BlockStack gap="200">
-                  <InlineStack gap="100">
-                    <Text variant="headingSm">⚠️ Alert</Text>
-                  </InlineStack>
-                  <Text variant="bodyMd">
-                    "Summer sale" keyword CPC increased 45% - consider alternatives
-                  </Text>
-                  <Button
-                    size="slim"
-                    onClick={() => alert('Detailed keyword analysis:\n\nCurrent CPC: $2.45\nPrevious CPC: $1.69\nIncrease: 45%\n\nSuggested alternatives:\n- "seasonal discount" (CPC: $1.20)\n- "limited time offer" (CPC: $1.55)\n- "flash sale" (CPC: $1.35)')}
-                  >
-                    View Details
-                  </Button>
-                </BlockStack>
-              </Box>
-            </Grid.Cell>
-            <Grid.Cell columnSpan={{ xs: 6, sm: 6, md: 4, lg: 4 }}>
-              <Box padding="300" background="bg-surface-info" borderRadius="200">
-                <BlockStack gap="200">
-                  <InlineStack gap="100">
-                    <Text variant="headingSm">💡 Trend</Text>
-                  </InlineStack>
-                  <Text variant="bodyMd">
-                    Mobile traffic up 25% this week - optimize for mobile experience
-                  </Text>
-                  <Button
-                    size="slim"
-                    onClick={() => alert('Mobile Optimization Tips:\n\n1. Use shorter headlines (5-7 words)\n2. Ensure landing pages are mobile-responsive\n3. Test mobile-specific ad copy\n4. Consider mobile-preferred bidding\n5. Optimize page load speed')}
-                  >
-                    Learn More
-                  </Button>
-                </BlockStack>
-              </Box>
-            </Grid.Cell>
-          </Grid>
+          <Text variant="headingMd">AI Recommendations</Text>
+          {recommendations.length > 0 ? (
+            <Grid>
+              {recommendations.map((rec, idx) => (
+                <Grid.Cell key={idx} columnSpan={{ xs: 6, sm: 6, md: 4, lg: 4 }}>
+                  <Box padding="300" background={rec.type === 'cost_saving' ? 'bg-surface-warning' : rec.type === 'opportunity' ? 'bg-surface-success' : 'bg-surface-secondary'} borderRadius="200">
+                    <BlockStack gap="200">
+                      <Text variant="headingSm">{rec.title}</Text>
+                      <Text variant="bodySm">{rec.description}</Text>
+                      <InlineStack gap="200">
+                        <Badge tone={rec.type === 'cost_saving' ? 'warning' : rec.type === 'opportunity' ? 'success' : 'info'}>
+                          {rec.type.replace('_',' ')}
+                        </Badge>
+                        <Badge tone="info">Impact: {rec.impact || 'n/a'}</Badge>
+                      </InlineStack>
+                      <Button size="slim" onClick={() => openApplyModal({ ...ins, diff: { note: 'Preview only' } })}>Apply</Button>
+                    </BlockStack>
+                  </Box>
+                </Grid.Cell>
+              ))}
+            </Grid>
+          ) : (
+            <Box padding="300" background="bg-surface-secondary" borderRadius="200">
+              <Text variant="bodySm" tone="subdued">No recommendations available for the selected period.</Text>
+            </Box>
+          )}
+        </BlockStack>
+      </Card>
+
+      {/* Apply Recommendation Modal */}
+      {applyModal.open && (
+        <Card>
+          <BlockStack gap="300">
+            <Text variant="headingMd">Confirm Automation</Text>
+            <Text variant="bodySm" tone="subdued">Review the change before applying.</Text>
+            <Box background="bg-surface-secondary" padding="300" borderRadius="200">
+              <BlockStack gap="100">
+                <Text variant="bodySm"><strong>Title:</strong> {applyModal.recommendation?.title}</Text>
+                <Text variant="bodySm"><strong>Description:</strong> {applyModal.recommendation?.body}</Text>
+                {/* Simple diff preview area */}
+                <Text variant="bodySm" tone="subdued">This action will be logged and simulated for safety.</Text>
+              </BlockStack>
+            </Box>
+            <InlineStack gap="200">
+              <Button onClick={closeApplyModal} disabled={applying}>Cancel</Button>
+              <Button variant="primary" onClick={confirmApply} loading={applying}>Confirm</Button>
+            </InlineStack>
+          </BlockStack>
+        </Card>
+      )}
+
+      {/* AI Insight Templates (narrative cards) */}
+      <Card>
+        <BlockStack gap="400">
+          <Text variant="headingMd">AI Insight Templates</Text>
+          {insightTemplates.length > 0 ? (
+            <Grid>
+              {insightTemplates.map((ins, idx) => (
+                <Grid.Cell key={idx} columnSpan={{ xs: 6, sm: 6, md: 4, lg: 4 }}>
+                  <Box padding="300" background={ins.severity === 'high' ? 'bg-surface-critical' : ins.severity === 'warning' ? 'bg-surface-warning' : 'bg-surface-secondary'} borderRadius="200">
+                    <BlockStack gap="200">
+                      <InlineStack align="space-between">
+                        <Text variant="headingSm">{ins.title}</Text>
+                        <Badge tone={ins.severity === 'high' ? 'critical' : ins.severity === 'warning' ? 'warning' : 'info'}>
+                          {ins.severity || 'info'}
+                        </Badge>
+                      </InlineStack>
+                      <Text variant="bodySm">{ins.body}</Text>
+                      <InlineStack gap="200">
+                        {Array.isArray(ins.tags) && ins.tags.map((t: string, i: number) => (
+                          <Badge key={i} tone="info">{t}</Badge>
+                        ))}
+                      </InlineStack>
+                    </BlockStack>
+                  </Box>
+                </Grid.Cell>
+              ))}
+            </Grid>
+          ) : (
+            <Box padding="300" background="bg-surface-secondary" borderRadius="200">
+              <Text variant="bodySm" tone="subdued">No insight templates available for the selected period.</Text>
+            </Box>
+          )}
         </BlockStack>
       </Card>
 
       {/* Time Saved Banner */}
-      {aiImpact?.timeSaved && (
+      {hasData && aiImpact?.timeSaved && (
         <Banner
           title={`AI saved you ${aiImpact.timeSaved} hours this week`}
           tone="success"

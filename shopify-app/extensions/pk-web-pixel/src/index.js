@@ -1,6 +1,15 @@
 // Ads Autopilot AI Shopify Web Pixel Extension with Consent Mode v2 & GA4/Google Ads Integration
 // Compliant with GDPR, CCPA, and other privacy regulations
 
+// Token cache for pixel authentication
+let pixelTokenCache = {
+  token: null,
+  expiresAt: 0,
+  isRefreshing: false,
+  refreshPromise: null,
+};
+
+// HMAC signing function (still used for token fetch authentication)
 function sign(payload, secret) {
   const enc = new TextEncoder();
   const keyData = enc.encode(secret || "");
@@ -18,6 +27,91 @@ function sign(payload, secret) {
         return encodeURIComponent(b);
       }),
     );
+}
+
+// Fetch pixel token from backend
+async function fetchPixelToken(backend, tenant, secret) {
+  try {
+    const nonce = Date.now();
+    const op = `POST:${tenant}:pixel_token:${nonce}`;
+    const sig = await sign(op, secret);
+
+    const response = await fetch(
+      `${backend}/security/pixel/token?tenant=${encodeURIComponent(tenant)}&sig=${sig}`,
+      {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+          nonce,
+          shop: window?.location?.host || "",
+        }),
+      },
+    );
+
+    if (!response.ok) {
+      console.warn("Ads Autopilot AI: Token fetch failed", response.status);
+      return null;
+    }
+
+    const data = await response.json();
+    if (data.ok && data.token) {
+      return {
+        token: data.token,
+        expiresAt: data.expiresAt,
+      };
+    }
+
+    return null;
+  } catch (e) {
+    console.warn("Ads Autopilot AI: Token fetch error:", e);
+    return null;
+  }
+}
+
+// Get valid pixel token (from cache or fetch new one)
+async function getPixelToken(backend, tenant, secret) {
+  const now = Date.now();
+  const bufferTime = 2 * 60 * 1000; // Refresh 2 minutes before expiry
+
+  // Return cached token if still valid
+  if (
+    pixelTokenCache.token &&
+    pixelTokenCache.expiresAt > now + bufferTime
+  ) {
+    return pixelTokenCache.token;
+  }
+
+  // If already refreshing, wait for that promise
+  if (pixelTokenCache.isRefreshing && pixelTokenCache.refreshPromise) {
+    return pixelTokenCache.refreshPromise;
+  }
+
+  // Fetch new token
+  pixelTokenCache.isRefreshing = true;
+  pixelTokenCache.refreshPromise = (async () => {
+    try {
+      const tokenData = await fetchPixelToken(backend, tenant, secret);
+
+      if (tokenData) {
+        pixelTokenCache.token = tokenData.token;
+        pixelTokenCache.expiresAt = tokenData.expiresAt;
+        console.log(
+          "Ads Autopilot AI: Token refreshed, expires at",
+          new Date(tokenData.expiresAt).toISOString(),
+        );
+        return tokenData.token;
+      }
+
+      // Token fetch failed, return null
+      console.warn("Ads Autopilot AI: Token refresh failed");
+      return null;
+    } finally {
+      pixelTokenCache.isRefreshing = false;
+      pixelTokenCache.refreshPromise = null;
+    }
+  })();
+
+  return pixelTokenCache.refreshPromise;
 }
 
 // Consent Mode v2 Implementation
@@ -277,33 +371,49 @@ export function registerAnalytics(analytics) {
   const tenant = window?.shopify?.adsautopilot_tenant || "TENANT_123";
   const secret = window?.shopify?.adsautopilot_secret || "";
 
+  // Initialize token on load
+  getPixelToken(backend, tenant, secret).catch((e) => {
+    console.warn("Ads Autopilot AI: Initial token fetch failed:", e);
+  });
+
   async function postPixel(event, payload) {
     try {
       const consent = getConsentStatus();
       const privacySafePayload = createPrivacySafePayload(payload, consent);
 
-      const nonce = Date.now();
-      const op = `POST:${tenant}:pixel_ingest:${nonce}`;
-      const sig = await sign(op, secret);
+      // Try to get pixel token first (preferred method)
+      let token = await getPixelToken(backend, tenant, secret);
 
-      await fetch(
-        `${backend}/pixels/ingest?tenant=${encodeURIComponent(tenant)}&sig=${sig}`,
-        {
-          method: "POST",
-          headers: { "content-type": "application/json" },
-          body: JSON.stringify({
-            nonce,
-            shop: window?.location?.host || "",
-            event,
-            payload: privacySafePayload,
-            consent_metadata: {
-              granted: consent.analytics || consent.marketing,
-              source: consent.source,
-              timestamp: Date.now(),
-            },
-          }),
-        },
-      );
+      // Fallback to HMAC if token unavailable (transition period)
+      let headers = { "content-type": "application/json" };
+      let url = `${backend}/pixels/ingest?tenant=${encodeURIComponent(tenant)}`;
+
+      if (token) {
+        // Use token-based authentication
+        headers["Authorization"] = `Bearer ${token}`;
+      } else {
+        // Fallback to HMAC authentication
+        const nonce = Date.now();
+        const op = `POST:${tenant}:pixel_ingest:${nonce}`;
+        const sig = await sign(op, secret);
+        url += `&sig=${sig}`;
+      }
+
+      await fetch(url, {
+        method: "POST",
+        headers: headers,
+        body: JSON.stringify({
+          nonce: Date.now(),
+          shop: window?.location?.host || "",
+          event,
+          payload: privacySafePayload,
+          consent_metadata: {
+            granted: consent.analytics || consent.marketing,
+            source: consent.source,
+            timestamp: Date.now(),
+          },
+        }),
+      });
     } catch (e) {
       console.warn("Ads Autopilot AI: Pixel send failed:", e);
     }

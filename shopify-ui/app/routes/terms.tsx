@@ -3,7 +3,7 @@ import type { MetaFunction } from "@remix-run/node";
 export const meta: MetaFunction = () => {
   return [
     { title: "Terms of Service - Ads Autopilot AI" },
-    { name: "description", content: "Ads Autopilot AI Terms of Service - Legal terms for our Shopify conversion optimization app" },
+    { name: "description", content: "Ads Autopilot AI Terms of Service - Legal terms for AI-powered Google Ads automation" },
   ];
 };
 
@@ -23,7 +23,7 @@ export default function Terms() {
       <h2>Service Description</h2>
 
       <h3>What Ads Autopilot AI Does</h3>
-      <p>Ads Autopilot AI is a Shopify app that provides:</p>
+      <p>Ads Autopilot AI is an AI-powered Google Ads automation platform for Shopify stores that provides:</p>
       <ul>
         <li><strong>AI-Powered Campaign Optimization:</strong> Automated Google Ads campaign management and optimization</li>
         <li><strong>Audience Management:</strong> Anonymous customer segmentation and targeting</li>

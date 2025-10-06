@@ -1,17 +1,40 @@
-# Ads Autopilot AI SaaS (Backend + Shopify + WordPress + Ads Script)
+# Ads Autopilot AI - Documentation
 
-This bundle removes the Google Apps Script Web App. Instead, you run **your own backend** (Node/Express).
+Ads Autopilot AI is an AI-powered conversion optimization platform that helps Shopify and WordPress stores increase sales by 15-25% through intelligent campaign management and privacy-first analytics.
 
-- The Google Ads Script calls your backend for config and posts metrics.
-- Your Shopify/WP apps manage pixels and can send settings to the backend.
-- Storage can be Google Sheets (via service account) or later a DB.
+## What is Ads Autopilot AI?
 
-## Folders
+Ads Autopilot AI revolutionizes e-commerce conversion optimization through our innovative Intent Operating System (Intent OS). Built with privacy-first principles, the platform enables:
 
-- backend/ — Express API with HMAC & Google Sheets support
-- ads-script/ — Universal Ads Script (points to your backend)
-- shopify-app/ — Skeleton service to send settings and a Web Pixel stub
-- wordpress-plugin/ — Pixel injection + optional backend forward
-- docs/ — onboarding/API/roadmap
+- **AI-Powered Optimization**: Automated campaign management and conversion rate optimization
+- **Privacy-First Analytics**: GDPR/CCPA compliant tracking without collecting customer PII
+- **Seamless Integration**: Works with Shopify, WordPress, Google Ads, and Google Sheets
+- **Data Control**: You own and control all your optimization data
 
-See docs/ONBOARDING.md to run.
+## Architecture Overview
+
+Ads Autopilot AI consists of four main components:
+
+- **backend/** — Express API with HMAC security & Google Sheets integration
+- **ads-script/** — Google Ads Script for automated campaign optimization
+- **shopify-app/** — Native Shopify app with Intent OS dashboard
+- **wordpress-plugin/** — WordPress pixel injection and tracking
+- **docs/** — Comprehensive onboarding, API, and implementation guides
+
+## Quick Start
+
+See [ONBOARDING.md](./ONBOARDING.md) for detailed setup instructions.
+
+## Documentation
+
+- [API Documentation](./API.md) - Complete API reference
+- [Onboarding Guide](./ONBOARDING.md) - Get started in 5 minutes
+- [Billing Integration](./BILLING_INTEGRATION.md) - Shopify billing setup
+- [Test Plan](./TEST_PLAN.md) - Testing procedures
+- [Funnel E2E Guide](./FUNNEL_E2E_GUIDE.md) - End-to-end conversion optimization
+
+## Support
+
+- **Email**: support@adsautopilot.app
+- **Response Time**: 24 hours maximum
+- **Privacy Questions**: privacy@adsautopilot.app

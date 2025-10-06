@@ -11,7 +11,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
       <html>
         <head><title>Install Ads Autopilot AI</title></head>
         <body>
-          <h1>Install Ads Autopilot AI Shopify App</h1>
+          <h1>Install Ads Autopilot AI</h1>
           <form method="get">
             <label>
               Shop Name: 
@@ -61,8 +61,10 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
   const authUrl = `https://${shopDomain}/admin/oauth/authorize?${params.toString()}`;
   
-  console.log(`🔗 Redirecting to Shopify OAuth for shop: ${shop}`);
-  console.log(`🔗 Auth URL: ${authUrl}`);
+  if (process.env.NODE_ENV !== 'production') {
+    console.log(`🔗 Redirecting to Shopify OAuth for shop: ${shop}`);
+    console.log(`🔗 Auth URL: ${authUrl}`);
+  }
   
   return redirect(authUrl);
 }

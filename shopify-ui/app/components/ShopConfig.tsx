@@ -320,7 +320,7 @@ export function ShopConfig({
                 transition: "all 0.2s ease",
               }}
             >
-              💾 Save Shop Name
+              Save Shop Name
             </button>
             <button
               onClick={handleClear}

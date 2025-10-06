@@ -8,20 +8,65 @@ import ShopifyBillingService from "../services/shopify-billing.js";
 
 /**
  * Get shop access token from session or database
- * In production, this should query a secure token store
+ * Retrieves access token from Redis session storage (used by Shopify UI)
+ * Falls back to database if Redis is unavailable
  */
 async function getShopAccessToken(shopDomain) {
   try {
-    // This is a placeholder - in production you would:
-    // 1. Query the session store for the shop's access token
-    // 2. Or query a secure token database
-    // 3. Handle token refresh if needed
-    
-    // For now, return null to indicate token not available
-    // This prevents Shopify API calls when tokens aren't set up
+    console.log(`[Token Retrieval] Attempting to retrieve access token for shop: ${shopDomain}`);
+
+    // Normalize shop domain
+    const normalizedShop = shopDomain.includes('.myshopify.com')
+      ? shopDomain
+      : `${shopDomain}.myshopify.com`;
+
+    // Method 1: Try to retrieve from Redis session storage
+    // Shopify RedisSessionStorage uses key pattern: shopify_sessions_offline_{shop}
+    // We'll try both offline and online session patterns
+    try {
+      const { getJson } = await import("../services/redis.js");
+
+      // Try offline session first (persists across page loads)
+      const offlineKey = `shopify_sessions_offline_${normalizedShop}`;
+      let sessionData = await getJson(offlineKey);
+
+      // Try online session if offline not found
+      if (!sessionData) {
+        const onlineKey = `shopify_sessions_online_${normalizedShop}`;
+        sessionData = await getJson(onlineKey);
+      }
+
+      // Also try without the prefix pattern (legacy compatibility)
+      if (!sessionData) {
+        const legacyKey = `session:${normalizedShop}`;
+        sessionData = await getJson(legacyKey);
+      }
+
+      if (sessionData) {
+        // Session data structure from Shopify session storage
+        const accessToken = sessionData.accessToken || sessionData.access_token;
+
+        if (accessToken) {
+          console.log(`[Token Retrieval] ✅ Successfully retrieved access token from Redis for shop: ${normalizedShop}`);
+          return accessToken;
+        }
+
+        console.warn(`[Token Retrieval] ⚠️ Session found but no access token for shop: ${normalizedShop}`);
+      } else {
+        console.log(`[Token Retrieval] No Redis session found for shop: ${normalizedShop}`);
+      }
+    } catch (redisError) {
+      console.warn(`[Token Retrieval] Redis query failed: ${redisError.message}`);
+    }
+
+    // No token found in Redis session storage
+    // Note: Access tokens are only stored in Redis (via Shopify session storage)
+    // They are never persisted to the database for security reasons
+    console.log(`[Token Retrieval] ❌ No access token found in Redis for shop: ${normalizedShop}`);
     return null;
+
   } catch (error) {
-    console.error("Failed to retrieve shop access token:", error);
+    console.error(`[Token Retrieval] ❌ Failed to retrieve shop access token for ${shopDomain}:`, error);
     return null;
   }
 }

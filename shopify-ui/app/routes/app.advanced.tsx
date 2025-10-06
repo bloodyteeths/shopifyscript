@@ -326,13 +326,15 @@ export async function action({ request }: ActionFunctionArgs) {
       AP_PLAYBOOK_PROMPT: String(fd.get("playbook") || ""),
     };
 
-    console.log(`💾 Saving settings for ${shopName}:`, {
-      schedule: settings.AP_SCHEDULE,
-      target_cpa: settings.AP_TARGET_CPA,
-      target_roas: settings.AP_TARGET_ROAS,
-      keywords_count: settings.AP_DESIRED_KEYWORDS_PIPE.split("|").length,
-      playbook_length: settings.AP_PLAYBOOK_PROMPT.length,
-    });
+    if (process.env.NODE_ENV !== 'production') {
+      console.log(`💾 Saving settings for ${shopName}:`, {
+        schedule: settings.AP_SCHEDULE,
+        target_cpa: settings.AP_TARGET_CPA,
+        target_roas: settings.AP_TARGET_ROAS,
+        keywords_count: settings.AP_DESIRED_KEYWORDS_PIPE.split("|").length,
+        playbook_length: settings.AP_PLAYBOOK_PROMPT.length,
+      });
+    }
 
     // Always save settings first with enhanced error handling
     const { backendFetch } = await import("../server/hmac.server");
@@ -957,7 +959,7 @@ export default function Advanced() {
 
         {/* Automation Schedule */}
         <div style={sectionStyle}>
-          <h3 style={legendStyle}>🕒 Automation Schedule</h3>
+          <h3 style={legendStyle}>Automation Schedule</h3>
           <p style={helpStyle}>
             Choose how often Ads Autopilot AI should optimize your campaigns
           </p>
@@ -1203,7 +1205,7 @@ export default function Advanced() {
 
         {/* Bid Limits */}
         <div style={sectionStyle}>
-          <h3 style={legendStyle}>💳 Maximum Bid Limits</h3>
+          <h3 style={legendStyle}>Maximum Bid Limits</h3>
           <p style={helpStyle}>
             Set cost-per-click limits to control your ad spending
           </p>
@@ -1396,7 +1398,7 @@ export default function Advanced() {
                     opacity: nav.state !== "idle" ? 0.7 : 1,
                   }}
                 >
-                  {nav.state !== "idle" ? "⏳ Saving..." : "💾 Save Bid Limits"}
+                  {nav.state !== "idle" ? "Saving..." : "Save Bid Limits"}
                 </button>
                 {buttonFeedback.saveCaps && (
                   <span
@@ -1607,7 +1609,7 @@ export default function Advanced() {
 
         {/* Target Keywords */}
         <div style={sectionStyle}>
-          <h3 style={legendStyle}>🔑 Target Keywords</h3>
+          <h3 style={legendStyle}>Target Keywords</h3>
           <p style={helpStyle}>
             Choose keyword categories that match your business or enter your own
           </p>
@@ -1892,8 +1894,8 @@ export default function Advanced() {
             }}
           >
             {nav.state !== "idle"
-              ? "⏳ Saving & Running..."
-              : "💾 Save Settings & Run Optimization"}
+              ? "Saving & Running..."
+              : "Save Settings & Run Optimization"}
           </button>
           {(buttonFeedback.saveSettings || buttonFeedback.runOptimization) && (
             <span

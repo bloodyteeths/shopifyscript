@@ -3,7 +3,7 @@ import type { MetaFunction } from "@remix-run/node";
 export const meta: MetaFunction = () => {
   return [
     { title: "Privacy Policy - Ads Autopilot AI" },
-    { name: "description", content: "Ads Autopilot AI Privacy Policy - Privacy-first conversion optimization for Shopify stores" },
+    { name: "description", content: "Ads Autopilot AI Privacy Policy - Privacy-first AI-powered Google Ads automation for Shopify stores" },
   ];
 };
 

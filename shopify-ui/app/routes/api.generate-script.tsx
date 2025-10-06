@@ -66,7 +66,9 @@ export async function action({ request }: ActionFunctionArgs) {
     }
     */
 
-    console.log(`🔗 Fetching script from backend for shop: ${currentShopName}`);
+    if (process.env.NODE_ENV !== 'production') {
+      console.log(`🔗 Fetching script from backend for shop: ${currentShopName}`);
+    }
 
     // Build query parameters to pass user settings directly
     const scriptParams = new URLSearchParams({
@@ -79,7 +81,9 @@ export async function action({ request }: ActionFunctionArgs) {
     try {
       // Try v2 endpoint first with parameters, fallback to raw endpoint
       try {
-        console.log(`🔗 Attempting to fetch from /ads-script/v2 endpoint with params: ${scriptParams}`);
+        if (process.env.NODE_ENV !== 'production') {
+          console.log(`🔗 Attempting to fetch from /ads-script/v2 endpoint with params: ${scriptParams}`);
+        }
         realScript = await backendFetchText(
           `/ads-script/v2?${scriptParams}`,
           "GET",
@@ -180,6 +184,7 @@ export async function loader() {
     error: "This endpoint requires POST method for script generation"
   });
 }
+
 
 
 

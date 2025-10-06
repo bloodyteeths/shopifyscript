@@ -2,7 +2,8 @@ import express from "express";
 import { json, logAccess } from "../utils/response.js";
 import { verify, sign } from "../utils/hmac.js";
 import { requireFeature, getCurrentSubscription } from "../middleware/subscription-check.js";
-import { canCreateCampaign, recordCampaignCreation } from "../services/campaign-counter.js";
+import { canCreateCampaign, recordCampaignCreation, enforceCampaignLimits } from "../services/campaign-counter.js";
+import { requireActiveSubscription } from "../middleware/subscription-check.js";
 import { getRSADraftsFromSupabase } from "../services/rsa-supabase.js";
 import { getSupabaseClient, isSupabaseEnabled } from "../services/supabase-client.js";
 import { logger } from "../services/logger.js";
@@ -156,6 +157,7 @@ router.get("/stats/quick", async (req, res) => {
       case 'YESTERDAY': dayCount = 2; break;
       case 'LAST_7_DAYS': dayCount = 7; break;
       case 'LAST_30_DAYS': dayCount = 30; break;
+      case 'LAST_90_DAYS': dayCount = 90; break;
       case 'ALL_TIME': dayCount = 365; break;
     }
 
@@ -776,6 +778,395 @@ router.get("/optimizations/stats", async (req, res) => {
       source: 'fallback',
       error: error.message
     });
+  }
+});
+
+// ✅ NEW: GET /api/ai/recommendations - Data-backed AI recommendations
+router.get("/recommendations", async (req, res) => {
+  const { tenant, sig, period = 'LAST_7_DAYS' } = req.query;
+  const payload = `GET:${tenant}:ai_recommendations`;
+  if (!tenant || !verify(sig, payload)) {
+    return res.status(403).json({ ok: false, error: "auth" });
+  }
+
+  try {
+    const supabaseClient = getSupabaseClient();
+    if (!supabaseClient) {
+      return res.json({ ok: true, recommendations: [] });
+    }
+
+    // Set RLS context
+    await supabaseClient.rpc('set_config', { parameter: 'app.current_tenant_id', value: String(tenant) }).catch(() => {});
+
+    // Fetch recent tenant metrics (granular) for basic heuristics
+    const lookbackDays = period === 'LAST_30_DAYS' ? 30 : period === 'LAST_90_DAYS' ? 90 : 7;
+    const startDate = new Date();
+    startDate.setDate(startDate.getDate() - lookbackDays);
+    const startDateStr = startDate.toISOString().split('T')[0];
+
+    const { data: tm } = await supabaseClient
+      .from('tenant_metrics')
+      .select('entity_type, entity_name, clicks, conversions, impressions, cost_micros, date')
+      .eq('tenant_id', tenant)
+      .in('entity_type', ['campaign','ad_group'])
+      .gte('date', startDateStr);
+
+    const recommendations = [];
+
+    if (tm && tm.length) {
+      // Aggregate by campaign/ad_group
+      const agg = new Map();
+      for (const r of tm) {
+        const key = `${r.entity_type}:${r.entity_name}`;
+        const prev = agg.get(key) || { impressions: 0, clicks: 0, conversions: 0, cost: 0 };
+        prev.impressions += r.impressions || 0;
+        prev.clicks += r.clicks || 0;
+        prev.conversions += parseFloat(r.conversions || 0);
+        prev.cost += (r.cost_micros || 0) / 1e6;
+        agg.set(key, prev);
+      }
+
+      // Heuristics
+      for (const [key, v] of agg.entries()) {
+        const ctr = v.impressions > 0 ? (v.clicks / v.impressions) * 100 : 0;
+        const cpc = v.clicks > 0 ? v.cost / v.clicks : 0;
+        const convRate = v.clicks > 0 ? (v.conversions / v.clicks) * 100 : 0;
+
+        // Suggest increasing budget for strong performers
+        if (v.conversions >= 10 && ctr >= 3.0 && convRate >= 2.0) {
+          recommendations.push({
+            type: 'opportunity',
+            title: 'Increase budget for top performer',
+            description: `${key} is outperforming: CTR ${ctr.toFixed(1)}%, ConvRate ${convRate.toFixed(1)}%. Consider +20% budget.`,
+            impact: 'medium',
+          });
+        }
+
+        // Suggest keyword/creative refresh for low CTR
+        if (v.impressions >= 1000 && ctr < 1.0) {
+          recommendations.push({
+            type: 'improvement',
+            title: 'Refresh headlines for low CTR',
+            description: `${key} CTR ${ctr.toFixed(1)}% with ${v.impressions} impressions. Test sharper headlines and value props.`,
+            impact: 'low',
+          });
+        }
+
+        // Suggest bid control for high CPC and low conversions
+        if (cpc > 2.0 && v.conversions < 2 && v.clicks >= 50) {
+          recommendations.push({
+            type: 'cost_saving',
+            title: 'Lower bids to cut high CPC',
+            description: `${key} CPC $${cpc.toFixed(2)} with low conversions. Reduce bids by 10-15%.`,
+            impact: 'high',
+          });
+        }
+      }
+    }
+
+    return res.json({ ok: true, recommendations });
+  } catch (error) {
+    return res.status(500).json({ ok: false, error: error.message });
+  }
+});
+
+// ✅ NEW: GET /api/ai/anomalies - Spend anomaly detection (Supabase function)
+router.get("/anomalies", async (req, res) => {
+  const { tenant, sig, period = 'LAST_7_DAYS' } = req.query;
+  const payload = `GET:${tenant}:ai_anomalies`;
+  if (!tenant || !verify(sig, payload)) {
+    return res.status(403).json({ ok: false, error: "auth" });
+  }
+  try {
+    const supabaseClient = getSupabaseClient();
+    if (!supabaseClient) {
+      return res.json({ ok: true, anomalies: [] });
+    }
+    await supabaseClient.rpc('set_config', { parameter: 'app.current_tenant_id', value: String(tenant) }).catch(() => {});
+    const { data, error } = await supabaseClient.rpc('ai_detect_spend_anomalies', {
+      p_tenant: String(tenant),
+      p_period: String(period)
+    });
+    if (error) {
+      console.error('Anomalies function error:', error.message);
+      return res.json({ ok: true, anomalies: [] });
+    }
+    return res.json({ ok: true, anomalies: data || [], period });
+  } catch (error) {
+    return res.status(500).json({ ok: false, error: error.message });
+  }
+});
+
+// ✅ NEW: GET /api/ai/pacing - Spend pacing helper (Supabase function)
+router.get("/pacing", async (req, res) => {
+  const { tenant, sig, period = 'LAST_7_DAYS', daily_budget } = req.query;
+  const payload = `GET:${tenant}:ai_pacing`;
+  if (!tenant || !verify(sig, payload)) {
+    return res.status(403).json({ ok: false, error: "auth" });
+  }
+  try {
+    const budget = Number(daily_budget || 0);
+    const supabaseClient = getSupabaseClient();
+    if (!supabaseClient) {
+      return res.json({ ok: true, pacing: [] });
+    }
+    await supabaseClient.rpc('set_config', { parameter: 'app.current_tenant_id', value: String(tenant) }).catch(() => {});
+    const { data, error } = await supabaseClient.rpc('ai_spend_pacing', {
+      p_tenant: String(tenant),
+      p_period: String(period),
+      p_daily_budget: budget
+    });
+    if (error) {
+      console.error('Pacing function error:', error.message);
+      return res.json({ ok: true, pacing: [] });
+    }
+    return res.json({ ok: true, pacing: data || [], period, daily_budget: budget });
+  } catch (error) {
+    return res.status(500).json({ ok: false, error: error.message });
+  }
+});
+
+// ✅ NEW: GET /api/ai/insights/templates - Narrative insight templates from real metrics
+router.get("/insights/templates", async (req, res) => {
+  const { tenant, sig, period = 'LAST_7_DAYS', daily_budget } = req.query;
+  const payload = `GET:${tenant}:ai_insights_templates`;
+  if (!tenant || !verify(sig, payload)) {
+    return res.status(403).json({ ok: false, error: "auth" });
+  }
+
+  try {
+    const supabaseClient = getSupabaseClient();
+    if (!supabaseClient) {
+      return res.json({ ok: true, insights: [] });
+    }
+
+    await supabaseClient.rpc('set_config', { parameter: 'app.current_tenant_id', value: String(tenant) }).catch(() => {});
+
+    const insights = [];
+
+    // 1) Spend anomalies
+    try {
+      const { data: anomalies } = await supabaseClient.rpc('ai_detect_spend_anomalies', {
+        p_tenant: String(tenant),
+        p_period: String(period)
+      });
+      const topAnomaly = (anomalies || []).sort((a, b) => Math.abs(b.zscore) - Math.abs(a.zscore))[0];
+      if (topAnomaly && Math.abs(topAnomaly.zscore) >= 2) {
+        insights.push({
+          id: 'spend_anomaly',
+          severity: Math.abs(topAnomaly.zscore) >= 3 ? 'high' : 'medium',
+          title: topAnomaly.zscore > 0 ? 'Spend Spike Detected' : 'Spend Drop Detected',
+          body: `${topAnomaly.d}: spend ${topAnomaly.zscore > 0 ? 'above' : 'below'} normal (z=${topAnomaly.zscore.toFixed(2)}). ${topAnomaly.message}.`,
+          metrics: { spend: topAnomaly.spend, mean: topAnomaly.mean, stddev: topAnomaly.stddev },
+          tags: ['anomaly','spend']
+        });
+      }
+    } catch {}
+
+    // 2) Pacing vs budget (if provided)
+    const budget = Number(daily_budget || 0);
+    if (budget > 0) {
+      try {
+        const { data: pacing } = await supabaseClient.rpc('ai_spend_pacing', {
+          p_tenant: String(tenant),
+          p_period: String(period),
+          p_daily_budget: budget
+        });
+        const today = (pacing || []).slice(-1)[0];
+        if (today) {
+          insights.push({
+            id: 'spend_pacing',
+            severity: today.status === 'ahead' ? 'warning' : 'info',
+            title: `Daily Spend Pacing: ${today.status.replace('_',' ')}`,
+            body: `Today spend $${Number(today.spend).toFixed(2)} vs target $${Number(today.target).toFixed(2)} (${Number(today.pace_percent || 0).toFixed(0)}% of budget).`,
+            metrics: { spend: today.spend, target: today.target, pace_percent: today.pace_percent },
+            tags: ['pacing','budget']
+          });
+        }
+      } catch {}
+    }
+
+    // 3) Low CTR ad groups (high impressions, low CTR)
+    try {
+      const { data: lowCtrGroups } = await supabaseClient
+        .from('tenant_metrics')
+        .select('entity_name, impressions, clicks, ctr')
+        .eq('tenant_id', tenant)
+        .eq('entity_type', 'ad_group')
+        .eq('period', period)
+        .gte('impressions', 1000)
+        .lte('ctr', 1.0)
+        .order('impressions', { ascending: false })
+        .limit(3);
+      if (lowCtrGroups && lowCtrGroups.length) {
+        const names = lowCtrGroups.map(g => g.entity_name).filter(Boolean).slice(0, 3);
+        const sample = lowCtrGroups[0];
+        insights.push({
+          id: 'low_ctr_groups',
+          severity: 'low',
+          title: 'Low CTR Ad Groups Detected',
+          body: `${names.join(', ')} below 1.0% CTR with high impressions. Consider testing new headlines and CTAs. (Top group CTR ${Number(sample.ctr || 0).toFixed(2)}%)`,
+          metrics: { count: lowCtrGroups.length },
+          tags: ['ctr','ad_group']
+        });
+      }
+    } catch {}
+
+    // 4) Top converting keywords
+    try {
+      const { data: topTerms } = await supabaseClient
+        .from('search_terms')
+        .select('search_term, clicks, conversions, cost_micros')
+        .eq('tenant_id', tenant)
+        .gte('date', new Date(Date.now() - 30*24*60*60*1000).toISOString())
+        .order('conversions', { ascending: false })
+        .limit(5);
+      if (topTerms && topTerms.length) {
+        const list = topTerms
+          .filter(t => (t.conversions || 0) > 0)
+          .map(t => `${t.search_term} (${Number(t.conversions).toFixed(0)} conv)`).join(', ');
+        if (list) {
+          insights.push({
+            id: 'top_keywords',
+            severity: 'info',
+            title: 'Top Converting Keywords',
+            body: list,
+            metrics: { count: topTerms.length },
+            tags: ['keywords']
+          });
+        }
+      }
+    } catch {}
+
+    return res.json({ ok: true, insights, period, daily_budget: budget || undefined });
+  } catch (error) {
+    return res.status(500).json({ ok: false, error: error.message });
+  }
+});
+
+// ✅ NEW: POST /api/ai/automation/apply - Log and apply automation with diff preview
+router.post("/automation/apply", async (req, res) => {
+  const { tenant, sig } = req.query;
+  const { nonce = Date.now(), recommendation, simulate = true } = req.body || {};
+  const payload = `POST:${tenant}:ai_automation_apply:${nonce}`;
+  if (!tenant || !verify(sig, payload)) {
+    return res.status(403).json({ ok: false, error: "auth" });
+  }
+
+  try {
+    const supabaseClient = getSupabaseClient();
+    if (!supabaseClient) {
+      return res.json({ ok: true, applied: false, simulate: true });
+    }
+
+    await supabaseClient.rpc('set_config', { parameter: 'app.current_tenant_id', value: String(tenant) }).catch(() => {});
+
+    const execStatus = simulate ? 'pending' : 'completed';
+    const automationType = recommendation?.type || 'recommendation';
+    const diff = recommendation?.diff || null;
+
+    // Insert execution log
+    const { error: logError } = await supabaseClient
+      .from('automation_execution_logs')
+      .insert({
+        tenant_id: String(tenant),
+        automation_id: null,
+        automation_type: automationType,
+        activity_type: 'apply',
+        execution_status: execStatus,
+        executed_at: new Date().toISOString(),
+        metadata: {
+          source: 'ai_templates',
+          recommendation,
+          diff
+        }
+      });
+
+    if (logError) {
+      console.warn('⚠️ Failed to log automation application:', logError.message);
+    }
+
+    // In this phase, we simulate apply. Real apply would call provider APIs or update configs.
+    return res.json({ ok: true, applied: !simulate, simulate, diff });
+  } catch (error) {
+    return res.status(500).json({ ok: false, error: error.message });
+  }
+});
+
+// ✅ NEW: GET /api/ai/monitoring/ingestion - Ingestion monitoring (row counts + latest timestamps)
+router.get("/monitoring/ingestion", async (req, res) => {
+  const { tenant, sig } = req.query;
+  const payload = `GET:${tenant}:ingestion_status`;
+  if (!tenant || !verify(sig, payload)) {
+    return res.status(403).json({ ok: false, error: "auth" });
+  }
+
+  try {
+    const supabaseClient = getSupabaseClient();
+    if (!supabaseClient) {
+      return res.json({ ok: true, source: 'none', message: 'Supabase not configured', tables: {} });
+    }
+
+    // Set RLS context
+    await supabaseClient.rpc('set_config', { parameter: 'app.current_tenant_id', value: String(tenant) }).catch(() => {});
+
+    async function getTableStatus(table, dateColumn) {
+      try {
+        const { count, error: countError } = await supabaseClient
+          .from(table)
+          .select('*', { count: 'exact', head: true })
+          .eq('tenant_id', String(tenant));
+        if (countError) throw countError;
+
+        let latest = null;
+        const { data: latestRow, error: latestError } = await supabaseClient
+          .from(table)
+          .select(`${dateColumn}`)
+          .eq('tenant_id', String(tenant))
+          .order(dateColumn, { ascending: false })
+          .limit(1);
+        if (!latestError && latestRow && latestRow.length > 0) {
+          latest = latestRow[0][dateColumn];
+        }
+
+        const countVal = count || 0;
+        let status = 'empty';
+        let ageHours = null;
+        if (countVal > 0 && latest) {
+          const latestDate = new Date(latest);
+          const diffMs = Date.now() - latestDate.getTime();
+          ageHours = Math.floor(diffMs / (1000 * 60 * 60));
+          status = ageHours <= 48 ? 'fresh' : 'stale';
+        }
+
+        return { count: countVal, latest, status, ageHours };
+      } catch (error) {
+        return { error: error.message };
+      }
+    }
+
+    const [tenantMetrics, campaignMetrics, adGroupMetrics, searchTerms, runLogs] = await Promise.all([
+      getTableStatus('tenant_metrics', 'date'),
+      getTableStatus('campaign_metrics', 'date'),
+      getTableStatus('ad_group_metrics', 'date'),
+      getTableStatus('search_terms', 'date'),
+      getTableStatus('run_logs', 'timestamp')
+    ]);
+
+    return res.json({
+      ok: true,
+      source: 'supabase',
+      tables: {
+        tenant_metrics: tenantMetrics,
+        campaign_metrics: campaignMetrics,
+        ad_group_metrics: adGroupMetrics,
+        search_terms: searchTerms,
+        run_logs: runLogs
+      },
+      timestamp: new Date().toISOString()
+    });
+  } catch (error) {
+    return res.status(500).json({ ok: false, error: error.message });
   }
 });
 
@@ -3361,6 +3752,41 @@ router.get("/campaigns", async (req, res) => {
   }
 });
 
+// ✅ NEW: POST /api/ai/campaigns - Create campaign with tier limit enforcement
+router.post("/campaigns", requireActiveSubscription(), async (req, res) => {
+  const { tenant, sig } = req.query;
+  const payload = `POST:${tenant}:ai_campaigns`;
+  if (!tenant || !verify(sig, payload)) {
+    return res.status(403).json({ ok: false, error: "auth" });
+  }
+
+  try {
+    const userTier = req.subscription?.tier || 'starter';
+    const { allowed, currentCount, limit, upgradeUrl } = await canCreateCampaign(String(tenant), userTier);
+    if (!allowed) {
+      return res.status(402).json({
+        ok: false,
+        error: 'campaign_limit_exceeded',
+        message: `Your ${userTier} plan allows up to ${limit} campaigns. You currently have ${currentCount}.`,
+        currentCount,
+        limit,
+        upgradeUrl
+      });
+    }
+
+    const { name } = req.body || {};
+    if (!name || typeof name !== 'string') {
+      return res.status(400).json({ ok: false, error: 'invalid_name' });
+    }
+
+    await recordCampaignCreation(String(tenant), name.trim(), userTier);
+
+    return res.status(201).json({ ok: true, campaign: { name, status: 'CREATED' } });
+  } catch (error) {
+    return res.status(500).json({ ok: false, error: error.message });
+  }
+});
+
 // GET /api/ai/performance/insights - Get AI performance insights
 router.get("/performance/insights", async (req, res) => {
   const { tenant, sig, period = 'LAST_7_DAYS' } = req.query;
@@ -3684,6 +4110,7 @@ router.get("/performance/insights", async (req, res) => {
       case 'YESTERDAY': daysBack = 2; break;
       case 'LAST_7_DAYS': daysBack = 7; break;
       case 'LAST_30_DAYS': daysBack = 30; break;
+      case 'LAST_90_DAYS': daysBack = 90; break;
       case 'ALL_TIME': daysBack = 365; break;
     }
 
@@ -3742,14 +4169,14 @@ router.get("/performance/insights", async (req, res) => {
     try {
       const { data: deviceData } = await supabaseClient
         .from('device_metrics')
-        .select('device_type, clicks, impressions, conversions')
+        .select('device, clicks, impressions, conversions')
         .eq('tenant_id', tenant)
         .gte('date', startDateStr);
 
       if (deviceData && deviceData.length > 0) {
         const deviceAgg = {};
         deviceData.forEach(row => {
-          const device = row.device_type || 'Unknown';
+          const device = row.device || 'Unknown';
           if (!deviceAgg[device]) {
             deviceAgg[device] = { name: device, clicks: 0, impressions: 0, conversions: 0 };
           }

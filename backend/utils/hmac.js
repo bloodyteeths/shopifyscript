@@ -1,3 +1,4 @@
+import '../config/load-env.js'; // Load environment variables first
 import crypto from "crypto";
 import { getValidatedHMACSecret } from "./secret-validator.js";
 

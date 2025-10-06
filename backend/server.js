@@ -1,6 +1,8 @@
+import './config/load-env.js'; // Load environment variables first
 import express from "express";
 import cors from "cors";
 import crypto from "crypto";
+import jwt from "jsonwebtoken";
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import dotenv from "dotenv";
@@ -21,6 +23,7 @@ import { buildSegments } from "./segments/materialize.js";
 import { initializeRSATestQueueRoutes } from "./routes/rsa-test-queue-routes.js";
 // Security & Privacy Services (disabled for Vercel compatibility)
 // import securityMiddleware from './middleware/security.js'; // Too aggressive for Vercel
+import { securityHeadersMiddleware } from './middleware/security-light.js'; // Lightweight security headers
 import privacyService from "./services/privacy.js";
 // import environmentSecurity from './services/environment-security.js'; // Disabled for Vercel compatibility
 // PROMOTE Gate functions integrated
@@ -29,6 +32,7 @@ import { healthService, createHealthRoutes } from "./services/health.js";
 import logger from "./services/logger.js";
 import { createEnvironment } from "../deployment/environment.js";
 import { JobScheduler } from "./jobs/scheduler.js";
+import { getQueueManager, JOB_PRIORITIES, JOB_TYPES } from "./services/queue-manager.js";
 import { pingRedis, getJson, setJson } from "./services/redis.js";
 import * as redis from "./services/redis.js";
 // Profit & Inventory Services
@@ -44,6 +48,8 @@ import securityRoutes from "./routes/security.js";
 import configRoutes from "./routes/config.js";
 // Reports Routes
 import reportsRoutes from "./routes/reports.js";
+// Monitoring Routes
+import monitoringRoutes from "./routes/monitoring.js";
 // Dashboard Routes
 import dashboardRoutes from "./routes/dashboards.js";
 // Automation Routes
@@ -60,6 +66,7 @@ import { startAIAutomation, stopAIAutomation, getAIAutomationService } from "./s
 import tenantRegistry from "./services/tenant-registry.js";
 // WebSocket Server
 import { initializeWebSocketServer } from "./services/websocket-server.js";
+import { requireActiveSubscription } from "./middleware/subscription-check.js";
 
 // Load env from root and backend/.env (resolve relative to this file)
 dotenv.config();
@@ -158,10 +165,12 @@ const __dirname = dirname(__filename);
 app.use('/dashboard', express.static(join(__dirname, 'public')));
 
 // ==== SECURITY MIDDLEWARE ====
-// Security middleware disabled for Vercel compatibility
-// The agents made it too aggressive and it blocks legitimate requests
+// Lightweight security headers middleware (serverless-friendly)
+app.use(securityHeadersMiddleware());
+const securityHeadersEnabled = process.env.ENABLE_SECURITY_HEADERS === 'true' ||
+  (process.env.NODE_ENV === 'production' && process.env.ENABLE_SECURITY_HEADERS !== 'false');
 console.log(
-  "ℹ️ Security middleware disabled for Vercel serverless compatibility",
+  `ℹ️ Lightweight security headers: ${securityHeadersEnabled ? 'ENABLED' : 'DISABLED'}`,
 );
 
 // ==== BEGIN: simple cache middleware ====
@@ -1151,6 +1160,8 @@ app.use("/api/billing", billingRoutes);
 app.use("/api", configRoutes);
 // ==== REPORTS ROUTES ====
 app.use("/api/reports", reportsRoutes);
+// ==== MONITORING ROUTES ====
+app.use("/api/monitoring", monitoringRoutes);
 
 // ==== DASHBOARD ROUTES ====
 app.use("/api/dashboards", dashboardRoutes);
@@ -4392,21 +4403,78 @@ app.post("/api/audiences/mapUpsert", async (req, res) => {
 });
 
 // ----- AI Writer job (optional) -----
-app.post("/api/jobs/ai_writer", async (req, res) => {
+app.post("/api/jobs/ai_writer", requireActiveSubscription(), async (req, res) => {
   const { tenant, sig } = req.query;
-  const { nonce = Date.now(), dryRun = true, limit = 5 } = req.body || {};
+  const {
+    nonce = Date.now(),
+    dryRun = false,
+    limit = 5,
+    runSync = process.env.AI_WRITER_SYNC === 'true',
+    metadata = {}
+  } = req.body || {};
+
   const payload = `POST:${tenant}:ai_writer:${nonce}`;
   if (!tenant || !verify(sig, payload))
     return res.status(403).json({ ok: false, error: "auth" });
 
+  const provider = (process.env.AI_PROVIDER || "").toLowerCase();
+  if (provider === "openai" && !process.env.OPENAI_KEY)
+    return res.status(400).json({ ok: false, error: "OPENAI_KEY missing" });
+  if (provider === "anthropic" && !process.env.ANTHROPIC_KEY)
+    return res.status(400).json({ ok: false, error: "ANTHROPIC_KEY missing" });
+  if (provider === "google" && !process.env.GEMINI_API_KEY && !process.env.GOOGLE_API_KEY)
+    return res.status(400).json({ ok: false, error: "GEMINI_API_KEY missing" });
+
+  const safeLimit = Math.max(1, Math.min(Number(limit) || 5, 10));
+  const shouldQueue = !dryRun && !runSync;
+
   try {
-    const provider = (process.env.AI_PROVIDER || "").toLowerCase();
-    if (provider === "openai" && !process.env.OPENAI_KEY)
-      return res.status(400).json({ ok: false, error: "OPENAI_KEY missing" });
-    if (provider === "anthropic" && !process.env.ANTHROPIC_KEY)
-      return res.status(400).json({ ok: false, error: "ANTHROPIC_KEY missing" });
-    if (provider === "google" && !process.env.GEMINI_API_KEY && !process.env.GOOGLE_API_KEY)
-      return res.status(400).json({ ok: false, error: "GEMINI_API_KEY missing" });
+    if (shouldQueue) {
+      try {
+        const queueManager = getQueueManager();
+        const job = await queueManager.addJob({
+          type: JOB_TYPES.AI_WRITER_GENERATE,
+          tenantId: String(tenant),
+          priority: JOB_PRIORITIES.HIGH,
+          data: {
+            limit: safeLimit,
+            requestNonce: nonce,
+            requestMetadata: metadata,
+            requestedBy: req.headers['x-shopify-shop-domain'] || req.headers['x-user-id'] || 'api'
+          },
+          metadata: {
+            source: 'api',
+            requestedAt: new Date().toISOString()
+          }
+        });
+
+        try {
+          await appendRows(
+            tenant,
+            "RUN_LOGS",
+            ["timestamp", "message"],
+            [[new Date().toISOString(), `ai_writer_queued:${job.id}`]],
+          );
+        } catch {}
+
+        return res.json({
+          ok: true,
+          queued: true,
+          processing: true,
+          status: "queued",
+          jobId: job.id,
+          limit: safeLimit,
+          message: "AI writer job queued. We'll notify you when it's ready."
+        });
+      } catch (error) {
+        logger.error("Failed to enqueue AI writer job", {
+          tenant,
+          error: error.message,
+        });
+        return res.status(500).json({ ok: false, error: error.message || "Queueing failed" });
+      }
+    }
+
     if (dryRun) {
       try {
         await appendRows(
@@ -4416,79 +4484,95 @@ app.post("/api/jobs/ai_writer", async (req, res) => {
           [[new Date().toISOString(), "ai_writer_dry_run"]],
         );
       } catch {}
-      return res.json({ ok: true, dryRun: true, limit });
+      return res.json({ ok: true, dryRun: true, limit: safeLimit });
     }
 
-    // Use inline execution for Vercel serverless compatibility
     const { handleInlineAIWriter } = await import("./api/ai-writer-inline.js");
 
-    console.log(`Starting inline AI writer for ${tenant} with limit ${limit}`);
+    console.log(`Starting inline AI writer for ${tenant} with limit ${safeLimit}`);
 
-    // For Vercel, we need to wait for the AI generation to complete
-    // But we'll limit to just 1 theme for speed and use a timeout
-    const safeLimit = Math.min(limit, 2); // Process 2 themes max
+    const result = await Promise.race([
+      handleInlineAIWriter(tenant, safeLimit),
+      new Promise((resolve) =>
+        setTimeout(() => resolve({
+          ok: true,
+          wrote: 0,
+          timeout: true,
+          message: "Generation is taking longer than expected. Check back in a minute."
+        }), 25000)
+      )
+    ]);
 
     try {
-      // Use a race between AI generation and timeout
-      const result = await Promise.race([
-        handleInlineAIWriter(tenant, safeLimit),
-        new Promise((resolve) =>
-          setTimeout(() => resolve({
-            ok: true,
-            wrote: 0,
-            timeout: true,
-            message: "Generation is taking longer than expected. Check back in a minute."
-          }), 25000) // 25 second timeout
-        )
-      ]);
+      const logMessage = result.timeout
+        ? 'ai_writer_timeout: generation in progress'
+        : result.timedOut
+          ? `ai_writer_partial: ${result.wrote} themes before deadline`
+          : `ai_writer_completed: ${result.wrote} themes`;
+      await appendRows(
+        tenant,
+        "RUN_LOGS",
+        ["timestamp", "message"],
+        [[new Date().toISOString(), logMessage]],
+      );
+    } catch {}
 
-      // Log result
-      try {
-        const logMessage = result.timeout
-          ? 'ai_writer_timeout: generation in progress'
-          : result.timedOut
-            ? `ai_writer_partial: ${result.wrote} themes before deadline`
-            : `ai_writer_completed: ${result.wrote} themes`;
-        await appendRows(
-          tenant,
-          "RUN_LOGS",
-          ["timestamp", "message"],
-          [[new Date().toISOString(), logMessage]],
-        );
-      } catch {}
-
-      // Send response
-      if (result.timeout) {
-        res.json({
-          ok: true,
-          status: "processing",
-          message: "AI generation started. It's taking longer than usual, please refresh in 30 seconds.",
-          limitReduced: safeLimit < limit
-        });
-      } else {
-        res.json({
-          ok: true,
-          ...result,
-          limitReduced: safeLimit < limit,
-          message: result.timedOut
-            ? `Generated ${result.wrote} themes before hitting the safety timeout. Run again for more.`
-            : safeLimit < limit
-              ? `Generated ${safeLimit} themes (reduced from ${limit} for speed). Run again for more.`
-              : `Successfully generated ${result.wrote} themes.`
-        });
-      }
-
-    } catch (error) {
-      console.error(`AI writer error for ${tenant}:`, error);
-
-      res.json({
-        ok: false,
-        error: error.message || "AI generation failed",
-        message: "Failed to generate content. Please try again."
+    if (result.timeout) {
+      return res.json({
+        ok: true,
+        status: "processing",
+        processing: true,
+        message: "AI generation started. It's taking longer than usual, please refresh in 30 seconds.",
+        limitReduced: safeLimit < limit
       });
     }
-  } catch (e) {
-    res.status(500).json({ ok: false, error: String(e) });
+
+    return res.json({
+      ok: true,
+      ...result,
+      limitReduced: safeLimit < limit,
+      message: result.timedOut
+        ? `Generated ${result.wrote} themes before hitting the safety timeout. Run again for more.`
+        : safeLimit < limit
+          ? `Generated ${safeLimit} themes (reduced from ${limit} for speed). Run again for more.`
+          : `Successfully generated ${result.wrote} themes.`
+    });
+
+  } catch (error) {
+    console.error(`AI writer error for ${tenant}:`, error);
+    res.status(500).json({
+      ok: false,
+      error: error.message || "AI generation failed",
+      message: "Failed to generate content. Please try again."
+    });
+  }
+});
+
+app.get("/api/jobs/status", async (req, res) => {
+  const { tenant, sig, jobId } = req.query;
+  const payload = `GET:${tenant}:jobs_status`;
+  if (!tenant || !verify(sig, payload)) {
+    return res.status(403).json({ ok: false, error: "auth" });
+  }
+
+  if (!jobId) {
+    return res.status(400).json({ ok: false, error: "jobId required" });
+  }
+
+  try {
+    const queueManager = getQueueManager();
+    const job = await queueManager.getJobById(jobId);
+
+    if (!job) {
+      return res.status(404).json({ ok: false, error: "Job not found" });
+    }
+
+    return res.json({
+      ok: true,
+      job
+    });
+  } catch (error) {
+    return res.status(500).json({ ok: false, error: error.message });
   }
 });
 
@@ -4507,7 +4591,7 @@ app.post("/api/jobs/weekly_summary", async (req, res) => {
   }
 });
 
-// ----- Pixels ingest (HMAC) -----
+// ----- Pixels ingest (JWT Token or HMAC fallback) -----
 app.post("/api/pixels/ingest", async (req, res) => {
   const { tenant, sig } = req.query;
   const {
@@ -4516,9 +4600,64 @@ app.post("/api/pixels/ingest", async (req, res) => {
     event = "",
     payload = {},
   } = req.body || {};
-  const payloadSig = `POST:${tenant}:pixel_ingest:${nonce}`;
-  if (!tenant || !verify(sig, payloadSig))
+
+  // Check for JWT token authentication (preferred)
+  const authHeader = req.headers.authorization || req.headers.Authorization;
+  let isAuthenticated = false;
+  let authMethod = "none";
+
+  if (authHeader && authHeader.startsWith("Bearer ")) {
+    // JWT token authentication
+    const token = authHeader.substring(7);
+    try {
+      const PIXEL_TOKEN_SECRET = process.env.PIXEL_TOKEN_SECRET || process.env.HMAC_SECRET;
+      const decoded = jwt.verify(token, PIXEL_TOKEN_SECRET, {
+        issuer: "ads-autopilot-backend",
+        audience: "pixel-tracking",
+      });
+
+      // Validate tenant matches
+      if (decoded.tenant === tenant || decoded.shop === tenant) {
+        isAuthenticated = true;
+        authMethod = "token";
+      } else {
+        console.warn("Pixel ingest: Token tenant mismatch", {
+          tokenTenant: decoded.tenant,
+          tokenShop: decoded.shop,
+          requestTenant: tenant,
+        });
+      }
+    } catch (err) {
+      console.warn("Pixel ingest: Token validation failed", {
+        error: err.message,
+        tenant,
+      });
+    }
+  }
+
+  // Fallback to HMAC authentication (transition period)
+  if (!isAuthenticated && sig) {
+    const payloadSig = `POST:${tenant}:pixel_ingest:${nonce}`;
+    if (verify(sig, payloadSig)) {
+      isAuthenticated = true;
+      authMethod = "hmac";
+    }
+  }
+
+  if (!tenant || !isAuthenticated) {
+    console.warn("Pixel ingest: Authentication failed", {
+      tenant,
+      hasToken: !!authHeader,
+      hasHMAC: !!sig,
+      authMethod,
+    });
     return json(res, 403, { ok: false, code: "AUTH" });
+  }
+
+  // Log successful authentication method for monitoring
+  if (authMethod === "token") {
+    console.log("Pixel ingest: Authenticated via JWT token", { tenant });
+  }
   try {
     // Minimal PII-safe logging
     const label = String(event || "").toLowerCase();
@@ -5749,6 +5888,10 @@ app.use("/api/ai", aiInsightsRoutes);
 // ==== SCRIPT SYNC ROUTES (for Google Ads Scripts) ====
 import scriptSyncRoutes from "./routes/script-sync.js";
 app.use("/api/script", scriptSyncRoutes);
+
+// ==== SECRET ROTATION ROUTES (Admin only) ====
+import secretRotationRoutes from "./routes/secret-rotation.js";
+app.use("/api/secrets", secretRotationRoutes);
 
 // ==== MAIN AI ROUTES (with HMAC authentication) ====
 import aiRoutes from "./routes/ai.js";

@@ -256,6 +256,7 @@ function opKey(method: string, pathname: string): string {
   if (pathname.includes("/jobs/autopilot_tick")) return "autopilot_tick";
   if (pathname.includes("/cpc-ceilings/batch")) return "cpc_batch";
   if (pathname.includes("/jobs/autopilot_tick")) return "autopilot_tick";
+  if (pathname.includes("/security/pixel/token")) return "pixel_token";
   if (pathname.includes("/pixels/ingest")) return "pixel_ingest";
   if (pathname.includes("/shopify/seo/preview")) return "seo_preview";
   if (pathname.includes("/shopify/seo/apply")) return "seo_apply";

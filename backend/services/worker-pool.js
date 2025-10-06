@@ -173,6 +173,9 @@ class Worker extends EventEmitter {
       case 'health_check':
         return await this.executeHealthCheckJob(data, tenantId);
 
+      case 'ai_writer_generate':
+        return await this.executeAiWriterJob(data, tenantId);
+
       default:
         throw new Error(`Unknown job type: ${type}`);
     }
@@ -260,6 +263,27 @@ class Worker extends EventEmitter {
       },
       timestamp: new Date().toISOString()
     };
+  }
+
+  async executeAiWriterJob(data, tenantId) {
+    try {
+      const { handleInlineAIWriter } = await import('../api/ai-writer-inline.js');
+      const limit = Math.min(Number(data?.limit || 5), 10);
+      const result = await handleInlineAIWriter(tenantId, limit);
+      return {
+        ...result,
+        tenantId,
+        limit,
+        generatedAt: new Date().toISOString()
+      };
+    } catch (error) {
+      logger.error('AI writer job failed', {
+        tenantId,
+        error: error.message,
+        stack: error.stack
+      });
+      throw error;
+    }
   }
 
   /**

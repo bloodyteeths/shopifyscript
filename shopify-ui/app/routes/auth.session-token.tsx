@@ -2,7 +2,9 @@ import type { LoaderFunctionArgs } from "@remix-run/node";
 import { authenticate } from "../shopify.server";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
-  console.log("🎫 Session token route accessed with 2025 auth strategy");
+  if (process.env.NODE_ENV !== 'production') {
+    console.log("🎫 Session token route accessed with 2025 auth strategy");
+  }
   
   try {
     // Use v3 authenticate context for 2025 compatibility
@@ -38,7 +40,11 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
       }
     });
   } catch (error) {
-    console.error("🚨 Session token route error:", error);
+    if (process.env.NODE_ENV !== 'production') {
+      console.error("🚨 Session token route error:", error);
+    } else {
+      console.error("Session token route error:", error);
+    }
     const url = new URL(request.url);
     const shop = url.searchParams.get("shop") || "";
     return new Response(null, {

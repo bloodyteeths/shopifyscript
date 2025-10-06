@@ -42,7 +42,7 @@ export default function IntentOSComingSoon() {
             color: "#856404",
           }}
         >
-          📅 Expected Launch: {launchDate}
+          Expected Launch: {launchDate}
         </div>
       </div>
 
@@ -126,7 +126,7 @@ export default function IntentOSComingSoon() {
             }}
           >
             <h3 style={{ color: "#dc3545", marginBottom: "1rem" }}>
-              💨 Exit Intent
+              Exit Intent
             </h3>
             <p style={{ color: "#666", fontSize: "14px" }}>
               Catch visitors before they leave with last-chance offers and
@@ -175,7 +175,7 @@ export default function IntentOSComingSoon() {
               display: "block",
             }}
           >
-            🤖 Use Autopilot Now
+            Use Autopilot Now
           </Link>
 
           <Link
@@ -255,7 +255,7 @@ export default function IntentOSComingSoon() {
         }}
       >
         <h3 style={{ marginBottom: "1rem", color: "#333" }}>
-          📬 Want to know when Smart Website features launch?
+          Want to know when Smart Website features launch?
         </h3>
         <p style={{ color: "#666", marginBottom: "1.5rem" }}>
           We'll email you as soon as these conversion optimization tools are
@@ -294,7 +294,7 @@ export default function IntentOSComingSoon() {
               cursor: "pointer",
             }}
           >
-            📧 Notify Me
+            Notify Me
           </button>
         </div>
       </div>

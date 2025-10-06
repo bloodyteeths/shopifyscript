@@ -1,10 +1,29 @@
-/** Ads Autopilot AI — Universal Google Ads Script (backend version)
- * CONFIGURED FOR YOUR CANARY TEST
+/** Ads Autopilot AI — Universal Google Ads Script (Production Ready)
+ * DEPLOYMENT INSTRUCTIONS:
+ * 1. Replace __TENANT_ID__ with your unique tenant identifier
+ * 2. Replace __BACKEND_URL__ with your production backend URL (e.g., https://api.adsautopilot.net/api)
+ * 3. Replace __SHARED_SECRET__ with your HMAC shared secret
+ * 4. Optionally set __SECRET_VERSION__ to track secret rotation (default: 1)
+ *
+ * SECURITY NOTES:
+ * - Keep SHARED_SECRET confidential
+ * - Rotate SHARED_SECRET quarterly using secret rotation mechanism
+ * - Use different secrets for production/staging/development environments
+ *
  * Ready to upload to Google Ads Scripts Editor
  */
-var TENANT_ID     = 'TENANT_123';
-var BACKEND_URL   = 'https://99f9e96b3102.ngrok-free.app/api';
-var SHARED_SECRET = 'f3a1c9d8b2e47a65c0fb19d7e3a9428c6de5b1a7c4f08923ab56d7e1c2f3a4b5';
+
+// ============================================================================
+// CONFIGURATION - UPDATE THESE VALUES BEFORE DEPLOYMENT
+// ============================================================================
+var TENANT_ID      = '__TENANT_ID__';        // Your unique tenant identifier (e.g., 'shopname-123')
+var BACKEND_URL    = '__BACKEND_URL__';      // Production backend URL (e.g., 'https://api.adsautopilot.net/api')
+var SHARED_SECRET  = '__SHARED_SECRET__';    // HMAC shared secret for authentication
+var SECRET_VERSION = '__SECRET_VERSION__';   // Secret version for rotation tracking (default: '1')
+
+// Script metadata
+var SCRIPT_VERSION = '2.1.0';
+var SCRIPT_NAME    = 'Ads Autopilot AI Enhanced';
 
 function main(){
   var cfg = getConfig_();
@@ -69,47 +88,222 @@ function main(){
   });
 }
 
-// --- Backend IO (HMAC) ---
+// ============================================================================
+// SECRET ROTATION MECHANISM
+// ============================================================================
+
+/**
+ * Attempt to fetch and use rotated secret if primary secret fails
+ * This enables zero-downtime secret rotation
+ */
+function tryRotatedSecret_() {
+  try {
+    var props = PropertiesService.getScriptProperties();
+    var rotatedSecret = props.getProperty('ROTATED_SECRET');
+    var rotatedVersion = props.getProperty('ROTATED_SECRET_VERSION');
+
+    if (rotatedSecret && rotatedVersion) {
+      log_('• Attempting authentication with rotated secret (v' + rotatedVersion + ')');
+      return {
+        secret: rotatedSecret,
+        version: rotatedVersion
+      };
+    }
+  } catch(e) {
+    log_('! Failed to retrieve rotated secret: ' + e);
+  }
+  return null;
+}
+
+/**
+ * Store rotated secret for future use
+ * Called when backend indicates a new secret is available
+ */
+function storeRotatedSecret_(newSecret, newVersion) {
+  try {
+    var props = PropertiesService.getScriptProperties();
+    props.setProperty('ROTATED_SECRET', newSecret);
+    props.setProperty('ROTATED_SECRET_VERSION', newVersion);
+    props.setProperty('SECRET_ROTATED_AT', new Date().toISOString());
+    log_('✓ Rotated secret stored (v' + newVersion + ')');
+    return true;
+  } catch(e) {
+    log_('! Failed to store rotated secret: ' + e);
+    return false;
+  }
+}
+
+/**
+ * Clear rotated secret after successful migration
+ */
+function clearRotatedSecret_() {
+  try {
+    var props = PropertiesService.getScriptProperties();
+    props.deleteProperty('ROTATED_SECRET');
+    props.deleteProperty('ROTATED_SECRET_VERSION');
+    log_('✓ Rotated secret cleared');
+  } catch(e) {
+    log_('! Failed to clear rotated secret: ' + e);
+  }
+}
+
+// ============================================================================
+// BACKEND COMMUNICATION (HMAC AUTHENTICATED)
+// ============================================================================
+
+/**
+ * Fetch configuration from backend with automatic secret rotation support
+ */
 function getConfig_(){
   var sig = sign_("GET:"+TENANT_ID+":config");
   var url = BACKEND_URL + "/config?tenant=" + encodeURIComponent(TENANT_ID) + "&sig=" + encodeURIComponent(sig);
+
   try {
-    var r = UrlFetchApp.fetch(url, { 
-      muteHttpExceptions:true, 
-      followRedirects:true, 
+    var r = UrlFetchApp.fetch(url, {
+      muteHttpExceptions:true,
+      followRedirects:true,
       validateHttpsCertificates:true,
       headers: {
-        'ngrok-skip-browser-warning': 'true',
-        'User-Agent': 'GoogleAdsScript/1.0'
+        'User-Agent': 'AdsAutopilotAI/' + SCRIPT_VERSION,
+        'X-Script-Version': SCRIPT_VERSION,
+        'X-Secret-Version': SECRET_VERSION || '1'
       }
     });
-    if (r.getResponseCode()>=200 && r.getResponseCode()<300) return JSON.parse(r.getContentText()).config;
-  } catch(e){ log_("! Config fetch error: "+e); }
+
+    var code = r.getResponseCode();
+
+    // Success - return config
+    if (code >= 200 && code < 300) {
+      var response = JSON.parse(r.getContentText());
+
+      // Check if backend is signaling secret rotation
+      if (response.secret_rotation) {
+        log_('! Backend signaling secret rotation required');
+        handleSecretRotation_(response.secret_rotation);
+      }
+
+      return response.config;
+    }
+
+    // Authentication failed - try rotated secret
+    if (code === 401 || code === 403) {
+      log_('! Authentication failed with primary secret, trying rotation');
+      var rotated = tryRotatedSecret_();
+
+      if (rotated) {
+        // Retry with rotated secret
+        var rotatedSig = signWithSecret_("GET:"+TENANT_ID+":config", rotated.secret);
+        var rotatedUrl = BACKEND_URL + "/config?tenant=" + encodeURIComponent(TENANT_ID) + "&sig=" + encodeURIComponent(rotatedSig);
+
+        var r2 = UrlFetchApp.fetch(rotatedUrl, {
+          muteHttpExceptions:true,
+          followRedirects:true,
+          validateHttpsCertificates:true,
+          headers: {
+            'User-Agent': 'AdsAutopilotAI/' + SCRIPT_VERSION,
+            'X-Script-Version': SCRIPT_VERSION,
+            'X-Secret-Version': rotated.version
+          }
+        });
+
+        if (r2.getResponseCode() >= 200 && r2.getResponseCode() < 300) {
+          log_('✓ Authentication successful with rotated secret');
+          // Update primary secret to rotated one
+          SHARED_SECRET = rotated.secret;
+          SECRET_VERSION = rotated.version;
+          clearRotatedSecret_();
+          return JSON.parse(r2.getContentText()).config;
+        }
+      }
+    }
+
+    log_("! Config fetch failed: HTTP " + code);
+  } catch(e){
+    log_("! Config fetch error: "+e);
+  }
   return null;
 }
+
+/**
+ * Handle secret rotation notification from backend
+ */
+function handleSecretRotation_(rotationInfo) {
+  try {
+    if (rotationInfo.new_secret && rotationInfo.new_version) {
+      storeRotatedSecret_(rotationInfo.new_secret, rotationInfo.new_version);
+      log_('✓ New secret received and stored for rotation');
+    } else if (rotationInfo.deadline) {
+      log_('! Secret rotation deadline: ' + rotationInfo.deadline);
+    }
+  } catch(e) {
+    log_('! Error handling secret rotation: ' + e);
+  }
+}
+/**
+ * Post data to backend with automatic retry on auth failure
+ */
 function postToBackend_(action, payload){
   var sig = sign_("POST:"+TENANT_ID+":"+action+":"+(payload.nonce||''));
   var url = BACKEND_URL + "/" + action + "?tenant=" + encodeURIComponent(TENANT_ID) + "&sig=" + encodeURIComponent(sig);
   var CHUNK = 500, metrics = payload.metrics||[], sts=payload.search_terms||[], logs=payload.run_logs||[];
+
   for (var i=0;i<Math.max(1, Math.ceil(metrics.length/CHUNK)); i++){
     var part = { nonce: payload.nonce, metrics: metrics.slice(i*CHUNK,(i+1)*CHUNK), search_terms: i===0?sts.slice(0,CHUNK):[], run_logs: i===0?logs:[] };
-    try { 
-      UrlFetchApp.fetch(url, { 
-        method:'post', 
-        contentType:'application/json', 
-        payload: JSON.stringify(part), 
+
+    try {
+      var response = UrlFetchApp.fetch(url, {
+        method:'post',
+        contentType:'application/json',
+        payload: JSON.stringify(part),
         muteHttpExceptions:true,
         headers: {
-          'ngrok-skip-browser-warning': 'true',
-          'User-Agent': 'GoogleAdsScript/1.0'
+          'User-Agent': 'AdsAutopilotAI/' + SCRIPT_VERSION,
+          'X-Script-Version': SCRIPT_VERSION,
+          'X-Secret-Version': SECRET_VERSION || '1'
         }
-      }); 
+      });
+
+      // Check for auth failures and retry with rotated secret
+      if (response.getResponseCode() === 401 || response.getResponseCode() === 403) {
+        log_('! Auth failed on post, trying rotated secret (chunk ' + i + ')');
+        var rotated = tryRotatedSecret_();
+
+        if (rotated) {
+          var rotatedSig = signWithSecret_("POST:"+TENANT_ID+":"+action+":"+(payload.nonce||''), rotated.secret);
+          var rotatedUrl = BACKEND_URL + "/" + action + "?tenant=" + encodeURIComponent(TENANT_ID) + "&sig=" + encodeURIComponent(rotatedSig);
+
+          UrlFetchApp.fetch(rotatedUrl, {
+            method:'post',
+            contentType:'application/json',
+            payload: JSON.stringify(part),
+            muteHttpExceptions:true,
+            headers: {
+              'User-Agent': 'AdsAutopilotAI/' + SCRIPT_VERSION,
+              'X-Script-Version': SCRIPT_VERSION,
+              'X-Secret-Version': rotated.version
+            }
+          });
+
+          log_('✓ Chunk ' + i + ' posted with rotated secret');
+        }
+      }
     }
     catch(e){ log_("! Backend post error (chunk "+i+"): "+e); }
   }
 }
+
+/**
+ * Sign payload with default shared secret
+ */
 function sign_(payload){
-  var raw = Utilities.computeHmacSha256Signature(payload, SHARED_SECRET);
+  return signWithSecret_(payload, SHARED_SECRET);
+}
+
+/**
+ * Sign payload with specified secret (for rotation support)
+ */
+function signWithSecret_(payload, secret){
+  var raw = Utilities.computeHmacSha256Signature(payload, secret);
   return Utilities.base64Encode(raw).replace(/=+$/,'');
 }
 

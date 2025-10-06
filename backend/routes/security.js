@@ -4,10 +4,98 @@
  */
 
 import express from "express";
+import jwt from "jsonwebtoken";
+import crypto from "crypto";
 import securityMiddleware from "../middleware/security.js";
 import { getDoc, ensureSheet } from "../services/sheets.js";
 
 const router = express.Router();
+
+// Pixel token secret - should be different from HMAC_SECRET
+const PIXEL_TOKEN_SECRET = process.env.PIXEL_TOKEN_SECRET || process.env.HMAC_SECRET;
+
+// HMAC verification helper
+function verifyHMAC(signature, payload, secret) {
+  const expectedSig = crypto
+    .createHmac("sha256", secret || "")
+    .update(payload)
+    .digest("base64")
+    .replace(/=+$/, "");
+  return signature === expectedSig;
+}
+
+/**
+ * Pixel Token Generation Endpoint
+ * Generates JWT tokens for pixel tracking with 15-minute expiry
+ * Requires HMAC authentication
+ */
+router.post("/pixel/token", express.json(), async (req, res) => {
+  try {
+    const { tenant, sig } = req.query;
+    const { shop, nonce = Date.now() } = req.body || {};
+
+    // Verify HMAC authentication
+    const hmacSecret = process.env.HMAC_SECRET;
+    if (!hmacSecret) {
+      return res.status(500).json({
+        ok: false,
+        error: "Server configuration error"
+      });
+    }
+
+    const payload = `POST:${tenant}:pixel_token:${nonce}`;
+    const isValidHMAC = verifyHMAC(sig, payload, hmacSecret);
+
+    if (!tenant || !isValidHMAC) {
+      console.warn("Pixel token request rejected - invalid HMAC", {
+        tenant,
+        hasSignature: !!sig,
+        payload
+      });
+      return res.status(403).json({
+        ok: false,
+        error: "Invalid authentication"
+      });
+    }
+
+    // Generate JWT token with 15-minute expiry
+    const tokenPayload = {
+      shop: shop || tenant,
+      tenant: tenant,
+      type: "pixel",
+      iat: Math.floor(Date.now() / 1000),
+    };
+
+    const token = jwt.sign(tokenPayload, PIXEL_TOKEN_SECRET, {
+      expiresIn: "15m",
+      issuer: "ads-autopilot-backend",
+      audience: "pixel-tracking",
+    });
+
+    // Calculate expiry timestamp for client-side cache management
+    const expiresAt = Date.now() + (15 * 60 * 1000); // 15 minutes from now
+
+    console.log("Pixel token generated", {
+      tenant,
+      shop: shop || tenant,
+      expiresAt: new Date(expiresAt).toISOString(),
+    });
+
+    res.json({
+      ok: true,
+      token: token,
+      expiresAt: expiresAt,
+      expiresIn: 900, // 15 minutes in seconds
+    });
+  } catch (error) {
+    console.error("Error generating pixel token:", error);
+    res.status(500).json({
+      ok: false,
+      error: "Failed to generate pixel token",
+      message: error.message,
+    });
+  }
+});
 
 /**
  * CSP Violation Reporting Endpoint

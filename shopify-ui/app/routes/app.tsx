@@ -13,7 +13,9 @@ export const links = () => [{ rel: "stylesheet", href: polarisStyles }];
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   try {
-    console.log(`🏪 Dashboard loaded for shop: ${new URL(request.url).searchParams.get('shop') || 'unknown'}`);
+    if (process.env.NODE_ENV !== 'production') {
+      console.log(`🏪 Dashboard loaded for shop: ${new URL(request.url).searchParams.get('shop') || 'unknown'}`);
+    }
     
     // Standard Shopify authentication following best practices
     const { session } = await authenticate.admin(request);
@@ -25,14 +27,20 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
       throw new Error("Unable to determine shop name from Shopify session");
     }
 
-    console.log(`🏪 Shopify app authenticated for shop: ${shopName}`);
+    if (process.env.NODE_ENV !== 'production') {
+      console.log(`🏪 Shopify app authenticated for shop: ${shopName}`);
+    }
 
     return json({
       apiKey: process.env.SHOPIFY_API_KEY || "",
       shopName,
     });
   } catch (error) {
-    console.error("🚨 App route authentication error:", error);
+    if (process.env.NODE_ENV !== 'production') {
+      console.error("🚨 App route authentication error:", error);
+    } else {
+      console.error("App route authentication error:", error);
+    }
     console.error("Request URL:", request.url);
     
     // Redirect to auth with shop context if possible

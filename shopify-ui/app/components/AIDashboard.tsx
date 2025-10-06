@@ -690,7 +690,7 @@ export function AIDashboard({ shopName, subscriptionTier = "starter", hasFeature
                 }}
                 title="Drafts are automatically saved"
               >
-                ✓ Saved ({selectedDraftIndices.length})
+                Saved ({selectedDraftIndices.length})
               </button>
               <button
                 onClick={rejectDrafts}

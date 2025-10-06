@@ -102,7 +102,7 @@ export function MLAutopilotDashboard({ shopName, mlState, onRefresh }: MLAutopil
         marginTop: "16px"
       }}>
         <h3 style={{ margin: "0 0 12px 0", color: "#495057" }}>
-          🤖 ML Autopilot Dashboard
+          ML Autopilot Dashboard
         </h3>
         <p style={{ margin: 0, color: "#6c757d" }}>
           ML Autopilot is initializing. Run an autopilot tick to see insights.
@@ -127,7 +127,7 @@ export function MLAutopilotDashboard({ shopName, mlState, onRefresh }: MLAutopil
         marginBottom: "20px"
       }}>
         <h3 style={{ margin: 0, color: "#495057" }}>
-          🤖 ML Autopilot Dashboard
+          ML Autopilot Dashboard
         </h3>
         <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
           {lastUpdated && (
@@ -253,7 +253,7 @@ export function MLAutopilotDashboard({ shopName, mlState, onRefresh }: MLAutopil
       {mlState.insights && (
         <div style={{ marginBottom: "20px" }}>
           <h4 style={{ margin: "0 0 12px 0", color: "#495057" }}>
-            📊 Performance Insights
+            Performance Insights
           </h4>
 
           {/* Time of Day Insights */}
@@ -272,7 +272,7 @@ export function MLAutopilotDashboard({ shopName, mlState, onRefresh }: MLAutopil
                 marginBottom: "8px"
               }}>
                 <span style={{ fontWeight: "bold", fontSize: "14px" }}>
-                  🕒 Optimal Hours
+                  Optimal Hours
                 </span>
                 <span style={{
                   fontSize: "12px",
@@ -314,7 +314,7 @@ export function MLAutopilotDashboard({ shopName, mlState, onRefresh }: MLAutopil
                 marginBottom: "8px"
               }}>
                 <span style={{ fontWeight: "bold", fontSize: "14px" }}>
-                  📅 Optimal Days
+                  Optimal Days
                 </span>
                 <span style={{
                   fontSize: "12px",
@@ -356,7 +356,7 @@ export function MLAutopilotDashboard({ shopName, mlState, onRefresh }: MLAutopil
                 marginBottom: "8px"
               }}>
                 <span style={{ fontWeight: "bold", fontSize: "14px" }}>
-                  🎯 CPA Prediction
+                  CPA Prediction
                 </span>
                 <span style={{
                   fontSize: "12px",
@@ -388,7 +388,7 @@ export function MLAutopilotDashboard({ shopName, mlState, onRefresh }: MLAutopil
               padding: "12px"
             }}>
               <div style={{ fontWeight: "bold", fontSize: "14px", marginBottom: "8px" }}>
-                📈 Performance Forecasts
+                Performance Forecasts
               </div>
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
                 {mlState.insights.performanceForecasts.next7Days && (

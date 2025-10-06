@@ -117,7 +117,7 @@ export function AIInsights({ shopName, period, onRefresh }: AIInsightsProps) {
         textAlign: 'center',
         marginBottom: '24px'
       }}>
-        <div style={{ color: '#666', marginBottom: '16px' }}>🤖 Generating AI insights...</div>
+        <div style={{ color: '#666', marginBottom: '16px' }}>Generating AI insights...</div>
         <div style={{
           width: '32px',
           height: '32px',
@@ -193,7 +193,7 @@ export function AIInsights({ shopName, period, onRefresh }: AIInsightsProps) {
               alignItems: 'center',
               gap: '8px'
             }}>
-              🤖 AI-Powered Insights
+              AI-Powered Insights
             </h2>
             <p style={{ color: '#616161', margin: '0', fontSize: '14px' }}>
               Generated {new Date(insights.timestamp).toLocaleString()} • {period} period
@@ -456,7 +456,7 @@ export function AIInsights({ shopName, period, onRefresh }: AIInsightsProps) {
                     color: '#008060',
                     fontWeight: '500'
                   }}>
-                    💡 {insight.action}
+                    {insight.action}
                   </div>
                 )}
               </div>

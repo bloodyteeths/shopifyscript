@@ -5,5 +5,10 @@
     "SHOPIFY_APP_URL": "https://ads-autopilot-ui.vercel.app",
     "SCOPES": "read_products,write_products",
     "BACKEND_PUBLIC_URL": "https://ads-autopilot-backend.vercel.app/api"
+  },
+  "build": {
+    "env": {
+      "NODE_ENV": "production"
+    }
   }
 }

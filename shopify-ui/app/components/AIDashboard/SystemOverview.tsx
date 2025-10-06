@@ -25,7 +25,7 @@ const CheckCircleIcon = () => <span style={{ color: '#00a047' }}>●</span>;
 const AlertCircleIcon = () => <span style={{ color: '#ff6d6d' }}>●</span>;
 const InfoIcon = () => <span style={{ color: '#006fbb' }}>●</span>;
 const ClockIcon = () => <span>⏱️</span>;
-const TrendingUpIcon = () => <span>📈</span>;
+const TrendingUpIcon = () => <span></span>;
 const ActivityIcon = () => <span>⚡</span>;
 
 interface SystemOverviewProps {
@@ -78,6 +78,9 @@ export function SystemOverview({ shopName, hasFeatureAccess = false }: SystemOve
   const [dataSources, setDataSources] = useState<DataSourceStatus[]>([]);
   const [quickStats, setQuickStats] = useState<QuickStats | null>(null);
   const [automationStatus, setAutomationStatus] = useState<AutomationStatus | null>(null);
+  const [ingestionStatus, setIngestionStatus] = useState<any | null>(null);
+  const [logMetrics, setLogMetrics] = useState<any | null>(null);
+  const [alertMessage, setAlertMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [lastRefresh, setLastRefresh] = useState<Date>(new Date());
@@ -197,6 +200,38 @@ export function SystemOverview({ shopName, hasFeatureAccess = false }: SystemOve
     }
   }, [shopName]);
 
+  // Fetch ingestion monitoring status
+  const fetchIngestionStatus = useCallback(async () => {
+    try {
+      const response = await authenticatedFetch("/ai/monitoring/ingestion", "GET", undefined, shopName);
+      if (response.ok) {
+        const data = await response.json();
+        if (data.ok) {
+          setIngestionStatus(data.tables || null);
+        }
+      }
+    } catch (err) {
+      console.error("Failed to fetch ingestion status:", err);
+      setIngestionStatus(null);
+    }
+  }, [shopName]);
+
+  // Fetch logging metrics
+  const fetchLogMetrics = useCallback(async () => {
+    try {
+      const response = await authenticatedFetch("/monitoring/logs", "GET", undefined, shopName);
+      if (response.ok) {
+        const data = await response.json();
+        if (data.ok) {
+          setLogMetrics(data.metrics || null);
+        }
+      }
+    } catch (err) {
+      console.error("Failed to fetch log metrics:", err);
+      setLogMetrics(null);
+    }
+  }, [shopName]);
+
   // Refresh all data
   const refreshData = useCallback(async () => {
     setLoading(true);
@@ -207,7 +242,9 @@ export function SystemOverview({ shopName, hasFeatureAccess = false }: SystemOve
         fetchOptimizationStats(),
         fetchDataSources(),
         fetchQuickStats(),
-        fetchAutomationStatus()
+        fetchAutomationStatus(),
+        fetchIngestionStatus(),
+        fetchLogMetrics()
       ]);
       setLastRefresh(new Date());
     } catch (err) {
@@ -215,7 +252,7 @@ export function SystemOverview({ shopName, hasFeatureAccess = false }: SystemOve
     } finally {
       setLoading(false);
     }
-  }, [fetchSystemHealth, fetchOptimizationStats, fetchDataSources, fetchQuickStats, fetchAutomationStatus]);
+  }, [fetchSystemHealth, fetchOptimizationStats, fetchDataSources, fetchQuickStats, fetchAutomationStatus, fetchIngestionStatus, fetchLogMetrics]);
 
   // Auto-refresh every 30 seconds
   useEffect(() => {
@@ -254,6 +291,29 @@ export function SystemOverview({ shopName, hasFeatureAccess = false }: SystemOve
     return new Intl.NumberFormat('en-US').format(num);
   };
 
+  // Compute alerts
+  useEffect(() => {
+    let message: string | null = null;
+    // Ingestion stale/empty alerts
+    try {
+      const keys = ['tenant_metrics','campaign_metrics','ad_group_metrics','search_terms','run_logs'];
+      const stale = keys.filter(k => ingestionStatus?.[k]?.status === 'stale');
+      const empty = keys.filter(k => ingestionStatus?.[k]?.status === 'empty');
+      if (stale.length) {
+        message = `Ingestion stale: ${stale.join(', ')}`;
+      } else if (empty.length) {
+        message = `Ingestion empty: ${empty.join(', ')}`;
+      }
+    } catch {}
+    // Error count alerts
+    try {
+      if (!message && logMetrics?.errorCount && logMetrics.errorCount > 0) {
+        message = `Backend reported ${logMetrics.errorCount} error(s) since startup`;
+      }
+    } catch {}
+    setAlertMessage(message);
+  }, [ingestionStatus, logMetrics]);
+
   // Get status badge tone
   const getStatusTone = (status: string): "success" | "warning" | "critical" | "info" => {
     switch (status) {
@@ -288,6 +348,11 @@ export function SystemOverview({ shopName, hasFeatureAccess = false }: SystemOve
 
   return (
     <BlockStack gap="400">
+      {alertMessage && (
+        <Banner tone="warning" title="System Alert">
+          <Text as="p">{alertMessage}</Text>
+        </Banner>
+      )}
       {/* Header with refresh button */}
       <InlineStack align="space-between">
         <BlockStack gap="100">
@@ -565,6 +630,59 @@ export function SystemOverview({ shopName, hasFeatureAccess = false }: SystemOve
                   </Box>
                 </Layout.Section>
               </Layout>
+            )}
+          </BlockStack>
+        </Box>
+      </Card>
+
+      {/* Ingestion Monitoring */}
+      <Card>
+        <Box padding="400">
+          <BlockStack gap="400">
+            <InlineStack align="space-between">
+              <Text variant="headingMd" as="h3">Ingestion Monitoring</Text>
+              <Text variant="bodyMd" as="span" tone="subdued">
+                Last checked: {formatTimeAgo(lastRefresh.toISOString())}
+              </Text>
+            </InlineStack>
+
+            {ingestionStatus ? (
+              <Layout>
+                {[
+                  { key: 'tenant_metrics', label: 'Tenant Metrics' },
+                  { key: 'campaign_metrics', label: 'Campaign Metrics' },
+                  { key: 'ad_group_metrics', label: 'Ad Group Metrics' },
+                  { key: 'search_terms', label: 'Search Terms' },
+                  { key: 'run_logs', label: 'Run Logs' }
+                ].map(({ key, label }) => (
+                  <Layout.Section key={key} oneFifth>
+                    <Box padding="300" borderWidth="025" borderRadius="200" borderColor="border">
+                      <BlockStack gap="100">
+                        <Text variant="bodySm" as="span" tone="subdued">{label}</Text>
+                        <InlineStack align="space-between">
+                          <Text variant="headingMd" as="span">
+                            {ingestionStatus?.[key]?.count ?? 0}
+                          </Text>
+                          <Badge>
+                            {ingestionStatus?.[key]?.status
+                              ? String(ingestionStatus[key].status).toUpperCase()
+                              : 'N/A'}
+                          </Badge>
+                        </InlineStack>
+                        <Text variant="bodySm" as="span" tone="subdued">
+                          {ingestionStatus?.[key]?.latest
+                            ? `Latest: ${String(ingestionStatus[key].latest)}${ingestionStatus[key].ageHours != null ? ` (${ingestionStatus[key].ageHours}h ago)` : ''}`
+                            : 'No data'}
+                        </Text>
+                      </BlockStack>
+                    </Box>
+                  </Layout.Section>
+                ))}
+              </Layout>
+            ) : (
+              <Box padding="300" borderWidth="025" borderRadius="200" borderColor="border">
+                <Text variant="bodySm" as="span" tone="subdued">Ingestion status unavailable</Text>
+              </Box>
             )}
           </BlockStack>
         </Box>

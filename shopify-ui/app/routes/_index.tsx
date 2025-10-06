@@ -26,7 +26,8 @@ export default function Index() {
         <title>Ads Autopilot AI - Shopify App</title>
       </head>
       <body>
-        <h1>Ads Autopilot AI Shopify App</h1>
+        <h1>Ads Autopilot AI</h1>
+        <p>AI-powered Google Ads automation for Shopify stores.</p>
         <p>This app should be accessed through the Shopify Admin panel.</p>
         <p>
           If you're seeing this page, please install the app through Shopify.

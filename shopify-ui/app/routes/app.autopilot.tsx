@@ -64,7 +64,9 @@ export async function loader({ request }: LoaderFunctionArgs) {
         customRules: hasFeatureAccess(subscriptionInfo, 'custom_ai_optimization_rules')
       };
 
-      console.log(`🔐 Feature access for ${shopName}:`, availableFeatures);
+      if (process.env.NODE_ENV !== 'production') {
+        console.log(`🔐 Feature access for ${shopName}:`, availableFeatures);
+      }
       
     } catch (subscriptionError) {
       console.error('Subscription check failed on autopilot, using basic access:', subscriptionError);

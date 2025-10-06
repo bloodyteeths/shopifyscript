@@ -315,7 +315,7 @@ export default function Billing() {
           borderRadius: "8px", 
           marginBottom: "32px"
         }}>
-          <h3 style={{ margin: "0 0 16px 0" }}>🎉 Free Trial Active</h3>
+          <h3 style={{ margin: "0 0 16px 0" }}>Free Trial Active</h3>
           <div style={{ marginBottom: "16px" }}>
             <p style={{ margin: "0 0 8px 0", fontSize: "16px" }}>
               <strong>Current Plan:</strong> {tier?.name || 'Unknown'} (${tier?.price}/month)

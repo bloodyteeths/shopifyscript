@@ -1,6 +1,6 @@
-# Ads Autopilot AI SaaS Production Deployment Guide
+# Ads Autopilot AI - Production Deployment Guide
 
-Complete guide for deploying Ads Autopilot AI SaaS to production with Docker, monitoring, and security best practices.
+Complete guide for deploying Ads Autopilot AI to production with Docker, monitoring, and security best practices.
 
 ## Table of Contents
 
@@ -73,12 +73,12 @@ sudo apt install -y git curl jq htop nginx certbot
 
 ```bash
 # Production deployment location
-sudo mkdir -p /opt/adsautopilot
-sudo chown $USER:$USER /opt/adsautopilot
-cd /opt/adsautopilot
+sudo mkdir -p /opt/ads-autopilot
+sudo chown $USER:$USER /opt/ads-autopilot
+cd /opt/ads-autopilot
 
 # Clone from your repository
-git clone https://github.com/your-org/adsautopilot-saas.git .
+git clone https://github.com/your-org/ads-autopilot-ai.git .
 ```
 
 ### 2. Environment Configuration
@@ -94,12 +94,13 @@ cp .env.example .env
 ```bash
 # === APPLICATION SETTINGS ===
 NODE_ENV=production
-PORT=3001
-BACKEND_PUBLIC_URL=https://api.yourdomain.com
+PORT=3005
+BACKEND_URL=https://ads-autopilot-backend.vercel.app
+BACKEND_PUBLIC_URL=https://ads-autopilot-backend.vercel.app/api
 
 # === SECURITY ===
 HMAC_SECRET=your-256-bit-secret-key-here-minimum-32-chars
-ALLOWED_ORIGINS=https://yourdomain.com,https://www.yourdomain.com
+ALLOWED_ORIGINS=https://ads-autopilot-ui.vercel.app,https://admin.shopify.com
 
 # === GOOGLE SERVICES ===
 GOOGLE_SHEETS_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\n"
@@ -798,9 +799,9 @@ curl -f http://localhost:3001/health
 
 ### Contact Information
 
-- **Primary Ops**: ops@adsautopilot.net
-- **Emergency**: +1-555-ADS_AUTOPILOT_AI-OPS
-- **Status Page**: https://status.adsautopilot.net
+- **Primary Ops**: ops@adsautopilotai.com
+- **Emergency**: +1-555-AUTOPILOT-OPS
+- **Status Page**: https://status.adsautopilotai.com
 
 ---
 

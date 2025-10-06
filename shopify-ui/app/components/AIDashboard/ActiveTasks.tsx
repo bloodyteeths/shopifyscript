@@ -26,7 +26,7 @@ const ClockIcon = () => <span>⏱️</span>;
 const CheckCircleIcon = () => <span style={{ color: '#00a047' }}>✅</span>;
 const AlertTriangleIcon = () => <span style={{ color: '#ff8a00' }}>⚠️</span>;
 const XCircleIcon = () => <span style={{ color: '#ff6d6d' }}>❌</span>;
-const TrendingUpIcon = () => <span>📈</span>;
+const TrendingUpIcon = () => <span></span>;
 const ActivityIcon = () => <span>⚡</span>;
 
 interface ActiveTasksProps {

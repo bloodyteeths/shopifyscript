@@ -40,7 +40,7 @@ AI_MODEL=gemini-1.5-flash
 
 # CORS & Security
 ALLOWED_ORIGINS=http://localhost:3000,https://admin.shopify.com
-RATE_LIMIT_PER_MIN=60
+RATE_LIMIT_MAX=60
 
 # Shopify (for embedded app)
 SHOPIFY_API_KEY=your-shopify-api-key

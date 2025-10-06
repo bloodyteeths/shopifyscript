@@ -422,7 +422,7 @@ export function CompetitorIntel({
                           <Text variant="bodySm" color="subdued">{advantage.description}</Text>
                           {advantage.actionable && (
                             <Box paddingBlockStart="2">
-                              <Text variant="bodySm" fontWeight="medium">💡 {advantage.recommendation}</Text>
+                              <Text variant="bodySm" fontWeight="medium">{advantage.recommendation}</Text>
                             </Box>
                           )}
                         </Stack>
@@ -454,7 +454,7 @@ export function CompetitorIntel({
                           </Stack>
                           <Text variant="bodySm" color="subdued">{gap.description}</Text>
                           <Box paddingBlockStart="2">
-                            <Text variant="bodySm" fontWeight="medium">🎯 {gap.recommendation}</Text>
+                            <Text variant="bodySm" fontWeight="medium">{gap.recommendation}</Text>
                           </Box>
                         </Stack>
                       </Box>

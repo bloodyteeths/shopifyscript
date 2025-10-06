@@ -328,7 +328,7 @@ export function AIStatusIndicator({ shopName, compact = false, showTokenUsage = 
           }}
           title="Refresh AI status"
         >
-          {loading ? '⏳' : '🔄'}
+          {loading ? '...' : ''}
         </button>
       </div>
 

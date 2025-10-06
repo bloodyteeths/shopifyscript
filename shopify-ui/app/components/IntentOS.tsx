@@ -30,7 +30,7 @@ const CheckCircleIcon = () => <span>✅</span>;
 const AlertCircleIcon = () => <span>⚠️</span>;
 const InfoIcon = () => <span>ℹ️</span>;
 const EditIcon = () => <span>✏️</span>;
-const DeleteIcon = () => <span>🗑️</span>;
+const DeleteIcon = () => <span>Delete</span>;
 
 interface IntentOSProps {
   tenantId: string;
