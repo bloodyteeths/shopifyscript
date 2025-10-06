@@ -627,12 +627,12 @@ function collectPerf_() {
     log_("Collecting metrics for 6 time periods using GAQL...");
 
     var periodQueries = [
-      { period: "TODAY", query: "SELECT campaign.id, campaign.name, metrics.clicks, metrics.cost_micros, metrics.conversions, metrics.impressions, metrics.ctr FROM campaign WHERE segments.date DURING TODAY AND campaign.advertising_channel_type = SEARCH AND campaign.status IN ('ENABLED', 'PAUSED')" },
-      { period: "YESTERDAY", query: "SELECT campaign.id, campaign.name, metrics.clicks, metrics.cost_micros, metrics.conversions, metrics.impressions, metrics.ctr FROM campaign WHERE segments.date DURING YESTERDAY AND campaign.advertising_channel_type = SEARCH AND campaign.status IN ('ENABLED', 'PAUSED')" },
-      { period: "LAST_7_DAYS", query: "SELECT campaign.id, campaign.name, metrics.clicks, metrics.cost_micros, metrics.conversions, metrics.impressions, metrics.ctr FROM campaign WHERE segments.date DURING LAST_7_DAYS AND campaign.advertising_channel_type = SEARCH AND campaign.status IN ('ENABLED', 'PAUSED')" },
-      { period: "LAST_14_DAYS", query: "SELECT campaign.id, campaign.name, metrics.clicks, metrics.cost_micros, metrics.conversions, metrics.impressions, metrics.ctr FROM campaign WHERE segments.date DURING LAST_14_DAYS AND campaign.advertising_channel_type = SEARCH AND campaign.status IN ('ENABLED', 'PAUSED')" },
-      { period: "LAST_30_DAYS", query: "SELECT campaign.id, campaign.name, metrics.clicks, metrics.cost_micros, metrics.conversions, metrics.impressions, metrics.ctr FROM campaign WHERE segments.date DURING LAST_30_DAYS AND campaign.advertising_channel_type = SEARCH AND campaign.status IN ('ENABLED', 'PAUSED')" },
-      { period: "ALL_TIME", query: "SELECT campaign.id, campaign.name, metrics.clicks, metrics.cost_micros, metrics.conversions, metrics.impressions, metrics.ctr FROM campaign WHERE campaign.advertising_channel_type = SEARCH AND campaign.status IN ('ENABLED', 'PAUSED')" }
+      { period: "TODAY", query: "SELECT segments.date, campaign.id, campaign.name, metrics.clicks, metrics.cost_micros, metrics.conversions, metrics.impressions, metrics.ctr FROM campaign WHERE segments.date DURING TODAY AND campaign.advertising_channel_type = SEARCH AND campaign.status IN ('ENABLED', 'PAUSED')" },
+      { period: "YESTERDAY", query: "SELECT segments.date, campaign.id, campaign.name, metrics.clicks, metrics.cost_micros, metrics.conversions, metrics.impressions, metrics.ctr FROM campaign WHERE segments.date DURING YESTERDAY AND campaign.advertising_channel_type = SEARCH AND campaign.status IN ('ENABLED', 'PAUSED')" },
+      { period: "LAST_7_DAYS", query: "SELECT segments.date, campaign.id, campaign.name, metrics.clicks, metrics.cost_micros, metrics.conversions, metrics.impressions, metrics.ctr FROM campaign WHERE segments.date DURING LAST_7_DAYS AND campaign.advertising_channel_type = SEARCH AND campaign.status IN ('ENABLED', 'PAUSED')" },
+      { period: "LAST_14_DAYS", query: "SELECT segments.date, campaign.id, campaign.name, metrics.clicks, metrics.cost_micros, metrics.conversions, metrics.impressions, metrics.ctr FROM campaign WHERE segments.date DURING LAST_14_DAYS AND campaign.advertising_channel_type = SEARCH AND campaign.status IN ('ENABLED', 'PAUSED')" },
+      { period: "LAST_30_DAYS", query: "SELECT segments.date, campaign.id, campaign.name, metrics.clicks, metrics.cost_micros, metrics.conversions, metrics.impressions, metrics.ctr FROM campaign WHERE segments.date DURING LAST_30_DAYS AND campaign.advertising_channel_type = SEARCH AND campaign.status IN ('ENABLED', 'PAUSED')" },
+      { period: "LAST_90_DAYS", query: "SELECT segments.date, campaign.id, campaign.name, metrics.clicks, metrics.cost_micros, metrics.conversions, metrics.impressions, metrics.ctr FROM campaign WHERE segments.date DURING LAST_90_DAYS AND campaign.advertising_channel_type = SEARCH AND campaign.status IN ('ENABLED', 'PAUSED')" }
     ];
 
     for (var pq = 0; pq < periodQueries.length; pq++) {
@@ -653,13 +653,14 @@ function collectPerf_() {
           var ctr = parseFloat(row["metrics.ctr"]) || 0;
           var campaignId = row["campaign.id"];
           var campaignName = row["campaign.name"];
+          var dateStr = row["segments.date"] || Utilities.formatDate(new Date(), AdsApp.currentAccount().getTimeZone(), 'yyyy-MM-dd');
 
           log_("Campaign [" + period + "] " + campaignName + " - Impr: " + impressions + ", Clicks: " + clicks + ", Cost: $" + cost.toFixed(2));
 
           if (impressions > 0 || clicks > 0 || cost > 0) {
             rows.push([
               period,
-              new Date(),
+              dateStr,
               'campaign',
               campaignName,
               '',
@@ -682,12 +683,12 @@ function collectPerf_() {
     log_("Collecting ad group metrics for 6 time periods...");
 
     var adGroupQueries = [
-      { period: "TODAY", query: "SELECT campaign.name, ad_group.id, ad_group.name, metrics.clicks, metrics.cost_micros, metrics.conversions, metrics.impressions, metrics.ctr FROM ad_group WHERE segments.date DURING TODAY AND campaign.advertising_channel_type = SEARCH AND ad_group.status IN ('ENABLED', 'PAUSED')" },
-      { period: "YESTERDAY", query: "SELECT campaign.name, ad_group.id, ad_group.name, metrics.clicks, metrics.cost_micros, metrics.conversions, metrics.impressions, metrics.ctr FROM ad_group WHERE segments.date DURING YESTERDAY AND campaign.advertising_channel_type = SEARCH AND ad_group.status IN ('ENABLED', 'PAUSED')" },
-      { period: "LAST_7_DAYS", query: "SELECT campaign.name, ad_group.id, ad_group.name, metrics.clicks, metrics.cost_micros, metrics.conversions, metrics.impressions, metrics.ctr FROM ad_group WHERE segments.date DURING LAST_7_DAYS AND campaign.advertising_channel_type = SEARCH AND ad_group.status IN ('ENABLED', 'PAUSED')" },
-      { period: "LAST_14_DAYS", query: "SELECT campaign.name, ad_group.id, ad_group.name, metrics.clicks, metrics.cost_micros, metrics.conversions, metrics.impressions, metrics.ctr FROM ad_group WHERE segments.date DURING LAST_14_DAYS AND campaign.advertising_channel_type = SEARCH AND ad_group.status IN ('ENABLED', 'PAUSED')" },
-      { period: "LAST_30_DAYS", query: "SELECT campaign.name, ad_group.id, ad_group.name, metrics.clicks, metrics.cost_micros, metrics.conversions, metrics.impressions, metrics.ctr FROM ad_group WHERE segments.date DURING LAST_30_DAYS AND campaign.advertising_channel_type = SEARCH AND ad_group.status IN ('ENABLED', 'PAUSED')" },
-      { period: "ALL_TIME", query: "SELECT campaign.name, ad_group.id, ad_group.name, metrics.clicks, metrics.cost_micros, metrics.conversions, metrics.impressions, metrics.ctr FROM ad_group WHERE campaign.advertising_channel_type = SEARCH AND ad_group.status IN ('ENABLED', 'PAUSED')" }
+      { period: "TODAY", query: "SELECT segments.date, campaign.name, ad_group.id, ad_group.name, metrics.clicks, metrics.cost_micros, metrics.conversions, metrics.impressions, metrics.ctr FROM ad_group WHERE segments.date DURING TODAY AND campaign.advertising_channel_type = SEARCH AND ad_group.status IN ('ENABLED', 'PAUSED')" },
+      { period: "YESTERDAY", query: "SELECT segments.date, campaign.name, ad_group.id, ad_group.name, metrics.clicks, metrics.cost_micros, metrics.conversions, metrics.impressions, metrics.ctr FROM ad_group WHERE segments.date DURING YESTERDAY AND campaign.advertising_channel_type = SEARCH AND ad_group.status IN ('ENABLED', 'PAUSED')" },
+      { period: "LAST_7_DAYS", query: "SELECT segments.date, campaign.name, ad_group.id, ad_group.name, metrics.clicks, metrics.cost_micros, metrics.conversions, metrics.impressions, metrics.ctr FROM ad_group WHERE segments.date DURING LAST_7_DAYS AND campaign.advertising_channel_type = SEARCH AND ad_group.status IN ('ENABLED', 'PAUSED')" },
+      { period: "LAST_14_DAYS", query: "SELECT segments.date, campaign.name, ad_group.id, ad_group.name, metrics.clicks, metrics.cost_micros, metrics.conversions, metrics.impressions, metrics.ctr FROM ad_group WHERE segments.date DURING LAST_14_DAYS AND campaign.advertising_channel_type = SEARCH AND ad_group.status IN ('ENABLED', 'PAUSED')" },
+      { period: "LAST_30_DAYS", query: "SELECT segments.date, campaign.name, ad_group.id, ad_group.name, metrics.clicks, metrics.cost_micros, metrics.conversions, metrics.impressions, metrics.ctr FROM ad_group WHERE segments.date DURING LAST_30_DAYS AND campaign.advertising_channel_type = SEARCH AND ad_group.status IN ('ENABLED', 'PAUSED')" },
+      { period: "LAST_90_DAYS", query: "SELECT segments.date, campaign.name, ad_group.id, ad_group.name, metrics.clicks, metrics.cost_micros, metrics.conversions, metrics.impressions, metrics.ctr FROM ad_group WHERE segments.date DURING LAST_90_DAYS AND campaign.advertising_channel_type = SEARCH AND ad_group.status IN ('ENABLED', 'PAUSED')" }
     ];
 
     for (var agq = 0; agq < adGroupQueries.length; agq++) {
@@ -706,9 +707,10 @@ function collectPerf_() {
           var cost = costMicros / 1000000;
 
           if (impressions > 0 || clicks > 0 || cost > 0) {
+            var agDateStr = row["segments.date"] || Utilities.formatDate(new Date(), AdsApp.currentAccount().getTimeZone(), 'yyyy-MM-dd');
             rows.push([
               period,
-              new Date(),
+              agDateStr,
               'ad_group',
               row["campaign.name"],
               row["ad_group.name"],
