@@ -2,7 +2,7 @@
 
 describe("Intent Block Preview & UTM Testing", () => {
   beforeEach(() => {
-    cy.stubProofKitAPI("success");
+    cy.stubAds Autopilot AIAPI("success");
     cy.fixture("api-responses").as("apiResponses");
   });
 

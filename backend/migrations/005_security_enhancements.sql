@@ -1,4 +1,4 @@
--- ProofKit Security Enhancements Migration
+-- Ads Autopilot AI Security Enhancements Migration
 -- Version: 005 - Critical Security Improvements
 -- Description: Adds security monitoring tables and enhances RLS policies
 

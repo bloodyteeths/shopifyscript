@@ -1,5 +1,5 @@
 /**
- * ProofKit Autonomous AI System - Complete Integration Test
+ * Ads Autopilot AI Autonomous AI System - Complete Integration Test
  *
  * This test validates that all components of the autonomous Google Ads
  * optimization system are working together correctly.
@@ -94,7 +94,7 @@ class TestResults {
  * Main Test Runner
  */
 async function runIntegrationTests() {
-  console.log('🚀 ProofKit Autonomous AI System - Integration Test');
+  console.log('🚀 Ads Autopilot AI Autonomous AI System - Integration Test');
   console.log('='.repeat(80));
   console.log(`Tenant: ${TEST_TENANT}`);
   console.log(`Test URL: ${TEST_URL}`);
@@ -378,7 +378,7 @@ async function runIntegrationTests() {
 
   if (allPassed) {
     console.log('\n🎉 SUCCESS: All integration tests passed!');
-    console.log('The ProofKit Autonomous AI System is fully operational.');
+    console.log('The Ads Autopilot AI Autonomous AI System is fully operational.');
   } else {
     console.log('\n⚠️ WARNING: Some tests failed. Please review the failures above.');
   }
@@ -400,7 +400,7 @@ async function runIntegrationTests() {
 }
 
 // Run the tests
-console.log('\n🔧 Starting ProofKit Autonomous AI System Integration Tests...\n');
+console.log('\n🔧 Starting Ads Autopilot AI Autonomous AI System Integration Tests...\n');
 
 runIntegrationTests().catch(error => {
   console.error('\n❌ CRITICAL ERROR:', error);

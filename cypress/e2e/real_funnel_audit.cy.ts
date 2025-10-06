@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-describe("ProofKit Real Funnel Audit & Screenshots", () => {
+describe("Ads Autopilot AI Real Funnel Audit & Screenshots", () => {
   let stepCounter = 0;
 
   const takeStep = (label: string, expectation: string, route?: string) => {
@@ -31,13 +31,13 @@ describe("ProofKit Real Funnel Audit & Screenshots", () => {
     stepCounter = 0;
   });
 
-  it("should audit the complete ProofKit funnel with real UI interactions", () => {
+  it("should audit the complete Ads Autopilot AI funnel with real UI interactions", () => {
     // Step 1: Landing page / Dashboard
     cy.visit("/");
 
     takeStep(
       "Application Landing",
-      "ProofKit application loads with navigation and main interface elements visible",
+      "Ads Autopilot AI application loads with navigation and main interface elements visible",
     );
 
     // Step 2: Navigate to settings or main app

@@ -1,5 +1,5 @@
 /**
- * ProofKit Billing Service
+ * Ads Autopilot AI Billing Service
  * Handles Stripe integration for WordPress users and subscription management
  */
 
@@ -86,7 +86,7 @@ export class BillingService {
         name,
         metadata: {
           ...metadata,
-          source: "proofkit",
+          source: "adsautopilot",
         },
       });
 

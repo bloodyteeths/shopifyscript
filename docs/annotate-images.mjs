@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * ProofKit Screenshot Annotation Tool
+ * Ads Autopilot AI Screenshot Annotation Tool
  *
  * Optional image annotation using Sharp to overlay step numbers on screenshots.
  * Falls back gracefully if Sharp is not available.
@@ -171,7 +171,7 @@ class ImageAnnotator {
 
     const summary = {
       generatedAt: new Date().toISOString(),
-      generator: "ProofKit Funnel Doc Generator v1.0",
+      generator: "Ads Autopilot AI Funnel Doc Generator v1.0",
       input: {
         stepsFile: this.stepsFile,
         screenshotsDir: this.screenshotsDir,
@@ -206,7 +206,7 @@ class ImageAnnotator {
 
 // CLI execution
 if (import.meta.url === `file://${process.argv[1]}`) {
-  console.log("ProofKit Funnel Documentation Generator");
+  console.log("Ads Autopilot AI Funnel Documentation Generator");
   console.log("=====================================");
 
   const generator = new ImageAnnotator();

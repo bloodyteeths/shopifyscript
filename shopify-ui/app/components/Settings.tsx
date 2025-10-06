@@ -230,7 +230,7 @@ const AutomationSettings: React.FC<{
           >
             <Text variant="headingMd">Autopilot Mode</Text>
             <Text variant="bodyMd" color="subdued">
-              Let ProofKit automatically optimize your campaigns based on
+              Let Ads Autopilot AI automatically optimize your campaigns based on
               performance data.
             </Text>
           </SettingToggle>
@@ -412,7 +412,7 @@ const DataExport: React.FC = () => {
         const a = document.createElement("a");
         a.style.display = "none";
         a.href = url;
-        a.download = `proofkit-${type}-${new Date().toISOString().split("T")[0]}.csv`;
+        a.download = `adsautopilot-${type}-${new Date().toISOString().split("T")[0]}.csv`;
         document.body.appendChild(a);
         a.click();
         window.URL.revokeObjectURL(url);
@@ -529,7 +529,7 @@ const DangerZone: React.FC<{
                   Delete Account
                 </Text>
                 <Text variant="bodySm" color="subdued">
-                  Permanently delete your ProofKit account and all associated
+                  Permanently delete your Ads Autopilot AI account and all associated
                   data.
                 </Text>
               </Stack>
@@ -597,13 +597,13 @@ const DangerZone: React.FC<{
         <Modal.Section>
           <TextContainer>
             <p>
-              This will permanently delete your ProofKit account and all
+              This will permanently delete your Ads Autopilot AI account and all
               associated data, including campaigns, audiences, analytics, and
               settings.
             </p>
             <p>
               You will be immediately logged out and will need to reinstall the
-              app to use ProofKit again.
+              app to use Ads Autopilot AI again.
             </p>
             <p>
               <strong>This action cannot be undone.</strong>
@@ -864,7 +864,7 @@ export const Settings: React.FC<SettingsProps> = ({ initialConfig }) => {
     <Frame>
       <Page
         title="Settings"
-        subtitle="Manage your ProofKit configuration and integrations"
+        subtitle="Manage your Ads Autopilot AI configuration and integrations"
         secondaryActions={[
           {
             content: "Refresh",

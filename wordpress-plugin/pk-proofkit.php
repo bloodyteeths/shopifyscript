@@ -1,22 +1,22 @@
 <?php
 /**
- * Plugin Name: Proofkit Pixels & Ads Helper
- * Plugin URI: https://wordpress.org/plugins/proofkit-pixels-ads-helper/
+ * Plugin Name: Ads Autopilot AI Pixels & Ads Helper
+ * Plugin URI: https://wordpress.org/plugins/adsautopilot-pixels-ads-helper/
  * Description: GA4 + Google Ads pixels, Woo events, Enhanced Conversions (hashed), backend forward. Easily integrate Google Analytics 4 and Google Ads tracking with your WooCommerce store.
  * Version: 1.0.0
  * Requires at least: 5.0
  * Requires PHP: 7.4
- * Author: Proofkit
- * Author URI: https://proofkit.com/
+ * Author: Ads Autopilot AI
+ * Author URI: https://adsautopilot.com/
  * License: GPL v2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain: pk-proofkit
+ * Text Domain: pk-adsautopilot
  * Domain Path: /languages
  * Network: false
  * WC requires at least: 3.0
  * WC tested up to: 8.0
  *
- * @package ProofkitPixelsAdsHelper
+ * @package Ads Autopilot AIPixelsAdsHelper
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,25 +34,25 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 // Define plugin constants.
-define( 'PK_PROOFKIT_VERSION', '1.0.0' );
-define( 'PK_PROOFKIT_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
-define( 'PK_PROOFKIT_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
-define( 'PK_PROOFKIT_TEXT_DOMAIN', 'pk-proofkit' );
+define( 'PK_ADS_AUTOPILOT_AI_VERSION', '1.0.0' );
+define( 'PK_ADS_AUTOPILOT_AI_PLUGIN_URL', plugin_dir_url( __FILE__ ) );
+define( 'PK_ADS_AUTOPILOT_AI_PLUGIN_PATH', plugin_dir_path( __FILE__ ) );
+define( 'PK_ADS_AUTOPILOT_AI_TEXT_DOMAIN', 'pk-adsautopilot' );
 
 /**
  * Load plugin textdomain for internationalization.
  */
-function pk_proofkit_load_textdomain() {
+function pk_adsautopilot_load_textdomain() {
 	load_plugin_textdomain(
-		'pk-proofkit',
+		'pk-adsautopilot',
 		false,
 		dirname( plugin_basename( __FILE__ ) ) . '/languages/'
 	);
 }
-add_action( 'plugins_loaded', 'pk_proofkit_load_textdomain' );
+add_action( 'plugins_loaded', 'pk_adsautopilot_load_textdomain' );
 
 // Load the main plugin class.
-require_once plugin_dir_path( __FILE__ ) . 'class-pk-proofkit.php';
+require_once plugin_dir_path( __FILE__ ) . 'class-pk-adsautopilot.php';
 
 // Initialize the plugin.
-new PK_Proofkit();
+new PK_Ads Autopilot AI();

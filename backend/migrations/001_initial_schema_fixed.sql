@@ -1,4 +1,4 @@
--- ProofKit Supabase Schema Migration (Fixed)
+-- Ads Autopilot AI Supabase Schema Migration (Fixed)
 -- Version: 001 - Initial Schema
 -- Description: Core tables for tenant data, metrics, and logs
 

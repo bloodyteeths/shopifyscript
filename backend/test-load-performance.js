@@ -305,7 +305,7 @@ class LoadTester {
         path: url.pathname + url.search,
         method,
         headers: {
-          'User-Agent': 'ProofKit-LoadTest/1.0',
+          'User-Agent': 'Ads Autopilot AI-LoadTest/1.0',
           ...headers,
         },
         timeout: this.config.maxResponseTime,

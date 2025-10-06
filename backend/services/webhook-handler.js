@@ -1,5 +1,5 @@
 /**
- * ProofKit Webhook Handler Service
+ * Ads Autopilot AI Webhook Handler Service
  * Processes billing webhooks from Stripe and Shopify
  */
 

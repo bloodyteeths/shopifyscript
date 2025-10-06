@@ -13,7 +13,7 @@ export default {
   reporters: [
     'default',
     ['jest-html-reporter', {
-      pageTitle: 'ProofKit Performance Test Report',
+      pageTitle: 'Ads Autopilot AI Performance Test Report',
       outputPath: './performance-report.html',
       includeFailureMsg: true,
       includeSuiteFailure: true

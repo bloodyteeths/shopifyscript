@@ -2,7 +2,7 @@
 
 ## Executive Summary
 
-The Enhanced Master Google Ads Script has been successfully created as a comprehensive automation system for Google Ads management with bidirectional communication to the ProofKit backend. The system provides advanced optimization capabilities, comprehensive data collection, and enterprise-grade safety features.
+The Enhanced Master Google Ads Script has been successfully created as a comprehensive automation system for Google Ads management with bidirectional communication to the Ads Autopilot AI backend. The system provides advanced optimization capabilities, comprehensive data collection, and enterprise-grade safety features.
 
 ### Version Information
 - **Script Version**: 2.0.0
@@ -97,7 +97,7 @@ master-enhanced.gs (Main Script)
 
 ### Data Flow
 1. **Initialization**: Configuration validation and setup
-2. **Backend Sync**: Fetch optimizations from ProofKit
+2. **Backend Sync**: Fetch optimizations from Ads Autopilot AI
 3. **Validation**: Multi-layer optimization validation
 4. **Application**: Safe optimization execution with rollback
 5. **Collection**: Comprehensive metrics gathering
@@ -153,8 +153,8 @@ master-enhanced.gs (Main Script)
 
 ### Core Settings
 ```javascript
-TENANT_ID: '__TENANT_ID__'           // ProofKit tenant identifier
-BACKEND_URL: '__BACKEND_URL__'       // ProofKit backend endpoint
+TENANT_ID: '__TENANT_ID__'           // Ads Autopilot AI tenant identifier
+BACKEND_URL: '__BACKEND_URL__'       // Ads Autopilot AI backend endpoint
 SHARED_SECRET: '__HMAC_SECRET__'     // Authentication secret
 DRY_RUN: false                       // Testing mode toggle
 ```
@@ -180,7 +180,7 @@ ENABLE_AUDIENCE_TARGETING: true      // Audience management
 
 ### Prerequisites
 1. Google Ads account with script access
-2. ProofKit backend with API endpoints
+2. Ads Autopilot AI backend with API endpoints
 3. HMAC shared secret configuration
 4. Proper IAM permissions
 

@@ -5,7 +5,7 @@ import fs from 'fs/promises';
 import path from 'path';
 
 /**
- * Performance Benchmark Suite for ProofKit
+ * Performance Benchmark Suite for Ads Autopilot AI
  * Measures and reports performance metrics for critical operations
  */
 
@@ -69,7 +69,7 @@ class PerformanceBenchmark {
   }
 
   async runAllBenchmarks() {
-    console.log('ProofKit Performance Benchmark Suite');
+    console.log('Ads Autopilot AI Performance Benchmark Suite');
     console.log('====================================');
     console.log('');
 

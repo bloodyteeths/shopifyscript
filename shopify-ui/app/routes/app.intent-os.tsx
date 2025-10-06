@@ -4,7 +4,7 @@ import { useShopContext, buildAppUrl } from "../utils/navigation";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   return json({
-    tenantId: process.env.TENANT_ID || "proofkit",
+    tenantId: process.env.TENANT_ID || "adsautopilot",
     launchDate: "Q1 2026",
   });
 };

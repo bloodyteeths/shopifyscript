@@ -1,4 +1,4 @@
-# ProofKit Google Ads Script - Idempotency Test Harness
+# Ads Autopilot AI Google Ads Script - Idempotency Test Harness
 
 **CRITICAL P0-1 PRODUCTION SAFETY SYSTEM**
 

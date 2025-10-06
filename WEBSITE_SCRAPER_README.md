@@ -119,7 +119,7 @@ console.log(ads.content.headlines);
 Run the migration:
 
 ```sql
-psql -d proofkit -f backend/migrations/008_website_content_extraction.sql
+psql -d adsautopilot -f backend/migrations/008_website_content_extraction.sql
 ```
 
 Or use Supabase dashboard to run the SQL file.
@@ -190,7 +190,7 @@ Or use Supabase dashboard to run the SQL file.
 
 - **Public data only:** No authentication bypass
 - **Respects robots.txt:** Honors website preferences
-- **User agent:** `ProofKit-ContentBot/2.0 (+https://proofkit.io/bot)`
+- **User agent:** `Ads Autopilot AI-ContentBot/2.0 (+https://adsautopilot.io/bot)`
 - **GDPR compliant:** Data minimization, user control
 - **Fair use:** Small snippets for commercial service
 - **Opt-out:** Respects robots.txt and meta tags

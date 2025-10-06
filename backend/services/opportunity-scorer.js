@@ -1,5 +1,5 @@
 /**
- * Opportunity Scorer Service for ProofKit SaaS
+ * Opportunity Scorer Service for Ads Autopilot AI SaaS
  * Advanced scoring engine for market opportunities with risk assessment and ROI modeling
  *
  * Features:

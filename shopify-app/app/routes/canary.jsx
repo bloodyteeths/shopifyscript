@@ -102,7 +102,7 @@ export default function CanaryWizard() {
               onChange={(e) => setCampaign(e.target.value)}
             />
             <p>
-              Apply label PROOFKIT_AUTOMATED in Google Ads UI to this campaign
+              Apply label ADS_AUTOPILOT_AI_AUTOMATED in Google Ads UI to this campaign
               only.
             </p>
           </li>

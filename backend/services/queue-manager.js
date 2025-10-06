@@ -1,5 +1,5 @@
 /**
- * Queue Manager for ProofKit SaaS
+ * Queue Manager for Ads Autopilot AI SaaS
  * Implements priority queues, job persistence, retry logic, and dead letter queue
  */
 

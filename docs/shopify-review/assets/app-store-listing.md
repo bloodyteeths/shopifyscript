@@ -1,15 +1,15 @@
-# Shopify App Store Listing - ProofKit
+# Shopify App Store Listing - Ads Autopilot AI
 
 ## 📱 App Store Listing Details
 
 ### App Basic Information
 
-**App Name**: ProofKit - Intent OS & Conversion Rate Optimization  
-**Developer**: ProofKit Team  
+**App Name**: Ads Autopilot AI - Intent OS & Conversion Rate Optimization  
+**Developer**: Ads Autopilot AI Team  
 **Category**: Marketing > Conversion Optimization  
 **Pricing Model**: Freemium (Free plan + Premium features)  
-**Support Email**: support@proofkit.app  
-**Website**: https://proofkit.app
+**Support Email**: support@adsautopilot.app  
+**Website**: https://adsautopilot.app
 
 ---
 
@@ -18,7 +18,7 @@
 ### Primary Title
 
 ```
-ProofKit - Intent OS & Conversion Rate Optimization
+Ads Autopilot AI - Intent OS & Conversion Rate Optimization
 ```
 
 ### Tagline
@@ -41,7 +41,7 @@ Boost conversions 15-25% with AI optimization. Privacy-first, setup in 5 minutes
 
 **Transform Your Store's Performance with Intent OS**
 
-ProofKit revolutionizes e-commerce conversion optimization through our innovative Intent Operating System (Intent OS). Increase your conversion rates by 15-25% while maintaining complete customer privacy and data control.
+Ads Autopilot AI revolutionizes e-commerce conversion optimization through our innovative Intent Operating System (Intent OS). Increase your conversion rates by 15-25% while maintaining complete customer privacy and data control.
 
 **🚀 Key Features:**
 
@@ -73,7 +73,7 @@ ProofKit revolutionizes e-commerce conversion optimization through our innovativ
 - Google Sheets for easy data management
 - Optional Web Pixel for enhanced tracking
 
-**🎯 Why Choose ProofKit?**
+**🎯 Why Choose Ads Autopilot AI?**
 
 - **Proven Results**: Average 15-25% conversion rate improvement
 - **Privacy Protection**: Zero customer PII collection
@@ -97,12 +97,12 @@ ProofKit revolutionizes e-commerce conversion optimization through our innovativ
 - Enterprise-grade security
 
 **📊 What Merchants Say:**
-"ProofKit increased our conversion rate by 22% in the first month. The privacy-first approach was exactly what we needed for GDPR compliance." - Fashion Retailer
+"Ads Autopilot AI increased our conversion rate by 22% in the first month. The privacy-first approach was exactly what we needed for GDPR compliance." - Fashion Retailer
 
 "Finally, a conversion optimization tool that doesn't require sharing customer data. Setup was incredibly easy." - Electronics Store Owner
 
 **Get Started Today:**
-Install ProofKit and start optimizing your conversion rates in minutes. No customer data required, no complex setup, just results.
+Install Ads Autopilot AI and start optimizing your conversion rates in minutes. No customer data required, no complex setup, just results.
 
 ---
 
@@ -179,7 +179,7 @@ Install ProofKit and start optimizing your conversion rates in minutes. No custo
 - **Size**: 1024x1024px (high resolution)
 - **Format**: PNG with transparency
 - **Style**: Modern, clean, professional
-- **Colors**: ProofKit brand colors (primary blue #007ACC, secondary gray #6B7280)
+- **Colors**: Ads Autopilot AI brand colors (primary blue #007ACC, secondary gray #6B7280)
 - **Content**: Abstract "P" logo with optimization arrow/graph element
 
 **Icon Variations Needed**:
@@ -193,7 +193,7 @@ Install ProofKit and start optimizing your conversion rates in minutes. No custo
 
 **Primary Palette**:
 
-- **ProofKit Blue**: #007ACC (main brand color)
+- **Ads Autopilot AI Blue**: #007ACC (main brand color)
 - **Success Green**: #10B981 (positive metrics, success states)
 - **Warning Orange**: #F59E0B (attention, warnings)
 - **Error Red**: #EF4444 (errors, critical alerts)
@@ -343,7 +343,7 @@ Install ProofKit and start optimizing your conversion rates in minutes. No custo
 
 ### Support Channels
 
-**Primary Support**: support@proofkit.app
+**Primary Support**: support@adsautopilot.app
 
 - Response time: 24 hours
 - Languages: English (primary), Spanish, French
@@ -366,7 +366,7 @@ Install ProofKit and start optimizing your conversion rates in minutes. No custo
 
 **Quick Start Guide** (5 minutes):
 
-1. Install ProofKit from App Store
+1. Install Ads Autopilot AI from App Store
 2. Connect Google Sheets (optional)
 3. Configure first Intent Block
 4. Launch first campaign
@@ -374,7 +374,7 @@ Install ProofKit and start optimizing your conversion rates in minutes. No custo
 
 **Video Tutorials**:
 
-- "ProofKit Setup in 5 Minutes"
+- "Ads Autopilot AI Setup in 5 Minutes"
 - "Creating High-Converting Intent Blocks"
 - "Google Ads Integration Setup"
 - "Privacy-First Analytics Walkthrough"

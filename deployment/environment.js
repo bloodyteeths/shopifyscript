@@ -1,5 +1,5 @@
 /**
- * ProofKit SaaS Environment Management
+ * Ads Autopilot AI SaaS Environment Management
  * Comprehensive environment validation and configuration system
  * Handles production, staging, and development environments
  */

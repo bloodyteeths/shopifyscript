@@ -58,7 +58,7 @@ psql -h your-supabase-host.supabase.co \\
      -p 5432
 
 # 2. Run the migration
-\\i /Users/tamsar/Downloads/proofkit-saas/backend/migrations/012_add_period_tracking.sql
+\\i /Users/tamsar/Downloads/adsautopilot-saas/backend/migrations/012_add_period_tracking.sql
 
 # 3. Verify the migration succeeded
 SELECT column_name, data_type
@@ -104,7 +104,7 @@ ALTER TABLE device_metrics DROP COLUMN IF EXISTS period;
 
 ```bash
 # 1. Navigate to backend directory
-cd /Users/tamsar/Downloads/proofkit-saas/backend
+cd /Users/tamsar/Downloads/adsautopilot-saas/backend
 
 # 2. Verify all changes are present
 git status
@@ -117,7 +117,7 @@ npm test
 pm2 restart backend
 
 # Option B: If using systemd
-sudo systemctl restart proofkit-backend
+sudo systemctl restart adsautopilot-backend
 
 # Option C: If using npm/node directly
 pkill -f "node.*server.js"
@@ -160,7 +160,7 @@ curl -X POST "http://localhost:3000/api/script/generate?tenant=YOUR_TENANT&sig=<
 
 2. **Manual deployment in Google Ads**:
    - Go to Google Ads → Tools → Scripts
-   - Select your ProofKit script
+   - Select your Ads Autopilot AI script
    - Click "Edit"
    - **Replace the `collectPerf_()` function** (lines ~598-730)
    - Click "Preview" to test
@@ -202,7 +202,7 @@ Campaign [LAST_30_DAYS] My Campaign - Impr: 60000, Clicks: 1800
 
 ```bash
 # 1. Navigate to Shopify UI directory
-cd /Users/tamsar/Downloads/proofkit-saas/shopify-ui
+cd /Users/tamsar/Downloads/adsautopilot-saas/shopify-ui
 
 # 2. Install dependencies (if any new ones)
 npm install

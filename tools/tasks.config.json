@@ -8,7 +8,7 @@
     },
     {
       "id": "verify_wp_textdomain",
-      "cmd": "grep -q 'Text Domain:' wordpress-plugin/pk-proofkit.php",
+      "cmd": "grep -q 'Text Domain:' wordpress-plugin/pk-adsautopilot.php",
       "cwd": "."
     },
     {
@@ -81,7 +81,7 @@
     },
     {
       "id": "verify_wp_settings",
-      "cmd": "grep -q 'add_options_page' wordpress-plugin/pk-proofkit.php",
+      "cmd": "grep -q 'add_options_page' wordpress-plugin/pk-adsautopilot.php",
       "cwd": "."
     },
 

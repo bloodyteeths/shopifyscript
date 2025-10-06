@@ -1,5 +1,5 @@
 /**
- * ProofKit Support System Service
+ * Ads Autopilot AI Support System Service
  * Handles tier-based support ticket management with SLA tracking
  */
 

@@ -2,12 +2,12 @@
 
 ## Overview
 
-This playbook guides merchants through uploading Customer Match audiences to Google Ads and configuring ProofKit to automatically attach them to campaigns.
+This playbook guides merchants through uploading Customer Match audiences to Google Ads and configuring Ads Autopilot AI to automatically attach them to campaigns.
 
 ## Prerequisites
 
 - Active Google Ads account with Customer Match eligibility
-- ProofKit SaaS account with audience features enabled
+- Ads Autopilot AI SaaS account with audience features enabled
 - Customer data file (emails, phones, or addresses)
 
 ## Step 1: Prepare Customer Data
@@ -117,11 +117,11 @@ function getUserListIds() {
 gcloud ads customer-user-lists list --customer-id=YOUR_CUSTOMER_ID
 ```
 
-## Step 4: Configure ProofKit Audience Mapping
+## Step 4: Configure Ads Autopilot AI Audience Mapping
 
-### Access ProofKit Dashboard
+### Access Ads Autopilot AI Dashboard
 
-1. Log into your ProofKit account
+1. Log into your Ads Autopilot AI account
 2. Navigate to **Audiences** section
 3. Select **Audience Mapping** tab
 
@@ -181,7 +181,7 @@ campaign,ad_group,user_list_id,mode,bid_modifier
 
 ### Upload Process
 
-1. In ProofKit dashboard, click **Upload Audience Map**
+1. In Ads Autopilot AI dashboard, click **Upload Audience Map**
 2. Select your CSV file
 3. Review the preview table
 4. Click **Confirm Upload**
@@ -218,7 +218,7 @@ campaign,ad_group,user_list_id,mode,bid_modifier
 
 ## Step 6: Monitor Performance
 
-### ProofKit Run Logs
+### Ads Autopilot AI Run Logs
 
 Monitor audience attachment in the **Run Logs** section:
 
@@ -251,7 +251,7 @@ Monitor audience attachment in the **Run Logs** section:
 
 ### Automatic Safety Features
 
-ProofKit includes several safety mechanisms:
+Ads Autopilot AI includes several safety mechanisms:
 
 **Size Validation**
 
@@ -302,7 +302,7 @@ ProofKit includes several safety mechanisms:
 1. Check list processing status in Google Ads
 2. Verify list meets minimum size requirements
 3. Confirm user list ID is correct
-4. Check ProofKit feature flags are enabled
+4. Check Ads Autopilot AI feature flags are enabled
 
 **Size Unknown Warnings**
 
@@ -313,19 +313,19 @@ ProofKit includes several safety mechanisms:
 **Permission Errors**
 
 - Ensure Google Ads account has audience management permissions
-- Verify ProofKit has necessary API access
+- Verify Ads Autopilot AI has necessary API access
 - Check customer ID is correctly configured
 
 ### Support Contacts
 
-- ProofKit Support: [support@proofkit.net](mailto:support@proofkit.net)
+- Ads Autopilot AI Support: [support@adsautopilot.net](mailto:support@adsautopilot.net)
 - Google Ads Help: [Google Ads Customer Match Guide](https://support.google.com/google-ads/answer/6379332)
 
 ## Advanced Configuration
 
 ### Custom Size Thresholds
 
-Configure minimum audience size in ProofKit settings:
+Configure minimum audience size in Ads Autopilot AI settings:
 
 ```
 AUDIENCE_MIN_SIZE: 5000  # Custom minimum size
@@ -353,8 +353,8 @@ const listSize = await googleAds.customers.userLists.get({
 
 ### Data Handling
 
-- Customer data is hashed by Google Ads, not ProofKit
-- ProofKit only stores list IDs and targeting preferences
+- Customer data is hashed by Google Ads, not Ads Autopilot AI
+- Ads Autopilot AI only stores list IDs and targeting preferences
 - Follow local privacy regulations (GDPR, CCPA, etc.)
 
 ### Consent Requirements
@@ -367,4 +367,4 @@ const listSize = await googleAds.customers.userLists.get({
 
 **Last Updated**: August 2025  
 **Version**: 2.0  
-**Author**: ProofKit Engineering Team
+**Author**: Ads Autopilot AI Engineering Team

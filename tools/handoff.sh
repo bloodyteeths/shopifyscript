@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Append directive note to docs/PROOFKIT_ROADMAP_FINAL.md if not present
-if ! grep -q "sole source of truth" docs/PROOFKIT_ROADMAP_FINAL.md 2>/dev/null; then
-  cat >> docs/PROOFKIT_ROADMAP_FINAL.md <<'EOF'
+# Append directive note to docs/ADS_AUTOPILOT_AI_ROADMAP_FINAL.md if not present
+if ! grep -q "sole source of truth" docs/ADS_AUTOPILOT_AI_ROADMAP_FINAL.md 2>/dev/null; then
+  cat >> docs/ADS_AUTOPILOT_AI_ROADMAP_FINAL.md <<'EOF'
 
 ---
 
@@ -16,6 +16,6 @@ if grep -q 'FEATURE_AI_DRAFTS' backend/server.js && grep -q 'ENABLE_SCRIPT' back
   echo "Flags present in backend/server.js"
 fi
 
-echo "Handoff ready. Run smoke tests per PROOFKIT_ROADMAP_FINAL.md."
+echo "Handoff ready. Run smoke tests per ADS_AUTOPILOT_AI_ROADMAP_FINAL.md."
 
 

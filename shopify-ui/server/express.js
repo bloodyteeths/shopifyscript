@@ -76,6 +76,6 @@ export default app;
 // For local development
 if (process.env.NODE_ENV !== "production" || !process.env.VERCEL) {
   app.listen(port, () => {
-    console.log(`Proofkit UI (express) at http://localhost:${port}`);
+    console.log(`Ads Autopilot AI UI (express) at http://localhost:${port}`);
   });
 }

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * ProofKit Ads Script - PROMOTE Gate Integration
+ * Ads Autopilot AI Ads Script - PROMOTE Gate Integration
  *
  * This script implements the critical production safety gate that blocks
  * deployments if idempotency tests fail. It integrates with CI/CD pipelines
@@ -44,7 +44,7 @@ class PromoteGate {
    * @returns {Object} Gate decision with detailed results
    */
   async evaluateGate() {
-    console.log("🔒 ProofKit PROMOTE Gate - Evaluating deployment safety...");
+    console.log("🔒 Ads Autopilot AI PROMOTE Gate - Evaluating deployment safety...");
 
     try {
       // Check for recent idempotency test results
@@ -438,7 +438,7 @@ class PromoteGate {
 
         if (
           content.includes("LABEL_GUARD") ||
-          content.includes("PROOFKIT_AUTOMATED")
+          content.includes("ADS_AUTOPILOT_AI_AUTOMATED")
         ) {
           labelGuardFound = true;
           break;
@@ -466,7 +466,7 @@ class PromoteGate {
    */
   async checkReservedKeywords() {
     try {
-      const reservedKeywords = ["proofkit", "brand", "competitor", "important"];
+      const reservedKeywords = ["adsautopilot", "brand", "competitor", "important"];
       const logDir = this.options.logDirectory;
 
       if (!fs.existsSync(logDir)) {

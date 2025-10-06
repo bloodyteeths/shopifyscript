@@ -59,7 +59,7 @@ const sampleAdData = {
 };
 
 async function testContentIntelligenceSystem() {
-  console.log('🚀 Testing ProofKit Content Intelligence System\n');
+  console.log('🚀 Testing Ads Autopilot AI Content Intelligence System\n');
 
   try {
     // Test 1: Content Intelligence Analysis
@@ -251,7 +251,7 @@ async function main() {
     console.log('🔍 Keyword Mining: Semantic extraction and intent classification');
     console.log('⚡ Content Optimization: SEO, conversion, and ad relevance analysis');
     console.log('🔗 System Integration: All services working together seamlessly');
-    console.log('\n✅ ProofKit Content Intelligence System is ready for production!');
+    console.log('\n✅ Ads Autopilot AI Content Intelligence System is ready for production!');
   } else {
     console.log('\n❌ System test failed. Please check the error details above.');
   }

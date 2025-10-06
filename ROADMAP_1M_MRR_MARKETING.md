@@ -1,5 +1,5 @@
 # 🎯 COMPREHENSIVE $1M MRR MARKETING ROADMAP
-**ProofKit SaaS - Day-by-Day Marketing Execution Plan**
+**Ads Autopilot AI SaaS - Day-by-Day Marketing Execution Plan**
 
 **Target:** $1,000,000 Monthly Recurring Revenue by Month 12  
 **Initial Budget:** $200 → 70% Revenue Reinvestment Strategy  
@@ -45,7 +45,7 @@ Month 12:  17,500+ customers × $58 ARPU = $1,015,000 MRR ✅
   - Primary keywords: "Google Ads automation", "AI campaign optimization", "Shopify advertising"
   - Long-tail keywords: "automated Google Ads for Shopify", "AI bid management Shopify"
 - **Afternoon (4 hours):** Optimize app listing
-  - App name: "ProofKit: AI Google Ads Automation" (29 characters)
+  - App name: "Ads Autopilot AI: AI Google Ads Automation" (29 characters)
   - Description: Focus on ROI, automation, time-saving benefits
   - Screenshots: Before/after campaign performance, dashboard views
   - Review competitive apps (AdScale, Adwisely) for positioning gaps
@@ -329,7 +329,7 @@ Premium Positioning:
 9:30-10:00 AM: LinkedIn Outreach
 - Send 25 connection requests with personalized messages
 - Engage with prospects' content (likes, comments)
-- Message warm connections about ProofKit
+- Message warm connections about Ads Autopilot AI
 
 10:00-10:30 AM: Campaign Monitoring
 - Check Google Ads performance and optimize
@@ -383,7 +383,7 @@ Would you be interested in a free 15-minute audit of your current Google Ads set
 
 Best regards,
 [Your name]
-ProofKit AI Automation
+Ads Autopilot AI AI Automation
 
 P.S. Here's a free guide I created: "First 30 Days of Google Ads for Shopify"
 ```
@@ -424,7 +424,7 @@ Would you be open to a 15-minute conversation this week?
 
 Best,
 [Your name]
-ProofKit Enterprise Solutions
+Ads Autopilot AI Enterprise Solutions
 ```
 
 ---
@@ -439,7 +439,7 @@ Morning (9:30-10:00 AM):
 - Share 1 piece of valuable content (industry insights)
 
 Afternoon (4:00-4:30 PM):  
-- Message 15 warm connections about ProofKit
+- Message 15 warm connections about Ads Autopilot AI
 - Join and engage in Shopify/e-commerce groups
 - Share customer success stories and case studies
 ```

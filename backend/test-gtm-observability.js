@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * ProofKit GTM/Observability System Test Suite
+ * Ads Autopilot AI GTM/Observability System Test Suite
  * Comprehensive testing of weekly summaries, anomaly detection, alerts, and Looker integration
  */
 
@@ -448,7 +448,7 @@ async function testLookerTemplate() {
     const templatePath = path.resolve(
       process.cwd(),
       "looker-studio",
-      "proofkit-template.json",
+      "adsautopilot-template.json",
     );
     const templateContent = await fs.promises.readFile(templatePath, "utf8");
     const template = JSON.parse(templateContent);
@@ -549,7 +549,7 @@ async function cleanupTestData() {
  * Main Test Runner
  */
 async function runTests() {
-  console.log("🚀 ProofKit GTM/Observability System Test Suite");
+  console.log("🚀 Ads Autopilot AI GTM/Observability System Test Suite");
   console.log("================================================");
   console.log(`Test Tenant: ${testConfig.tenant}`);
   console.log(`Mode: ${testConfig.runAll ? "Full" : "Quick"}`);

@@ -1,5 +1,5 @@
 /**
- * Token Usage Monitoring Service for ProofKit SaaS
+ * Token Usage Monitoring Service for Ads Autopilot AI SaaS
  * Comprehensive token tracking, cost monitoring, and budget management
  * 
  * Features:

@@ -1,5 +1,5 @@
 /**
- * Optimization Rules Engine for ProofKit SaaS
+ * Optimization Rules Engine for Ads Autopilot AI SaaS
  *
  * Implements customizable optimization rules, A/B testing framework,
  * and machine learning predictions for campaign optimization

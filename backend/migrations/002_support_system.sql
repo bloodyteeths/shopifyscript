@@ -1,4 +1,4 @@
--- ProofKit Support System Migration
+-- Ads Autopilot AI Support System Migration
 -- Version: 002 - Support System
 -- Description: Tier-based support ticket system with SLA tracking
 
@@ -245,9 +245,9 @@ INSERT INTO support_sla_config (subscription_tier, ticket_category, ticket_prior
 
 -- Insert contact methods configuration
 INSERT INTO support_contact_methods (subscription_tier, email_support, phone_support, priority_routing, dedicated_manager, support_email, support_phone, guaranteed_response_hours, guaranteed_resolution_hours) VALUES
-('starter', TRUE, FALSE, FALSE, FALSE, 'support@proofkit.com', NULL, 24, NULL),
-('professional', TRUE, FALSE, TRUE, FALSE, 'priority@proofkit.com', NULL, 12, 48),
-('enterprise', TRUE, TRUE, TRUE, TRUE, 'enterprise@proofkit.com', '(307) 395-9830', 6, 24);
+('starter', TRUE, FALSE, FALSE, FALSE, 'support@adsautopilot.com', NULL, 24, NULL),
+('professional', TRUE, FALSE, TRUE, FALSE, 'priority@adsautopilot.com', NULL, 12, 48),
+('enterprise', TRUE, TRUE, TRUE, TRUE, 'enterprise@adsautopilot.com', '(307) 395-9830', 6, 24);
 
 -- Function to generate ticket number
 CREATE OR REPLACE FUNCTION generate_ticket_number()

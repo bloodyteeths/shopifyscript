@@ -1,5 +1,5 @@
 /**
- * Brand Voice Profile Generator for ProofKit SaaS
+ * Brand Voice Profile Generator for Ads Autopilot AI SaaS
  * Advanced brand personality detection, tone analysis, and voice profiling
  *
  * Features:

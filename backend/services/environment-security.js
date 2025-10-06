@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * ProofKit Environment Security Service
+ * Ads Autopilot AI Environment Security Service
  *
  * Prevents environment bypass attacks by implementing deployment-time
  * environment locking and runtime validation.

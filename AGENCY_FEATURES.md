@@ -1,8 +1,8 @@
-# ProofKit Agency Features
+# Ads Autopilot AI Agency Features
 
 ## Overview
 
-ProofKit's agency-scale utilities provide comprehensive tools for managing multiple clients, automating workflows, and generating white-label reports. This system is designed for agencies and consultants managing multiple advertising accounts.
+Ads Autopilot AI's agency-scale utilities provide comprehensive tools for managing multiple clients, automating workflows, and generating white-label reports. This system is designed for agencies and consultants managing multiple advertising accounts.
 
 ## Core Features
 
@@ -419,4 +419,4 @@ LOG_LEVEL=debug
 
 ## License
 
-This agency features extension maintains the same license as the core ProofKit system.
+This agency features extension maintains the same license as the core Ads Autopilot AI system.

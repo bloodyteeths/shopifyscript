@@ -1,4 +1,4 @@
-# Shopify App Store Review Bundle - ProofKit
+# Shopify App Store Review Bundle - Ads Autopilot AI
 
 This directory contains all documentation and evidence required for Shopify App Store review and annual compliance.
 
@@ -80,8 +80,8 @@ docs/shopify-review/
 
 ## 🔗 Important Links
 
-- **App URL**: `https://proofkit.app`
-- **Support Email**: `support@proofkit.app`
+- **App URL**: `https://adsautopilot.app`
+- **Support Email**: `support@adsautopilot.app`
 - **Privacy Policy**: `/docs/shopify-review/support/privacy-policy.md`
 - **Terms of Service**: `/docs/shopify-review/support/terms-of-service.md`
 - **Developer Documentation**: `/docs/`

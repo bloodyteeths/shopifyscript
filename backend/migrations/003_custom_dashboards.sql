@@ -1,4 +1,4 @@
--- ProofKit Custom Dashboards Migration
+-- Ads Autopilot AI Custom Dashboards Migration
 -- Version: 003 - Enterprise Custom Dashboards
 -- Description: Tables for Enterprise-tier custom dashboard configurations
 

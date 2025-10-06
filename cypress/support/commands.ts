@@ -57,14 +57,14 @@ Cypress.Commands.add("resetSteps", () => {
 });
 
 /**
- * Command to stub ProofKit API responses
+ * Command to stub Ads Autopilot AI API responses
  */
 Cypress.Commands.add(
-  "stubProofKitAPI",
+  "stubAds Autopilot AIAPI",
   (scenario: "success" | "error" | "loading" = "success") => {
     const baseConfig = {
       enabled: true,
-      label: "PROOFKIT_AUTOMATED",
+      label: "ADS_AUTOPILOT_AI_AUTOMATED",
       daily_budget_cap_default: 25.0,
       cpc_ceiling_default: 2.5,
       business_start: "09:00",
@@ -240,7 +240,7 @@ declare global {
     interface Chainable {
       step(label: string, expectText: string, route?: string): Chainable<void>;
       resetSteps(): Chainable<void>;
-      stubProofKitAPI(
+      stubAds Autopilot AIAPI(
         scenario?: "success" | "error" | "loading",
       ): Chainable<void>;
       checkA11y(context?: string, options?: any): Chainable<void>;

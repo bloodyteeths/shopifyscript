@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * PROOFKIT CANARY VALIDATION SYSTEM
+ * ADS_AUTOPILOT_AI CANARY VALIDATION SYSTEM
  * Automated safety validation for canary deployments
  * P0-7 CRITICAL: Prevents risky first deploys
  */

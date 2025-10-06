@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-describe("ProofKit Manual Funnel Screenshots", () => {
+describe("Ads Autopilot AI Manual Funnel Screenshots", () => {
   before(() => {
     // Configure error handling
     Cypress.on("uncaught:exception", (err, runnable) => {
@@ -15,7 +15,7 @@ describe("ProofKit Manual Funnel Screenshots", () => {
     });
   });
 
-  it("should manually capture each ProofKit interface section", () => {
+  it("should manually capture each Ads Autopilot AI interface section", () => {
     // Routes to test
     const routes = [
       { path: "/app", name: "main-dashboard", wait: 4000 },
@@ -59,6 +59,6 @@ describe("ProofKit Manual Funnel Screenshots", () => {
       overwrite: true,
     });
 
-    cy.log("✅ All ProofKit interface screenshots captured successfully!");
+    cy.log("✅ All Ads Autopilot AI interface screenshots captured successfully!");
   });
 });

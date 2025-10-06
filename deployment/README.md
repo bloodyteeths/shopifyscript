@@ -1,6 +1,6 @@
-# ProofKit SaaS DevOps Infrastructure
+# Ads Autopilot AI SaaS DevOps Infrastructure
 
-This directory contains the production-ready DevOps infrastructure for ProofKit SaaS, including Docker configuration, environment management, health monitoring, logging, and deployment automation.
+This directory contains the production-ready DevOps infrastructure for Ads Autopilot AI SaaS, including Docker configuration, environment management, health monitoring, logging, and deployment automation.
 
 ## 🚀 Quick Start
 
@@ -64,10 +64,10 @@ The `Dockerfile` uses a multi-stage build approach for optimal production images
 
 ```bash
 # Build production image
-docker build -t proofkit-saas:latest .
+docker build -t adsautopilot-saas:latest .
 
 # Run container
-docker run -p 3000:3000 --env-file .env proofkit-saas:latest
+docker run -p 3000:3000 --env-file .env adsautopilot-saas:latest
 ```
 
 ## 🔧 Environment Management
@@ -260,7 +260,7 @@ The `production-start.sh` script handles:
 
 ### Services
 
-1. **proofkit-app** - Main application container
+1. **adsautopilot-app** - Main application container
 2. **redis** - Caching and session storage
 3. **nginx** - Reverse proxy and load balancer
 4. **prometheus** - Metrics collection (monitoring profile)
@@ -283,10 +283,10 @@ docker-compose up -d
 docker-compose --profile monitoring up -d
 
 # View logs
-docker-compose logs -f proofkit-app
+docker-compose logs -f adsautopilot-app
 
 # Scale application
-docker-compose up -d --scale proofkit-app=3
+docker-compose up -d --scale adsautopilot-app=3
 ```
 
 ## 🔒 Security Features
@@ -424,7 +424,7 @@ curl http://localhost:3000/metrics
 curl http://localhost:3000/health | jq .
 
 # Monitor resource usage
-docker stats proofkit-app
+docker stats adsautopilot-app
 ```
 
 ## 🔮 Production Considerations

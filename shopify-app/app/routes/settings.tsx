@@ -83,12 +83,12 @@ export default function Settings() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          "proofkit.tenant_id": formData.tenantId,
-          "proofkit.backend_url": formData.backendUrl,
-          "proofkit.secret_key": formData.hmacSecret,
-          "proofkit.ga4_measurement_id": formData.ga4MeasurementId,
-          "proofkit.google_ads_id": formData.googleAdsId,
-          "proofkit.conversion_label": formData.conversionLabel,
+          "adsautopilot.tenant_id": formData.tenantId,
+          "adsautopilot.backend_url": formData.backendUrl,
+          "adsautopilot.secret_key": formData.hmacSecret,
+          "adsautopilot.ga4_measurement_id": formData.ga4MeasurementId,
+          "adsautopilot.google_ads_id": formData.googleAdsId,
+          "adsautopilot.conversion_label": formData.conversionLabel,
         }),
       });
 
@@ -104,7 +104,7 @@ export default function Settings() {
           tenant: formData.tenantId,
           config: {
             enabled: true,
-            label: "PROOFKIT_AUTOMATED",
+            label: "ADS_AUTOPILOT_AI_AUTOMATED",
             backend_url: formData.backendUrl,
             hmac_secret: formData.hmacSecret,
             ga4_measurement_id: formData.ga4MeasurementId,
@@ -147,8 +147,8 @@ export default function Settings() {
 
   return (
     <Page
-      title="ProofKit Settings"
-      subtitle="Configure your connection to ProofKit backend and tracking"
+      title="Ads Autopilot AI Settings"
+      subtitle="Configure your connection to Ads Autopilot AI backend and tracking"
       primaryAction={{
         content: "Continue to Setup Wizard",
         url: "/app/funnel/wizard",
@@ -180,7 +180,7 @@ export default function Settings() {
                     value={formData.tenantId}
                     onChange={handleInputChange("tenantId")}
                     placeholder="demo-tenant-1"
-                    helpText="Your unique ProofKit tenant identifier"
+                    helpText="Your unique Ads Autopilot AI tenant identifier"
                     requiredIndicator
                     data-testid="settings-tenant-id"
                     autoComplete="off"
@@ -190,8 +190,8 @@ export default function Settings() {
                     label="Backend URL"
                     value={formData.backendUrl}
                     onChange={handleInputChange("backendUrl")}
-                    placeholder="https://api.proofkit.com"
-                    helpText="ProofKit backend API endpoint"
+                    placeholder="https://api.adsautopilot.com"
+                    helpText="Ads Autopilot AI backend API endpoint"
                     requiredIndicator
                     data-testid="settings-backend-url"
                     autoComplete="off"

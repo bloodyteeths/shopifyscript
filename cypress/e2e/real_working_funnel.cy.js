@@ -1,13 +1,13 @@
 /// <reference types="cypress" />
 
-describe("ProofKit Real Working Funnel Screenshots", () => {
+describe("Ads Autopilot AI Real Working Funnel Screenshots", () => {
   beforeEach(() => {
     // Stub backend API calls that might fail but allow UI to render
     cy.intercept("GET", "**/api/config**", {
       statusCode: 200,
       body: {
         ok: true,
-        config: { enabled: true, label: "PROOFKIT_AUTOMATED", PROMOTE: false },
+        config: { enabled: true, label: "ADS_AUTOPILOT_AI_AUTOMATED", PROMOTE: false },
       },
     });
     cy.intercept("GET", "**/api/insights**", {
@@ -28,7 +28,7 @@ describe("ProofKit Real Working Funnel Screenshots", () => {
     });
   });
 
-  it("should capture working ProofKit interface across all sections", () => {
+  it("should capture working Ads Autopilot AI interface across all sections", () => {
     let stepCounter = 0;
 
     // Step 1: Main app dashboard
@@ -233,7 +233,7 @@ describe("ProofKit Real Working Funnel Screenshots", () => {
         name: "Main Dashboard Working",
         route: "/app",
         description:
-          "ProofKit main dashboard with working navigation and feature cards",
+          "Ads Autopilot AI main dashboard with working navigation and feature cards",
         screenshot: "01-main-dashboard-working.png",
       },
       {
@@ -324,7 +324,7 @@ describe("ProofKit Real Working Funnel Screenshots", () => {
     ]);
 
     cy.log(
-      `✅ Captured ${stepCounter} real working ProofKit interface screenshots!`,
+      `✅ Captured ${stepCounter} real working Ads Autopilot AI interface screenshots!`,
     );
   });
 });

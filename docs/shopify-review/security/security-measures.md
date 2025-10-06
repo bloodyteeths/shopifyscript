@@ -1,4 +1,4 @@
-# ProofKit Security Implementation & Measures
+# Ads Autopilot AI Security Implementation & Measures
 
 ## 🔒 Executive Summary
 
@@ -8,7 +8,7 @@
 **Last Security Audit**: August 16, 2025  
 **Next Scheduled Review**: November 2025
 
-ProofKit implements comprehensive security measures across all layers of the application stack, from infrastructure to application code, ensuring the highest level of protection for merchant data and system integrity.
+Ads Autopilot AI implements comprehensive security measures across all layers of the application stack, from infrastructure to application code, ensuring the highest level of protection for merchant data and system integrity.
 
 ---
 
@@ -72,7 +72,7 @@ const authConfig = {
   grant_type: "authorization_code",
   client_id: process.env.SHOPIFY_API_KEY,
   client_secret: process.env.SHOPIFY_API_SECRET, // Server-side only
-  redirect_uri: "https://proofkit.app/auth/callback",
+  redirect_uri: "https://adsautopilot.app/auth/callback",
   scope: "read_products",
   code_challenge_method: "S256",
   code_challenge: generateCodeChallenge(),
@@ -734,12 +734,12 @@ security_tests:
 
 ## 📞 Security Contact Information
 
-**Security Team**: security@proofkit.app  
-**Security Incidents**: security-incident@proofkit.app  
-**Vulnerability Reports**: security-vulnerability@proofkit.app  
-**Compliance Questions**: compliance@proofkit.app
+**Security Team**: security@adsautopilot.app  
+**Security Incidents**: security-incident@adsautopilot.app  
+**Vulnerability Reports**: security-vulnerability@adsautopilot.app  
+**Compliance Questions**: compliance@adsautopilot.app
 
-**Emergency Security Hotline**: Available 24/7 via security@proofkit.app with "CRITICAL SECURITY INCIDENT" in subject line
+**Emergency Security Hotline**: Available 24/7 via security@adsautopilot.app with "CRITICAL SECURITY INCIDENT" in subject line
 
 ---
 

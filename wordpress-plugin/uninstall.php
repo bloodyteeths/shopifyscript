@@ -1,11 +1,11 @@
 <?php
 /**
- * Uninstall script for Proofkit Pixels & Ads Helper
+ * Uninstall script for Ads Autopilot AI Pixels & Ads Helper
  *
  * This file is executed when the plugin is uninstalled via WordPress admin.
  * It removes all plugin options and data from the database.
  *
- * @package ProofkitPixelsAdsHelper
+ * @package Ads Autopilot AIPixelsAdsHelper
  * @since 1.0.0
  */
 
@@ -18,7 +18,7 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
  * Remove plugin options from the database.
  * Handles both single site and multisite installations.
  */
-function pk_proofkit_uninstall_cleanup() {
+function pk_adsautopilot_uninstall_cleanup() {
 	// Array of option names to delete.
 	$options = array(
 		'pk_ga4_id',
@@ -58,4 +58,4 @@ function pk_proofkit_uninstall_cleanup() {
 }
 
 // Execute cleanup.
-pk_proofkit_uninstall_cleanup();
+pk_adsautopilot_uninstall_cleanup();

@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-describe("ProofKit Complete Merchant Funnel", () => {
+describe("Ads Autopilot AI Complete Merchant Funnel", () => {
   before(() => {
     // Initialize documentation system
     cy.task("initializeFunnelDocs");
@@ -19,7 +19,7 @@ describe("ProofKit Complete Merchant Funnel", () => {
         ok: true,
         config: {
           enabled: true,
-          label: "PROOFKIT_AUTOMATED",
+          label: "ADS_AUTOPILOT_AI_AUTOMATED",
           PROMOTE: false,
         },
       },
@@ -52,7 +52,7 @@ describe("ProofKit Complete Merchant Funnel", () => {
     cy.visit("/app");
     cy.step(
       "App Installation Landing",
-      "User sees ProofKit installation page with clear value proposition and install button",
+      "User sees Ads Autopilot AI installation page with clear value proposition and install button",
       "/app",
     );
 
@@ -61,7 +61,7 @@ describe("ProofKit Complete Merchant Funnel", () => {
       if (!$body.find('[data-testid="setup-wizard-prompt"]').length) {
         $body.append(`
           <div data-testid="setup-wizard-prompt" style="padding: 20px; border: 1px solid #ccc; margin: 20px;">
-            <h2>Welcome to ProofKit!</h2>
+            <h2>Welcome to Ads Autopilot AI!</h2>
             <p>Complete your setup to start automating your Google Ads</p>
             <button data-testid="start-setup-button" style="padding: 10px 20px; background: #008060; color: white; border: none; cursor: pointer;">
               Start Setup Wizard
@@ -93,7 +93,7 @@ describe("ProofKit Complete Merchant Funnel", () => {
       if (!$body.find('[data-testid="settings-form"]').length) {
         $body.append(`
           <div data-testid="settings-form" style="padding: 20px; max-width: 600px;">
-            <h2>ProofKit Settings</h2>
+            <h2>Ads Autopilot AI Settings</h2>
             <form>
               <div style="margin-bottom: 15px;">
                 <label>Tenant ID *</label>
@@ -162,7 +162,7 @@ describe("ProofKit Complete Merchant Funnel", () => {
     cy.get("body").then(($body) => {
       $body.html(`
         <div data-testid="wizard-page" style="padding: 20px; max-width: 800px;">
-          <h1>ProofKit Setup Wizard</h1>
+          <h1>Ads Autopilot AI Setup Wizard</h1>
           
           <div data-testid="wizard-progress" style="margin-bottom: 20px;">
             <div style="background: #f0f0f0; height: 8px; border-radius: 4px;">
@@ -612,7 +612,7 @@ describe("ProofKit Complete Merchant Funnel", () => {
           <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; padding: 30px; border-radius: 8px; max-width: 500px; width: 90%;">
             <h3>Audience Upload Instructions</h3>
             <div style="text-align: left;">
-              <p data-testid="upload-step-1"><strong>Step 1:</strong> Export your audience CSV from ProofKit</p>
+              <p data-testid="upload-step-1"><strong>Step 1:</strong> Export your audience CSV from Ads Autopilot AI</p>
               <p><strong>Step 2:</strong> In Google Ads, go to Tools & Settings → Audience Manager</p>
               <p><strong>Step 3:</strong> Click + and select "Customer list"</p>
               <p><strong>Step 4:</strong> Upload your CSV file</p>
@@ -733,7 +733,7 @@ describe("ProofKit Complete Merchant Funnel", () => {
             
             <div data-testid="setup-complete" style="display: none; background: #d4edda; padding: 20px; border-radius: 4px; text-align: center; margin-top: 15px;">
               <h3>🎉 Setup Complete!</h3>
-              <p>Your ProofKit automation is now active and optimizing your Google Ads campaigns.</p>
+              <p>Your Ads Autopilot AI automation is now active and optimizing your Google Ads campaigns.</p>
               <button data-testid="dashboard-link" style="background: #008060; color: white; padding: 12px 24px; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">
                 Go to Dashboard
               </button>

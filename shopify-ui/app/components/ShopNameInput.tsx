@@ -210,7 +210,7 @@ export function ShopNameInput({
             fontStyle: "italic",
           }}
         >
-          <strong>Examples:</strong> "proofkit", "my-store", "awesome-shop"
+          <strong>Examples:</strong> "adsautopilot", "my-store", "awesome-shop"
         </div>
       )}
     </div>

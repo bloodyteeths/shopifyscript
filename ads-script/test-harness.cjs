@@ -1,5 +1,5 @@
 /**
- * ProofKit Ads Script Test Harness - Idempotency Validation
+ * Ads Autopilot AI Ads Script Test Harness - Idempotency Validation
  *
  * This harness ensures that Google Ads Script runs are idempotent by:
  * 1. Running the script in preview mode to capture planned mutations
@@ -28,7 +28,7 @@ class AdsScriptTestHarness {
   init(config = {}) {
     this.config = {
       logDirectory:
-        config.logDirectory || "/Users/tamsar/Downloads/proofkit-saas/run_logs",
+        config.logDirectory || "/Users/tamsar/Downloads/adsautopilot-saas/run_logs",
       maxRetries: config.maxRetries || 3,
       assertionTimeout: config.assertionTimeout || 30000,
       ...config,

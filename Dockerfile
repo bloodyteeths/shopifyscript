@@ -1,4 +1,4 @@
-# Multi-stage Docker build for ProofKit SaaS
+# Multi-stage Docker build for Ads Autopilot AI SaaS
 # Production-ready configuration with optimization and security
 
 # Stage 1: Base Node.js setup
@@ -17,7 +17,7 @@ RUN apk update && apk upgrade && \
 
 # Create non-root user for security
 RUN addgroup -g 1001 -S nodejs && \
-    adduser -S proofkit -u 1001
+    adduser -S adsautopilot -u 1001
 
 # Stage 2: Dependencies installation
 FROM base AS deps
@@ -56,16 +56,16 @@ RUN apk update && apk upgrade && \
 
 # Create non-root user
 RUN addgroup -g 1001 -S nodejs && \
-    adduser -S proofkit -u 1001
+    adduser -S adsautopilot -u 1001
 
 # Copy production dependencies
-COPY --from=deps --chown=proofkit:nodejs /app/node_modules ./node_modules
-COPY --from=deps --chown=proofkit:nodejs /app/backend/node_modules ./backend/node_modules
+COPY --from=deps --chown=adsautopilot:nodejs /app/node_modules ./node_modules
+COPY --from=deps --chown=adsautopilot:nodejs /app/backend/node_modules ./backend/node_modules
 
 # Copy application code
-COPY --from=builder --chown=proofkit:nodejs /app/backend ./backend
-COPY --from=builder --chown=proofkit:nodejs /app/package*.json ./
-COPY --from=builder --chown=proofkit:nodejs /app/shopify-ui/dist ./public 2>/dev/null || true
+COPY --from=builder --chown=adsautopilot:nodejs /app/backend ./backend
+COPY --from=builder --chown=adsautopilot:nodejs /app/package*.json ./
+COPY --from=builder --chown=adsautopilot:nodejs /app/shopify-ui/dist ./public 2>/dev/null || true
 
 # Set production environment
 ENV NODE_ENV=production
@@ -77,7 +77,7 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
     CMD curl -f http://localhost:$PORT/health || exit 1
 
 # Switch to non-root user
-USER proofkit
+USER adsautopilot
 
 # Expose port
 EXPOSE 3000

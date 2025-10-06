@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * PROOFKIT CANARY ROLLBACK SYSTEM
+ * ADS_AUTOPILOT_AI CANARY ROLLBACK SYSTEM
  * Automatic safety rollback mechanisms with monitoring triggers
  * P0-7 CRITICAL: Immediate rollback for safety violations
  */

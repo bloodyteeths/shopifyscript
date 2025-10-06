@@ -1,5 +1,5 @@
 /**
- * Campaign Auto-Optimizer Service for ProofKit SaaS
+ * Campaign Auto-Optimizer Service for Ads Autopilot AI SaaS
  *
  * Continuously optimizes Google Ads campaigns based on real-time performance data
  * Acts as a professional PPC manager making intelligent decisions 24/7

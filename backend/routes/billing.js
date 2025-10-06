@@ -1,5 +1,5 @@
 /**
- * ProofKit Billing Routes
+ * Ads Autopilot AI Billing Routes
  * Handles both Stripe (WordPress) and Shopify billing endpoints
  */
 

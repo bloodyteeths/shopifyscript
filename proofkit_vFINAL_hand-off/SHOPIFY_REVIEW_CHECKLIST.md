@@ -1,4 +1,4 @@
-# Shopify Review Checklist (Proofkit)
+# Shopify Review Checklist (Ads Autopilot AI)
 
 - ✅ Embedded app (Polaris + App Bridge)
 - ✅ Clear value prop and screenshots

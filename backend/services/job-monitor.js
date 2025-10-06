@@ -1,5 +1,5 @@
 /**
- * Job Monitor Service for ProofKit SaaS
+ * Job Monitor Service for Ads Autopilot AI SaaS
  * Real-time job status monitoring, performance metrics, and alerting
  */
 

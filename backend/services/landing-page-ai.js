@@ -1,5 +1,5 @@
 /**
- * Landing Page AI Optimization Service for ProofKit SaaS
+ * Landing Page AI Optimization Service for Ads Autopilot AI SaaS
  * Analyzes landing pages and generates AI-powered optimization suggestions
  * PRO tier feature - never auto-publishes, only creates drafts
  */
@@ -113,7 +113,7 @@ export class LandingPageAIService {
     try {
       const response = await fetch(url, {
         headers: {
-          'User-Agent': 'ProofKit-AI-Analyzer/1.0'
+          'User-Agent': 'Ads Autopilot AI-AI-Analyzer/1.0'
         },
         timeout: 10000
       });

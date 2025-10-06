@@ -1,7 +1,7 @@
 {
-  "name": "proofkit-saas",
+  "name": "adsautopilot-saas",
   "version": "1.0.0",
-  "description": "ProofKit SaaS - Comprehensive testing suite and application",
+  "description": "Ads Autopilot AI SaaS - Comprehensive testing suite and application",
   "type": "module",
   "scripts": {
     "dev:backend": "cd backend && npm run dev",

@@ -2,7 +2,7 @@
 
 describe("Audience Attachment & Size Guards", () => {
   beforeEach(() => {
-    cy.stubProofKitAPI("success");
+    cy.stubAds Autopilot AIAPI("success");
     cy.fixture("api-responses").as("apiResponses");
     cy.fixture("tenant-data").as("testData");
   });

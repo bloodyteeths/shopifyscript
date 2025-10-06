@@ -1,4 +1,4 @@
-# PROOFKIT CANARY TEST CHECKLIST - COMPREHENSIVE SAFETY GUIDE
+# ADS_AUTOPILOT_AI CANARY TEST CHECKLIST - COMPREHENSIVE SAFETY GUIDE
 
 ## CRITICAL SAFETY OVERVIEW
 
@@ -21,7 +21,7 @@
 ### 0.2 Canary Campaign Selection
 
 - [ ] **Single Campaign**: Pick ONE Search campaign only
-- [ ] **Label Applied**: `PROOFKIT_AUTOMATED` label in Google Ads UI
+- [ ] **Label Applied**: `ADS_AUTOPILOT_AI_AUTOMATED` label in Google Ads UI
 - [ ] **Performance History**: Campaign has ≥7 days of data
 - [ ] **Budget Baseline**: Current daily budget documented
 - [ ] **CPC Baseline**: Current avg CPC documented
@@ -68,7 +68,7 @@ PROMOTE=FALSE (CRITICAL: Only enable during window)
 
 - [ ] **All Other Campaigns**: Listed by name (CSV format)
 - [ ] **Double-Check**: Only canary campaign NOT in exclusions
-- [ ] **Label Guard**: `PROOFKIT_AUTOMATED` as fallback protection
+- [ ] **Label Guard**: `ADS_AUTOPILOT_AI_AUTOMATED` as fallback protection
 - [ ] **Validation**: Script verifies exclusions before run
 
 ---

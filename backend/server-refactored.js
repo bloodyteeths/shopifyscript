@@ -919,7 +919,7 @@ setupErrorHandling(app);
 
 // Start server
 app.listen(PORT, () => {
-  console.log(`Proofkit backend on :${PORT}`);
+  console.log(`Ads Autopilot AI backend on :${PORT}`);
   console.log(
     `Sheets auth: ${process.env.GOOGLE_SERVICE_EMAIL ? "service_account " + process.env.GOOGLE_SERVICE_EMAIL : "unknown"}`,
   );

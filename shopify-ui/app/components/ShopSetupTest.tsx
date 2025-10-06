@@ -21,7 +21,7 @@ export function ShopSetupTest() {
     needsSetup: boolean;
   }>({
     stored: null,
-    current: "proofkit",
+    current: "adsautopilot",
     needsSetup: true,
   });
 
@@ -47,7 +47,7 @@ export function ShopSetupTest() {
   const testCases = [
     {
       name: "Valid Names",
-      values: ["proofkit", "my-store", "test123", "awesome_shop"],
+      values: ["adsautopilot", "my-store", "test123", "awesome_shop"],
     },
     {
       name: "Invalid Names",

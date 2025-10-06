@@ -1,5 +1,5 @@
 /**
- * Content Optimizer Service for ProofKit SaaS
+ * Content Optimizer Service for Ads Autopilot AI SaaS
  * Advanced content optimization for landing pages, ad-to-landing relevance, and conversion
  *
  * Features:

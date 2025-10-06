@@ -1,5 +1,5 @@
 /**
- * Dynamic Copy Generator Service for ProofKit SaaS
+ * Dynamic Copy Generator Service for Ads Autopilot AI SaaS
  * Creates compelling, personalized ad copy using ALL available data sources
  *
  * Features:

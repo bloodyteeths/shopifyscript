@@ -1,8 +1,8 @@
-# ProofKit Privacy Implementation Documentation
+# Ads Autopilot AI Privacy Implementation Documentation
 
 ## Overview
 
-This document provides comprehensive documentation of ProofKit's privacy-compliant implementations for Customer Match API, PII handling, consent filtering, and data cleanup procedures. ProofKit is designed with privacy-by-design principles and implements multiple layers of data protection.
+This document provides comprehensive documentation of Ads Autopilot AI's privacy-compliant implementations for Customer Match API, PII handling, consent filtering, and data cleanup procedures. Ads Autopilot AI is designed with privacy-by-design principles and implements multiple layers of data protection.
 
 ## Table of Contents
 
@@ -18,7 +18,7 @@ This document provides comprehensive documentation of ProofKit's privacy-complia
 
 ### Implementation Details
 
-ProofKit implements industry-standard SHA-256 hashing for all PII data sent to Google's Customer Match API, ensuring that no raw personally identifiable information is transmitted or stored.
+Ads Autopilot AI implements industry-standard SHA-256 hashing for all PII data sent to Google's Customer Match API, ensuring that no raw personally identifiable information is transmitted or stored.
 
 #### Key Implementation Points:
 
@@ -73,7 +73,7 @@ ProofKit implements industry-standard SHA-256 hashing for all PII data sent to G
 
 ### Core Principle
 
-ProofKit implements a strict "no raw PII at rest" policy, ensuring that all personally identifiable information is either hashed, pseudonymized, or encrypted before storage.
+Ads Autopilot AI implements a strict "no raw PII at rest" policy, ensuring that all personally identifiable information is either hashed, pseudonymized, or encrypted before storage.
 
 ### Implementation Across Components:
 
@@ -119,7 +119,7 @@ ProofKit implements a strict "no raw PII at rest" policy, ensuring that all pers
 
 ### Multi-Layer Consent Implementation
 
-ProofKit implements comprehensive consent filtering at multiple levels:
+Ads Autopilot AI implements comprehensive consent filtering at multiple levels:
 
 #### 1. Shopify Web Pixel Consent Mode v2
 
@@ -178,8 +178,8 @@ The uninstall procedure has been enhanced to provide comprehensive cleanup while
 #### Current Implementation:
 
 ```php
-// File: /wordpress-plugin-release/proofkit-pixels-ads-helper/uninstall.php
-function pk_proofkit_uninstall_cleanup() {
+// File: /wordpress-plugin-release/adsautopilot-pixels-ads-helper/uninstall.php
+function pk_adsautopilot_uninstall_cleanup() {
   $options = array(
     'pk_ga4_id', 'pk_aw_id', 'pk_aw_label',
     'pk_backend_url', 'pk_tenant', 'pk_secret'
@@ -217,7 +217,7 @@ function pk_proofkit_uninstall_cleanup() {
 #### Enhanced Uninstall Process:
 
 ```php
-function pk_proofkit_enhanced_uninstall_cleanup() {
+function pk_adsautopilot_enhanced_uninstall_cleanup() {
   // 1. Remove theme customizations
   pk_remove_theme_pixels();
 
@@ -258,7 +258,7 @@ function pk_trigger_backend_cleanup() {
 
 ### Automated Compliance Checks
 
-ProofKit includes automated privacy compliance verification:
+Ads Autopilot AI includes automated privacy compliance verification:
 
 #### 1. Data Retention Compliance:
 
@@ -454,7 +454,7 @@ const processingActivity = {
 
 ## Conclusion
 
-ProofKit implements comprehensive privacy protection through multiple layers of security, hashing, consent management, and compliance automation. The system is designed to exceed GDPR requirements while maintaining functionality for advertising and analytics use cases.
+Ads Autopilot AI implements comprehensive privacy protection through multiple layers of security, hashing, consent management, and compliance automation. The system is designed to exceed GDPR requirements while maintaining functionality for advertising and analytics use cases.
 
 All implementations follow privacy-by-design principles and provide strong protection for user data throughout the entire data lifecycle.
 
@@ -462,6 +462,6 @@ All implementations follow privacy-by-design principles and provide strong prote
 
 For technical privacy implementation questions or compliance verification, contact:
 
-- Technical Support: support@proofkit.com
-- Privacy Officer: privacy@proofkit.com
-- Legal Compliance: legal@proofkit.com
+- Technical Support: support@adsautopilot.com
+- Privacy Officer: privacy@adsautopilot.com
+- Legal Compliance: legal@adsautopilot.com

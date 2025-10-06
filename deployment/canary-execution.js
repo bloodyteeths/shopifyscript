@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * PROOFKIT CANARY EXECUTION SYSTEM
+ * ADS_AUTOPILOT_AI CANARY EXECUTION SYSTEM
  * Time-boxed execution with comprehensive monitoring and automatic safety controls
  * P0-7 CRITICAL: Safe execution of canary deployments with real-time oversight
  */

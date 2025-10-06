@@ -23,10 +23,10 @@ export default function Index() {
   return (
     <html>
       <head>
-        <title>ProofKit - Shopify App</title>
+        <title>Ads Autopilot AI - Shopify App</title>
       </head>
       <body>
-        <h1>ProofKit Shopify App</h1>
+        <h1>Ads Autopilot AI Shopify App</h1>
         <p>This app should be accessed through the Shopify Admin panel.</p>
         <p>
           If you're seeing this page, please install the app through Shopify.

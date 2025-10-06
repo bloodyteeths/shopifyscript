@@ -4,7 +4,7 @@
       "ok": true,
       "config": {
         "enabled": true,
-        "label": "PROOFKIT_AUTOMATED",
+        "label": "ADS_AUTOPILOT_AI_AUTOMATED",
         "daily_budget_cap_default": 25.0,
         "cpc_ceiling_default": 2.5,
         "business_start": "09:00",

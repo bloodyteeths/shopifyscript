@@ -1,5 +1,5 @@
 /**
- * ProofKit Autopilot — Microsoft Ads Script Port
+ * Ads Autopilot AI — Microsoft Ads Script Port
  * Port of Google Ads Script functionality to Microsoft Ads (Bing Ads)
  * Provides automated campaign management with safety controls
  */
@@ -16,7 +16,7 @@ var RUN_MODE = "PRODUCTION"; // 'PRODUCTION', 'PREVIEW', 'IDEMPOTENCY_TEST'
 
 // Global safety guards
 var NEG_GUARD_ACTIVE = false;
-var RESERVED_KEYWORDS = ["proofkit", "brand", "competitor", "important"];
+var RESERVED_KEYWORDS = ["adsautopilot", "brand", "competitor", "important"];
 
 function main() {
   // Initialize idempotency tracking
@@ -77,7 +77,7 @@ function main() {
 
   // Collect performance metrics
   var metrics = collectPerformance_();
-  var runLogs = [[new Date(), "✓ ProofKit run complete"]];
+  var runLogs = [[new Date(), "✓ Ads Autopilot AI run complete"]];
 
   // Add idempotency tracking to run logs
   if (PREVIEW_MODE || RUN_MODE === "IDEMPOTENCY_TEST") {
@@ -118,7 +118,7 @@ function getConfig_() {
       followRedirects: true,
       validateHttpsCertificates: true,
       headers: {
-        "User-Agent": "ProofKit-MicrosoftAdsScript/1.0 (+https://proofkit.net)",
+        "User-Agent": "Ads Autopilot AI-MicrosoftAdsScript/1.0 (+https://adsautopilot.net)",
       },
     });
 
@@ -182,7 +182,7 @@ function postToBackend_(action, payload) {
         validateHttpsCertificates: true,
         headers: {
           "User-Agent":
-            "ProofKit-MicrosoftAdsScript/1.0 (+https://proofkit.net)",
+            "Ads Autopilot AI-MicrosoftAdsScript/1.0 (+https://adsautopilot.net)",
         },
       });
     } catch (e) {
@@ -907,7 +907,7 @@ function ensureSeed_(cfg) {
   var campaignIterator = BingAdsApp.campaigns().get();
   if (campaignIterator.hasNext()) return; // Campaigns already exist
 
-  var name = (cfg.desired && cfg.desired.campaign_name) || "ProofKit - Search";
+  var name = (cfg.desired && cfg.desired.campaign_name) || "Ads Autopilot AI - Search";
   var daily = cfg.daily_budget_cap_default || 3.0;
   var ceiling = cfg.cpc_ceiling_default || 0.2;
   var adGroupName = (cfg.desired && cfg.desired.ad_group) || "Default";
@@ -976,7 +976,7 @@ function ensureSeed_(cfg) {
     var adBuilder = adGroup
       .newAd()
       .responsiveSearchAdBuilder()
-      .withFinalUrl(cfg.default_final_url || "https://www.proofkit.net");
+      .withFinalUrl(cfg.default_final_url || "https://www.adsautopilot.net");
 
     headlines.slice(0, 15).forEach(function (headline) {
       adBuilder.addHeadline(
@@ -1096,7 +1096,7 @@ function ensureLabel_(name) {
     if (iterator.next().getName() === name) return;
   }
 
-  BingAdsApp.createLabel(name, "Touched by ProofKit");
+  BingAdsApp.createLabel(name, "Touched by Ads Autopilot AI");
 }
 
 function safeLabel_(entity, name) {
@@ -1147,7 +1147,7 @@ function initializeSafetyGuards_(cfg) {
   log_("• Safety Guards Initialized:");
   log_("  - PROMOTE: " + (cfg.PROMOTE ? "ENABLED" : "DISABLED"));
   log_("  - NEG_GUARD: " + (NEG_GUARD_ACTIVE ? "ACTIVE" : "INACTIVE"));
-  log_("  - LABEL_GUARD: " + (cfg.label || "PROOFKIT_AUTOMATED"));
+  log_("  - LABEL_GUARD: " + (cfg.label || "ADS_AUTOPILOT_AI_AUTOMATED"));
   log_("  - PREVIEW_MODE: " + (PREVIEW_MODE ? "TRUE" : "FALSE"));
   log_("  - RUN_MODE: " + RUN_MODE);
 
@@ -1218,7 +1218,7 @@ function isExcludedAdGroup_(cfg, campaignName, adGroupName) {
 function initializeIdempotencyTracking_() {
   try {
     var testMode =
-      PropertiesService.getScriptProperties().getProperty("PROOFKIT_TEST_MODE");
+      PropertiesService.getScriptProperties().getProperty("ADS_AUTOPILOT_AI_TEST_MODE");
     if (testMode === "PREVIEW" || testMode === "IDEMPOTENCY_TEST") {
       RUN_MODE = testMode;
       PREVIEW_MODE = testMode === "PREVIEW" || testMode === "IDEMPOTENCY_TEST";
@@ -1251,7 +1251,7 @@ function setTestMode_(mode) {
 
   try {
     PropertiesService.getScriptProperties().setProperty(
-      "PROOFKIT_TEST_MODE",
+      "ADS_AUTOPILOT_AI_TEST_MODE",
       mode,
     );
   } catch (e) {

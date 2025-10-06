@@ -1,5 +1,5 @@
 /**
- * Content Approval Workflow Service for ProofKit SaaS
+ * Content Approval Workflow Service for Ads Autopilot AI SaaS
  * Manages approval pipeline with review states and workflow automation
  */
 

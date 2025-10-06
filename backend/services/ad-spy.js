@@ -1,5 +1,5 @@
 /**
- * Ad Spy Service for ProofKit SaaS
+ * Ad Spy Service for Ads Autopilot AI SaaS
  * Analyzes competitor ad copy patterns and strategies
  *
  * Features:

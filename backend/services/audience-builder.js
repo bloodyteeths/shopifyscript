@@ -43,7 +43,7 @@ class AudienceBuilderService {
     };
 
     // PII hashing salt (should match shopify-sync.js)
-    this.hashSalt = process.env.PII_HASH_SALT || 'proofkit-default-salt-change-me';
+    this.hashSalt = process.env.PII_HASH_SALT || 'adsautopilot-default-salt-change-me';
 
     // Metrics
     this.metrics = {

@@ -179,7 +179,7 @@ export default function Privacy() {
         <strong>Contact Information:</strong><br />
         <strong>Email:</strong> atanrikulu@e-listele.com<br />
         <strong>Support:</strong> atanrikulu@e-listele.com<br />
-        <strong>Website:</strong> <a href="https://proofkit-saas.vercel.app/privacy">https://proofkit-saas.vercel.app/privacy</a>
+        <strong>Website:</strong> <a href="https://adsautopilot-saas.vercel.app/privacy">https://adsautopilot-saas.vercel.app/privacy</a>
       </p>
     </div>
   );

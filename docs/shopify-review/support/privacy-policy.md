@@ -1,4 +1,4 @@
-# ProofKit Privacy Policy
+# Ads Autopilot AI Privacy Policy
 
 **Effective Date**: August 16, 2025  
 **Last Updated**: August 16, 2025  
@@ -8,7 +8,7 @@
 
 ## 📋 Executive Summary
 
-ProofKit is committed to protecting your privacy and maintaining the highest standards of data protection. This Privacy Policy explains our privacy-by-design approach, minimal data collection practices, and your rights regarding any information we process.
+Ads Autopilot AI is committed to protecting your privacy and maintaining the highest standards of data protection. This Privacy Policy explains our privacy-by-design approach, minimal data collection practices, and your rights regarding any information we process.
 
 **Key Privacy Principles**:
 
@@ -24,16 +24,16 @@ ProofKit is committed to protecting your privacy and maintaining the highest sta
 
 ### Merchant Account Information
 
-**When You Install ProofKit**:
+**When You Install Ads Autopilot AI**:
 
 - **Store Information**: Store name, domain, Shopify store ID
 - **Contact Details**: Email address for support and notifications
 - **Authentication Data**: OAuth tokens for secure API access
-- **App Configuration**: Settings and preferences you configure in ProofKit
+- **App Configuration**: Settings and preferences you configure in Ads Autopilot AI
 
 **Purpose**: To provide app functionality and support services  
 **Legal Basis**: Legitimate business interest and contractual necessity  
-**Retention**: Duration of your ProofKit subscription plus 30 days
+**Retention**: Duration of your Ads Autopilot AI subscription plus 30 days
 
 ### Product Catalog Data (Read-Only)
 
@@ -45,7 +45,7 @@ ProofKit is committed to protecting your privacy and maintaining the highest sta
 
 **How We Use It**:
 
-- Display products in ProofKit configuration interface
+- Display products in Ads Autopilot AI configuration interface
 - Generate conversion optimization recommendations
 - Configure product-specific marketing campaigns
 
@@ -60,7 +60,7 @@ ProofKit is committed to protecting your privacy and maintaining the highest sta
 
 **Performance & Analytics**:
 
-- **App Usage Statistics**: Feature usage, click patterns within ProofKit
+- **App Usage Statistics**: Feature usage, click patterns within Ads Autopilot AI
 - **Performance Metrics**: App load times, API response times
 - **Error Logs**: Application errors and debugging information
 - **Campaign Performance**: Aggregated conversion and engagement metrics
@@ -147,7 +147,7 @@ ProofKit is committed to protecting your privacy and maintaining the highest sta
 
 **App Functionality**:
 
-- Provide ProofKit features and services
+- Provide Ads Autopilot AI features and services
 - Process your configuration and campaign settings
 - Generate conversion optimization recommendations
 - Facilitate integrations with Google Ads and Google Sheets
@@ -204,7 +204,7 @@ ProofKit is committed to protecting your privacy and maintaining the highest sta
 
 **Google Ads API**:
 
-- **Purpose**: Optimize advertising campaigns based on ProofKit insights
+- **Purpose**: Optimize advertising campaigns based on Ads Autopilot AI insights
 - **Data Shared**: Campaign optimization scripts and audience segments
 - **Merchant Control**: You control Google Ads account access
 - **Data Processing**: Scripts run in your Google Ads account
@@ -221,7 +221,7 @@ ProofKit is committed to protecting your privacy and maintaining the highest sta
 **Required Integrations**:
 
 - **OAuth Authentication**: Secure login and permission management
-- **Product API**: Read-only access to display products in ProofKit interface
+- **Product API**: Read-only access to display products in Ads Autopilot AI interface
 - **App Proxy**: Secure API communication through Shopify
 - **Webhooks**: Receive notifications for app configuration changes
 
@@ -370,7 +370,7 @@ ProofKit is committed to protecting your privacy and maintaining the highest sta
 
 **Age Restrictions**:
 
-- ProofKit is not intended for use by individuals under 13 years of age
+- Ads Autopilot AI is not intended for use by individuals under 13 years of age
 - We do not knowingly collect personal information from children
 - Merchant responsibility to ensure compliance with age verification
 - Immediate deletion of any inadvertently collected children's data
@@ -386,7 +386,7 @@ ProofKit is committed to protecting your privacy and maintaining the highest sta
 
 ## 📊 Cookies & Tracking Technologies
 
-### ProofKit App Cookies
+### Ads Autopilot AI App Cookies
 
 **Essential Cookies**:
 
@@ -397,7 +397,7 @@ ProofKit is committed to protecting your privacy and maintaining the highest sta
 
 **Analytics Cookies** (Optional):
 
-- **Usage Analytics**: Understand how merchants use ProofKit features
+- **Usage Analytics**: Understand how merchants use Ads Autopilot AI features
 - **Performance Monitoring**: Monitor app performance and reliability
 - **Error Tracking**: Identify and fix technical issues
 - **Feature Usage**: Analyze which features are most valuable
@@ -435,7 +435,7 @@ ProofKit is committed to protecting your privacy and maintaining the highest sta
 
 - **Advance Notice**: 30-day notice for material changes
 - **Email Notification**: Direct email to all app users
-- **In-App Notification**: Prominent notification within ProofKit
+- **In-App Notification**: Prominent notification within Ads Autopilot AI
 - **Version History**: Maintain history of all policy versions
 
 ### Material Changes
@@ -450,7 +450,7 @@ ProofKit is committed to protecting your privacy and maintaining the highest sta
 
 **Your Options When Changes Occur**:
 
-- **Accept Changes**: Continue using ProofKit under new terms
+- **Accept Changes**: Continue using Ads Autopilot AI under new terms
 - **Opt-Out**: Disable specific features affected by changes
 - **Data Export**: Export your data before changes take effect
 - **Uninstall**: Remove the app if you disagree with changes
@@ -461,10 +461,10 @@ ProofKit is committed to protecting your privacy and maintaining the highest sta
 
 ### Data Protection Officer
 
-**Privacy Questions**: privacy@proofkit.app  
-**Data Subject Requests**: dpo@proofkit.app  
-**Security Incidents**: security@proofkit.app  
-**General Support**: support@proofkit.app
+**Privacy Questions**: privacy@adsautopilot.app  
+**Data Subject Requests**: dpo@adsautopilot.app  
+**Security Incidents**: security@adsautopilot.app  
+**General Support**: support@adsautopilot.app
 
 ### Regional Representatives
 
@@ -476,7 +476,7 @@ ProofKit is committed to protecting your privacy and maintaining the highest sta
 
 **California (CCPA)**:
 
-- **Consumer Rights**: Available via privacy@proofkit.app
+- **Consumer Rights**: Available via privacy@adsautopilot.app
 - **Do Not Sell Requests**: We don't sell data, but opt-out available
 - **Attorney General Cooperation**: Full compliance with California AG
 
@@ -539,23 +539,23 @@ ProofKit is committed to protecting your privacy and maintaining the highest sta
 
 **Personal Information**: Information that identifies, relates to, or could reasonably be linked with a particular individual or household.
 
-**Merchant**: The Shopify store owner who installs and uses ProofKit.
+**Merchant**: The Shopify store owner who installs and uses Ads Autopilot AI.
 
 **Customer**: The end customers who shop at merchant stores (we don't collect their personal information).
 
 **Processing**: Any operation performed on personal information, including collection, storage, use, disclosure, or deletion.
 
-**Third Party**: Any individual or entity other than ProofKit, the merchant, or the merchant's customers.
+**Third Party**: Any individual or entity other than Ads Autopilot AI, the merchant, or the merchant's customers.
 
 **Data Controller**: The entity that determines the purposes and means of processing personal information (typically the merchant for customer data).
 
-**Data Processor**: The entity that processes personal information on behalf of the data controller (ProofKit for merchant account data).
+**Data Processor**: The entity that processes personal information on behalf of the data controller (Ads Autopilot AI for merchant account data).
 
 ---
 
 **Contact Information**:  
-**Email**: privacy@proofkit.app  
-**Support**: support@proofkit.app  
-**Website**: https://proofkit.app/privacy
+**Email**: privacy@adsautopilot.app  
+**Support**: support@adsautopilot.app  
+**Website**: https://adsautopilot.app/privacy
 
 **This Privacy Policy is effective as of August 16, 2025, and will remain in effect except with respect to any changes in its provisions in the future, which will be in effect immediately after being posted on this page.**

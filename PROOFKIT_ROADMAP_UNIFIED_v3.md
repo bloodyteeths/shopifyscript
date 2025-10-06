@@ -1,4 +1,4 @@
-# Proofkit — Unified Roadmap & Claude Rules (v3)
+# Ads Autopilot AI — Unified Roadmap & Claude Rules (v3)
 
 > **What this is:** A single, build-ready roadmap that **merges** your original **Roadmap & Claude Rules (v1.0)**, the **Pricing Tiers & Master Roadmap (v2)** feature scope, and the new **Audience OS + Profit-Aware Retargeting** addendum. Hand this file to Cursor/Claude; each milestone includes exact **Agent Prompts**.
 
@@ -315,7 +315,7 @@ TESTS: Apply/Revert works; UTM changes page copy; drafts created.
 
 ## 10) Claude Prompt Template (paste into each task)
 
-> **ROLE:** Senior engineer building Proofkit SaaS (backend + Shopify + WP + Ads/Microsoft Scripts + Audience OS).  
+> **ROLE:** Senior engineer building Ads Autopilot AI SaaS (backend + Shopify + WP + Ads/Microsoft Scripts + Audience OS).  
 > **GOAL:** {one‑sentence merchant impact}.  
 > **INPUTS:** `{env}`, `{tenant}`, relevant snippets or file tree.  
 > **CONSTRAINTS:** Idempotent; secrets from env; RSA 30/90; negative dedupe; consent safe; audience attach read-only IDs unless FEATURE_CM_API.  

@@ -1,5 +1,5 @@
 /**
- * ProofKit SaaS Health Check & Monitoring Service
+ * Ads Autopilot AI SaaS Health Check & Monitoring Service
  * Comprehensive health monitoring for all application components
  * Provides detailed health status, metrics, and diagnostics
  */

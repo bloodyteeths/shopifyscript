@@ -13,7 +13,7 @@
     },
     {
       "id": "verify_wp_plugin",
-      "cmd": "grep -q 'add_options_page' wordpress-plugin/pk-proofkit.php && test -f wordpress-plugin/uninstall.php",
+      "cmd": "grep -q 'add_options_page' wordpress-plugin/pk-adsautopilot.php && test -f wordpress-plugin/uninstall.php",
       "cwd": "."
     },
     {

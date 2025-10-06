@@ -1,6 +1,6 @@
-# ProofKit SaaS Troubleshooting Guide
+# Ads Autopilot AI SaaS Troubleshooting Guide
 
-Comprehensive troubleshooting guide for diagnosing and resolving issues in ProofKit SaaS production environments.
+Comprehensive troubleshooting guide for diagnosing and resolving issues in Ads Autopilot AI SaaS production environments.
 
 ## Table of Contents
 
@@ -45,13 +45,13 @@ curl -s http://localhost:3001/api/diagnostics | jq
 #!/bin/bash
 # Quick system status script
 
-echo "=== ProofKit System Status ==="
+echo "=== Ads Autopilot AI System Status ==="
 echo "Time: $(date)"
 echo ""
 
 # Container status
 echo "🐳 Container Status:"
-docker-compose -f /opt/proofkit/docker-compose.prod.yml ps
+docker-compose -f /opt/adsautopilot/docker-compose.prod.yml ps
 
 # Health checks
 echo -e "\n🏥 Health Checks:"
@@ -65,7 +65,7 @@ docker stats --no-stream --format "table {{.Container}}\t{{.CPUPerc}}\t{{.MemUsa
 
 # Recent errors
 echo -e "\n🚨 Recent Errors (last 10):"
-docker-compose -f /opt/proofkit/docker-compose.prod.yml logs app 2>&1 | grep -i error | tail -10
+docker-compose -f /opt/adsautopilot/docker-compose.prod.yml logs app 2>&1 | grep -i error | tail -10
 ```
 
 ## Common Issues
@@ -91,7 +91,7 @@ sudo netstat -tulpn | grep :3001
 docker-compose config
 
 # Check file permissions
-ls -la /opt/proofkit/
+ls -la /opt/adsautopilot/
 ```
 
 **Solutions:**
@@ -123,10 +123,10 @@ cat .env | grep -A5 -B5 "PRIVATE_KEY"
 
 ```bash
 # Fix ownership
-sudo chown -R $USER:$USER /opt/proofkit
+sudo chown -R $USER:$USER /opt/adsautopilot
 
 # Fix secrets permissions
-sudo chmod 600 /opt/proofkit/secrets/*
+sudo chmod 600 /opt/adsautopilot/secrets/*
 ```
 
 ### 2. High Memory Usage
@@ -141,13 +141,13 @@ sudo chmod 600 /opt/proofkit/secrets/*
 
 ```bash
 # Monitor memory usage
-docker stats proofkit-app
+docker stats adsautopilot-app
 
 # Check Node.js heap usage
 curl -s http://localhost:3001/metrics | grep nodejs_heap
 
 # Analyze memory leaks
-docker exec -it proofkit-app node -e "console.log(process.memoryUsage())"
+docker exec -it adsautopilot-app node -e "console.log(process.memoryUsage())"
 ```
 
 **Solutions:**
@@ -402,10 +402,10 @@ server.headersTimeout = 66000;
 
 ```bash
 # Check CPU usage patterns
-docker stats proofkit-app
+docker stats adsautopilot-app
 
 # Profile Node.js process
-docker exec -it proofkit-app node --prof server.js
+docker exec -it adsautopilot-app node --prof server.js
 
 # Analyze CPU usage
 curl -s http://localhost:3001/metrics | grep process_cpu
@@ -544,10 +544,10 @@ RUN apk add --no-cache python3 make g++
 ```dockerfile
 # Create user correctly
 RUN addgroup -g 1001 -S nodejs && \
-    adduser -S proofkit -u 1001 -G nodejs
+    adduser -S adsautopilot -u 1001 -G nodejs
 
 # Set ownership
-COPY --chown=proofkit:nodejs . .
+COPY --chown=adsautopilot:nodejs . .
 ```
 
 ### 2. Volume Mount Issues
@@ -556,20 +556,20 @@ COPY --chown=proofkit:nodejs . .
 
 ```bash
 # Check volume permissions
-docker exec -it proofkit-app ls -la /app/logs
+docker exec -it adsautopilot-app ls -la /app/logs
 
 # Verify volume creation
-docker volume ls | grep proofkit
+docker volume ls | grep adsautopilot
 
 # Check mount points
-docker inspect proofkit-app | jq '.[0].Mounts'
+docker inspect adsautopilot-app | jq '.[0].Mounts'
 ```
 
 **Solutions:**
 
 ```bash
 # Fix volume permissions
-docker exec -it proofkit-app chown -R proofkit:nodejs /app/logs
+docker exec -it adsautopilot-app chown -R adsautopilot:nodejs /app/logs
 
 # Recreate volumes if needed
 docker-compose down -v
@@ -750,10 +750,10 @@ add_header Strict-Transport-Security "max-age=31536000; includeSubDomains";
 curl -s http://localhost:3001/metrics
 
 # Verify Prometheus scraping
-curl -s http://localhost:9090/api/v1/targets | jq '.data.activeTargets[] | select(.labels.job == "proofkit-api")'
+curl -s http://localhost:9090/api/v1/targets | jq '.data.activeTargets[] | select(.labels.job == "adsautopilot-api")'
 
 # Check metric collection
-docker-compose logs prometheus | grep proofkit
+docker-compose logs prometheus | grep adsautopilot
 ```
 
 **Solutions:**
@@ -780,7 +780,7 @@ const httpRequestsTotal = new promClient.Counter({
 ```yaml
 # Optimize alert rules in prometheus.yml
 groups:
-  - name: proofkit-alerts
+  - name: adsautopilot-alerts
     rules:
       - alert: HighErrorRate
         expr: rate(http_requests_total{status=~"5.."}[5m]) > 0.1
@@ -789,7 +789,7 @@ groups:
           summary: "High error rate detected"
 
       - alert: HighMemoryUsage
-        expr: container_memory_usage_bytes{name="proofkit-app"} / container_spec_memory_limit_bytes > 0.8
+        expr: container_memory_usage_bytes{name="adsautopilot-app"} / container_spec_memory_limit_bytes > 0.8
         for: 5m
         annotations:
           summary: "Memory usage above 80%"
@@ -823,7 +823,7 @@ docker-compose up -d --scale app=2
 
 # 2. Rollback to previous version
 docker-compose down
-docker-compose up -d proofkit-saas:previous-tag
+docker-compose up -d adsautopilot-saas:previous-tag
 
 # 3. Check resource constraints
 df -h
@@ -844,7 +844,7 @@ curl -s "http://localhost:3001/api/export/emergency" > emergency-export.json
 
 # Snapshot volumes
 docker run --rm \
-  -v proofkit-saas_app-logs:/source \
+  -v adsautopilot-saas_app-logs:/source \
   -v /emergency-backup:/backup \
   alpine:latest \
   cp -r /source/* /backup/
@@ -877,18 +877,18 @@ docker-compose logs --since="1h" app | grep -E "(POST|PUT|DELETE)"
 ### Emergency Escalation
 
 1. **Level 1 - Operations Team**
-   - Email: ops@proofkit.net
-   - Slack: #proofkit-ops
+   - Email: ops@adsautopilot.net
+   - Slack: #adsautopilot-ops
    - Response: 15 minutes
 
 2. **Level 2 - Engineering Lead**
-   - Email: engineering@proofkit.net
-   - Phone: +1-555-PROOFKIT-ENG
+   - Email: engineering@adsautopilot.net
+   - Phone: +1-555-ADS_AUTOPILOT_AI-ENG
    - Response: 30 minutes
 
 3. **Level 3 - CTO/Emergency**
-   - Email: emergency@proofkit.net
-   - Phone: +1-555-PROOFKIT-911
+   - Email: emergency@adsautopilot.net
+   - Phone: +1-555-ADS_AUTOPILOT_AI-911
    - Response: 60 minutes
 
 ### External Services
@@ -900,10 +900,10 @@ docker-compose logs --since="1h" app | grep -E "(POST|PUT|DELETE)"
 
 ### Documentation
 
-- **Status Page**: https://status.proofkit.net
-- **API Docs**: https://docs.proofkit.net
-- **Internal Wiki**: https://wiki.proofkit.net
-- **Incident Reports**: https://incidents.proofkit.net
+- **Status Page**: https://status.adsautopilot.net
+- **API Docs**: https://docs.adsautopilot.net
+- **Internal Wiki**: https://wiki.adsautopilot.net
+- **Incident Reports**: https://incidents.adsautopilot.net
 
 ---
 

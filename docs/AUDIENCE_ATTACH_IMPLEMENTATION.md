@@ -2,7 +2,7 @@
 
 ## Overview
 
-Enhanced ProofKit's audience attachment functionality with a script-only approach that supports Customer Match lists via ID attachment. This implementation includes comprehensive safety guards, multiple targeting modes, and a complete merchant workflow.
+Enhanced Ads Autopilot AI's audience attachment functionality with a script-only approach that supports Customer Match lists via ID attachment. This implementation includes comprehensive safety guards, multiple targeting modes, and a complete merchant workflow.
 
 ## Implementation Summary
 
@@ -195,11 +195,11 @@ campaign,ad_group,user_list_id,mode,bid_modifier
 - Set 180-day membership duration
 - Wait for processing (6-24 hours)
 
-### 3. ProofKit Configuration
+### 3. Ads Autopilot AI Configuration
 
 - Copy User List ID from Google Ads
 - Create AUDIENCE_MAP CSV with targeting preferences
-- Upload via ProofKit dashboard
+- Upload via Ads Autopilot AI dashboard
 
 ### 4. Monitoring and Optimization
 
@@ -296,7 +296,7 @@ FEATURE_AUDIENCE_ATTACH: false;
 
 ### Data Protection
 
-- User List IDs only (no customer data in ProofKit)
+- User List IDs only (no customer data in Ads Autopilot AI)
 - Google Ads handles all PII hashing
 - Audit trail for all audience changes
 
@@ -317,6 +317,6 @@ FEATURE_AUDIENCE_ATTACH: false;
 **Implementation Date**: August 2025  
 **Version**: 2.0  
 **Status**: Production Ready  
-**Team**: ProofKit Engineering
+**Team**: Ads Autopilot AI Engineering
 
 This implementation delivers a comprehensive, production-ready audience attachment system that maintains the script-only approach while providing enterprise-grade safety and monitoring capabilities.

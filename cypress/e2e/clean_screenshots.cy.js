@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-describe("ProofKit Clean Interface Screenshots", () => {
+describe("Ads Autopilot AI Clean Interface Screenshots", () => {
   beforeEach(() => {
     // Ignore hydration errors that don't affect UI functionality
     cy.on("uncaught:exception", (err, runnable) => {
@@ -21,7 +21,7 @@ describe("ProofKit Clean Interface Screenshots", () => {
         ok: true,
         config: {
           enabled: true,
-          label: "PROOFKIT_AUTOMATED",
+          label: "ADS_AUTOPILOT_AI_AUTOMATED",
           PROMOTE: false,
           daily_budget_cap_default: 25.0,
           cpc_ceiling_default: 2.5,
@@ -49,7 +49,7 @@ describe("ProofKit Clean Interface Screenshots", () => {
     });
   });
 
-  it("should capture clean ProofKit interface screenshots", () => {
+  it("should capture clean Ads Autopilot AI interface screenshots", () => {
     let stepCounter = 0;
 
     // Step 1: Main dashboard
@@ -58,7 +58,7 @@ describe("ProofKit Clean Interface Screenshots", () => {
 
     stepCounter++;
     cy.screenshot(
-      `e2e-test-results/screenshots/funnel/${stepCounter.toString().padStart(2, "0")}-proofkit-main-dashboard`,
+      `e2e-test-results/screenshots/funnel/${stepCounter.toString().padStart(2, "0")}-adsautopilot-main-dashboard`,
       {
         capture: "fullPage",
         overwrite: true,
@@ -66,8 +66,8 @@ describe("ProofKit Clean Interface Screenshots", () => {
     );
 
     // Verify we can see the actual UI elements
-    cy.get("body").should("contain.text", "ProofKit Dashboard");
-    cy.get("nav").should("contain.text", "Proofkit");
+    cy.get("body").should("contain.text", "Ads Autopilot AI Dashboard");
+    cy.get("nav").should("contain.text", "Ads Autopilot AI");
 
     // Step 2: Autopilot - click navigation
     cy.get('a[href="/app/autopilot"]').click({ force: true });
@@ -209,7 +209,7 @@ describe("ProofKit Clean Interface Screenshots", () => {
     );
 
     cy.log(
-      `✅ Successfully captured ${stepCounter} working ProofKit screenshots!`,
+      `✅ Successfully captured ${stepCounter} working Ads Autopilot AI screenshots!`,
     );
   });
 });

@@ -180,21 +180,21 @@ async function testSupportMethods() {
       starter: {
         email_support: true,
         phone_support: false,
-        support_email: 'support@proofkit.com',
+        support_email: 'support@adsautopilot.com',
         guaranteed_response_hours: 24
       },
       professional: {
         email_support: true,
         phone_support: false,
         priority_routing: true,
-        support_email: 'priority@proofkit.com',
+        support_email: 'priority@adsautopilot.com',
         guaranteed_response_hours: 12
       },
       enterprise: {
         email_support: true,
         phone_support: true,
         priority_routing: true,
-        support_email: 'enterprise@proofkit.com',
+        support_email: 'enterprise@adsautopilot.com',
         support_phone: '(307) 395-9830',
         guaranteed_response_hours: 6
       }
@@ -221,7 +221,7 @@ async function testSupportMethods() {
  * Main test runner
  */
 async function runTests() {
-  console.log('🚀 ProofKit Billing Integration Test Suite');
+  console.log('🚀 Ads Autopilot AI Billing Integration Test Suite');
   console.log('Testing subscription status, tier enforcement, and support integration\n');
   
   try {

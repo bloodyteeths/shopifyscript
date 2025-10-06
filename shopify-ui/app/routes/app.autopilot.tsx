@@ -564,8 +564,8 @@ export default function Autopilot() {
       
       // Store in localStorage for persistence (client-side only)
       try {
-        localStorage.setItem('proofkit_generated_script', actionData.script);
-        localStorage.setItem('proofkit_script_meta', JSON.stringify({
+        localStorage.setItem('adsautopilot_generated_script', actionData.script);
+        localStorage.setItem('adsautopilot_script_meta', JSON.stringify({
           size: actionData.size,
           shopName: actionData.shopName,
           timestamp: Date.now()
@@ -581,8 +581,8 @@ export default function Autopilot() {
   // Load stored script on page load (client-side only)
   React.useEffect(() => {
     try {
-      const storedScript = localStorage.getItem('proofkit_generated_script');
-      const storedMeta = localStorage.getItem('proofkit_script_meta');
+      const storedScript = localStorage.getItem('adsautopilot_generated_script');
+      const storedMeta = localStorage.getItem('adsautopilot_script_meta');
       if (storedScript && storedMeta) {
         const meta = JSON.parse(storedMeta);
         const hourAgo = Date.now() - (60 * 60 * 1000);
@@ -591,8 +591,8 @@ export default function Autopilot() {
           setShowScript(true);
           setToast(`Loaded ${meta.size}KB script`);
         } else {
-          localStorage.removeItem('proofkit_generated_script');
-          localStorage.removeItem('proofkit_script_meta');
+          localStorage.removeItem('adsautopilot_generated_script');
+          localStorage.removeItem('adsautopilot_script_meta');
         }
       }
     } catch (e) {
@@ -1122,8 +1122,8 @@ Shop: ${shopName || "unknown"}`;
                   setShowScript(false);
                   setScriptCode("");
                   try {
-                    localStorage.removeItem('proofkit_generated_script');
-                    localStorage.removeItem('proofkit_script_meta');
+                    localStorage.removeItem('adsautopilot_generated_script');
+                    localStorage.removeItem('adsautopilot_script_meta');
                   } catch (e) {
                     console.warn('Failed to clear localStorage:', e);
                   }

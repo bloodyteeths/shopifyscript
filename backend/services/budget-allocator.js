@@ -1,5 +1,5 @@
 /**
- * Budget Allocator Service for ProofKit SaaS
+ * Budget Allocator Service for Ads Autopilot AI SaaS
  *
  * Intelligently reallocates budget across campaigns to maximize ROI
  * Implements budget pacing and overspend prevention

@@ -1,5 +1,5 @@
 /**
- * Generated Ad Copy Samples - ProofKit SaaS Copywriting AI
+ * Generated Ad Copy Samples - Ads Autopilot AI SaaS Copywriting AI
  * Examples of AI-generated headlines and descriptions for different industries and segments
  */
 

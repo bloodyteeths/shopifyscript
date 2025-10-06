@@ -208,7 +208,7 @@ function ensureSeed_(cfg) {
 
   var H = ["Digital Certificates", "Compliance Reports", "Export Clean PDFs", "Generate Certs Fast", "Audit-Ready Reports", "Start Free Today"];
   var D = ["Create inspector-ready PDFs fast.", "Replace spreadsheets with an auditable system.", "Templates enforce SOPs. Audit trail included.", "Setup in under 10 minutes."];
-  var b = ag.newAd().responsiveSearchAdBuilder().withFinalUrl(cfg.default_final_url || "https://www.proofkit.net");
+  var b = ag.newAd().responsiveSearchAdBuilder().withFinalUrl(cfg.default_final_url || "https://www.adsautopilot.net");
   H.slice(0, 15).forEach(function(h) { b.addHeadline(h.length > 30 ? h.slice(0, 30) : h); });
   D.slice(0, 4).forEach(function(d) { b.addDescription(d.length > 90 ? d.slice(0, 90) : d); });
   try { b.build(); } catch(e) { log_("Seed RSA failed: " + e); }
@@ -559,7 +559,7 @@ function isExcludedAdGroup_(cfg, campaignName, adGroupName) {
 // Idempotency tracking
 function initializeIdempotencyTracking_() {
   try {
-    var testMode = PropertiesService.getScriptProperties().getProperty('PROOFKIT_TEST_MODE');
+    var testMode = PropertiesService.getScriptProperties().getProperty('ADS_AUTOPILOT_AI_TEST_MODE');
     if (testMode === 'PREVIEW' || testMode === 'IDEMPOTENCY_TEST') {
       RUN_MODE = testMode;
       PREVIEW_MODE = (testMode === 'PREVIEW' || testMode === 'IDEMPOTENCY_TEST');

@@ -1,5 +1,5 @@
 /**
- * Competitor Intelligence Service for ProofKit SaaS
+ * Competitor Intelligence Service for Ads Autopilot AI SaaS
  * Monitors and analyzes competitor strategies to provide market insights
  *
  * Features:

@@ -1,9 +1,9 @@
 {
   "metadata": {
-    "name": "ProofKit Performance Dashboard",
-    "description": "Comprehensive Google Ads performance monitoring and analytics dashboard for ProofKit merchants",
+    "name": "Ads Autopilot AI Performance Dashboard",
+    "description": "Comprehensive Google Ads performance monitoring and analytics dashboard for Ads Autopilot AI merchants",
     "version": "1.0.0",
-    "author": "ProofKit SaaS",
+    "author": "Ads Autopilot AI SaaS",
     "tags": ["google-ads", "ecommerce", "performance", "analytics"],
     "lastUpdated": "2025-08-16",
     "dataSource": "Google Sheets",
@@ -33,8 +33,8 @@
   "dataConnections": {
     "primary": {
       "type": "google_sheets",
-      "name": "ProofKit Metrics Data",
-      "description": "Main metrics data from ProofKit backend",
+      "name": "Ads Autopilot AI Metrics Data",
+      "description": "Main metrics data from Ads Autopilot AI backend",
       "required": true,
       "sheets": [
         {
@@ -766,7 +766,7 @@
   },
   "installation": {
     "requirements": [
-      "Google Sheets access to ProofKit data",
+      "Google Sheets access to Ads Autopilot AI data",
       "Looker Studio Pro license (optional for advanced features)",
       "Minimum viewer permissions on data sources"
     ],
@@ -774,7 +774,7 @@
       {
         "step": 1,
         "title": "Connect Data Source",
-        "description": "Connect your Google Sheets containing ProofKit data",
+        "description": "Connect your Google Sheets containing Ads Autopilot AI data",
         "action": "Add Google Sheets connector with URL: [SHEET_URL]"
       },
       {
@@ -818,7 +818,7 @@
     ]
   },
   "documentation": {
-    "overview": "This Looker Studio template provides comprehensive monitoring and analysis for Google Ads campaigns managed through ProofKit. It includes executive summaries, detailed campaign analysis, search term insights, anomaly detection, and time-based performance patterns.",
+    "overview": "This Looker Studio template provides comprehensive monitoring and analysis for Google Ads campaigns managed through Ads Autopilot AI. It includes executive summaries, detailed campaign analysis, search term insights, anomaly detection, and time-based performance patterns.",
     "features": [
       "Real-time performance monitoring",
       "AI-powered insights integration",
@@ -837,9 +837,9 @@
       "Schedule regular reports for consistent monitoring"
     ],
     "support": {
-      "email": "support@proofkit.com",
-      "documentation": "https://docs.proofkit.com/looker-studio",
-      "video_tutorials": "https://www.youtube.com/c/proofkit"
+      "email": "support@adsautopilot.com",
+      "documentation": "https://docs.adsautopilot.com/looker-studio",
+      "video_tutorials": "https://www.youtube.com/c/adsautopilot"
     }
   }
 }

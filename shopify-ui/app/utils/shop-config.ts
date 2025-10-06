@@ -5,7 +5,7 @@
  * Replaces complex automatic Shopify tenant detection with simple manual shop name input.
  */
 
-const SHOP_NAME_KEY = "proofkit_shop_name";
+const SHOP_NAME_KEY = "adsautopilot_shop_name";
 // No default shop name - user must enter manually
 
 /**
@@ -97,8 +97,8 @@ export function getShopNameOrDefault(): string {
   if (stored && validateShopName(stored)) {
     return stored;
   }
-  // Use environment TENANT_ID or fallback to proofkit
-  return process.env.TENANT_ID || "proofkit";
+  // Use environment TENANT_ID or fallback to adsautopilot
+  return process.env.TENANT_ID || "adsautopilot";
 }
 
 /**
@@ -192,9 +192,9 @@ export function getServerShopName(
     return envShopName;
   }
 
-  // 5. Fallback to environment default or 'proofkit' 
+  // 5. Fallback to environment default or 'adsautopilot' 
   // Note: This should rarely be needed since Shopify auth provides shop context
-  const fallback = process.env.DEFAULT_DEV_TENANT || process.env.TENANT_ID || "proofkit";
+  const fallback = process.env.DEFAULT_DEV_TENANT || process.env.TENANT_ID || "adsautopilot";
   console.warn(`⚠️ Using fallback shop name: ${fallback} (no shop context found)`);
   return fallback;
 }
@@ -214,7 +214,7 @@ export interface ShopConfig {
  */
 export function getShopConfig(): ShopConfig {
   const stored = getStoredShopName();
-  const shopName = stored || process.env.TENANT_ID || "proofkit";
+  const shopName = stored || process.env.TENANT_ID || "adsautopilot";
 
   return {
     shopName,
@@ -234,7 +234,7 @@ export function isShopSetupNeeded(): boolean {
 
   // Check if user explicitly dismissed setup for this session
   try {
-    const setupDismissed = sessionStorage.getItem("proofkit_setup_dismissed");
+    const setupDismissed = sessionStorage.getItem("adsautopilot_setup_dismissed");
     if (setupDismissed === "true") {
       return false;
     }
@@ -252,8 +252,8 @@ export function isShopSetupNeeded(): boolean {
     return true;
   }
 
-  // If we're only using the default 'proofkit' and no explicit user choice was made
-  const defaultTenant = process.env.TENANT_ID || "proofkit";
+  // If we're only using the default 'adsautopilot' and no explicit user choice was made
+  const defaultTenant = process.env.TENANT_ID || "adsautopilot";
   if (
     storedShopName === defaultTenant &&
     !localStorage.getItem(`${SHOP_NAME_KEY}_user_set`)
@@ -295,7 +295,7 @@ export function completeShopSetup(shopName: string): boolean {
  */
 export function dismissShopSetupForSession(): void {
   try {
-    sessionStorage.setItem("proofkit_setup_dismissed", "true");
+    sessionStorage.setItem("adsautopilot_setup_dismissed", "true");
   } catch (e) {
     // sessionStorage not available
   }

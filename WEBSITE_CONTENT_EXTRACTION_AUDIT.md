@@ -2,7 +2,7 @@
 
 ## Executive Summary
 
-I have successfully implemented a comprehensive website content extraction system for ProofKit SaaS that transforms generic ad generation into **data-driven, business-specific ad creation**. The system intelligently scrapes user websites, extracts valuable business data (products, USPs, testimonials, offers), and feeds this rich content directly into the AI ad generator.
+I have successfully implemented a comprehensive website content extraction system for Ads Autopilot AI SaaS that transforms generic ad generation into **data-driven, business-specific ad creation**. The system intelligently scrapes user websites, extracts valuable business data (products, USPs, testimonials, offers), and feeds this rich content directly into the AI ad generator.
 
 **Key Achievement:** Ads are no longer generic. They now reference **actual products, real offers, genuine testimonials, and authentic brand voice** from the user's website.
 
@@ -412,9 +412,9 @@ Instead of generic:
 
 ### User Agent:
 ```
-ProofKit-ContentBot/2.0 (+https://proofkit.io/bot)
+Ads Autopilot AI-ContentBot/2.0 (+https://adsautopilot.io/bot)
 ```
-- Identifies as ProofKit bot
+- Identifies as Ads Autopilot AI bot
 - Provides contact information
 - Transparent about purpose
 
@@ -433,7 +433,7 @@ ProofKit-ContentBot/2.0 (+https://proofkit.io/bot)
 
 ### Terms of Service:
 - Users agree to scrape only their own websites or with permission
-- ProofKit not liable for unauthorized scraping
+- Ads Autopilot AI not liable for unauthorized scraping
 - Rate limiting prevents abuse (max 1 scrape per URL per hour)
 - Blacklist mechanism for reported abuse
 
@@ -791,7 +791,7 @@ Ad Generation Impact
 
 ## Conclusion
 
-The Website Content Extraction System transforms ProofKit from a **generic ad generator** into a **data-driven, business-specific ad creation platform**. By automatically scraping and indexing real business content, we enable:
+The Website Content Extraction System transforms Ads Autopilot AI from a **generic ad generator** into a **data-driven, business-specific ad creation platform**. By automatically scraping and indexing real business content, we enable:
 
 1. **Specific, compelling ads** using actual products, offers, and USPs
 2. **Authentic brand voice** matching the customer's website

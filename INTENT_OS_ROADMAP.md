@@ -8,7 +8,7 @@
 
 ## Executive Summary
 
-Intent OS is ProofKit's **Conversion Rate Optimization Engine** designed to maximize Google Ads ROI by personalizing website experiences. The backend infrastructure is **90% complete** with sophisticated AI integration, but **frontend deployment mechanisms are missing**, requiring 6-10 weeks of additional development.
+Intent OS is Ads Autopilot AI's **Conversion Rate Optimization Engine** designed to maximize Google Ads ROI by personalizing website experiences. The backend infrastructure is **90% complete** with sophisticated AI integration, but **frontend deployment mechanisms are missing**, requiring 6-10 weeks of additional development.
 
 **Strategic Decision**: Defer to focus on core Google Ads automation SaaS, implement Intent OS in Phase 2 post-launch.
 
@@ -216,7 +216,7 @@ const shopifyAPI = {
 
 ```javascript
 // Required: Dynamic content injection
-window.ProofKitIntentOS = {
+window.Ads Autopilot AIIntentOS = {
   detectUTM: () => {
     const params = new URLSearchParams(window.location.search);
     return {
@@ -239,19 +239,19 @@ window.ProofKitIntentOS = {
 
 ```php
 // Required: WordPress action hooks
-add_action('wp_head', 'proofkit_inject_intent_detection');
-add_filter('the_content', 'proofkit_filter_content_by_intent');
-add_shortcode('proofkit_intent_block', 'proofkit_render_intent_block');
+add_action('wp_head', 'adsautopilot_inject_intent_detection');
+add_filter('the_content', 'adsautopilot_filter_content_by_intent');
+add_shortcode('adsautopilot_intent_block', 'adsautopilot_render_intent_block');
 ```
 
 #### **2. Content Injection Mechanism**
 
 ```php
 // Required: Dynamic content replacement
-function proofkit_filter_content_by_intent($content) {
-    $utm_params = proofkit_get_utm_params();
-    $intent_type = proofkit_detect_intent($utm_params);
-    return proofkit_swap_content_by_intent($content, $intent_type);
+function adsautopilot_filter_content_by_intent($content) {
+    $utm_params = adsautopilot_get_utm_params();
+    $intent_type = adsautopilot_detect_intent($utm_params);
+    return adsautopilot_swap_content_by_intent($content, $intent_type);
 }
 ```
 

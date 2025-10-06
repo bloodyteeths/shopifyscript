@@ -2,7 +2,7 @@
 
 describe("AI Drafts Generation & Validation", () => {
   beforeEach(() => {
-    cy.stubProofKitAPI("success");
+    cy.stubAds Autopilot AIAPI("success");
     cy.fixture("api-responses").as("apiResponses");
   });
 

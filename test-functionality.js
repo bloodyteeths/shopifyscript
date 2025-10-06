@@ -7,7 +7,7 @@ import fetch from "node-fetch";
 const BACKEND_URL = "http://localhost:3005";
 const HMAC_SECRET =
   "f3a1c9d8b2e47a65c0fb19d7e3a9428c6de5b1a7c4f08923ab56d7e1c2f3a4b5";
-const TENANT = "proofkit";
+const TENANT = "adsautopilot";
 
 // HMAC signing function (matches backend implementation)
 function sign(payload, secret = HMAC_SECRET) {
@@ -173,7 +173,7 @@ async function testAIService() {
 
 // Main test runner
 async function runTests() {
-  console.log("🚀 ProofKit SaaS Functionality Test Suite");
+  console.log("🚀 Ads Autopilot AI SaaS Functionality Test Suite");
   console.log("==========================================");
 
   const tests = [
@@ -215,7 +215,7 @@ async function runTests() {
     console.log("1. Access your app in Shopify test store");
     console.log("2. Go to Advanced settings page");
     console.log("3. Configure your Google Ads automation settings");
-    console.log('4. Verify tenant is detected as "proofkit"');
+    console.log('4. Verify tenant is detected as "adsautopilot"');
     console.log("5. Test saving settings and verify they persist");
   } else {
     console.log("\n⚠️ Some tests failed. Check the errors above.");

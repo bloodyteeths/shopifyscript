@@ -1,12 +1,12 @@
 <?php
 /**
- * Enhanced Uninstall script for Proofkit Pixels & Ads Helper
+ * Enhanced Uninstall script for Ads Autopilot AI Pixels & Ads Helper
  *
  * This file is executed when the plugin is uninstalled via WordPress admin.
  * It removes all plugin options and data from the database while preserving
  * audit trails required for GDPR compliance.
  *
- * @package ProofkitPixelsAdsHelper
+ * @package Ads Autopilot AIPixelsAdsHelper
  * @since 1.0.0
  */
 
@@ -19,7 +19,7 @@ if ( ! defined( 'WP_UNINSTALL_PLUGIN' ) ) {
  * Enhanced privacy-compliant uninstall cleanup.
  * Removes tracking pixels and theme blocks while preserving Sheets audit trails.
  */
-function pk_proofkit_enhanced_uninstall_cleanup() {
+function pk_adsautopilot_enhanced_uninstall_cleanup() {
 	// Step 1: Remove theme customizations and tracking pixels
 	pk_remove_theme_pixels();
 	
@@ -146,9 +146,9 @@ function pk_trigger_backend_cleanup() {
 		
 		// Log the cleanup attempt (best effort)
 		if ( ! is_wp_error( $response ) ) {
-			error_log( 'ProofKit: Backend cleanup notification sent successfully' );
+			error_log( 'Ads Autopilot AI: Backend cleanup notification sent successfully' );
 		} else {
-			error_log( 'ProofKit: Backend cleanup notification failed: ' . $response->get_error_message() );
+			error_log( 'Ads Autopilot AI: Backend cleanup notification failed: ' . $response->get_error_message() );
 		}
 	}
 }
@@ -177,7 +177,7 @@ function pk_log_uninstall_event() {
 	update_option( 'pk_uninstall_log', $uninstall_log, false );
 	
 	// Try to send to error log for server-level tracking
-	error_log( 'ProofKit Uninstall: ' . wp_json_encode( $uninstall_log ) );
+	error_log( 'Ads Autopilot AI Uninstall: ' . wp_json_encode( $uninstall_log ) );
 }
 
 /**
@@ -229,17 +229,17 @@ function pk_generate_hmac_signature( $payload, $secret ) {
  * Legacy cleanup function for backward compatibility.
  * Handles both single site and multisite installations.
  */
-function pk_proofkit_uninstall_cleanup() {
+function pk_adsautopilot_uninstall_cleanup() {
 	// Call the enhanced cleanup function
-	pk_proofkit_enhanced_uninstall_cleanup();
+	pk_adsautopilot_enhanced_uninstall_cleanup();
 }
 
 // Execute enhanced cleanup with error handling
 try {
-	pk_proofkit_enhanced_uninstall_cleanup();
+	pk_adsautopilot_enhanced_uninstall_cleanup();
 } catch ( Exception $e ) {
 	// Log error but don't prevent uninstall
-	error_log( 'ProofKit Uninstall Error: ' . $e->getMessage() );
+	error_log( 'Ads Autopilot AI Uninstall Error: ' . $e->getMessage() );
 	
 	// Fallback to basic cleanup
 	pk_remove_plugin_options();

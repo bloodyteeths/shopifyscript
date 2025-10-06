@@ -2,7 +2,7 @@
 Generated: 2025-09-26
 
 ## Overview
-This report tracks the implementation of AI features for ProofKit SaaS to deliver on promised functionality for PRO, GROWTH, and ENTERPRISE tiers.
+This report tracks the implementation of AI features for Ads Autopilot AI SaaS to deliver on promised functionality for PRO, GROWTH, and ENTERPRISE tiers.
 
 ## Implementation Tasks and Audit Results
 

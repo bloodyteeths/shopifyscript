@@ -43,8 +43,8 @@ export const loader: LoaderFunction = async ({ request }) => {
     phone_support: mockTier === "enterprise",
     priority_routing: ["professional", "enterprise"].includes(mockTier),
     dedicated_manager: mockTier === "enterprise",
-    support_email: "support@proofkit.com",
-    support_phone: mockTier === "enterprise" ? "+1-800-PROOFKIT" : null,
+    support_email: "support@adsautopilot.com",
+    support_phone: mockTier === "enterprise" ? "+1-800-ADS_AUTOPILOT_AI" : null,
     guaranteed_response_hours: mockTier === "enterprise" ? 6 : mockTier === "professional" ? 12 : 24,
     guaranteed_resolution_hours: mockTier === "enterprise" ? 24 : mockTier === "professional" ? 48 : null
   };

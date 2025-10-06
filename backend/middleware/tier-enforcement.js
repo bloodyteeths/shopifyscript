@@ -1,5 +1,5 @@
 /**
- * ProofKit Tier Enforcement Middleware
+ * Ads Autopilot AI Tier Enforcement Middleware
  * Enforces feature access and usage limits based on subscription tiers
  */
 

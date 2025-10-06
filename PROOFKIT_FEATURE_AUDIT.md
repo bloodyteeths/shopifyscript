@@ -1,12 +1,12 @@
-# ProofKit Google Ads Script Feature Audit
+# Ads Autopilot AI Google Ads Script Feature Audit
 **Date:** September 19, 2025
 **Script Version:** 1.0 (Clean version - 26KB)
 
 ## Executive Summary
 
-ProofKit's Google Ads script has been optimized from **47KB to 26KB** (47% reduction) by removing excessive developer comments while maintaining all core functionality. The system delivers most promised features through a well-architected backend with Google Sheets and Supabase integration.
+Ads Autopilot AI's Google Ads script has been optimized from **47KB to 26KB** (47% reduction) by removing excessive developer comments while maintaining all core functionality. The system delivers most promised features through a well-architected backend with Google Sheets and Supabase integration.
 
-## What ProofKit Promises vs What's Actually Delivered
+## What Ads Autopilot AI Promises vs What's Actually Delivered
 
 ### ✅ FULLY WORKING FEATURES
 
@@ -211,7 +211,7 @@ SUPABASE_SERVICE_ROLE_KEY=<key> # Optional
 
 ## Conclusion
 
-ProofKit delivers on its core promises of automated Google Ads management with robust safety features and configuration management. The **cleaned 26KB script** maintains all functionality while being more maintainable.
+Ads Autopilot AI delivers on its core promises of automated Google Ads management with robust safety features and configuration management. The **cleaned 26KB script** maintains all functionality while being more maintainable.
 
 **Key strengths:**
 - Solid architecture with multi-tenant support

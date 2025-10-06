@@ -4,7 +4,7 @@ import crypto from "crypto";
 // Session storage configuration
 const sessionStorage = createCookieSessionStorage({
   cookie: {
-    name: "proofkit_session",
+    name: "adsautopilot_session",
     secure: process.env.NODE_ENV === "production",
     secrets: [process.env.SESSION_SECRET || "fallback-secret-change-me"],
     sameSite: "lax",

@@ -1,15 +1,15 @@
-# ProofKit Enhanced Google Ads Script - Deployment Guide
+# Ads Autopilot AI Enhanced Google Ads Script - Deployment Guide
 
 ## 🚀 Quick Start Guide
 
-This guide will help you deploy the Enhanced ProofKit Google Ads Script in your account. The script provides automated optimization and performance monitoring with secure backend communication.
+This guide will help you deploy the Enhanced Ads Autopilot AI Google Ads Script in your account. The script provides automated optimization and performance monitoring with secure backend communication.
 
 ## 📋 Prerequisites
 
 Before deploying the script, ensure you have:
 
 1. **Google Ads Account** with Scripts access
-2. **ProofKit Backend** credentials and endpoints
+2. **Ads Autopilot AI Backend** credentials and endpoints
 3. **HMAC Shared Secret** for authentication
 4. **Manager/Admin Access** to Google Ads account
 
@@ -17,11 +17,11 @@ Before deploying the script, ensure you have:
 
 ### 1.1 Gather Required Information
 
-You'll need the following information from your ProofKit administrator:
+You'll need the following information from your Ads Autopilot AI administrator:
 
 ```
-TENANT_ID: Your unique ProofKit tenant identifier
-BACKEND_URL: ProofKit backend API endpoint (e.g., https://api.proofkit.net)
+TENANT_ID: Your unique Ads Autopilot AI tenant identifier
+BACKEND_URL: Ads Autopilot AI backend API endpoint (e.g., https://api.adsautopilot.net)
 HMAC_SECRET: Shared secret for authentication
 ```
 
@@ -33,7 +33,7 @@ Open the `master-enhanced.gs` file and update the configuration section:
 var CONFIG = {
   // Backend Connection - REPLACE THESE VALUES
   TENANT_ID: 'your_tenant_id_here',           // Replace with your tenant ID
-  BACKEND_URL: 'https://api.proofkit.net',    // Replace with your backend URL
+  BACKEND_URL: 'https://api.adsautopilot.net',    // Replace with your backend URL
   SHARED_SECRET: 'your_hmac_secret_here',     // Replace with your HMAC secret
 
   // Script Behavior
@@ -85,7 +85,7 @@ var CONFIG = {
 
 ### 2.3 Script Naming
 
-Name your script: `ProofKit Enhanced Automation v2.0`
+Name your script: `Ads Autopilot AI Enhanced Automation v2.0`
 
 ## 🧪 Step 3: Testing Phase
 
@@ -150,7 +150,7 @@ Once testing is successful:
 Monitor the first few scheduled runs:
 
 1. Check execution logs in Google Ads Scripts
-2. Verify data appears in ProofKit backend
+2. Verify data appears in Ads Autopilot AI backend
 3. Review any optimization changes made
 4. Confirm error rates are low (<5%)
 
@@ -174,7 +174,7 @@ Key log entries to monitor:
 
 ```javascript
 // Successful execution
-"Enhanced ProofKit Script completed successfully"
+"Enhanced Ads Autopilot AI Script completed successfully"
 
 // Optimizations applied
 "Applied X optimizations, Y failed"
@@ -275,7 +275,7 @@ EXCLUDED_KEYWORDS: [
 **Solution**: Check backend connectivity and HMAC secret
 
 **Issue**: No optimizations received
-**Solution**: Verify ProofKit backend has optimizations queued
+**Solution**: Verify Ads Autopilot AI backend has optimizations queued
 
 **Issue**: Changes not applying
 **Solution**: Ensure DRY_RUN is false and check safety limits
@@ -297,14 +297,14 @@ EXCLUDED_KEYWORDS: [
 ### Getting Help
 
 1. **Configuration Issues**: Check this deployment guide
-2. **Backend Problems**: Contact ProofKit support
+2. **Backend Problems**: Contact Ads Autopilot AI support
 3. **Google Ads Issues**: Consult Google Ads documentation
 4. **Script Errors**: Review the comprehensive error logging
 
 ### Additional Resources
 
 - **Google Ads Scripts Documentation**: [developers.google.com/google-ads/scripts](https://developers.google.com/google-ads/scripts)
-- **ProofKit API Documentation**: Contact your ProofKit administrator
+- **Ads Autopilot AI API Documentation**: Contact your Ads Autopilot AI administrator
 - **HMAC Authentication**: [RFC 2104](https://tools.ietf.org/html/rfc2104)
 
 ## ✅ Deployment Checklist
@@ -326,7 +326,7 @@ Before going live, verify:
 Your deployment is successful when you see:
 
 - **Consistent Script Execution**: 95%+ success rate
-- **Backend Synchronization**: Regular data updates in ProofKit
+- **Backend Synchronization**: Regular data updates in Ads Autopilot AI
 - **Optimization Application**: Appropriate changes being made
 - **Performance Improvement**: Better campaign metrics over time
 - **Error Management**: Low error rates and quick resolution
@@ -337,4 +337,4 @@ Your deployment is successful when you see:
 **Last Updated**: September 28, 2024
 **Compatible Script Version**: 2.0.0
 
-🎉 **Congratulations!** Your Enhanced ProofKit Google Ads Script is now ready for production use.
+🎉 **Congratulations!** Your Enhanced Ads Autopilot AI Google Ads Script is now ready for production use.

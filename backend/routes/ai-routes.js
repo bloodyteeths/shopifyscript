@@ -41,7 +41,7 @@ router.get('/provider/status', async (req, res) => {
  */
 router.get('/tokens/usage', async (req, res) => {
   try {
-    const tenant = req.headers['x-tenant-id'] || 'proofkit';
+    const tenant = req.headers['x-tenant-id'] || 'adsautopilot';
 
     // Mock usage data for now
     const usage = {
@@ -88,7 +88,7 @@ router.get('/tokens/usage', async (req, res) => {
  */
 router.get('/drafts', async (req, res) => {
   try {
-    const tenant = req.headers['x-tenant-id'] || 'proofkit';
+    const tenant = req.headers['x-tenant-id'] || 'adsautopilot';
 
     // Mock drafts for now
     const drafts = {
@@ -133,7 +133,7 @@ router.get('/drafts', async (req, res) => {
  */
 router.post('/accept', async (req, res) => {
   try {
-    const tenant = req.headers['x-tenant-id'] || 'proofkit';
+    const tenant = req.headers['x-tenant-id'] || 'adsautopilot';
     const { items } = req.body;
 
     if (!items || !Array.isArray(items) || items.length === 0) {
@@ -165,7 +165,7 @@ router.post('/accept', async (req, res) => {
  */
 router.get('/logs', async (req, res) => {
   try {
-    const tenant = req.headers['x-tenant-id'] || 'proofkit';
+    const tenant = req.headers['x-tenant-id'] || 'adsautopilot';
     const limit = parseInt(req.query.limit) || 10;
 
     // Mock logs for demonstration

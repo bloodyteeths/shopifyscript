@@ -1,8 +1,8 @@
-# ProofKit Shopify App Configuration
+# Ads Autopilot AI Shopify App Configuration
 # This file configures managed pricing and webhooks for the app
 
-name = "ProofKit Autopilot"
-handle = "proofkit-autopilot"
+name = "Ads Autopilot AI"
+handle = "adsautopilot-autopilot"
 application_url = "https://ads-autopilot-ui.vercel.app"
 embedded = true
 
@@ -58,7 +58,7 @@ embedded = false
 [build]
 # Build configuration
 automatically_update_urls_on_dev = true
-dev_store_url = "https://proofkit.myshopify.com"
+dev_store_url = "https://adsautopilot.myshopify.com"
 
 # Note: Managed pricing plans are configured in the Partner Dashboard
 # This app uses Shopify's managed pricing system instead of the Billing API

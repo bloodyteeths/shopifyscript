@@ -18,7 +18,7 @@
     "scheduleStart": "09:00",
     "scheduleEnd": "17:00",
     "scheduleDays": "MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY",
-    "canaryLabel": "PROOFKIT_AUTOMATED",
+    "canaryLabel": "ADS_AUTOPILOT_AI_AUTOMATED",
     "exclusions": "Brand Campaign,Shopping Campaign"
   },
   "audienceDefaults": {

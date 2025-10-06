@@ -23,7 +23,7 @@
 ### ✅ **ENTERPRISE TIER ($199/month) - PRIORITY PHONE + EMAIL SUPPORT**
 - **Promise**: Priority phone and email support with 6-hour response time
 - **Delivered**: Complete phone+email support with 6h SLA and urgent priority
-- **Features**: Phone support (+1-800-PROOFKIT), dedicated account manager, SLA guarantees
+- **Features**: Phone support (+1-800-ADS_AUTOPILOT_AI), dedicated account manager, SLA guarantees
 - **Premium**: Urgent category/priority, phone callback options, custom integrations
 
 ---

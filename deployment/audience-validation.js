@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * PROOFKIT AUDIENCE ATTACHMENT VALIDATION SYSTEM
+ * ADS_AUTOPILOT_AI AUDIENCE ATTACHMENT VALIDATION SYSTEM
  * Comprehensive validation for safe audience attachment during canary tests
  * P0-7 CRITICAL: Ensures GDPR compliance and safe audience targeting
  */

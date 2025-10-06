@@ -9,7 +9,7 @@ export async function loader() {
 
   // Pass tenant info to client for dynamic script generation
   const tenantInfo = {
-    tenantId: process.env.TENANT_ID || "proofkit",
+    tenantId: process.env.TENANT_ID || "adsautopilot",
     backendUrl:
       process.env.BACKEND_PUBLIC_URL ||
       "https://ads-autopilot-backend.vercel.app/api",
@@ -32,11 +32,11 @@ export async function action({ request }: ActionFunctionArgs) {
 
     try {
       // Fetch the real script using text endpoint (returns raw script, not JSON)
-      const currentTenant = process.env.TENANT_ID || "proofkit";
+      const currentTenant = process.env.TENANT_ID || "adsautopilot";
       const realScript = await backendFetchText("/ads-script/raw");
 
       if (realScript && realScript.length > 1000) {
-        const personalizedScript = `/** ProofKit Google Ads Script - Personalized for ${mode} mode
+        const personalizedScript = `/** Ads Autopilot AI Google Ads Script - Personalized for ${mode} mode
  * Tenant: ${currentTenant}
  * Generated: ${new Date().toISOString()}
  * Budget Cap: $${budget}/day
@@ -100,7 +100,7 @@ Mode: ${mode}
 Budget: $${budget}/day
 CPC: $${cpc}
 URL: ${url}
-Tenant: proofkit`;
+Tenant: adsautopilot`;
     alert(
       `Autopilot would be enabled with:\n\n${config}\n\nIn production, this would start the automation.`,
     );
@@ -268,7 +268,7 @@ Tenant: proofkit`;
             ALWAYS ON
           </span>
           <span>
-            Automation running for: <strong>proofkit</strong>
+            Automation running for: <strong>adsautopilot</strong>
           </span>
         </div>
         <div style={{ fontSize: "14px", color: "#666" }}>

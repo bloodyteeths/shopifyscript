@@ -1,5 +1,5 @@
 /**
- * Anomaly Detection Service for ProofKit SaaS
+ * Anomaly Detection Service for Ads Autopilot AI SaaS
  * Intelligent monitoring of spend, CPA, and performance metrics
  * with configurable thresholds and machine learning-based detection
  */

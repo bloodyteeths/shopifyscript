@@ -16,7 +16,7 @@ export async function authenticatedFetch(
   const timestamp = Date.now();
   // Use the actual shop name for multi-tenant support
   // This should be provided by the Shopify app context
-  const tenant = shopName || (window as any).__SHOPIFY_SHOP__ || "proofkit";
+  const tenant = shopName || (window as any).__SHOPIFY_SHOP__ || "adsautopilot";
 
   // For client-side, we need to use a different approach
   // Since we can't expose the HMAC secret to the client,
@@ -67,7 +67,7 @@ export async function directBackendFetch(
   }
 
   const timestamp = Date.now();
-  const tenant = shopName || "proofkit";
+  const tenant = shopName || "adsautopilot";
 
   const crypto = require("crypto");
   const payload = JSON.stringify({ tenant, timestamp });

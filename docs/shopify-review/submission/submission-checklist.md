@@ -2,7 +2,7 @@
 
 ## 📋 Final Submission Readiness Assessment
 
-**App Name**: ProofKit - Intent OS & Conversion Rate Optimization  
+**App Name**: Ads Autopilot AI - Intent OS & Conversion Rate Optimization  
 **Submission Date**: Ready for submission as of August 16, 2025  
 **Review Status**: ✅ ALL REQUIREMENTS MET  
 **Confidence Level**: HIGH - Exceeds Shopify standards in all categories
@@ -161,7 +161,7 @@
 ### Support Infrastructure
 
 - [x] **Support Email**: Dedicated support with 24-hour response SLA
-  - Contact: support@proofkit.app
+  - Contact: support@adsautopilot.app
   - Evidence: `/docs/shopify-review/support/support-policy.md`
   - Status: ✅ OPERATIONAL
 
@@ -409,10 +409,10 @@
 
 ## 📞 Submission Support Contacts
 
-**Primary Submission Contact**: submission@proofkit.app  
-**Technical Questions**: tech@proofkit.app  
-**Legal Questions**: legal@proofkit.app  
-**Emergency Contact**: Available 24/7 via support@proofkit.app
+**Primary Submission Contact**: submission@adsautopilot.app  
+**Technical Questions**: tech@adsautopilot.app  
+**Legal Questions**: legal@adsautopilot.app  
+**Emergency Contact**: Available 24/7 via support@adsautopilot.app
 
 **Shopify Partner Team**: Available for review coordination and questions
 

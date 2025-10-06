@@ -1,5 +1,5 @@
 /**
- * Optimization Safety & Rollback Service for ProofKit SaaS
+ * Optimization Safety & Rollback Service for Ads Autopilot AI SaaS
  *
  * Implements comprehensive safety mechanisms, rollback functionality,
  * and protection systems for campaign optimization

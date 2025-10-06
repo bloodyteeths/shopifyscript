@@ -1,5 +1,5 @@
 /**
- * Content Indexer Service for ProofKit SaaS
+ * Content Indexer Service for Ads Autopilot AI SaaS
  * Stores and indexes extracted website content in Supabase for quick retrieval
  * Creates searchable index for products, testimonials, offers, and other content
  *

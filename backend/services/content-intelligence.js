@@ -1,5 +1,5 @@
 /**
- * Content Intelligence Service for ProofKit SaaS
+ * Content Intelligence Service for Ads Autopilot AI SaaS
  * Advanced NLP-based content analysis for extracting winning hooks, sentiment, and copy patterns
  *
  * Features:

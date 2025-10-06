@@ -24,7 +24,7 @@ export const loader: LoaderFunction = async ({ request }) => {
           email_support: true,
           phone_support: false,
           priority_routing: false,
-          support_email: "support@proofkit.com",
+          support_email: "support@adsautopilot.com",
           guaranteed_response_hours: 24
         }
       });
@@ -37,7 +37,7 @@ export const loader: LoaderFunction = async ({ request }) => {
       email_support: true,
       phone_support: false,
       priority_routing: false,
-      support_email: "support@proofkit.com",
+      support_email: "support@adsautopilot.com",
       guaranteed_response_hours: 24
     };
 
@@ -49,7 +49,7 @@ export const loader: LoaderFunction = async ({ request }) => {
         email_support: true,
         phone_support: true,
         priority_routing: true,
-        support_email: "enterprise@proofkit.com",
+        support_email: "enterprise@adsautopilot.com",
         support_phone: "(307) 395-9830",
         guaranteed_response_hours: 6
       };
@@ -68,7 +68,7 @@ export const loader: LoaderFunction = async ({ request }) => {
         email_support: true,
         phone_support: false,
         priority_routing: false,
-        support_email: "support@proofkit.com",
+        support_email: "support@adsautopilot.com",
         guaranteed_response_hours: 24
       }
     });
@@ -442,7 +442,7 @@ export default function Support() {
 
         <div style={{ padding: "1.5rem", border: "1px solid #e5e7eb", borderRadius: "8px" }}>
           <h3>Billing & Accounts</h3>
-          <p><strong>Email:</strong> billing@proofkit.com<br />
+          <p><strong>Email:</strong> billing@adsautopilot.com<br />
           <strong>Response Time:</strong> {tier === "enterprise" ? "4" : tier === "professional" ? "6" : "24"} hours<br />
           <strong>Hours:</strong> Monday-Friday, 9 AM - 6 PM EST</p>
           <p>For subscription issues, billing questions, refund requests, and plan changes.</p>

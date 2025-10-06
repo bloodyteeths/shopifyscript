@@ -1,4 +1,4 @@
-# ProofKit PROMOTE Gate - Production Safety Documentation
+# Ads Autopilot AI PROMOTE Gate - Production Safety Documentation
 
 ## 🚨 CRITICAL PRODUCTION SAFETY SYSTEM 🚨
 
@@ -11,7 +11,7 @@ The PROMOTE Gate provides multiple layers of protection:
 1. **Script-Level Protection** - Blocks mutations in Google Ads scripts when `PROMOTE=FALSE`
 2. **Backend Validation** - Middleware that validates PROMOTE status before processing requests
 3. **NEG_GUARD System** - Protects against reserved keyword conflicts
-4. **Label Guard** - Ensures all entities are properly tagged with `PROOFKIT_AUTOMATED`
+4. **Label Guard** - Ensures all entities are properly tagged with `ADS_AUTOPILOT_AI_AUTOMATED`
 5. **Idempotency Validation** - Prevents duplicate mutations through comprehensive testing
 6. **Mutation Limits** - Enforces safety thresholds on the number of changes per run
 
@@ -44,7 +44,7 @@ The PROMOTE flag is controlled through the tenant configuration:
 // In Google Sheets CONFIG_{tenant} tab or backend configuration
 {
   "PROMOTE": "TRUE",  // Enables live mutations
-  "label": "PROOFKIT_AUTOMATED",
+  "label": "ADS_AUTOPILOT_AI_AUTOMATED",
   "enabled": "TRUE"
 }
 ```
@@ -55,7 +55,7 @@ The PROMOTE flag is controlled through the tenant configuration:
 # Backend environment
 PROMOTE_GATE_ENABLED=true
 MAX_MUTATIONS_PER_RUN=100
-RESERVED_KEYWORDS=proofkit,brand,competitor,important
+RESERVED_KEYWORDS=adsautopilot,brand,competitor,important
 ```
 
 ## Google Ads Script Integration
@@ -119,7 +119,7 @@ function initializeSafetyGuards_(cfg) {
   log_("• Safety Guards Initialized:");
   log_("  - PROMOTE: " + (cfg.PROMOTE ? "ENABLED" : "DISABLED"));
   log_("  - NEG_GUARD: " + (NEG_GUARD_ACTIVE ? "ACTIVE" : "INACTIVE"));
-  log_("  - LABEL_GUARD: " + (cfg.label || "PROOFKIT_AUTOMATED"));
+  log_("  - LABEL_GUARD: " + (cfg.label || "ADS_AUTOPILOT_AI_AUTOMATED"));
 }
 ```
 
@@ -191,7 +191,7 @@ app.post(
 The NEG_GUARD system prevents adding important terms as negative keywords:
 
 ```javascript
-var RESERVED_KEYWORDS = ["proofkit", "brand", "competitor", "important"];
+var RESERVED_KEYWORDS = ["adsautopilot", "brand", "competitor", "important"];
 
 function isReservedKeyword_(term) {
   if (!term) return false;
@@ -229,7 +229,7 @@ function upsertListNegs_(list, terms) {
 
 ### Comprehensive Labeling
 
-All entities created or modified by ProofKit are labeled with `PROOFKIT_AUTOMATED`:
+All entities created or modified by Ads Autopilot AI are labeled with `ADS_AUTOPILOT_AI_AUTOMATED`:
 
 ```javascript
 /**
@@ -348,7 +348,7 @@ Before enabling PROMOTE=TRUE for any tenant:
 5. ✅ **Backend Gate Status**
    ```bash
    # Check backend PROMOTE gate endpoint
-   curl -X GET "https://backend.proofkit.net/api/promote/gate/status?tenant=TENANT_ID&sig=HMAC_SIG"
+   curl -X GET "https://backend.adsautopilot.net/api/promote/gate/status?tenant=TENANT_ID&sig=HMAC_SIG"
    ```
 
 ### Emergency Procedures

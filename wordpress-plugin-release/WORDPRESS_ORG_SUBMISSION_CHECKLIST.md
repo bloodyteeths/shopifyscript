@@ -4,8 +4,8 @@
 
 ### 1. Plugin Structure ✅
 
-- [x] Main plugin file: `pk-proofkit.php` with proper headers
-- [x] Class file: `class-pk-proofkit.php` with organized code
+- [x] Main plugin file: `pk-adsautopilot.php` with proper headers
+- [x] Class file: `class-pk-adsautopilot.php` with organized code
 - [x] Uninstaller: `uninstall.php` with multisite support
 - [x] Security files: `index.php` in all directories
 
@@ -18,7 +18,7 @@
 
 ### 3. Internationalization (i18n) ✅
 
-- [x] Text domain properly set: `pk-proofkit`
+- [x] Text domain properly set: `pk-adsautopilot`
 - [x] All strings wrapped in translation functions
 - [x] `.pot` file generated in `/languages/` directory
 - [x] Translation loading function implemented
@@ -54,16 +54,16 @@
 
 ## 📦 Submission Package
 
-**File:** `proofkit-pixels-ads-helper-v1.0.0.zip`
+**File:** `adsautopilot-pixels-ads-helper-v1.0.0.zip`
 
 **Contents:**
 
-- `pk-proofkit.php` (Main plugin file)
-- `class-pk-proofkit.php` (Plugin class)
+- `pk-adsautopilot.php` (Main plugin file)
+- `class-pk-adsautopilot.php` (Plugin class)
 - `uninstall.php` (Uninstaller)
 - `readme.txt` (WordPress.org readme)
 - `LICENSE` (GPL v2 license)
-- `languages/pk-proofkit.pot` (Translation template)
+- `languages/pk-adsautopilot.pot` (Translation template)
 - `languages/index.php` (Security file)
 - `index.php` (Security file)
 
@@ -77,7 +77,7 @@
 
 2. **WordPress.org Submission:**
    - Go to https://wordpress.org/plugins/developers/add/
-   - Upload `proofkit-pixels-ads-helper-v1.0.0.zip`
+   - Upload `adsautopilot-pixels-ads-helper-v1.0.0.zip`
    - Fill out submission form with plugin details
    - Submit for review
 
@@ -88,13 +88,13 @@
 
 ## 📋 Plugin Details Summary
 
-- **Plugin Name:** Proofkit Pixels & Ads Helper
+- **Plugin Name:** Ads Autopilot AI Pixels & Ads Helper
 - **Version:** 1.0.0
 - **WordPress Compatibility:** 5.0+
 - **PHP Compatibility:** 7.4+
 - **WooCommerce Compatibility:** 3.0+
 - **License:** GPL v2 or later
-- **Text Domain:** pk-proofkit
+- **Text Domain:** pk-adsautopilot
 
 ## 🔧 Key Features
 

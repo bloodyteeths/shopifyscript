@@ -278,7 +278,7 @@ class SheetsBackupService {
    */
   async storeBackupMetadata(tenantId, metadata) {
     try {
-      await optimizedSheets.ensureSheet(tenantId, "_proofkit_backups", [
+      await optimizedSheets.ensureSheet(tenantId, "_adsautopilot_backups", [
         "backup_id",
         "type",
         "file_path",
@@ -291,7 +291,7 @@ class SheetsBackupService {
         "tenant_id",
       ]);
 
-      await optimizedSheets.addRow(tenantId, "_proofkit_backups", {
+      await optimizedSheets.addRow(tenantId, "_adsautopilot_backups", {
         ...metadata,
         tenant_id: tenantId,
       });
@@ -314,7 +314,7 @@ class SheetsBackupService {
       // Get backup metadata
       const backupRows = await optimizedSheets.getRows(
         tenantId,
-        "_proofkit_backups",
+        "_adsautopilot_backups",
       );
       const backupRecord = backupRows.find((row) => row.backup_id === backupId);
 
@@ -402,7 +402,7 @@ class SheetsBackupService {
       backupRecord.restored_at = new Date().toISOString();
       await optimizedSheets.updateRow(
         tenantId,
-        "_proofkit_backups",
+        "_adsautopilot_backups",
         backupRecord,
       );
 
@@ -499,7 +499,7 @@ class SheetsBackupService {
 
       const backupRows = await optimizedSheets.getRows(
         tenantId,
-        "_proofkit_backups",
+        "_adsautopilot_backups",
       );
 
       let backups = backupRows.filter(
@@ -544,7 +544,7 @@ class SheetsBackupService {
     try {
       const backupRows = await optimizedSheets.getRows(
         tenantId,
-        "_proofkit_backups",
+        "_adsautopilot_backups",
       );
       const backupRecord = backupRows.find((row) => row.backup_id === backupId);
 
@@ -560,7 +560,7 @@ class SheetsBackupService {
       // Delete backup record
       await optimizedSheets.deleteRow(
         tenantId,
-        "_proofkit_backups",
+        "_adsautopilot_backups",
         backupRecord,
       );
 

@@ -1,10 +1,10 @@
-# ProofKit Annual Review & Maintenance Plan
+# Ads Autopilot AI Annual Review & Maintenance Plan
 
 ## 📅 Annual Review Schedule
 
 **Review Cycle**: August 2025 - August 2026  
 **Next Major Review**: August 16, 2026  
-**Review Coordinator**: ProofKit Technical Team  
+**Review Coordinator**: Ads Autopilot AI Technical Team  
 **Shopify Compliance Officer**: TBD based on Shopify requirements
 
 ---
@@ -297,7 +297,7 @@
 
 **Customer Feedback Channels**:
 
-- **In-App Feedback**: Quick feedback collection within ProofKit
+- **In-App Feedback**: Quick feedback collection within Ads Autopilot AI
 - **Support Ticket Analysis**: Identify common issues and requests
 - **App Store Reviews**: Monitor and respond to public feedback
 - **Direct Surveys**: Quarterly customer satisfaction surveys
@@ -419,16 +419,16 @@
 
 ## 📞 Review Contact Information
 
-**Annual Review Coordinator**: review@proofkit.app  
-**Technical Lead**: tech-lead@proofkit.app  
-**Compliance Officer**: compliance@proofkit.app  
-**Security Team**: security@proofkit.app
+**Annual Review Coordinator**: review@adsautopilot.app  
+**Technical Lead**: tech-lead@adsautopilot.app  
+**Compliance Officer**: compliance@adsautopilot.app  
+**Security Team**: security@adsautopilot.app
 
 **Emergency Contacts**:
 
-- **Critical Issues**: Available 24/7 via support@proofkit.app
-- **Security Incidents**: security-incident@proofkit.app
-- **Compliance Concerns**: compliance-urgent@proofkit.app
+- **Critical Issues**: Available 24/7 via support@adsautopilot.app
+- **Security Incidents**: security-incident@adsautopilot.app
+- **Compliance Concerns**: compliance-urgent@adsautopilot.app
 
 ---
 

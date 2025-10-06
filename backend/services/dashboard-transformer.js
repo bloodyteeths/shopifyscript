@@ -1,5 +1,5 @@
 /**
- * Dashboard Transformer Service for ProofKit SaaS
+ * Dashboard Transformer Service for Ads Autopilot AI SaaS
  * Data normalization, metric calculations, and aggregation logic
  *
  * Features:

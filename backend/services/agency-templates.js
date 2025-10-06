@@ -436,7 +436,7 @@ class AgencyTemplateService {
       const exportData = {
         ...template,
         exported_at: new Date().toISOString(),
-        exported_by: "ProofKit Agency System",
+        exported_by: "Ads Autopilot AI Agency System",
       };
 
       return exportData;

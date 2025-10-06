@@ -1,14 +1,14 @@
 <?php
 /**
- * Plugin Name: Proofkit Pixels & Ads Helper
+ * Plugin Name: Ads Autopilot AI Pixels & Ads Helper
  * Description: GA4 + Google Ads pixels, Woo events, Enhanced Conversions (hashed), backend forward.
  * Version: 0.3.1
- * Text Domain: pk-proofkit
+ * Text Domain: pk-adsautopilot
  */
 if (!defined('ABSPATH')) exit;
 
 add_action('admin_menu', function(){
-  add_options_page(__('Proofkit','pk-proofkit'), __('Proofkit','pk-proofkit'), 'manage_options', 'pk-proofkit', 'pk_render_settings');
+  add_options_page(__('Ads Autopilot AI','pk-adsautopilot'), __('Ads Autopilot AI','pk-adsautopilot'), 'manage_options', 'pk-adsautopilot', 'pk_render_settings');
 });
 
 function pk_render_settings(){
@@ -24,16 +24,16 @@ function pk_render_settings(){
   $ga4 = get_option('pk_ga4_id',''); $aw = get_option('pk_aw_id',''); $lbl = get_option('pk_aw_label','');
   $backend = get_option('pk_backend_url',''); $ten = get_option('pk_tenant',''); $sec = get_option('pk_secret','');
   ?>
-  <div class="wrap"><h1><?php echo esc_html(__('Proofkit','pk-proofkit')); ?></h1>
+  <div class="wrap"><h1><?php echo esc_html(__('Ads Autopilot AI','pk-adsautopilot')); ?></h1>
   <form method="post">
-    <p><?php echo esc_html(__('GA4 ID (G-XXXX):','pk-proofkit')); ?> <input name="ga4" value="<?php echo esc_attr($ga4); ?>"></p>
-    <p><?php echo esc_html(__('Google Ads Conv ID (AW-XXXXXX):','pk-proofkit')); ?> <input name="aw" value="<?php echo esc_attr($aw); ?>"></p>
-    <p><?php echo esc_html(__('Google Ads Conv Label:','pk-proofkit')); ?> <input name="aw_label" value="<?php echo esc_attr($lbl); ?>"></p>
-    <h3><?php echo esc_html(__('Backend','pk-proofkit')); ?></h3>
-    <p><?php echo esc_html(__('Backend URL:','pk-proofkit')); ?> <input name="backend_url" value="<?php echo esc_attr($backend); ?>" size="60"></p>
-    <p><?php echo esc_html(__('Tenant ID:','pk-proofkit')); ?> <input name="tenant" value="<?php echo esc_attr($ten); ?>"></p>
-    <p><?php echo esc_html(__('HMAC Secret:','pk-proofkit')); ?> <input name="secret" value="<?php echo esc_attr($sec); ?>"></p>
-    <p><button class="button button-primary" name="pk_save" value="1"><?php echo esc_html(__('Save','pk-proofkit')); ?></button></p>
+    <p><?php echo esc_html(__('GA4 ID (G-XXXX):','pk-adsautopilot')); ?> <input name="ga4" value="<?php echo esc_attr($ga4); ?>"></p>
+    <p><?php echo esc_html(__('Google Ads Conv ID (AW-XXXXXX):','pk-adsautopilot')); ?> <input name="aw" value="<?php echo esc_attr($aw); ?>"></p>
+    <p><?php echo esc_html(__('Google Ads Conv Label:','pk-adsautopilot')); ?> <input name="aw_label" value="<?php echo esc_attr($lbl); ?>"></p>
+    <h3><?php echo esc_html(__('Backend','pk-adsautopilot')); ?></h3>
+    <p><?php echo esc_html(__('Backend URL:','pk-adsautopilot')); ?> <input name="backend_url" value="<?php echo esc_attr($backend); ?>" size="60"></p>
+    <p><?php echo esc_html(__('Tenant ID:','pk-adsautopilot')); ?> <input name="tenant" value="<?php echo esc_attr($ten); ?>"></p>
+    <p><?php echo esc_html(__('HMAC Secret:','pk-adsautopilot')); ?> <input name="secret" value="<?php echo esc_attr($sec); ?>"></p>
+    <p><button class="button button-primary" name="pk_save" value="1"><?php echo esc_html(__('Save','pk-adsautopilot')); ?></button></p>
   </form></div><?php
 }
 

@@ -1,5 +1,5 @@
 /**
- * ProofKit Shopify Billing Service
+ * Ads Autopilot AI Shopify Billing Service
  * Handles Shopify App Billing API for embedded app subscriptions
  */
 
@@ -75,7 +75,7 @@ export class ShopifyBillingService {
       `;
 
       const variables = {
-        name: `ProofKit ${tier.name} Plan`,
+        name: `Ads Autopilot AI ${tier.name} Plan`,
         lineItems: [
           {
             plan: {

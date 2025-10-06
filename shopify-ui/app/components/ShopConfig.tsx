@@ -28,7 +28,7 @@ export function ShopConfig({
     setShopName(currentShopName);
     // Ensure URL reflects saved shop for server-side loaders
     try {
-      const defaultShop = process.env.TENANT_ID || "proofkit";
+      const defaultShop = process.env.TENANT_ID || "adsautopilot";
       if (currentShopName && currentShopName !== defaultShop) {
         const url = new URL(window.location.href);
         if (url.searchParams.get("shop") !== currentShopName) {
@@ -241,7 +241,7 @@ export function ShopConfig({
         }}
       >
         Set your shop name to ensure proper tenant identification for all
-        ProofKit features.
+        Ads Autopilot AI features.
       </p>
 
       <div style={{ marginBottom: "12px" }}>
@@ -349,7 +349,7 @@ export function ShopConfig({
               border: "1px solid #e9ecef",
             }}
           >
-            <strong>Examples:</strong> "proofkit", "my-store", "awesome-shop"
+            <strong>Examples:</strong> "adsautopilot", "my-store", "awesome-shop"
             <br />
             <strong>Note:</strong> Enter only the part before ".myshopify.com"
           </div>
@@ -397,7 +397,7 @@ export function ShopConfig({
       >
         <strong>Note:</strong> This shop name will be used for all API calls and
         data isolation. Use your Shopify shop name without ".myshopify.com"
-        (e.g., "proofkit" for "proofkit.myshopify.com").
+        (e.g., "adsautopilot" for "adsautopilot.myshopify.com").
       </div>
     </div>
   );

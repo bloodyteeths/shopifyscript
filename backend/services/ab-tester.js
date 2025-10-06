@@ -1,5 +1,5 @@
 /**
- * A/B Testing Service for ProofKit SaaS
+ * A/B Testing Service for Ads Autopilot AI SaaS
  * Manages A/B testing of ad variations with statistical significance
  *
  * Features:

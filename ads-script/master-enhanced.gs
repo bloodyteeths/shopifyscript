@@ -1,8 +1,8 @@
 /**
- * Enhanced Master Google Ads Script - ProofKit Integration
+ * Enhanced Master Google Ads Script - Ads Autopilot AI Integration
  * Version: 2.0.0
  *
- * This script runs in your Google Ads account and communicates with the ProofKit backend
+ * This script runs in your Google Ads account and communicates with the Ads Autopilot AI backend
  * to fetch optimization instructions and send performance data back.
  *
  * SETUP INSTRUCTIONS:
@@ -24,8 +24,8 @@
 
 var CONFIG = {
   // Backend Connection
-  TENANT_ID: '__TENANT_ID__',           // Your ProofKit tenant ID
-  BACKEND_URL: '__BACKEND_URL__',       // ProofKit backend URL
+  TENANT_ID: '__TENANT_ID__',           // Your Ads Autopilot AI tenant ID
+  BACKEND_URL: '__BACKEND_URL__',       // Ads Autopilot AI backend URL
   SHARED_SECRET: '__HMAC_SECRET__',     // HMAC secret for authentication
 
   // Script Behavior
@@ -55,7 +55,7 @@ var CONFIG = {
   ENABLE_AUDIENCE_TARGETING: true,      // Enable audience management
 
   // Labels
-  SCRIPT_LABEL: 'ProofKit-Enhanced',    // Label for tracking managed entities
+  SCRIPT_LABEL: 'Ads Autopilot AI-Enhanced',    // Label for tracking managed entities
 
   // Exclusions
   EXCLUDED_CAMPAIGNS: [],               // Campaign names to exclude
@@ -78,7 +78,7 @@ var SCRIPT_RUN_ID = 'RUN_' + new Date().getTime();
 
 function main() {
   try {
-    log_('Enhanced ProofKit Script v' + CONFIG.VERSION + ' Starting', 'INFO');
+    log_('Enhanced Ads Autopilot AI Script v' + CONFIG.VERSION + ' Starting', 'INFO');
     log_('Run ID: ' + SCRIPT_RUN_ID, 'INFO');
     log_('Mode: ' + (CONFIG.DRY_RUN ? 'DRY RUN' : 'LIVE'), 'INFO');
 
@@ -121,7 +121,7 @@ function main() {
     // Send execution summary
     sendExecutionSummary_();
 
-    log_('Enhanced ProofKit Script completed successfully', 'INFO');
+    log_('Enhanced Ads Autopilot AI Script completed successfully', 'INFO');
 
   } catch (error) {
     log_('Critical error in main execution: ' + error.toString(), 'ERROR');
@@ -257,7 +257,7 @@ function makeHttpRequest_(url, method, payload) {
     followRedirects: true,
     validateHttpsCertificates: true,
     headers: {
-      'User-Agent': 'ProofKit-Enhanced-Script/' + CONFIG.VERSION,
+      'User-Agent': 'Ads Autopilot AI-Enhanced-Script/' + CONFIG.VERSION,
       'Content-Type': 'application/json'
     }
   };
@@ -1156,7 +1156,7 @@ function ensureLabel_(labelName) {
     }
 
     // Create label if it doesn't exist
-    AdsApp.createLabel(labelName, 'Managed by ProofKit Enhanced Script v' + CONFIG.VERSION);
+    AdsApp.createLabel(labelName, 'Managed by Ads Autopilot AI Enhanced Script v' + CONFIG.VERSION);
     log_('Created label: ' + labelName, 'INFO');
   } catch (error) {
     log_('Failed to ensure label: ' + error.toString(), 'ERROR');
@@ -1212,7 +1212,7 @@ function applyAudienceTargeting_(optimization) {
 function getScriptInfo() {
   return {
     version: CONFIG.VERSION,
-    name: 'ProofKit Enhanced Google Ads Script',
+    name: 'Ads Autopilot AI Enhanced Google Ads Script',
     description: 'Advanced automation with bidirectional backend communication',
     lastUpdated: '2024-09-28',
     capabilities: [

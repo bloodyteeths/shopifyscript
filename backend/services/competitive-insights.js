@@ -1,5 +1,5 @@
 /**
- * Competitive Insights Service for ProofKit SaaS
+ * Competitive Insights Service for Ads Autopilot AI SaaS
  * Advanced competitive intelligence with weakness detection and trend identification
  *
  * Features:

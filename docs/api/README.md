@@ -1,10 +1,10 @@
-# ProofKit SaaS API Documentation
+# Ads Autopilot AI SaaS API Documentation
 
-Comprehensive API reference for the ProofKit SaaS platform - Google Ads automation and e-commerce optimization.
+Comprehensive API reference for the Ads Autopilot AI SaaS platform - Google Ads automation and e-commerce optimization.
 
 ## Overview
 
-ProofKit SaaS is a comprehensive advertising automation platform that provides:
+Ads Autopilot AI SaaS is a comprehensive advertising automation platform that provides:
 
 - **Google Ads Campaign Management**: Automated bidding, budget management, negative keyword mining
 - **E-commerce Integration**: Shopify and WordPress plugins for product optimization
@@ -33,12 +33,12 @@ ProofKit SaaS is a comprehensive advertising automation platform that provides:
 
 ## Base URL
 
-- **Production**: `https://api.proofkit.net`
+- **Production**: `https://api.adsautopilot.net`
 - **Development**: `http://localhost:3001`
 
 ## Authentication
 
-ProofKit uses HMAC-SHA256 authentication for all API endpoints.
+Ads Autopilot AI uses HMAC-SHA256 authentication for all API endpoints.
 
 ### HMAC Authentication
 
@@ -61,7 +61,7 @@ const signature = crypto
 **Example Request:**
 
 ```bash
-curl -X GET "https://api.proofkit.net/api/config?tenant=TENANT_123&sig=ABC123" \
+curl -X GET "https://api.adsautopilot.net/api/config?tenant=TENANT_123&sig=ABC123" \
   -H "Content-Type: application/json"
 ```
 
@@ -131,7 +131,7 @@ Retrieve tenant configuration including automation settings, feature flags, and 
   "ok": true,
   "config": {
     "enabled": true,
-    "label": "PROOFKIT_AUTOMATED",
+    "label": "ADS_AUTOPILOT_AI_AUTOMATED",
     "plan": "pro",
     "PROMOTE": false,
     "daily_budget_cap_default": 3.0,
@@ -423,7 +423,7 @@ Performance data submitted as arrays aligned to predefined headers for efficienc
 
 ## Webhooks
 
-ProofKit supports webhooks for real-time notifications:
+Ads Autopilot AI supports webhooks for real-time notifications:
 
 **Supported Events:**
 
@@ -451,10 +451,10 @@ ProofKit supports webhooks for real-time notifications:
 ### Node.js
 
 ```javascript
-const ProofKitAPI = require("@proofkit/api-client");
+const Ads Autopilot AIAPI = require("@adsautopilot/api-client");
 
-const client = new ProofKitAPI({
-  baseURL: "https://api.proofkit.net",
+const client = new Ads Autopilot AIAPI({
+  baseURL: "https://api.adsautopilot.net",
   tenant: "TENANT_123",
   hmacSecret: "your-secret-key",
 });
@@ -472,10 +472,10 @@ await client.metrics.submit({
 ### Python
 
 ```python
-from proofkit import ProofKitClient
+from adsautopilot import Ads Autopilot AIClient
 
-client = ProofKitClient(
-    base_url='https://api.proofkit.net',
+client = Ads Autopilot AIClient(
+    base_url='https://api.adsautopilot.net',
     tenant='TENANT_123',
     hmac_secret='your-secret-key'
 )
@@ -489,9 +489,9 @@ result = client.autopilot.tick(dry_run=True)
 
 ## Testing
 
-ProofKit provides a sandbox environment for testing integrations:
+Ads Autopilot AI provides a sandbox environment for testing integrations:
 
-**Sandbox URL**: `https://sandbox-api.proofkit.net`
+**Sandbox URL**: `https://sandbox-api.adsautopilot.net`
 
 **Test Credentials:**
 
@@ -500,10 +500,10 @@ ProofKit provides a sandbox environment for testing integrations:
 
 ## Support
 
-- **Documentation**: https://docs.proofkit.net
-- **Status Page**: https://status.proofkit.net
-- **Support Email**: support@proofkit.net
-- **Emergency**: +1-555-PROOFKIT
+- **Documentation**: https://docs.adsautopilot.net
+- **Status Page**: https://status.adsautopilot.net
+- **Support Email**: support@adsautopilot.net
+- **Emergency**: +1-555-ADS_AUTOPILOT_AI
 
 ---
 

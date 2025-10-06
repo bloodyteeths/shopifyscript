@@ -1,14 +1,14 @@
-# ProofKit Data Flow Architecture
+# Ads Autopilot AI Data Flow Architecture
 
 ## 🎯 Overview
 
-This document provides a comprehensive overview of ProofKit's data architecture, showing how information flows between Shopify stores, the ProofKit application, backend services, and external integrations.
+This document provides a comprehensive overview of Ads Autopilot AI's data architecture, showing how information flows between Shopify stores, the Ads Autopilot AI application, backend services, and external integrations.
 
 ## 📊 High-Level Architecture
 
 ```
 ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   Shopify       │    │   ProofKit      │    │   Backend       │    │   Google        │
+│   Shopify       │    │   Ads Autopilot AI      │    │   Backend       │    │   Google        │
 │   Store         │◄──►│   App (UI)      │◄──►│   API           │◄──►│   Services      │
 │                 │    │                 │    │                 │    │                 │
 │ • Admin Panel   │    │ • Remix UI      │    │ • Express.js    │    │ • Sheets API    │
@@ -24,7 +24,7 @@ This document provides a comprehensive overview of ProofKit's data architecture,
 
 ```
 ┌─────────┐     ┌─────────┐     ┌─────────┐     ┌─────────┐
-│ Store   │────►│ Shopify │────►│ ProofKit│────►│ Backend │
+│ Store   │────►│ Shopify │────►│ Ads Autopilot AI│────►│ Backend │
 │ Owner   │     │ OAuth   │     │ App     │     │ API     │
 └─────────┘     └─────────┘     └─────────┘     └─────────┘
      │               │               │               │
@@ -37,7 +37,7 @@ This document provides a comprehensive overview of ProofKit's data architecture,
 
 1. **Store Owner** initiates app installation from Shopify App Store
 2. **Shopify OAuth** handles authentication and permission grants
-3. **ProofKit App** receives OAuth tokens and establishes session
+3. **Ads Autopilot AI App** receives OAuth tokens and establishes session
 4. **Backend API** validates all requests using HMAC signatures
 
 ### 2. Core Application Data Flow
@@ -50,7 +50,7 @@ This document provides a comprehensive overview of ProofKit's data architecture,
           │ User Actions
           ▼
 ┌─────────────────┐
-│ ProofKit UI     │
+│ Ads Autopilot AI UI     │
 │ (Embedded)      │
 │ • Intent OS     │
 │ • Audiences     │
@@ -96,7 +96,7 @@ Behavior   → Segmentation  →  Configuration  →  & Canary       →  Tracki
 
 ```
 ┌─────────────┐     ┌─────────────┐     ┌─────────────┐
-│ ProofKit UI │────►│ Signature   │────►│ Backend     │
+│ Ads Autopilot AI UI │────►│ Signature   │────►│ Backend     │
 │ Request     │     │ Generation  │     │ Validation  │
 └─────────────┘     └─────────────┘     └─────────────┘
        │                    │                    │
@@ -114,7 +114,7 @@ Behavior   → Segmentation  →  Configuration  →  & Canary       →  Tracki
 ### Data Encryption
 
 ```
-Client ◄──── HTTPS ────► ProofKit UI ◄──── HTTPS ────► Backend API
+Client ◄──── HTTPS ────► Ads Autopilot AI UI ◄──── HTTPS ────► Backend API
   │                         │                            │
   ▼                         ▼                            ▼
 TLS 1.3                 App Bridge                  Server-side
@@ -190,7 +190,7 @@ Encryption             Secure Context               Validation
 ### Google Sheets API Integration
 
 ```
-ProofKit Backend ◄──── API Calls ────► Google Sheets
+Ads Autopilot AI Backend ◄──── API Calls ────► Google Sheets
        │                                    │
        ▼                                    ▼
 • Configuration        Read/Write        • Intent Blocks
@@ -203,7 +203,7 @@ ProofKit Backend ◄──── API Calls ────► Google Sheets
 ### Google Ads Script Integration
 
 ```
-ProofKit Backend → Script Generation → Google Ads Account
+Ads Autopilot AI Backend → Script Generation → Google Ads Account
        │               │                      │
        ▼               ▼                      ▼
 Campaign Config    JavaScript Code      Automated Bidding
@@ -215,7 +215,7 @@ Audience Data      Uploaded to Ads      Campaign Optimization
 ### Web Pixel Integration (Optional)
 
 ```
-Shopify Store → Customer Events → ProofKit Pixel → Analytics
+Shopify Store → Customer Events → Ads Autopilot AI Pixel → Analytics
      │              │                 │              │
      ▼              ▼                 ▼              ▼
 Storefront     Purchase Events    Consent Mode    Performance

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# ProofKit SaaS Production Deployment Script
+# Ads Autopilot AI SaaS Production Deployment Script
 # Comprehensive deployment automation with health checks and rollback
 
 set -euo pipefail
@@ -135,16 +135,16 @@ create_backup() {
     log INFO "Creating backup..."
     
     local timestamp=$(date '+%Y%m%d_%H%M%S')
-    local backup_name="proofkit_backup_${timestamp}"
+    local backup_name="adsautopilot_backup_${timestamp}"
     
     mkdir -p "$BACKUP_DIR"
     
     # Backup volumes if they exist
-    if docker volume ls | grep -q proofkit; then
+    if docker volume ls | grep -q adsautopilot; then
         log INFO "Backing up Docker volumes..."
         docker run --rm \
-            -v proofkit-saas_app-logs:/source/logs \
-            -v proofkit-saas_redis-data:/source/redis \
+            -v adsautopilot-saas_app-logs:/source/logs \
+            -v adsautopilot-saas_redis-data:/source/redis \
             -v "${BACKUP_DIR}:/backup" \
             alpine:latest \
             tar czf "/backup/${backup_name}_volumes.tar.gz" -C /source .
@@ -171,8 +171,8 @@ build_images() {
     # Build with build cache and multi-stage optimization
     docker build \
         --target runtime \
-        --tag proofkit-saas:latest \
-        --tag "proofkit-saas:$(date '+%Y%m%d_%H%M%S')" \
+        --tag adsautopilot-saas:latest \
+        --tag "adsautopilot-saas:$(date '+%Y%m%d_%H%M%S')" \
         .
     
     log INFO "Docker images built successfully"
@@ -268,8 +268,8 @@ rollback() {
         # Restore volumes
         if [[ -f "${BACKUP_DIR}/${backup_name}_volumes.tar.gz" ]]; then
             docker run --rm \
-                -v proofkit-saas_app-logs:/target/logs \
-                -v proofkit-saas_redis-data:/target/redis \
+                -v adsautopilot-saas_app-logs:/target/logs \
+                -v adsautopilot-saas_redis-data:/target/redis \
                 -v "${BACKUP_DIR}:/backup" \
                 alpine:latest \
                 tar xzf "/backup/${backup_name}_volumes.tar.gz" -C /target
@@ -291,7 +291,7 @@ cleanup_backups() {
     
     # Keep only the last 5 backups
     cd "$BACKUP_DIR"
-    ls -t proofkit_backup_*.tar.gz 2>/dev/null | tail -n +6 | xargs -r rm -f
+    ls -t adsautopilot_backup_*.tar.gz 2>/dev/null | tail -n +6 | xargs -r rm -f
     
     log INFO "Backup cleanup completed"
 }
@@ -366,7 +366,7 @@ done
 
 # Main execution
 main() {
-    log INFO "Starting ProofKit SaaS deployment - Command: $COMMAND"
+    log INFO "Starting Ads Autopilot AI SaaS deployment - Command: $COMMAND"
     
     # Setup log file
     mkdir -p "$(dirname "$LOG_FILE")"

@@ -2,7 +2,7 @@
 
 describe("Script Preview & Idempotency Testing", () => {
   beforeEach(() => {
-    cy.stubProofKitAPI("success");
+    cy.stubAds Autopilot AIAPI("success");
     cy.fixture("api-responses").as("apiResponses");
     cy.fixture("tenant-data").as("testData");
   });
@@ -159,7 +159,7 @@ describe("Script Preview & Idempotency Testing", () => {
     cy.get('[data-testid="troubleshooting-link"]').should("be.visible");
 
     // Test retry functionality
-    cy.stubProofKitAPI("success");
+    cy.stubAds Autopilot AIAPI("success");
     cy.get('[data-testid="retry-preview"]').click();
 
     cy.wait("@scriptPreview");

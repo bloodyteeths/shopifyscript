@@ -1,5 +1,5 @@
 
-/** Proofkit Autopilot — Universal Google Ads Script (backend version)
+/** Ads Autopilot AI — Universal Google Ads Script (backend version)
  * These placeholders are replaced by the backend endpoint `/api/ads-script/raw`.
  */
 var TENANT_ID     = '__TENANT_ID__';
@@ -114,7 +114,7 @@ function main(){
 
   // Metrics push
   var metrics = collectPerf_();
-  var runLogs = [[new Date(), '✓ Proofkit run complete']];
+  var runLogs = [[new Date(), '✓ Ads Autopilot AI run complete']];
   
   // Add idempotency tracking to run logs
   if (PREVIEW_MODE || RUN_MODE === 'IDEMPOTENCY_TEST') {
@@ -144,7 +144,7 @@ function getConfig_(){
       validateHttpsCertificates:true,
       headers: {
         'ngrok-skip-browser-warning': '1',
-        'User-Agent': 'Proofkit-AdsScript/1.0 (+https://proofkit.net)'
+        'User-Agent': 'Ads Autopilot AI-AdsScript/1.0 (+https://adsautopilot.net)'
       }
     });
     var code = r.getResponseCode();
@@ -179,7 +179,7 @@ function postToBackend_(action, payload){
         validateHttpsCertificates:true,
         headers: {
           'ngrok-skip-browser-warning': '1',
-          'User-Agent': 'Proofkit-AdsScript/1.0 (+https://proofkit.net)'
+          'User-Agent': 'Ads Autopilot AI-AdsScript/1.0 (+https://adsautopilot.net)'
         }
       });
     }
@@ -195,7 +195,7 @@ function sign_(payload){
 function ensureSeed_(cfg){
   var any = AdsApp.campaigns().withCondition("campaign.advertising_channel_type = SEARCH").get();
   if (any.hasNext()) return;
-  var name=(cfg.desired && cfg.desired.campaign_name)||"ProofKit - Search";
+  var name=(cfg.desired && cfg.desired.campaign_name)||"Ads Autopilot AI - Search";
   var daily=cfg.daily_budget_cap_default||3.00, ceil=cfg.cpc_ceiling_default||0.20;
   var adg=(cfg.desired && cfg.desired.ad_group)||"Default";
   
@@ -342,7 +342,7 @@ function buildSafeRSAs_(cfg){
 function lint_(arr, maxLen, maxItems, minLen){ var out=[], seen={}; for (var i=0;i<arr.length && out.length<maxItems;i++){ var s=String(arr[i]||"").trim(); if(!s) continue; s=dedupeWords_(s); if(s.length>maxLen) s=s.slice(0,maxLen); if(s.length<minLen) continue; var k=s.toLowerCase(); if(seen[k]) continue; seen[k]=true; out.push(s);} return out; }
 function hasLabelledAd_(ag,label){ var ads=ag.ads().get(); while(ads.hasNext()){ var ad=ads.next(), labs=ad.labels().get(); while(labs.hasNext()) if(labs.next().getName()===label) return true; } return false; }
 function inferFinalUrl_(ag){ var it=ag.ads().withCondition("ad_group_ad.status IN ('ENABLED','PAUSED')").get(); while(it.hasNext()){ var ad=it.next(); try{ var urls=ad.urls(); var u=urls.getFinalUrl?urls.getFinalUrl():(urls.getFinalUrls&&urls.getFinalUrls()[0]); if(u) return u; }catch(e){} } return null; }
-function ensureLabel_(name){ var it=AdsApp.labels().get(); while(it.hasNext()) if(it.next().getName()===name) return; AdsApp.createLabel(name,"Touched by Proofkit"); }
+function ensureLabel_(name){ var it=AdsApp.labels().get(); while(it.hasNext()) if(it.next().getName()===name) return; AdsApp.createLabel(name,"Touched by Ads Autopilot AI"); }
 function safeLabel_(entity,name){ safeLabelWithGuard_(entity, name); }
 function dedupeWords_(s){ var p=s.split(/\s+/), out=[], seen={}; for(var i=0;i<p.length;i++){ var w=p[i], k=w.toLowerCase(); if(seen[k]) continue; seen[k]=true; out.push(w);} return out.join(' '); }
 function log_(m){ Logger.log(m); }
@@ -603,7 +603,7 @@ function isExcludedAdGroup_(cfg, campaignName, adGroupName){
 function initializeIdempotencyTracking_(){
   // Check if we're in preview/test mode via URL parameters or PropertiesService
   try {
-    var testMode = PropertiesService.getScriptProperties().getProperty('PROOFKIT_TEST_MODE');
+    var testMode = PropertiesService.getScriptProperties().getProperty('ADS_AUTOPILOT_AI_TEST_MODE');
     if (testMode === 'PREVIEW' || testMode === 'IDEMPOTENCY_TEST') {
       RUN_MODE = testMode;
       PREVIEW_MODE = (testMode === 'PREVIEW' || testMode === 'IDEMPOTENCY_TEST');
@@ -637,7 +637,7 @@ function setTestMode_(mode) {
   MUTATION_LOG = [];
   
   try {
-    PropertiesService.getScriptProperties().setProperty('PROOFKIT_TEST_MODE', mode);
+    PropertiesService.getScriptProperties().setProperty('ADS_AUTOPILOT_AI_TEST_MODE', mode);
   } catch(e) {
     log_('• Could not set test mode property: ' + e);
   }
@@ -713,7 +713,7 @@ function runIdempotencyTest_() {
 
 // Global safety guards
 var NEG_GUARD_ACTIVE = false;
-var RESERVED_KEYWORDS = ['proofkit', 'brand', 'competitor', 'important'];
+var RESERVED_KEYWORDS = ['adsautopilot', 'brand', 'competitor', 'important'];
 
 /**
  * Critical PROMOTE gate validation - blocks all mutations if PROMOTE=FALSE
@@ -761,7 +761,7 @@ function initializeSafetyGuards_(cfg) {
   log_('• Safety Guards Initialized:');
   log_('  - PROMOTE: ' + (cfg.PROMOTE ? 'ENABLED' : 'DISABLED'));
   log_('  - NEG_GUARD: ' + (NEG_GUARD_ACTIVE ? 'ACTIVE' : 'INACTIVE'));
-  log_('  - LABEL_GUARD: ' + (cfg.label || 'PROOFKIT_AUTOMATED'));
+  log_('  - LABEL_GUARD: ' + (cfg.label || 'ADS_AUTOPILOT_AI_AUTOMATED'));
   log_('  - PREVIEW_MODE: ' + (PREVIEW_MODE ? 'TRUE' : 'FALSE'));
   log_('  - RUN_MODE: ' + RUN_MODE);
   
@@ -780,14 +780,14 @@ function loadNegGuard_(cfg) {
     
     // Fallback to hardcoded list if sheet is empty
     if (RESERVED_KEYWORDS.length === 0) {
-      RESERVED_KEYWORDS = ['proofkit', 'brand', 'competitor', 'important'];
+      RESERVED_KEYWORDS = ['adsautopilot', 'brand', 'competitor', 'important'];
       log_('• NEG_GUARD: Using fallback reserved keywords');
     } else {
       log_('• NEG_GUARD: Loaded ' + RESERVED_KEYWORDS.length + ' reserved keywords from sheet');
     }
   } catch (e) {
     log_('! NEG_GUARD: Error loading from sheet, using fallback: ' + e);
-    RESERVED_KEYWORDS = ['proofkit', 'brand', 'competitor', 'important'];
+    RESERVED_KEYWORDS = ['adsautopilot', 'brand', 'competitor', 'important'];
   }
 }
 
@@ -931,7 +931,7 @@ function getPaceSignals_() {
       validateHttpsCertificates: true,
       headers: {
         'ngrok-skip-browser-warning': '1',
-        'User-Agent': 'Proofkit-AdsScript/1.0 (+https://proofkit.net)'
+        'User-Agent': 'Ads Autopilot AI-AdsScript/1.0 (+https://adsautopilot.net)'
       }
     });
     
@@ -1207,7 +1207,7 @@ function computePaceSignals_() {
       validateHttpsCertificates: true,
       headers: {
         'ngrok-skip-browser-warning': '1',
-        'User-Agent': 'Proofkit-AdsScript/1.0 (+https://proofkit.net)'
+        'User-Agent': 'Ads Autopilot AI-AdsScript/1.0 (+https://adsautopilot.net)'
       }
     });
     

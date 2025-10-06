@@ -312,7 +312,7 @@ export default function BillingPage() {
     <AppShell>
       <Page
         title="Billing & Subscription"
-        subtitle="Manage your ProofKit subscription and billing preferences"
+        subtitle="Manage your Ads Autopilot AI subscription and billing preferences"
       >
         <Layout>
           {error && (

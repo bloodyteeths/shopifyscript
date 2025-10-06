@@ -1,4 +1,4 @@
-// ProofKit Shopify Web Pixel Extension with Consent Mode v2 & GA4/Google Ads Integration
+// Ads Autopilot AI Shopify Web Pixel Extension with Consent Mode v2 & GA4/Google Ads Integration
 // Compliant with GDPR, CCPA, and other privacy regulations
 
 function sign(payload, secret) {
@@ -90,7 +90,7 @@ function getConsentStatus() {
         source: "shopify",
       };
     } catch (e) {
-      console.warn("ProofKit: Error reading Shopify consent:", e);
+      console.warn("Ads Autopilot AI: Error reading Shopify consent:", e);
     }
   }
 
@@ -111,7 +111,7 @@ function getConsentStatus() {
         source: "gtag",
       };
     } catch (e) {
-      console.warn("ProofKit: Error reading Google consent:", e);
+      console.warn("Ads Autopilot AI: Error reading Google consent:", e);
     }
   }
 
@@ -212,7 +212,7 @@ function getConsentStatus() {
 // GA4 and Google Ads conversion tracking
 function fireGA4Event(eventName, parameters, consent) {
   if (!consent.marketing && !consent.analytics) {
-    console.log("ProofKit: GA4 event blocked due to consent:", eventName);
+    console.log("Ads Autopilot AI: GA4 event blocked due to consent:", eventName);
     return;
   }
 
@@ -220,8 +220,8 @@ function fireGA4Event(eventName, parameters, consent) {
   if (typeof gtag !== "undefined") {
     gtag("event", eventName, {
       ...parameters,
-      send_to: window?.shopify?.proofkit_ga4_id || "GA_MEASUREMENT_ID",
-      debug_mode: window?.shopify?.proofkit_debug || false,
+      send_to: window?.shopify?.adsautopilot_ga4_id || "GA_MEASUREMENT_ID",
+      debug_mode: window?.shopify?.adsautopilot_debug || false,
     });
   }
 
@@ -229,10 +229,10 @@ function fireGA4Event(eventName, parameters, consent) {
   if (
     eventName === "purchase" &&
     consent.marketing &&
-    window?.shopify?.proofkit_google_ads_id
+    window?.shopify?.adsautopilot_google_ads_id
   ) {
     gtag("event", "conversion", {
-      send_to: `${window.shopify.proofkit_google_ads_id}/${window?.shopify?.proofkit_conversion_label || "CONVERSION_LABEL"}`,
+      send_to: `${window.shopify.adsautopilot_google_ads_id}/${window?.shopify?.adsautopilot_conversion_label || "CONVERSION_LABEL"}`,
       value: parameters.value || 0,
       currency: parameters.currency || "USD",
       transaction_id: parameters.transaction_id || parameters.order_id,
@@ -272,10 +272,10 @@ export function registerAnalytics(analytics) {
   initializeConsentMode();
 
   const backend = (
-    window?.shopify?.proofkit_backend || "http://localhost:3001/api"
+    window?.shopify?.adsautopilot_backend || "http://localhost:3001/api"
   ).replace(/\/$/, "");
-  const tenant = window?.shopify?.proofkit_tenant || "TENANT_123";
-  const secret = window?.shopify?.proofkit_secret || "";
+  const tenant = window?.shopify?.adsautopilot_tenant || "TENANT_123";
+  const secret = window?.shopify?.adsautopilot_secret || "";
 
   async function postPixel(event, payload) {
     try {
@@ -305,7 +305,7 @@ export function registerAnalytics(analytics) {
         },
       );
     } catch (e) {
-      console.warn("ProofKit: Pixel send failed:", e);
+      console.warn("Ads Autopilot AI: Pixel send failed:", e);
     }
   }
 
@@ -517,7 +517,7 @@ export function registerAnalytics(analytics) {
     );
 
     // Log successful conversion
-    console.log("ProofKit: Purchase conversion tracked", {
+    console.log("Ads Autopilot AI: Purchase conversion tracked", {
       transaction_id: purchaseData.transaction_id,
       value: purchaseData.value,
       currency: purchaseData.currency,
@@ -539,9 +539,9 @@ export function registerAnalytics(analytics) {
         });
       }
 
-      console.log("ProofKit: Consent updated", newConsent);
+      console.log("Ads Autopilot AI: Consent updated", newConsent);
     });
   }
 
-  console.log("ProofKit Web Pixel initialized with Consent Mode v2");
+  console.log("Ads Autopilot AI Web Pixel initialized with Consent Mode v2");
 }

@@ -41,5 +41,5 @@ app.all(
 
 const port = Number(process.env.PORT || 3037);
 app.listen(port, () => {
-  console.log(`Proofkit UI (express) at http://localhost:${port}`);
+  console.log(`Ads Autopilot AI UI (express) at http://localhost:${port}`);
 });

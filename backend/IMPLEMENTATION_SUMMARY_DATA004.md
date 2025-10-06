@@ -319,7 +319,7 @@ const csv = await audienceBuilder.exportAudienceCSV(tenantId, 'all');
 
 **System Status**: ✅ PRODUCTION READY
 
-All components tested and integrated with existing ProofKit infrastructure. Ready for immediate deployment with zero configuration required.
+All components tested and integrated with existing Ads Autopilot AI infrastructure. Ready for immediate deployment with zero configuration required.
 
 ---
 

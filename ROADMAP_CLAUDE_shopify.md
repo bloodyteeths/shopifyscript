@@ -1,4 +1,4 @@
-# Proofkit SaaS — Roadmap & Claude Rules (v1.0)
+# Ads Autopilot AI SaaS — Roadmap & Claude Rules (v1.0)
 
 **Goal:** Ship a pair of merchant-friendly apps (Shopify + WordPress) powered by a backend + a universal Google Ads Script that optimizes Search campaigns without the Google Ads API. Win on _time-to-value_, _hands‑off optimization_, and _privacy‑first pixels_. Fast approval, zero gray areas.
 
@@ -203,7 +203,7 @@ See links in _Appendix A_.
 
 ## Appendix B — Claude Prompt Template (paste into each task)
 
-> **ROLE:** Senior engineer building Proofkit SaaS (backend + Shopify + WP + Ads Script).
+> **ROLE:** Senior engineer building Ads Autopilot AI SaaS (backend + Shopify + WP + Ads Script).
 >
 > **GOAL:** {one‑sentence merchant impact}.
 >

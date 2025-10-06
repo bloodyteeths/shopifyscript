@@ -1,4 +1,4 @@
-# 🧪 ProofKit AI System - Complete Testing Guide
+# 🧪 Ads Autopilot AI AI System - Complete Testing Guide
 
 ## 📋 Pre-Testing Setup
 

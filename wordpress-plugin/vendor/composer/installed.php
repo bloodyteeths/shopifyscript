@@ -1,6 +1,6 @@
 <?php return array(
     'root' => array(
-        'name' => 'proofkit/wordpress-plugin',
+        'name' => 'adsautopilot/wordpress-plugin',
         'pretty_version' => '1.0.0+no-version-set',
         'version' => '1.0.0.0',
         'reference' => null,
@@ -37,7 +37,7 @@
             'aliases' => array(),
             'dev_requirement' => false,
         ),
-        'proofkit/wordpress-plugin' => array(
+        'adsautopilot/wordpress-plugin' => array(
             'pretty_version' => '1.0.0+no-version-set',
             'version' => '1.0.0.0',
             'reference' => null,

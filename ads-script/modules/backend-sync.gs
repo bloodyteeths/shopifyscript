@@ -1,7 +1,7 @@
 /**
- * Backend Synchronization Module for ProofKit Enhanced Script
+ * Backend Synchronization Module for Ads Autopilot AI Enhanced Script
  *
- * This module handles all communication with the ProofKit backend,
+ * This module handles all communication with the Ads Autopilot AI backend,
  * including authentication, data transfer, and error handling.
  *
  * Features:
@@ -18,7 +18,7 @@
 
 /**
  * Main backend synchronization function
- * Orchestrates the entire sync process with the ProofKit backend
+ * Orchestrates the entire sync process with the Ads Autopilot AI backend
  */
 function syncWithBackend(config) {
   var syncResult = {
@@ -248,7 +248,7 @@ function makeSecureHttpRequest(url, method, payload, config, retryCount) {
     followRedirects: true,
     validateHttpsCertificates: true,
     headers: {
-      'User-Agent': 'ProofKit-Enhanced-Script/' + (config.VERSION || '2.0.0'),
+      'User-Agent': 'Ads Autopilot AI-Enhanced-Script/' + (config.VERSION || '2.0.0'),
       'Content-Type': 'application/json',
       'X-Script-Version': config.VERSION || '2.0.0',
       'X-Run-ID': config.RUN_ID || generateRunId()
@@ -541,7 +541,7 @@ function getExecutionContext(config) {
  */
 function getScriptInfo(config) {
   return {
-    name: 'ProofKit Enhanced Google Ads Script',
+    name: 'Ads Autopilot AI Enhanced Google Ads Script',
     version: config.VERSION || '2.0.0',
     modules: [
       'backend-sync',

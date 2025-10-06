@@ -1,5 +1,5 @@
 /**
- * RSA Content Generator Service for ProofKit SaaS
+ * RSA Content Generator Service for Ads Autopilot AI SaaS
  * Generates intelligent RSA content with 30/90 character validation
  * Now enhanced with website content extraction for dynamic, specific ads
  */

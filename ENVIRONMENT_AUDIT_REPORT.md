@@ -35,7 +35,7 @@ PORT=3000  # ✅ Clean separation
 
 ```env
 # Tenant Registry - Multi-tenant configuration
-TENANT_REGISTRY_JSON='{"proofkit":"1vqcqkLxY4r3tWowi6GMsoRbSJG5x4XY7QKg2mTe54rU"}'
+TENANT_REGISTRY_JSON='{"adsautopilot":"1vqcqkLxY4r3tWowi6GMsoRbSJG5x4XY7QKg2mTe54rU"}'
 
 # Google Sheets Configuration (for direct access if needed)
 GOOGLE_SHEETS_CLIENT_EMAIL=mybaby-sync-backend@shortcutai-caq80.iam.gserviceaccount.com
@@ -43,7 +43,7 @@ GOOGLE_SHEETS_PRIVATE_KEY="[PRIVATE_KEY_CONTENT]"
 GOOGLE_SHEETS_PROJECT_ID=1vqcqkLxY4r3tWowi6GMsoRbSJG5x4XY7QKg2mTe54rU
 
 # Default development tenant (fallback)
-DEFAULT_DEV_TENANT=proofkit
+DEFAULT_DEV_TENANT=adsautopilot
 ```
 
 ### 3. Inconsistent NODE_ENV Configuration ✅ FIXED
@@ -81,16 +81,16 @@ BACKEND_PUBLIC_URL=http://localhost:3005/api  # ✅ Correct
 Created and ran comprehensive validation script (`validate-env.js`) with following results:
 
 ```
-🔍 ProofKit Environment Variable Audit
+🔍 Ads Autopilot AI Environment Variable Audit
 =====================================
 
 📡 Backend Environment Validation
 ================================
-✅ Loaded backend .env from /Users/tamsar/Downloads/proofkit-saas/backend/.env
+✅ Loaded backend .env from /Users/tamsar/Downloads/adsautopilot-saas/backend/.env
 ✅ NODE_ENV: development
 ✅ PORT: 3005
 ✅ HMAC_SECRET: [CONFIGURED]
-✅ TENANT_ID: proofkit
+✅ TENANT_ID: adsautopilot
 ✅ TENANT_REGISTRY_JSON: Valid JSON with 1 tenants
 ✅ GOOGLE_SHEETS_CLIENT_EMAIL: [CONFIGURED]
 ✅ GOOGLE_SHEETS_PRIVATE_KEY: [CONFIGURED]
@@ -98,15 +98,15 @@ Created and ran comprehensive validation script (`validate-env.js`) with followi
 
 🛒 Shopify UI Environment Validation
 ===================================
-✅ Loaded shopify-ui .env from /Users/tamsar/Downloads/proofkit-saas/shopify-ui/.env
+✅ Loaded shopify-ui .env from /Users/tamsar/Downloads/adsautopilot-saas/shopify-ui/.env
 ✅ NODE_ENV: development
 ✅ PORT: 3000
-✅ TENANT_ID: proofkit
+✅ TENANT_ID: adsautopilot
 ✅ HMAC_SECRET: [CONFIGURED]
 ✅ BACKEND_PUBLIC_URL: http://localhost:3005/api
 ✅ TENANT_REGISTRY_JSON: [CONFIGURED]
 ✅ GOOGLE_SHEETS_CLIENT_EMAIL: [CONFIGURED]
-✅ DEFAULT_DEV_TENANT: proofkit
+✅ DEFAULT_DEV_TENANT: adsautopilot
 
 🔗 Cross-Application Communication
 =================================
@@ -139,7 +139,7 @@ Overall Status: ✅ ALL SYSTEMS GO
 - `NODE_ENV=development`
 - `PORT=3005`
 - `HMAC_SECRET` (secure secret)
-- `TENANT_ID=proofkit`
+- `TENANT_ID=adsautopilot`
 - `TENANT_REGISTRY_JSON` (tenant mapping)
 - `GOOGLE_SHEETS_*` (authentication credentials)
 - `BACKEND_PUBLIC_URL=http://localhost:3005/api`
@@ -148,12 +148,12 @@ Overall Status: ✅ ALL SYSTEMS GO
 
 - `NODE_ENV=development`
 - `PORT=3000`
-- `TENANT_ID=proofkit`
+- `TENANT_ID=adsautopilot`
 - `HMAC_SECRET` (matching backend)
 - `BACKEND_PUBLIC_URL=http://localhost:3005/api`
 - `TENANT_REGISTRY_JSON` (tenant mapping)
 - `GOOGLE_SHEETS_*` (for direct access if needed)
-- `DEFAULT_DEV_TENANT=proofkit`
+- `DEFAULT_DEV_TENANT=adsautopilot`
 
 ## Security Considerations
 
@@ -180,9 +180,9 @@ Overall Status: ✅ ALL SYSTEMS GO
 
 ## Files Modified
 
-- ✅ `/Users/tamsar/Downloads/proofkit-saas/shopify-ui/.env` - Added missing environment variables
-- ✅ `/Users/tamsar/Downloads/proofkit-saas/backend/.env` - Fixed port inconsistencies and added NODE_ENV
-- ✅ Created validation script: `/Users/tamsar/Downloads/proofkit-saas/validate-env.js`
+- ✅ `/Users/tamsar/Downloads/adsautopilot-saas/shopify-ui/.env` - Added missing environment variables
+- ✅ `/Users/tamsar/Downloads/adsautopilot-saas/backend/.env` - Fixed port inconsistencies and added NODE_ENV
+- ✅ Created validation script: `/Users/tamsar/Downloads/adsautopilot-saas/validate-env.js`
 
 ---
 
@@ -190,4 +190,4 @@ Overall Status: ✅ ALL SYSTEMS GO
 **All Issues**: RESOLVED  
 **System Status**: READY FOR DEVELOPMENT
 
-The ProofKit SaaS environment is now properly configured with consistent, secure, and reliable environment variable management across both the backend and Shopify UI applications.
+The Ads Autopilot AI SaaS environment is now properly configured with consistent, secure, and reliable environment variable management across both the backend and Shopify UI applications.

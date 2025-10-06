@@ -574,7 +574,7 @@ async function readConfigFromSheets(tenant) {
     st_min_clicks: Number(map.st_min_clicks || "2"),
     st_min_cost: Number(map.st_min_cost || "2.82"),
     master_neg_list_name:
-      map.master_neg_list_name || "Proofkit • Master Negatives",
+      map.master_neg_list_name || "Ads Autopilot AI • Master Negatives",
     // Audience settings
     AUDIENCE_MIN_SIZE: Number(map.AUDIENCE_MIN_SIZE || "1000"),
     // Feature flags (safe defaults)
@@ -1086,7 +1086,7 @@ app.get("/api/redis/health", async (req, res) => {
 });
 app.post("/api/redis/test", async (req, res) => {
   try {
-    const key = req.body?.key || "proofkit:test";
+    const key = req.body?.key || "adsautopilot:test";
     const value = req.body?.value ?? { now: Date.now() };
     const ttl = Number(req.body?.ttl || 60);
     await setJson(key, value, ttl);
@@ -1248,7 +1248,7 @@ app.get("/api/promote/gate/status", async (req, res) => {
       ok: true,
       promote: gateResult.promote,
       promoteRaw: config.PROMOTE,
-      label: config.label || "PROOFKIT_AUTOMATED",
+      label: config.label || "ADS_AUTOPILOT_AI_AUTOMATED",
       enabled: config.enabled,
       gateStatus: gateResult.ok ? "OPEN" : "BLOCKED",
       message: gateResult.error || "PROMOTE gate operational",
@@ -5756,7 +5756,7 @@ app.use("/api/ai", aiRoutes);  // Mount AI routes at /api/ai
 
 // Start the server (works for both local and Vercel)
 app.listen(PORT, async () => {
-  logger.info("ProofKit backend server started", {
+  logger.info("Ads Autopilot AI backend server started", {
     port: PORT,
     environment: process.env.NODE_ENV || "development",
     sheetsAuth: process.env.GOOGLE_SERVICE_EMAIL
@@ -5829,14 +5829,14 @@ app.listen(PORT, async () => {
 
   jobScheduler.start();
 
-  logger.info("ProofKit automation jobs started", {
+  logger.info("Ads Autopilot AI automation jobs started", {
     tenants: activeTenants,
     jobs: ["anomaly_detection", "weekly_summary"],
     intervals: ["15min", "weekly"],
     note: "Always-on automation for all registered tenants",
   });
 
-  console.log(`🚀 ProofKit SaaS backend server running on port ${PORT}`);
+  console.log(`🚀 Ads Autopilot AI SaaS backend server running on port ${PORT}`);
   console.log(`📊 Health checks available at: http://localhost:${PORT}/health`);
   console.log(`🔍 Metrics available at: http://localhost:${PORT}/metrics`);
   console.log(
@@ -6371,7 +6371,7 @@ app.get("/api/profit/status", async (req, res) => {
 app.get("/", (req, res) => {
   json(res, 200, {
     ok: true,
-    service: "proofkit-backend",
+    service: "adsautopilot-backend",
     version: "1.0.0",
     status: "running",
     timestamp: new Date().toISOString(),

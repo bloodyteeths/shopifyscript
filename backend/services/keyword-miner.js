@@ -1,5 +1,5 @@
 /**
- * Keyword Miner Service for ProofKit SaaS
+ * Keyword Miner Service for Ads Autopilot AI SaaS
  * Advanced semantic keyword extraction, intent classification, and competitive gap analysis
  *
  * Features:

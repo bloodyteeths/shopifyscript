@@ -1,5 +1,5 @@
 /**
- * Message Adapter Service for ProofKit SaaS
+ * Message Adapter Service for Ads Autopilot AI SaaS
  * Adapts messaging by customer segment, time, location, and emotional triggers
  *
  * Features:

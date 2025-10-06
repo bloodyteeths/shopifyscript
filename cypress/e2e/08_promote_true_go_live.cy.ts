@@ -2,7 +2,7 @@
 
 describe("PROMOTE Enable & Go Live", () => {
   beforeEach(() => {
-    cy.stubProofKitAPI("success");
+    cy.stubAds Autopilot AIAPI("success");
     cy.fixture("api-responses").as("apiResponses");
   });
 
@@ -189,7 +189,7 @@ describe("PROMOTE Enable & Go Live", () => {
     cy.get('[data-testid="run-required-tests"]').should("be.visible");
 
     // Test retry after requirements met
-    cy.stubProofKitAPI("success");
+    cy.stubAds Autopilot AIAPI("success");
     cy.get('[data-testid="run-required-tests"]').click();
 
     // Should succeed after requirements

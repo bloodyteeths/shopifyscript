@@ -2,7 +2,7 @@
 /**
  * Main plugin class file.
  *
- * @package ProofkitPixelsAdsHelper
+ * @package Ads Autopilot AIPixelsAdsHelper
  * @since   1.0.0
  */
 
@@ -13,7 +13,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Main plugin class.
  */
-class PK_Proofkit {
+class PK_Ads Autopilot AI {
 
 	/**
 	 * Constructor.
@@ -37,7 +37,7 @@ class PK_Proofkit {
 	 */
 	public function register_settings() {
 		register_setting(
-			'pk_proofkit_settings',
+			'pk_adsautopilot_settings',
 			'pk_ga4_id',
 			array(
 				'type'              => 'string',
@@ -46,7 +46,7 @@ class PK_Proofkit {
 			)
 		);
 		register_setting(
-			'pk_proofkit_settings',
+			'pk_adsautopilot_settings',
 			'pk_aw_id',
 			array(
 				'type'              => 'string',
@@ -55,7 +55,7 @@ class PK_Proofkit {
 			)
 		);
 		register_setting(
-			'pk_proofkit_settings',
+			'pk_adsautopilot_settings',
 			'pk_aw_label',
 			array(
 				'type'              => 'string',
@@ -64,7 +64,7 @@ class PK_Proofkit {
 			)
 		);
 		register_setting(
-			'pk_proofkit_settings',
+			'pk_adsautopilot_settings',
 			'pk_backend_url',
 			array(
 				'type'              => 'string',
@@ -73,7 +73,7 @@ class PK_Proofkit {
 			)
 		);
 		register_setting(
-			'pk_proofkit_settings',
+			'pk_adsautopilot_settings',
 			'pk_tenant',
 			array(
 				'type'              => 'string',
@@ -82,7 +82,7 @@ class PK_Proofkit {
 			)
 		);
 		register_setting(
-			'pk_proofkit_settings',
+			'pk_adsautopilot_settings',
 			'pk_secret',
 			array(
 				'type'              => 'string',
@@ -97,10 +97,10 @@ class PK_Proofkit {
 	 */
 	public function add_admin_menu() {
 		add_options_page(
-			__( 'Proofkit', 'pk-proofkit' ),
-			__( 'Proofkit', 'pk-proofkit' ),
+			__( 'Ads Autopilot AI', 'pk-adsautopilot' ),
+			__( 'Ads Autopilot AI', 'pk-adsautopilot' ),
 			'manage_options',
-			'pk-proofkit',
+			'pk-adsautopilot',
 			array( $this, 'render_settings_page' )
 		);
 	}
@@ -111,14 +111,14 @@ class PK_Proofkit {
 	public function render_settings_page() {
 		// Check user capabilities.
 		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_die( esc_html__( 'You do not have sufficient permissions to access this page.', 'pk-proofkit' ) );
+			wp_die( esc_html__( 'You do not have sufficient permissions to access this page.', 'pk-adsautopilot' ) );
 		}
 
 		// Handle form submission.
 		if ( isset( $_POST['pk_save'] ) ) {
 			// Verify nonce.
-			if ( ! isset( $_POST['pk_proofkit_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['pk_proofkit_nonce'] ) ), 'pk_proofkit_settings' ) ) {
-				wp_die( esc_html__( 'Security check failed. Please try again.', 'pk-proofkit' ) );
+			if ( ! isset( $_POST['pk_adsautopilot_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['pk_adsautopilot_nonce'] ) ), 'pk_adsautopilot_settings' ) ) {
+				wp_die( esc_html__( 'Security check failed. Please try again.', 'pk-adsautopilot' ) );
 			}
 
 			// Sanitize and save settings.
@@ -141,7 +141,7 @@ class PK_Proofkit {
 				update_option( 'pk_secret', sanitize_text_field( wp_unslash( $_POST['secret'] ) ) );
 			}
 
-			echo '<div class="updated"><p>' . esc_html__( 'Settings saved successfully.', 'pk-proofkit' ) . '</p></div>';
+			echo '<div class="updated"><p>' . esc_html__( 'Settings saved successfully.', 'pk-adsautopilot' ) . '</p></div>';
 		}
 
 		// Get current values.
@@ -155,68 +155,68 @@ class PK_Proofkit {
 		<div class="wrap">
 			<h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
 			<form method="post" action="">
-				<?php wp_nonce_field( 'pk_proofkit_settings', 'pk_proofkit_nonce' ); ?>
-				<?php settings_fields( 'pk_proofkit_settings' ); ?>
+				<?php wp_nonce_field( 'pk_adsautopilot_settings', 'pk_adsautopilot_nonce' ); ?>
+				<?php settings_fields( 'pk_adsautopilot_settings' ); ?>
 				<table class="form-table">
 					<tr>
 						<th scope="row">
-							<label for="ga4"><?php esc_html_e( 'GA4 ID (G-XXXX):', 'pk-proofkit' ); ?></label>
+							<label for="ga4"><?php esc_html_e( 'GA4 ID (G-XXXX):', 'pk-adsautopilot' ); ?></label>
 						</th>
 						<td>
 							<input type="text" id="ga4" name="ga4" value="<?php echo esc_attr( $ga4 ); ?>" class="regular-text" />
-							<p class="description"><?php esc_html_e( 'Enter your Google Analytics 4 Measurement ID.', 'pk-proofkit' ); ?></p>
+							<p class="description"><?php esc_html_e( 'Enter your Google Analytics 4 Measurement ID.', 'pk-adsautopilot' ); ?></p>
 						</td>
 					</tr>
 					<tr>
 						<th scope="row">
-							<label for="aw"><?php esc_html_e( 'Google Ads Conversion ID (AW-XXXXXX):', 'pk-proofkit' ); ?></label>
+							<label for="aw"><?php esc_html_e( 'Google Ads Conversion ID (AW-XXXXXX):', 'pk-adsautopilot' ); ?></label>
 						</th>
 						<td>
 							<input type="text" id="aw" name="aw" value="<?php echo esc_attr( $aw ); ?>" class="regular-text" />
-							<p class="description"><?php esc_html_e( 'Enter your Google Ads Conversion ID.', 'pk-proofkit' ); ?></p>
+							<p class="description"><?php esc_html_e( 'Enter your Google Ads Conversion ID.', 'pk-adsautopilot' ); ?></p>
 						</td>
 					</tr>
 					<tr>
 						<th scope="row">
-							<label for="aw_label"><?php esc_html_e( 'Google Ads Conversion Label:', 'pk-proofkit' ); ?></label>
+							<label for="aw_label"><?php esc_html_e( 'Google Ads Conversion Label:', 'pk-adsautopilot' ); ?></label>
 						</th>
 						<td>
 							<input type="text" id="aw_label" name="aw_label" value="<?php echo esc_attr( $lbl ); ?>" class="regular-text" />
-							<p class="description"><?php esc_html_e( 'Enter your Google Ads Conversion Label.', 'pk-proofkit' ); ?></p>
+							<p class="description"><?php esc_html_e( 'Enter your Google Ads Conversion Label.', 'pk-adsautopilot' ); ?></p>
 						</td>
 					</tr>
 				</table>
-				<h2><?php esc_html_e( 'Backend Configuration', 'pk-proofkit' ); ?></h2>
+				<h2><?php esc_html_e( 'Backend Configuration', 'pk-adsautopilot' ); ?></h2>
 				<table class="form-table">
 					<tr>
 						<th scope="row">
-							<label for="backend_url"><?php esc_html_e( 'Backend URL:', 'pk-proofkit' ); ?></label>
+							<label for="backend_url"><?php esc_html_e( 'Backend URL:', 'pk-adsautopilot' ); ?></label>
 						</th>
 						<td>
 							<input type="url" id="backend_url" name="backend_url" value="<?php echo esc_attr( $backend ); ?>" class="large-text" />
-							<p class="description"><?php esc_html_e( 'Enter your backend API URL.', 'pk-proofkit' ); ?></p>
+							<p class="description"><?php esc_html_e( 'Enter your backend API URL.', 'pk-adsautopilot' ); ?></p>
 						</td>
 					</tr>
 					<tr>
 						<th scope="row">
-							<label for="tenant"><?php esc_html_e( 'Tenant ID:', 'pk-proofkit' ); ?></label>
+							<label for="tenant"><?php esc_html_e( 'Tenant ID:', 'pk-adsautopilot' ); ?></label>
 						</th>
 						<td>
 							<input type="text" id="tenant" name="tenant" value="<?php echo esc_attr( $ten ); ?>" class="regular-text" />
-							<p class="description"><?php esc_html_e( 'Enter your tenant identifier.', 'pk-proofkit' ); ?></p>
+							<p class="description"><?php esc_html_e( 'Enter your tenant identifier.', 'pk-adsautopilot' ); ?></p>
 						</td>
 					</tr>
 					<tr>
 						<th scope="row">
-							<label for="secret"><?php esc_html_e( 'HMAC Secret:', 'pk-proofkit' ); ?></label>
+							<label for="secret"><?php esc_html_e( 'HMAC Secret:', 'pk-adsautopilot' ); ?></label>
 						</th>
 						<td>
 							<input type="password" id="secret" name="secret" value="<?php echo esc_attr( $sec ); ?>" class="regular-text" />
-							<p class="description"><?php esc_html_e( 'Enter your HMAC secret key for secure authentication.', 'pk-proofkit' ); ?></p>
+							<p class="description"><?php esc_html_e( 'Enter your HMAC secret key for secure authentication.', 'pk-adsautopilot' ); ?></p>
 						</td>
 					</tr>
 				</table>
-				<?php submit_button( __( 'Save Settings', 'pk-proofkit' ), 'primary', 'pk_save' ); ?>
+				<?php submit_button( __( 'Save Settings', 'pk-adsautopilot' ), 'primary', 'pk_save' ); ?>
 			</form>
 		</div>
 		<?php
@@ -234,7 +234,7 @@ class PK_Proofkit {
 				'pk-gtag',
 				esc_url( 'https://www.googletagmanager.com/gtag/js?id=' . $ga4 ),
 				array(),
-				PK_PROOFKIT_VERSION,
+				PK_ADS_AUTOPILOT_AI_VERSION,
 				false
 			);
 
@@ -259,7 +259,7 @@ class PK_Proofkit {
 			if ( wp_script_is( 'pk-gtag', 'enqueued' ) ) {
 				wp_add_inline_script( 'pk-gtag', $aw_config );
 			} else {
-				wp_enqueue_script( 'pk-gtag-aw', '', array(), PK_PROOFKIT_VERSION, false );
+				wp_enqueue_script( 'pk-gtag-aw', '', array(), PK_ADS_AUTOPILOT_AI_VERSION, false );
 				wp_add_inline_script( 'pk-gtag-aw', $aw_config );
 			}
 		}
@@ -308,7 +308,7 @@ class PK_Proofkit {
 			$purchase_script  .= $conversion_script;
 		}
 
-		wp_enqueue_script( 'pk-purchase-tracking', '', array(), PK_PROOFKIT_VERSION, true );
+		wp_enqueue_script( 'pk-purchase-tracking', '', array(), PK_ADS_AUTOPILOT_AI_VERSION, true );
 		wp_add_inline_script( 'pk-purchase-tracking', $purchase_script );
 
 		// Optional: forward a log to backend.

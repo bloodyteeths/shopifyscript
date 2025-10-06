@@ -1,8 +1,8 @@
-# ProofKit SaaS Content Intelligence System
+# Ads Autopilot AI SaaS Content Intelligence System
 
 ## Overview
 
-The Content Intelligence System is a comprehensive NLP-powered platform designed to extract winning hooks, analyze brand voice, mine keywords, and optimize content for ProofKit SaaS. This system enables dynamic ad copy generation by understanding website content at a deep level.
+The Content Intelligence System is a comprehensive NLP-powered platform designed to extract winning hooks, analyze brand voice, mine keywords, and optimize content for Ads Autopilot AI SaaS. This system enables dynamic ad copy generation by understanding website content at a deep level.
 
 ## 🏗️ System Architecture
 
@@ -394,7 +394,7 @@ console.log(`Score: ${optimization.overallScore.overall}%`);
 
 ## 🎉 Summary
 
-The Content Intelligence System provides ProofKit SaaS with powerful NLP capabilities to:
+The Content Intelligence System provides Ads Autopilot AI SaaS with powerful NLP capabilities to:
 
 - **Extract winning copy patterns** from any website
 - **Maintain brand voice consistency** across campaigns

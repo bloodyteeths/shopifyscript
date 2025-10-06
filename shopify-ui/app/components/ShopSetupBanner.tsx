@@ -178,7 +178,7 @@ export function ShopSetupBanner({
               margin: "0",
             }}
           >
-            ProofKit is now configured for:{" "}
+            Ads Autopilot AI is now configured for:{" "}
             <strong>{shopName}.myshopify.com</strong>
           </p>
         </div>
@@ -222,7 +222,7 @@ export function ShopSetupBanner({
                   margin: "0",
                 }}
               >
-                Enter your Shopify store name to set up ProofKit automation and
+                Enter your Shopify store name to set up Ads Autopilot AI automation and
                 tracking.
               </p>
             </div>
@@ -341,7 +341,7 @@ export function ShopSetupBanner({
                 lineHeight: "1.4",
               }}
             >
-              <strong>Examples:</strong> "proofkit", "my-store", "awesome-shop"
+              <strong>Examples:</strong> "adsautopilot", "my-store", "awesome-shop"
               <br />
               <strong>Note:</strong> Enter only the part before ".myshopify.com"
             </div>
@@ -373,7 +373,7 @@ export function ShopSetupBanner({
               >
                 <strong>Why do we need this?</strong>
                 <br />
-                ProofKit uses your shop name to:
+                Ads Autopilot AI uses your shop name to:
                 <ul style={{ margin: "8px 0 0 0", paddingLeft: "20px" }}>
                   <li>Generate personalized Google Ads scripts</li>
                   <li>Track your store's performance data</li>

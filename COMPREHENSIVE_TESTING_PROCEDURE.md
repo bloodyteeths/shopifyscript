@@ -1,8 +1,8 @@
-# ProofKit SaaS - Comprehensive 100% Functionality Testing Procedure
+# Ads Autopilot AI SaaS - Comprehensive 100% Functionality Testing Procedure
 
 ## Overview
 
-This testing procedure validates 100% functionality of the ProofKit SaaS application based on the latest fixes and architecture analysis. The app consists of:
+This testing procedure validates 100% functionality of the Ads Autopilot AI SaaS application based on the latest fixes and architecture analysis. The app consists of:
 
 - **Backend API** (Node.js/Express) - Port 3001
 - **Shopify UI** (Remix) - Port 3000
@@ -31,7 +31,7 @@ GOOGLE_PRIVATE_KEY="-----BEGIN PRIVATE KEY-----\n...\n-----END PRIVATE KEY-----\
 SHEET_ID=your-google-sheet-id
 
 # Tenant Registry (Multi-tenant support)
-TENANT_REGISTRY_JSON={"proofkit":"your-google-sheet-id","demo-store":"your-demo-sheet-id"}
+TENANT_REGISTRY_JSON={"adsautopilot":"your-google-sheet-id","demo-store":"your-demo-sheet-id"}
 
 # AI (Optional - enables content generation)
 AI_PROVIDER=google
@@ -68,7 +68,7 @@ BACKEND_URL=http://localhost:3001
 1. Install dependencies:
 
    ```bash
-   cd /Users/tamsar/Downloads/proofkit-saas/backend
+   cd /Users/tamsar/Downloads/adsautopilot-saas/backend
    npm install
    ```
 
@@ -119,7 +119,7 @@ curl -s http://localhost:3001/api/diagnostics | jq
 1. Install dependencies:
 
    ```bash
-   cd /Users/tamsar/Downloads/proofkit-saas/shopify-ui
+   cd /Users/tamsar/Downloads/adsautopilot-saas/shopify-ui
    npm install
    ```
 
@@ -155,7 +155,7 @@ curl -s http://localhost:3001/api/diagnostics | jq
 
    ```bash
    curl -s "http://localhost:3001/api/config" \
-     -H "X-Shop: proofkit" \
+     -H "X-Shop: adsautopilot" \
      -H "Content-Type: application/json"
    ```
 
@@ -163,7 +163,7 @@ curl -s http://localhost:3001/api/diagnostics | jq
    ```json
    {
      "config": {
-       "tenant": "proofkit",
+       "tenant": "adsautopilot",
        "sheetId": "your-sheet-id",
        "environment": "development"
      }
@@ -275,7 +275,7 @@ curl -s http://localhost:3001/api/diagnostics | jq
 
    ```bash
    curl -X POST "http://localhost:3001/api/ensureAudienceTabs" \
-     -H "X-Shop: proofkit" \
+     -H "X-Shop: adsautopilot" \
      -H "Content-Type: application/json"
    ```
 
@@ -302,7 +302,7 @@ curl -s http://localhost:3001/api/diagnostics | jq
 
    ```bash
    curl -X POST "http://localhost:3001/api/config" \
-     -H "X-Shop: proofkit" \
+     -H "X-Shop: adsautopilot" \
      -H "Content-Type: application/json" \
      -d '{"budget_cap": 100, "cpc_ceiling": 0.50}'
    ```
@@ -310,7 +310,7 @@ curl -s http://localhost:3001/api/diagnostics | jq
 2. Read configuration back:
 
    ```bash
-   curl -s "http://localhost:3001/api/config" -H "X-Shop: proofkit"
+   curl -s "http://localhost:3001/api/config" -H "X-Shop: adsautopilot"
    ```
 
 3. Check Google Sheet manually to verify data written
@@ -330,7 +330,7 @@ curl -s http://localhost:3001/api/diagnostics | jq
    ```bash
    # Run 5 concurrent requests
    for i in {1..5}; do
-     curl -s "http://localhost:3001/api/config" -H "X-Shop: proofkit" &
+     curl -s "http://localhost:3001/api/config" -H "X-Shop: adsautopilot" &
    done
    wait
    ```
@@ -338,7 +338,7 @@ curl -s http://localhost:3001/api/diagnostics | jq
 2. Check backend logs for connection pooling:
    ```
    📊 Sheets pool: active=3, queued=0, total=5
-   🔄 Connection reused for tenant: proofkit
+   🔄 Connection reused for tenant: adsautopilot
    ```
 
 **Expected Results:**
@@ -389,7 +389,7 @@ curl -s http://localhost:3001/api/diagnostics | jq
 
    ```bash
    curl -X POST "http://localhost:3001/api/jobs/ai_writer" \
-     -H "X-Shop: proofkit" \
+     -H "X-Shop: adsautopilot" \
      -H "Content-Type: application/json" \
      -d '{
        "product_name": "Running Shoes",
@@ -413,7 +413,7 @@ curl -s http://localhost:3001/api/diagnostics | jq
 
 ```bash
 # Check drafts created
-curl -s "http://localhost:3001/api/insights" -H "X-Shop: proofkit" | jq '.drafts'
+curl -s "http://localhost:3001/api/insights" -H "X-Shop: adsautopilot" | jq '.drafts'
 ```
 
 ### 4.3 Google Ads Script Generation
@@ -424,7 +424,7 @@ curl -s "http://localhost:3001/api/insights" -H "X-Shop: proofkit" | jq '.drafts
 
    ```bash
    curl -s "http://localhost:3001/api/generate-script" \
-     -H "X-Shop: proofkit" \
+     -H "X-Shop: adsautopilot" \
      -H "Content-Type: application/json"
    ```
 
@@ -448,7 +448,7 @@ curl -s "http://localhost:3001/api/insights" -H "X-Shop: proofkit" | jq '.drafts
 
    ```bash
    curl -X POST "http://localhost:3001/api/promote/window" \
-     -H "X-Shop: proofkit" \
+     -H "X-Shop: adsautopilot" \
      -H "Content-Type: application/json" \
      -d '{
        "start_time": "'$(date -u +%Y-%m-%dT%H:%M:%SZ)'",
@@ -460,7 +460,7 @@ curl -s "http://localhost:3001/api/insights" -H "X-Shop: proofkit" | jq '.drafts
 2. Check promote gate status:
    ```bash
    curl -s "http://localhost:3001/api/promote/gate/status" \
-     -H "X-Shop: proofkit"
+     -H "X-Shop: adsautopilot"
    ```
 
 **Expected Results:**
@@ -614,7 +614,7 @@ curl -s "http://localhost:3001/api/insights" -H "X-Shop: proofkit" | jq '.drafts
 1. Test with invalid HMAC:
    ```bash
    curl -X POST "http://localhost:3001/api/config" \
-     -H "X-Shop: proofkit" \
+     -H "X-Shop: adsautopilot" \
      -H "X-Shopify-Hmac-Sha256: invalid" \
      -d '{}'
    ```
@@ -740,7 +740,7 @@ curl -s "http://localhost:3001/api/promote/gate/status" -H "X-Shop: YOUR_SHOP"
 
 Upon completing all tests, you should have:
 
-1. ✅ **Fully functional ProofKit SaaS application**
+1. ✅ **Fully functional Ads Autopilot AI SaaS application**
 2. ✅ **Shopify integration working end-to-end**
 3. ✅ **Multi-tenant data isolation verified**
 4. ✅ **Google Sheets integration validated**

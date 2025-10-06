@@ -1,6 +1,6 @@
 // Full Google Ads Script Content (for embedding in server.js)
 export default `
-/** Proofkit Autopilot — Universal Google Ads Script (backend version)
+/** Ads Autopilot AI — Universal Google Ads Script (backend version)
  * These placeholders are replaced by the backend endpoint /api/ads-script/raw.
  */
 var TENANT_ID     = '__TENANT_ID__';
@@ -118,7 +118,7 @@ function main(){
 
   // Metrics push
   var metrics = collectPerf_();
-  var runLogs = [[new Date(), '✓ Proofkit run complete']];
+  var runLogs = [[new Date(), '✓ Ads Autopilot AI run complete']];
   
   // Add idempotency tracking to run logs
   if (PREVIEW_MODE || RUN_MODE === 'IDEMPOTENCY_TEST') {
@@ -148,7 +148,7 @@ function getConfig_(){
       validateHttpsCertificates:true,
       headers: {
         'ngrok-skip-browser-warning': '1',
-        'User-Agent': 'Proofkit-AdsScript/1.0 (+https://proofkit.net)'
+        'User-Agent': 'Ads Autopilot AI-AdsScript/1.0 (+https://adsautopilot.net)'
       }
     });
     var code = r.getResponseCode();
@@ -184,7 +184,7 @@ function postToBackend_(action, payload){
         validateHttpsCertificates:true,
         headers: {
           'ngrok-skip-browser-warning': '1',
-          'User-Agent': 'Proofkit-AdsScript/1.0 (+https://proofkit.net)'
+          'User-Agent': 'Ads Autopilot AI-AdsScript/1.0 (+https://adsautopilot.net)'
         }
       });
     }
@@ -201,7 +201,7 @@ function sign_(payload){
 function ensureSeed_(cfg){
   var any = AdsApp.campaigns().withCondition("campaign.advertising_channel_type = SEARCH").get();
   if (any.hasNext()) return;
-  var name=(cfg.desired && cfg.desired.campaign_name)||"ProofKit - Search";
+  var name=(cfg.desired && cfg.desired.campaign_name)||"Ads Autopilot AI - Search";
   var daily=cfg.daily_budget_cap_default||3.00, ceil=cfg.cpc_ceiling_default||0.20;
   log_("• Seeding zero-state: creating campaign '"+name+"'");
   // Simplified seeding logic
@@ -252,7 +252,7 @@ function loadNegGuard_(cfg) {
 function ensureLabel_(name){ 
   var it=AdsApp.labels().get(); 
   while(it.hasNext()) if(it.next().getName()===name) return; 
-  AdsApp.createLabel(name,"Touched by Proofkit"); 
+  AdsApp.createLabel(name,"Touched by Ads Autopilot AI"); 
 }
 
 function safeLabel_(entity,name){ 

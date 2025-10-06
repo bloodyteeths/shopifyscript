@@ -51,7 +51,7 @@ async function handleProxyRequest(
 
     // Fall back to environment variable or default
     if (!tenant) {
-      tenant = process.env.TENANT_ID || "proofkit";
+      tenant = process.env.TENANT_ID || "adsautopilot";
     }
 
     // Backend configuration from environment (required for multi-tenant)

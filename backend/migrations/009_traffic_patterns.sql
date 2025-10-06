@@ -285,8 +285,8 @@ COMMENT ON TABLE daily_traffic_summary IS 'Daily summaries of traffic performanc
 COMMENT ON TABLE schedule_performance IS 'Tracks performance and accuracy of automated schedules';
 
 -- Grant permissions (adjust based on your application user)
--- GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO proofkit_app;
--- GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO proofkit_app;
+-- GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO adsautopilot_app;
+-- GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA public TO adsautopilot_app;
 
 -- Migration complete
 SELECT 'Traffic Pattern Analysis migration completed successfully' AS status;

@@ -1,5 +1,5 @@
-=== Proofkit Pixels & Ads Helper ===
-Contributors: proofkit
+=== Ads Autopilot AI Pixels & Ads Helper ===
+Contributors: adsautopilot
 Tags: google-analytics, google-ads, woocommerce, tracking, pixels, ga4, enhanced-conversions
 Requires at least: 5.0
 Tested up to: 6.4
@@ -12,7 +12,7 @@ Easily integrate Google Analytics 4 and Google Ads tracking with your WooCommerc
 
 == Description ==
 
-Proofkit Pixels & Ads Helper is a lightweight, efficient plugin that seamlessly integrates Google Analytics 4 (GA4) and Google Ads tracking with your WooCommerce store. This plugin is designed to help you track conversions accurately and optimize your advertising campaigns.
+Ads Autopilot AI Pixels & Ads Helper is a lightweight, efficient plugin that seamlessly integrates Google Analytics 4 (GA4) and Google Ads tracking with your WooCommerce store. This plugin is designed to help you track conversions accurately and optimize your advertising campaigns.
 
 **Key Features:**
 
@@ -33,13 +33,13 @@ Proofkit Pixels & Ads Helper is a lightweight, efficient plugin that seamlessly 
 
 **Professional Support:**
 
-This plugin is developed and maintained by Proofkit, a trusted name in e-commerce analytics and tracking solutions.
+This plugin is developed and maintained by Ads Autopilot AI, a trusted name in e-commerce analytics and tracking solutions.
 
 == Installation ==
 
-1. Upload the plugin files to the `/wp-content/plugins/proofkit-pixels-ads-helper` directory, or install the plugin through the WordPress plugins screen directly.
+1. Upload the plugin files to the `/wp-content/plugins/adsautopilot-pixels-ads-helper` directory, or install the plugin through the WordPress plugins screen directly.
 2. Activate the plugin through the 'Plugins' screen in WordPress.
-3. Use the Settings -> Proofkit screen to configure the plugin.
+3. Use the Settings -> Ads Autopilot AI screen to configure the plugin.
 4. Enter your Google Analytics 4 Measurement ID (G-XXXX).
 5. Enter your Google Ads Conversion ID (AW-XXXX) and Label.
 6. Optionally configure backend integration settings.
@@ -94,7 +94,7 @@ No, the plugin is designed to be lightweight and follows WordPress best practice
 == Upgrade Notice ==
 
 = 1.0.0 =
-Initial release of Proofkit Pixels & Ads Helper. Install now to start tracking your conversions accurately!
+Initial release of Ads Autopilot AI Pixels & Ads Helper. Install now to start tracking your conversions accurately!
 
 == Privacy Policy ==
 
@@ -109,7 +109,7 @@ Please ensure your website's privacy policy accurately reflects the use of these
 
 == Support ==
 
-For support, feature requests, or bug reports, please visit our website at https://proofkit.com/ or contact our support team.
+For support, feature requests, or bug reports, please visit our website at https://adsautopilot.com/ or contact our support team.
 
 == Technical Requirements ==
 

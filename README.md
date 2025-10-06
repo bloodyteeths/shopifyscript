@@ -1,6 +1,6 @@
-# ProofKit SaaS - Comprehensive Testing Suite
+# Ads Autopilot AI SaaS - Comprehensive Testing Suite
 
-A comprehensive testing infrastructure for the ProofKit SaaS application, achieving >90% code coverage with unit tests, integration tests, component tests, and performance tests.
+A comprehensive testing infrastructure for the Ads Autopilot AI SaaS application, achieving >90% code coverage with unit tests, integration tests, component tests, and performance tests.
 
 ## Testing Architecture
 
@@ -76,7 +76,7 @@ cd tests/performance && npm run test:stress
 
 ### 🏗️ Backend Unit Tests (`backend/tests/unit/`)
 
-**Location**: `/Users/tamsar/Downloads/proofkit-saas/backend/tests/unit/`
+**Location**: `/Users/tamsar/Downloads/adsautopilot-saas/backend/tests/unit/`
 
 #### Services Tested:
 
@@ -103,7 +103,7 @@ cd tests/performance && npm run test:stress
 
 ### 🔗 Integration Tests (`backend/tests/integration/`)
 
-**Location**: `/Users/tamsar/Downloads/proofkit-saas/backend/tests/integration/`
+**Location**: `/Users/tamsar/Downloads/adsautopilot-saas/backend/tests/integration/`
 
 #### API Endpoints Tested:
 
@@ -126,7 +126,7 @@ cd tests/performance && npm run test:stress
 
 ### ⚛️ Frontend Component Tests (`shopify-ui/app/tests/`)
 
-**Location**: `/Users/tamsar/Downloads/proofkit-saas/shopify-ui/app/tests/`
+**Location**: `/Users/tamsar/Downloads/adsautopilot-saas/shopify-ui/app/tests/`
 
 #### Components Tested:
 
@@ -155,7 +155,7 @@ cd tests/performance && npm run test:stress
 
 ### ⚡ Performance Tests (`tests/performance/`)
 
-**Location**: `/Users/tamsar/Downloads/proofkit-saas/tests/performance/`
+**Location**: `/Users/tamsar/Downloads/adsautopilot-saas/tests/performance/`
 
 #### Load Testing (`load-test.js`):
 

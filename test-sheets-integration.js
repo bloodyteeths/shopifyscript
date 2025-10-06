@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * Test Google Sheets Integration for ProofKit
+ * Test Google Sheets Integration for Ads Autopilot AI
  * Tests CONFIG_* tabs creation and data flow
  */
 

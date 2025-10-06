@@ -188,7 +188,7 @@ function generateSuggestions(insights: any, campaigns: any, summary: any) {
 
     // Schedule options
     schedule: {
-      description: "How often should ProofKit optimize your campaigns?",
+      description: "How often should Ads Autopilot AI optimize your campaigns?",
       options: [
         {
           value: "daily",
@@ -301,7 +301,7 @@ export async function action({ request }: ActionFunctionArgs) {
         "Shop name detection failed in action:",
         shopNameError.message,
       );
-      shopName = process.env.TENANT_ID || "proofkit";
+      shopName = process.env.TENANT_ID || "adsautopilot";
     }
 
     const fd = await request.formData();
@@ -470,7 +470,7 @@ export async function action({ request }: ActionFunctionArgs) {
     console.error("Action critical error:", error.message, error.stack);
 
     // Ensure we have a shop name for error response
-    const errorShopName = shopName || process.env.TENANT_ID || "proofkit";
+    const errorShopName = shopName || process.env.TENANT_ID || "adsautopilot";
 
     return json(
       {
@@ -716,7 +716,7 @@ export default function Advanced() {
     <div style={{ maxWidth: 920 }}>
       <h1>Advanced Settings</h1>
       <p style={{ color: "#666", marginBottom: "24px" }}>
-        Fine-tune your ProofKit automation and optimize your store's
+        Fine-tune your Ads Autopilot AI automation and optimize your store's
         performance.
       </p>
 
@@ -959,7 +959,7 @@ export default function Advanced() {
         <div style={sectionStyle}>
           <h3 style={legendStyle}>🕒 Automation Schedule</h3>
           <p style={helpStyle}>
-            Choose how often ProofKit should optimize your campaigns
+            Choose how often Ads Autopilot AI should optimize your campaigns
           </p>
           <div style={{ marginTop: "12px" }}>
             <div style={{ display: "grid", gap: "8px" }}>

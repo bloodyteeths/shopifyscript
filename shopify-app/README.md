@@ -1,4 +1,4 @@
-# Proofkit Shopify (Remix skeleton)
+# Ads Autopilot AI Shopify (Remix skeleton)
 
 Local dev
 

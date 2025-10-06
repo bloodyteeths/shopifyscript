@@ -2,7 +2,7 @@
 
 ## Overview
 
-Intent OS is ProofKit's advanced conversion rate optimization engine that provides:
+Intent OS is Ads Autopilot AI's advanced conversion rate optimization engine that provides:
 
 1. **Catalog Overlays** - Apply/revert metafield changes with versioning
 2. **UTM-Driven Content** - Dynamic content swapping based on traffic source
@@ -336,8 +336,8 @@ gtag("event", "intent_os_cta_click", {
 ### Custom Analytics
 
 ```javascript
-// Send custom events to ProofKit
-window.proofkit.track("intent_os_conversion", {
+// Send custom events to Ads Autopilot AI
+window.adsautopilot.track("intent_os_conversion", {
   utm_term: "high-intent",
   conversion_value: 99.99,
   section_id: "intent-os-section-123",
@@ -608,5 +608,5 @@ app.post("/webhook/intent-os-overlay", (req, res) => {
 
 ---
 
-**Intent OS** - Powered by ProofKit SaaS
+**Intent OS** - Powered by Ads Autopilot AI SaaS
 _Conversion Rate Optimization Made Simple_

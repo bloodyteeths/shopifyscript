@@ -9,9 +9,9 @@ export async function loader({ request }: LoaderFunctionArgs) {
       `
       <!DOCTYPE html>
       <html>
-        <head><title>Install ProofKit</title></head>
+        <head><title>Install Ads Autopilot AI</title></head>
         <body>
-          <h1>Install ProofKit Shopify App</h1>
+          <h1>Install Ads Autopilot AI Shopify App</h1>
           <form method="get">
             <label>
               Shop Name: 

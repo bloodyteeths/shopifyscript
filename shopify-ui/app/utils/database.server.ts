@@ -277,7 +277,7 @@ export async function getTenantSheetId(tenantId: string): Promise<string> {
 
   // Fallback to environment variables
   const sheetMappings: Record<string, string> = {
-    proofkit: process.env.DEV_SHEET_ID || process.env.DEFAULT_SHEET_ID || "",
+    adsautopilot: process.env.DEV_SHEET_ID || process.env.DEFAULT_SHEET_ID || "",
     "dev-tenant": process.env.DEV_SHEET_ID || "",
     "demo-store": process.env.DEMO_SHEET_ID || "",
   };

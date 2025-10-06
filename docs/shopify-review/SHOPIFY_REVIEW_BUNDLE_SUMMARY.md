@@ -1,4 +1,4 @@
-# ProofKit Shopify App Store Review Bundle - Complete Summary
+# Ads Autopilot AI Shopify App Store Review Bundle - Complete Summary
 
 ## 🎯 Executive Summary
 
@@ -65,7 +65,7 @@ This comprehensive review bundle contains all documentation, evidence, and mater
 **Support Infrastructure**:
 
 - 24-hour response SLA
-- Dedicated support email: support@proofkit.app
+- Dedicated support email: support@adsautopilot.app
 - Comprehensive documentation and tutorials
 - Multi-language support capabilities
 
@@ -134,7 +134,7 @@ This comprehensive review bundle contains all documentation, evidence, and mater
 
 ## 📊 Compliance Verification Matrix
 
-| Category             | Requirement                   | ProofKit Status | Evidence Location                   |
+| Category             | Requirement                   | Ads Autopilot AI Status | Evidence Location                   |
 | -------------------- | ----------------------------- | --------------- | ----------------------------------- |
 | **App Architecture** | Embedded App with App Bridge  | ✅ Implemented  | `checklist/built-for-shopify.md`    |
 | **Authentication**   | OAuth 2.0 with secure tokens  | ✅ Implemented  | `checklist/built-for-shopify.md`    |
@@ -292,10 +292,10 @@ This comprehensive review bundle contains all documentation, evidence, and mater
 
 ## 📞 Bundle Support Contacts
 
-**Primary Contact**: review-bundle@proofkit.app  
-**Technical Questions**: tech-evidence@proofkit.app  
-**Compliance Questions**: compliance-evidence@proofkit.app  
-**Emergency Support**: Available 24/7 via support@proofkit.app
+**Primary Contact**: review-bundle@adsautopilot.app  
+**Technical Questions**: tech-evidence@adsautopilot.app  
+**Compliance Questions**: compliance-evidence@adsautopilot.app  
+**Emergency Support**: Available 24/7 via support@adsautopilot.app
 
 ---
 
@@ -320,4 +320,4 @@ This comprehensive review bundle contains all documentation, evidence, and mater
 
 ---
 
-**This bundle represents a complete, professional, and compliant submission package that exceeds Shopify's Built-for-Shopify requirements and positions ProofKit for successful App Store approval and long-term success.**
+**This bundle represents a complete, professional, and compliant submission package that exceeds Shopify's Built-for-Shopify requirements and positions Ads Autopilot AI for successful App Store approval and long-term success.**

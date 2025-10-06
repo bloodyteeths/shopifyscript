@@ -98,7 +98,7 @@ async function main() {
     process.exit(0);
   }
 
-  console.log('🚀 ProofKit Data Migration: Sheets → Supabase');
+  console.log('🚀 Ads Autopilot AI Data Migration: Sheets → Supabase');
   console.log('================================================\n');
 
   // Check Supabase is enabled

@@ -1,4 +1,4 @@
-# Proofkit — Final Roadmap & Agent Contract (vFINAL 2025-08-13)
+# Ads Autopilot AI — Final Roadmap & Agent Contract (vFINAL 2025-08-13)
 
 > **Compatibility:** This file is the **single source of truth** going forward. It **extends** your original _Roadmap & Claude Rules (v1.0)_ and the _Pricing Tiers & Master Roadmap (v2)_ and **merges** the _Audience OS + Profit-Aware Retargeting_ addendum.  
 > **Starter ZIP:** Using the previous starter ZIP is **fine**. Keep its structure. When conflicts appear, **prefer this roadmap** and patch via small diffs.
@@ -120,7 +120,7 @@ ENABLE_SCRIPT=true
 /shopify-app (Remix/Node template)
   /extensions/web-pixel
 /wordpress-plugin
-  proofkit/
+  adsautopilot/
 /docs
   TEST_PLAN.md
   LISTING_COPY.md
@@ -167,7 +167,7 @@ ASSUMPTIONS: CONFIG/BUDGET_CAPS/CPC_CEILINGS/SCHEDULES exist.
 PLAN:
 - Budget caps + TARGET_SPEND + CPC ceiling.
 - Shared neg list attach; ad-group exact negatives; n-gram miner.
-- RSA builder with 30/90 lint + uniqueness; label PROOFKIT_AUTOMATED.
+- RSA builder with 30/90 lint + uniqueness; label ADS_AUTOPILOT_AI_AUTOMATED.
 - GAQL: search terms, campaign/adgroup metrics → Sheets.
 ARTIFACTS: /ads-script/master.gs (+ functions: capBudget_, setBidding_, ensureSchedule_, ensureSharedNegList_, mineNgrams_, buildRSAs_, collectors_)
 TESTS: Preview twice (second is no-op); RSA lengths validated; no duplicate shared set links.
@@ -363,7 +363,7 @@ ROLLBACK: feature flags off; docs remain.
 
 ### C. Reserved labels & config
 
-- Label: **PROOFKIT_AUTOMATED**, **PROOFKIT_INTENT**
+- Label: **ADS_AUTOPILOT_AI_AUTOMATED**, **ADS_AUTOPILOT_AI_INTENT**
 - Respect `EXCLUSIONS_*`; never negate `NEG_GUARD_*` terms or brand.
 
 ### D. RSA limits

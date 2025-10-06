@@ -57,7 +57,7 @@ const WelcomeStep: React.FC<{ tier: string; onNext: () => void }> = ({ tier, onN
   <Stack vertical spacing="loose">
     <div style={{ textAlign: 'center' }}>
       <Icon source={StarFilledMinor} />
-      <Text variant="headingLg" as="h2">Welcome to ProofKit!</Text>
+      <Text variant="headingLg" as="h2">Welcome to Ads Autopilot AI!</Text>
       <Text variant="bodyMd" color="subdued">
         Let's get you set up with {tier} features in just a few steps.
       </Text>
@@ -234,7 +234,7 @@ const CompletionStep: React.FC<{ tier: string; onComplete: () => void }> = ({ ti
       <Icon source={CircleTickMajor} />
       <Text variant="headingLg" as="h2">You're All Set!</Text>
       <Text variant="bodyMd" color="subdued">
-        Your ProofKit {tier} account is ready to optimize your campaigns.
+        Your Ads Autopilot AI {tier} account is ready to optimize your campaigns.
       </Text>
     </div>
     
@@ -280,7 +280,7 @@ export const OnboardingFlow: React.FC<OnboardingFlowProps> = ({
     {
       id: 'welcome',
       title: 'Welcome',
-      description: 'Introduction to ProofKit',
+      description: 'Introduction to Ads Autopilot AI',
       component: WelcomeStep,
       completed: localCompletedSteps.has('welcome'),
       required: true,
@@ -381,7 +381,7 @@ export const OnboardingFlow: React.FC<OnboardingFlowProps> = ({
   
   const toastMarkup = showToast ? (
     <Toast
-      content="Onboarding completed! Welcome to ProofKit."
+      content="Onboarding completed! Welcome to Ads Autopilot AI."
       onDismiss={() => setShowToast(false)}
       duration={2000}
     />

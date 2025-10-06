@@ -264,5 +264,5 @@ app.get("/app/api/summary", async (_req, res) => {
 });
 
 app.listen(process.env.PORT || 3002, () =>
-  console.log("Proofkit Shopify skeleton on :" + (process.env.PORT || 3002)),
+  console.log("Ads Autopilot AI Shopify skeleton on :" + (process.env.PORT || 3002)),
 );

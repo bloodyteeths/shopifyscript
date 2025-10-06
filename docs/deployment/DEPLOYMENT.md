@@ -1,6 +1,6 @@
-# ProofKit SaaS Production Deployment Guide
+# Ads Autopilot AI SaaS Production Deployment Guide
 
-Complete guide for deploying ProofKit SaaS to production with Docker, monitoring, and security best practices.
+Complete guide for deploying Ads Autopilot AI SaaS to production with Docker, monitoring, and security best practices.
 
 ## Table of Contents
 
@@ -73,12 +73,12 @@ sudo apt install -y git curl jq htop nginx certbot
 
 ```bash
 # Production deployment location
-sudo mkdir -p /opt/proofkit
-sudo chown $USER:$USER /opt/proofkit
-cd /opt/proofkit
+sudo mkdir -p /opt/adsautopilot
+sudo chown $USER:$USER /opt/adsautopilot
+cd /opt/adsautopilot
 
 # Clone from your repository
-git clone https://github.com/your-org/proofkit-saas.git .
+git clone https://github.com/your-org/adsautopilot-saas.git .
 ```
 
 ### 2. Environment Configuration
@@ -144,16 +144,16 @@ GDPR_ENABLED=true
 
 ```bash
 # Create secrets directory
-sudo mkdir -p /opt/proofkit/secrets
+sudo mkdir -p /opt/adsautopilot/secrets
 
 # Store sensitive values as files
-echo "your-hmac-secret" | sudo tee /opt/proofkit/secrets/hmac_secret
-echo "your-google-private-key" | sudo tee /opt/proofkit/secrets/google_private_key
-echo "your-redis-password" | sudo tee /opt/proofkit/secrets/redis_password
+echo "your-hmac-secret" | sudo tee /opt/adsautopilot/secrets/hmac_secret
+echo "your-google-private-key" | sudo tee /opt/adsautopilot/secrets/google_private_key
+echo "your-redis-password" | sudo tee /opt/adsautopilot/secrets/redis_password
 
 # Set proper permissions
-sudo chmod 600 /opt/proofkit/secrets/*
-sudo chown root:root /opt/proofkit/secrets/*
+sudo chmod 600 /opt/adsautopilot/secrets/*
+sudo chown root:root /opt/adsautopilot/secrets/*
 ```
 
 ## Security Configuration
@@ -186,10 +186,10 @@ sudo crontab -e
 
 ### 3. Nginx Configuration
 
-Create `/etc/nginx/sites-available/proofkit`:
+Create `/etc/nginx/sites-available/adsautopilot`:
 
 ```nginx
-upstream proofkit_backend {
+upstream adsautopilot_backend {
     server 127.0.0.1:3001;
     keepalive 32;
 }
@@ -233,7 +233,7 @@ server {
     gzip_types text/plain text/css application/json application/javascript text/xml application/xml text/javascript;
 
     location / {
-        proxy_pass http://proofkit_backend;
+        proxy_pass http://adsautopilot_backend;
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection 'upgrade';
@@ -247,7 +247,7 @@ server {
 
     # Health check endpoint (no auth required)
     location /health {
-        proxy_pass http://proofkit_backend;
+        proxy_pass http://adsautopilot_backend;
         access_log off;
     }
 
@@ -262,7 +262,7 @@ server {
 Enable site:
 
 ```bash
-sudo ln -s /etc/nginx/sites-available/proofkit /etc/nginx/sites-enabled/
+sudo ln -s /etc/nginx/sites-available/adsautopilot /etc/nginx/sites-enabled/
 sudo nginx -t
 sudo systemctl restart nginx
 ```
@@ -312,8 +312,8 @@ services:
       target: runtime
       args:
         NODE_ENV: production
-    image: proofkit-saas:latest
-    container_name: proofkit-app
+    image: adsautopilot-saas:latest
+    container_name: adsautopilot-app
     restart: unless-stopped
     environment:
       - NODE_ENV=production
@@ -340,7 +340,7 @@ services:
 
   redis:
     image: redis:7-alpine
-    container_name: proofkit-redis
+    container_name: adsautopilot-redis
     restart: unless-stopped
     command: redis-server --requirepass ${REDIS_PASSWORD}
     volumes:
@@ -361,7 +361,7 @@ services:
   # Optional: Monitoring Stack
   prometheus:
     image: prom/prometheus:latest
-    container_name: proofkit-prometheus
+    container_name: adsautopilot-prometheus
     restart: unless-stopped
     ports:
       - "127.0.0.1:9090:9090"
@@ -379,7 +379,7 @@ services:
 
   grafana:
     image: grafana/grafana:latest
-    container_name: proofkit-grafana
+    container_name: adsautopilot-grafana
     restart: unless-stopped
     ports:
       - "127.0.0.1:3000:3000"
@@ -400,7 +400,7 @@ volumes:
 
 networks:
   default:
-    name: proofkit-network
+    name: adsautopilot-network
 ```
 
 ### 2. Production Dockerfile
@@ -429,7 +429,7 @@ FROM node:18-alpine AS runtime
 
 # Security: Create non-root user
 RUN addgroup -g 1001 -S nodejs && \
-    adduser -S proofkit -u 1001
+    adduser -S adsautopilot -u 1001
 
 # Install dumb-init for proper signal handling
 RUN apk add --no-cache dumb-init curl
@@ -437,13 +437,13 @@ RUN apk add --no-cache dumb-init curl
 WORKDIR /app
 
 # Copy application
-COPY --from=builder --chown=proofkit:nodejs /app .
+COPY --from=builder --chown=adsautopilot:nodejs /app .
 
 # Create log directory
-RUN mkdir -p logs && chown proofkit:nodejs logs
+RUN mkdir -p logs && chown adsautopilot:nodejs logs
 
 # Switch to non-root user
-USER proofkit
+USER adsautopilot
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
@@ -462,7 +462,7 @@ EXPOSE 3001
 
 ```bash
 # Build and deploy
-cd /opt/proofkit
+cd /opt/adsautopilot
 
 # Build production images
 docker-compose -f docker-compose.prod.yml build
@@ -492,7 +492,7 @@ const logger = winston.createLogger({
     winston.format.errors({ stack: true }),
     winston.format.json(),
   ),
-  defaultMeta: { service: "proofkit-api" },
+  defaultMeta: { service: "adsautopilot-api" },
   transports: [
     new winston.transports.File({
       filename: "/app/logs/error.log",
@@ -521,17 +521,17 @@ if (process.env.NODE_ENV !== "production") {
 
 ```bash
 # Configure logrotate
-sudo tee /etc/logrotate.d/proofkit << EOF
-/opt/proofkit/logs/*.log {
+sudo tee /etc/logrotate.d/adsautopilot << EOF
+/opt/adsautopilot/logs/*.log {
     daily
     missingok
     rotate 30
     compress
     delaycompress
     notifempty
-    create 644 proofkit proofkit
+    create 644 adsautopilot adsautopilot
     postrotate
-        docker-compose -f /opt/proofkit/docker-compose.prod.yml restart app
+        docker-compose -f /opt/adsautopilot/docker-compose.prod.yml restart app
     endscript
 }
 EOF
@@ -549,7 +549,7 @@ global:
 rule_files: []
 
 scrape_configs:
-  - job_name: "proofkit-api"
+  - job_name: "adsautopilot-api"
     static_configs:
       - targets: ["app:3001"]
     metrics_path: "/metrics"
@@ -586,13 +586,13 @@ curl -s http://localhost:3001/api/diagnostics | jq
 
 ### 2. Monitoring Script
 
-Create `/opt/proofkit/scripts/health-monitor.sh`:
+Create `/opt/adsautopilot/scripts/health-monitor.sh`:
 
 ```bash
 #!/bin/bash
 
 # Health monitoring script
-LOG_FILE="/var/log/proofkit-health.log"
+LOG_FILE="/var/log/adsautopilot-health.log"
 API_URL="http://localhost:3001"
 
 log() {
@@ -618,7 +618,7 @@ check_health "/ready" "Readiness"
 check_health "/live" "Liveness"
 
 # Check Docker containers
-if ! docker-compose -f /opt/proofkit/docker-compose.prod.yml ps | grep -q "Up"; then
+if ! docker-compose -f /opt/adsautopilot/docker-compose.prod.yml ps | grep -q "Up"; then
     log "✗ Docker containers not running"
     exit 1
 fi
@@ -630,19 +630,19 @@ Add to crontab:
 
 ```bash
 # Monitor every 5 minutes
-*/5 * * * * /opt/proofkit/scripts/health-monitor.sh
+*/5 * * * * /opt/adsautopilot/scripts/health-monitor.sh
 ```
 
 ## Backup & Recovery
 
 ### 1. Automated Backup Script
 
-Create `/opt/proofkit/scripts/backup.sh`:
+Create `/opt/adsautopilot/scripts/backup.sh`:
 
 ```bash
 #!/bin/bash
 
-BACKUP_DIR="/opt/backups/proofkit"
+BACKUP_DIR="/opt/backups/adsautopilot"
 RETENTION_DAYS=30
 DATE=$(date +%Y%m%d_%H%M%S)
 
@@ -650,15 +650,15 @@ mkdir -p "$BACKUP_DIR"
 
 # Backup Docker volumes
 docker run --rm \
-  -v proofkit-saas_app-logs:/source/logs \
-  -v proofkit-saas_redis-data:/source/redis \
+  -v adsautopilot-saas_app-logs:/source/logs \
+  -v adsautopilot-saas_redis-data:/source/redis \
   -v "$BACKUP_DIR:/backup" \
   alpine:latest \
-  tar czf "/backup/proofkit_volumes_$DATE.tar.gz" -C /source .
+  tar czf "/backup/adsautopilot_volumes_$DATE.tar.gz" -C /source .
 
 # Backup configuration
-tar czf "$BACKUP_DIR/proofkit_config_$DATE.tar.gz" \
-  -C /opt/proofkit \
+tar czf "$BACKUP_DIR/adsautopilot_config_$DATE.tar.gz" \
+  -C /opt/adsautopilot \
   .env docker-compose.prod.yml deployment/ monitoring/
 
 # Google Sheets backup (export key data)
@@ -679,16 +679,16 @@ echo "Backup completed: $DATE"
 
 ```bash
 # 1. Restore configuration
-cd /opt/proofkit
-tar xzf /opt/backups/proofkit/proofkit_config_YYYYMMDD_HHMMSS.tar.gz
+cd /opt/adsautopilot
+tar xzf /opt/backups/adsautopilot/adsautopilot_config_YYYYMMDD_HHMMSS.tar.gz
 
 # 2. Restore Docker volumes
 docker run --rm \
-  -v proofkit-saas_app-logs:/target/logs \
-  -v proofkit-saas_redis-data:/target/redis \
-  -v "/opt/backups/proofkit:/backup" \
+  -v adsautopilot-saas_app-logs:/target/logs \
+  -v adsautopilot-saas_redis-data:/target/redis \
+  -v "/opt/backups/adsautopilot:/backup" \
   alpine:latest \
-  tar xzf "/backup/proofkit_volumes_YYYYMMDD_HHMMSS.tar.gz" -C /target
+  tar xzf "/backup/adsautopilot_volumes_YYYYMMDD_HHMMSS.tar.gz" -C /target
 
 # 3. Restart services
 docker-compose -f docker-compose.prod.yml up -d
@@ -767,23 +767,23 @@ curl -f http://localhost:3001/health
 
    ```bash
    # Check container status
-   docker-compose -f /opt/proofkit/docker-compose.prod.yml ps
+   docker-compose -f /opt/adsautopilot/docker-compose.prod.yml ps
 
    # View recent logs
-   docker-compose -f /opt/proofkit/docker-compose.prod.yml logs --tail=100 app
+   docker-compose -f /opt/adsautopilot/docker-compose.prod.yml logs --tail=100 app
 
    # Restart if needed
-   docker-compose -f /opt/proofkit/docker-compose.prod.yml restart app
+   docker-compose -f /opt/adsautopilot/docker-compose.prod.yml restart app
    ```
 
 2. **High Memory Usage**
 
    ```bash
    # Check container resources
-   docker stats proofkit-app
+   docker stats adsautopilot-app
 
    # Scale horizontally (if load balancer configured)
-   docker-compose -f /opt/proofkit/docker-compose.prod.yml up -d --scale app=2
+   docker-compose -f /opt/adsautopilot/docker-compose.prod.yml up -d --scale app=2
    ```
 
 3. **Database Issues**
@@ -798,9 +798,9 @@ curl -f http://localhost:3001/health
 
 ### Contact Information
 
-- **Primary Ops**: ops@proofkit.net
-- **Emergency**: +1-555-PROOFKIT-OPS
-- **Status Page**: https://status.proofkit.net
+- **Primary Ops**: ops@adsautopilot.net
+- **Emergency**: +1-555-ADS_AUTOPILOT_AI-OPS
+- **Status Page**: https://status.adsautopilot.net
 
 ---
 

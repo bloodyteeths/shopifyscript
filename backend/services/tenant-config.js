@@ -11,7 +11,7 @@ class TenantConfigService {
     this.configDefaults = {
       enabled: true,
       PROMOTE: true,
-      label: "Proofkit • Managed",
+      label: "Ads Autopilot AI • Managed",
       plan: "starter",
       default_final_url: "https://example.com",
       daily_budget_cap_default: 3.0,
@@ -23,7 +23,7 @@ class TenantConfigService {
       st_lookback: "LAST_7_DAYS",
       st_min_clicks: 2,
       st_min_cost: 2.82,
-      master_neg_list_name: "Proofkit • Master Negatives",
+      master_neg_list_name: "Ads Autopilot AI • Master Negatives",
 
       // Feature flags
       ENABLE_SCRIPT: true,

@@ -1,5 +1,5 @@
 /**
- * Dashboard Cache Service for ProofKit SaaS
+ * Dashboard Cache Service for Ads Autopilot AI SaaS
  * Intelligent caching system for dashboard data aggregation
  *
  * Features:

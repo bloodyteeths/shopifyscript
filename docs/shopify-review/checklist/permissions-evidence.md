@@ -2,7 +2,7 @@
 
 ## 📋 Executive Summary
 
-**App Name**: ProofKit - Intent OS & Conversion Rate Optimization  
+**App Name**: Ads Autopilot AI - Intent OS & Conversion Rate Optimization  
 **Permission Scope**: Minimal - Only essential permissions requested  
 **Privacy Approach**: Privacy by Design - No PII collection or storage  
 **Review Date**: August 16, 2025
@@ -55,14 +55,14 @@
 
 **Why We Need It**:
 
-1. **Backend API Integration**: Secure communication with ProofKit backend
+1. **Backend API Integration**: Secure communication with Ads Autopilot AI backend
 2. **HMAC Validation**: All API calls validated through app proxy
 3. **Real-Time Updates**: Webhook support for configuration changes
 4. **Storefront Integration**: Optional pixel and overlay deployment
 
 **How We Use It**:
 
-- Proxy API calls to ProofKit backend for security
+- Proxy API calls to Ads Autopilot AI backend for security
 - Validate merchant authentication via HMAC
 - Receive webhook notifications for app configuration changes
 - Serve conversion optimization scripts (when enabled by merchant)
@@ -89,7 +89,7 @@
 
 **Why We Don't Need These**:
 
-- ProofKit operates on aggregated behavior patterns, not individual customer data
+- Ads Autopilot AI operates on aggregated behavior patterns, not individual customer data
 - Intent OS analyzes product performance and conversion rates, not personal information
 - Audience segmentation uses anonymous criteria, not customer identities
 - GDPR and privacy compliance through data minimization
@@ -111,7 +111,7 @@
 
 **Why We Don't Need These**:
 
-- ProofKit focuses on marketing and conversion optimization
+- Ads Autopilot AI focuses on marketing and conversion optimization
 - No inventory management or fulfillment features
 - Shipping and logistics outside of app scope
 - Product-focused optimization without operational data needs
@@ -314,7 +314,7 @@ const rateLimit = {
 **Minimal Permission Scope**:
 
 - Most conversion optimization apps request extensive customer data permissions
-- ProofKit achieves superior results with minimal data access
+- Ads Autopilot AI achieves superior results with minimal data access
 - Privacy-first approach differentiates from data-heavy competitors
 - Compliance-ready for global privacy regulations
 
@@ -357,9 +357,9 @@ const rateLimit = {
 
 ## 📞 Contact Information
 
-**Security Questions**: `security@proofkit.app`  
-**Privacy Questions**: `privacy@proofkit.app`  
-**Technical Support**: `support@proofkit.app`  
+**Security Questions**: `security@adsautopilot.app`  
+**Privacy Questions**: `privacy@adsautopilot.app`  
+**Technical Support**: `support@adsautopilot.app`  
 **Emergency Contact**: Available via app listing contact form
 
 ---

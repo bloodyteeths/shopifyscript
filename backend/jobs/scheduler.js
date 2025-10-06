@@ -1,5 +1,5 @@
 /**
- * Job Scheduler for ProofKit SaaS
+ * Job Scheduler for Ads Autopilot AI SaaS
  * Manages automated execution of weekly summaries, anomaly detection, and alerting
  */
 
@@ -385,8 +385,8 @@ export class JobScheduler {
       // Send weekly summary via configured channels
       try {
         await alertsService.sendWeeklySummary(tenantId, result.summary, {
-          dashboardUrl: `https://app.proofkit.com/dashboard/${tenantId}`,
-          settingsUrl: `https://app.proofkit.com/settings/${tenantId}`,
+          dashboardUrl: `https://app.adsautopilot.com/dashboard/${tenantId}`,
+          settingsUrl: `https://app.adsautopilot.com/settings/${tenantId}`,
         });
       } catch (alertError) {
         logger.warn("Failed to send weekly summary alert", {

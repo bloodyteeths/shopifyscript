@@ -61,7 +61,7 @@ const HELP_CONTENT: Record<string, HelpContent> = {
   // Campaign Management
   'campaign_budget': {
     title: 'Campaign Budget Settings',
-    content: 'Set daily or total budget limits for your campaigns. ProofKit will automatically optimize spending within your budget constraints.',
+    content: 'Set daily or total budget limits for your campaigns. Ads Autopilot AI will automatically optimize spending within your budget constraints.',
     actions: [
       { label: 'Budget Best Practices', url: '/help/budget-optimization' },
       { label: 'Watch Tutorial', action: () => console.log('Play budget tutorial') }

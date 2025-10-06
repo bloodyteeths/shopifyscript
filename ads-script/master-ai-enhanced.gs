@@ -1,4 +1,4 @@
-/** ProofKit Autopilot - AI-Enhanced Google Ads Script
+/** Ads Autopilot AI - AI-Enhanced Google Ads Script
  * Automated campaign optimization with AI-powered features
  * Version: 2.0
  */
@@ -161,7 +161,7 @@ function main() {
 
   // Collect and send comprehensive metrics
   var metrics = collectPerf_();
-  var runLogs = [[new Date(), 'ProofKit AI-Enhanced run complete']];
+  var runLogs = [[new Date(), 'Ads Autopilot AI AI-Enhanced run complete']];
 
   if (AI_FEATURES_ENABLED) {
     runLogs.push([new Date(), 'AI Features Active: ' + JSON.stringify({
@@ -213,7 +213,7 @@ function getAIRecommendations_(performanceData) {
       muteHttpExceptions: true,
       followRedirects: true,
       validateHttpsCertificates: true,
-      headers: { 'User-Agent': 'Proofkit-AdsScript/2.0' }
+      headers: { 'User-Agent': 'Ads Autopilot AI-AdsScript/2.0' }
     });
 
     var code = r.getResponseCode();
@@ -298,7 +298,7 @@ function analyzeSearchTermsWithAI_(searchTerms) {
       muteHttpExceptions: true,
       followRedirects: true,
       validateHttpsCertificates: true,
-      headers: { 'User-Agent': 'Proofkit-AdsScript/2.0' }
+      headers: { 'User-Agent': 'Ads Autopilot AI-AdsScript/2.0' }
     });
     log_("Search terms sent for AI analysis");
   } catch(e) {
@@ -413,7 +413,7 @@ function getConfig_() {
       muteHttpExceptions: true,
       followRedirects: true,
       validateHttpsCertificates: true,
-      headers: { 'User-Agent': 'Proofkit-AdsScript/2.0' }
+      headers: { 'User-Agent': 'Ads Autopilot AI-AdsScript/2.0' }
     });
     var code = r.getResponseCode();
     var txt = r.getContentText();
@@ -451,7 +451,7 @@ function postToBackend_(action, payload) {
       muteHttpExceptions: true,
       followRedirects: true,
       validateHttpsCertificates: true,
-      headers: { 'User-Agent': 'Proofkit-AdsScript/2.0' }
+      headers: { 'User-Agent': 'Ads Autopilot AI-AdsScript/2.0' }
     });
   } catch(e) { log_("Backend post error: " + e); }
 
@@ -471,7 +471,7 @@ function postToBackend_(action, payload) {
         muteHttpExceptions: true,
         followRedirects: true,
         validateHttpsCertificates: true,
-        headers: { 'User-Agent': 'Proofkit-AdsScript/2.0' }
+        headers: { 'User-Agent': 'Ads Autopilot AI-AdsScript/2.0' }
       });
     } catch(e) { log_("Backend post error (chunk " + i + "): " + e); }
   }
@@ -495,7 +495,7 @@ function sign_(payload) {
 function ensureSeed_(cfg) {
   var any = AdsApp.campaigns().withCondition("campaign.advertising_channel_type = SEARCH").get();
   if (any.hasNext()) return;
-  var name = (cfg.desired && cfg.desired.campaign_name) || "ProofKit - Search";
+  var name = (cfg.desired && cfg.desired.campaign_name) || "Ads Autopilot AI - Search";
   var daily = cfg.daily_budget_cap_default || 3.00;
   var ceil = cfg.cpc_ceiling_default || 0.20;
   var adg = (cfg.desired && cfg.desired.ad_group) || "Default";
@@ -521,7 +521,7 @@ function ensureSeed_(cfg) {
 
   var H = ["Digital Certificates", "Compliance Reports", "Export Clean PDFs", "Generate Certs Fast", "Audit-Ready Reports", "Start Free Today"];
   var D = ["Create inspector-ready PDFs fast.", "Replace spreadsheets with an auditable system.", "Templates enforce SOPs. Audit trail included.", "Setup in under 10 minutes."];
-  var b = ag.newAd().responsiveSearchAdBuilder().withFinalUrl(cfg.default_final_url || "https://www.proofkit.net");
+  var b = ag.newAd().responsiveSearchAdBuilder().withFinalUrl(cfg.default_final_url || "https://www.adsautopilot.net");
   H.slice(0, 15).forEach(function(h) { b.addHeadline(h.length > 30 ? h.slice(0, 30) : h); });
   D.slice(0, 4).forEach(function(d) { b.addDescription(d.length > 90 ? d.slice(0, 90) : d); });
   try { b.build(); } catch(e) { log_("Seed RSA failed: " + e); }
@@ -748,7 +748,7 @@ function inferFinalUrl_(ag) {
 function ensureLabel_(name) {
   var it = AdsApp.labels().get();
   while (it.hasNext()) if (it.next().getName() === name) return;
-  AdsApp.createLabel(name, "AI-Powered by ProofKit");
+  AdsApp.createLabel(name, "AI-Powered by Ads Autopilot AI");
 }
 
 function safeLabel_(entity, name) { safeLabelWithGuard_(entity, name); }
@@ -864,7 +864,7 @@ function isExcludedAdGroup_(cfg, campaignName, adGroupName) {
 
 function initializeIdempotencyTracking_() {
   try {
-    var testMode = PropertiesService.getScriptProperties().getProperty('PROOFKIT_TEST_MODE');
+    var testMode = PropertiesService.getScriptProperties().getProperty('ADS_AUTOPILOT_AI_TEST_MODE');
     if (testMode === 'PREVIEW' || testMode === 'IDEMPOTENCY_TEST') {
       RUN_MODE = testMode;
       PREVIEW_MODE = (testMode === 'PREVIEW' || testMode === 'IDEMPOTENCY_TEST');
@@ -885,7 +885,7 @@ function logMutation_(type, details) {
 }
 
 var NEG_GUARD_ACTIVE = false;
-var RESERVED_KEYWORDS = ['proofkit', 'brand', 'competitor', 'important'];
+var RESERVED_KEYWORDS = ['adsautopilot', 'brand', 'competitor', 'important'];
 
 function validatePromoteGate_(cfg) {
   if (!cfg) return false;
@@ -909,10 +909,10 @@ function initializeSafetyGuards_(cfg) {
 
 function loadNegGuard_(cfg) {
   try {
-    RESERVED_KEYWORDS = cfg.NEG_GUARD || ['proofkit', 'brand', 'competitor', 'important'];
+    RESERVED_KEYWORDS = cfg.NEG_GUARD || ['adsautopilot', 'brand', 'competitor', 'important'];
     log_('NEG_GUARD: Loaded ' + RESERVED_KEYWORDS.length + ' reserved keywords');
   } catch(e) {
-    RESERVED_KEYWORDS = ['proofkit', 'brand', 'competitor', 'important'];
+    RESERVED_KEYWORDS = ['adsautopilot', 'brand', 'competitor', 'important'];
   }
 }
 
@@ -978,7 +978,7 @@ function getPaceSignals_() {
       muteHttpExceptions: true,
       followRedirects: true,
       validateHttpsCertificates: true,
-      headers: { 'User-Agent': 'Proofkit-AdsScript/2.0' }
+      headers: { 'User-Agent': 'Ads Autopilot AI-AdsScript/2.0' }
     });
 
     var code = r.getResponseCode();

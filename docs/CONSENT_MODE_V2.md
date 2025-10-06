@@ -1,8 +1,8 @@
-# Consent Mode v2 — ProofKit Implementation
+# Consent Mode v2 — Ads Autopilot AI Implementation
 
 ## Overview
 
-ProofKit's Shopify Web Pixel Extension now includes comprehensive Consent Mode v2 support, automatically handling privacy compliance for Google Analytics 4 and Google Ads conversion tracking.
+Ads Autopilot AI's Shopify Web Pixel Extension now includes comprehensive Consent Mode v2 support, automatically handling privacy compliance for Google Analytics 4 and Google Ads conversion tracking.
 
 ## ✅ Implementation Status
 
@@ -16,9 +16,9 @@ ProofKit's Shopify Web Pixel Extension now includes comprehensive Consent Mode v
 
 ### For Merchants
 
-1. **Enable the ProofKit Web Pixel Extension** in your Shopify store
+1. **Enable the Ads Autopilot AI Web Pixel Extension** in your Shopify store
 2. **Configure your metafields** (see setup guide below)
-3. **Install your CMP** (OneTrust, Cookiebot, etc.) - ProofKit auto-detects most popular ones
+3. **Install your CMP** (OneTrust, Cookiebot, etc.) - Ads Autopilot AI auto-detects most popular ones
 4. **Test consent scenarios** to ensure compliance
 
 ### Key Features
@@ -76,13 +76,13 @@ Purchase  → Verify Marketing → Include Full Data → Conversion Tracking
 
 ### Debug Mode
 
-Enable debug logging by setting `proofkit.debug_mode = "true"` in your metafields:
+Enable debug logging by setting `adsautopilot.debug_mode = "true"` in your metafields:
 
 ```javascript
 // Console output examples:
-✓ ProofKit Web Pixel initialized with Consent Mode v2
-✓ ProofKit: Purchase conversion tracked
-⚠ ProofKit: GA4 event blocked due to consent: page_view
+✓ Ads Autopilot AI Web Pixel initialized with Consent Mode v2
+✓ Ads Autopilot AI: Purchase conversion tracked
+⚠ Ads Autopilot AI: GA4 event blocked due to consent: page_view
 ```
 
 ## Compliance Benefits
@@ -96,7 +96,7 @@ Enable debug logging by setting `proofkit.debug_mode = "true"` in your metafield
 
 ### From Basic Implementation
 
-1. Update to latest ProofKit Web Pixel Extension
+1. Update to latest Ads Autopilot AI Web Pixel Extension
 2. Configure metafields for GA4/Google Ads (optional)
 3. Test consent scenarios
 4. Update privacy policy if needed
@@ -104,8 +104,8 @@ Enable debug logging by setting `proofkit.debug_mode = "true"` in your metafield
 ### From Manual gtag Implementation
 
 1. Remove manual gtag consent code
-2. Enable ProofKit Web Pixel Extension
-3. ProofKit handles all consent automatically
+2. Enable Ads Autopilot AI Web Pixel Extension
+3. Ads Autopilot AI handles all consent automatically
 4. Verify tracking continues working
 
 ## Advanced Features
@@ -129,7 +129,7 @@ window.dispatchEvent(
 
 ### Server-Side Consent
 
-ProofKit includes consent metadata with all events for server-side respect:
+Ads Autopilot AI includes consent metadata with all events for server-side respect:
 
 ```json
 {
@@ -146,4 +146,4 @@ ProofKit includes consent metadata with all events for server-side respect:
 
 - **Technical Issues**: Check the detailed implementation guides
 - **Privacy Questions**: Consult the Consent Mode v2 guide
-- **General Support**: support@proofkit.com
+- **General Support**: support@adsautopilot.com

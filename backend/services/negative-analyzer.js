@@ -1,5 +1,5 @@
 /**
- * Negative Keyword Intelligence Service for ProofKit SaaS
+ * Negative Keyword Intelligence Service for Ads Autopilot AI SaaS
  * Smart negative keyword detection and analysis from search terms
  */
 

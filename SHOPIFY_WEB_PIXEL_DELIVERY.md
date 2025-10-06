@@ -1,4 +1,4 @@
-# 🚀 ProofKit Shopify Web Pixel Extension - DELIVERY COMPLETE
+# 🚀 Ads Autopilot AI Shopify Web Pixel Extension - DELIVERY COMPLETE
 
 ## ✅ MISSION ACCOMPLISHED
 
@@ -65,7 +65,7 @@ gtag("consent", "default", {
 
 ### Enhanced Event Tracking
 
-| Event          | ProofKit Backend | GA4               | Google Ads        |
+| Event          | Ads Autopilot AI Backend | GA4               | Google Ads        |
 | -------------- | ---------------- | ----------------- | ----------------- |
 | Page View      | ✅               | ✅ page_view      | -                 |
 | Product View   | ✅               | ✅ view_item      | -                 |
@@ -103,18 +103,18 @@ gtag("consent", "default", {
 ### Required Metafields (Shopify Admin)
 
 ```
-proofkit.backend_url = "https://api.proofkit.com/api"
-proofkit.tenant_id = "TENANT_123"
-proofkit.secret_key = "your_secret_key"
+adsautopilot.backend_url = "https://api.adsautopilot.com/api"
+adsautopilot.tenant_id = "TENANT_123"
+adsautopilot.secret_key = "your_secret_key"
 ```
 
 ### Optional Metafields (GA4/Google Ads)
 
 ```
-proofkit.ga4_measurement_id = "G-XXXXXXXXXX"
-proofkit.google_ads_id = "AW-XXXXXXXXX"
-proofkit.conversion_label = "abc123def456"
-proofkit.debug_mode = "true"
+adsautopilot.ga4_measurement_id = "G-XXXXXXXXXX"
+adsautopilot.google_ads_id = "AW-XXXXXXXXX"
+adsautopilot.conversion_label = "abc123def456"
+adsautopilot.debug_mode = "true"
 ```
 
 ## 🧪 TESTING & VALIDATION
@@ -130,9 +130,9 @@ proofkit.debug_mode = "true"
 
 ```javascript
 // Console output examples:
-✓ ProofKit Web Pixel initialized with Consent Mode v2
-✓ ProofKit: Purchase conversion tracked
-⚠ ProofKit: GA4 event blocked due to consent: page_view
+✓ Ads Autopilot AI Web Pixel initialized with Consent Mode v2
+✓ Ads Autopilot AI: Purchase conversion tracked
+⚠ Ads Autopilot AI: GA4 event blocked due to consent: page_view
 ```
 
 ## 📊 COMPLIANCE ACHIEVEMENTS
@@ -188,7 +188,7 @@ window.dispatchEvent(
 - **Easy Setup**: Minimal configuration required
 - **Future-Proof**: Built for evolving privacy landscape
 
-### For ProofKit
+### For Ads Autopilot AI
 
 - **Competitive Advantage**: Industry-leading privacy implementation
 - **Shopify App Store Ready**: Meets all current standards
@@ -227,4 +227,4 @@ window.dispatchEvent(
 **Quality**: Production-ready, fully documented, privacy-compliant  
 **Deployment**: Ready for immediate use
 
-**All requirements met. ProofKit Shopify Web Pixel Extension with Consent Mode v2 compliance is ready for production deployment.**
+**All requirements met. Ads Autopilot AI Shopify Web Pixel Extension with Consent Mode v2 compliance is ready for production deployment.**

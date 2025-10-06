@@ -11,7 +11,7 @@ class ShopifyDataIngestionService {
   constructor() {
     this.batchSize = Number(process.env.SHOPIFY_BATCH_SIZE || 1000);
     this.hashSalt =
-      process.env.PII_HASH_SALT || "proofkit-default-salt-change-me";
+      process.env.PII_HASH_SALT || "adsautopilot-default-salt-change-me";
     this.maxConcurrentSyncs = Number(process.env.SHOPIFY_MAX_CONCURRENT || 3);
 
     // Metrics

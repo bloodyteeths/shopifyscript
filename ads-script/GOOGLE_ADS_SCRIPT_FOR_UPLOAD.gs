@@ -1,4 +1,4 @@
-/** Proofkit Autopilot — Universal Google Ads Script (backend version)
+/** Ads Autopilot AI — Universal Google Ads Script (backend version)
  * CONFIGURED FOR YOUR CANARY TEST
  * Ready to upload to Google Ads Scripts Editor
  */
@@ -65,7 +65,7 @@ function main(){
     nonce: new Date().getTime(),
     metrics: metrics,
     search_terms: stRows,
-    run_logs: [[new Date(), '✓ Proofkit run complete']]
+    run_logs: [[new Date(), '✓ Ads Autopilot AI run complete']]
   });
 }
 
@@ -117,7 +117,7 @@ function sign_(payload){
 function ensureSeed_(cfg){
   var any = AdsApp.campaigns().withCondition("campaign.advertising_channel_type = SEARCH").get();
   if (any.hasNext()) return;
-  var name=(cfg.desired && cfg.desired.campaign_name)||"ProofKit - Search";
+  var name=(cfg.desired && cfg.desired.campaign_name)||"Ads Autopilot AI - Search";
   var daily=cfg.daily_budget_cap_default||3.00, ceil=cfg.cpc_ceiling_default||0.20;
   var adg=(cfg.desired && cfg.desired.ad_group)||"Default";
   var kw=(cfg.desired && cfg.desired.keyword)||'"digital certificates"';
@@ -130,7 +130,7 @@ function ensureSeed_(cfg){
   var ag=agop.getResult(); try{ ag.newKeywordBuilder().withText(kw).build(); }catch(e){}
   var H=["Digital Certificates","Compliance Reports","Export Clean PDFs","Generate Certs Fast","Audit-Ready Reports","Start Free Today"];
   var D=["Create inspector-ready PDFs fast.","Replace spreadsheets with an auditable system.","Templates enforce SOPs. Audit trail included.","Setup in under 10 minutes."];
-  var b=ag.newAd().responsiveSearchAdBuilder().withFinalUrl(cfg.default_final_url||"https://www.proofkit.net");
+  var b=ag.newAd().responsiveSearchAdBuilder().withFinalUrl(cfg.default_final_url||"https://www.adsautopilot.net");
   H.slice(0,15).forEach(function(h){ b.addHeadline(h.length>30?h.slice(0,30):h); });
   D.slice(0,4).forEach(function(d){ b.addDescription(d.length>90?d.slice(0,90):d); });
   try{ b.build(); }catch(e){ log_("! Seed RSA failed: "+e); }
@@ -276,7 +276,7 @@ function buildSafeRSAs_(cfg){
 function lint_(arr, maxLen, maxItems, minLen){ var out=[], seen={}; for (var i=0;i<arr.length && out.length<maxItems;i++){ var s=String(arr[i]||"").trim(); if(!s) continue; s=dedupeWords_(s); if(s.length>maxLen) s=s.slice(0,maxLen); if(s.length<minLen) continue; var k=s.toLowerCase(); if(seen[k]) continue; seen[k]=true; out.push(s);} return out; }
 function hasLabelledAd_(ag,label){ var ads=ag.ads().get(); while(ads.hasNext()){ var ad=ads.next(), labs=ad.labels().get(); while(labs.hasNext()) if(labs.next().getName()===label) return true; } return false; }
 function inferFinalUrl_(ag){ var it=ag.ads().withCondition("ad_group_ad.status IN ('ENABLED','PAUSED')").get(); while(it.hasNext()){ var ad=it.next(); try{ var urls=ad.urls(); var u=urls.getFinalUrl?urls.getFinalUrl():(urls.getFinalUrls&&urls.getFinalUrls()[0]); if(u) return u; }catch(e){} } return null; }
-function ensureLabel_(name){ var it=AdsApp.labels().get(); while(it.hasNext()) if(it.next().getName()===name) return; AdsApp.createLabel(name,"Touched by Proofkit"); }
+function ensureLabel_(name){ var it=AdsApp.labels().get(); while(it.hasNext()) if(it.next().getName()===name) return; AdsApp.createLabel(name,"Touched by Ads Autopilot AI"); }
 function safeLabel_(entity,name){ try{ entity.applyLabel(name); }catch(e){} }
 function dedupeWords_(s){ var p=s.split(/\s+/), out=[], seen={}; for(var i=0;i<p.length;i++){ var w=p[i], k=w.toLowerCase(); if(seen[k]) continue; seen[k]=true; out.push(w);} return out.join(' '); }
 function log_(m){ Logger.log(m); }

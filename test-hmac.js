@@ -4,7 +4,7 @@ import crypto from "crypto";
 
 const HMAC_SECRET =
   "f3a1c9d8b2e47a65c0fb19d7e3a9428c6de5b1a7c4f08923ab56d7e1c2f3a4b5";
-const TENANT = "proofkit";
+const TENANT = "adsautopilot";
 
 // HMAC signing function (matches backend implementation)
 function sign(payload, secret = HMAC_SECRET) {

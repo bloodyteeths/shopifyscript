@@ -1,5 +1,5 @@
 /**
- * Worker Pool Manager for ProofKit SaaS
+ * Worker Pool Manager for Ads Autopilot AI SaaS
  * Implements tier-based worker allocation, parallel task execution, and resource management
  */
 

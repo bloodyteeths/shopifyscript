@@ -1,4 +1,4 @@
-# Proofkit — Pricing Tiers & Master Roadmap (v2)
+# Ads Autopilot AI — Pricing Tiers & Master Roadmap (v2)
 
 ## Pricing & Features (merchant-friendly)
 

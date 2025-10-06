@@ -1,5 +1,5 @@
 /**
- * SERP Monitor Service for ProofKit SaaS
+ * SERP Monitor Service for Ads Autopilot AI SaaS
  * Tracks search engine results page positions and competitor visibility
  *
  * Features:

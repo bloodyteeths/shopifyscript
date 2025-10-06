@@ -1,5 +1,5 @@
 /**
- * ProofKit Upgrade Flow Service
+ * Ads Autopilot AI Upgrade Flow Service
  * Handles upgrade prompts, feature gates, and conversion flows
  */
 
@@ -306,7 +306,7 @@ export class UpgradeFlowService {
     const baseUrl =
       platform === "shopify"
         ? "/billing"
-        : "/wp-admin/admin.php?page=proofkit-billing";
+        : "/wp-admin/admin.php?page=adsautopilot-billing";
     return `${baseUrl}?upgrade=${tierIndex}&utm_source=feature_gate&utm_medium=upgrade_flow`;
   }
 

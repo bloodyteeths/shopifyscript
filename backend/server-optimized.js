@@ -1,5 +1,5 @@
 /**
- * Optimized Production Server - ProofKit SaaS
+ * Optimized Production Server - Ads Autopilot AI SaaS
  *
  * Features:
  * - Advanced caching with prediction and warming
@@ -535,7 +535,7 @@ process.on("SIGINT", () => gracefulShutdown("SIGINT"));
 
 // Start server
 app.listen(PORT, () => {
-  logger.info("Optimized ProofKit backend server started", {
+  logger.info("Optimized Ads Autopilot AI backend server started", {
     port: PORT,
     environment: process.env.NODE_ENV || "development",
     features: {

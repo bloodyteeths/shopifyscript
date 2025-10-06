@@ -411,7 +411,7 @@ class BootValidationService {
   async validateSystemSheets(tenantId, result, options = {}) {
     try {
       // Ensure schema tracking sheet
-      await optimizedSheets.ensureSheet(tenantId, "_proofkit_schema", [
+      await optimizedSheets.ensureSheet(tenantId, "_adsautopilot_schema", [
         "sheet_name",
         "version",
         "hash",
@@ -422,7 +422,7 @@ class BootValidationService {
       ]);
 
       // Ensure backup tracking sheet
-      await optimizedSheets.ensureSheet(tenantId, "_proofkit_backups", [
+      await optimizedSheets.ensureSheet(tenantId, "_adsautopilot_backups", [
         "backup_id",
         "type",
         "file_path",

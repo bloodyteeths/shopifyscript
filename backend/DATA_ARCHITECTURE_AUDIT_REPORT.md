@@ -3,14 +3,14 @@
 
 **Date:** September 28, 2025
 **Agent:** CORE-002 (Database Architect)
-**Project:** ProofKit SaaS
+**Project:** Ads Autopilot AI SaaS
 **Objective:** Refactor data operations to prioritize Supabase over Google Sheets
 
 ---
 
 ## Executive Summary
 
-Successfully implemented a Supabase-first, Google Sheets-fallback architecture for all data operations in the ProofKit SaaS backend. The new unified data store provides:
+Successfully implemented a Supabase-first, Google Sheets-fallback architecture for all data operations in the Ads Autopilot AI SaaS backend. The new unified data store provides:
 
 - **Primary Storage:** Supabase (PostgreSQL) for fast, scalable data access
 - **Fallback Storage:** Google Sheets for backward compatibility and redundancy

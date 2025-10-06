@@ -1,5 +1,5 @@
 /**
- * ProofKit Content Intelligence Integration Example
+ * Ads Autopilot AI Content Intelligence Integration Example
  * Demonstrates how to use all NLP services together for comprehensive ad copy analysis
  */
 
@@ -471,7 +471,7 @@ function calculateMessageAlignment(headlines, websiteContent) {
  * Example usage function
  */
 export async function exampleUsage() {
-  console.log('🎯 ProofKit Content Intelligence Integration Example\n');
+  console.log('🎯 Ads Autopilot AI Content Intelligence Integration Example\n');
 
   // Example: Analyze a SaaS website for search ad campaigns
   const results = await analyzeWebsiteForAdCopy('https://example-saas.com', {

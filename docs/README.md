@@ -1,4 +1,4 @@
-# Proofkit SaaS (Backend + Shopify + WordPress + Ads Script)
+# Ads Autopilot AI SaaS (Backend + Shopify + WordPress + Ads Script)
 
 This bundle removes the Google Apps Script Web App. Instead, you run **your own backend** (Node/Express).
 

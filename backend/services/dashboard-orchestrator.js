@@ -1,5 +1,5 @@
 /**
- * Dashboard Orchestrator Service for ProofKit SaaS
+ * Dashboard Orchestrator Service for Ads Autopilot AI SaaS
  * Aggregates data from all AI services for dashboard consumption
  *
  * Features:

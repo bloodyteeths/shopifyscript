@@ -268,7 +268,7 @@ export default function Terms() {
         <strong>Contact Information:</strong><br />
         <strong>Email:</strong> atanrikulu@e-listele.com<br />
         <strong>Support:</strong> atanrikulu@e-listele.com<br />
-        <strong>Website:</strong> <a href="https://proofkit-saas.vercel.app/terms">https://proofkit-saas.vercel.app/terms</a>
+        <strong>Website:</strong> <a href="https://adsautopilot-saas.vercel.app/terms">https://adsautopilot-saas.vercel.app/terms</a>
       </p>
     </div>
   );

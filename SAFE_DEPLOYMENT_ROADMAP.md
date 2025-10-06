@@ -1,5 +1,5 @@
 # 🛡️ SAFE DEPLOYMENT ROADMAP - FEATURE BRANCH STRATEGY
-**ProofKit Production Deployment - Option A Implementation**
+**Ads Autopilot AI Production Deployment - Option A Implementation**
 
 **Current Status:** 81 files modified, 5,011 insertions, 360 deletions  
 **Risk Level:** HIGH - Major refactoring across core systems  
@@ -117,9 +117,9 @@ git checkout -b staging-validation
 **Morning (9:00-12:00 PM): Backend API Testing**
 ```bash
 # Test all critical endpoints
-curl https://staging.proofkit.com/api/health
-curl https://staging.proofkit.com/api/subscription/status
-curl https://staging.proofkit.com/api/insights/tier-features
+curl https://staging.adsautopilot.com/api/health
+curl https://staging.adsautopilot.com/api/subscription/status
+curl https://staging.adsautopilot.com/api/insights/tier-features
 
 # Test tier enforcement
 # - Create test accounts for each tier

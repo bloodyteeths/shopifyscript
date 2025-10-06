@@ -23,7 +23,7 @@ export default function AppShell({ children }) {
   return (
     <div style={{ display: "flex", minHeight: "100vh" }}>
       <nav style={{ width: 220, padding: 16, borderRight: "1px solid #eee" }}>
-        <h3>Proofkit</h3>
+        <h3>Ads Autopilot AI</h3>
         <div style={{ margin: "8px 0", fontSize: 12, opacity: 0.8 }}>
           Plan: {String(cfg?.plan || "starter")}
         </div>

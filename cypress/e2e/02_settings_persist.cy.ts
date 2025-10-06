@@ -1,8 +1,8 @@
 /// <reference types="cypress" />
 
-describe("ProofKit Settings Configuration", () => {
+describe("Ads Autopilot AI Settings Configuration", () => {
   beforeEach(() => {
-    cy.stubProofKitAPI("success");
+    cy.stubAds Autopilot AIAPI("success");
     cy.fixture("tenant-data").as("testData");
   });
 
@@ -121,7 +121,7 @@ describe("ProofKit Settings Configuration", () => {
   });
 
   it("should handle API errors with retry functionality", () => {
-    cy.stubProofKitAPI("error");
+    cy.stubAds Autopilot AIAPI("error");
     cy.fixture("tenant-data").then((testData) => {
       const { demoTenant } = testData;
 
@@ -150,7 +150,7 @@ describe("ProofKit Settings Configuration", () => {
       cy.get('[data-testid="retry-save-button"]').should("be.visible");
 
       // Test retry with success
-      cy.stubProofKitAPI("success");
+      cy.stubAds Autopilot AIAPI("success");
       cy.get('[data-testid="retry-save-button"]').click();
 
       cy.wait("@upsertConfig");

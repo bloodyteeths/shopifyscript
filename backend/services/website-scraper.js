@@ -1,5 +1,5 @@
 /**
- * Website Scraper Service for ProofKit SaaS
+ * Website Scraper Service for Ads Autopilot AI SaaS
  * Intelligently scrapes user's website for products, USPs, testimonials, and content
  * Extracts winning hooks, guarantees, and offers for dynamic ad creation
  *
@@ -29,7 +29,7 @@ export class WebsiteScraperService {
     this.config = {
       timeout: 15000, // 15 seconds timeout
       maxRetries: 3,
-      userAgent: 'ProofKit-ContentBot/2.0 (+https://proofkit.io/bot)',
+      userAgent: 'Ads Autopilot AI-ContentBot/2.0 (+https://adsautopilot.io/bot)',
       maxDepth: 3, // Max crawl depth
       maxPages: 20, // Max pages to crawl per site
       respectRobotsTxt: true,

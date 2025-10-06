@@ -1,5 +1,5 @@
 /**
- * Advanced AI Provider Service for ProofKit SaaS
+ * Advanced AI Provider Service for Ads Autopilot AI SaaS
  * Multi-provider support with intelligent fallbacks and optimization
  */
 

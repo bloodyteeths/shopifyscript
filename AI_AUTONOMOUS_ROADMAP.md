@@ -10,7 +10,7 @@
 ---
 
 ## 🎯 Mission Statement
-Transform ProofKit into a fully autonomous AI-powered Google Ads management system that operates like a professional PPC expert, learning from website content, competitor analysis, traffic patterns, and customer demographics to continuously optimize campaigns 24/7.
+Transform Ads Autopilot AI into a fully autonomous AI-powered Google Ads management system that operates like a professional PPC expert, learning from website content, competitor analysis, traffic patterns, and customer demographics to continuously optimize campaigns 24/7.
 
 ---
 

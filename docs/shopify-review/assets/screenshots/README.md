@@ -1,8 +1,8 @@
-# ProofKit App Store Screenshots
+# Ads Autopilot AI App Store Screenshots
 
 ## 📸 Required Screenshots for Shopify App Store
 
-This directory should contain 5 high-quality screenshots showcasing ProofKit's key features and user interface.
+This directory should contain 5 high-quality screenshots showcasing Ads Autopilot AI's key features and user interface.
 
 ### Screenshot Requirements
 
@@ -76,7 +76,7 @@ This directory should contain 5 high-quality screenshots showcasing ProofKit's k
 **Content Quality**:
 
 - Use realistic store names and data
-- Show actual ProofKit features in action
+- Show actual Ads Autopilot AI features in action
 - Demonstrate clear value proposition
 - Include success metrics where appropriate
 - Show professional, clean interface
@@ -92,7 +92,7 @@ This directory should contain 5 high-quality screenshots showcasing ProofKit's k
 **Technical Standards**:
 
 - No browser chrome or OS elements
-- Focus on ProofKit interface only
+- Focus on Ads Autopilot AI interface only
 - Proper aspect ratios maintained
 - Consistent zoom levels across screenshots
 - Clean, uncluttered compositions
@@ -128,7 +128,7 @@ Before submitting screenshots:
 
 ### Next Steps
 
-1. **Create Screenshots**: Use actual ProofKit interface or high-fidelity mockups
+1. **Create Screenshots**: Use actual Ads Autopilot AI interface or high-fidelity mockups
 2. **Review Quality**: Ensure all guidelines are met
 3. **Optimize Files**: Compress and optimize for App Store submission
 4. **Test Display**: Verify screenshots display correctly in various contexts
@@ -136,4 +136,4 @@ Before submitting screenshots:
 
 ---
 
-**Note**: These screenshots will be the first impression potential customers have of ProofKit. Ensure they accurately represent the app's capabilities and value proposition while maintaining the highest visual quality standards.
+**Note**: These screenshots will be the first impression potential customers have of Ads Autopilot AI. Ensure they accurately represent the app's capabilities and value proposition while maintaining the highest visual quality standards.

@@ -2165,7 +2165,7 @@ function isExcludedAdGroup_(cfg, campaignName, adGroupName) {
 // Idempotency tracking
 function initializeIdempotencyTracking_() {
   try {
-    var testMode = PropertiesService.getScriptProperties().getProperty('PROOFKIT_TEST_MODE');
+    var testMode = PropertiesService.getScriptProperties().getProperty('ADS_AUTOPILOT_AI_TEST_MODE');
     if (testMode === 'PREVIEW' || testMode === 'IDEMPOTENCY_TEST') {
       RUN_MODE = testMode;
       PREVIEW_MODE = (testMode === 'PREVIEW' || testMode === 'IDEMPOTENCY_TEST');

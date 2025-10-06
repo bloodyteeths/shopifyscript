@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-describe("ProofKit Final Working Test", () => {
+describe("Ads Autopilot AI Final Working Test", () => {
   before(() => {
     Cypress.on("uncaught:exception", (err, runnable) => {
       // Ignore all client-side errors for clean screenshots
@@ -8,7 +8,7 @@ describe("ProofKit Final Working Test", () => {
     });
   });
 
-  it("should capture the complete working ProofKit interface", () => {
+  it("should capture the complete working Ads Autopilot AI interface", () => {
     let stepCounter = 0;
 
     // Step 1: Main Dashboard
@@ -115,6 +115,6 @@ describe("ProofKit Final Working Test", () => {
       },
     );
 
-    cy.log(`✅ Captured ${stepCounter} final working ProofKit screenshots!`);
+    cy.log(`✅ Captured ${stepCounter} final working Ads Autopilot AI screenshots!`);
   });
 });

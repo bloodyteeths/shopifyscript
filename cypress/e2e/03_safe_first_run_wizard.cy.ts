@@ -2,7 +2,7 @@
 
 describe("Safe First Run Wizard", () => {
   beforeEach(() => {
-    cy.stubProofKitAPI("success");
+    cy.stubAds Autopilot AIAPI("success");
     cy.fixture("tenant-data").as("testData");
   });
 

@@ -1,5 +1,5 @@
 /**
- * ProofKit Support API Routes  
+ * Ads Autopilot AI Support API Routes  
  * Tier-based support ticket system with SLA enforcement
  */
 

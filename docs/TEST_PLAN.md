@@ -1,8 +1,8 @@
-# ProofKit E2E Testing Plan
+# Ads Autopilot AI E2E Testing Plan
 
 ## Overview
 
-Comprehensive end-to-end testing strategy for ProofKit's merchant funnel covering local development, CI/CD integration, and troubleshooting procedures.
+Comprehensive end-to-end testing strategy for Ads Autopilot AI's merchant funnel covering local development, CI/CD integration, and troubleshooting procedures.
 
 ## Quick Start
 

@@ -1,5 +1,5 @@
 /**
- * Bid Manager Service for ProofKit SaaS
+ * Bid Manager Service for Ads Autopilot AI SaaS
  *
  * Implements intelligent bidding strategies based on real-time performance data
  * Automatically adjusts bids to optimize for target CPA or ROAS

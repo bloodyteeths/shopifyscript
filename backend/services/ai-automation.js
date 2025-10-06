@@ -1,5 +1,5 @@
 /**
- * AI Automation Service for ProofKit SaaS
+ * AI Automation Service for Ads Autopilot AI SaaS
  * Provides fully automated AI workflows with token optimization and cost controls
  * 
  * Features:

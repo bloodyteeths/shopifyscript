@@ -1,13 +1,13 @@
 /// <reference types="cypress" />
 
-describe("ProofKit Complete Feature Audit", () => {
+describe("Ads Autopilot AI Complete Feature Audit", () => {
   before(() => {
     Cypress.on("uncaught:exception", (err, runnable) => {
       return false; // Ignore all uncaught exceptions for clean screenshots
     });
   });
 
-  it("should audit all ProofKit features including scripts and pixels", () => {
+  it("should audit all Ads Autopilot AI features including scripts and pixels", () => {
     let stepCounter = 0;
 
     // Step 1: Main Dashboard
@@ -167,7 +167,7 @@ describe("ProofKit Complete Feature Audit", () => {
     });
 
     cy.log(
-      `✅ Complete ProofKit feature audit captured: ${stepCounter} screenshots`,
+      `✅ Complete Ads Autopilot AI feature audit captured: ${stepCounter} screenshots`,
     );
   });
 });

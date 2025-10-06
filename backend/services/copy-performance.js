@@ -1,5 +1,5 @@
 /**
- * Copy Performance Analytics Service for ProofKit SaaS
+ * Copy Performance Analytics Service for Ads Autopilot AI SaaS
  * Analyzes and predicts copy performance with AI-driven insights
  *
  * Features:

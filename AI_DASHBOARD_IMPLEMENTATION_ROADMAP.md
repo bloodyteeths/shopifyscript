@@ -503,7 +503,7 @@ Master Script (Runs every 4-6 hours)
     ↓
 5. Send to Backend
     ↓
-ProofKit Backend
+Ads Autopilot AI Backend
     ↓
 Dashboard (Real-time Updates)
 ```

@@ -1,5 +1,5 @@
 {
-    "name": "proofkit/wordpress-plugin",
+    "name": "adsautopilot/wordpress-plugin",
     "description": "WordPress plugin compliance tools",
     "require": {
         "squizlabs/php_codesniffer": "^3.0",

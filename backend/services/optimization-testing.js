@@ -1,5 +1,5 @@
 /**
- * Optimization Testing Framework for ProofKit SaaS
+ * Optimization Testing Framework for Ads Autopilot AI SaaS
  *
  * Automated testing framework for optimization strategies, A/B testing,
  * performance validation, and safety testing

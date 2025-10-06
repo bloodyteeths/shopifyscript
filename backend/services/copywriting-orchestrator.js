@@ -1,5 +1,5 @@
 /**
- * Copywriting Orchestrator Service for ProofKit SaaS
+ * Copywriting Orchestrator Service for Ads Autopilot AI SaaS
  * Central coordinator for all copywriting AI operations
  *
  * Features:

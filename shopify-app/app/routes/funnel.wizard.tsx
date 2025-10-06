@@ -56,7 +56,7 @@ export default function FunnelWizard() {
     scheduleStart: "09:00",
     scheduleEnd: "17:00",
     scheduleDays: "MONDAY,TUESDAY,WEDNESDAY,THURSDAY,FRIDAY",
-    canaryLabel: "PROOFKIT_AUTOMATED",
+    canaryLabel: "ADS_AUTOPILOT_AI_AUTOMATED",
     exclusions: "",
   });
 
@@ -569,7 +569,7 @@ export default function FunnelWizard() {
                 <TextContainer>
                   <p>
                     <strong>Step 1:</strong> Export your audience CSV from
-                    ProofKit
+                    Ads Autopilot AI
                   </p>
                   <p>
                     <strong>Step 2:</strong> In Google Ads, go to Tools &
@@ -712,7 +712,7 @@ export default function FunnelWizard() {
   return (
     <ErrorBoundary>
       <Page
-        title="ProofKit Setup Wizard"
+        title="Ads Autopilot AI Setup Wizard"
         subtitle={`Step ${currentStep + 1} of ${steps.length}: ${currentStepData.title}`}
         breadcrumbs={[{ content: "Settings", url: "/app/settings" }]}
         data-testid="wizard-page"

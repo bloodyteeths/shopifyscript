@@ -1,4 +1,4 @@
-# Proofkit — Go‑Live (Canary) Runbook
+# Ads Autopilot AI — Go‑Live (Canary) Runbook
 
 This checklist gets you from **green smokes** to a **time‑boxed live canary** safely.
 
@@ -7,7 +7,7 @@ This checklist gets you from **green smokes** to a **time‑boxed live canary** 
 ## 0) Prereqs
 
 - Google Sheet created; note its ID.
-- Ads account has **label** `PROOFKIT_AUTOMATED` (create once in Google Ads UI).
+- Ads account has **label** `ADS_AUTOPILOT_AI_AUTOMATED` (create once in Google Ads UI).
 - Copy `.env.example` → `.env` and fill in at least:
   - `HMAC_SECRET`, `TENANT_REGISTRY_JSON`, `ALLOWED_ORIGINS`
   - Optional: `GOOGLE_API_KEY` (Gemini). AI is optional; drafts remain in Sheets until `PROMOTE=TRUE`.
@@ -35,7 +35,7 @@ Open the app and visit:
 
 ## 3) Canary Wizard steps
 
-1. Choose a single Search campaign as **canary** (ensure it has the label `PROOFKIT_AUTOMATED`).
+1. Choose a single Search campaign as **canary** (ensure it has the label `ADS_AUTOPILOT_AI_AUTOMATED`).
 2. Set **risk caps**:
    - Daily budget cap: **$3–$5**
    - CPC ceiling: **$0.15–$0.25**

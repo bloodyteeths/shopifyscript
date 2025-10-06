@@ -24,7 +24,7 @@ jest.mock('./services/supabase-client.js');
 jest.mock('./sheets.js');
 jest.mock('./services/email-service.js');
 
-describe('ProofKit Comprehensive Workflow Tests', () => {
+describe('Ads Autopilot AI Comprehensive Workflow Tests', () => {
   
   describe('1. Validation Layer Tests', () => {
     describe('RSA Content Validation', () => {

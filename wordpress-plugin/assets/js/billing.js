@@ -1,5 +1,5 @@
 /**
- * ProofKit WordPress Billing JavaScript
+ * Ads Autopilot AI WordPress Billing JavaScript
  * Handles billing UI interactions and Stripe integration
  */
 
@@ -114,8 +114,8 @@
 
     function initializeBilling() {
         // Initialize Stripe
-        if (proofkitBilling.stripePublicKey) {
-            stripe = Stripe(proofkitBilling.stripePublicKey);
+        if (adsautopilotBilling.stripePublicKey) {
+            stripe = Stripe(adsautopilotBilling.stripePublicKey);
         }
 
         pricingTiers = PRICING_TIERS;
@@ -136,11 +136,11 @@
         showLoading();
         
         $.ajax({
-            url: proofkitBilling.ajaxUrl,
+            url: adsautopilotBilling.ajaxUrl,
             type: 'POST',
             data: {
-                action: 'proofkit_get_subscription',
-                nonce: proofkitBilling.nonce
+                action: 'adsautopilot_get_subscription',
+                nonce: adsautopilotBilling.nonce
             },
             success: function(response) {
                 hideLoading();
@@ -149,12 +149,12 @@
                     currentSubscription = response.data.subscriptions?.[0] || null;
                     renderBillingInterface();
                 } else {
-                    showError(response.data || proofkitBilling.strings.error);
+                    showError(response.data || adsautopilotBilling.strings.error);
                 }
             },
             error: function() {
                 hideLoading();
-                showError(proofkitBilling.strings.error);
+                showError(adsautopilotBilling.strings.error);
             }
         });
     }
@@ -231,12 +231,12 @@
         showLoading();
         
         $.ajax({
-            url: proofkitBilling.ajaxUrl,
+            url: adsautopilotBilling.ajaxUrl,
             type: 'POST',
             data: {
-                action: 'proofkit_create_checkout',
+                action: 'adsautopilot_create_checkout',
                 tierIndex: tierIndex,
-                nonce: proofkitBilling.nonce
+                nonce: adsautopilotBilling.nonce
             },
             success: function(response) {
                 hideLoading();
@@ -245,12 +245,12 @@
                     // Redirect to Stripe Checkout
                     window.location.href = response.data.sessionUrl;
                 } else {
-                    showError(response.data || proofkitBilling.strings.error);
+                    showError(response.data || adsautopilotBilling.strings.error);
                 }
             },
             error: function() {
                 hideLoading();
-                showError(proofkitBilling.strings.error);
+                showError(adsautopilotBilling.strings.error);
             }
         });
     };
@@ -277,11 +277,11 @@
         showLoading();
         
         $.ajax({
-            url: proofkitBilling.ajaxUrl,
+            url: adsautopilotBilling.ajaxUrl,
             type: 'POST',
             data: {
-                action: 'proofkit_create_portal',
-                nonce: proofkitBilling.nonce
+                action: 'adsautopilot_create_portal',
+                nonce: adsautopilotBilling.nonce
             },
             success: function(response) {
                 hideLoading();
@@ -289,29 +289,29 @@
                 if (response.success) {
                     window.location.href = response.data.portalUrl;
                 } else {
-                    showError(response.data || proofkitBilling.strings.error);
+                    showError(response.data || adsautopilotBilling.strings.error);
                 }
             },
             error: function() {
                 hideLoading();
-                showError(proofkitBilling.strings.error);
+                showError(adsautopilotBilling.strings.error);
             }
         });
     }
 
     function confirmCancelSubscription() {
-        if (!confirm(proofkitBilling.strings.confirmCancel)) return;
+        if (!confirm(adsautopilotBilling.strings.confirmCancel)) return;
         
         showLoading();
         
         $.ajax({
-            url: proofkitBilling.ajaxUrl,
+            url: adsautopilotBilling.ajaxUrl,
             type: 'POST',
             data: {
-                action: 'proofkit_cancel_subscription',
+                action: 'adsautopilot_cancel_subscription',
                 subscriptionId: currentSubscription.id,
                 immediately: false,
-                nonce: proofkitBilling.nonce
+                nonce: adsautopilotBilling.nonce
             },
             success: function(response) {
                 hideLoading();
@@ -320,12 +320,12 @@
                     showSuccess('Subscription will be canceled at the end of the current billing period.');
                     loadSubscription(); // Reload to show updated status
                 } else {
-                    showError(response.data || proofkitBilling.strings.error);
+                    showError(response.data || adsautopilotBilling.strings.error);
                 }
             },
             error: function() {
                 hideLoading();
-                showError(proofkitBilling.strings.error);
+                showError(adsautopilotBilling.strings.error);
             }
         });
     }

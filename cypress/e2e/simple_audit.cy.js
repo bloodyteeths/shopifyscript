@@ -1,9 +1,9 @@
 /// <reference types="cypress" />
 
-describe("ProofKit UI Audit & Screenshots", () => {
+describe("Ads Autopilot AI UI Audit & Screenshots", () => {
   let stepCounter = 0;
 
-  it("should capture screenshots of the ProofKit interface", () => {
+  it("should capture screenshots of the Ads Autopilot AI interface", () => {
     // Step 1: Home page
     cy.visit("/");
     stepCounter++;
@@ -152,7 +152,7 @@ describe("ProofKit UI Audit & Screenshots", () => {
       {
         step: 1,
         name: "Application Home",
-        description: "ProofKit application landing page with navigation",
+        description: "Ads Autopilot AI application landing page with navigation",
         screenshot: "01-application-home.png",
       },
       {
@@ -217,6 +217,6 @@ describe("ProofKit UI Audit & Screenshots", () => {
       },
     ]);
 
-    cy.log(`✅ Captured ${stepCounter} screenshots of ProofKit interface`);
+    cy.log(`✅ Captured ${stepCounter} screenshots of Ads Autopilot AI interface`);
   });
 });

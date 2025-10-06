@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * ProofKit PROMOTE Gate - Comprehensive Test Suite
+ * Ads Autopilot AI PROMOTE Gate - Comprehensive Test Suite
  *
  * Critical production safety test suite that validates PROMOTE gate
  * functionality and idempotency requirements before production deployment.
@@ -40,7 +40,7 @@ class PromoteGateTestSuite {
    * Run the complete PROMOTE gate test suite
    */
   async runTestSuite() {
-    console.log("🧪 Starting ProofKit PROMOTE Gate Test Suite...\n");
+    console.log("🧪 Starting Ads Autopilot AI PROMOTE Gate Test Suite...\n");
 
     try {
       // Ensure test output directory exists
@@ -203,7 +203,7 @@ class PromoteGateTestSuite {
 
     // Test 1: Label guard configuration
     await this.runTest("LABEL_GUARD_CONFIGURED", async () => {
-      const expectedLabel = "PROOFKIT_AUTOMATED";
+      const expectedLabel = "ADS_AUTOPILOT_AI_AUTOMATED";
 
       // Simulate checking for label configuration
       const mockConfig = {
@@ -252,9 +252,9 @@ class PromoteGateTestSuite {
 
     // Test 1: Reserved keyword protection
     await this.runTest("RESERVED_KEYWORD_PROTECTION", async () => {
-      const reservedKeywords = ["proofkit", "brand", "competitor", "important"];
+      const reservedKeywords = ["adsautopilot", "brand", "competitor", "important"];
       const testTerms = [
-        "proofkit automation",
+        "adsautopilot automation",
         "competitor analysis",
         "test keyword",
       ];
@@ -316,7 +316,7 @@ class PromoteGateTestSuite {
     // Test 1: Label application simulation
     await this.runTest("LABEL_APPLICATION_SIMULATION", async () => {
       const mockEntity = { id: "test-entity-123" };
-      const labelName = "PROOFKIT_AUTOMATED";
+      const labelName = "ADS_AUTOPILOT_AI_AUTOMATED";
 
       // Simulate label application
       const labelApplied = this.simulateLabelApplication(mockEntity, labelName);
@@ -337,9 +337,9 @@ class PromoteGateTestSuite {
     await this.runTest("DUPLICATE_LABEL_HANDLING", async () => {
       const mockEntity = {
         id: "test-entity-456",
-        labels: ["PROOFKIT_AUTOMATED"], // Already has label
+        labels: ["ADS_AUTOPILOT_AI_AUTOMATED"], // Already has label
       };
-      const labelName = "PROOFKIT_AUTOMATED";
+      const labelName = "ADS_AUTOPILOT_AI_AUTOMATED";
 
       const labelApplied = this.simulateLabelApplication(mockEntity, labelName);
 
@@ -548,7 +548,7 @@ class PromoteGateTestSuite {
     );
 
     const report = {
-      suite: "ProofKit PROMOTE Gate Test Suite",
+      suite: "Ads Autopilot AI PROMOTE Gate Test Suite",
       timestamp: new Date().toISOString(),
       summary: this.summary,
       results: this.testResults,
@@ -568,7 +568,7 @@ class PromoteGateTestSuite {
       "promote_gate_test_summary.txt",
     );
     const summaryText = `
-ProofKit PROMOTE Gate Test Suite Results
+Ads Autopilot AI PROMOTE Gate Test Suite Results
 ========================================
 Timestamp: ${report.timestamp}
 Total Tests: ${this.summary.total}

@@ -195,7 +195,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
     if (actionType === "redirect_to_plans") {
       // For managed pricing apps, redirect to Shopify's hosted plan selection page
-      const appHandle = process.env.SHOPIFY_APP_HANDLE || "proofkit-autopilot";
+      const appHandle = process.env.SHOPIFY_APP_HANDLE || "adsautopilot-autopilot";
       
       return json({
         success: true,
@@ -250,7 +250,7 @@ export default function Billing() {
       console.error('Failed to open pricing page:', error);
       
       // Show instructions to user
-      alert(`Please visit your Shopify admin and go to:\nSettings → Apps → ProofKit\n\nOr visit: ${managedPricingUrl}`);
+      alert(`Please visit your Shopify admin and go to:\nSettings → Apps → Ads Autopilot AI\n\nOr visit: ${managedPricingUrl}`);
     }
   };
 
@@ -283,7 +283,7 @@ export default function Billing() {
         }}>
           <h3 style={{ margin: "0 0 16px 0" }}>Choose Your Plan</h3>
           <p style={{ margin: "0 0 20px 0", fontSize: "16px" }}>
-            Start your 14-day free trial to access ProofKit's powerful features.
+            Start your 14-day free trial to access Ads Autopilot AI's powerful features.
           </p>
           <button
             onClick={redirectToManagedPricing}
@@ -419,7 +419,7 @@ export default function Billing() {
     <div style={{ padding: "24px", maxWidth: "1200px", margin: "0 auto" }}>
       <h1>Billing & Subscription</h1>
       <p style={{ color: "#666", marginBottom: "32px" }}>
-        Manage your ProofKit subscription for {shopName}
+        Manage your Ads Autopilot AI subscription for {shopName}
       </p>
 
       {renderSubscriptionStatus()}

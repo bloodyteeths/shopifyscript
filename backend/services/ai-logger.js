@@ -1,5 +1,5 @@
 /**
- * AI Automation Logging and Monitoring Service for ProofKit SaaS
+ * AI Automation Logging and Monitoring Service for Ads Autopilot AI SaaS
  * Comprehensive logging, monitoring, and alerting for AI operations
  * 
  * Features:

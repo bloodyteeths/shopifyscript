@@ -1,4 +1,4 @@
-# WordPress.org Review Checklist (Proofkit)
+# WordPress.org Review Checklist (Ads Autopilot AI)
 
 - ✅ Plugin uses settings API; sanitization/escaping; nonces on forms
 - ✅ Uninstall cleans up options

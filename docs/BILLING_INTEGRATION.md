@@ -1,8 +1,8 @@
-# ProofKit Billing Integration Documentation
+# Ads Autopilot AI Billing Integration Documentation
 
 ## Overview
 
-ProofKit implements a comprehensive billing system supporting both Shopify App Billing and Stripe for direct WordPress billing. The system includes tier-based feature enforcement, usage limits, upgrade flows, and webhook handling.
+Ads Autopilot AI implements a comprehensive billing system supporting both Shopify App Billing and Stripe for direct WordPress billing. The system includes tier-based feature enforcement, usage limits, upgrade flows, and webhook handling.
 
 ## Architecture
 
@@ -300,7 +300,7 @@ Key features:
 
 ### WordPress Plugin
 
-The billing interface is integrated into the WordPress admin at `admin.php?page=proofkit-billing`.
+The billing interface is integrated into the WordPress admin at `admin.php?page=adsautopilot-billing`.
 
 Key features:
 
@@ -413,4 +413,4 @@ For billing integration support:
 
 ---
 
-This billing integration provides a robust foundation for monetizing ProofKit across both Shopify and WordPress platforms while maintaining excellent user experience and security standards.
+This billing integration provides a robust foundation for monetizing Ads Autopilot AI across both Shopify and WordPress platforms while maintaining excellent user experience and security standards.

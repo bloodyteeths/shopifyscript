@@ -44,12 +44,12 @@ class TenantRegistry {
           });
         }
 
-        // Add proofkit mapping for development and default usage
+        // Add adsautopilot mapping for development and default usage
         if (process.env.SHEET_ID) {
-          this.registry.set("proofkit", {
-            id: "proofkit",
+          this.registry.set("adsautopilot", {
+            id: "adsautopilot",
             sheetId: process.env.SHEET_ID,
-            name: "ProofKit Shop",
+            name: "Ads Autopilot AI Shop",
             plan: "starter",
             enabled: true,
             config: {},
@@ -57,7 +57,7 @@ class TenantRegistry {
             updatedAt: new Date().toISOString(),
           });
           console.log(
-            `🔧 Added proofkit mapping to Sheet: ${process.env.SHEET_ID}`,
+            `🔧 Added adsautopilot mapping to Sheet: ${process.env.SHEET_ID}`,
           );
         }
       } else {

@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-describe("ProofKit UI Screenshots", () => {
+describe("Ads Autopilot AI UI Screenshots", () => {
   beforeEach(() => {
     // Stub all API calls to prevent 500 errors
     cy.intercept("GET", "**/api/**", {
@@ -10,7 +10,7 @@ describe("ProofKit UI Screenshots", () => {
     cy.intercept("POST", "**/api/**", { statusCode: 200, body: { ok: true } });
   });
 
-  it("should capture actual ProofKit interface screenshots", () => {
+  it("should capture actual Ads Autopilot AI interface screenshots", () => {
     let stepCounter = 0;
 
     // Step 1: Home page
@@ -195,7 +195,7 @@ describe("ProofKit UI Screenshots", () => {
           step: 1,
           name: "Application Home",
           route: "/",
-          description: "ProofKit application landing and navigation",
+          description: "Ads Autopilot AI application landing and navigation",
         },
         {
           step: 2,
@@ -267,7 +267,7 @@ describe("ProofKit UI Screenshots", () => {
     });
 
     cy.log(
-      `✅ Successfully captured ${stepCounter} screenshots of the real ProofKit interface`,
+      `✅ Successfully captured ${stepCounter} screenshots of the real Ads Autopilot AI interface`,
     );
   });
 });

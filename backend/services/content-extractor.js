@@ -1,5 +1,5 @@
 /**
- * Content Extractor Service for ProofKit SaaS
+ * Content Extractor Service for Ads Autopilot AI SaaS
  * Intelligent HTML parsing and data extraction using pattern matching and heuristics
  * Extracts structured data, products, meta tags, and content without external dependencies
  *

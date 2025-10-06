@@ -377,7 +377,7 @@ class AIAutomationTestSuite {
  * Main test execution
  */
 async function main() {
-  console.log('🚀 ProofKit AI Automation System - Test Suite');
+  console.log('🚀 Ads Autopilot AI AI Automation System - Test Suite');
   console.log('='.repeat(50));
 
   const testSuite = new AIAutomationTestSuite();

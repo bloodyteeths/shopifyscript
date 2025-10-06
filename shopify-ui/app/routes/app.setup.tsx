@@ -81,7 +81,7 @@ export default function Setup() {
         }}
       >
         <h1 style={{ margin: "0 0 16px 0", fontSize: "28px", color: "#333" }}>
-          Welcome to ProofKit!
+          Welcome to Ads Autopilot AI!
         </h1>
         <p style={{ margin: "0 0 8px 0", fontSize: "18px", color: "#666" }}>
           Setting up for: <strong>{data.shopDomain}</strong>
@@ -150,7 +150,7 @@ export default function Setup() {
               lineHeight: "1.5",
             }}
           >
-            ProofKit is now connected to your <strong>{data.shopDomain}</strong>{" "}
+            Ads Autopilot AI is now connected to your <strong>{data.shopDomain}</strong>{" "}
             store.
             <br />
             Your AI-powered Google Ads optimization is ready to begin!

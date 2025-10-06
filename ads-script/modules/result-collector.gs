@@ -1,8 +1,8 @@
 /**
- * Result Collector Module for ProofKit Enhanced Script
+ * Result Collector Module for Ads Autopilot AI Enhanced Script
  *
  * This module collects comprehensive performance metrics from Google Ads
- * and formats them for transmission to the ProofKit backend.
+ * and formats them for transmission to the Ads Autopilot AI backend.
  *
  * Features:
  * - Comprehensive data collection across all entity types

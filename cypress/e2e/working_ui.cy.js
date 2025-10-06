@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-describe("ProofKit Working UI Screenshots", () => {
+describe("Ads Autopilot AI Working UI Screenshots", () => {
   beforeEach(() => {
     // Prevent hydration errors and handle uncaught exceptions
     cy.on("uncaught:exception", (err, runnable) => {
@@ -97,7 +97,7 @@ describe("ProofKit Working UI Screenshots", () => {
           <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 1200px; margin: 0 auto; padding: 20px;">
             <div style="display: flex; min-height: 100vh;">
               <nav style="width: 240px; padding: 16px; border-right: 1px solid #e1e1e1; background: #f8f9fa;">
-                <h3 style="color: #008060; margin-bottom: 20px;">🚀 ProofKit</h3>
+                <h3 style="color: #008060; margin-bottom: 20px;">🚀 Ads Autopilot AI</h3>
                 <ul style="list-style: none; padding: 0; margin: 0;">
                   <li style="margin-bottom: 8px;"><a href="/app/autopilot" style="color: #333; text-decoration: none; padding: 8px 12px; display: block; border-radius: 4px; background: #008060; color: white;">🤖 Autopilot</a></li>
                   <li style="margin-bottom: 8px;"><a href="/app/insights" style="color: #333; text-decoration: none; padding: 8px 12px; display: block; border-radius: 4px;">📊 Insights</a></li>
@@ -107,7 +107,7 @@ describe("ProofKit Working UI Screenshots", () => {
               </nav>
               <main style="flex: 1; padding: 24px;">
                 <div style="background: white; border-radius: 8px; padding: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
-                  <h1 style="color: #333; margin-bottom: 16px;">Welcome to ProofKit Dashboard</h1>
+                  <h1 style="color: #333; margin-bottom: 16px;">Welcome to Ads Autopilot AI Dashboard</h1>
                   <p style="color: #666; margin-bottom: 24px;">Automated Google Ads optimization for Shopify merchants</p>
                   
                   <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 32px;">
@@ -447,7 +447,7 @@ describe("ProofKit Working UI Screenshots", () => {
       win.document.querySelector("main").innerHTML = `
         <div style="background: white; border-radius: 8px; padding: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
           <div style="text-align: center; margin-bottom: 32px;">
-            <h1 style="color: #333; margin-bottom: 12px;">🎉 ProofKit Setup Complete!</h1>
+            <h1 style="color: #333; margin-bottom: 12px;">🎉 Ads Autopilot AI Setup Complete!</h1>
             <p style="color: #666; font-size: 18px;">Your Google Ads automation is now active and optimizing campaigns</p>
           </div>
           
@@ -516,7 +516,7 @@ describe("ProofKit Working UI Screenshots", () => {
     );
 
     cy.log(
-      `✅ Successfully captured ${stepCounter} working ProofKit interface screenshots`,
+      `✅ Successfully captured ${stepCounter} working Ads Autopilot AI interface screenshots`,
     );
   });
 });

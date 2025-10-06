@@ -1,18 +1,18 @@
-name = "ProofKit Web Pixel"
+name = "Ads Autopilot AI Web Pixel"
 type = "web_pixel_extension"
 
-# Configuration for ProofKit Web Pixel Extension
+# Configuration for Ads Autopilot AI Web Pixel Extension
 # Supports Consent Mode v2, GA4, and Google Ads conversion tracking
 
 [configuration]
 metafields = [
-  { namespace = "proofkit", key = "backend_url" },
-  { namespace = "proofkit", key = "tenant_id" },
-  { namespace = "proofkit", key = "secret_key" },
-  { namespace = "proofkit", key = "ga4_measurement_id" },
-  { namespace = "proofkit", key = "google_ads_id" },
-  { namespace = "proofkit", key = "conversion_label" },
-  { namespace = "proofkit", key = "debug_mode" }
+  { namespace = "adsautopilot", key = "backend_url" },
+  { namespace = "adsautopilot", key = "tenant_id" },
+  { namespace = "adsautopilot", key = "secret_key" },
+  { namespace = "adsautopilot", key = "ga4_measurement_id" },
+  { namespace = "adsautopilot", key = "google_ads_id" },
+  { namespace = "adsautopilot", key = "conversion_label" },
+  { namespace = "adsautopilot", key = "debug_mode" }
 ]
 
 # Privacy and compliance settings

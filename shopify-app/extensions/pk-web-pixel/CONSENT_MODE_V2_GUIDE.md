@@ -2,7 +2,7 @@
 
 ## Overview
 
-Google's Consent Mode v2 is a privacy framework that allows websites to adjust how Google tags behave based on user consent choices. The ProofKit Web Pixel Extension fully implements Consent Mode v2 to ensure compliance with privacy regulations while maintaining measurement capabilities.
+Google's Consent Mode v2 is a privacy framework that allows websites to adjust how Google tags behave based on user consent choices. The Ads Autopilot AI Web Pixel Extension fully implements Consent Mode v2 to ensure compliance with privacy regulations while maintaining measurement capabilities.
 
 ## What is Consent Mode v2?
 
@@ -17,23 +17,23 @@ Consent Mode v2 is an enhanced version of Google's consent framework that:
 
 ### Core Consent Types
 
-| Consent Type            | Purpose                                                      | Default | ProofKit Behavior                   |
+| Consent Type            | Purpose                                                      | Default | Ads Autopilot AI Behavior                   |
 | ----------------------- | ------------------------------------------------------------ | ------- | ----------------------------------- |
 | `ad_storage`            | Controls whether data can be stored for advertising purposes | Denied  | Required for Google Ads conversions |
 | `analytics_storage`     | Controls whether data can be stored for analytics purposes   | Denied  | Required for GA4 enhanced ecommerce |
 | `ad_user_data`          | Controls sharing of user data with Google for advertising    | Denied  | Required for conversion tracking    |
 | `ad_personalization`    | Controls whether data can be used for ad personalization     | Denied  | Enhances ad targeting               |
-| `functionality_storage` | Controls storage needed for core site functionality          | Granted | Always granted by ProofKit          |
-| `security_storage`      | Controls storage needed for security purposes                | Granted | Always granted by ProofKit          |
+| `functionality_storage` | Controls storage needed for core site functionality          | Granted | Always granted by Ads Autopilot AI          |
+| `security_storage`      | Controls storage needed for security purposes                | Granted | Always granted by Ads Autopilot AI          |
 
-## Implementation in ProofKit
+## Implementation in Ads Autopilot AI
 
 ### 1. Default Consent State
 
-ProofKit initializes with privacy-first defaults:
+Ads Autopilot AI initializes with privacy-first defaults:
 
 ```javascript
-// Automatically called when ProofKit Web Pixel loads
+// Automatically called when Ads Autopilot AI Web Pixel loads
 gtag("consent", "default", {
   ad_storage: "denied",
   analytics_storage: "denied",
@@ -93,7 +93,7 @@ gtag("consent", "default", {
 
 ### 3. Consent Detection
 
-ProofKit automatically detects consent from multiple sources:
+Ads Autopilot AI automatically detects consent from multiple sources:
 
 #### Priority Order:
 
@@ -206,7 +206,7 @@ function integrateCustomCMP() {
   // Your CMP's consent check logic
   const userConsent = yourCMP.getConsentPreferences();
 
-  // Trigger ProofKit consent update
+  // Trigger Ads Autopilot AI consent update
   window.dispatchEvent(
     new CustomEvent("consent_changed", {
       detail: {
@@ -238,8 +238,8 @@ console.log("Consent State:", {
   ad_personalization: google_tag_data?.ics?.get("ad_personalization"),
 });
 
-// Check ProofKit detection
-console.log("ProofKit Consent:", getConsentStatus());
+// Check Ads Autopilot AI detection
+console.log("Ads Autopilot AI Consent:", getConsentStatus());
 ```
 
 ### 2. Google Analytics Debug Mode
@@ -308,7 +308,7 @@ gtag("consent", "update", {
 
 ### 1. Data Redaction
 
-When consent is denied, ProofKit automatically redacts sensitive data:
+When consent is denied, Ads Autopilot AI automatically redacts sensitive data:
 
 ```javascript
 // Consent denied payload example
@@ -388,7 +388,7 @@ If you're currently using Consent Mode v1:
 
 ### Migration Steps
 
-1. Update to ProofKit Web Pixel (automatic v2 support)
+1. Update to Ads Autopilot AI Web Pixel (automatic v2 support)
 2. Review CMP consent mappings
 3. Test with new consent types
 4. Update privacy policies if needed
@@ -405,7 +405,7 @@ If you're currently using Consent Mode v1:
 
 - Initialize consent state as early as possible
 - Avoid blocking page rendering on consent decisions
-- Use ProofKit's automatic detection features
+- Use Ads Autopilot AI's automatic detection features
 
 ### 3. Regular Testing
 
@@ -422,23 +422,23 @@ If you're currently using Consent Mode v1:
 ## Support and Resources
 
 - **Google Consent Mode v2 Documentation**: [developers.google.com/tag-platform/security/consent-mode](https://developers.google.com/tag-platform/security/consent-mode)
-- **ProofKit Support**: support@proofkit.com
-- **Privacy Compliance**: legal@proofkit.com
-- **Technical Documentation**: [docs.proofkit.com](https://docs.proofkit.com)
+- **Ads Autopilot AI Support**: support@adsautopilot.com
+- **Privacy Compliance**: legal@adsautopilot.com
+- **Technical Documentation**: [docs.adsautopilot.com](https://docs.adsautopilot.com)
 
 ## FAQ
 
 **Q: Do I need to modify my existing CMP?**
-A: No, ProofKit automatically detects most popular CMPs. Manual integration is only needed for custom implementations.
+A: No, Ads Autopilot AI automatically detects most popular CMPs. Manual integration is only needed for custom implementations.
 
 **Q: Will I lose conversion data with Consent Mode v2?**
 A: Google provides conversion modeling when consent is denied, helping maintain measurement capabilities while respecting privacy.
 
 **Q: How do I know if consent is working correctly?**
-A: Enable debug mode and monitor browser console for ProofKit consent messages. Also use Google Tag Assistant for verification.
+A: Enable debug mode and monitor browser console for Ads Autopilot AI consent messages. Also use Google Tag Assistant for verification.
 
 **Q: What happens in regions without privacy laws?**
-A: ProofKit uses reasonable defaults but still respects any consent preferences users provide through your CMP.
+A: Ads Autopilot AI uses reasonable defaults but still respects any consent preferences users provide through your CMP.
 
 **Q: Is this compatible with server-side tracking?**
-A: Yes, ProofKit sends consent metadata with all events, allowing server-side systems to respect consent preferences.
+A: Yes, Ads Autopilot AI sends consent metadata with all events, allowing server-side systems to respect consent preferences.

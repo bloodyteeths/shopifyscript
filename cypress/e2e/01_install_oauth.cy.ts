@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-describe("ProofKit Installation & OAuth Flow", () => {
+describe("Ads Autopilot AI Installation & OAuth Flow", () => {
   beforeEach(() => {
     cy.resetSteps();
     cy.task("initializeFunnelDocs");
@@ -23,7 +23,7 @@ describe("ProofKit Installation & OAuth Flow", () => {
     cy.visit("/install");
     cy.step(
       "App Installation Landing",
-      'User sees ProofKit app installation page with "Install App" button and clear value proposition',
+      'User sees Ads Autopilot AI app installation page with "Install App" button and clear value proposition',
       "/install",
     );
 

@@ -1,5 +1,5 @@
 /**
- * Test Script for ProofKit SaaS Copywriting AI System
+ * Test Script for Ads Autopilot AI SaaS Copywriting AI System
  * Demonstrates the complete copy generation, A/B testing, and performance analysis pipeline
  */
 
@@ -9,7 +9,7 @@ import { getMessageAdapter } from './services/message-adapter.js';
 import { getCopyPerformanceService } from './services/copy-performance.js';
 
 async function testCopywritingSystem() {
-  console.log('🚀 Testing ProofKit SaaS Copywriting AI System');
+  console.log('🚀 Testing Ads Autopilot AI SaaS Copywriting AI System');
   console.log('=' .repeat(60));
 
   const tenantId = 'test_tenant_copywriting';

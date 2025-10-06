@@ -1,4 +1,4 @@
--- ProofKit Advanced Automation Migration
+-- Ads Autopilot AI Advanced Automation Migration
 -- Version: 004 - Enterprise Advanced Automation System
 -- Description: Tables for Enterprise-tier AI automation and bid management
 

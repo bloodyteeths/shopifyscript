@@ -1,8 +1,8 @@
-# ProofKit Web Pixel - Merchant Setup Guide
+# Ads Autopilot AI Web Pixel - Merchant Setup Guide
 
 ## Overview
 
-The ProofKit Web Pixel Extension provides privacy-compliant analytics and conversion tracking for your Shopify store. It integrates seamlessly with Google Analytics 4 (GA4), Google Ads, and your Consent Management Platform (CMP) to ensure GDPR, CCPA, and other privacy regulation compliance.
+The Ads Autopilot AI Web Pixel Extension provides privacy-compliant analytics and conversion tracking for your Shopify store. It integrates seamlessly with Google Analytics 4 (GA4), Google Ads, and your Consent Management Platform (CMP) to ensure GDPR, CCPA, and other privacy regulation compliance.
 
 ## Features
 
@@ -18,20 +18,20 @@ The ProofKit Web Pixel Extension provides privacy-compliant analytics and conver
 ### Step 1: Install the Extension
 
 1. Navigate to your Shopify Admin
-2. Go to Apps > ProofKit
+2. Go to Apps > Ads Autopilot AI
 3. Click on "Extensions" tab
-4. Enable the "ProofKit Web Pixel" extension
+4. Enable the "Ads Autopilot AI Web Pixel" extension
 
 ### Step 2: Configure Extension Settings
 
-In your Shopify Admin, configure the following metafields under `proofkit` namespace:
+In your Shopify Admin, configure the following metafields under `adsautopilot` namespace:
 
 #### Required Settings
 
 | Metafield Key | Description                          | Example Value                  |
 | ------------- | ------------------------------------ | ------------------------------ |
-| `backend_url` | ProofKit backend API endpoint        | `https://api.proofkit.com/api` |
-| `tenant_id`   | Your ProofKit tenant identifier      | `TENANT_123`                   |
+| `backend_url` | Ads Autopilot AI backend API endpoint        | `https://api.adsautopilot.com/api` |
+| `tenant_id`   | Your Ads Autopilot AI tenant identifier      | `TENANT_123`                   |
 | `secret_key`  | HMAC secret for secure communication | `your_secret_key_here`         |
 
 #### Optional Settings (for GA4/Google Ads)
@@ -45,7 +45,7 @@ In your Shopify Admin, configure the following metafields under `proofkit` names
 
 ### Step 3: Configure Your Consent Management Platform
 
-The ProofKit Web Pixel automatically detects and integrates with most popular CMPs. Follow the setup guide for your specific CMP:
+The Ads Autopilot AI Web Pixel automatically detects and integrates with most popular CMPs. Follow the setup guide for your specific CMP:
 
 #### Supported CMPs
 
@@ -93,10 +93,10 @@ If you want to send events to GA4:
     dataLayer.push(arguments);
   }
 
-  // ProofKit Web Pixel will handle consent initialization
+  // Ads Autopilot AI Web Pixel will handle consent initialization
   gtag("js", new Date());
   gtag("config", "G-XXXXXXXXXX", {
-    // Don't send page_view automatically - ProofKit handles this
+    // Don't send page_view automatically - Ads Autopilot AI handles this
     send_page_view: false,
   });
 </script>
@@ -133,9 +133,9 @@ If you want to track conversions in Google Ads:
 Enable debug mode by setting the `debug_mode` metafield to `true`. This will log detailed information to the browser console:
 
 ```javascript
-// Check console for ProofKit debug messages
-console.log("ProofKit: GA4 event blocked due to consent: page_view");
-console.log("ProofKit: Purchase conversion tracked", {
+// Check console for Ads Autopilot AI debug messages
+console.log("Ads Autopilot AI: GA4 event blocked due to consent: page_view");
+console.log("Ads Autopilot AI: Purchase conversion tracked", {
   transaction_id: "order_123",
   value: 99.99,
   currency: "USD",
@@ -145,7 +145,7 @@ console.log("ProofKit: Purchase conversion tracked", {
 
 ## Events Tracked
 
-The ProofKit Web Pixel automatically tracks the following Shopify events:
+The Ads Autopilot AI Web Pixel automatically tracks the following Shopify events:
 
 | Shopify Event        | GA4 Event        | Description                                       |
 | -------------------- | ---------------- | ------------------------------------------------- |
@@ -202,22 +202,22 @@ The extension implements Google's Consent Mode v2 with the following consent typ
 
 ### Debug Console Messages
 
-Monitor the browser console for ProofKit messages:
+Monitor the browser console for Ads Autopilot AI messages:
 
 ```
-✓ ProofKit Web Pixel initialized with Consent Mode v2
-✓ ProofKit: Purchase conversion tracked
-⚠ ProofKit: GA4 event blocked due to consent: page_view
-⚠ ProofKit: Error reading Shopify consent: [error details]
+✓ Ads Autopilot AI Web Pixel initialized with Consent Mode v2
+✓ Ads Autopilot AI: Purchase conversion tracked
+⚠ Ads Autopilot AI: GA4 event blocked due to consent: page_view
+⚠ Ads Autopilot AI: Error reading Shopify consent: [error details]
 ```
 
 ## Support
 
 For technical support or questions:
 
-1. Check the [ProofKit Documentation](https://docs.proofkit.com)
-2. Contact support at support@proofkit.com
-3. Join our [Discord Community](https://discord.gg/proofkit)
+1. Check the [Ads Autopilot AI Documentation](https://docs.adsautopilot.com)
+2. Contact support at support@adsautopilot.com
+3. Join our [Discord Community](https://discord.gg/adsautopilot)
 
 ## Compliance Certifications
 

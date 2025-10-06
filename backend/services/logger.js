@@ -1,5 +1,5 @@
 /**
- * ProofKit SaaS Structured Logging & Observability Service
+ * Ads Autopilot AI SaaS Structured Logging & Observability Service
  * Advanced logging system with structured data, metrics, and observability
  * Supports multiple log levels, formats, and outputs
  */
@@ -55,7 +55,7 @@ class Logger {
     };
 
     this.context = {
-      service: options.service || "proofkit-saas",
+      service: options.service || "adsautopilot-saas",
       version: options.version || "1.0.0",
       environment: process.env.NODE_ENV || "development",
       hostname: os.hostname(),
@@ -667,7 +667,7 @@ export const logger = new Logger({
   enableFile: process.env.VERCEL
     ? false
     : process.env.NODE_ENV === "production",
-  service: "proofkit-saas",
+  service: "adsautopilot-saas",
   version: process.env.npm_package_version || "1.0.0",
 });
 

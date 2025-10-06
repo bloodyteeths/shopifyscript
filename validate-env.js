@@ -165,7 +165,7 @@ function validateCrossCommunication() {
 }
 
 function main() {
-  log("🔍 ProofKit Environment Variable Audit", "bold");
+  log("🔍 Ads Autopilot AI Environment Variable Audit", "bold");
   log("=====================================", "bold");
 
   const backendValid = validateBackend();

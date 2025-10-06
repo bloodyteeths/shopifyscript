@@ -1,5 +1,5 @@
 /**
- * Optimization Dashboard Service for ProofKit SaaS
+ * Optimization Dashboard Service for Ads Autopilot AI SaaS
  *
  * Provides comprehensive dashboard endpoints and data aggregation
  * for monitoring optimization performance and activities

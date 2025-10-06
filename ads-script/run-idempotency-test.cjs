@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * ProofKit Ads Script - Idempotency Test Runner
+ * Ads Autopilot AI Ads Script - Idempotency Test Runner
  *
  * This script demonstrates the complete idempotency testing workflow
  * and can be used as a reference implementation for CI/CD integration.
@@ -52,7 +52,7 @@ mockMainFunction.plannedMutations = [];
  * Main test execution function
  */
 async function runIdempotencyTest() {
-  console.log("🚀 Starting ProofKit Idempotency Test Workflow\n");
+  console.log("🚀 Starting Ads Autopilot AI Idempotency Test Workflow\n");
 
   try {
     // Initialize test harness
@@ -180,7 +180,7 @@ async function runIdempotencyTest() {
 
 // CLI integration
 if (require.main === module) {
-  console.log("ProofKit Ads Script - Idempotency Test Runner");
+  console.log("Ads Autopilot AI Ads Script - Idempotency Test Runner");
   console.log("Critical P0-1 safety validation for production deployment\n");
 
   runIdempotencyTest();

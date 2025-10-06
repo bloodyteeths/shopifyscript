@@ -1,8 +1,8 @@
-# ProofKit GTM/Observability System
+# Ads Autopilot AI GTM/Observability System
 
 ## Overview
 
-The ProofKit GTM/Observability system provides comprehensive monitoring, alerting, and analytics for Google Ads campaigns. This unified system delivers:
+The Ads Autopilot AI GTM/Observability system provides comprehensive monitoring, alerting, and analytics for Google Ads campaigns. This unified system delivers:
 
 - **AI-powered weekly summaries** with plain-English insights
 - **Real-time anomaly detection** for spend/CPA spikes
@@ -20,7 +20,7 @@ curl -X POST "http://localhost:3007/api/alerts/channels/TENANT_123" \
   -H "Content-Type: application/json" \
   -d '{
     "type": "slack",
-    "name": "ProofKit Alerts",
+    "name": "Ads Autopilot AI Alerts",
     "config": {
       "webhookUrl": "https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK",
       "enabled": true
@@ -188,7 +188,7 @@ await jobScheduler.triggerJob("weekly_summary", "TENANT_123");
 
 ### Template Configuration
 
-**File:** `looker-studio/proofkit-template.json`
+**File:** `looker-studio/adsautopilot-template.json`
 
 Comprehensive dashboard template with:
 
@@ -204,7 +204,7 @@ Comprehensive dashboard template with:
 
    ```
    - Add Google Sheets connector
-   - URL: Your ProofKit Google Sheets document
+   - URL: Your Ads Autopilot AI Google Sheets document
    - Sheets: METRICS_{TENANT}, SEARCH_TERMS_{TENANT}, etc.
    ```
 
@@ -319,7 +319,7 @@ node backend/test-gtm-observability.js --verbose
 ### Sample Test Output
 
 ```
-🚀 ProofKit GTM/Observability System Test Suite
+🚀 Ads Autopilot AI GTM/Observability System Test Suite
 ================================================
 
 📊 Setting up test data...
@@ -502,8 +502,8 @@ node backend/test-gtm-observability.js --verbose
 
 ## 📄 License
 
-ProofKit SaaS - Commercial License. All rights reserved.
+Ads Autopilot AI SaaS - Commercial License. All rights reserved.
 
 ---
 
-**ProofKit GTM/Observability System** - Delivering intelligent monitoring and actionable insights for merchant success. 🎯
+**Ads Autopilot AI GTM/Observability System** - Delivering intelligent monitoring and actionable insights for merchant success. 🎯

@@ -1,5 +1,5 @@
 /**
- * N-gram Waste Detection Service for ProofKit SaaS
+ * N-gram Waste Detection Service for Ads Autopilot AI SaaS
  * Advanced phrase-level blocking using n-gram analysis
  * PRO tier feature for detecting wasteful phrase patterns
  */

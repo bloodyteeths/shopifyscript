@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# ProofKit SaaS Production Startup Script
+# Ads Autopilot AI SaaS Production Startup Script
 # Handles environment validation, dependency checks, and graceful startup
 
 set -euo pipefail
@@ -9,7 +9,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 LOG_FILE="${PROJECT_ROOT}/logs/startup.log"
-PID_FILE="${PROJECT_ROOT}/proofkit.pid"
+PID_FILE="${PROJECT_ROOT}/adsautopilot.pid"
 
 # Colors for output
 RED='\033[0;31m'
@@ -68,7 +68,7 @@ check_running() {
     if [[ -f "$PID_FILE" ]]; then
         local pid=$(cat "$PID_FILE")
         if kill -0 "$pid" 2>/dev/null; then
-            error_exit "ProofKit is already running (PID: $pid)"
+            error_exit "Ads Autopilot AI is already running (PID: $pid)"
         else
             log WARN "Stale PID file found, removing..."
             rm -f "$PID_FILE"
@@ -203,7 +203,7 @@ health_check() {
 
 # Start the application
 start_application() {
-    log INFO "Starting ProofKit SaaS backend..."
+    log INFO "Starting Ads Autopilot AI SaaS backend..."
     
     cd "${PROJECT_ROOT}/backend"
     
@@ -218,7 +218,7 @@ start_application() {
     # Save PID
     echo "$pid" > "$PID_FILE"
     
-    log INFO "ProofKit started with PID: $pid"
+    log INFO "Ads Autopilot AI started with PID: $pid"
     
     # Wait a moment for startup
     sleep 5
@@ -231,7 +231,7 @@ start_application() {
     # Perform health check
     health_check
     
-    log INFO "ProofKit SaaS is running successfully!"
+    log INFO "Ads Autopilot AI SaaS is running successfully!"
     echo "🚀 Application started successfully"
     echo "📊 Health checks: http://localhost:${PORT}/health"
     echo "🔍 Metrics: http://localhost:${PORT}/metrics"
@@ -247,7 +247,7 @@ stop_application() {
     fi
     
     local pid=$(cat "$PID_FILE")
-    log INFO "Stopping ProofKit SaaS (PID: $pid)..."
+    log INFO "Stopping Ads Autopilot AI SaaS (PID: $pid)..."
     
     if kill -0 "$pid" 2>/dev/null; then
         # Send SIGTERM for graceful shutdown
@@ -266,7 +266,7 @@ stop_application() {
             kill -KILL "$pid"
         fi
         
-        log INFO "ProofKit SaaS stopped"
+        log INFO "Ads Autopilot AI SaaS stopped"
     else
         log WARN "Process $pid not found, cleaning up PID file"
     fi
@@ -277,13 +277,13 @@ stop_application() {
 # Status function
 status_application() {
     if [[ ! -f "$PID_FILE" ]]; then
-        echo "❌ ProofKit SaaS is not running"
+        echo "❌ Ads Autopilot AI SaaS is not running"
         return 1
     fi
     
     local pid=$(cat "$PID_FILE")
     if kill -0 "$pid" 2>/dev/null; then
-        echo "✅ ProofKit SaaS is running (PID: $pid)"
+        echo "✅ Ads Autopilot AI SaaS is running (PID: $pid)"
         
         # Try to get health status
         if curl -f -s "http://localhost:${PORT:-3000}/health" > /dev/null; then
@@ -294,7 +294,7 @@ status_application() {
         
         return 0
     else
-        echo "❌ ProofKit SaaS is not running (stale PID file)"
+        echo "❌ Ads Autopilot AI SaaS is not running (stale PID file)"
         rm -f "$PID_FILE"
         return 1
     fi
@@ -302,7 +302,7 @@ status_application() {
 
 # Restart function
 restart_application() {
-    log INFO "Restarting ProofKit SaaS..."
+    log INFO "Restarting Ads Autopilot AI SaaS..."
     stop_application
     sleep 2
     start_application

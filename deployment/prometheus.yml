@@ -1,11 +1,11 @@
-# ProofKit SaaS Prometheus Configuration
+# Ads Autopilot AI SaaS Prometheus Configuration
 # Monitoring and metrics collection for comprehensive observability
 
 global:
   scrape_interval: 15s
   evaluation_interval: 15s
   external_labels:
-    cluster: "proofkit-saas"
+    cluster: "adsautopilot-saas"
     environment: "production"
 
 # Alertmanager configuration
@@ -29,10 +29,10 @@ scrape_configs:
     scrape_interval: 30s
     metrics_path: "/metrics"
 
-  # ProofKit application metrics
-  - job_name: "proofkit-app"
+  # Ads Autopilot AI application metrics
+  - job_name: "adsautopilot-app"
     static_configs:
-      - targets: ["proofkit-app:3000"]
+      - targets: ["adsautopilot-app:3000"]
     scrape_interval: 15s
     metrics_path: "/metrics"
     scrape_timeout: 10s
@@ -73,9 +73,9 @@ scrape_configs:
     scrape_timeout: 10s
 
   # Custom application health checks
-  - job_name: "proofkit-health"
+  - job_name: "adsautopilot-health"
     static_configs:
-      - targets: ["proofkit-app:3000"]
+      - targets: ["adsautopilot-app:3000"]
     scrape_interval: 60s
     metrics_path: "/health"
     scrape_timeout: 15s
@@ -85,7 +85,7 @@ scrape_configs:
 # Recording rules for aggregated metrics
 # These can be uncommented and customized based on specific needs
 # groups:
-#   - name: proofkit.rules
+#   - name: adsautopilot.rules
 #     rules:
 #       - record: instance:node_cpu_utilisation:rate5m
 #         expr: |
@@ -119,15 +119,15 @@ scrape_configs:
 #             node_uname_info{nodename!=""}
 #           )
 #
-#       - record: proofkit:http_requests:rate5m
+#       - record: adsautopilot:http_requests:rate5m
 #         expr: |
 #           rate(http_requests_total[5m])
 #
-#       - record: proofkit:http_request_duration:p95
+#       - record: adsautopilot:http_request_duration:p95
 #         expr: |
 #           histogram_quantile(0.95, rate(http_request_duration_seconds_bucket[5m]))
 #
-#       - record: proofkit:error_rate:rate5m
+#       - record: adsautopilot:error_rate:rate5m
 #         expr: |
 #           rate(http_requests_total{status=~"5.."}[5m])
 #           /

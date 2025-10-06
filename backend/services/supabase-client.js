@@ -19,7 +19,7 @@ const supabaseOptions = {
   },
   global: {
     headers: {
-      'X-Client-Info': 'proofkit-backend/1.0',
+      'X-Client-Info': 'adsautopilot-backend/1.0',
     },
   },
   // Connection pooling configuration

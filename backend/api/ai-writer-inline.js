@@ -69,7 +69,7 @@ async function fetchWebsiteContext(tenant) {
 
     const response = await fetch(storeUrl, {
       headers: {
-        'User-Agent': 'ProofKit AI Bot/1.0'
+        'User-Agent': 'Ads Autopilot AI AI Bot/1.0'
       },
       signal: controller.signal
     });

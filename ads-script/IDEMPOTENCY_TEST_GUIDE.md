@@ -1,4 +1,4 @@
-# ProofKit Ads Script - Idempotency Test Harness
+# Ads Autopilot AI Ads Script - Idempotency Test Harness
 
 ## Overview
 
@@ -89,7 +89,7 @@ if (promoteGate.canPromote) {
 ```javascript
 // Set test mode via Properties Service
 PropertiesService.getScriptProperties().setProperty(
-  "PROOFKIT_TEST_MODE",
+  "ADS_AUTOPILOT_AI_TEST_MODE",
   "PREVIEW",
 );
 

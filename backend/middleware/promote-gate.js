@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 
 /**
- * ProofKit Backend - PROMOTE Gate Middleware
+ * Ads Autopilot AI Backend - PROMOTE Gate Middleware
  *
  * Critical production safety middleware that enforces PROMOTE=TRUE
  * before allowing any mutations that could affect live Google Ads accounts.
@@ -168,7 +168,7 @@ export function promoteGateForMutation(mutationType) {
 
       // Mutation-specific safety checks
       if (mutationType === "NEGATIVE_KEYWORDS") {
-        const reservedTerms = ["proofkit", "brand", "competitor"];
+        const reservedTerms = ["adsautopilot", "brand", "competitor"];
         const terms = req.body.terms || [];
 
         for (const term of terms) {
@@ -271,7 +271,7 @@ export async function getPromoteGateStatus(tenant) {
       ok: true,
       promote: promoteEnabled,
       promoteRaw: config.PROMOTE,
-      label: config.label || "PROOFKIT_AUTOMATED",
+      label: config.label || "ADS_AUTOPILOT_AI_AUTOMATED",
       enabled: config.enabled,
       timestamp: new Date().toISOString(),
     };

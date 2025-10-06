@@ -1,6 +1,6 @@
 /**
  * Dashboard API Routes
- * Main endpoints for the ProofKit AI Dashboard frontend
+ * Main endpoints for the Ads Autopilot AI AI Dashboard frontend
  *
  * Provides system overview, stats, health, activity, and notifications
  * Uses dashboard-orchestrator service for data aggregation

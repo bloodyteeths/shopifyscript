@@ -1,4 +1,4 @@
-Proofkit Shopify UI (Remix)
+Ads Autopilot AI Shopify UI (Remix)
 
 Local dev
 

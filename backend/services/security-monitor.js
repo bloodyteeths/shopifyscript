@@ -302,10 +302,10 @@ class SecurityMonitor {
    */
   async sendEmailAlert(event) {
     try {
-      const subject = `🚨 ProofKit Security Alert: ${event.risk_level} - ${event.threat_type || event.anomaly_type}`;
+      const subject = `🚨 Ads Autopilot AI Security Alert: ${event.risk_level} - ${event.threat_type || event.anomaly_type}`;
       
       const html = `
-        <h2>Security Alert - ProofKit Database</h2>
+        <h2>Security Alert - Ads Autopilot AI Database</h2>
         <p><strong>Risk Level:</strong> <span style="color: ${event.risk_level === 'CRITICAL' ? 'red' : 'orange'}">${event.risk_level}</span></p>
         <p><strong>Tenant:</strong> ${event.tenant_id}</p>
         <p><strong>Threat Type:</strong> ${event.threat_type || event.anomaly_type}</p>

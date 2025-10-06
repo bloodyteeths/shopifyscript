@@ -46,7 +46,7 @@ export async function getTenantFromRequest(request: Request): Promise<string> {
     }
 
     // Method 3: Check explicit tenant in headers (for testing/APIs)
-    const explicitTenant = request.headers.get("x-proofkit-tenant");
+    const explicitTenant = request.headers.get("x-adsautopilot-tenant");
     if (explicitTenant) {
       console.log(`🔧 Detected tenant from header: ${explicitTenant}`);
       return explicitTenant;
@@ -54,7 +54,7 @@ export async function getTenantFromRequest(request: Request): Promise<string> {
 
     // Method 4: Extract from subdomain (if using subdomain routing)
     const host = request.headers.get("host") || "";
-    if (host.includes(".proofkit.com")) {
+    if (host.includes(".adsautopilot.com")) {
       const subdomain = host.split(".")[0];
       if (subdomain && subdomain !== "www" && subdomain !== "app") {
         console.log(`🌐 Detected tenant from subdomain: ${subdomain}`);
@@ -69,9 +69,9 @@ export async function getTenantFromRequest(request: Request): Promise<string> {
         console.log(`⚠️ Using development fallback tenant: ${devTenant}`);
         return devTenant;
       }
-      // Even in dev, fall back to proofkit only if nothing else works
-      console.log(`⚠️ Using hardcoded development fallback: proofkit`);
-      return "proofkit";
+      // Even in dev, fall back to adsautopilot only if nothing else works
+      console.log(`⚠️ Using hardcoded development fallback: adsautopilot`);
+      return "adsautopilot";
     }
 
     // Production: no valid tenant found - this should not happen with proper Shopify authentication
@@ -83,7 +83,7 @@ export async function getTenantFromRequest(request: Request): Promise<string> {
     if (process.env.NODE_ENV === "development") {
       console.log(`⚠️ Error fallback - using development default`);
       return (
-        process.env.DEFAULT_DEV_TENANT || process.env.TENANT_ID || "proofkit"
+        process.env.DEFAULT_DEV_TENANT || process.env.TENANT_ID || "adsautopilot"
       );
     }
 
@@ -168,7 +168,7 @@ export function getAvailableDevTenants(): string[] {
   }
 
   return [
-    process.env.TENANT_ID || "proofkit",
+    process.env.TENANT_ID || "adsautopilot",
     "dev-tenant",
     "demo-store",
     "test-shop",

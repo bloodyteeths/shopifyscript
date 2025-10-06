@@ -1,4 +1,4 @@
-# ProofKit SaaS Worker Infrastructure
+# Ads Autopilot AI SaaS Worker Infrastructure
 
 A robust background worker system with tier-based processing, parallel task execution, and comprehensive monitoring.
 

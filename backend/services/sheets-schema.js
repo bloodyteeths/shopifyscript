@@ -10,8 +10,8 @@ import { createHash } from "crypto";
 
 const SCHEMA_VERSION = "1.0.0";
 const BACKUP_RETENTION_DAYS = 30;
-const SCHEMA_SHEET_NAME = "_proofkit_schema";
-const BACKUP_SHEET_NAME = "_proofkit_backups";
+const SCHEMA_SHEET_NAME = "_adsautopilot_schema";
+const BACKUP_SHEET_NAME = "_adsautopilot_backups";
 
 class SheetsSchemaService {
   constructor() {
@@ -36,7 +36,7 @@ class SheetsSchemaService {
   }
 
   /**
-   * Define default sheet schemas for ProofKit
+   * Define default sheet schemas for Ads Autopilot AI
    */
   defineDefaultSchemas() {
     // Core tracking sheet schema

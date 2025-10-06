@@ -1,4 +1,4 @@
-# PROOFKIT PRODUCTION DEPLOYMENT GUIDE
+# ADS_AUTOPILOT_AI PRODUCTION DEPLOYMENT GUIDE
 
 ## CRITICAL SAFETY OVERVIEW
 
@@ -14,7 +14,7 @@
 
 - [ ] **Backend Running**: `curl http://localhost:3001/api/diagnostics` returns healthy
 - [ ] **Environment Validated**: All required env vars set (HMAC*SECRET, GOOGLE_SHEETS*\*, GEMINI_API_KEY)
-- [ ] **Google Ads Access**: Test campaign labeled with `PROOFKIT_AUTOMATED`
+- [ ] **Google Ads Access**: Test campaign labeled with `ADS_AUTOPILOT_AI_AUTOMATED`
 - [ ] **Sheets Connected**: Google Sheets integration working
 - [ ] **Time Zone Set**: Europe/Istanbul timezone confirmed
 - [ ] **Business Hours**: Deploy only Monday-Thursday, 9AM-5PM local time
@@ -35,7 +35,7 @@
 
 ```bash
 # 1. Navigate to deployment directory
-cd /Users/tamsar/Downloads/proofkit-saas/deployment
+cd /Users/tamsar/Downloads/adsautopilot-saas/deployment
 
 # 2. Verify all scripts are present
 ls -la canary-*.js run-canary-test.sh
@@ -401,7 +401,7 @@ node canary-rollback.js manual-rollback tenant1 "emergency_stop"
 ### Documentation Files
 
 - `/deployment/canary-test-checklist.md` - Complete manual checklist
-- `/proofkit_vFINAL_hand-off/GO-LIVE.md` - Original go-live instructions
+- `/adsautopilot_vFINAL_hand-off/GO-LIVE.md` - Original go-live instructions
 - `/docs/TEST_PLAN.md` - Comprehensive testing procedures
 
 ### Script Files

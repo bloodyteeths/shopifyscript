@@ -16,7 +16,7 @@ describe('HMAC Utilities', () => {
 
   describe('createHMAC', () => {
     it('should create a valid HMAC signature', () => {
-      const message = 'POST:proofkit:upsertconfig:1234567890';
+      const message = 'POST:adsautopilot:upsertconfig:1234567890';
       const signature = createHMAC(message);
       
       expect(signature).toBeDefined();
@@ -25,7 +25,7 @@ describe('HMAC Utilities', () => {
     });
 
     it('should create consistent signatures for the same input', () => {
-      const message = 'GET:proofkit:config';
+      const message = 'GET:adsautopilot:config';
       const signature1 = createHMAC(message);
       const signature2 = createHMAC(message);
       
@@ -33,7 +33,7 @@ describe('HMAC Utilities', () => {
     });
 
     it('should create different signatures for different inputs', () => {
-      const message1 = 'GET:proofkit:config';
+      const message1 = 'GET:adsautopilot:config';
       const message2 = 'GET:TENANT_456:config';
       const signature1 = createHMAC(message1);
       const signature2 = createHMAC(message2);
@@ -59,7 +59,7 @@ describe('HMAC Utilities', () => {
 
   describe('verifyHMAC', () => {
     it('should verify valid HMAC signatures', () => {
-      const message = 'POST:proofkit:upsertconfig:1234567890';
+      const message = 'POST:adsautopilot:upsertconfig:1234567890';
       const signature = createHMAC(message);
       
       const isValid = verifyHMAC(message, signature);
@@ -68,7 +68,7 @@ describe('HMAC Utilities', () => {
     });
 
     it('should reject invalid signatures', () => {
-      const message = 'POST:proofkit:upsertconfig:1234567890';
+      const message = 'POST:adsautopilot:upsertconfig:1234567890';
       const invalidSignature = 'invalid-signature';
       
       const isValid = verifyHMAC(message, invalidSignature);
@@ -77,7 +77,7 @@ describe('HMAC Utilities', () => {
     });
 
     it('should reject tampered messages', () => {
-      const originalMessage = 'POST:proofkit:upsertconfig:1234567890';
+      const originalMessage = 'POST:adsautopilot:upsertconfig:1234567890';
       const tamperedMessage = 'POST:TENANT_456:upsertconfig:1234567890';
       const signature = createHMAC(originalMessage);
       
@@ -87,7 +87,7 @@ describe('HMAC Utilities', () => {
     });
 
     it('should be timing-attack resistant', () => {
-      const message = 'GET:proofkit:config';
+      const message = 'GET:adsautopilot:config';
       const validSignature = createHMAC(message);
       const invalidSignature = 'a'.repeat(validSignature.length);
       
@@ -110,7 +110,7 @@ describe('HMAC Utilities', () => {
     });
 
     it('should handle malformed signatures gracefully', () => {
-      const message = 'GET:proofkit:config';
+      const message = 'GET:adsautopilot:config';
       
       expect(verifyHMAC(message, null)).toBe(false);
       expect(verifyHMAC(message, undefined)).toBe(false);
@@ -146,7 +146,7 @@ describe('HMAC Utilities', () => {
 
   describe('Integration tests', () => {
     it('should work with typical API request flow', () => {
-      const tenant = 'proofkit';
+      const tenant = 'adsautopilot';
       const endpoint = 'upsertconfig';
       const nonce = generateNonce();
       const method = 'POST';
@@ -161,7 +161,7 @@ describe('HMAC Utilities', () => {
     });
 
     it('should work with GET requests (no nonce)', () => {
-      const tenant = 'proofkit';
+      const tenant = 'adsautopilot';
       const endpoint = 'config';
       const method = 'GET';
       
@@ -174,7 +174,7 @@ describe('HMAC Utilities', () => {
     });
 
     it('should prevent replay attacks with nonce validation', () => {
-      const tenant = 'proofkit';
+      const tenant = 'adsautopilot';
       const endpoint = 'upsertconfig';
       const oldNonce = '1234567890'; // Old timestamp
       const method = 'POST';
@@ -210,7 +210,7 @@ describe('HMAC Utilities', () => {
     });
 
     it('should handle special characters in messages', () => {
-      const specialMessage = 'POST:proofkit:endpoint:!@#$%^&*()';
+      const specialMessage = 'POST:adsautopilot:endpoint:!@#$%^&*()';
       
       expect(() => createHMAC(specialMessage)).not.toThrow();
       
@@ -219,7 +219,7 @@ describe('HMAC Utilities', () => {
     });
 
     it('should handle unicode characters', () => {
-      const unicodeMessage = 'POST:proofkit:测试:🚀';
+      const unicodeMessage = 'POST:adsautopilot:测试:🚀';
       
       expect(() => createHMAC(unicodeMessage)).not.toThrow();
       

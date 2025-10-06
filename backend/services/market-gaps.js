@@ -1,5 +1,5 @@
 /**
- * Market Gap Analyzer Service for ProofKit SaaS
+ * Market Gap Analyzer Service for Ads Autopilot AI SaaS
  * Identifies untapped opportunities and market gaps for strategic advantage
  *
  * Features:

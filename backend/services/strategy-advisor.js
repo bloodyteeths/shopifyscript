@@ -1,5 +1,5 @@
 /**
- * Strategy Advisor Service for ProofKit SaaS
+ * Strategy Advisor Service for Ads Autopilot AI SaaS
  * AI-powered strategic recommendations for market entry, positioning, and growth
  *
  * Features:

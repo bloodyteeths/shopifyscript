@@ -1,4 +1,4 @@
-# ProofKit Shopify Web Pixel Extension
+# Ads Autopilot AI Shopify Web Pixel Extension
 
 A privacy-compliant Shopify Web Pixel extension that provides advanced analytics and conversion tracking with Google Consent Mode v2 support.
 
@@ -15,15 +15,15 @@ A privacy-compliant Shopify Web Pixel extension that provides advanced analytics
 ## 📋 Requirements
 
 - Shopify store with Web Pixel extensions enabled
-- ProofKit backend API access
+- Ads Autopilot AI backend API access
 - Optional: Google Analytics 4 property
 - Optional: Google Ads account with conversion tracking
 - Recommended: Consent Management Platform (CMP)
 
 ## 🛠 Installation
 
-1. **Install ProofKit App**: Install the ProofKit app from the Shopify App Store
-2. **Enable Extension**: Navigate to Apps > ProofKit > Extensions and enable the Web Pixel
+1. **Install Ads Autopilot AI App**: Install the Ads Autopilot AI app from the Shopify App Store
+2. **Enable Extension**: Navigate to Apps > Ads Autopilot AI > Extensions and enable the Web Pixel
 3. **Configure Settings**: Set up your metafields as described in the setup guide
 4. **Test Implementation**: Verify tracking works with your consent setup
 
@@ -37,21 +37,21 @@ A privacy-compliant Shopify Web Pixel extension that provides advanced analytics
 
 ### Required Metafields
 
-Configure these metafields in your Shopify Admin under the `proofkit` namespace:
+Configure these metafields in your Shopify Admin under the `adsautopilot` namespace:
 
 ```
-proofkit.backend_url = "https://api.proofkit.com/api"
-proofkit.tenant_id = "TENANT_123"
-proofkit.secret_key = "your_secret_key"
+adsautopilot.backend_url = "https://api.adsautopilot.com/api"
+adsautopilot.tenant_id = "TENANT_123"
+adsautopilot.secret_key = "your_secret_key"
 ```
 
 ### Optional Metafields (for GA4/Google Ads)
 
 ```
-proofkit.ga4_measurement_id = "G-XXXXXXXXXX"
-proofkit.google_ads_id = "AW-XXXXXXXXX"
-proofkit.conversion_label = "abc123def456"
-proofkit.debug_mode = "true"
+adsautopilot.ga4_measurement_id = "G-XXXXXXXXXX"
+adsautopilot.google_ads_id = "AW-XXXXXXXXX"
+adsautopilot.conversion_label = "abc123def456"
+adsautopilot.debug_mode = "true"
 ```
 
 ## 📊 Events Tracked
@@ -100,11 +100,11 @@ proofkit.debug_mode = "true"
 Enable debug mode to see detailed console output:
 
 ```javascript
-// Set proofkit.debug_mode = "true" in metafields
+// Set adsautopilot.debug_mode = "true" in metafields
 // Check browser console for messages like:
-console.log("ProofKit Web Pixel initialized with Consent Mode v2");
-console.log("ProofKit: Purchase conversion tracked", conversionData);
-console.log("ProofKit: GA4 event blocked due to consent: page_view");
+console.log("Ads Autopilot AI Web Pixel initialized with Consent Mode v2");
+console.log("Ads Autopilot AI: Purchase conversion tracked", conversionData);
+console.log("Ads Autopilot AI: GA4 event blocked due to consent: page_view");
 ```
 
 ### Consent Testing
@@ -125,7 +125,7 @@ Test different consent scenarios:
 
 ```
 ┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
-│   Shopify       │    │   ProofKit       │    │   Google        │
+│   Shopify       │    │   Ads Autopilot AI       │    │   Google        │
 │   Web Pixel     │───▶│   Backend API    │    │   Analytics     │
 │                 │    │                  │    │   & Ads         │
 └─────────────────┘    └──────────────────┘    └─────────────────┘
@@ -142,9 +142,9 @@ Test different consent scenarios:
 ## 🔄 Event Flow
 
 1. **User Action**: Customer performs action on store (page view, purchase, etc.)
-2. **Consent Check**: ProofKit checks current consent status from multiple sources
+2. **Consent Check**: Ads Autopilot AI checks current consent status from multiple sources
 3. **Event Processing**: Event data is processed based on consent status
-4. **Multi-Destination**: Events sent to ProofKit backend and optionally GA4/Google Ads
+4. **Multi-Destination**: Events sent to Ads Autopilot AI backend and optionally GA4/Google Ads
 5. **Privacy Compliance**: Personal data redacted if consent not granted
 
 ## 📝 Development
@@ -187,14 +187,14 @@ analytics.subscribe("custom_event", (e) => {
 
 ## 🆘 Support
 
-- **Documentation**: [docs.proofkit.com](https://docs.proofkit.com)
-- **Email Support**: support@proofkit.com
-- **Privacy Questions**: legal@proofkit.com
-- **Discord Community**: [discord.gg/proofkit](https://discord.gg/proofkit)
+- **Documentation**: [docs.adsautopilot.com](https://docs.adsautopilot.com)
+- **Email Support**: support@adsautopilot.com
+- **Privacy Questions**: legal@adsautopilot.com
+- **Discord Community**: [discord.gg/adsautopilot](https://discord.gg/adsautopilot)
 
 ## 📜 License
 
-This extension is proprietary software owned by ProofKit. Usage is governed by the ProofKit Terms of Service and Shopify App Store policies.
+This extension is proprietary software owned by Ads Autopilot AI. Usage is governed by the Ads Autopilot AI Terms of Service and Shopify App Store policies.
 
 ## 🔄 Changelog
 
@@ -210,9 +210,9 @@ This extension is proprietary software owned by ProofKit. Usage is governed by t
 ### v1.0.0
 
 - ✅ Basic event tracking
-- ✅ ProofKit backend integration
+- ✅ Ads Autopilot AI backend integration
 - ✅ Simple consent checking
 
 ---
 
-**Built with ❤️ by ProofKit for privacy-conscious merchants**
+**Built with ❤️ by Ads Autopilot AI for privacy-conscious merchants**

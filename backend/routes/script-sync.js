@@ -1,6 +1,6 @@
 /**
  * Script Sync Routes
- * API endpoints for secure communication between Google Ads Scripts and ProofKit backend
+ * API endpoints for secure communication between Google Ads Scripts and Ads Autopilot AI backend
  *
  * Endpoints:
  * - POST /api/script/authenticate - Initial handshake

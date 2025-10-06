@@ -56,7 +56,7 @@ class EmailService {
       
       // Default sender information
       from: {
-        name: process.env.EMAIL_FROM_NAME || 'ProofKit Analytics',
+        name: process.env.EMAIL_FROM_NAME || 'Ads Autopilot AI Analytics',
         address: process.env.EMAIL_FROM_ADDRESS || process.env.SMTP_USER
       },
       
@@ -135,15 +135,15 @@ class EmailService {
         text: emailOptions.text,
         attachments: emailOptions.attachments || [],
         headers: {
-          'X-ProofKit-Type': emailOptions.type || 'notification',
-          'X-ProofKit-Tenant': emailOptions.tenantId || 'unknown',
+          'X-Ads Autopilot AI-Type': emailOptions.type || 'notification',
+          'X-Ads Autopilot AI-Tenant': emailOptions.tenantId || 'unknown',
           'List-Unsubscribe': emailOptions.unsubscribeUrl || ''
         }
       };
 
       // Add custom headers for tracking
       if (emailOptions.trackingId) {
-        mailOptions.headers['X-ProofKit-Tracking-ID'] = emailOptions.trackingId;
+        mailOptions.headers['X-Ads Autopilot AI-Tracking-ID'] = emailOptions.trackingId;
       }
 
       const result = await this.transporter.sendMail(mailOptions);
@@ -303,7 +303,7 @@ class EmailService {
       return `Custom Analytics Report - ${reportData.reportName}`;
     }
 
-    return `ProofKit ${frequency} Report`;
+    return `Ads Autopilot AI ${frequency} Report`;
   }
 
   /**
@@ -398,7 +398,7 @@ class EmailService {
             </div>
           </div>
           <div class="footer">
-            <p>ProofKit Analytics • <a href="{{unsubscribeUrl}}">Unsubscribe</a></p>
+            <p>Ads Autopilot AI Analytics • <a href="{{unsubscribeUrl}}">Unsubscribe</a></p>
           </div>
         </div>
       `;
@@ -473,7 +473,7 @@ class EmailService {
             </div>
           </div>
           <div class="footer">
-            <p>ProofKit Professional Analytics • <a href="{{unsubscribeUrl}}">Unsubscribe</a></p>
+            <p>Ads Autopilot AI Professional Analytics • <a href="{{unsubscribeUrl}}">Unsubscribe</a></p>
           </div>
         </div>
       `;
@@ -554,14 +554,14 @@ class EmailService {
             </div>
           </div>
           <div class="footer">
-            <p>ProofKit Enterprise Analytics • <a href="{{unsubscribeUrl}}">Unsubscribe</a></p>
+            <p>Ads Autopilot AI Enterprise Analytics • <a href="{{unsubscribeUrl}}">Unsubscribe</a></p>
           </div>
         </div>
       `;
     }
 
     // Default template
-    return baseStyles + '<div class="container"><div class="content"><h1>ProofKit Report</h1><p>{{content}}</p></div></div>';
+    return baseStyles + '<div class="container"><div class="content"><h1>Ads Autopilot AI Report</h1><p>{{content}}</p></div></div>';
   }
 
   /**
@@ -657,8 +657,8 @@ class EmailService {
     try {
       const testEmail = {
         to: this.emailConfig.from.address,
-        subject: 'ProofKit Email Service Test',
-        html: '<h2>Email Service Test</h2><p>This is a test email from ProofKit automated reporting system.</p>',
+        subject: 'Ads Autopilot AI Email Service Test',
+        html: '<h2>Email Service Test</h2><p>This is a test email from Ads Autopilot AI automated reporting system.</p>',
         type: 'test'
       };
 

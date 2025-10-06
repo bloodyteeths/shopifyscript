@@ -1,5 +1,5 @@
 /**
- * Optimization Applier Module for ProofKit Enhanced Script
+ * Optimization Applier Module for Ads Autopilot AI Enhanced Script
  *
  * This module safely applies optimization instructions from the backend
  * with comprehensive validation, safety checks, and rollback capabilities.

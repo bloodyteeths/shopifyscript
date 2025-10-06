@@ -1,34 +1,34 @@
-# ProofKit Contact Information
+# Ads Autopilot AI Contact Information
 
 ## 📞 Primary Contacts
 
 ### Business Operations
 
-**General Business**: business@proofkit.app  
-**Partnership Inquiries**: partnerships@proofkit.app  
-**Media & Press**: press@proofkit.app  
-**Investor Relations**: investors@proofkit.app
+**General Business**: business@adsautopilot.app  
+**Partnership Inquiries**: partnerships@adsautopilot.app  
+**Media & Press**: press@adsautopilot.app  
+**Investor Relations**: investors@adsautopilot.app
 
 ### Technical Support
 
-**Customer Support**: support@proofkit.app  
-**Technical Support**: technical@proofkit.app  
-**Developer Relations**: developers@proofkit.app  
-**API Support**: api@proofkit.app
+**Customer Support**: support@adsautopilot.app  
+**Technical Support**: technical@adsautopilot.app  
+**Developer Relations**: developers@adsautopilot.app  
+**API Support**: api@adsautopilot.app
 
 ### Legal & Compliance
 
-**Legal Questions**: legal@proofkit.app  
-**Privacy Officer**: privacy@proofkit.app  
-**Data Protection Officer**: dpo@proofkit.app  
-**Compliance Officer**: compliance@proofkit.app
+**Legal Questions**: legal@adsautopilot.app  
+**Privacy Officer**: privacy@adsautopilot.app  
+**Data Protection Officer**: dpo@adsautopilot.app  
+**Compliance Officer**: compliance@adsautopilot.app
 
 ### Security
 
-**Security Team**: security@proofkit.app  
-**Security Incidents**: security-incident@proofkit.app  
-**Vulnerability Reports**: security-vulnerability@proofkit.app  
-**Emergency Security**: security-emergency@proofkit.app
+**Security Team**: security@adsautopilot.app  
+**Security Incidents**: security-incident@adsautopilot.app  
+**Vulnerability Reports**: security-vulnerability@adsautopilot.app  
+**Emergency Security**: security-emergency@adsautopilot.app
 
 ---
 
@@ -36,9 +36,9 @@
 
 ### Critical Service Issues
 
-**24/7 Emergency Support**: Mark email as "CRITICAL" and send to support@proofkit.app  
-**Service Outage**: outage@proofkit.app  
-**Data Breach Response**: security-incident@proofkit.app  
+**24/7 Emergency Support**: Mark email as "CRITICAL" and send to support@adsautopilot.app  
+**Service Outage**: outage@adsautopilot.app  
+**Data Breach Response**: security-incident@adsautopilot.app  
 **Escalation Path**: Available through primary support channels
 
 ### Emergency Response Timeline
@@ -54,7 +54,7 @@
 
 ### Business Details
 
-**Company Name**: ProofKit Inc.  
+**Company Name**: Ads Autopilot AI Inc.  
 **Business Type**: Software as a Service (SaaS)  
 **Industry**: E-commerce Technology / Conversion Optimization  
 **Founded**: 2025
@@ -72,10 +72,10 @@
 
 ### Official Websites
 
-**Main Website**: https://proofkit.app  
-**Documentation**: https://docs.proofkit.app  
-**Support Portal**: https://support.proofkit.app  
-**Status Page**: https://status.proofkit.app
+**Main Website**: https://adsautopilot.app  
+**Documentation**: https://docs.adsautopilot.app  
+**Support Portal**: https://support.adsautopilot.app  
+**Status Page**: https://status.adsautopilot.app
 
 ### Social Media & Community
 
@@ -121,17 +121,17 @@
 
 ### Development Team
 
-**Lead Developer**: tech-lead@proofkit.app  
-**Frontend Team**: frontend@proofkit.app  
-**Backend Team**: backend@proofkit.app  
-**DevOps Team**: devops@proofkit.app
+**Lead Developer**: tech-lead@adsautopilot.app  
+**Frontend Team**: frontend@adsautopilot.app  
+**Backend Team**: backend@adsautopilot.app  
+**DevOps Team**: devops@adsautopilot.app
 
 ### Operations Team
 
-**Customer Success Manager**: success@proofkit.app  
-**Support Team Lead**: support-lead@proofkit.app  
-**Quality Assurance**: qa@proofkit.app  
-**Security Officer**: security-officer@proofkit.app
+**Customer Success Manager**: success@adsautopilot.app  
+**Support Team Lead**: support-lead@adsautopilot.app  
+**Quality Assurance**: qa@adsautopilot.app  
+**Security Officer**: security-officer@adsautopilot.app
 
 ---
 
@@ -189,7 +189,7 @@
 
 ### Security Incident Reporting
 
-**Primary Channel**: security-incident@proofkit.app  
+**Primary Channel**: security-incident@adsautopilot.app  
 **PGP Encrypted**: Required for sensitive security reports  
 **Anonymous Reporting**: [Secure anonymous reporting portal]  
 **Bug Bounty**: [Future bug bounty program details]
@@ -200,24 +200,24 @@
 
 ### Data Protection
 
-**GDPR Representative (EU)**: gdpr@proofkit.app  
-**CCPA Representative (California)**: ccpa@proofkit.app  
-**Privacy Rights Officer**: privacy-rights@proofkit.app  
-**Data Subject Requests**: data-requests@proofkit.app
+**GDPR Representative (EU)**: gdpr@adsautopilot.app  
+**CCPA Representative (California)**: ccpa@adsautopilot.app  
+**Privacy Rights Officer**: privacy-rights@adsautopilot.app  
+**Data Subject Requests**: data-requests@adsautopilot.app
 
 ### Legal Compliance
 
-**Terms of Service**: tos@proofkit.app  
-**Intellectual Property**: ip@proofkit.app  
-**Contract Disputes**: legal-disputes@proofkit.app  
-**Regulatory Compliance**: regulatory@proofkit.app
+**Terms of Service**: tos@adsautopilot.app  
+**Intellectual Property**: ip@adsautopilot.app  
+**Contract Disputes**: legal-disputes@adsautopilot.app  
+**Regulatory Compliance**: regulatory@adsautopilot.app
 
 ### International Compliance
 
-**EU Representative**: eu-representative@proofkit.app  
-**UK Representative**: uk-representative@proofkit.app  
-**Canadian Compliance**: canada-compliance@proofkit.app  
-**APAC Compliance**: apac-compliance@proofkit.app
+**EU Representative**: eu-representative@adsautopilot.app  
+**UK Representative**: uk-representative@adsautopilot.app  
+**Canadian Compliance**: canada-compliance@adsautopilot.app  
+**APAC Compliance**: apac-compliance@adsautopilot.app
 
 ---
 
@@ -225,10 +225,10 @@
 
 ### Technology Partners
 
-**Shopify Integration**: shopify-integration@proofkit.app  
-**Google Integration**: google-integration@proofkit.app  
-**Cloud Infrastructure**: infrastructure@proofkit.app  
-**Third-Party APIs**: api-partnerships@proofkit.app
+**Shopify Integration**: shopify-integration@adsautopilot.app  
+**Google Integration**: google-integration@adsautopilot.app  
+**Cloud Infrastructure**: infrastructure@adsautopilot.app  
+**Third-Party APIs**: api-partnerships@adsautopilot.app
 
 ### Service Providers
 
@@ -279,24 +279,24 @@
 
 ### Support Issue Escalation
 
-1. **Level 1**: Front-line support team (support@proofkit.app)
-2. **Level 2**: Senior technical support (technical@proofkit.app)
-3. **Level 3**: Development team (tech-lead@proofkit.app)
-4. **Level 4**: Management team (escalation@proofkit.app)
+1. **Level 1**: Front-line support team (support@adsautopilot.app)
+2. **Level 2**: Senior technical support (technical@adsautopilot.app)
+3. **Level 3**: Development team (tech-lead@adsautopilot.app)
+4. **Level 4**: Management team (escalation@adsautopilot.app)
 
 ### Business Issue Escalation
 
-1. **Level 1**: Customer success team (success@proofkit.app)
-2. **Level 2**: Business operations (business@proofkit.app)
-3. **Level 3**: Senior management (management@proofkit.app)
-4. **Level 4**: Executive team (executive@proofkit.app)
+1. **Level 1**: Customer success team (success@adsautopilot.app)
+2. **Level 2**: Business operations (business@adsautopilot.app)
+3. **Level 3**: Senior management (management@adsautopilot.app)
+4. **Level 4**: Executive team (executive@adsautopilot.app)
 
 ### Security Issue Escalation
 
-1. **Level 1**: Security team (security@proofkit.app)
-2. **Level 2**: Security officer (security-officer@proofkit.app)
-3. **Level 3**: CTO (cto@proofkit.app)
-4. **Level 4**: CEO (ceo@proofkit.app)
+1. **Level 1**: Security team (security@adsautopilot.app)
+2. **Level 2**: Security officer (security-officer@adsautopilot.app)
+3. **Level 3**: CTO (cto@adsautopilot.app)
+4. **Level 4**: CEO (ceo@adsautopilot.app)
 
 ---
 
@@ -311,10 +311,10 @@
 
 ### Documentation Questions
 
-**Documentation Clarification**: docs@proofkit.app  
-**Technical Evidence**: tech-evidence@proofkit.app  
-**Compliance Evidence**: compliance-evidence@proofkit.app  
-**Additional Information**: review-support@proofkit.app
+**Documentation Clarification**: docs@adsautopilot.app  
+**Technical Evidence**: tech-evidence@adsautopilot.app  
+**Compliance Evidence**: compliance-evidence@adsautopilot.app  
+**Additional Information**: review-support@adsautopilot.app
 
 ---
 
@@ -329,14 +329,14 @@
 
 ### How to Update
 
-**Internal Updates**: hr@proofkit.app  
-**External Updates**: operations@proofkit.app  
-**Partner Notifications**: partnerships@proofkit.app  
-**Customer Notifications**: communications@proofkit.app
+**Internal Updates**: hr@adsautopilot.app  
+**External Updates**: operations@adsautopilot.app  
+**Partner Notifications**: partnerships@adsautopilot.app  
+**Customer Notifications**: communications@adsautopilot.app
 
 ---
 
 **Last Updated**: August 16, 2025  
 **Next Review**: November 16, 2025  
-**Contact for Updates**: operations@proofkit.app  
-**Emergency Contact Verification**: Available 24/7 via support@proofkit.app
+**Contact for Updates**: operations@adsautopilot.app  
+**Emergency Contact Verification**: Available 24/7 via support@adsautopilot.app

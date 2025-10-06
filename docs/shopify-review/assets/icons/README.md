@@ -1,4 +1,4 @@
-# ProofKit App Icons
+# Ads Autopilot AI App Icons
 
 ## 🎨 App Icon Requirements for Shopify App Store
 
@@ -11,7 +11,7 @@ This directory should contain the app icons in various sizes required for Shopif
 - **Size**: 1024x1024px (high resolution)
 - **Format**: PNG with transparency
 - **Style**: Modern, clean, professional
-- **Content**: ProofKit brand identity with optimization theme
+- **Content**: Ads Autopilot AI brand identity with optimization theme
 
 ### Required Icon Sizes
 
@@ -56,21 +56,21 @@ This directory should contain the app icons in various sizes required for Shopif
 **Visual Style**:
 
 - Modern and professional appearance
-- Consistent with ProofKit brand identity
+- Consistent with Ads Autopilot AI brand identity
 - Clear and recognizable at all sizes
 - Scalable design elements
 - High contrast for visibility
 
 **Color Scheme**:
 
-- **Primary**: ProofKit Blue (#007ACC)
+- **Primary**: Ads Autopilot AI Blue (#007ACC)
 - **Secondary**: Complementary grays and whites
 - **Accent**: Optimization-themed colors (green for growth)
 - **Background**: Transparent or subtle gradient
 
 **Design Elements**:
 
-- Abstract "P" lettermark for ProofKit
+- Abstract "P" lettermark for Ads Autopilot AI
 - Optimization/growth arrow or graph element
 - Clean, geometric design
 - Minimal detail for scalability
@@ -81,7 +81,7 @@ This directory should contain the app icons in various sizes required for Shopif
 **Option 1: Letter + Arrow**
 
 - Stylized "P" with upward arrow
-- Represents ProofKit + optimization/growth
+- Represents Ads Autopilot AI + optimization/growth
 - Clean, corporate aesthetic
 - Easily recognizable at small sizes
 
@@ -119,7 +119,7 @@ This directory should contain the app icons in various sizes required for Shopif
 
 ### Brand Consistency
 
-**ProofKit Brand Elements**:
+**Ads Autopilot AI Brand Elements**:
 
 - Consistent color palette usage
 - Professional and trustworthy appearance
@@ -193,4 +193,4 @@ Before submitting icons:
 
 ---
 
-**Note**: The app icon is often the first visual contact potential customers have with ProofKit. It should immediately convey professionalism, trustworthiness, and the value proposition of conversion optimization.
+**Note**: The app icon is often the first visual contact potential customers have with Ads Autopilot AI. It should immediately convey professionalism, trustworthiness, and the value proposition of conversion optimization.

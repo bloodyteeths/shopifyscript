@@ -1,4 +1,4 @@
-# ProofKit Terms of Service
+# Ads Autopilot AI Terms of Service
 
 **Effective Date**: August 16, 2025  
 **Last Updated**: August 16, 2025  
@@ -8,7 +8,7 @@
 
 ## 📋 Agreement Overview
 
-These Terms of Service ("Terms") govern your use of ProofKit - Intent OS & Conversion Rate Optimization ("ProofKit", "the App", "the Service") provided by the ProofKit team ("we", "us", "our"). By installing, accessing, or using ProofKit, you ("Merchant", "you", "your") agree to be bound by these Terms.
+These Terms of Service ("Terms") govern your use of Ads Autopilot AI - Intent OS & Conversion Rate Optimization ("Ads Autopilot AI", "the App", "the Service") provided by the Ads Autopilot AI team ("we", "us", "our"). By installing, accessing, or using Ads Autopilot AI, you ("Merchant", "you", "your") agree to be bound by these Terms.
 
 **Key Points**:
 
@@ -22,7 +22,7 @@ These Terms of Service ("Terms") govern your use of ProofKit - Intent OS & Conve
 
 ## 🎯 Service Description
 
-### What ProofKit Provides
+### What Ads Autopilot AI Provides
 
 **Core Services**:
 
@@ -40,7 +40,7 @@ These Terms of Service ("Terms") govern your use of ProofKit - Intent OS & Conve
 - Support for marketing automation and optimization
 - Privacy-compliant tracking and measurement
 
-### What ProofKit Does NOT Provide
+### What Ads Autopilot AI Does NOT Provide
 
 **Service Limitations**:
 
@@ -61,7 +61,7 @@ These Terms of Service ("Terms") govern your use of ProofKit - Intent OS & Conve
 
 - Provide accurate store and contact information
 - Maintain secure access to your Shopify admin account
-- Keep your ProofKit app settings and configurations current
+- Keep your Ads Autopilot AI app settings and configurations current
 - Notify us immediately of any security breaches or unauthorized access
 
 **Compliance Obligations**:
@@ -78,11 +78,11 @@ These Terms of Service ("Terms") govern your use of ProofKit - Intent OS & Conve
 - Ensure all marketing content complies with applicable laws
 - Maintain appropriate backup of critical business data
 
-### ProofKit Responsibilities
+### Ads Autopilot AI Responsibilities
 
 **Service Provision**:
 
-- Provide the ProofKit service as described in documentation
+- Provide the Ads Autopilot AI service as described in documentation
 - Maintain service availability of 99.9% uptime (excluding scheduled maintenance)
 - Provide customer support as outlined in our Support Policy
 - Implement security measures to protect your account and data
@@ -126,7 +126,7 @@ These Terms of Service ("Terms") govern your use of ProofKit - Intent OS & Conve
 **Billing Method**:
 
 - All charges processed through Shopify's secure billing system
-- Charges appear as "ProofKit" on your Shopify invoice
+- Charges appear as "Ads Autopilot AI" on your Shopify invoice
 - Same payment method as your Shopify subscription
 - Automatic renewal unless cancelled
 
@@ -162,13 +162,13 @@ These Terms of Service ("Terms") govern your use of ProofKit - Intent OS & Conve
 **Your Data Remains Yours**:
 
 - You retain full ownership of all store data and configurations
-- ProofKit acts as a data processor, not a data controller
+- Ads Autopilot AI acts as a data processor, not a data controller
 - You control all integrations and data sharing settings
 - Complete data export available at any time
 
 **No Customer PII Collection**:
 
-- ProofKit does not collect personal information from your customers
+- Ads Autopilot AI does not collect personal information from your customers
 - All analytics and optimization based on aggregated, anonymous data
 - Customer privacy protected through privacy-by-design architecture
 - Full compliance with GDPR, CCPA, and other privacy regulations
@@ -213,7 +213,7 @@ These Terms of Service ("Terms") govern your use of ProofKit - Intent OS & Conve
 
 **Allowed Activities**:
 
-- ✅ Using ProofKit for legitimate e-commerce conversion optimization
+- ✅ Using Ads Autopilot AI for legitimate e-commerce conversion optimization
 - ✅ Creating marketing campaigns that comply with applicable laws
 - ✅ Integrating with Google Ads and Google Sheets for business purposes
 - ✅ Sharing aggregated, non-personal performance data
@@ -223,14 +223,14 @@ These Terms of Service ("Terms") govern your use of ProofKit - Intent OS & Conve
 
 **Forbidden Activities**:
 
-- ❌ Using ProofKit for any illegal or fraudulent activities
+- ❌ Using Ads Autopilot AI for any illegal or fraudulent activities
 - ❌ Creating misleading or deceptive marketing content
 - ❌ Attempting to access other merchants' data or accounts
 - ❌ Reverse engineering, modifying, or redistributing the service
 - ❌ Using the service to spam customers or send unsolicited communications
 - ❌ Violating privacy laws or customer consent requirements
 - ❌ Creating campaigns that promote illegal products or services
-- ❌ Using the service in a way that could damage ProofKit's reputation
+- ❌ Using the service in a way that could damage Ads Autopilot AI's reputation
 
 ### Enforcement
 
@@ -288,7 +288,7 @@ These Terms of Service ("Terms") govern your use of ProofKit - Intent OS & Conve
 
 **Included Support**:
 
-- Email support for all users (support@proofkit.app)
+- Email support for all users (support@adsautopilot.app)
 - Comprehensive documentation and tutorials
 - In-app help and guidance
 - Community forum access
@@ -329,7 +329,7 @@ These Terms of Service ("Terms") govern your use of ProofKit - Intent OS & Conve
 - Data export available for 30 days after cancellation
 - Reactivation possible at any time
 
-**Termination by ProofKit**:
+**Termination by Ads Autopilot AI**:
 
 - Advance notice provided except for violations of Terms
 - Opportunity to cure violations where appropriate
@@ -360,7 +360,7 @@ These Terms of Service ("Terms") govern your use of ProofKit - Intent OS & Conve
 
 **What We Warrant**:
 
-- ProofKit will perform substantially as described in documentation
+- Ads Autopilot AI will perform substantially as described in documentation
 - Service will be provided with reasonable care and skill
 - Security measures will be maintained according to industry standards
 - Support will be provided as outlined in our support policy
@@ -376,7 +376,7 @@ These Terms of Service ("Terms") govern your use of ProofKit - Intent OS & Conve
 
 **Damages Limitation**:
 
-- Our liability limited to amount paid for ProofKit in preceding 12 months
+- Our liability limited to amount paid for Ads Autopilot AI in preceding 12 months
 - No liability for indirect, consequential, or special damages
 - No liability for lost profits, revenue, or business opportunities
 - Limitation applies regardless of cause of action or theory of liability
@@ -393,15 +393,15 @@ These Terms of Service ("Terms") govern your use of ProofKit - Intent OS & Conve
 
 **Merchant Indemnification**:
 
-- You agree to indemnify ProofKit against claims arising from:
+- You agree to indemnify Ads Autopilot AI against claims arising from:
   - Your violation of these Terms
   - Your marketing content or campaigns
   - Your violation of applicable laws
   - Unauthorized use of your account
 
-**ProofKit Indemnification**:
+**Ads Autopilot AI Indemnification**:
 
-- We will indemnify you against claims that ProofKit infringes third-party intellectual property rights
+- We will indemnify you against claims that Ads Autopilot AI infringes third-party intellectual property rights
 - Our obligation limited to obtaining rights, modifying service, or refunding fees
 - Indemnification subject to prompt notice and reasonable cooperation
 
@@ -438,10 +438,10 @@ These Terms of Service ("Terms") govern your use of ProofKit - Intent OS & Conve
 
 **Technology Export**:
 
-- ProofKit may be subject to export control laws
+- Ads Autopilot AI may be subject to export control laws
 - Use in prohibited countries or by prohibited persons forbidden
 - Merchant responsible for compliance with local import/export laws
-- Notice required if ProofKit will be used internationally
+- Notice required if Ads Autopilot AI will be used internationally
 
 ---
 
@@ -449,23 +449,23 @@ These Terms of Service ("Terms") govern your use of ProofKit - Intent OS & Conve
 
 ### General Contact
 
-**Support Email**: support@proofkit.app  
-**Business Email**: business@proofkit.app  
-**Legal Email**: legal@proofkit.app  
-**Website**: https://proofkit.app
+**Support Email**: support@adsautopilot.app  
+**Business Email**: business@adsautopilot.app  
+**Legal Email**: legal@adsautopilot.app  
+**Website**: https://adsautopilot.app
 
 ### Legal Notices
 
-**Terms Questions**: legal@proofkit.app  
-**Privacy Questions**: privacy@proofkit.app  
-**Security Issues**: security@proofkit.app  
-**Compliance Questions**: compliance@proofkit.app
+**Terms Questions**: legal@adsautopilot.app  
+**Privacy Questions**: privacy@adsautopilot.app  
+**Security Issues**: security@adsautopilot.app  
+**Compliance Questions**: compliance@adsautopilot.app
 
 ### Emergency Contact
 
-**Critical Issues**: Mark email subject as "URGENT" and send to support@proofkit.app  
-**Security Incidents**: security@proofkit.app with "SECURITY INCIDENT" in subject  
-**Legal Process**: legal@proofkit.app for subpoenas, court orders, etc.
+**Critical Issues**: Mark email subject as "URGENT" and send to support@adsautopilot.app  
+**Security Incidents**: security@adsautopilot.app with "SECURITY INCIDENT" in subject  
+**Legal Process**: legal@adsautopilot.app for subpoenas, court orders, etc.
 
 ---
 
@@ -473,7 +473,7 @@ These Terms of Service ("Terms") govern your use of ProofKit - Intent OS & Conve
 
 ### Entire Agreement
 
-These Terms, together with our Privacy Policy and any other referenced policies, constitute the entire agreement between you and ProofKit regarding the service.
+These Terms, together with our Privacy Policy and any other referenced policies, constitute the entire agreement between you and Ads Autopilot AI regarding the service.
 
 ### Severability
 
@@ -501,7 +501,7 @@ Provisions regarding data protection, liability limitations, and dispute resolut
 
 **Version 1.0** - August 16, 2025
 
-- Initial Terms of Service for ProofKit launch
+- Initial Terms of Service for Ads Autopilot AI launch
 - Comprehensive privacy and data protection provisions
 - Clear service boundaries and responsibilities
 - Transparent pricing and cancellation terms
@@ -515,8 +515,8 @@ Provisions regarding data protection, liability limitations, and dispute resolut
 
 ---
 
-**By installing or using ProofKit, you acknowledge that you have read, understood, and agree to be bound by these Terms of Service.**
+**By installing or using Ads Autopilot AI, you acknowledge that you have read, understood, and agree to be bound by these Terms of Service.**
 
 **Last Updated**: August 16, 2025  
 **Effective Date**: August 16, 2025  
-**Contact**: legal@proofkit.app for questions about these Terms
+**Contact**: legal@adsautopilot.app for questions about these Terms

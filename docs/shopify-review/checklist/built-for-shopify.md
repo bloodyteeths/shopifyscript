@@ -1,8 +1,8 @@
-# Built-for-Shopify Compliance Checklist - ProofKit
+# Built-for-Shopify Compliance Checklist - Ads Autopilot AI
 
 ## 📋 Executive Summary
 
-**App Name**: ProofKit - Intent OS & Conversion Rate Optimization  
+**App Name**: Ads Autopilot AI - Intent OS & Conversion Rate Optimization  
 **App Type**: Embedded Shopify App  
 **Architecture**: Remix + Polaris UI with backend API integration  
 **Review Date**: August 16, 2025  
@@ -64,7 +64,7 @@
 **Data Flow Architecture**:
 
 ```
-Shopify Store → ProofKit App → Backend API → Google Services
+Shopify Store → Ads Autopilot AI App → Backend API → Google Services
      ↑              ↓               ↓            ↓
    Admin UI    ← App Bridge ←  HMAC Auth  → Sheets/Ads
 ```
@@ -165,7 +165,7 @@ Shopify Store → ProofKit App → Backend API → Google Services
 
 **Support Infrastructure**:
 
-- ✅ **Dedicated Email**: `support@proofkit.app` with 24h response SLA
+- ✅ **Dedicated Email**: `support@adsautopilot.app` with 24h response SLA
 - ✅ **Documentation**: Complete setup and usage guides
 - ✅ **In-App Help**: Contextual help and tooltips
 - ✅ **Video Tutorials**: Setup and feature demonstration videos
@@ -240,7 +240,7 @@ Shopify Store → ProofKit App → Backend API → Google Services
 
 ### ✅ App Store Listing
 
-- **App Title**: "ProofKit - Intent OS & Conversion Rate Optimization"
+- **App Title**: "Ads Autopilot AI - Intent OS & Conversion Rate Optimization"
 - **Tagline**: "AI-powered conversion optimization for Shopify stores"
 - **Description**: Comprehensive feature overview and benefits
 - **Category**: Marketing > Conversion Optimization
@@ -282,8 +282,8 @@ Shopify Store → ProofKit App → Backend API → Google Services
 
 ## 📞 Emergency Contacts
 
-**Primary Developer**: Available via `support@proofkit.app`  
-**Technical Lead**: GitHub issues at ProofKit repository  
+**Primary Developer**: Available via `support@adsautopilot.app`  
+**Technical Lead**: GitHub issues at Ads Autopilot AI repository  
 **Business Contact**: App listing contact form
 
 ---

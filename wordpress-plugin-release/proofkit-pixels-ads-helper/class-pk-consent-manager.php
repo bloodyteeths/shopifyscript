@@ -1,11 +1,11 @@
 <?php
 /**
- * ProofKit Consent Management System
+ * Ads Autopilot AI Consent Management System
  *
  * Handles GDPR-compliant consent filtering and privacy controls
  * for Google Analytics 4 and Google Ads tracking.
  *
- * @package ProofkitPixelsAdsHelper
+ * @package Ads Autopilot AIPixelsAdsHelper
  * @since 1.0.0
  */
 
@@ -78,14 +78,14 @@ class PK_Consent_Manager {
 
 		?>
 		<script type="text/javascript">
-		// ProofKit Consent Mode v2 Implementation
+		// Ads Autopilot AI Consent Mode v2 Implementation
 		window.dataLayer = window.dataLayer || [];
 		function gtag(){dataLayer.push(arguments);}
 
 		// Set default consent state (privacy-first approach)
 		gtag('consent', 'default', <?php echo wp_json_encode( $gtag_config['default'] ); ?>);
 
-		// Initialize ProofKit consent manager
+		// Initialize Ads Autopilot AI consent manager
 		window.pkConsent = {
 			initialized: false,
 			currentConsent: <?php echo wp_json_encode( $gtag_config['default'] ); ?>,
@@ -99,7 +99,7 @@ class PK_Consent_Manager {
 				// Store consent in backend for compliance
 				this.recordConsent(updatedConsent);
 				
-				console.log('ProofKit: Consent updated', updatedConsent);
+				console.log('Ads Autopilot AI: Consent updated', updatedConsent);
 			},
 			
 			// Record consent for compliance
@@ -148,7 +148,7 @@ class PK_Consent_Manager {
 
 		// Mark as initialized
 		window.pkConsent.initialized = true;
-		console.log('ProofKit: Consent Mode v2 initialized');
+		console.log('Ads Autopilot AI: Consent Mode v2 initialized');
 		</script>
 		<?php
 	}
@@ -163,9 +163,9 @@ class PK_Consent_Manager {
 
 		wp_enqueue_script(
 			'pk-consent-manager',
-			PK_PROOFKIT_PLUGIN_URL . 'assets/js/consent-manager.js',
+			PK_ADS_AUTOPILOT_AI_PLUGIN_URL . 'assets/js/consent-manager.js',
 			array( 'jquery' ),
-			PK_PROOFKIT_VERSION,
+			PK_ADS_AUTOPILOT_AI_VERSION,
 			true
 		);
 
@@ -420,7 +420,7 @@ class PK_Consent_Manager {
 			'site_info' => array(
 				'url' => get_site_url(),
 				'wordpress_version' => get_bloginfo( 'version' ),
-				'plugin_version' => PK_PROOFKIT_VERSION,
+				'plugin_version' => PK_ADS_AUTOPILOT_AI_VERSION,
 			),
 		);
 

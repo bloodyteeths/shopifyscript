@@ -1,8 +1,8 @@
-# ProofKit Customer Support Policy
+# Ads Autopilot AI Customer Support Policy
 
 ## 📞 Support Overview
 
-**Support Email**: support@proofkit.app  
+**Support Email**: support@adsautopilot.app  
 **Response Time**: 24 hours maximum (typically 2-6 hours during business hours)  
 **Coverage**: 24/7 email support with business hours priority  
 **Languages**: English (primary), Spanish, French  
@@ -14,7 +14,7 @@
 
 ### Primary Support: Email
 
-**Contact**: support@proofkit.app
+**Contact**: support@adsautopilot.app
 
 **Response Time SLA**:
 
@@ -56,7 +56,7 @@
 **Onboarding Resources**:
 
 1. **Welcome Email**: Setup checklist and quick start guide
-2. **Video Tutorial**: "ProofKit Setup in 5 Minutes"
+2. **Video Tutorial**: "Ads Autopilot AI Setup in 5 Minutes"
 3. **Live Chat**: Available during initial 48 hours post-install
 4. **Setup Verification**: Confirmation that everything is working correctly
 
@@ -193,7 +193,7 @@
 
 **Getting Started Series**:
 
-1. "ProofKit Installation in Under 5 Minutes"
+1. "Ads Autopilot AI Installation in Under 5 Minutes"
 2. "Creating Your First Intent Block"
 3. "Setting Up Audience Segmentation"
 4. "Connecting Google Ads for Optimization"
@@ -258,7 +258,7 @@
 
 **Ticket Lifecycle**:
 
-1. **Submission**: Email to support@proofkit.app
+1. **Submission**: Email to support@adsautopilot.app
 2. **Auto-Acknowledgment**: Immediate confirmation with ticket ID
 3. **Initial Response**: Within SLA timeframe based on priority
 4. **Investigation**: Thorough analysis and testing
@@ -415,7 +415,7 @@
 
 **For Critical Issues**:
 
-- **Email**: support@proofkit.app (mark subject as "EMERGENCY")
+- **Email**: support@adsautopilot.app (mark subject as "EMERGENCY")
 - **Response Time**: 30 minutes maximum
 - **Escalation**: Automatic for issues affecting multiple stores
 - **Follow-up**: Post-resolution analysis and prevention plan
@@ -427,7 +427,7 @@
 ### Customer Testimonials
 
 **"Outstanding support that actually helps"**
-_"The ProofKit team helped us set up our conversion optimization in under 30 minutes. When we had questions about Google Ads integration, they walked us through the entire process with a screen share. This is how support should be done."_
+_"The Ads Autopilot AI team helped us set up our conversion optimization in under 30 minutes. When we had questions about Google Ads integration, they walked us through the entire process with a screen share. This is how support should be done."_
 — Sarah M., Fashion E-commerce Store
 
 **"Quick and knowledgeable responses"**
@@ -435,7 +435,7 @@ _"I had an issue with our analytics tracking, and the support team not only fixe
 — Mike R., Electronics Retailer
 
 **"Privacy compliance made easy"**
-_"As a European store, GDPR compliance was critical for us. The ProofKit support team provided detailed guidance on privacy-compliant setup and helped us configure everything correctly."_
+_"As a European store, GDPR compliance was critical for us. The Ads Autopilot AI support team provided detailed guidance on privacy-compliant setup and helped us configure everything correctly."_
 — Anna L., EU Beauty Store
 
 ### Support Impact Metrics
@@ -444,7 +444,7 @@ _"As a European store, GDPR compliance was critical for us. The ProofKit support
 
 - **Setup Time Reduction**: Average setup time reduced from 45 minutes to 8 minutes
 - **Issue Resolution**: 87% of issues resolved on first contact
-- **Customer Retention**: 94% of supported customers continue using ProofKit
+- **Customer Retention**: 94% of supported customers continue using Ads Autopilot AI
 - **Satisfaction Growth**: Support satisfaction increased from 4.1 to 4.6 over 6 months
 
 ---
@@ -513,4 +513,4 @@ _"As a European store, GDPR compliance was critical for us. The ProofKit support
 **Document Version**: 1.0  
 **Last Updated**: August 16, 2025  
 **Next Review**: November 2025  
-**Contact**: support@proofkit.app for questions about this policy
+**Contact**: support@adsautopilot.app for questions about this policy

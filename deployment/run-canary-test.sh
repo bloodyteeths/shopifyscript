@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# PROOFKIT CANARY TEST AUTOMATION SCRIPT
+# ADS_AUTOPILOT_AI CANARY TEST AUTOMATION SCRIPT
 # P0-7 CRITICAL: Comprehensive automation for safe canary deployments
 # Usage: ./run-canary-test.sh <tenant> [options]
 

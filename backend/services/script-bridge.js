@@ -1,6 +1,6 @@
 /**
  * Script Communication Bridge Service
- * Handles secure bidirectional communication between Google Ads Scripts and ProofKit backend
+ * Handles secure bidirectional communication between Google Ads Scripts and Ads Autopilot AI backend
  *
  * Features:
  * - HMAC signature validation for incoming requests

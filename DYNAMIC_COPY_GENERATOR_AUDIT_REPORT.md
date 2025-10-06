@@ -1,5 +1,5 @@
 # Dynamic Copy Generator System - Audit Report
-## ProofKit SaaS - Agent OPT-002
+## Ads Autopilot AI SaaS - Agent OPT-002
 
 **Date:** 2025-09-28
 **Author:** Agent OPT-002 (Copywriting AI Expert)

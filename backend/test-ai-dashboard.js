@@ -9,7 +9,7 @@ import fetch from 'node-fetch';
 
 const BACKEND_URL = 'http://localhost:3005/api';
 const HMAC_SECRET = 'f3a1c9d8b2e47a65c0fb19d7e3a9428c6de5b1a7c4f08923ab56d7e1c2f3a4b5';
-const TENANT = 'proofkit';
+const TENANT = 'adsautopilot';
 
 function generateHMAC(tenant, timestamp) {
   const payload = JSON.stringify({ tenant, timestamp });

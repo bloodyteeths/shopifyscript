@@ -1,10 +1,10 @@
-# Proofkit Backend (Node/Express)
+# Ads Autopilot AI Backend (Node/Express)
 
 This replaces the earlier Google Apps Script Web App. It powers BOTH your Shopify app and WordPress plugin, and serves the Google Ads Script.
 
 ## Shop Name System
 
-The backend now uses a manual shop name system instead of automatic tenant detection. The default shop name is "proofkit" but can be customized via environment variables.
+The backend now uses a manual shop name system instead of automatic tenant detection. The default shop name is "adsautopilot" but can be customized via environment variables.
 
 ## Endpoints
 
@@ -25,8 +25,8 @@ Set these in your `.env` file:
 
 ```env
 # Shop Configuration
-TENANT_ID=proofkit
-TENANT_REGISTRY_JSON='{"proofkit":"1vqcqkLxY4r3tWowi6GMsoRbSJG5x4XY7QKg2mTe54rU"}'
+TENANT_ID=adsautopilot
+TENANT_REGISTRY_JSON='{"adsautopilot":"1vqcqkLxY4r3tWowi6GMsoRbSJG5x4XY7QKg2mTe54rU"}'
 
 # Backend URLs
 BACKEND_URL=http://localhost:3001
@@ -46,7 +46,7 @@ HMAC_SECRET=your_hmac_secret_here
 To support multiple shops, update the TENANT_REGISTRY_JSON:
 
 ```env
-TENANT_REGISTRY_JSON='{"shop1":"sheet_id_1","shop2":"sheet_id_2","proofkit":"sheet_id_default"}'
+TENANT_REGISTRY_JSON='{"shop1":"sheet_id_1","shop2":"sheet_id_2","adsautopilot":"sheet_id_default"}'
 ```
 
 ## Storage
