@@ -389,35 +389,6 @@ export default function AppIndex() {
             borderRadius: "8px",
             padding: "1.5rem",
             background: "#f8f9fa",
-          }}
-        >
-          <h3>Insights</h3>
-          <p>Performance analytics and campaign insights</p>
-          <Link
-            to="/app/insights"
-            style={{
-              background: "#28a745",
-              color: "white",
-              padding: "12px 24px",
-              textDecoration: "none",
-              borderRadius: "6px",
-              display: "inline-block",
-              fontSize: "16px",
-              fontWeight: "bold",
-              boxShadow: "0 2px 8px rgba(40, 167, 69, 0.3)",
-              transition: "all 0.2s ease",
-            }}
-          >
-            View Insights
-          </Link>
-        </div>
-
-        <div
-          style={{
-            border: "1px solid #ddd",
-            borderRadius: "8px",
-            padding: "1.5rem",
-            background: "#f8f9fa",
             position: "relative",
           }}
         >
