@@ -19,6 +19,11 @@ export async function getRSAAssetsFromSupabase(tenant, options = {}) {
   }
 
   try {
+    const supabase = getSupabaseClient();
+    if (!supabase) {
+      logger.warn('Supabase client not initialized in getRSAAssetsFromSupabase');
+      return null;
+    }
     const {
       theme = null,
       source = null,
@@ -248,22 +253,34 @@ export async function writeRSAAssetsToSupabase(tenant, assets) {
   }
 
   try {
-    // Transform assets to Supabase format
-    const records = assets.map(asset => ({
+    const supabase = getSupabaseClient();
+    if (!supabase) {
+      logger.warn('Supabase client not initialized in writeRSAAssetsToSupabase');
+      return false;
+    }
+
+    // Group incoming assets (headlines/descriptions for a single theme) into one RSA row
+    const theme = assets?.[0]?.theme || 'default';
+    const headlines = assets.filter(a => (a.type || a.asset_type) === 'headline').map(a => a.text || a.asset_text).filter(Boolean);
+    const descriptions = assets.filter(a => (a.type || a.asset_type) === 'description').map(a => a.text || a.asset_text).filter(Boolean);
+    const source = assets?.[0]?.source || 'ai_generated';
+
+    // Build aggregated RSA record to match reader expectations (headlines_pipe/descriptions_pipe)
+    const record = {
       tenant_id: tenant,
-      asset_type: asset.type || asset.asset_type,
-      asset_text: asset.text || asset.asset_text,
-      theme: asset.theme || 'default',
-      source: asset.source || 'ai_generated',
-      campaign_name: asset.campaign_name || null,
-      ad_group_name: asset.ad_group_name || null,
-      performance_score: asset.performance_score || null,
-      active: asset.active !== false
-    }));
+      asset_type: 'rsa',
+      asset_text: (headlines[0] || theme) + '',
+      theme,
+      headlines_pipe: headlines.join('|'),
+      descriptions_pipe: descriptions.join('|'),
+      rationale: source,
+      approval_status: 'approved',
+      active: true
+    };
 
     const { data, error } = await supabase
       .from('rsa_assets')
-      .insert(records)
+      .insert(record)
       .select();
 
     if (error) {
@@ -275,9 +292,12 @@ export async function writeRSAAssetsToSupabase(tenant, assets) {
       return false;
     }
 
-    logger.info('✅ RSA assets written to Supabase', {
+    logger.info('✅ RSA assets written to Supabase (aggregated row)', {
       tenant,
-      count: data.length
+      theme,
+      headlines: headlines.length,
+      descriptions: descriptions.length,
+      count: Array.isArray(data) ? data.length : (data ? 1 : 0)
     });
 
     return true;
@@ -360,6 +380,10 @@ export async function getBusinessContextFromSupabase(tenant) {
   }
 
   try {
+    const supabase = getSupabaseClient();
+    if (!supabase) {
+      return null;
+    }
     // Get tenant config
     const { data: config, error: configError } = await supabase
       .from('tenant_configs')
