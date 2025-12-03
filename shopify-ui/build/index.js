@@ -75191,7 +75191,7 @@ function normalizeBackendBase(rawBase) {
   }
 }
 function opKey(method, pathname) {
-  return pathname.includes("/autopilot/quickstart") ? "autopilot_quickstart" : pathname.includes("/connect/sheets/test") ? "sheets_test" : pathname.includes("/connect/sheets/save") ? "sheets_save" : pathname.includes("/promote/status") ? "promote_status" : pathname.includes("/insights/tier-status") ? "tier_status" : pathname.includes("/insights/terms") ? "insights_terms" : pathname.includes("/run-logs") ? "run_logs" : pathname.includes("/insights/actions/apply") ? "insights_actions" : pathname.includes("/insights") ? "insights" : pathname.includes("/ads-script/raw") ? "script_raw" : pathname.includes("/summary") ? "summary_get" : pathname.includes("/diagnostics") ? "diagnostics" : pathname.endsWith("/config") ? "config" : pathname.includes("/upsertConfig") ? "upsertconfig" : pathname.includes("/jobs/autopilot_tick") ? "autopilot_tick" : pathname.includes("/cpc-ceilings/batch") ? "cpc_batch" : pathname.includes("/jobs/autopilot_tick") ? "autopilot_tick" : pathname.includes("/pixels/ingest") ? "pixel_ingest" : pathname.includes("/shopify/seo/preview") ? "seo_preview" : pathname.includes("/shopify/seo/apply") ? "seo_apply" : pathname.includes("/shopify/tags/batch") ? "tags_batch" : pathname.includes("/seed-demo") ? "seed_demo" : pathname.includes("/sessions/store") ? "session_store" : pathname.includes("/sessions/retrieve") ? "session_retrieve" : pathname.includes("/sessions/delete") ? "session_delete" : pathname.includes("/sessions/list") ? "session_list" : "unknown";
+  return pathname.includes("/autopilot/quickstart") ? "autopilot_quickstart" : pathname.includes("/connect/sheets/test") ? "sheets_test" : pathname.includes("/connect/sheets/save") ? "sheets_save" : pathname.includes("/promote/status") ? "promote_status" : pathname.includes("/insights/tier-status") ? "tier_status" : pathname.includes("/insights/terms") ? "insights_terms" : pathname.includes("/run-logs") ? "run_logs" : pathname.includes("/insights/actions/apply") ? "insights_actions" : pathname.includes("/insights") ? "insights" : pathname.includes("/ads-script/raw") ? "script_raw" : pathname.includes("/summary") ? "summary_get" : pathname.includes("/diagnostics") ? "diagnostics" : pathname.endsWith("/config") ? "config" : pathname.includes("/upsertConfig") ? "upsertconfig" : pathname.includes("/jobs/autopilot_tick") ? "autopilot_tick" : pathname.includes("/cpc-ceilings/batch") ? "cpc_batch" : pathname.includes("/jobs/autopilot_tick") ? "autopilot_tick" : pathname.includes("/security/pixel/token") ? "pixel_token" : pathname.includes("/pixels/ingest") ? "pixel_ingest" : pathname.includes("/shopify/seo/preview") ? "seo_preview" : pathname.includes("/shopify/seo/apply") ? "seo_apply" : pathname.includes("/shopify/tags/batch") ? "tags_batch" : pathname.includes("/seed-demo") ? "seed_demo" : pathname.includes("/sessions/store") ? "session_store" : pathname.includes("/sessions/retrieve") ? "session_retrieve" : pathname.includes("/sessions/delete") ? "session_delete" : pathname.includes("/sessions/list") ? "session_list" : "unknown";
 }
 var import_crypto, init_hmac_server = __esm({
   "app/server/hmac.server.ts"() {
@@ -139850,6 +139850,16 @@ function App() {
       /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("meta", { name: "viewport", content: "width=device-width, initial-scale=1" }),
       /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(import_react3.Meta, {}),
       /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(import_react3.Links, {}),
+      /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("script", { async: !0, src: "https://www.googletagmanager.com/gtag/js?id=G-756618Z0XS" }),
+      /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("script", { dangerouslySetInnerHTML: {
+        __html: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-756618Z0XS');
+            gtag('config', 'AW-17457205812');
+          `
+      } }),
       /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("style", { dangerouslySetInnerHTML: {
         __html: `
             @media (max-width: 768px) {
@@ -140054,7 +140064,7 @@ function App() {
                                 color: "#202223",
                                 transition: "all 0.2s ease"
                               },
-                              children: "\u{1F916} AI Dashboard"
+                              children: "AI Dashboard"
                             }
                           ) }),
                           /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
@@ -140223,7 +140233,7 @@ function App() {
                                 color: "#202223",
                                 transition: "all 0.2s ease"
                               },
-                              children: "\u{1F916} AI Dashboard"
+                              children: "AI Dashboard"
                             }
                           ) }),
                           /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
@@ -140360,7 +140370,6 @@ async function action({ request: request2 }) {
       } catch (tierError) {
         console.warn("Failed to detect tier, using starter:", tierError.message), actualTier = "starter";
       }
-    console.log(`\u{1F517} Fetching script from backend for shop: ${currentShopName}`);
     let scriptParams = new URLSearchParams({
       budget: String(budget || "20.00"),
       cpc: String(cpc || "0.50"),
@@ -140368,7 +140377,7 @@ async function action({ request: request2 }) {
     }).toString(), realScript;
     try {
       try {
-        console.log(`\u{1F517} Attempting to fetch from /ads-script/v2 endpoint with params: ${scriptParams}`), realScript = await backendFetchText2(
+        realScript = await backendFetchText2(
           `/ads-script/v2?${scriptParams}`,
           "GET",
           void 0,
@@ -140457,7 +140466,6 @@ __export(auth_session_token_exports, {
 });
 init_shopify_server();
 var loader2 = async ({ request: request2 }) => {
-  console.log("\u{1F3AB} Session token route accessed with 2025 auth strategy");
   try {
     let { session, admin } = await authenticate.admin(request2);
     if (!session || !admin)
@@ -140478,7 +140486,7 @@ var loader2 = async ({ request: request2 }) => {
       }
     });
   } catch (error) {
-    console.error("\u{1F6A8} Session token route error:", error);
+    console.error("Session token route error:", error);
     let shop = new URL(request2.url).searchParams.get("shop") || "";
     return new Response(null, {
       status: 302,
@@ -140691,7 +140699,7 @@ function HealthIndicator({
 
 // app/components/AIDashboard/ActiveTasks.tsx
 var import_react4 = __toESM(require_react()), import_polaris3 = __toESM(require_cjs3());
-var import_jsx_runtime5 = __toESM(require_jsx_runtime()), PlayIcon = () => /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("span", { children: "\u25B6\uFE0F" }), PauseIcon = () => /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("span", { children: "\u23F8\uFE0F" }), StopIcon = () => /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("span", { children: "\u23F9\uFE0F" }), ClockIcon = () => /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("span", { children: "\u23F1\uFE0F" }), CheckCircleIcon = () => /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("span", { style: { color: "#00a047" }, children: "\u2705" }), AlertTriangleIcon = () => /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("span", { style: { color: "#ff8a00" }, children: "\u26A0\uFE0F" }), XCircleIcon = () => /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("span", { style: { color: "#ff6d6d" }, children: "\u274C" }), TrendingUpIcon = () => /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("span", { children: "\u{1F4C8}" }), ActivityIcon = () => /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("span", { children: "\u26A1" });
+var import_jsx_runtime5 = __toESM(require_jsx_runtime()), PlayIcon = () => /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("span", { children: "\u25B6\uFE0F" }), PauseIcon = () => /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("span", { children: "\u23F8\uFE0F" }), StopIcon = () => /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("span", { children: "\u23F9\uFE0F" }), ClockIcon = () => /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("span", { children: "\u23F1\uFE0F" }), CheckCircleIcon = () => /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("span", { style: { color: "#00a047" }, children: "\u2705" }), AlertTriangleIcon = () => /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("span", { style: { color: "#ff8a00" }, children: "\u26A0\uFE0F" }), XCircleIcon = () => /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("span", { style: { color: "#ff6d6d" }, children: "\u274C" }), TrendingUpIcon = () => /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("span", {}), ActivityIcon = () => /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("span", { children: "\u26A1" });
 function ActiveTasks({ shopName, hasFeatureAccess: hasFeatureAccess2 = !1 }) {
   let [tasks, setTasks] = (0, import_react4.useState)([]), [loading, setLoading] = (0, import_react4.useState)(!0), [error, setError] = (0, import_react4.useState)(null), [selectedTask, setSelectedTask] = (0, import_react4.useState)(null), [showTaskModal, setShowTaskModal] = (0, import_react4.useState)(!1), fetchTasks = (0, import_react4.useCallback)(async () => {
     try {
@@ -141073,7 +141081,7 @@ function ActiveTasks({ shopName, hasFeatureAccess: hasFeatureAccess2 = !1 }) {
 
 // app/components/AIDashboard/SystemOverview.tsx
 var import_jsx_runtime6 = __toESM(require_jsx_runtime()), CheckCircleIcon2 = () => /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { style: { color: "#00a047" }, children: "\u25CF" }), AlertCircleIcon = () => /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { style: { color: "#ff6d6d" }, children: "\u25CF" }), InfoIcon = () => /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { style: { color: "#006fbb" }, children: "\u25CF" });
-var TrendingUpIcon2 = () => /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { children: "\u{1F4C8}" }), ActivityIcon2 = () => /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { children: "\u26A1" });
+var TrendingUpIcon2 = () => /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", {}), ActivityIcon2 = () => /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { children: "\u26A1" });
 function SystemOverview({ shopName, hasFeatureAccess: hasFeatureAccess2 = !1 }) {
   let [systemHealth, setSystemHealth] = (0, import_react5.useState)(null), [optimizationStats, setOptimizationStats] = (0, import_react5.useState)(null), [dataSources, setDataSources] = (0, import_react5.useState)([]), [quickStats, setQuickStats] = (0, import_react5.useState)(null), [automationStatus, setAutomationStatus] = (0, import_react5.useState)(null), [ingestionStatus, setIngestionStatus] = (0, import_react5.useState)(null), [logMetrics, setLogMetrics] = (0, import_react5.useState)(null), [alertMessage, setAlertMessage] = (0, import_react5.useState)(null), [loading, setLoading] = (0, import_react5.useState)(!0), [error, setError] = (0, import_react5.useState)(null), [lastRefresh, setLastRefresh] = (0, import_react5.useState)(/* @__PURE__ */ new Date()), fetchSystemHealth = (0, import_react5.useCallback)(async () => {
     try {
@@ -141769,7 +141777,7 @@ function UserDashboard({ shopName, hasFeatureAccess: hasFeatureAccess2 = !1, onN
             /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.Text, { variant: "bodyMd", tone: "subdued", children: "Avg. CPC" }),
             /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.Text, { variant: "bodyMd", fontWeight: "bold", children: formatCurrency(metrics?.cpc || 0) })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.Box, { background: "bg-surface-warning", padding: "200", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.Text, { variant: "bodySm", children: "\u{1F4A1} AI suggests increasing budget by 20% for better results" }) })
+          /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.Box, { background: "bg-surface-warning", padding: "200", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.Text, { variant: "bodySm", children: "AI suggests increasing budget by 20% for better results" }) })
         ] })
       ] }) }) })
     ] }),
@@ -142627,9 +142635,9 @@ ${draft.descriptions.join(`
         /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "headingMd", children: "AI Recommendations" }),
         /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Divider, {}),
         /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris8.BlockStack, { gap: "200", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Box, { padding: "200", background: "bg-surface-warning", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "bodySm", children: "\u{1F4A1} Try emphasizing sustainability - competitors seeing 25% better engagement" }) }),
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Box, { padding: "200", background: "bg-surface-warning", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "bodySm", children: "\u{1F4A1} Test shorter headlines (5-7 words) for mobile optimization" }) }),
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Box, { padding: "200", background: "bg-surface-warning", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "bodySm", children: "\u{1F4A1} Include customer testimonials in descriptions for trust signals" }) })
+          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Box, { padding: "200", background: "bg-surface-warning", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "bodySm", children: "Try emphasizing sustainability - competitors seeing 25% better engagement" }) }),
+          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Box, { padding: "200", background: "bg-surface-warning", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "bodySm", children: "Test shorter headlines (5-7 words) for mobile optimization" }) }),
+          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Box, { padding: "200", background: "bg-surface-warning", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "bodySm", children: "Include customer testimonials in descriptions for trust signals" }) })
         ] })
       ] }) }) })
     ] }),
@@ -142997,7 +143005,7 @@ function PerformanceInsights({ shopName, hasFeatureAccess: hasFeatureAccess2 = !
           ),
           /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_recharts.Tooltip, {})
         ] }) }) : /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Box, { padding: "400", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "bodyMd", tone: "subdued", alignment: "center", children: "Device breakdown data will appear here once campaigns generate traffic." }) }) }),
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Box, { background: "bg-surface-secondary", padding: "300", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "bodySm", tone: "subdued", children: "\u{1F4A1} Mobile traffic converts 25% better with AI-optimized responsive ads" }) })
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Box, { background: "bg-surface-secondary", padding: "300", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "bodySm", tone: "subdued", children: "Mobile traffic converts 25% better with AI-optimized responsive ads" }) })
       ] }) }) }),
       /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Layout.Section, { oneHalf: !0, children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris9.BlockStack, { gap: "400", children: [
         /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "headingMd", children: "Top Performing Keywords" }),
@@ -143475,7 +143483,7 @@ function AIDashboard({ shopName, subscriptionTier = "starter", hasFeatureAccess:
               },
               title: "Drafts are automatically saved",
               children: [
-                "\u2713 Saved (",
+                "Saved (",
                 selectedDraftIndices.length,
                 ")"
               ]
@@ -144766,19 +144774,19 @@ function CampaignSetupForm({
     hasOffer: !1,
     offerText: ""
   }), businessTypeOptions = [
-    { label: "\u{1F6CD}\uFE0F E-commerce Store", value: "ecommerce" },
-    { label: "\u{1F3E2} Service Business", value: "service" },
-    { label: "\u{1F4CD} Local Business", value: "local" },
-    { label: "\u{1F4BC} B2B Company", value: "b2b" }
+    { label: "E-commerce Store", value: "ecommerce" },
+    { label: "Service Business", value: "service" },
+    { label: "Local Business", value: "local" },
+    { label: "B2B Company", value: "b2b" }
   ], goalOptions = [
-    { label: "\u{1F4B0} Get more sales", value: "sales" },
-    { label: "\u{1F680} Increase website traffic", value: "traffic" },
-    { label: "\u{1F4E7} Generate leads", value: "leads" }
+    { label: "Get more sales", value: "sales" },
+    { label: "Increase website traffic", value: "traffic" },
+    { label: "Generate leads", value: "leads" }
   ], toneCards = [
-    { id: "professional", emoji: "\u{1F454}", label: "Professional" },
-    { id: "friendly", emoji: "\u{1F60A}", label: "Friendly" },
-    { id: "urgent", emoji: "\u{1F525}", label: "Urgent" },
-    { id: "luxury", emoji: "\u{1F48E}", label: "Luxurious" }
+    { id: "professional", label: "Professional" },
+    { id: "friendly", label: "Friendly" },
+    { id: "urgent", label: "Urgent" },
+    { id: "luxury", label: "Luxurious" }
   ];
   return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(import_polaris13.BlockStack, { gap: "600", children: [
     /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(import_polaris13.Banner, { title: "Quick Campaign Setup", tone: "info", children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { children: "Answer a few simple questions to create your automated Google Ads campaign. Our AI will handle the rest!" }) }),
@@ -144931,10 +144939,10 @@ function CampaignSetupForm({
         {
           title: "",
           choices: [
-            { label: "\u{1F916} Let AI suggest keywords (Recommended)", value: "auto" },
-            { label: "\u{1F3F7}\uFE0F Focus on my brand name", value: "brand" },
-            { label: "\u{1F3AF} Target competitor keywords", value: "competitor" },
-            { label: "\u270F\uFE0F Use custom keywords", value: "custom" }
+            { label: "Let AI suggest keywords (Recommended)", value: "auto" },
+            { label: "Focus on my brand name", value: "brand" },
+            { label: "Target competitor keywords", value: "competitor" },
+            { label: "Use custom keywords", value: "custom" }
           ],
           selected: [config.keywordStrategy],
           onChange: (selected) => setConfig({ ...config, keywordStrategy: selected[0] })
@@ -144963,10 +144971,7 @@ function CampaignSetupForm({
           borderWidth: "025",
           borderRadius: "200",
           onClick: () => setConfig({ ...config, adTone: tone.id }),
-          children: /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(import_polaris13.BlockStack, { gap: "200", inlineAlign: "center", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(import_polaris13.Text, { variant: "headingLg", as: "p", children: tone.emoji }),
-            /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(import_polaris13.Text, { variant: "bodyMd", as: "p", children: tone.label })
-          ] })
+          children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(import_polaris13.BlockStack, { gap: "200", inlineAlign: "center", children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(import_polaris13.Text, { variant: "bodyMd", as: "p", children: tone.label }) })
         },
         tone.id
       )) })
@@ -145049,7 +145054,7 @@ function MLAutopilotDashboard({ shopName, mlState, onRefresh }) {
       alignItems: "center",
       marginBottom: "20px"
     }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("h3", { style: { margin: 0, color: "#495057" }, children: "\u{1F916} ML Autopilot Dashboard" }),
+      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("h3", { style: { margin: 0, color: "#495057" }, children: "ML Autopilot Dashboard" }),
       /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: "12px" }, children: [
         lastUpdated && /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("span", { style: { fontSize: "12px", color: "#6c757d" }, children: [
           "Updated: ",
@@ -145157,7 +145162,7 @@ function MLAutopilotDashboard({ shopName, mlState, onRefresh }) {
       ] })
     ] }),
     mlState.insights && /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("div", { style: { marginBottom: "20px" }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("h4", { style: { margin: "0 0 12px 0", color: "#495057" }, children: "\u{1F4CA} Performance Insights" }),
+      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("h4", { style: { margin: "0 0 12px 0", color: "#495057" }, children: "Performance Insights" }),
       mlState.insights.timeOfDayTrends && /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("div", { style: {
         background: "#e7f3ff",
         border: "1px solid #b3d9ff",
@@ -145171,7 +145176,7 @@ function MLAutopilotDashboard({ shopName, mlState, onRefresh }) {
           alignItems: "center",
           marginBottom: "8px"
         }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("span", { style: { fontWeight: "bold", fontSize: "14px" }, children: "\u{1F552} Optimal Hours" }),
+          /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("span", { style: { fontWeight: "bold", fontSize: "14px" }, children: "Optimal Hours" }),
           /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("span", { style: {
             fontSize: "12px",
             color: "#0c5460",
@@ -145201,7 +145206,7 @@ function MLAutopilotDashboard({ shopName, mlState, onRefresh }) {
           alignItems: "center",
           marginBottom: "8px"
         }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("span", { style: { fontWeight: "bold", fontSize: "14px" }, children: "\u{1F4C5} Optimal Days" }),
+          /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("span", { style: { fontWeight: "bold", fontSize: "14px" }, children: "Optimal Days" }),
           /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("span", { style: {
             fontSize: "12px",
             color: "#856404",
@@ -145231,7 +145236,7 @@ function MLAutopilotDashboard({ shopName, mlState, onRefresh }) {
           alignItems: "center",
           marginBottom: "8px"
         }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("span", { style: { fontWeight: "bold", fontSize: "14px" }, children: "\u{1F3AF} CPA Prediction" }),
+          /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("span", { style: { fontWeight: "bold", fontSize: "14px" }, children: "CPA Prediction" }),
           /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("span", { style: {
             fontSize: "12px",
             color: "#155724",
@@ -145259,7 +145264,7 @@ function MLAutopilotDashboard({ shopName, mlState, onRefresh }) {
         borderRadius: "6px",
         padding: "12px"
       }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("div", { style: { fontWeight: "bold", fontSize: "14px", marginBottom: "8px" }, children: "\u{1F4C8} Performance Forecasts" }),
+        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("div", { style: { fontWeight: "bold", fontSize: "14px", marginBottom: "8px" }, children: "Performance Forecasts" }),
         /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }, children: [
           mlState.insights.performanceForecasts.next7Days && /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("div", { children: [
             /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("div", { style: { fontSize: "12px", color: "#721c24", fontWeight: "bold" }, children: "Next 7 Days" }),
@@ -145360,7 +145365,7 @@ function MLAutopilotDashboard({ shopName, mlState, onRefresh }) {
     padding: "20px",
     marginTop: "16px"
   }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("h3", { style: { margin: "0 0 12px 0", color: "#495057" }, children: "\u{1F916} ML Autopilot Dashboard" }),
+    /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("h3", { style: { margin: "0 0 12px 0", color: "#495057" }, children: "ML Autopilot Dashboard" }),
     /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("p", { style: { margin: 0, color: "#6c757d" }, children: "ML Autopilot is initializing. Run an autopilot tick to see insights." })
   ] });
 }
@@ -145395,7 +145400,7 @@ async function loader7({ request: request2 }) {
         advancedSettings: hasFeatureAccess(subscriptionInfo, "advanced_ai_optimization"),
         realTimeAnalytics: hasFeatureAccess(subscriptionInfo, "real_time_performance_analytics"),
         customRules: hasFeatureAccess(subscriptionInfo, "custom_ai_optimization_rules")
-      }, console.log(`\u{1F510} Feature access for ${shopName}:`, availableFeatures);
+      };
     } catch (subscriptionError) {
       console.error("Subscription check failed on autopilot, using basic access:", subscriptionError);
     }
@@ -146349,7 +146354,7 @@ function IntentOSComingSoon() {
                 color: "#856404"
               },
               children: [
-                "\u{1F4C5} Expected Launch: ",
+                "Expected Launch: ",
                 launchDate
               ]
             }
@@ -146432,7 +146437,7 @@ function IntentOSComingSoon() {
                           background: "#fff"
                         },
                         children: [
-                          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h3", { style: { color: "#dc3545", marginBottom: "1rem" }, children: "\u{1F4A8} Exit Intent" }),
+                          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h3", { style: { color: "#dc3545", marginBottom: "1rem" }, children: "Exit Intent" }),
                           /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("p", { style: { color: "#666", fontSize: "14px" }, children: "Catch visitors before they leave with last-chance offers and incentives." })
                         ]
                       }
@@ -146484,7 +146489,7 @@ function IntentOSComingSoon() {
                           fontWeight: "bold",
                           display: "block"
                         },
-                        children: "\u{1F916} Use Autopilot Now"
+                        children: "Use Autopilot Now"
                       }
                     ),
                     /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
@@ -146570,7 +146575,7 @@ function IntentOSComingSoon() {
               borderRadius: "8px"
             },
             children: [
-              /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h3", { style: { marginBottom: "1rem", color: "#333" }, children: "\u{1F4EC} Want to know when Smart Website features launch?" }),
+              /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h3", { style: { marginBottom: "1rem", color: "#333" }, children: "Want to know when Smart Website features launch?" }),
               /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("p", { style: { color: "#666", marginBottom: "1.5rem" }, children: "We'll email you as soon as these conversion optimization tools are ready." }),
               /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(
                 "div",
@@ -146610,7 +146615,7 @@ function IntentOSComingSoon() {
                           fontWeight: "bold",
                           cursor: "pointer"
                         },
-                        children: "\u{1F4E7} Notify Me"
+                        children: "Notify Me"
                       }
                     )
                   ]
@@ -146869,15 +146874,7 @@ async function action5({ request: request2 }) {
       AP_TARGET_ROAS: String(fd.get("target_roas") || ""),
       AP_DESIRED_KEYWORDS_PIPE: String(fd.get("desired_keywords") || "").split(/\r?\n|,|[|]/).map((s) => s.trim()).filter(Boolean).join("|"),
       AP_PLAYBOOK_PROMPT: String(fd.get("playbook") || "")
-    };
-    console.log(`\u{1F4BE} Saving settings for ${shopName}:`, {
-      schedule: settings.AP_SCHEDULE,
-      target_cpa: settings.AP_TARGET_CPA,
-      target_roas: settings.AP_TARGET_ROAS,
-      keywords_count: settings.AP_DESIRED_KEYWORDS_PIPE.split("|").length,
-      playbook_length: settings.AP_PLAYBOOK_PROMPT.length
-    });
-    let { backendFetch: backendFetch2 } = await Promise.resolve().then(() => (init_hmac_server(), hmac_server_exports)), saveResult = await backendFetch2(
+    }, { backendFetch: backendFetch2 } = await Promise.resolve().then(() => (init_hmac_server(), hmac_server_exports)), saveResult = await backendFetch2(
       "/upsertConfig",
       "POST",
       { nonce: Date.now(), settings },
@@ -147389,7 +147386,7 @@ function Advanced() {
     /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(import_react27.Form, { method: "post", style: { display: "grid", gap: 20 }, children: [
       /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("input", { type: "hidden", name: "shop", value: data?.shopName || "" }),
       /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("div", { style: sectionStyle, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("h3", { style: legendStyle, children: "\u{1F552} Automation Schedule" }),
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("h3", { style: legendStyle, children: "Automation Schedule" }),
         /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("p", { style: helpStyle, children: "Choose how often Ads Autopilot AI should optimize your campaigns" }),
         /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("div", { style: { marginTop: "12px" }, children: [
           /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("div", { style: { display: "grid", gap: "8px" }, children: suggestions.schedule?.options.map((option, idx) => /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(
@@ -147654,7 +147651,7 @@ function Advanced() {
         ] })
       ] }),
       /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("div", { style: sectionStyle, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("h3", { style: legendStyle, children: "\u{1F4B3} Maximum Bid Limits" }),
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("h3", { style: legendStyle, children: "Maximum Bid Limits" }),
         /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("p", { style: helpStyle, children: "Set cost-per-click limits to control your ad spending" }),
         /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("div", { style: { marginTop: "12px" }, children: [
           /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("div", { style: { marginBottom: "16px" }, children: [
@@ -147870,7 +147867,7 @@ function Advanced() {
                         cursor: nav.state !== "idle" ? "not-allowed" : "pointer",
                         opacity: nav.state !== "idle" ? 0.7 : 1
                       },
-                      children: nav.state !== "idle" ? "\u23F3 Saving..." : "\u{1F4BE} Save Bid Limits"
+                      children: nav.state !== "idle" ? "Saving..." : "Save Bid Limits"
                     }
                   ),
                   buttonFeedback.saveCaps && /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
@@ -148109,7 +148106,7 @@ function Advanced() {
         ] })
       ] }),
       /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("div", { style: sectionStyle, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("h3", { style: legendStyle, children: "\u{1F511} Target Keywords" }),
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("h3", { style: legendStyle, children: "Target Keywords" }),
         /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("p", { style: helpStyle, children: "Choose keyword categories that match your business or enter your own" }),
         /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("div", { style: { marginTop: "12px" }, children: [
           /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("div", { style: { marginBottom: "12px" }, children: [
@@ -148418,7 +148415,7 @@ competitor alternatives`,
                   boxShadow: nav.state === "idle" ? "0 4px 12px rgba(40, 167, 69, 0.3)" : "none",
                   transition: "all 0.2s ease"
                 },
-                children: nav.state !== "idle" ? "\u23F3 Saving & Running..." : "\u{1F4BE} Save Settings & Run Optimization"
+                children: nav.state !== "idle" ? "Saving & Running..." : "Save Settings & Run Optimization"
               }
             ),
             (buttonFeedback.saveSettings || buttonFeedback.runOptimization) && /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
@@ -148825,7 +148822,14 @@ function Billing() {
   } = (0, import_react29.useLoaderData)(), actionData = (0, import_react29.useActionData)(), isSubmitting = (0, import_react29.useNavigation)().state === "submitting";
   import_react28.default.useEffect(() => {
     actionData?.success && actionData?.redirectUrl && window.top?.location.assign(actionData.redirectUrl);
-  }, [actionData]);
+  }, [actionData]), import_react28.default.useEffect(() => {
+    if ((hasActivePayment || isInTrial) && typeof window < "u" && window.gtag) {
+      let conversionFiredKey = `conversion_fired_${shopName}`;
+      sessionStorage.getItem(conversionFiredKey) || (window.gtag("event", "conversion", {
+        send_to: "AW-17457205812/dmSgCPHDtMsbELSkn4RB"
+      }), sessionStorage.setItem(conversionFiredKey, "true"), console.log("Google Ads conversion event fired for sign-up"));
+    }
+  }, [hasActivePayment, isInTrial, shopName]);
   let redirectToManagedPricing = () => {
     console.log("Redirecting to managed pricing"), console.log("App handle:", appHandle), console.log("Shop name:", shopName), console.log("Managed pricing URL:", managedPricingUrl);
     try {
@@ -148885,7 +148889,7 @@ Or visit: ${managedPricingUrl}`);
           borderRadius: "8px",
           marginBottom: "32px"
         }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("h3", { style: { margin: "0 0 16px 0" }, children: "\u{1F389} Free Trial Active" }),
+          /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("h3", { style: { margin: "0 0 16px 0" }, children: "Free Trial Active" }),
           /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("div", { style: { marginBottom: "16px" }, children: [
             /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("p", { style: { margin: "0 0 8px 0", fontSize: "16px" }, children: [
               /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("strong", { children: "Current Plan:" }),
@@ -150516,7 +150520,7 @@ function AIStatusIndicator({ shopName, compact = !1, showTokenUsage = !1 }) {
             fontSize: "10px"
           },
           title: "Refresh AI status",
-          children: loading ? "\u23F3" : "\u{1F504}"
+          children: loading ? "..." : ""
         }
       )
     ] }),
@@ -150624,7 +150628,6 @@ var import_jsx_runtime28 = __toESM(require_jsx_runtime()), loader14 = async ({ r
           });
           if (syncResponse.ok) {
             let tierData = await syncResponse.json();
-            console.log(`\u2705 Tier synced with backend for ${shopName}:`, tierData.tier);
           } else
             console.warn(`Failed to sync tier for ${shopName}:`, syncResponse.status);
         } catch (tierSyncError) {
@@ -151018,7 +151021,7 @@ function AppIndex() {
                 },
                 children: [
                   /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("div", { style: { position: "absolute", top: "8px", right: "8px" }, children: /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(AIStatusIndicator, { shopName, compact: !0 }) }),
-                  /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("h3", { children: "\u{1F916} AI Dashboard" }),
+                  /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("h3", { children: "AI Dashboard" }),
                   /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("p", { children: "Manage AI-generated content and monitor automation" }),
                   /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(
                     import_react37.Link,
@@ -151411,7 +151414,7 @@ async function loader17({ request: request2 }) {
     redirect_uri: redirectUri,
     state: crypto.randomUUID()
   }), authUrl = `https://${shopDomain}/admin/oauth/authorize?${params.toString()}`;
-  return console.log(`\u{1F517} Redirecting to Shopify OAuth for shop: ${shop}`), console.log(`\u{1F517} Auth URL: ${authUrl}`), (0, import_node17.redirect)(authUrl);
+  return (0, import_node17.redirect)(authUrl);
 }
 function Install() {
   return null;
@@ -152499,11 +152502,11 @@ var loader20 = async ({ request: request2 }) => {
         } catch {
         }
     }
-    console.log(`\u{1F510} Shopify OAuth request for shop: ${shopName || "unknown"}`), (!host || !url.searchParams.get("id")) && shopName && !url.searchParams.get("shop") && url.searchParams.set("shop", `${shopName}.myshopify.com`);
+    (!host || !url.searchParams.get("id")) && shopName && !url.searchParams.get("shop") && url.searchParams.set("shop", `${shopName}.myshopify.com`);
     let auth = await authenticate.admin(request2);
     return auth instanceof Response ? auth : null;
   } catch (error) {
-    return console.error("\u{1F6A8} Auth route error:", error), console.error("Request URL:", request2.url), console.error("Request headers:", Object.fromEntries(request2.headers.entries())), (0, import_node20.redirect)(`/auth/login?error=auth_failed&shop=${extractShopFromRequest(request2) || "unknown"}`);
+    return console.error("Auth route error:", error), console.error("Request URL:", request2.url), console.error("Request headers:", Object.fromEntries(request2.headers.entries())), (0, import_node20.redirect)(`/auth/login?error=auth_failed&shop=${extractShopFromRequest(request2) || "unknown"}`);
   }
 };
 
@@ -153462,16 +153465,15 @@ var import_react46 = __toESM(require_react()), import_jsx_runtime42 = __toESM(re
 // app/routes/app.tsx
 var import_jsx_runtime43 = __toESM(require_jsx_runtime()), links2 = () => [{ rel: "stylesheet", href: styles_default }], loader23 = async ({ request: request2 }) => {
   try {
-    console.log(`\u{1F3EA} Dashboard loaded for shop: ${new URL(request2.url).searchParams.get("shop") || "unknown"}`);
     let { session } = await authenticate.admin(request2), shopName = session?.shop?.replace(".myshopify.com", "");
     if (!shopName)
       throw console.error("No shop name found in session:", session), new Error("Unable to determine shop name from Shopify session");
-    return console.log(`\u{1F3EA} Shopify app authenticated for shop: ${shopName}`), (0, import_node23.json)({
+    return (0, import_node23.json)({
       apiKey: process.env.SHOPIFY_API_KEY || "",
       shopName
     });
   } catch (error) {
-    console.error("\u{1F6A8} App route authentication error:", error), console.error("Request URL:", request2.url);
+    console.error("App route authentication error:", error), console.error("Request URL:", request2.url);
     let url = new URL(request2.url), shop = url.searchParams.get("shop") || url.searchParams.get("host"), authUrl = shop ? `/auth/login?shop=${shop}` : "/auth/login";
     throw new Response(null, {
       status: 302,
@@ -153506,7 +153508,7 @@ function App2() {
 var ErrorBoundary5 = boundary.error, headers = (headersArgs) => boundary.headers(headersArgs);
 
 // server-assets-manifest:@remix-run/dev/assets-manifest
-var assets_manifest_default = { entry: { module: "/assets/entry.client-NEDKIYA6.js", imports: ["/assets/_shared/chunk-HAMHSZSO.js", "/assets/_shared/chunk-ZYYQ3RDD.js", "/assets/_shared/chunk-TXQSRDID.js", "/assets/_shared/chunk-P23QBOGJ.js"] }, routes: { root: { id: "root", parentId: void 0, path: "", index: void 0, caseSensitive: void 0, module: "/assets/root-7ZDBBPNQ.js", imports: ["/assets/_shared/chunk-LXK74B4C.js", "/assets/_shared/chunk-SUCM6EVT.js"], hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/_health": { id: "routes/_health", parentId: "root", path: void 0, index: void 0, caseSensitive: void 0, module: "/assets/routes/_health-A5T2YZUT.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/_index": { id: "routes/_index", parentId: "root", path: void 0, index: !0, caseSensitive: void 0, module: "/assets/routes/_index-73J7LGV3.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/api.generate-script": { id: "routes/api.generate-script", parentId: "root", path: "api/generate-script", index: void 0, caseSensitive: void 0, module: "/assets/routes/api.generate-script-3DUZY66Z.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/api.proxy.$": { id: "routes/api.proxy.$", parentId: "root", path: "api/proxy/*", index: void 0, caseSensitive: void 0, module: "/assets/routes/api.proxy.$-44OW55O3.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/api.script-proxy": { id: "routes/api.script-proxy", parentId: "root", path: "api/script-proxy", index: void 0, caseSensitive: void 0, module: "/assets/routes/api.script-proxy-D7CGEASX.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app": { id: "routes/app", parentId: "root", path: "app", index: void 0, caseSensitive: void 0, module: "/assets/routes/app-H7ZLOLDU.js", imports: ["/assets/_shared/chunk-PCQUX7PX.js", "/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/app._index": { id: "routes/app._index", parentId: "routes/app", path: void 0, index: !0, caseSensitive: void 0, module: "/assets/routes/app._index-DVE23OVO.js", imports: ["/assets/_shared/chunk-QJVHAVDT.js", "/assets/_shared/chunk-XGZ5RCNR.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.additional": { id: "routes/app.additional", parentId: "routes/app", path: "additional", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.additional-OWYYDPK3.js", imports: ["/assets/_shared/chunk-SUCM6EVT.js"], hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.advanced": { id: "routes/app.advanced", parentId: "routes/app", path: "advanced", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.advanced-BE5OVC5T.js", imports: ["/assets/_shared/chunk-XGZ5RCNR.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.ai-dashboard": { id: "routes/app.ai-dashboard", parentId: "routes/app", path: "ai-dashboard", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.ai-dashboard-VANDPRGL.js", imports: ["/assets/_shared/chunk-XGZ5RCNR.js", "/assets/_shared/chunk-SUCM6EVT.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.autopilot": { id: "routes/app.autopilot", parentId: "routes/app", path: "autopilot", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.autopilot-5DAWX3Y7.js", imports: ["/assets/_shared/chunk-XGZ5RCNR.js", "/assets/_shared/chunk-YO2XKRKB.js", "/assets/_shared/chunk-SUCM6EVT.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.billing": { id: "routes/app.billing", parentId: "routes/app", path: "billing", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.billing-I7YL7X6Q.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/app.dashboards": { id: "routes/app.dashboards", parentId: "routes/app", path: "dashboards", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.dashboards-HP4F5CMG.js", imports: ["/assets/_shared/chunk-SUCM6EVT.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.intent-os": { id: "routes/app.intent-os", parentId: "routes/app", path: "intent-os", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.intent-os-YVHHU3E5.js", imports: ["/assets/_shared/chunk-QJVHAVDT.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.reports": { id: "routes/app.reports", parentId: "routes/app", path: "reports", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.reports-HDY4DXEW.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/app.setup": { id: "routes/app.setup", parentId: "routes/app", path: "setup", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.setup-JWL3BGKB.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.support": { id: "routes/app.support", parentId: "routes/app", path: "support", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.support-S5L6YTSY.js", imports: ["/assets/_shared/chunk-SUCM6EVT.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/auth.$": { id: "routes/auth.$", parentId: "root", path: "auth/*", index: void 0, caseSensitive: void 0, module: "/assets/routes/auth.$-D4HZOJGU.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/auth.session-token": { id: "routes/auth.session-token", parentId: "root", path: "auth/session-token", index: void 0, caseSensitive: void 0, module: "/assets/routes/auth.session-token-IZRALWIP.js", imports: ["/assets/_shared/chunk-PCQUX7PX.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/debug": { id: "routes/debug", parentId: "root", path: "debug", index: void 0, caseSensitive: void 0, module: "/assets/routes/debug-5ZDPCOZX.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/health": { id: "routes/health", parentId: "root", path: "health", index: void 0, caseSensitive: void 0, module: "/assets/routes/health-FBV7EBK7.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/install": { id: "routes/install", parentId: "root", path: "install", index: void 0, caseSensitive: void 0, module: "/assets/routes/install-YL2XNGMC.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/local.autopilot": { id: "routes/local.autopilot", parentId: "root", path: "local/autopilot", index: void 0, caseSensitive: void 0, module: "/assets/routes/local.autopilot-53IAOLIK.js", imports: ["/assets/_shared/chunk-YO2XKRKB.js", "/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/privacy": { id: "routes/privacy", parentId: "root", path: "privacy", index: void 0, caseSensitive: void 0, module: "/assets/routes/privacy-FAMCBMFP.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/support": { id: "routes/support", parentId: "root", path: "support", index: void 0, caseSensitive: void 0, module: "/assets/routes/support-5ENTISHI.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/terms": { id: "routes/terms", parentId: "root", path: "terms", index: void 0, caseSensitive: void 0, module: "/assets/routes/terms-T6ZZOXSF.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 } }, version: "d214acf4", hmr: void 0, url: "/assets/manifest-D214ACF4.js" };
+var assets_manifest_default = { entry: { module: "/assets/entry.client-NEDKIYA6.js", imports: ["/assets/_shared/chunk-HAMHSZSO.js", "/assets/_shared/chunk-ZYYQ3RDD.js", "/assets/_shared/chunk-TXQSRDID.js", "/assets/_shared/chunk-P23QBOGJ.js"] }, routes: { root: { id: "root", parentId: void 0, path: "", index: void 0, caseSensitive: void 0, module: "/assets/root-G7MITZQA.js", imports: ["/assets/_shared/chunk-LXK74B4C.js", "/assets/_shared/chunk-SUCM6EVT.js"], hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/_health": { id: "routes/_health", parentId: "root", path: void 0, index: void 0, caseSensitive: void 0, module: "/assets/routes/_health-A5T2YZUT.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/_index": { id: "routes/_index", parentId: "root", path: void 0, index: !0, caseSensitive: void 0, module: "/assets/routes/_index-73J7LGV3.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/api.generate-script": { id: "routes/api.generate-script", parentId: "root", path: "api/generate-script", index: void 0, caseSensitive: void 0, module: "/assets/routes/api.generate-script-3DUZY66Z.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/api.proxy.$": { id: "routes/api.proxy.$", parentId: "root", path: "api/proxy/*", index: void 0, caseSensitive: void 0, module: "/assets/routes/api.proxy.$-44OW55O3.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/api.script-proxy": { id: "routes/api.script-proxy", parentId: "root", path: "api/script-proxy", index: void 0, caseSensitive: void 0, module: "/assets/routes/api.script-proxy-D7CGEASX.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app": { id: "routes/app", parentId: "root", path: "app", index: void 0, caseSensitive: void 0, module: "/assets/routes/app-H7ZLOLDU.js", imports: ["/assets/_shared/chunk-PCQUX7PX.js", "/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/app._index": { id: "routes/app._index", parentId: "routes/app", path: void 0, index: !0, caseSensitive: void 0, module: "/assets/routes/app._index-JGMY7XOK.js", imports: ["/assets/_shared/chunk-QJVHAVDT.js", "/assets/_shared/chunk-XGZ5RCNR.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.additional": { id: "routes/app.additional", parentId: "routes/app", path: "additional", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.additional-OWYYDPK3.js", imports: ["/assets/_shared/chunk-SUCM6EVT.js"], hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.advanced": { id: "routes/app.advanced", parentId: "routes/app", path: "advanced", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.advanced-6NBZFQ6D.js", imports: ["/assets/_shared/chunk-XGZ5RCNR.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.ai-dashboard": { id: "routes/app.ai-dashboard", parentId: "routes/app", path: "ai-dashboard", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.ai-dashboard-BMNIKW4J.js", imports: ["/assets/_shared/chunk-XGZ5RCNR.js", "/assets/_shared/chunk-SUCM6EVT.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.autopilot": { id: "routes/app.autopilot", parentId: "routes/app", path: "autopilot", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.autopilot-MX3FROEZ.js", imports: ["/assets/_shared/chunk-XGZ5RCNR.js", "/assets/_shared/chunk-YO2XKRKB.js", "/assets/_shared/chunk-SUCM6EVT.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.billing": { id: "routes/app.billing", parentId: "routes/app", path: "billing", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.billing-RUZ5BMZJ.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/app.dashboards": { id: "routes/app.dashboards", parentId: "routes/app", path: "dashboards", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.dashboards-HP4F5CMG.js", imports: ["/assets/_shared/chunk-SUCM6EVT.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.intent-os": { id: "routes/app.intent-os", parentId: "routes/app", path: "intent-os", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.intent-os-DXKA7GHE.js", imports: ["/assets/_shared/chunk-QJVHAVDT.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.reports": { id: "routes/app.reports", parentId: "routes/app", path: "reports", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.reports-HDY4DXEW.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/app.setup": { id: "routes/app.setup", parentId: "routes/app", path: "setup", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.setup-JWL3BGKB.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.support": { id: "routes/app.support", parentId: "routes/app", path: "support", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.support-S5L6YTSY.js", imports: ["/assets/_shared/chunk-SUCM6EVT.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/auth.$": { id: "routes/auth.$", parentId: "root", path: "auth/*", index: void 0, caseSensitive: void 0, module: "/assets/routes/auth.$-D4HZOJGU.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/auth.session-token": { id: "routes/auth.session-token", parentId: "root", path: "auth/session-token", index: void 0, caseSensitive: void 0, module: "/assets/routes/auth.session-token-VO5NUU2V.js", imports: ["/assets/_shared/chunk-PCQUX7PX.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/debug": { id: "routes/debug", parentId: "root", path: "debug", index: void 0, caseSensitive: void 0, module: "/assets/routes/debug-5ZDPCOZX.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/health": { id: "routes/health", parentId: "root", path: "health", index: void 0, caseSensitive: void 0, module: "/assets/routes/health-FBV7EBK7.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/install": { id: "routes/install", parentId: "root", path: "install", index: void 0, caseSensitive: void 0, module: "/assets/routes/install-YL2XNGMC.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/local.autopilot": { id: "routes/local.autopilot", parentId: "root", path: "local/autopilot", index: void 0, caseSensitive: void 0, module: "/assets/routes/local.autopilot-53IAOLIK.js", imports: ["/assets/_shared/chunk-YO2XKRKB.js", "/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/privacy": { id: "routes/privacy", parentId: "root", path: "privacy", index: void 0, caseSensitive: void 0, module: "/assets/routes/privacy-FAMCBMFP.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/support": { id: "routes/support", parentId: "root", path: "support", index: void 0, caseSensitive: void 0, module: "/assets/routes/support-5ENTISHI.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/terms": { id: "routes/terms", parentId: "root", path: "terms", index: void 0, caseSensitive: void 0, module: "/assets/routes/terms-T6ZZOXSF.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 } }, version: "913a317f", hmr: void 0, url: "/assets/manifest-913A317F.js" };
 
 // server-entry-module:@remix-run/dev/server-build
 var mode = "production", assetsBuildDirectory = "public/assets", future = { v3_fetcherPersist: !1, v3_relativeSplatPath: !1, v3_throwAbortReason: !1, v3_routeConfig: !1, v3_singleFetch: !1, v3_lazyRouteDiscovery: !1, unstable_optimizeDeps: !1 }, publicPath = "/assets/", entry = { module: entry_server_exports }, routes = {
