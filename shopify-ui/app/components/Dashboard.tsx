@@ -494,6 +494,8 @@ export const Dashboard: React.FC<DashboardProps> = ({
     );
   }
 
+  const [showMoreMetrics, setShowMoreMetrics] = useState(false);
+
   return (
     <Page
       title="Dashboard"
@@ -503,14 +505,6 @@ export const Dashboard: React.FC<DashboardProps> = ({
         onAction: refreshMetrics,
         loading,
       }}
-      secondaryActions={[
-        {
-          content: "Export Report",
-          onAction: () => {
-            // Implement export functionality
-          },
-        },
-      ]}
     >
       <Layout>
         <Layout.Section>
@@ -524,20 +518,19 @@ export const Dashboard: React.FC<DashboardProps> = ({
           </Stack>
         </Layout.Section>
 
-        {/* Key Metrics */}
+        {/* Primary Metrics - Top 3 */}
         <Layout.Section>
           <Layout>
             <Layout.Section oneThird>
               <MetricCard
-                title="Total Visitors"
-                value={metrics?.totalVisitors || 0}
-                prefix=""
-                suffix=""
+                title="Revenue"
+                value={metrics?.revenue || 0}
+                prefix="$"
                 loading={loading}
                 change={
                   metrics
                     ? {
-                        value: 12.5,
+                        value: 15.7,
                         trend: "up",
                         period: "last period",
                       }
@@ -565,72 +558,14 @@ export const Dashboard: React.FC<DashboardProps> = ({
 
             <Layout.Section oneThird>
               <MetricCard
-                title="Conversion Rate"
-                value={metrics?.conversionRate || 0}
-                suffix="%"
+                title="ROAS"
+                value={metrics?.performance?.avgCpc ? ((metrics?.revenue || 0) / (metrics?.performance?.avgCpc * (metrics?.totalVisitors || 1))).toFixed(2) : 0}
+                suffix="x"
                 loading={loading}
                 change={
                   metrics
                     ? {
-                        value: 2.1,
-                        trend: "down",
-                        period: "last period",
-                      }
-                    : undefined
-                }
-              />
-            </Layout.Section>
-          </Layout>
-        </Layout.Section>
-
-        <Layout.Section>
-          <Layout>
-            <Layout.Section oneThird>
-              <MetricCard
-                title="Revenue"
-                value={metrics?.revenue || 0}
-                prefix="$"
-                loading={loading}
-                change={
-                  metrics
-                    ? {
-                        value: 15.7,
-                        trend: "up",
-                        period: "last period",
-                      }
-                    : undefined
-                }
-              />
-            </Layout.Section>
-
-            <Layout.Section oneThird>
-              <MetricCard
-                title="Average CPC"
-                value={metrics?.performance?.avgCpc || 0}
-                prefix="$"
-                loading={loading}
-                change={
-                  metrics
-                    ? {
-                        value: 5.2,
-                        trend: "down",
-                        period: "last period",
-                      }
-                    : undefined
-                }
-              />
-            </Layout.Section>
-
-            <Layout.Section oneThird>
-              <MetricCard
-                title="Click-Through Rate"
-                value={metrics?.performance?.ctr || 0}
-                suffix="%"
-                loading={loading}
-                change={
-                  metrics
-                    ? {
-                        value: 3.4,
+                        value: 5.4,
                         trend: "up",
                         period: "last period",
                       }
@@ -641,80 +576,136 @@ export const Dashboard: React.FC<DashboardProps> = ({
           </Layout>
         </Layout.Section>
 
-        {/* Charts */}
+        {/* Revenue Trend Chart */}
         <Layout.Section>
-          <Layout>
-            <Layout.Section twoThirds>
-              {metrics?.trends?.visitors && (
-                <TrendChart
-                  data={metrics.trends.visitors}
-                  title="Visitor Trends"
-                  color={chartColors.primary}
-                  type="area"
-                />
-              )}
-            </Layout.Section>
-
-            <Layout.Section oneThird>
-              <QuickActions
-                onCreateCampaign={handleQuickAction.createCampaign}
-                onCreateAudience={handleQuickAction.createAudience}
-                onViewInsights={handleQuickAction.viewInsights}
-                onRunAutopilot={handleQuickAction.runAutopilot}
-              />
-            </Layout.Section>
-          </Layout>
+          {metrics?.trends?.revenue && (
+            <TrendChart
+              data={metrics.trends.revenue}
+              title="Revenue Trend"
+              color={chartColors.success}
+              type="area"
+            />
+          )}
         </Layout.Section>
 
+        {/* Collapsible More Metrics Section */}
         <Layout.Section>
-          <Layout>
-            <Layout.Section oneHalf>
-              {metrics?.trends?.conversions && (
-                <TrendChart
-                  data={metrics.trends.conversions}
-                  title="Conversion Trends"
-                  color={chartColors.success}
-                />
-              )}
-            </Layout.Section>
+          <Card>
+            <Card.Section>
+              <Button
+                onClick={() => setShowMoreMetrics(!showMoreMetrics)}
+                disclosure={showMoreMetrics ? "up" : "down"}
+                fullWidth
+              >
+                {showMoreMetrics ? "Hide" : "View More Metrics"}
+              </Button>
+            </Card.Section>
+            {showMoreMetrics && (
+              <>
+                <Card.Section>
+                  <Layout>
+                    <Layout.Section oneThird>
+                      <MetricCard
+                        title="Total Visitors"
+                        value={metrics?.totalVisitors || 0}
+                        loading={loading}
+                        change={
+                          metrics
+                            ? {
+                                value: 12.5,
+                                trend: "up",
+                                period: "last period",
+                              }
+                            : undefined
+                        }
+                      />
+                    </Layout.Section>
 
-            <Layout.Section oneHalf>
-              {metrics?.trends?.revenue && (
-                <TrendChart
-                  data={metrics.trends.revenue}
-                  title="Revenue Trends"
-                  color={chartColors.warning}
-                />
-              )}
-            </Layout.Section>
-          </Layout>
+                    <Layout.Section oneThird>
+                      <MetricCard
+                        title="Conversion Rate"
+                        value={metrics?.conversionRate || 0}
+                        suffix="%"
+                        loading={loading}
+                        change={
+                          metrics
+                            ? {
+                                value: 2.1,
+                                trend: "down",
+                                period: "last period",
+                              }
+                            : undefined
+                        }
+                      />
+                    </Layout.Section>
+
+                    <Layout.Section oneThird>
+                      <MetricCard
+                        title="Average CPC"
+                        value={metrics?.performance?.avgCpc || 0}
+                        prefix="$"
+                        loading={loading}
+                        change={
+                          metrics
+                            ? {
+                                value: 5.2,
+                                trend: "down",
+                                period: "last period",
+                              }
+                            : undefined
+                        }
+                      />
+                    </Layout.Section>
+                  </Layout>
+                </Card.Section>
+
+                <Card.Section>
+                  <Layout>
+                    <Layout.Section oneHalf>
+                      <MetricCard
+                        title="Click-Through Rate"
+                        value={metrics?.performance?.ctr || 0}
+                        suffix="%"
+                        loading={loading}
+                        change={
+                          metrics
+                            ? {
+                                value: 3.4,
+                                trend: "up",
+                                period: "last period",
+                              }
+                            : undefined
+                        }
+                      />
+                    </Layout.Section>
+
+                    <Layout.Section oneHalf>
+                      <PerformanceDonut
+                        title="Campaign Status"
+                        data={[
+                          {
+                            name: "Active",
+                            value: metrics?.campaigns?.active || 0,
+                            color: chartColors.success,
+                          },
+                          {
+                            name: "Paused",
+                            value: metrics?.campaigns?.paused || 0,
+                            color: chartColors.warning,
+                          },
+                        ]}
+                      />
+                    </Layout.Section>
+                  </Layout>
+                </Card.Section>
+              </>
+            )}
+          </Card>
         </Layout.Section>
 
-        {/* Campaign Performance Overview */}
+        {/* Recent Activity - Limited to 3 items */}
         <Layout.Section>
-          <Layout>
-            <Layout.Section oneHalf>
-              <PerformanceDonut
-                title="Campaign Status Distribution"
-                data={[
-                  {
-                    name: "Active",
-                    value: metrics?.campaigns?.active || 0,
-                    color: chartColors.success,
-                  },
-                  {
-                    name: "Paused",
-                    value: metrics?.campaigns?.paused || 0,
-                    color: chartColors.warning,
-                  },
-                ]}
-              />
-            </Layout.Section>
-
-            <Layout.Section oneHalf>
-              <RecentActivity activities={recentActivities} />
-            </Layout.Section>
-          </Layout>
+          <RecentActivity activities={recentActivities.slice(0, 3)} />
         </Layout.Section>
       </Layout>
     </Page>

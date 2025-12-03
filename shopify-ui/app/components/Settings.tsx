@@ -15,18 +15,10 @@ import {
   Badge,
   Tabs,
   Divider,
-  ButtonGroup,
-  Modal,
-  TextContainer,
-  List,
-  Icon,
   Toast,
   Frame,
   SettingToggle,
   DescriptionList,
-  Link,
-  CalloutCard,
-  ProgressBar,
 } from "@shopify/polaris";
 import type { AppConfig } from "../services/api.server";
 
@@ -55,15 +47,6 @@ interface ConnectionStatus {
   };
 }
 
-interface NotificationSettings {
-  email: boolean;
-  webhook?: string;
-  slackWebhook?: string;
-  performance: boolean;
-  budgetAlerts: boolean;
-  campaignUpdates: boolean;
-  weeklyReports: boolean;
-}
 
 const ConnectionCard: React.FC<{
   title: string;
@@ -196,23 +179,14 @@ const AutomationSettings: React.FC<{
   const [autopilotEnabled, setAutopilotEnabled] = useState(
     config.automation.autopilotEnabled,
   );
-  const [bidOptimization, setBidOptimization] = useState(
-    config.automation.bidOptimization,
-  );
-  const [budgetOptimization, setBudgetOptimization] = useState(
-    config.automation.budgetOptimization,
-  );
-  const [keywordExpansion, setKeywordExpansion] = useState(
-    config.automation.keywordExpansion,
-  );
 
   const handleSave = () => {
     onUpdate({
       automation: {
         autopilotEnabled,
-        bidOptimization,
-        budgetOptimization,
-        keywordExpansion,
+        bidOptimization: false,
+        budgetOptimization: false,
+        keywordExpansion: false,
       },
     });
   };
@@ -239,28 +213,12 @@ const AutomationSettings: React.FC<{
             <>
               <Divider />
 
-              <Text variant="headingMd">Automation Features</Text>
-
-              <Checkbox
-                label="Bid optimization"
-                checked={bidOptimization}
-                onChange={setBidOptimization}
-                helpText="Automatically adjust bids to maximize ROAS"
-              />
-
-              <Checkbox
-                label="Budget optimization"
-                checked={budgetOptimization}
-                onChange={setBudgetOptimization}
-                helpText="Redistribute budget between campaigns based on performance"
-              />
-
-              <Checkbox
-                label="Keyword expansion"
-                checked={keywordExpansion}
-                onChange={setKeywordExpansion}
-                helpText="Automatically discover and add high-performing keywords"
-              />
+              <Banner status="info" title="Advanced Automation Features">
+                <p>
+                  Additional automation features including bid optimization, budget
+                  optimization, and keyword expansion are coming soon.
+                </p>
+              </Banner>
             </>
           )}
 
@@ -273,93 +231,6 @@ const AutomationSettings: React.FC<{
   );
 };
 
-const NotificationSettings: React.FC<{
-  config: AppConfig;
-  onUpdate: (updates: Partial<AppConfig>) => void;
-}> = ({ config, onUpdate }) => {
-  const [email, setEmail] = useState(config.notifications.email);
-  const [webhook, setWebhook] = useState(config.notifications.webhook || "");
-  const [slackWebhook, setSlackWebhook] = useState(
-    config.notifications.slackWebhook || "",
-  );
-
-  const handleSave = () => {
-    onUpdate({
-      notifications: {
-        email,
-        webhook: webhook || undefined,
-        slackWebhook: slackWebhook || undefined,
-      },
-    });
-  };
-
-  const testWebhook = async (url: string, type: "webhook" | "slack") => {
-    try {
-      const response = await fetch("/api/notifications/test", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url, type }),
-      });
-
-      if (response.ok) {
-        // Show success toast
-      } else {
-        // Show error toast
-      }
-    } catch (error) {
-      // Show error toast
-    }
-  };
-
-  return (
-    <Card title="Notifications">
-      <Card.Section>
-        <FormLayout>
-          <Checkbox
-            label="Email notifications"
-            checked={email}
-            onChange={setEmail}
-            helpText="Receive notifications via email"
-          />
-
-          <TextField
-            label="Webhook URL"
-            value={webhook}
-            onChange={setWebhook}
-            placeholder="https://your-api.com/webhook"
-            helpText="Send notifications to your custom webhook endpoint"
-            connectedRight={
-              webhook ? (
-                <Button onClick={() => testWebhook(webhook, "webhook")}>
-                  Test
-                </Button>
-              ) : undefined
-            }
-          />
-
-          <TextField
-            label="Slack Webhook URL"
-            value={slackWebhook}
-            onChange={setSlackWebhook}
-            placeholder="https://hooks.slack.com/services/..."
-            helpText="Send notifications to your Slack channel"
-            connectedRight={
-              slackWebhook ? (
-                <Button onClick={() => testWebhook(slackWebhook, "slack")}>
-                  Test
-                </Button>
-              ) : undefined
-            }
-          />
-
-          <Button primary onClick={handleSave}>
-            Save Notification Settings
-          </Button>
-        </FormLayout>
-      </Card.Section>
-    </Card>
-  );
-};
 
 const AccountInfo: React.FC<{
   config: AppConfig;
@@ -396,229 +267,11 @@ const AccountInfo: React.FC<{
   );
 };
 
-const DataExport: React.FC = () => {
-  const [exportLoading, setExportLoading] = useState<string | null>(null);
 
-  const handleExport = async (
-    type: "campaigns" | "audiences" | "insights" | "all",
-  ) => {
-    setExportLoading(type);
-    try {
-      const response = await fetch(`/api/export/${type}`, { method: "POST" });
-
-      if (response.ok) {
-        const blob = await response.blob();
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.style.display = "none";
-        a.href = url;
-        a.download = `adsautopilot-${type}-${new Date().toISOString().split("T")[0]}.csv`;
-        document.body.appendChild(a);
-        a.click();
-        window.URL.revokeObjectURL(url);
-        document.body.removeChild(a);
-      }
-    } catch (error) {
-      console.error("Export failed:", error);
-    } finally {
-      setExportLoading(null);
-    }
-  };
-
-  const exportOptions = [
-    {
-      title: "Campaign Data",
-      description: "Export all campaign performance data",
-      type: "campaigns" as const,
-    },
-    {
-      title: "Audience Data",
-      description: "Export audience definitions and performance",
-      type: "audiences" as const,
-    },
-    {
-      title: "Insights & Analytics",
-      description: "Export detailed analytics and insights",
-      type: "insights" as const,
-    },
-    {
-      title: "Complete Data Export",
-      description: "Export all data in a comprehensive package",
-      type: "all" as const,
-    },
-  ];
-
-  return (
-    <Card title="Data Export">
-      <Card.Section>
-        <Stack vertical>
-          <Text variant="bodyMd" color="subdued">
-            Export your data for analysis, backup, or migration purposes.
-          </Text>
-
-          <Stack vertical spacing="tight">
-            {exportOptions.map((option) => (
-              <Card key={option.type} subdued>
-                <Card.Section>
-                  <Stack distribution="equalSpacing">
-                    <Stack vertical spacing="extraTight">
-                      <Text variant="bodyMd" fontWeight="semibold">
-                        {option.title}
-                      </Text>
-                      <Text variant="bodySm" color="subdued">
-                        {option.description}
-                      </Text>
-                    </Stack>
-
-                    <Button
-                      onClick={() => handleExport(option.type)}
-                      loading={exportLoading === option.type}
-                    >
-                      Export CSV
-                    </Button>
-                  </Stack>
-                </Card.Section>
-              </Card>
-            ))}
-          </Stack>
-        </Stack>
-      </Card.Section>
-    </Card>
-  );
-};
-
-const DangerZone: React.FC<{
-  onResetData: () => void;
-  onDeleteAccount: () => void;
-}> = ({ onResetData, onDeleteAccount }) => {
-  const [showResetModal, setShowResetModal] = useState(false);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-
-  return (
-    <>
-      <Card title="Danger Zone">
-        <Card.Section>
-          <Stack vertical>
-            <Banner status="warning" title="Destructive Actions">
-              <p>
-                These actions cannot be undone. Please proceed with caution.
-              </p>
-            </Banner>
-
-            <Stack distribution="equalSpacing">
-              <Stack vertical spacing="extraTight">
-                <Text variant="bodyMd" fontWeight="semibold">
-                  Reset All Data
-                </Text>
-                <Text variant="bodySm" color="subdued">
-                  Clear all campaigns, audiences, and analytics data. App
-                  settings will be preserved.
-                </Text>
-              </Stack>
-
-              <Button destructive onClick={() => setShowResetModal(true)}>
-                Reset Data
-              </Button>
-            </Stack>
-
-            <Divider />
-
-            <Stack distribution="equalSpacing">
-              <Stack vertical spacing="extraTight">
-                <Text variant="bodyMd" fontWeight="semibold">
-                  Delete Account
-                </Text>
-                <Text variant="bodySm" color="subdued">
-                  Permanently delete your Ads Autopilot AI account and all associated
-                  data.
-                </Text>
-              </Stack>
-
-              <Button destructive onClick={() => setShowDeleteModal(true)}>
-                Delete Account
-              </Button>
-            </Stack>
-          </Stack>
-        </Card.Section>
-      </Card>
-
-      <Modal
-        open={showResetModal}
-        onClose={() => setShowResetModal(false)}
-        title="Reset All Data"
-        primaryAction={{
-          content: "Reset Data",
-          destructive: true,
-          onAction: () => {
-            onResetData();
-            setShowResetModal(false);
-          },
-        }}
-        secondaryActions={[
-          {
-            content: "Cancel",
-            onAction: () => setShowResetModal(false),
-          },
-        ]}
-      >
-        <Modal.Section>
-          <TextContainer>
-            <p>
-              This will permanently delete all your campaigns, audiences, and
-              analytics data. Your app settings and integrations will be
-              preserved.
-            </p>
-            <p>
-              <strong>This action cannot be undone.</strong>
-            </p>
-          </TextContainer>
-        </Modal.Section>
-      </Modal>
-
-      <Modal
-        open={showDeleteModal}
-        onClose={() => setShowDeleteModal(false)}
-        title="Delete Account"
-        primaryAction={{
-          content: "Delete Account",
-          destructive: true,
-          onAction: () => {
-            onDeleteAccount();
-            setShowDeleteModal(false);
-          },
-        }}
-        secondaryActions={[
-          {
-            content: "Cancel",
-            onAction: () => setShowDeleteModal(false),
-          },
-        ]}
-      >
-        <Modal.Section>
-          <TextContainer>
-            <p>
-              This will permanently delete your Ads Autopilot AI account and all
-              associated data, including campaigns, audiences, analytics, and
-              settings.
-            </p>
-            <p>
-              You will be immediately logged out and will need to reinstall the
-              app to use Ads Autopilot AI again.
-            </p>
-            <p>
-              <strong>This action cannot be undone.</strong>
-            </p>
-          </TextContainer>
-        </Modal.Section>
-      </Modal>
-    </>
-  );
-};
 
 export const Settings: React.FC<SettingsProps> = ({ initialConfig }) => {
   const [config, setConfig] = useState<AppConfig | null>(initialConfig || null);
   const [loading, setLoading] = useState(!initialConfig);
-  const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [selectedTab, setSelectedTab] = useState(0);
   const [toastActive, setToastActive] = useState(false);
@@ -687,8 +340,6 @@ export const Settings: React.FC<SettingsProps> = ({ initialConfig }) => {
     if (!config) return;
 
     try {
-      setSaving(true);
-
       const response = await fetch("/api/config", {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
@@ -706,8 +357,6 @@ export const Settings: React.FC<SettingsProps> = ({ initialConfig }) => {
       }
     } catch (err) {
       setError("Network error while saving settings");
-    } finally {
-      setSaving(false);
     }
   };
 
@@ -767,62 +416,21 @@ export const Settings: React.FC<SettingsProps> = ({ initialConfig }) => {
     }
   };
 
-  // Destructive actions
-  const handleResetData = async () => {
-    try {
-      const response = await fetch("/api/reset-data", { method: "POST" });
-
-      if (response.ok) {
-        setToastMessage("All data has been reset");
-        setToastActive(true);
-      }
-    } catch (error) {
-      setError("Failed to reset data");
-    }
-  };
-
-  const handleDeleteAccount = async () => {
-    try {
-      const response = await fetch("/api/delete-account", { method: "POST" });
-
-      if (response.ok) {
-        window.location.href = "/";
-      }
-    } catch (error) {
-      setError("Failed to delete account");
-    }
-  };
-
   const tabs = [
     {
-      id: "general",
-      content: "General",
-      accessibilityLabel: "General settings",
+      id: "connections",
+      content: "Connections",
+      accessibilityLabel: "Connection settings",
     },
     {
-      id: "integrations",
-      content: "Integrations",
-      accessibilityLabel: "Integration settings",
+      id: "tracking-automation",
+      content: "Tracking & Automation",
+      accessibilityLabel: "Tracking and automation settings",
     },
     {
-      id: "tracking",
-      content: "Tracking",
-      accessibilityLabel: "Tracking settings",
-    },
-    {
-      id: "automation",
-      content: "Automation",
-      accessibilityLabel: "Automation settings",
-    },
-    {
-      id: "notifications",
-      content: "Notifications",
-      accessibilityLabel: "Notification settings",
-    },
-    {
-      id: "data",
-      content: "Data & Privacy",
-      accessibilityLabel: "Data and privacy settings",
+      id: "account",
+      content: "Account",
+      accessibilityLabel: "Account information",
     },
   ];
 
@@ -877,72 +485,41 @@ export const Settings: React.FC<SettingsProps> = ({ initialConfig }) => {
             <Tabs tabs={tabs} selected={selectedTab} onSelect={setSelectedTab}>
               {selectedTab === 0 && (
                 <Layout>
-                  <Layout.Section oneHalf>
-                    <AccountInfo config={config} />
-                  </Layout.Section>
-
-                  <Layout.Section oneHalf>
-                    <Card title="App Status">
+                  <Layout.Section>
+                    <Card title="Shopify Connection">
                       <Card.Section>
-                        <Stack vertical>
-                          <Stack distribution="equalSpacing">
-                            <Text variant="bodyMd">Shopify Integration</Text>
-                            <Badge status="success">Active</Badge>
-                          </Stack>
+                        <Stack distribution="equalSpacing">
+                          <Stack vertical spacing="tight">
+                            <Stack spacing="tight">
+                              <Text variant="headingMd">Shopify</Text>
+                              <Badge status="success">Connected</Badge>
+                            </Stack>
 
-                          <Stack distribution="equalSpacing">
-                            <Text variant="bodyMd">Google Ads</Text>
-                            <Badge
-                              status={
-                                config.googleAds.connected
-                                  ? "success"
-                                  : "subdued"
-                              }
-                            >
-                              {config.googleAds.connected
-                                ? "Connected"
-                                : "Not Connected"}
-                            </Badge>
-                          </Stack>
+                            <Text variant="bodyMd" color="subdued">
+                              Your Shopify store is connected and active
+                            </Text>
 
-                          <Stack distribution="equalSpacing">
-                            <Text variant="bodyMd">Tracking Active</Text>
-                            <Badge
-                              status={
-                                config.tracking.conversionTracking
-                                  ? "success"
-                                  : "subdued"
-                              }
-                            >
-                              {config.tracking.conversionTracking
-                                ? "Yes"
-                                : "No"}
-                            </Badge>
-                          </Stack>
-
-                          <Stack distribution="equalSpacing">
-                            <Text variant="bodyMd">Autopilot</Text>
-                            <Badge
-                              status={
-                                config.automation.autopilotEnabled
-                                  ? "success"
-                                  : "subdued"
-                              }
-                            >
-                              {config.automation.autopilotEnabled
-                                ? "Enabled"
-                                : "Disabled"}
-                            </Badge>
+                            <div style={{ marginTop: "8px" }}>
+                              <Stack vertical spacing="extraTight">
+                                <Text variant="bodySm">
+                                  Shop: {connectionStates.shopify.shop}
+                                </Text>
+                                {connectionStates.shopify.installedAt && (
+                                  <Text variant="bodySm" color="subdued">
+                                    Installed:{" "}
+                                    {new Date(
+                                      connectionStates.shopify.installedAt,
+                                    ).toLocaleDateString()}
+                                  </Text>
+                                )}
+                              </Stack>
+                            </div>
                           </Stack>
                         </Stack>
                       </Card.Section>
                     </Card>
                   </Layout.Section>
-                </Layout>
-              )}
 
-              {selectedTab === 1 && (
-                <Layout>
                   <Layout.Section>
                     <Stack vertical>
                       <ConnectionCard
@@ -997,16 +574,12 @@ export const Settings: React.FC<SettingsProps> = ({ initialConfig }) => {
                 </Layout>
               )}
 
-              {selectedTab === 2 && (
+              {selectedTab === 1 && (
                 <Layout>
                   <Layout.Section>
                     <TrackingSettings config={config} onUpdate={updateConfig} />
                   </Layout.Section>
-                </Layout>
-              )}
 
-              {selectedTab === 3 && (
-                <Layout>
                   <Layout.Section>
                     <AutomationSettings
                       config={config}
@@ -1016,28 +589,10 @@ export const Settings: React.FC<SettingsProps> = ({ initialConfig }) => {
                 </Layout>
               )}
 
-              {selectedTab === 4 && (
+              {selectedTab === 2 && (
                 <Layout>
                   <Layout.Section>
-                    <NotificationSettings
-                      config={config}
-                      onUpdate={updateConfig}
-                    />
-                  </Layout.Section>
-                </Layout>
-              )}
-
-              {selectedTab === 5 && (
-                <Layout>
-                  <Layout.Section oneHalf>
-                    <DataExport />
-                  </Layout.Section>
-
-                  <Layout.Section oneHalf>
-                    <DangerZone
-                      onResetData={handleResetData}
-                      onDeleteAccount={handleDeleteAccount}
-                    />
+                    <AccountInfo config={config} />
                   </Layout.Section>
                 </Layout>
               )}

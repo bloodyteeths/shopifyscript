@@ -259,33 +259,6 @@ export default function App() {
                     AI Dashboard
                   </NavLink>
                 </li>
-                <li
-                  style={{
-                    marginTop: 12,
-                    paddingTop: 12,
-                    borderTop: "1px solid #e1e3e5",
-                  }}
-                >
-                  <NavLink
-                    to="/app/intent-os"
-                    style={{
-                      display: "block",
-                      padding: "8px 12px",
-                      borderRadius: "6px",
-                      textDecoration: "none",
-                      fontSize: "12px",
-                      fontWeight: "400",
-                      color: "#6d7175",
-                      opacity: 0.7,
-                    }}
-                  >
-                    Smart Website
-                    <br />
-                    <span style={{ fontSize: "10px", color: "#8c9196" }}>
-                      Coming Q1 2026
-                    </span>
-                  </NavLink>
-                </li>
               </ul>
               </nav>
 
@@ -412,34 +385,6 @@ export default function App() {
                       }}
                       >
                       AI Dashboard
-                    </NavLink>
-                  </li>
-                  <li
-                    style={{
-                      marginTop: 12,
-                      paddingTop: 12,
-                      borderTop: "1px solid #e1e3e5",
-                    }}
-                  >
-                    <NavLink
-                      to="/app/intent-os"
-                      onClick={() => setMobileMenuOpen(false)}
-                      style={{
-                        display: "block",
-                        padding: "12px 16px",
-                        borderRadius: "6px",
-                        textDecoration: "none",
-                        fontSize: "14px",
-                        fontWeight: "400",
-                        color: "#6d7175",
-                        opacity: 0.7,
-                      }}
-                    >
-                      Smart Website
-                      <br />
-                      <span style={{ fontSize: "12px", color: "#8c9196" }}>
-                        Coming Q1 2026
-                      </span>
                     </NavLink>
                   </li>
                 </ul>
