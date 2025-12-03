@@ -12,51 +12,10 @@
  * - Device-based bid adjustments
  * - Location-based bid modifiers
  * - Audience-based bid adjustments
- *
- * GOOGLE ADS API CONFIGURATION:
- * ==============================
- * This service requires the following environment variables or tenant configuration:
- *
- * - GOOGLE_ADS_DEVELOPER_TOKEN: Your Google Ads API developer token
- * - GOOGLE_ADS_CLIENT_ID: OAuth2 client ID
- * - GOOGLE_ADS_CLIENT_SECRET: OAuth2 client secret
- * - GOOGLE_ADS_REFRESH_TOKEN: OAuth2 refresh token for the account
- * - GOOGLE_ADS_CUSTOMER_ID: The Google Ads customer ID (without dashes)
- *
- * Alternatively, credentials can be stored per-tenant in the database under the
- * 'google_ads_credentials' config key with the following structure:
- * {
- *   developer_token: string,
- *   client_id: string,
- *   client_secret: string,
- *   refresh_token: string,
- *   customer_id: string,
- *   login_customer_id: string (optional, for MCC accounts)
- * }
- *
- * FALLBACK BEHAVIOR:
- * - If credentials are not configured, the service will log planned changes but not apply them
- * - This allows development and testing without live API access
- * - All methods gracefully degrade and return mock responses
- *
- * PACKAGE REQUIREMENT:
- * - Install google-ads-api: npm install google-ads-api
  */
 
 import dataStore from './data-store.js';
 import logger from './logger.js';
-
-// Conditionally import google-ads-api if available
-let GoogleAdsApi = null;
-try {
-  const googleAdsModule = await import('google-ads-api');
-  GoogleAdsApi = googleAdsModule.GoogleAdsApi;
-} catch (error) {
-  logger.warn('google-ads-api package not installed. Google Ads API integration will run in mock mode.', {
-    error: error.message,
-    hint: 'Install with: npm install google-ads-api'
-  });
-}
 
 /**
  * Bidding Strategy Configurations
@@ -697,225 +656,73 @@ export class BidManager {
    * Apply bid adjustment via Google Ads API
    */
   async applyBidAdjustmentViaAPI(credentials, campaignId, adjustment) {
+    // This is a placeholder for actual Google Ads API integration
+    // In production, this would use the Google Ads API client library
+
     logger.info('Applying bid adjustment via Google Ads API', {
       campaignId,
       adjustment
     });
 
-    // Check if Google Ads API is available
-    if (!GoogleAdsApi) {
-      logger.warn('Google Ads API not available - running in mock mode', {
-        campaignId,
-        adjustment,
-        action: 'Would adjust campaign bids',
-        hint: 'Install google-ads-api package to enable real API calls'
-      });
+    // Mock API call structure:
+    /*
+    const googleAds = new GoogleAdsApi({
+      client_id: credentials.client_id,
+      client_secret: credentials.client_secret,
+      refresh_token: credentials.refresh_token,
+      developer_token: credentials.developer_token
+    });
 
-      return {
-        type: 'bid_adjustment',
-        campaignId: campaignId,
-        adjustment: adjustment,
-        strategy: 'MOCK_MODE',
-        timestamp: new Date().toISOString(),
-        note: 'Mock response - google-ads-api package not installed'
-      };
-    }
+    const customer = googleAds.Customer({
+      customer_id: credentials.customer_id
+    });
 
-    // Check if credentials are configured
-    if (!credentials || !credentials.developer_token || !credentials.customer_id) {
-      logger.warn('Google Ads credentials not configured - running in mock mode', {
-        campaignId,
-        adjustment,
-        action: 'Would adjust campaign bids',
-        credentialsPresent: !!credentials,
-        hint: 'Configure Google Ads API credentials in tenant settings'
-      });
+    // For campaign-level bid adjustments
+    const campaign = await customer.campaigns.get(campaignId);
+    const currentBidStrategy = campaign.bidding_strategy;
 
-      return {
-        type: 'bid_adjustment',
-        campaignId: campaignId,
-        adjustment: adjustment,
-        strategy: 'MOCK_MODE',
-        timestamp: new Date().toISOString(),
-        note: 'Mock response - credentials not configured'
-      };
-    }
+    if (currentBidStrategy.type === 'TARGET_CPA') {
+      const newTargetCpa = currentBidStrategy.target_cpa.target_cpa_micros * adjustment;
 
-    try {
-      // Initialize Google Ads API client
-      const client = new GoogleAdsApi({
-        client_id: credentials.client_id,
-        client_secret: credentials.client_secret,
-        developer_token: credentials.developer_token
-      });
-
-      const customer = client.Customer({
-        customer_id: credentials.customer_id,
-        refresh_token: credentials.refresh_token,
-        login_customer_id: credentials.login_customer_id
-      });
-
-      // Fetch campaign details to determine bidding strategy
-      const campaignQuery = `
-        SELECT
-          campaign.id,
-          campaign.name,
-          campaign.bidding_strategy_type,
-          campaign.target_cpa.target_cpa_micros,
-          campaign.target_roas.target_roas,
-          campaign.manual_cpc.enhanced_cpc_enabled
-        FROM campaign
-        WHERE campaign.id = ${campaignId}
-      `;
-
-      const [campaign] = await customer.query(campaignQuery);
-
-      if (!campaign) {
-        throw new Error(`Campaign ${campaignId} not found`);
-      }
-
-      const biddingStrategyType = campaign.campaign.bidding_strategy_type;
-      logger.info('Campaign bidding strategy detected', {
-        campaignId,
-        biddingStrategyType
-      });
-
-      // Apply adjustment based on bidding strategy type
-      if (biddingStrategyType === 'TARGET_CPA') {
-        // Adjust Target CPA
-        const currentTargetCpaMicros = campaign.campaign.target_cpa?.target_cpa_micros || 0;
-        const newTargetCpaMicros = Math.round(currentTargetCpaMicros * adjustment);
-
-        await customer.campaigns.update({
-          resource_name: `customers/${credentials.customer_id}/campaigns/${campaignId}`,
+      await customer.campaigns.update(campaignId, {
+        bidding_strategy: {
           target_cpa: {
-            target_cpa_micros: newTargetCpaMicros
-          }
-        });
-
-        logger.info('Target CPA adjusted', {
-          campaignId,
-          oldCpaMicros: currentTargetCpaMicros,
-          newCpaMicros: newTargetCpaMicros,
-          adjustment
-        });
-
-        return {
-          type: 'bid_adjustment',
-          campaignId: campaignId,
-          adjustment: adjustment,
-          strategy: 'TARGET_CPA',
-          oldValue: currentTargetCpaMicros,
-          newValue: newTargetCpaMicros,
-          timestamp: new Date().toISOString()
-        };
-
-      } else if (biddingStrategyType === 'TARGET_ROAS') {
-        // Adjust Target ROAS
-        const currentTargetRoas = campaign.campaign.target_roas?.target_roas || 0;
-        const newTargetRoas = currentTargetRoas / adjustment; // Inverse relationship
-
-        await customer.campaigns.update({
-          resource_name: `customers/${credentials.customer_id}/campaigns/${campaignId}`,
-          target_roas: {
-            target_roas: newTargetRoas
-          }
-        });
-
-        logger.info('Target ROAS adjusted', {
-          campaignId,
-          oldRoas: currentTargetRoas,
-          newRoas: newTargetRoas,
-          adjustment
-        });
-
-        return {
-          type: 'bid_adjustment',
-          campaignId: campaignId,
-          adjustment: adjustment,
-          strategy: 'TARGET_ROAS',
-          oldValue: currentTargetRoas,
-          newValue: newTargetRoas,
-          timestamp: new Date().toISOString()
-        };
-
-      } else if (biddingStrategyType === 'MANUAL_CPC') {
-        // For manual CPC, adjust bids at ad group and keyword level
-        const adGroupQuery = `
-          SELECT
-            ad_group.id,
-            ad_group.name,
-            ad_group.cpc_bid_micros
-          FROM ad_group
-          WHERE campaign.id = ${campaignId}
-            AND ad_group.status = 'ENABLED'
-        `;
-
-        const adGroups = await customer.query(adGroupQuery);
-        const updatedAdGroups = [];
-
-        for (const row of adGroups) {
-          const adGroupId = row.ad_group.id;
-          const currentBidMicros = row.ad_group.cpc_bid_micros || 0;
-          const newBidMicros = Math.round(currentBidMicros * adjustment);
-
-          if (newBidMicros > 0) {
-            await customer.adGroups.update({
-              resource_name: `customers/${credentials.customer_id}/adGroups/${adGroupId}`,
-              cpc_bid_micros: newBidMicros
-            });
-
-            updatedAdGroups.push({
-              adGroupId,
-              oldBidMicros: currentBidMicros,
-              newBidMicros
-            });
+            target_cpa_micros: newTargetCpa
           }
         }
-
-        logger.info('Manual CPC bids adjusted', {
-          campaignId,
-          adGroupsUpdated: updatedAdGroups.length,
-          adjustment
-        });
-
-        return {
-          type: 'bid_adjustment',
-          campaignId: campaignId,
-          adjustment: adjustment,
-          strategy: 'MANUAL_CPC',
-          adGroupsUpdated: updatedAdGroups.length,
-          details: updatedAdGroups,
-          timestamp: new Date().toISOString()
-        };
-
-      } else {
-        logger.warn('Unsupported bidding strategy for automatic adjustment', {
-          campaignId,
-          biddingStrategyType
-        });
-
-        return {
-          type: 'bid_adjustment',
-          campaignId: campaignId,
-          adjustment: adjustment,
-          strategy: biddingStrategyType,
-          timestamp: new Date().toISOString(),
-          note: 'Bidding strategy does not support automatic adjustments'
-        };
-      }
-
-    } catch (error) {
-      logger.error('Failed to apply bid adjustment via Google Ads API', {
-        campaignId,
-        adjustment,
-        error: error.message,
-        stack: error.stack
       });
+    } else if (currentBidStrategy.type === 'MANUAL_CPC') {
+      // Adjust manual CPC bids at keyword level
+      const keywords = await customer.campaigns(campaignId).adGroups().keywords().list();
 
-      // Re-throw the error to be handled by the calling function
-      throw new Error(`Google Ads API error: ${error.message}`);
+      for (const keyword of keywords) {
+        const currentBid = keyword.cpc_bid_micros;
+        const newBid = Math.round(currentBid * adjustment);
+
+        await customer.keywords.update(keyword.resource_name, {
+          cpc_bid_micros: newBid
+        });
+      }
     }
+
+    return {
+      type: 'bid_adjustment',
+      campaignId: campaignId,
+      adjustment: adjustment,
+      strategy: currentBidStrategy.type,
+      timestamp: new Date().toISOString()
+    };
+    */
+
+    // For now, return mock success
+    return {
+      type: 'bid_adjustment',
+      campaignId: campaignId,
+      adjustment: adjustment,
+      strategy: 'MOCK_STRATEGY',
+      timestamp: new Date().toISOString(),
+      note: 'Mock API response - replace with actual Google Ads API integration'
+    };
   }
 
   /**
@@ -970,150 +777,42 @@ export class BidManager {
    * Apply hourly modifiers via Google Ads API
    */
   async applyHourlyModifiersViaAPI(credentials, campaignId, modifiers) {
-    logger.info('Applying hourly modifiers via Google Ads API', {
+    // Placeholder for Google Ads API integration
+    // This would create/update ad schedule criteria with bid modifiers
+
+    /*
+    const googleAds = new GoogleAdsApi(credentials);
+    const customer = googleAds.Customer({ customer_id: credentials.customer_id });
+
+    // Remove existing ad schedule criteria
+    const existingSchedules = await customer.campaigns(campaignId)
+      .adSchedules()
+      .list();
+
+    for (const schedule of existingSchedules) {
+      await customer.adSchedules.remove(schedule.resource_name);
+    }
+
+    // Create new ad schedule criteria with bid modifiers
+    for (const modifier of modifiers) {
+      await customer.campaigns(campaignId).adSchedules.create({
+        day_of_week: 'MONDAY', // Would loop through all days
+        start_hour: modifier.hour,
+        start_minute: 'ZERO',
+        end_hour: modifier.hour + 1,
+        end_minute: 'ZERO',
+        bid_modifier: modifier.modifier
+      });
+    }
+    */
+
+    return {
+      type: 'hourly_modifiers',
       campaignId,
-      modifierCount: modifiers.length
-    });
-
-    // Check if Google Ads API is available
-    if (!GoogleAdsApi) {
-      logger.warn('Google Ads API not available - running in mock mode', {
-        campaignId,
-        modifierCount: modifiers.length,
-        action: 'Would set hourly bid modifiers',
-        hint: 'Install google-ads-api package to enable real API calls'
-      });
-
-      return {
-        type: 'hourly_modifiers',
-        campaignId,
-        modifiersApplied: modifiers.length,
-        timestamp: new Date().toISOString(),
-        note: 'Mock response - google-ads-api package not installed'
-      };
-    }
-
-    // Check if credentials are configured
-    if (!credentials || !credentials.developer_token || !credentials.customer_id) {
-      logger.warn('Google Ads credentials not configured - running in mock mode', {
-        campaignId,
-        modifierCount: modifiers.length,
-        action: 'Would set hourly bid modifiers',
-        hint: 'Configure Google Ads API credentials in tenant settings'
-      });
-
-      return {
-        type: 'hourly_modifiers',
-        campaignId,
-        modifiersApplied: modifiers.length,
-        timestamp: new Date().toISOString(),
-        note: 'Mock response - credentials not configured'
-      };
-    }
-
-    try {
-      // Initialize Google Ads API client
-      const client = new GoogleAdsApi({
-        client_id: credentials.client_id,
-        client_secret: credentials.client_secret,
-        developer_token: credentials.developer_token
-      });
-
-      const customer = client.Customer({
-        customer_id: credentials.customer_id,
-        refresh_token: credentials.refresh_token,
-        login_customer_id: credentials.login_customer_id
-      });
-
-      // First, remove existing ad schedule criteria for this campaign
-      const existingSchedulesQuery = `
-        SELECT
-          campaign_criterion.resource_name,
-          campaign_criterion.ad_schedule.day_of_week,
-          campaign_criterion.ad_schedule.start_hour,
-          campaign_criterion.ad_schedule.start_minute
-        FROM campaign_criterion
-        WHERE campaign.id = ${campaignId}
-          AND campaign_criterion.type = 'AD_SCHEDULE'
-      `;
-
-      const existingSchedules = await customer.query(existingSchedulesQuery);
-      const removeOperations = [];
-
-      for (const row of existingSchedules) {
-        removeOperations.push({
-          remove: row.campaign_criterion.resource_name
-        });
-      }
-
-      if (removeOperations.length > 0) {
-        await customer.campaignCriteria.mutate(removeOperations);
-        logger.info('Removed existing ad schedules', {
-          campaignId,
-          removedCount: removeOperations.length
-        });
-      }
-
-      // Create new ad schedule criteria with bid modifiers
-      // Note: Google Ads requires ad schedules for each day of the week
-      const createOperations = [];
-      const daysOfWeek = ['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY'];
-
-      for (const modifier of modifiers) {
-        for (const day of daysOfWeek) {
-          const endHour = modifier.hour === 23 ? 0 : modifier.hour + 1;
-
-          createOperations.push({
-            create: {
-              campaign: `customers/${credentials.customer_id}/campaigns/${campaignId}`,
-              ad_schedule: {
-                day_of_week: day,
-                start_hour: modifier.hour,
-                start_minute: 'ZERO',
-                end_hour: endHour,
-                end_minute: 'ZERO'
-              },
-              bid_modifier: modifier.modifier,
-              status: 'ENABLED'
-            }
-          });
-        }
-      }
-
-      if (createOperations.length > 0) {
-        const result = await customer.campaignCriteria.mutate(createOperations);
-        logger.info('Created ad schedule criteria', {
-          campaignId,
-          criteriaCreated: createOperations.length,
-          hoursConfigured: modifiers.length
-        });
-
-        return {
-          type: 'hourly_modifiers',
-          campaignId,
-          modifiersApplied: modifiers.length,
-          criteriaCreated: createOperations.length,
-          timestamp: new Date().toISOString()
-        };
-      }
-
-      return {
-        type: 'hourly_modifiers',
-        campaignId,
-        modifiersApplied: 0,
-        timestamp: new Date().toISOString(),
-        note: 'No modifiers to apply'
-      };
-
-    } catch (error) {
-      logger.error('Failed to apply hourly modifiers via Google Ads API', {
-        campaignId,
-        error: error.message,
-        stack: error.stack
-      });
-
-      throw new Error(`Google Ads API error: ${error.message}`);
-    }
+      modifiersApplied: modifiers.length,
+      timestamp: new Date().toISOString(),
+      note: 'Mock API response - replace with actual Google Ads API integration'
+    };
   }
 
   /**
@@ -1167,154 +866,31 @@ export class BidManager {
    * Apply device modifiers via Google Ads API
    */
   async applyDeviceModifiersViaAPI(credentials, campaignId, modifiers) {
-    logger.info('Applying device modifiers via Google Ads API', {
+    // Placeholder for Google Ads API integration
+    /*
+    const googleAds = new GoogleAdsApi(credentials);
+    const customer = googleAds.Customer({ customer_id: credentials.customer_id });
+
+    for (const modifier of modifiers) {
+      const criterionId = this.getDeviceCriterionId(modifier.device);
+
+      await customer.campaigns(campaignId).criteria.create({
+        type: 'DEVICE',
+        device: {
+          type: modifier.device.toUpperCase()
+        },
+        bid_modifier: modifier.modifier
+      });
+    }
+    */
+
+    return {
+      type: 'device_modifiers',
       campaignId,
-      modifierCount: modifiers.length
-    });
-
-    // Check if Google Ads API is available
-    if (!GoogleAdsApi) {
-      logger.warn('Google Ads API not available - running in mock mode', {
-        campaignId,
-        modifierCount: modifiers.length,
-        action: 'Would set device bid modifiers',
-        hint: 'Install google-ads-api package to enable real API calls'
-      });
-
-      return {
-        type: 'device_modifiers',
-        campaignId,
-        modifiersApplied: modifiers.length,
-        timestamp: new Date().toISOString(),
-        note: 'Mock response - google-ads-api package not installed'
-      };
-    }
-
-    // Check if credentials are configured
-    if (!credentials || !credentials.developer_token || !credentials.customer_id) {
-      logger.warn('Google Ads credentials not configured - running in mock mode', {
-        campaignId,
-        modifierCount: modifiers.length,
-        action: 'Would set device bid modifiers',
-        hint: 'Configure Google Ads API credentials in tenant settings'
-      });
-
-      return {
-        type: 'device_modifiers',
-        campaignId,
-        modifiersApplied: modifiers.length,
-        timestamp: new Date().toISOString(),
-        note: 'Mock response - credentials not configured'
-      };
-    }
-
-    try {
-      // Initialize Google Ads API client
-      const client = new GoogleAdsApi({
-        client_id: credentials.client_id,
-        client_secret: credentials.client_secret,
-        developer_token: credentials.developer_token
-      });
-
-      const customer = client.Customer({
-        customer_id: credentials.customer_id,
-        refresh_token: credentials.refresh_token,
-        login_customer_id: credentials.login_customer_id
-      });
-
-      // Query existing device criteria
-      const existingDevicesQuery = `
-        SELECT
-          campaign_criterion.resource_name,
-          campaign_criterion.criterion_id,
-          campaign_criterion.device.type,
-          campaign_criterion.bid_modifier
-        FROM campaign_criterion
-        WHERE campaign.id = ${campaignId}
-          AND campaign_criterion.type = 'DEVICE'
-      `;
-
-      const existingDevices = await customer.query(existingDevicesQuery);
-      const existingDeviceMap = new Map();
-
-      for (const row of existingDevices) {
-        const deviceType = row.campaign_criterion.device?.type;
-        if (deviceType) {
-          existingDeviceMap.set(deviceType, row.campaign_criterion.resource_name);
-        }
-      }
-
-      // Apply modifiers for each device
-      const operations = [];
-      const deviceTypeMap = {
-        'mobile': 'MOBILE',
-        'desktop': 'DESKTOP',
-        'tablet': 'TABLET'
-      };
-
-      for (const modifier of modifiers) {
-        const deviceType = deviceTypeMap[modifier.device.toLowerCase()];
-        if (!deviceType) {
-          logger.warn('Unknown device type', { device: modifier.device });
-          continue;
-        }
-
-        const existingResourceName = existingDeviceMap.get(deviceType);
-
-        if (existingResourceName) {
-          // Update existing device criterion
-          operations.push({
-            update: {
-              resource_name: existingResourceName,
-              bid_modifier: modifier.modifier
-            },
-            update_mask: {
-              paths: ['bid_modifier']
-            }
-          });
-        } else {
-          // Create new device criterion
-          // Note: Device criteria might be auto-created by Google Ads
-          // In that case, we should update rather than create
-          logger.info('Device criterion not found, may need to be created by Google Ads first', {
-            campaignId,
-            deviceType
-          });
-        }
-      }
-
-      if (operations.length > 0) {
-        const result = await customer.campaignCriteria.mutate(operations);
-        logger.info('Device modifiers applied', {
-          campaignId,
-          operationsCount: operations.length
-        });
-
-        return {
-          type: 'device_modifiers',
-          campaignId,
-          modifiersApplied: operations.length,
-          timestamp: new Date().toISOString()
-        };
-      }
-
-      return {
-        type: 'device_modifiers',
-        campaignId,
-        modifiersApplied: 0,
-        timestamp: new Date().toISOString(),
-        note: 'No device criteria found to update'
-      };
-
-    } catch (error) {
-      logger.error('Failed to apply device modifiers via Google Ads API', {
-        campaignId,
-        error: error.message,
-        stack: error.stack
-      });
-
-      throw new Error(`Google Ads API error: ${error.message}`);
-    }
+      modifiersApplied: modifiers.length,
+      timestamp: new Date().toISOString(),
+      note: 'Mock API response - replace with actual Google Ads API integration'
+    };
   }
 
   /**
