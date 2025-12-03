@@ -1,12 +1,5 @@
 import React from "react";
 import type { HeadersFunction, LoaderFunctionArgs, ActionFunctionArgs } from "@remix-run/node";
-
-// Type declaration for Google Analytics gtag
-declare global {
-  interface Window {
-    gtag?: (...args: any[]) => void;
-  }
-}
 import { json } from "@remix-run/node";
 import { useLoaderData, useActionData, Form, useNavigation } from "@remix-run/react";
 // // import { boundary } from "@shopify/shopify-app-remix/server"; // Fixed: causes serverless crashes // Fixed: boundary utilities cause serverless crashes
@@ -241,21 +234,6 @@ export default function Billing() {
       window.top?.location.assign(actionData.redirectUrl);
     }
   }, [actionData]);
-
-  // Track conversion when user has successfully signed up (active subscription or trial)
-  React.useEffect(() => {
-    if ((hasActivePayment || isInTrial) && typeof window !== 'undefined' && window.gtag) {
-      // Only fire conversion once per session to avoid duplicates
-      const conversionFiredKey = `conversion_fired_${shopName}`;
-      if (!sessionStorage.getItem(conversionFiredKey)) {
-        window.gtag('event', 'conversion', {
-          'send_to': 'AW-17457205812/dmSgCPHDtMsbELSkn4RB'
-        });
-        sessionStorage.setItem(conversionFiredKey, 'true');
-        console.log('Google Ads conversion event fired for sign-up');
-      }
-    }
-  }, [hasActivePayment, isInTrial, shopName]);
 
   // Redirect to Shopify's managed pricing page
   const redirectToManagedPricing = () => {
