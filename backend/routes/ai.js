@@ -57,7 +57,7 @@ async function getValidators() {
   return await import("../lib/validators.js");
 }
 
-// GET /api/ai/system/health - Get system health for AI dashboard
+// GET /api/ai/system/health - Get ACTUAL system health for AI dashboard
 router.get("/system/health", async (req, res) => {
   const { tenant, sig } = req.query;
   const payload = `GET:${tenant}:ai_system_health`;
@@ -66,31 +66,128 @@ router.get("/system/health", async (req, res) => {
   }
 
   try {
-    console.log('🔍 Fetching system health for tenant:', tenant);
+    console.log('🔍 Checking actual system health for tenant:', tenant);
+    const startTime = Date.now();
+
+    // Initialize health status
+    const services = {
+      supabase: { status: 'unknown', message: '', responseTime: 0 },
+      redis: { status: 'unknown', message: '', responseTime: 0 },
+      aiEngine: { status: 'unknown', message: '', responseTime: 0 }
+    };
+
+    // 1. Check Supabase connection
+    try {
+      const supabaseStart = Date.now();
+      const supabase = getSupabaseClient();
+
+      if (!supabase) {
+        services.supabase = {
+          status: 'disabled',
+          message: 'Supabase not configured',
+          responseTime: 0
+        };
+      } else {
+        // Try a simple query to verify connection
+        const { data, error } = await supabase
+          .from('tenant_configs')
+          .select('count')
+          .limit(1)
+          .single();
+
+        services.supabase = {
+          status: error ? 'degraded' : 'healthy',
+          message: error ? `Error: ${error.message}` : 'Connected',
+          responseTime: Date.now() - supabaseStart
+        };
+      }
+    } catch (error) {
+      services.supabase = {
+        status: 'unhealthy',
+        message: `Failed: ${error.message}`,
+        responseTime: Date.now() - startTime
+      };
+    }
+
+    // 2. Check Redis connection (if configured)
+    try {
+      const redisStart = Date.now();
+      const { pingRedis } = await import('../services/redis.js');
+      const pingResult = await pingRedis();
+
+      services.redis = {
+        status: pingResult === 'PONG' ? 'healthy' : 'degraded',
+        message: pingResult === 'PONG' ? 'Connected' : 'No response',
+        responseTime: Date.now() - redisStart
+      };
+    } catch (error) {
+      // Redis is optional, so degraded rather than unhealthy
+      services.redis = {
+        status: 'disabled',
+        message: error.message.includes('not configured') ? 'Not configured' : `Error: ${error.message}`,
+        responseTime: 0
+      };
+    }
+
+    // 3. Check AI provider (Gemini/Google AI)
+    try {
+      const aiStart = Date.now();
+      const { getAIProvider } = await import('../lib/aiProvider.js');
+
+      // Try to initialize the AI provider
+      const aiProvider = await getAIProvider();
+
+      services.aiEngine = {
+        status: 'healthy',
+        message: `Provider: ${aiProvider.provider}`,
+        responseTime: Date.now() - aiStart,
+        provider: aiProvider.provider
+      };
+    } catch (error) {
+      services.aiEngine = {
+        status: 'unhealthy',
+        message: `Failed: ${error.message}`,
+        responseTime: Date.now() - startTime
+      };
+    }
+
+    // Determine overall system status
+    const statuses = Object.values(services).map(s => s.status);
+    let overallStatus = 'operational';
+
+    if (statuses.includes('unhealthy')) {
+      overallStatus = 'degraded';
+    } else if (statuses.filter(s => s === 'degraded').length >= 2) {
+      overallStatus = 'degraded';
+    }
+
+    // Calculate average response time
+    const responseTimes = Object.values(services)
+      .map(s => s.responseTime)
+      .filter(t => t > 0);
+    const avgResponseTime = responseTimes.length > 0
+      ? Math.round(responseTimes.reduce((a, b) => a + b, 0) / responseTimes.length)
+      : 0;
+
+    const totalCheckTime = Date.now() - startTime;
 
     res.json({
       ok: true,
       health: {
-        status: 'operational',
-        uptime: 99.9,
-        lastSync: new Date(Date.now() - 5 * 60 * 1000).toISOString(),
-        nextSync: new Date(Date.now() + 25 * 60 * 1000).toISOString(),
-        responseTime: 145,
-        errorRate: 0.2
+        status: overallStatus,
+        responseTime: avgResponseTime,
+        totalCheckTime,
+        timestamp: new Date().toISOString()
       },
-      services: {
-        aiEngine: { status: 'healthy', uptime: 99.9 },
-        analytics: { status: 'healthy', uptime: 98.5 },
-        optimizer: { status: 'healthy', uptime: 99.2 },
-        contentApi: { status: 'healthy', uptime: 99.8 }
-      },
+      services,
       lastCheck: new Date().toISOString()
     });
   } catch (error) {
-    console.error('❌ Failed to fetch system health:', error.message);
+    console.error('❌ Failed to check system health:', error.message);
     return res.status(500).json({
       ok: false,
-      error: error.message
+      error: error.message,
+      timestamp: new Date().toISOString()
     });
   }
 });
@@ -122,20 +219,13 @@ router.get("/stats/quick", async (req, res) => {
 
     const supabaseClient = getSupabaseClient();
     if (!supabaseClient) {
-      console.warn('⚠️ Supabase not available, using fallback data');
-      return res.json({
-        ok: true,
-        stats: {
-          ctr: 4.2,
-          roas: 3.5,
-          conversions: 245,
-          adSpend: 5420,
-          impressions: 125000,
-          clicks: 5250
-        },
+      console.warn('⚠️ Supabase not configured - cannot fetch real metrics');
+      return res.status(503).json({
+        ok: false,
+        error: 'Database not configured',
+        message: 'Supabase connection is not configured. Real metrics unavailable.',
         timestamp: new Date().toISOString(),
-        source: 'fallback',
-        period: period
+        source: 'none'
       });
     }
 
@@ -286,22 +376,16 @@ router.get("/stats/quick", async (req, res) => {
 
     res.json(responseData);
   } catch (error) {
-    console.error('❌ Failed to fetch quick stats:', error.message);
+    console.error('❌ Failed to fetch quick stats:', error.message, error.stack);
 
-    // Fallback to mock data on error
-    return res.json({
-      ok: true,
-      stats: {
-        ctr: 4.2,
-        roas: 3.5,
-        conversions: 245,
-        adSpend: 5420,
-        impressions: 125000,
-        clicks: 5250
-      },
+    // Return error response instead of misleading fallback data
+    return res.status(500).json({
+      ok: false,
+      error: 'Failed to fetch metrics',
+      message: error.message,
       timestamp: new Date().toISOString(),
-      source: 'fallback',
-      error: error.message
+      source: 'error',
+      hint: 'Check database connection and table schema'
     });
   }
 });

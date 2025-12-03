@@ -219,14 +219,38 @@ app.use((req, res, next) => {
 });
 // ==== END: simple cache middleware ====
 
-// ----- Minimal request logging (no secrets) -----
-app.use((req, _res, next) => {
-  try {
-    const ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress || "";
-    const path = req.path;
-    const method = req.method;
-    console.log(`[req] ${method} ${path} ip=${Array.isArray(ip) ? ip[0] : ip}`);
-  } catch {}
+// ----- Enhanced request logging with response time tracking (Vercel-compatible) -----
+// Track request start time and log method, path, status, and response time
+app.use((req, res, next) => {
+  // Capture request start time
+  const startTime = Date.now();
+
+  // Capture original end function
+  const originalEnd = res.end;
+
+  // Override end function to log response
+  res.end = function(...args) {
+    // Calculate response time
+    const responseTime = Date.now() - startTime;
+
+    try {
+      const ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress || "";
+      const path = req.path;
+      const method = req.method;
+      const status = res.statusCode;
+
+      // Log in a structured format: [timestamp] METHOD /path STATUS response_time_ms ip
+      console.log(
+        `[${new Date().toISOString()}] ${method} ${path} ${status} ${responseTime}ms ip=${Array.isArray(ip) ? ip[0] : ip}`
+      );
+    } catch (err) {
+      // Fail silently - logging should never break the app
+    }
+
+    // Call original end function
+    return originalEnd.apply(this, args);
+  };
+
   next();
 });
 
@@ -270,10 +294,24 @@ async function logAccess(req, status, note) {
   } catch {}
 }
 
-// ----- Basic rate limiting (by IP + tenant) -----
-const rateWindowMs = 60_000;
-const rateLimitMax = Number(process.env.RATE_LIMIT_MAX || 60);
+// ----- Enhanced rate limiting & security (Vercel-compatible) -----
+// Simple in-memory rate limiting that works in serverless environments
+// Note: Each serverless instance has its own memory, so limits are per-instance
+const rateWindowMs = 60_000; // 1 minute window
+const rateLimitMax = Number(process.env.RATE_LIMIT_MAX || 60); // Max requests per window
 const rateBuckets = new Map(); // key → { start: epochMs, count: number }
+
+// Clean up old rate limit entries every 5 minutes to prevent memory leaks
+setInterval(() => {
+  const now = Date.now();
+  for (const [key, bucket] of rateBuckets.entries()) {
+    if (now - bucket.start > rateWindowMs * 2) {
+      rateBuckets.delete(key);
+    }
+  }
+}, 5 * 60 * 1000);
+
+// Other caches for different features
 const metricsThrottle = new Map(); // tenant → lastTs
 // Insights cache: key `${tenant}:${w}` → { ts, data }
 const insightsCache = new Map();
@@ -382,25 +420,54 @@ async function removeScopedNegative(
   return true;
 }
 
+// ----- Combined security headers and rate limiting middleware -----
+// Serverless-compatible: Uses in-memory state (per instance)
 app.use((req, res, next) => {
+  // 1. SECURITY HEADERS: Prevent MIME sniffing and control referrer policy
   res.setHeader("X-Content-Type-Options", "nosniff");
   res.setHeader("Referrer-Policy", "strict-origin-when-cross-origin");
+
+  // 2. RATE LIMITING: Simple sliding window per IP+tenant
+  // Note: In serverless, each instance has its own memory, so this limits per-instance
+  // For distributed rate limiting, consider Redis or external service
   const ip =
     (req.headers["x-forwarded-for"] || req.socket.remoteAddress || "ip") + "";
   const tenant =
     req.query && req.query.tenant ? String(req.query.tenant) : "no-tenant";
+
+  // Create unique key combining IP and tenant for granular rate limiting
   const key = `${ip}:${tenant}`;
   const now = Date.now();
+
+  // Get or create bucket for this key
   const bucket = rateBuckets.get(key) || { start: now, count: 0 };
+
+  // Reset bucket if window has expired
   if (now - bucket.start > rateWindowMs) {
     bucket.start = now;
     bucket.count = 0;
   }
+
+  // Increment request count
   bucket.count += 1;
   rateBuckets.set(key, bucket);
+
+  // Check if rate limit exceeded
   if (bucket.count > rateLimitMax) {
-    return res.status(429).json({ ok: false, error: "rate_limited" });
+    // Return 429 Too Many Requests with JSON error
+    return res.status(429).json({
+      ok: false,
+      error: "rate_limited",
+      message: `Rate limit exceeded: ${rateLimitMax} requests per minute`,
+      retryAfter: Math.ceil((bucket.start + rateWindowMs - now) / 1000) // seconds until reset
+    });
   }
+
+  // Add rate limit headers for client visibility
+  res.setHeader("X-RateLimit-Limit", rateLimitMax.toString());
+  res.setHeader("X-RateLimit-Remaining", (rateLimitMax - bucket.count).toString());
+  res.setHeader("X-RateLimit-Reset", new Date(bucket.start + rateWindowMs).toISOString());
+
   next();
 });
 
