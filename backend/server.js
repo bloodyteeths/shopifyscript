@@ -110,6 +110,25 @@ try {
   }
 }
 
+// ==== GLOBAL ERROR HANDLERS ====
+// Catch unhandled promise rejections (prevents silent failures)
+process.on('unhandledRejection', (reason, promise) => {
+  logger.error('Unhandled Promise Rejection:', {
+    reason: reason instanceof Error ? reason.message : String(reason),
+    stack: reason instanceof Error ? reason.stack : undefined,
+  });
+});
+
+// Catch uncaught exceptions (fatal errors - log and exit gracefully)
+process.on('uncaughtException', (error) => {
+  logger.error('Uncaught Exception (FATAL):', {
+    message: error.message,
+    stack: error.stack,
+  });
+  // Give time for logs to flush, then exit
+  setTimeout(() => process.exit(1), 1000);
+});
+
 const app = express();
 app.set("trust proxy", 1);
 
