@@ -68,7 +68,7 @@ function main() {
   // Budget management
   camps.forEach(function(c) {
     if (isExcludedCampaign_(cfg, c.getName())) return;
-    var cap = cfg.BUDGET_CAPS[c.getName()] != null ? cfg.BUDGET_CAPS[c.getName()] : (parseFloat(cfg.daily_budget_cap_default) || parseFloat(cfg.USER_BUDGET_CAP) || 3.00);
+    var cap = cfg.BUDGET_CAPS[c.getName()] != null ? cfg.BUDGET_CAPS[c.getName()] : cfg.BUDGET_CAPS["*"] != null ? cfg.BUDGET_CAPS["*"] : (parseFloat(cfg.daily_budget_cap_default) || parseFloat(cfg.USER_BUDGET_CAP) || 3.00);
     if (cap && c.getBudget().getAmount() > cap) {
       logMutation_('BUDGET_CHANGE', {campaign: c.getName(), oldAmount: c.getBudget().getAmount(), newAmount: cap});
       if (!PREVIEW_MODE && cfg.PROMOTE) {
@@ -82,7 +82,7 @@ function main() {
   // Bidding strategy
   camps.forEach(function(c) {
     if (isExcludedCampaign_(cfg, c.getName())) return;
-    var ceil = cfg.CPC_CEILINGS[c.getName()] != null ? cfg.CPC_CEILINGS[c.getName()] : (parseFloat(cfg.cpc_ceiling_default) || parseFloat(cfg.USER_CPC_CEILING) || 0.20);
+    var ceil = cfg.CPC_CEILINGS[c.getName()] != null ? cfg.CPC_CEILINGS[c.getName()] : cfg.CPC_CEILINGS["*"] != null ? cfg.CPC_CEILINGS["*"] : (parseFloat(cfg.cpc_ceiling_default) || parseFloat(cfg.USER_CPC_CEILING) || 0.20);
     try {
       logMutation_('BIDDING_STRATEGY_CHANGE', {campaign: c.getName(), strategy: 'TARGET_SPEND', ceiling: ceil});
       if (!PREVIEW_MODE && cfg.PROMOTE) {

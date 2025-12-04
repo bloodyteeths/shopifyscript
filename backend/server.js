@@ -361,8 +361,6 @@ async function addScopedNegative(
     term = "",
   },
 ) {
-  const sh = await ensureNegativeMapSheet(tenant);
-  if (!sh) return false;
   const row = {
     scope: String(scope || "account").toLowerCase(),
     campaign: String(campaign || ""),
@@ -370,8 +368,51 @@ async function addScopedNegative(
     match: String(match || "exact").toLowerCase(),
     term: String(term || "").trim(),
   };
-  await sh.addRow(row);
-  return true;
+
+  let supabaseSuccess = false;
+  let sheetsSuccess = false;
+
+  // 1. Write to Supabase first (primary) - store as JSON array in config
+  try {
+    const configKey = "NEGATIVE_MAP";
+    const existingNegatives = await dataStore.getTenantConfig(tenant, configKey, { defaultValue: [] });
+
+    // Ensure it's an array
+    const negativesArray = Array.isArray(existingNegatives) ? existingNegatives : [];
+
+    // Add new negative to array
+    negativesArray.push(row);
+
+    // Save to Supabase
+    await dataStore.setTenantConfig(tenant, configKey, negativesArray);
+    supabaseSuccess = true;
+  } catch (supabaseError) {
+    logger.warn('addScopedNegative: Supabase write failed, will try Sheets', {
+      tenant,
+      scope: row.scope,
+      term: row.term,
+      error: supabaseError.message
+    });
+  }
+
+  // 2. Write to Sheets as backup
+  try {
+    const sh = await ensureNegativeMapSheet(tenant);
+    if (sh) {
+      await sh.addRow(row);
+      sheetsSuccess = true;
+    }
+  } catch (sheetsError) {
+    logger.warn('addScopedNegative: Sheets write failed', {
+      tenant,
+      scope: row.scope,
+      term: row.term,
+      error: sheetsError.message
+    });
+  }
+
+  // Return true if at least one write succeeded
+  return supabaseSuccess || sheetsSuccess;
 }
 
 async function removeScopedNegative(
@@ -874,28 +915,66 @@ async function appendMasterNegative(tenant, term) {
 }
 
 async function upsertMapValue(tenant, title, key, value) {
-  const doc = await getDoc();
-  if (!doc) return false;
-  const sh = await ensureSheet(doc, `${title}_${tenant}`, [
-    "campaign",
-    "value",
-  ]);
-  const rows = await sh.getRows();
   const k = String(key || "").trim() || "*";
-  let found = null;
-  for (const r of rows) {
-    if (String(r.campaign || "").trim() === k) {
-      found = r;
-      break;
+  let supabaseSuccess = false;
+  let sheetsSuccess = false;
+
+  // 1. Write to Supabase first (primary)
+  try {
+    // Get existing config or create new
+    const configKey = title; // e.g., "CPC_CEILINGS"
+    const existingConfig = await dataStore.getTenantConfig(tenant, configKey, { defaultValue: {} });
+
+    // Update the map with the new key-value
+    const updatedConfig = { ...existingConfig, [k]: String(value) };
+
+    // Save to Supabase
+    await dataStore.setTenantConfig(tenant, configKey, updatedConfig);
+    supabaseSuccess = true;
+  } catch (supabaseError) {
+    logger.warn('upsertMapValue: Supabase write failed, will try Sheets', {
+      tenant,
+      title,
+      key: k,
+      error: supabaseError.message
+    });
+  }
+
+  // 2. Write to Sheets as backup
+  try {
+    const doc = await getDoc();
+    if (doc) {
+      const sh = await ensureSheet(doc, `${title}_${tenant}`, [
+        "campaign",
+        "value",
+      ]);
+      const rows = await sh.getRows();
+      let found = null;
+      for (const r of rows) {
+        if (String(r.campaign || "").trim() === k) {
+          found = r;
+          break;
+        }
+      }
+      if (found) {
+        found.value = String(value);
+        await found.save();
+      } else {
+        await sh.addRow({ campaign: k, value: String(value) });
+      }
+      sheetsSuccess = true;
     }
+  } catch (sheetsError) {
+    logger.warn('upsertMapValue: Sheets write failed', {
+      tenant,
+      title,
+      key: k,
+      error: sheetsError.message
+    });
   }
-  if (found) {
-    found.value = String(value);
-    await found.save();
-  } else {
-    await sh.addRow({ campaign: k, value: String(value) });
-  }
-  return true;
+
+  // Return true if at least one write succeeded
+  return supabaseSuccess || sheetsSuccess;
 }
 
 // Read as AoA aligned to provided headers; uses toObject() when available
@@ -942,22 +1021,66 @@ async function readRowsAoA(tenant, title, headers, limit = 2000) {
 }
 
 async function upsertConfigKeys(tenant, kv) {
-  const doc = await getDoc();
-  if (!doc) {
-    memory.configs[tenant] = { ...(memory.configs[tenant] || {}), ...kv };
-    return;
+  let supabaseSuccess = false;
+  let sheetsSuccess = false;
+
+  // 1. Write to Supabase first (primary) - write each key-value pair
+  try {
+    for (const [key, value] of Object.entries(kv || {})) {
+      try {
+        await dataStore.setTenantConfig(tenant, key, String(value));
+      } catch (err) {
+        logger.warn('upsertConfigKeys: Failed to write key to Supabase', {
+          tenant,
+          key,
+          error: err.message
+        });
+      }
+    }
+    supabaseSuccess = true;
+  } catch (supabaseError) {
+    logger.warn('upsertConfigKeys: Supabase write failed, will try Sheets', {
+      tenant,
+      error: supabaseError.message
+    });
   }
-  const sh = await ensureSheet(doc, `CONFIG_${tenant}`, ["key", "value"]);
-  const rows = await sh.getRows();
-  const map = {};
-  rows.forEach((r) => {
-    if (r.key) map[String(r.key).trim()] = String(r.value || "").trim();
-  });
-  Object.entries(kv || {}).forEach(([k, v]) => (map[k] = String(v)));
-  await sh.clearRows();
-  await sh.setHeaderRow(["key", "value"]);
-  for (const [k, v] of Object.entries(map))
-    await sh.addRow({ key: k, value: v });
+
+  // 2. Write to Sheets as backup
+  try {
+    const doc = await getDoc();
+    if (!doc) {
+      // If no Sheets available, fall back to in-memory
+      memory.configs[tenant] = { ...(memory.configs[tenant] || {}), ...kv };
+      return;
+    }
+    const sh = await ensureSheet(doc, `CONFIG_${tenant}`, ["key", "value"]);
+    const rows = await sh.getRows();
+    const map = {};
+    rows.forEach((r) => {
+      if (r.key) map[String(r.key).trim()] = String(r.value || "").trim();
+    });
+    Object.entries(kv || {}).forEach(([k, v]) => (map[k] = String(v)));
+    await sh.clearRows();
+    await sh.setHeaderRow(["key", "value"]);
+    for (const [k, v] of Object.entries(map))
+      await sh.addRow({ key: k, value: v });
+    sheetsSuccess = true;
+  } catch (sheetsError) {
+    logger.warn('upsertConfigKeys: Sheets write failed', {
+      tenant,
+      error: sheetsError.message
+    });
+  }
+
+  // Log success status
+  if (supabaseSuccess || sheetsSuccess) {
+    logger.info('upsertConfigKeys: Write successful', {
+      tenant,
+      keys: Object.keys(kv || {}),
+      supabase: supabaseSuccess,
+      sheets: sheetsSuccess
+    });
+  }
 }
 
 async function acceptTopValidDrafts(tenant, maxCount) {
