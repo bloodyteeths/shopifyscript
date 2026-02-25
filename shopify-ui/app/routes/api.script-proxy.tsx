@@ -16,10 +16,10 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
         error: result.json?.error || "Failed to fetch script",
       });
     }
-  } catch (error) {
+  } catch (error: unknown) {
     return json({
       ok: false,
-      error: error.message || "Script proxy error",
+      error: error instanceof Error ? error.message : "Script proxy error",
     });
   }
 };

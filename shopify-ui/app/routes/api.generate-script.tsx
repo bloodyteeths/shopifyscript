@@ -33,8 +33,8 @@ export async function action({ request }: ActionFunctionArgs) {
         const subscriptionInfo = await checkSubscriptionStatus(admin);
         actualTier = subscriptionInfo?.subscriptionTier || "starter";
         console.log(`Detected subscription tier: ${actualTier} for ${currentShopName}`);
-      } catch (tierError) {
-        console.warn(`Failed to detect tier, using starter:`, tierError.message);
+      } catch (tierError: unknown) {
+        console.warn(`Failed to detect tier, using starter:`, tierError instanceof Error ? tierError.message : tierError);
         actualTier = "starter";
       }
     }
@@ -90,8 +90,8 @@ export async function action({ request }: ActionFunctionArgs) {
           undefined,
           currentShopName,
         );
-      } catch (v2Error) {
-        console.log(`⚠️ V2 endpoint failed, falling back to /ads-script/raw: ${v2Error.message}`);
+      } catch (v2Error: unknown) {
+        console.log(`⚠️ V2 endpoint failed, falling back to /ads-script/raw: ${v2Error instanceof Error ? v2Error.message : v2Error}`);
         realScript = await backendFetchText(
           `/ads-script/raw?${scriptParams}`,
           "GET",
@@ -114,10 +114,10 @@ export async function action({ request }: ActionFunctionArgs) {
           (e as any)?.message || e,
         );
       }
-    } catch (error) {
+    } catch (error: unknown) {
       console.log(
         `Backend fetch failed for ${currentShopName}:`,
-        error.message,
+        error instanceof Error ? error.message : error,
       );
       throw error;
     }
@@ -157,22 +157,16 @@ export async function action({ request }: ActionFunctionArgs) {
       });
     } else {
       console.log(`Script validation failed - length: ${realScript?.length || 0}, isHTML: ${realScript?.includes("<html") || false}`);
-      return json({ 
-        success: false, 
-        error: "Failed to fetch complete script - backend may be returning fallback content",
-        debug: {
-          length: realScript?.length || 0,
-          isHTML: realScript?.includes("<html") || false,
-          preview: realScript?.substring(0, 200) || "No content"
-        }
+      return json({
+        success: false,
+        error: "Failed to generate script. Please try again."
       });
     }
   } catch (error) {
     console.error(`Script generation error:`, error);
-    return json({ 
-      success: false, 
-      error: error.message || "Unknown error during script generation",
-      stack: error.stack
+    return json({
+      success: false,
+      error: "Script generation failed. Please try again."
     });
   }
 }
@@ -184,6 +178,8 @@ export async function loader() {
     error: "This endpoint requires POST method for script generation"
   });
 }
+
+
 
 
 

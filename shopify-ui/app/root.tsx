@@ -21,15 +21,7 @@ export const links: LinksFunction = () => [
 
 export default function App() {
   
-  // let shopContext;
-  // try {
-  //   shopContext = useShopContext();
-  //   console.log('✅ Shop context loaded');
-  // } catch (error) {
-  //   console.error('❌ Shop context error:', error);
-  //   shopContext = null;
-  // }
-  const shopContext = null; // Temporarily disabled for debugging
+  const shopContext = null; // Shop context handled by Shopify AppBridge
   
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   
@@ -259,6 +251,23 @@ export default function App() {
                     AI Dashboard
                   </NavLink>
                 </li>
+                <li>
+                  <NavLink
+                    to="/app/billing"
+                    style={{
+                      display: "block",
+                      padding: "8px 12px",
+                      borderRadius: "6px",
+                      textDecoration: "none",
+                      fontSize: "14px",
+                      fontWeight: "500",
+                      color: "#202223",
+                      transition: "all 0.2s ease",
+                    }}
+                  >
+                    Billing
+                  </NavLink>
+                </li>
               </ul>
               </nav>
 
@@ -387,6 +396,24 @@ export default function App() {
                       AI Dashboard
                     </NavLink>
                   </li>
+                  <li>
+                    <NavLink
+                      to="/app/billing"
+                      onClick={() => setMobileMenuOpen(false)}
+                      style={{
+                        display: "block",
+                        padding: "12px 16px",
+                        borderRadius: "6px",
+                        textDecoration: "none",
+                        fontSize: "16px",
+                        fontWeight: "500",
+                        color: "#202223",
+                        transition: "all 0.2s ease",
+                      }}
+                    >
+                      Billing
+                    </NavLink>
+                  </li>
                 </ul>
               </nav>
 
@@ -440,7 +467,7 @@ export default function App() {
                   </a>
                 </div>
                 <div style={{ color: "#8c9196", fontSize: "11px" }}>
-                  Ads Autopilot AI © 2024 • Contact: atanrikulu@e-listele.com
+                  Ads Autopilot AI © 2025 • Contact: atanrikulu@e-listele.com
                 </div>
               </footer>
               </main>

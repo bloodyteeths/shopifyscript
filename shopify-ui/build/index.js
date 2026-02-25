@@ -75191,7 +75191,7 @@ function normalizeBackendBase(rawBase) {
   }
 }
 function opKey(method, pathname) {
-  return pathname.includes("/autopilot/quickstart") ? "autopilot_quickstart" : pathname.includes("/connect/sheets/test") ? "sheets_test" : pathname.includes("/connect/sheets/save") ? "sheets_save" : pathname.includes("/promote/status") ? "promote_status" : pathname.includes("/insights/tier-status") ? "tier_status" : pathname.includes("/insights/terms") ? "insights_terms" : pathname.includes("/run-logs") ? "run_logs" : pathname.includes("/insights/actions/apply") ? "insights_actions" : pathname.includes("/insights") ? "insights" : pathname.includes("/ads-script/raw") ? "script_raw" : pathname.includes("/summary") ? "summary_get" : pathname.includes("/diagnostics") ? "diagnostics" : pathname.endsWith("/config") ? "config" : pathname.includes("/upsertConfig") ? "upsertconfig" : pathname.includes("/jobs/autopilot_tick") ? "autopilot_tick" : pathname.includes("/cpc-ceilings/batch") ? "cpc_batch" : pathname.includes("/jobs/autopilot_tick") ? "autopilot_tick" : pathname.includes("/pixels/ingest") ? "pixel_ingest" : pathname.includes("/shopify/seo/preview") ? "seo_preview" : pathname.includes("/shopify/seo/apply") ? "seo_apply" : pathname.includes("/shopify/tags/batch") ? "tags_batch" : pathname.includes("/seed-demo") ? "seed_demo" : pathname.includes("/sessions/store") ? "session_store" : pathname.includes("/sessions/retrieve") ? "session_retrieve" : pathname.includes("/sessions/delete") ? "session_delete" : pathname.includes("/sessions/list") ? "session_list" : "unknown";
+  return pathname.includes("/autopilot/quickstart") ? "autopilot_quickstart" : pathname.includes("/connect/sheets/test") ? "sheets_test" : pathname.includes("/connect/sheets/save") ? "sheets_save" : pathname.includes("/promote/status") ? "promote_status" : pathname.includes("/insights/tier-status") ? "tier_status" : pathname.includes("/insights/terms") ? "insights_terms" : pathname.includes("/run-logs") ? "run_logs" : pathname.includes("/insights/actions/apply") ? "insights_actions" : pathname.includes("/insights") ? "insights" : pathname.includes("/ads-script/raw") ? "script_raw" : pathname.includes("/summary") ? "summary_get" : pathname.includes("/diagnostics") ? "diagnostics" : pathname.endsWith("/config") ? "config" : pathname.includes("/upsertConfig") ? "upsertconfig" : pathname.includes("/jobs/autopilot_tick") ? "autopilot_tick" : pathname.includes("/cpc-ceilings/batch") ? "cpc_batch" : pathname.includes("/jobs/autopilot_tick") ? "autopilot_tick" : pathname.includes("/security/pixel/token") ? "pixel_token" : pathname.includes("/pixels/ingest") ? "pixel_ingest" : pathname.includes("/shopify/seo/preview") ? "seo_preview" : pathname.includes("/shopify/seo/apply") ? "seo_apply" : pathname.includes("/shopify/tags/batch") ? "tags_batch" : pathname.includes("/seed-demo") ? "seed_demo" : pathname.includes("/sessions/store") ? "session_store" : pathname.includes("/sessions/retrieve") ? "session_retrieve" : pathname.includes("/sessions/delete") ? "session_delete" : pathname.includes("/sessions/list") ? "session_list" : "unknown";
 }
 var import_crypto, init_hmac_server = __esm({
   "app/server/hmac.server.ts"() {
@@ -140054,40 +140054,26 @@ function App() {
                                 color: "#202223",
                                 transition: "all 0.2s ease"
                               },
-                              children: "\u{1F916} AI Dashboard"
+                              children: "AI Dashboard"
                             }
                           ) }),
-                          /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
-                            "li",
+                          /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("li", { children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
+                            import_react3.NavLink,
                             {
+                              to: "/app/billing",
                               style: {
-                                marginTop: 12,
-                                paddingTop: 12,
-                                borderTop: "1px solid #e1e3e5"
+                                display: "block",
+                                padding: "8px 12px",
+                                borderRadius: "6px",
+                                textDecoration: "none",
+                                fontSize: "14px",
+                                fontWeight: "500",
+                                color: "#202223",
+                                transition: "all 0.2s ease"
                               },
-                              children: /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)(
-                                import_react3.NavLink,
-                                {
-                                  to: "/app/intent-os",
-                                  style: {
-                                    display: "block",
-                                    padding: "8px 12px",
-                                    borderRadius: "6px",
-                                    textDecoration: "none",
-                                    fontSize: "12px",
-                                    fontWeight: "400",
-                                    color: "#6d7175",
-                                    opacity: 0.7
-                                  },
-                                  children: [
-                                    "Smart Website",
-                                    /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("br", {}),
-                                    /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("span", { style: { fontSize: "10px", color: "#8c9196" }, children: "Coming Q1 2026" })
-                                  ]
-                                }
-                              )
+                              children: "Billing"
                             }
-                          )
+                          ) })
                         ]
                       }
                     )
@@ -140223,41 +140209,27 @@ function App() {
                                 color: "#202223",
                                 transition: "all 0.2s ease"
                               },
-                              children: "\u{1F916} AI Dashboard"
+                              children: "AI Dashboard"
                             }
                           ) }),
-                          /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
-                            "li",
+                          /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("li", { children: /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(
+                            import_react3.NavLink,
                             {
+                              to: "/app/billing",
+                              onClick: () => setMobileMenuOpen(!1),
                               style: {
-                                marginTop: 12,
-                                paddingTop: 12,
-                                borderTop: "1px solid #e1e3e5"
+                                display: "block",
+                                padding: "12px 16px",
+                                borderRadius: "6px",
+                                textDecoration: "none",
+                                fontSize: "16px",
+                                fontWeight: "500",
+                                color: "#202223",
+                                transition: "all 0.2s ease"
                               },
-                              children: /* @__PURE__ */ (0, import_jsx_runtime2.jsxs)(
-                                import_react3.NavLink,
-                                {
-                                  to: "/app/intent-os",
-                                  onClick: () => setMobileMenuOpen(!1),
-                                  style: {
-                                    display: "block",
-                                    padding: "12px 16px",
-                                    borderRadius: "6px",
-                                    textDecoration: "none",
-                                    fontSize: "14px",
-                                    fontWeight: "400",
-                                    color: "#6d7175",
-                                    opacity: 0.7
-                                  },
-                                  children: [
-                                    "Smart Website",
-                                    /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("br", {}),
-                                    /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("span", { style: { fontSize: "12px", color: "#8c9196" }, children: "Coming Q1 2026" })
-                                  ]
-                                }
-                              )
+                              children: "Billing"
                             }
-                          )
+                          ) })
                         ]
                       }
                     )
@@ -140319,7 +140291,7 @@ function App() {
                           }
                         )
                       ] }),
-                      /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("div", { style: { color: "#8c9196", fontSize: "11px" }, children: "Ads Autopilot AI \xA9 2024 \u2022 Contact: atanrikulu@e-listele.com" })
+                      /* @__PURE__ */ (0, import_jsx_runtime2.jsx)("div", { style: { color: "#8c9196", fontSize: "11px" }, children: "Ads Autopilot AI \xA9 2025 \u2022 Contact: atanrikulu@e-listele.com" })
                     ] })
                   ]
                 }
@@ -140358,9 +140330,8 @@ async function action({ request: request2 }) {
         let { authenticate: authenticate2 } = await Promise.resolve().then(() => (init_shopify_server(), shopify_server_exports)), { checkSubscriptionStatus: checkSubscriptionStatus2 } = await Promise.resolve().then(() => (init_subscription_server(), subscription_server_exports)), { admin } = await authenticate2.admin(request2);
         actualTier = (await checkSubscriptionStatus2(admin))?.subscriptionTier || "starter", console.log(`Detected subscription tier: ${actualTier} for ${currentShopName}`);
       } catch (tierError) {
-        console.warn("Failed to detect tier, using starter:", tierError.message), actualTier = "starter";
+        console.warn("Failed to detect tier, using starter:", tierError instanceof Error ? tierError.message : tierError), actualTier = "starter";
       }
-    console.log(`\u{1F517} Fetching script from backend for shop: ${currentShopName}`);
     let scriptParams = new URLSearchParams({
       budget: String(budget || "20.00"),
       cpc: String(cpc || "0.50"),
@@ -140368,14 +140339,14 @@ async function action({ request: request2 }) {
     }).toString(), realScript;
     try {
       try {
-        console.log(`\u{1F517} Attempting to fetch from /ads-script/v2 endpoint with params: ${scriptParams}`), realScript = await backendFetchText2(
+        realScript = await backendFetchText2(
           `/ads-script/v2?${scriptParams}`,
           "GET",
           void 0,
           currentShopName
         );
       } catch (v2Error) {
-        console.log(`\u26A0\uFE0F V2 endpoint failed, falling back to /ads-script/raw: ${v2Error.message}`), realScript = await backendFetchText2(
+        console.log(`\u26A0\uFE0F V2 endpoint failed, falling back to /ads-script/raw: ${v2Error instanceof Error ? v2Error.message : v2Error}`), realScript = await backendFetchText2(
           `/ads-script/raw?${scriptParams}`,
           "GET",
           void 0,
@@ -140398,7 +140369,7 @@ async function action({ request: request2 }) {
     } catch (error) {
       throw console.log(
         `Backend fetch failed for ${currentShopName}:`,
-        error.message
+        error instanceof Error ? error.message : error
       ), error;
     }
     if (realScript && realScript.length > 2e4 && !realScript.includes("<html")) {
@@ -140427,18 +140398,12 @@ async function action({ request: request2 }) {
     } else
       return console.log(`Script validation failed - length: ${realScript?.length || 0}, isHTML: ${realScript?.includes("<html") || !1}`), (0, import_node2.json)({
         success: !1,
-        error: "Failed to fetch complete script - backend may be returning fallback content",
-        debug: {
-          length: realScript?.length || 0,
-          isHTML: realScript?.includes("<html") || !1,
-          preview: realScript?.substring(0, 200) || "No content"
-        }
+        error: "Failed to generate script. Please try again."
       });
   } catch (error) {
     return console.error("Script generation error:", error), (0, import_node2.json)({
       success: !1,
-      error: error.message || "Unknown error during script generation",
-      stack: error.stack
+      error: "Script generation failed. Please try again."
     });
   }
 }
@@ -140457,7 +140422,6 @@ __export(auth_session_token_exports, {
 });
 init_shopify_server();
 var loader2 = async ({ request: request2 }) => {
-  console.log("\u{1F3AB} Session token route accessed with 2025 auth strategy");
   try {
     let { session, admin } = await authenticate.admin(request2);
     if (!session || !admin)
@@ -140478,7 +140442,7 @@ var loader2 = async ({ request: request2 }) => {
       }
     });
   } catch (error) {
-    console.error("\u{1F6A8} Session token route error:", error);
+    console.error("Session token route error:", error);
     let shop = new URL(request2.url).searchParams.get("shop") || "";
     return new Response(null, {
       status: 302,
@@ -140510,7 +140474,7 @@ var loader3 = async ({ request: request2 }) => {
   } catch (error) {
     return (0, import_node3.json)({
       ok: !1,
-      error: error.message || "Script proxy error"
+      error: error instanceof Error ? error.message : "Script proxy error"
     });
   }
 };
@@ -140691,7 +140655,7 @@ function HealthIndicator({
 
 // app/components/AIDashboard/ActiveTasks.tsx
 var import_react4 = __toESM(require_react()), import_polaris3 = __toESM(require_cjs3());
-var import_jsx_runtime5 = __toESM(require_jsx_runtime()), PlayIcon = () => /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("span", { children: "\u25B6\uFE0F" }), PauseIcon = () => /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("span", { children: "\u23F8\uFE0F" }), StopIcon = () => /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("span", { children: "\u23F9\uFE0F" }), ClockIcon = () => /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("span", { children: "\u23F1\uFE0F" }), CheckCircleIcon = () => /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("span", { style: { color: "#00a047" }, children: "\u2705" }), AlertTriangleIcon = () => /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("span", { style: { color: "#ff8a00" }, children: "\u26A0\uFE0F" }), XCircleIcon = () => /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("span", { style: { color: "#ff6d6d" }, children: "\u274C" }), TrendingUpIcon = () => /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("span", { children: "\u{1F4C8}" }), ActivityIcon = () => /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("span", { children: "\u26A1" });
+var import_jsx_runtime5 = __toESM(require_jsx_runtime()), PlayIcon = () => /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("span", { children: "\u25B6\uFE0F" }), PauseIcon = () => /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("span", { children: "\u23F8\uFE0F" }), StopIcon = () => /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("span", { children: "\u23F9\uFE0F" }), ClockIcon = () => /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("span", { children: "\u23F1\uFE0F" }), CheckCircleIcon = () => /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("span", { style: { color: "#00a047" }, children: "\u2705" }), AlertTriangleIcon = () => /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("span", { style: { color: "#ff8a00" }, children: "\u26A0\uFE0F" }), XCircleIcon = () => /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("span", { style: { color: "#ff6d6d" }, children: "\u274C" }), TrendingUpIcon = () => /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("span", {}), ActivityIcon = () => /* @__PURE__ */ (0, import_jsx_runtime5.jsx)("span", { children: "\u26A1" });
 function ActiveTasks({ shopName, hasFeatureAccess: hasFeatureAccess2 = !1 }) {
   let [tasks, setTasks] = (0, import_react4.useState)([]), [loading, setLoading] = (0, import_react4.useState)(!0), [error, setError] = (0, import_react4.useState)(null), [selectedTask, setSelectedTask] = (0, import_react4.useState)(null), [showTaskModal, setShowTaskModal] = (0, import_react4.useState)(!1), fetchTasks = (0, import_react4.useCallback)(async () => {
     try {
@@ -141073,7 +141037,7 @@ function ActiveTasks({ shopName, hasFeatureAccess: hasFeatureAccess2 = !1 }) {
 
 // app/components/AIDashboard/SystemOverview.tsx
 var import_jsx_runtime6 = __toESM(require_jsx_runtime()), CheckCircleIcon2 = () => /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { style: { color: "#00a047" }, children: "\u25CF" }), AlertCircleIcon = () => /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { style: { color: "#ff6d6d" }, children: "\u25CF" }), InfoIcon = () => /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { style: { color: "#006fbb" }, children: "\u25CF" });
-var TrendingUpIcon2 = () => /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { children: "\u{1F4C8}" }), ActivityIcon2 = () => /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { children: "\u26A1" });
+var TrendingUpIcon2 = () => /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", {}), ActivityIcon2 = () => /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { children: "\u26A1" });
 function SystemOverview({ shopName, hasFeatureAccess: hasFeatureAccess2 = !1 }) {
   let [systemHealth, setSystemHealth] = (0, import_react5.useState)(null), [optimizationStats, setOptimizationStats] = (0, import_react5.useState)(null), [dataSources, setDataSources] = (0, import_react5.useState)([]), [quickStats, setQuickStats] = (0, import_react5.useState)(null), [automationStatus, setAutomationStatus] = (0, import_react5.useState)(null), [ingestionStatus, setIngestionStatus] = (0, import_react5.useState)(null), [logMetrics, setLogMetrics] = (0, import_react5.useState)(null), [alertMessage, setAlertMessage] = (0, import_react5.useState)(null), [loading, setLoading] = (0, import_react5.useState)(!0), [error, setError] = (0, import_react5.useState)(null), [lastRefresh, setLastRefresh] = (0, import_react5.useState)(/* @__PURE__ */ new Date()), fetchSystemHealth = (0, import_react5.useCallback)(async () => {
     try {
@@ -141769,7 +141733,7 @@ function UserDashboard({ shopName, hasFeatureAccess: hasFeatureAccess2 = !1, onN
             /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.Text, { variant: "bodyMd", tone: "subdued", children: "Avg. CPC" }),
             /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.Text, { variant: "bodyMd", fontWeight: "bold", children: formatCurrency(metrics?.cpc || 0) })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.Box, { background: "bg-surface-warning", padding: "200", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.Text, { variant: "bodySm", children: "\u{1F4A1} AI suggests increasing budget by 20% for better results" }) })
+          /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.Box, { background: "bg-surface-warning", padding: "200", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.Text, { variant: "bodySm", children: "AI suggests increasing budget by 20% for better results" }) })
         ] })
       ] }) }) })
     ] }),
@@ -142627,9 +142591,9 @@ ${draft.descriptions.join(`
         /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "headingMd", children: "AI Recommendations" }),
         /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Divider, {}),
         /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris8.BlockStack, { gap: "200", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Box, { padding: "200", background: "bg-surface-warning", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "bodySm", children: "\u{1F4A1} Try emphasizing sustainability - competitors seeing 25% better engagement" }) }),
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Box, { padding: "200", background: "bg-surface-warning", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "bodySm", children: "\u{1F4A1} Test shorter headlines (5-7 words) for mobile optimization" }) }),
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Box, { padding: "200", background: "bg-surface-warning", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "bodySm", children: "\u{1F4A1} Include customer testimonials in descriptions for trust signals" }) })
+          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Box, { padding: "200", background: "bg-surface-warning", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "bodySm", children: "Try emphasizing sustainability - competitors seeing 25% better engagement" }) }),
+          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Box, { padding: "200", background: "bg-surface-warning", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "bodySm", children: "Test shorter headlines (5-7 words) for mobile optimization" }) }),
+          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Box, { padding: "200", background: "bg-surface-warning", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "bodySm", children: "Include customer testimonials in descriptions for trust signals" }) })
         ] })
       ] }) }) })
     ] }),
@@ -142997,7 +142961,7 @@ function PerformanceInsights({ shopName, hasFeatureAccess: hasFeatureAccess2 = !
           ),
           /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_recharts.Tooltip, {})
         ] }) }) : /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Box, { padding: "400", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "bodyMd", tone: "subdued", alignment: "center", children: "Device breakdown data will appear here once campaigns generate traffic." }) }) }),
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Box, { background: "bg-surface-secondary", padding: "300", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "bodySm", tone: "subdued", children: "\u{1F4A1} Mobile traffic converts 25% better with AI-optimized responsive ads" }) })
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Box, { background: "bg-surface-secondary", padding: "300", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "bodySm", tone: "subdued", children: "Mobile traffic converts 25% better with AI-optimized responsive ads" }) })
       ] }) }) }),
       /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Layout.Section, { oneHalf: !0, children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris9.BlockStack, { gap: "400", children: [
         /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "headingMd", children: "Top Performing Keywords" }),
@@ -143475,7 +143439,7 @@ function AIDashboard({ shopName, subscriptionTier = "starter", hasFeatureAccess:
               },
               title: "Drafts are automatically saved",
               children: [
-                "\u2713 Saved (",
+                "Saved (",
                 selectedDraftIndices.length,
                 ")"
               ]
@@ -144766,19 +144730,19 @@ function CampaignSetupForm({
     hasOffer: !1,
     offerText: ""
   }), businessTypeOptions = [
-    { label: "\u{1F6CD}\uFE0F E-commerce Store", value: "ecommerce" },
-    { label: "\u{1F3E2} Service Business", value: "service" },
-    { label: "\u{1F4CD} Local Business", value: "local" },
-    { label: "\u{1F4BC} B2B Company", value: "b2b" }
+    { label: "E-commerce Store", value: "ecommerce" },
+    { label: "Service Business", value: "service" },
+    { label: "Local Business", value: "local" },
+    { label: "B2B Company", value: "b2b" }
   ], goalOptions = [
-    { label: "\u{1F4B0} Get more sales", value: "sales" },
-    { label: "\u{1F680} Increase website traffic", value: "traffic" },
-    { label: "\u{1F4E7} Generate leads", value: "leads" }
+    { label: "Get more sales", value: "sales" },
+    { label: "Increase website traffic", value: "traffic" },
+    { label: "Generate leads", value: "leads" }
   ], toneCards = [
-    { id: "professional", emoji: "\u{1F454}", label: "Professional" },
-    { id: "friendly", emoji: "\u{1F60A}", label: "Friendly" },
-    { id: "urgent", emoji: "\u{1F525}", label: "Urgent" },
-    { id: "luxury", emoji: "\u{1F48E}", label: "Luxurious" }
+    { id: "professional", label: "Professional" },
+    { id: "friendly", label: "Friendly" },
+    { id: "urgent", label: "Urgent" },
+    { id: "luxury", label: "Luxurious" }
   ];
   return /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(import_polaris13.BlockStack, { gap: "600", children: [
     /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(import_polaris13.Banner, { title: "Quick Campaign Setup", tone: "info", children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)("p", { children: "Answer a few simple questions to create your automated Google Ads campaign. Our AI will handle the rest!" }) }),
@@ -144931,10 +144895,10 @@ function CampaignSetupForm({
         {
           title: "",
           choices: [
-            { label: "\u{1F916} Let AI suggest keywords (Recommended)", value: "auto" },
-            { label: "\u{1F3F7}\uFE0F Focus on my brand name", value: "brand" },
-            { label: "\u{1F3AF} Target competitor keywords", value: "competitor" },
-            { label: "\u270F\uFE0F Use custom keywords", value: "custom" }
+            { label: "Let AI suggest keywords (Recommended)", value: "auto" },
+            { label: "Focus on my brand name", value: "brand" },
+            { label: "Target competitor keywords", value: "competitor" },
+            { label: "Use custom keywords", value: "custom" }
           ],
           selected: [config.keywordStrategy],
           onChange: (selected) => setConfig({ ...config, keywordStrategy: selected[0] })
@@ -144963,10 +144927,7 @@ function CampaignSetupForm({
           borderWidth: "025",
           borderRadius: "200",
           onClick: () => setConfig({ ...config, adTone: tone.id }),
-          children: /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(import_polaris13.BlockStack, { gap: "200", inlineAlign: "center", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(import_polaris13.Text, { variant: "headingLg", as: "p", children: tone.emoji }),
-            /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(import_polaris13.Text, { variant: "bodyMd", as: "p", children: tone.label })
-          ] })
+          children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(import_polaris13.BlockStack, { gap: "200", inlineAlign: "center", children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(import_polaris13.Text, { variant: "bodyMd", as: "p", children: tone.label }) })
         },
         tone.id
       )) })
@@ -145049,7 +145010,7 @@ function MLAutopilotDashboard({ shopName, mlState, onRefresh }) {
       alignItems: "center",
       marginBottom: "20px"
     }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("h3", { style: { margin: 0, color: "#495057" }, children: "\u{1F916} ML Autopilot Dashboard" }),
+      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("h3", { style: { margin: 0, color: "#495057" }, children: "ML Autopilot Dashboard" }),
       /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("div", { style: { display: "flex", alignItems: "center", gap: "12px" }, children: [
         lastUpdated && /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("span", { style: { fontSize: "12px", color: "#6c757d" }, children: [
           "Updated: ",
@@ -145157,7 +145118,7 @@ function MLAutopilotDashboard({ shopName, mlState, onRefresh }) {
       ] })
     ] }),
     mlState.insights && /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("div", { style: { marginBottom: "20px" }, children: [
-      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("h4", { style: { margin: "0 0 12px 0", color: "#495057" }, children: "\u{1F4CA} Performance Insights" }),
+      /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("h4", { style: { margin: "0 0 12px 0", color: "#495057" }, children: "Performance Insights" }),
       mlState.insights.timeOfDayTrends && /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("div", { style: {
         background: "#e7f3ff",
         border: "1px solid #b3d9ff",
@@ -145171,7 +145132,7 @@ function MLAutopilotDashboard({ shopName, mlState, onRefresh }) {
           alignItems: "center",
           marginBottom: "8px"
         }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("span", { style: { fontWeight: "bold", fontSize: "14px" }, children: "\u{1F552} Optimal Hours" }),
+          /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("span", { style: { fontWeight: "bold", fontSize: "14px" }, children: "Optimal Hours" }),
           /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("span", { style: {
             fontSize: "12px",
             color: "#0c5460",
@@ -145201,7 +145162,7 @@ function MLAutopilotDashboard({ shopName, mlState, onRefresh }) {
           alignItems: "center",
           marginBottom: "8px"
         }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("span", { style: { fontWeight: "bold", fontSize: "14px" }, children: "\u{1F4C5} Optimal Days" }),
+          /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("span", { style: { fontWeight: "bold", fontSize: "14px" }, children: "Optimal Days" }),
           /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("span", { style: {
             fontSize: "12px",
             color: "#856404",
@@ -145231,7 +145192,7 @@ function MLAutopilotDashboard({ shopName, mlState, onRefresh }) {
           alignItems: "center",
           marginBottom: "8px"
         }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("span", { style: { fontWeight: "bold", fontSize: "14px" }, children: "\u{1F3AF} CPA Prediction" }),
+          /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("span", { style: { fontWeight: "bold", fontSize: "14px" }, children: "CPA Prediction" }),
           /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("span", { style: {
             fontSize: "12px",
             color: "#155724",
@@ -145259,7 +145220,7 @@ function MLAutopilotDashboard({ shopName, mlState, onRefresh }) {
         borderRadius: "6px",
         padding: "12px"
       }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("div", { style: { fontWeight: "bold", fontSize: "14px", marginBottom: "8px" }, children: "\u{1F4C8} Performance Forecasts" }),
+        /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("div", { style: { fontWeight: "bold", fontSize: "14px", marginBottom: "8px" }, children: "Performance Forecasts" }),
         /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("div", { style: { display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }, children: [
           mlState.insights.performanceForecasts.next7Days && /* @__PURE__ */ (0, import_jsx_runtime19.jsxs)("div", { children: [
             /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("div", { style: { fontSize: "12px", color: "#721c24", fontWeight: "bold" }, children: "Next 7 Days" }),
@@ -145360,7 +145321,7 @@ function MLAutopilotDashboard({ shopName, mlState, onRefresh }) {
     padding: "20px",
     marginTop: "16px"
   }, children: [
-    /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("h3", { style: { margin: "0 0 12px 0", color: "#495057" }, children: "\u{1F916} ML Autopilot Dashboard" }),
+    /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("h3", { style: { margin: "0 0 12px 0", color: "#495057" }, children: "ML Autopilot Dashboard" }),
     /* @__PURE__ */ (0, import_jsx_runtime19.jsx)("p", { style: { margin: 0, color: "#6c757d" }, children: "ML Autopilot is initializing. Run an autopilot tick to see insights." })
   ] });
 }
@@ -145395,7 +145356,7 @@ async function loader7({ request: request2 }) {
         advancedSettings: hasFeatureAccess(subscriptionInfo, "advanced_ai_optimization"),
         realTimeAnalytics: hasFeatureAccess(subscriptionInfo, "real_time_performance_analytics"),
         customRules: hasFeatureAccess(subscriptionInfo, "custom_ai_optimization_rules")
-      }, console.log(`\u{1F510} Feature access for ${shopName}:`, availableFeatures);
+      };
     } catch (subscriptionError) {
       console.error("Subscription check failed on autopilot, using basic access:", subscriptionError);
     }
@@ -145405,18 +145366,20 @@ async function loader7({ request: request2 }) {
       // Default to starter limit
       tier: subscriptionInfo.subscriptionTier || "starter",
       canCreate: !0,
+      remaining: 5,
       upgradeUrl: "/app/billing"
     };
     try {
       let { backendFetch: backendFetch2 } = await Promise.resolve().then(() => (init_hmac_server(), hmac_server_exports)), limitsResponse = await backendFetch2("/campaign-limits", "GET", void 0, shopName);
-      if (limitsResponse.ok) {
-        let limits = await limitsResponse.json();
+      if (limitsResponse.status >= 200 && limitsResponse.status < 300) {
+        let limits = limitsResponse.json;
         campaignLimits = {
-          current: limits.currentCount || 0,
-          limit: limits.limit || 5,
-          tier: limits.tier || "starter",
-          canCreate: limits.allowed || !1,
-          upgradeUrl: limits.upgradeUrl || "/app/billing"
+          current: limits?.currentCount || 0,
+          limit: limits?.limit || 5,
+          tier: limits?.tier || "starter",
+          canCreate: limits?.allowed !== !1,
+          remaining: (limits?.limit || 5) - (limits?.currentCount || 0),
+          upgradeUrl: limits?.upgradeUrl || "/app/billing"
         };
       }
     } catch (limitsError) {
@@ -145597,21 +145560,15 @@ ${customizedScript}
             `Script validation failed for ${currentShopName}: length=${realScript?.length || 0}, hasHTML=${realScript?.includes("<html") || !1}`
           ), (0, import_node7.json)({
             success: !1,
-            error: "Failed to fetch complete script from backend",
-            debug: {
-              length: realScript?.length || 0,
-              isHTML: realScript?.includes("<html") || !1,
-              preview: realScript?.substring(0, 200) || "No content"
-            }
+            error: "Failed to fetch complete script. Please try again."
           });
       } catch (error) {
         return console.error(
           `Action script fetch failed for ${currentShopName}:`,
-          error.message
+          error instanceof Error ? error.message : error
         ), (0, import_node7.json)({
           success: !1,
-          error: error.message || "Backend fetch failed",
-          stack: error.stack
+          error: "Failed to generate script. Please try again."
         });
       }
     }
@@ -145639,13 +145596,13 @@ function Autopilot() {
         headlineCount: 15,
         descriptionCount: 4
       }, shopName);
-      if (response.ok) {
-        let result = await response.json();
-        result.ok ? (setGeneratedAds(result), setShowGeneratedAds(!0), setToast(`Generated ${result.headlines?.length || 0} headlines and ${result.descriptions?.length || 0} descriptions`)) : setToast("Error: " + result.error);
+      if (response.status >= 200 && response.status < 300) {
+        let result = response.json;
+        result?.ok ? (setGeneratedAds(result), setShowGeneratedAds(!0), setToast(`Generated ${result.headlines?.length || 0} headlines and ${result.descriptions?.length || 0} descriptions`)) : setToast("Error: " + (result?.error || "Unknown error"));
       } else
         setToast("Error: Failed to generate AI ads");
     } catch (error) {
-      console.error("AI ads generation error:", error), setToast("Error: " + error.message);
+      console.error("AI ads generation error:", error), setToast("Error: " + (error instanceof Error ? error.message : "Unknown error"));
     } finally {
       setIsGeneratingAds(!1);
     }
@@ -145655,9 +145612,9 @@ function Autopilot() {
         let { backendFetch: backendFetch2 } = await Promise.resolve().then(() => (init_hmac_server(), hmac_server_exports)), response = await backendFetch2("/jobs/autopilot_tick", "POST", {
           nonce: Date.now()
         }, shopName + "?dry=1");
-        if (response.ok) {
-          let result = await response.json();
-          result.ok && result.ml && (setMLState(result.ml), setToast("ML state updated"));
+        if (response.status >= 200 && response.status < 300) {
+          let result = response.json;
+          result?.ok && result?.ml && (setMLState(result.ml), setToast("ML state updated"));
         }
       } catch (error) {
         console.error("Failed to fetch ML state:", error), setToast("Error: Failed to fetch ML insights");
@@ -145676,31 +145633,32 @@ function Autopilot() {
           source: "ai_generated"
         }]
       }, shopName);
-      if (response.ok) {
-        let result = await response.json();
-        result.ok && result.accepted > 0 ? (setToast(`Accepted ${result.accepted} AI-generated ad sets`), setShowGeneratedAds(!1), setGeneratedAds(null)) : setToast("Error: " + (result.error || "Failed to accept ads"));
+      if (response.status >= 200 && response.status < 300) {
+        let result = response.json;
+        result?.ok && result?.accepted > 0 ? (setToast(`Accepted ${result.accepted} AI-generated ad sets`), setShowGeneratedAds(!1), setGeneratedAds(null)) : setToast("Error: " + (result?.error || "Failed to accept ads"));
       } else
         setToast("Error: Failed to accept AI ads");
     } catch (error) {
-      console.error("AI ads acceptance error:", error), setToast("Error: " + error.message);
+      console.error("AI ads acceptance error:", error), setToast("Error: " + (error instanceof Error ? error.message : "Unknown error"));
     }
   };
   React18.useEffect(() => {
     setShopName(serverShopName);
   }, [serverShopName]), React18.useEffect(() => {
-    if (actionData?.success) {
-      setScriptCode(actionData.script), setShowScript(!0), setToast(`Script generated: ${actionData.size}KB`);
+    let data = actionData;
+    if (data?.success && data.script) {
+      setScriptCode(data.script), setShowScript(!0), setToast(`Script generated: ${data.size}KB`);
       try {
-        localStorage.setItem("adsautopilot_generated_script", actionData.script), localStorage.setItem("adsautopilot_script_meta", JSON.stringify({
-          size: actionData.size,
-          shopName: actionData.shopName,
+        localStorage.setItem("adsautopilot_generated_script", data.script), localStorage.setItem("adsautopilot_script_meta", JSON.stringify({
+          size: data.size,
+          shopName: data.shopName,
           timestamp: Date.now()
         }));
       } catch (e) {
         console.warn("Failed to store script:", e);
       }
     } else
-      actionData?.error && setToast("Error: " + actionData.error);
+      data?.error && setToast("Error: " + data.error);
   }, [actionData]), React18.useEffect(() => {
     try {
       let storedScript = localStorage.getItem("adsautopilot_generated_script"), storedMeta = localStorage.getItem("adsautopilot_script_meta");
@@ -145713,19 +145671,7 @@ function Autopilot() {
     }
   }, []);
   function run() {
-    let config2 = `Configuration:
-Mode: ${mode2}
-Budget: $${budget}/day
-CPC: $${cpc}
-URL: ${url}
-Shop: ${shopName || "unknown"}`;
-    alert(
-      `Autopilot would be enabled with:
-
-${config2}
-
-In production, this would start the automation.`
-    ), setToast("Demo: Configuration shown (would enable in production)");
+    setToast("Settings saved. Generate your script below to activate optimization.");
   }
   return /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { children: [
     /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("h1", { children: "Autopilot" }),
@@ -145939,12 +145885,13 @@ In production, this would start the automation.`
         style: {
           marginTop: 8,
           padding: 12,
-          background: "#e7f3ff",
+          background: showScript ? "#d4edda" : "#e7f3ff",
           borderRadius: 4,
-          marginBottom: 16
+          marginBottom: 16,
+          border: showScript ? "1px solid #c3e6cb" : "1px solid #bee5eb"
         },
         children: [
-          /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("h4", { style: { margin: "0 0 8px 0", color: "#0c5460" }, children: "Autopilot Status" }),
+          /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("h4", { style: { margin: "0 0 8px 0", color: showScript ? "#155724" : "#0c5460" }, children: "Autopilot Status" }),
           /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)(
             "div",
             {
@@ -145959,32 +145906,33 @@ In production, this would start the automation.`
                   "span",
                   {
                     style: {
-                      background: "#28a745",
+                      background: showScript ? "#28a745" : "#6c757d",
                       color: "white",
                       padding: "4px 8px",
                       borderRadius: "12px",
                       fontSize: "12px"
                     },
-                    children: "ACTIVE"
+                    children: showScript ? "SCRIPT READY" : "SETUP NEEDED"
                   }
                 ),
                 /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("span", { children: [
-                  "Automation running for:",
+                  "Shop:",
                   " ",
                   /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: shopName || serverShopName || "Loading..." })
                 ] })
               ]
             }
           ),
-          /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { style: { fontSize: "14px", color: "#666" }, children: [
-            "Budget optimization: Active",
+          /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("div", { style: { fontSize: "14px", color: "#666" }, children: showScript ? /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)(import_jsx_runtime20.Fragment, { children: [
+            "Your script has been generated. Copy it into Google Ads to activate.",
             /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("br", {}),
-            "AI analysis: Running every 15min",
+            /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("strong", { children: "Next:" }),
+            " Google Ads \u2192 Tools \u2192 Scripts \u2192 + New script \u2192 Paste \u2192 Authorize \u2192 Run"
+          ] }) : /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)(import_jsx_runtime20.Fragment, { children: [
+            "Configure your settings below and generate your Google Ads script.",
             /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("br", {}),
-            "Performance monitoring: Continuous",
-            /* @__PURE__ */ (0, import_jsx_runtime20.jsx)("br", {}),
-            "Script updates: Available below"
-          ] })
+            "Once pasted into Google Ads, it will optimize your campaigns automatically."
+          ] }) })
         ]
       }
     ),
@@ -146052,7 +146000,7 @@ In production, this would start the automation.`
         }
       )
     ] }) }),
-    actionData?.success && /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { style: {
+    actionData?.success && actionData?.script && /* @__PURE__ */ (0, import_jsx_runtime20.jsxs)("div", { style: {
       background: "#d4edda",
       border: "1px solid #c3e6cb",
       padding: "12px",
@@ -146178,11 +146126,11 @@ In production, this would start the automation.`
         ' These AI-generated ads will be added to your asset library and can be used in your Google Ads campaigns. Click "Accept & Apply" to save them or "Reject" to generate new ones.'
       ] })
     ] }),
-    showMLDashboard && /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(ClientOnly, { children: /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(
+    showMLDashboard && /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(ClientOnly, { children: () => /* @__PURE__ */ (0, import_jsx_runtime20.jsx)(
       MLAutopilotDashboard,
       {
         shopName: shopName || serverShopName || "",
-        mlState,
+        mlState: mlState ?? void 0,
         onRefresh: fetchMLState
       }
     ) }),
@@ -146349,7 +146297,7 @@ function IntentOSComingSoon() {
                 color: "#856404"
               },
               children: [
-                "\u{1F4C5} Expected Launch: ",
+                "Expected Launch: ",
                 launchDate
               ]
             }
@@ -146432,7 +146380,7 @@ function IntentOSComingSoon() {
                           background: "#fff"
                         },
                         children: [
-                          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h3", { style: { color: "#dc3545", marginBottom: "1rem" }, children: "\u{1F4A8} Exit Intent" }),
+                          /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h3", { style: { color: "#dc3545", marginBottom: "1rem" }, children: "Exit Intent" }),
                           /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("p", { style: { color: "#666", fontSize: "14px" }, children: "Catch visitors before they leave with last-chance offers and incentives." })
                         ]
                       }
@@ -146484,7 +146432,7 @@ function IntentOSComingSoon() {
                           fontWeight: "bold",
                           display: "block"
                         },
-                        children: "\u{1F916} Use Autopilot Now"
+                        children: "Use Autopilot Now"
                       }
                     ),
                     /* @__PURE__ */ (0, import_jsx_runtime21.jsx)(
@@ -146570,7 +146518,7 @@ function IntentOSComingSoon() {
               borderRadius: "8px"
             },
             children: [
-              /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h3", { style: { marginBottom: "1rem", color: "#333" }, children: "\u{1F4EC} Want to know when Smart Website features launch?" }),
+              /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("h3", { style: { marginBottom: "1rem", color: "#333" }, children: "Want to know when Smart Website features launch?" }),
               /* @__PURE__ */ (0, import_jsx_runtime21.jsx)("p", { style: { color: "#666", marginBottom: "1.5rem" }, children: "We'll email you as soon as these conversion optimization tools are ready." }),
               /* @__PURE__ */ (0, import_jsx_runtime21.jsxs)(
                 "div",
@@ -146610,7 +146558,7 @@ function IntentOSComingSoon() {
                           fontWeight: "bold",
                           cursor: "pointer"
                         },
-                        children: "\u{1F4E7} Notify Me"
+                        children: "Notify Me"
                       }
                     )
                   ]
@@ -146869,15 +146817,7 @@ async function action5({ request: request2 }) {
       AP_TARGET_ROAS: String(fd.get("target_roas") || ""),
       AP_DESIRED_KEYWORDS_PIPE: String(fd.get("desired_keywords") || "").split(/\r?\n|,|[|]/).map((s) => s.trim()).filter(Boolean).join("|"),
       AP_PLAYBOOK_PROMPT: String(fd.get("playbook") || "")
-    };
-    console.log(`\u{1F4BE} Saving settings for ${shopName}:`, {
-      schedule: settings.AP_SCHEDULE,
-      target_cpa: settings.AP_TARGET_CPA,
-      target_roas: settings.AP_TARGET_ROAS,
-      keywords_count: settings.AP_DESIRED_KEYWORDS_PIPE.split("|").length,
-      playbook_length: settings.AP_PLAYBOOK_PROMPT.length
-    });
-    let { backendFetch: backendFetch2 } = await Promise.resolve().then(() => (init_hmac_server(), hmac_server_exports)), saveResult = await backendFetch2(
+    }, { backendFetch: backendFetch2 } = await Promise.resolve().then(() => (init_hmac_server(), hmac_server_exports)), saveResult = await backendFetch2(
       "/upsertConfig",
       "POST",
       { nonce: Date.now(), settings },
@@ -147389,7 +147329,7 @@ function Advanced() {
     /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(import_react27.Form, { method: "post", style: { display: "grid", gap: 20 }, children: [
       /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("input", { type: "hidden", name: "shop", value: data?.shopName || "" }),
       /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("div", { style: sectionStyle, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("h3", { style: legendStyle, children: "\u{1F552} Automation Schedule" }),
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("h3", { style: legendStyle, children: "Automation Schedule" }),
         /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("p", { style: helpStyle, children: "Choose how often Ads Autopilot AI should optimize your campaigns" }),
         /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("div", { style: { marginTop: "12px" }, children: [
           /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("div", { style: { display: "grid", gap: "8px" }, children: suggestions.schedule?.options.map((option, idx) => /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)(
@@ -147654,7 +147594,7 @@ function Advanced() {
         ] })
       ] }),
       /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("div", { style: sectionStyle, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("h3", { style: legendStyle, children: "\u{1F4B3} Maximum Bid Limits" }),
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("h3", { style: legendStyle, children: "Maximum Bid Limits" }),
         /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("p", { style: helpStyle, children: "Set cost-per-click limits to control your ad spending" }),
         /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("div", { style: { marginTop: "12px" }, children: [
           /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("div", { style: { marginBottom: "16px" }, children: [
@@ -147870,7 +147810,7 @@ function Advanced() {
                         cursor: nav.state !== "idle" ? "not-allowed" : "pointer",
                         opacity: nav.state !== "idle" ? 0.7 : 1
                       },
-                      children: nav.state !== "idle" ? "\u23F3 Saving..." : "\u{1F4BE} Save Bid Limits"
+                      children: nav.state !== "idle" ? "Saving..." : "Save Bid Limits"
                     }
                   ),
                   buttonFeedback.saveCaps && /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
@@ -148109,7 +148049,7 @@ function Advanced() {
         ] })
       ] }),
       /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("div", { style: sectionStyle, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("h3", { style: legendStyle, children: "\u{1F511} Target Keywords" }),
+        /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("h3", { style: legendStyle, children: "Target Keywords" }),
         /* @__PURE__ */ (0, import_jsx_runtime22.jsx)("p", { style: helpStyle, children: "Choose keyword categories that match your business or enter your own" }),
         /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("div", { style: { marginTop: "12px" }, children: [
           /* @__PURE__ */ (0, import_jsx_runtime22.jsxs)("div", { style: { marginBottom: "12px" }, children: [
@@ -148418,7 +148358,7 @@ competitor alternatives`,
                   boxShadow: nav.state === "idle" ? "0 4px 12px rgba(40, 167, 69, 0.3)" : "none",
                   transition: "all 0.2s ease"
                 },
-                children: nav.state !== "idle" ? "\u23F3 Saving & Running..." : "\u{1F4BE} Save Settings & Run Optimization"
+                children: nav.state !== "idle" ? "Saving & Running..." : "Save Settings & Run Optimization"
               }
             ),
             (buttonFeedback.saveSettings || buttonFeedback.runOptimization) && /* @__PURE__ */ (0, import_jsx_runtime22.jsx)(
@@ -148677,7 +148617,7 @@ var import_jsx_runtime23 = __toESM(require_jsx_runtime()), PRICING_TIERS = {
     limits: {
       campaigns: 5,
       dataRetentionDays: 7,
-      supportType: "email"
+      supportType: "Email"
     }
   },
   PROFESSIONAL: {
@@ -148700,7 +148640,7 @@ var import_jsx_runtime23 = __toESM(require_jsx_runtime()), PRICING_TIERS = {
     limits: {
       campaigns: 25,
       dataRetentionDays: 30,
-      supportType: "priority_email"
+      supportType: "Priority email"
     }
   },
   ENTERPRISE: {
@@ -148723,7 +148663,7 @@ var import_jsx_runtime23 = __toESM(require_jsx_runtime()), PRICING_TIERS = {
       campaigns: -1,
       // unlimited
       dataRetentionDays: 90,
-      supportType: "priority_phone_email"
+      supportType: "Priority phone + email"
     }
   }
 }, loader11 = async ({ request: request2 }) => {
@@ -148776,7 +148716,7 @@ var import_jsx_runtime23 = __toESM(require_jsx_runtime()), PRICING_TIERS = {
     } catch (error) {
       console.error("Error fetching subscription status:", error);
     }
-    let appHandle = process.env.SHOPIFY_APP_HANDLE || "ads-autopilot-ai", managedPricingUrl2 = `https://admin.shopify.com/store/${shopName}/charges/${appHandle}/pricing_plans`;
+    let appHandle = process.env.SHOPIFY_APP_HANDLE || "adsautopilot-autopilot", managedPricingUrl = `https://admin.shopify.com/store/${shopName}/charges/${appHandle}/pricing_plans`;
     return (0, import_node11.json)({
       shopName,
       hasActivePayment,
@@ -148786,7 +148726,7 @@ var import_jsx_runtime23 = __toESM(require_jsx_runtime()), PRICING_TIERS = {
       trialDaysRemaining,
       pricingTiers: PRICING_TIERS,
       appHandle,
-      managedPricingUrl: managedPricingUrl2,
+      managedPricingUrl,
       shouldRedirectToPlans: !hasActivePayment && !isInTrial
     });
   } catch (error) {
@@ -148821,20 +148761,25 @@ function Billing() {
     trialDaysRemaining,
     pricingTiers,
     appHandle,
+    managedPricingUrl,
     shouldRedirectToPlans: shouldRedirectToPlans3
   } = (0, import_react29.useLoaderData)(), actionData = (0, import_react29.useActionData)(), isSubmitting = (0, import_react29.useNavigation)().state === "submitting";
   import_react28.default.useEffect(() => {
     actionData?.success && actionData?.redirectUrl && window.top?.location.assign(actionData.redirectUrl);
   }, [actionData]);
   let redirectToManagedPricing = () => {
-    console.log("Redirecting to managed pricing"), console.log("App handle:", appHandle), console.log("Shop name:", shopName), console.log("Managed pricing URL:", managedPricingUrl);
     try {
-      window.open(managedPricingUrl, "_blank"), console.log("Opened pricing page in new tab");
-    } catch (error) {
-      console.error("Failed to open pricing page:", error), alert(`Please visit your Shopify admin and go to:
-Settings \u2192 Apps \u2192 Ads Autopilot AI
-
-Or visit: ${managedPricingUrl}`);
+      window.top && window.top !== window ? window.top.location.assign(managedPricingUrl) : window.location.assign(managedPricingUrl);
+    } catch {
+      try {
+        let redirectMessage = JSON.stringify({
+          message: "Shopify.API.remoteRedirect",
+          data: { location: managedPricingUrl }
+        });
+        window.parent.postMessage(redirectMessage, "*");
+      } catch {
+        window.location.href = managedPricingUrl;
+      }
     }
   }, formatPrice = (price) => price === "Unlimited" ? price : typeof price == "number" ? `$${price.toLocaleString()}` : price, renderFeatureList = (features) => /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("ul", { style: { margin: 0, paddingLeft: "20px" }, children: features.map((feature, index) => /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("li", { style: { marginBottom: "8px", fontSize: "14px" }, children: [
     "\u2713 ",
@@ -148885,7 +148830,7 @@ Or visit: ${managedPricingUrl}`);
           borderRadius: "8px",
           marginBottom: "32px"
         }, children: [
-          /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("h3", { style: { margin: "0 0 16px 0" }, children: "\u{1F389} Free Trial Active" }),
+          /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("h3", { style: { margin: "0 0 16px 0" }, children: "Free Trial Active" }),
           /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("div", { style: { marginBottom: "16px" }, children: [
             /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("p", { style: { margin: "0 0 8px 0", fontSize: "16px" }, children: [
               /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("strong", { children: "Current Plan:" }),
@@ -149040,12 +148985,7 @@ Or visit: ${managedPricingUrl}`);
         /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("hr", { style: { border: "none", borderTop: "1px solid #e0e0e0", margin: "16px 0" } }),
         /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("div", { style: { marginBottom: "16px" }, children: [
           /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("h4", { style: { margin: "0 0 12px 0" }, children: "Features:" }),
-          renderFeatureList(tier.features.slice(0, 5)),
-          tier.features.length > 5 && /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("p", { style: { color: "#666", fontSize: "14px", margin: "8px 0 0 0" }, children: [
-            "+ ",
-            tier.features.length - 5,
-            " more features"
-          ] })
+          renderFeatureList(tier.features)
         ] }),
         /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("hr", { style: { border: "none", borderTop: "1px solid #e0e0e0", margin: "16px 0" } }),
         /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("div", { style: { marginBottom: "24px" }, children: [
@@ -149053,19 +148993,16 @@ Or visit: ${managedPricingUrl}`);
           /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("ul", { style: { margin: 0, paddingLeft: "20px" }, children: [
             /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("li", { children: [
               "Campaigns: ",
-              tier.limits.campaigns
+              tier.limits.campaigns === -1 ? "Unlimited" : tier.limits.campaigns
             ] }),
             /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("li", { children: [
-              "Ad Groups: ",
-              tier.limits.adGroups
+              "Data Retention: ",
+              tier.limits.dataRetentionDays,
+              " days"
             ] }),
             /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("li", { children: [
-              "Keywords: ",
-              tier.limits.keywords
-            ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("li", { children: [
-              "Monthly Spend: ",
-              formatPrice(tier.limits.monthlySpend)
+              "Support: ",
+              tier.limits.supportType
             ] })
           ] })
         ] })
@@ -149110,47 +149047,8 @@ Or visit: ${managedPricingUrl}`);
         /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("li", { children: "Cancel or modify anytime through your Partner Dashboard" }),
         /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("li", { children: "14-day free trial on all plans" })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("div", { style: { marginTop: "16px", padding: "16px", backgroundColor: "#f0f0f0", borderRadius: "4px", fontSize: "12px" }, children: [
-        /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("h4", { children: "Debug Info:" }),
-        /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("p", { children: [
-          "App Handle: ",
-          appHandle
-        ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("p", { children: [
-          "Shop: ",
-          shopName
-        ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("p", { children: [
-          "Has Active Payment: ",
-          hasActivePayment ? "Yes" : "No"
-        ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("p", { children: [
-          "Subscription Tier: ",
-          subscriptionTier || "None"
-        ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("p", { children: [
-          "In Trial: ",
-          isInTrial ? "Yes" : "No"
-        ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("p", { children: [
-          "Trial Days Remaining: ",
-          trialDaysRemaining || "N/A"
-        ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("p", { children: [
-          "Should Redirect to Plans: ",
-          shouldRedirectToPlans3 ? "Yes" : "No"
-        ] }),
-        currentSubscription && /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("p", { children: [
-          "Subscription ID: ",
-          currentSubscription.id
-        ] })
-      ] }),
       currentSubscription && /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("div", { style: { marginTop: "16px", padding: "16px", backgroundColor: "#f5f5f5", borderRadius: "4px" }, children: [
         /* @__PURE__ */ (0, import_jsx_runtime23.jsx)("h4", { children: "Current Subscription Details:" }),
-        /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("p", { children: [
-          "Subscription ID: ",
-          currentSubscription.id
-        ] }),
         /* @__PURE__ */ (0, import_jsx_runtime23.jsxs)("p", { children: [
           "Next billing: ",
           new Date(currentSubscription.currentPeriodEnd).toLocaleDateString()
@@ -150516,7 +150414,7 @@ function AIStatusIndicator({ shopName, compact = !1, showTokenUsage = !1 }) {
             fontSize: "10px"
           },
           title: "Refresh AI status",
-          children: loading ? "\u23F3" : "\u{1F504}"
+          children: loading ? "..." : ""
         }
       )
     ] }),
@@ -150624,7 +150522,6 @@ var import_jsx_runtime28 = __toESM(require_jsx_runtime()), loader14 = async ({ r
           });
           if (syncResponse.ok) {
             let tierData = await syncResponse.json();
-            console.log(`\u2705 Tier synced with backend for ${shopName}:`, tierData.tier);
           } else
             console.warn(`Failed to sync tier for ${shopName}:`, syncResponse.status);
         } catch (tierSyncError) {
@@ -150634,7 +150531,7 @@ var import_jsx_runtime28 = __toESM(require_jsx_runtime()), loader14 = async ({ r
     } catch (subscriptionError) {
       console.error("Subscription check failed, allowing app access:", subscriptionError);
     }
-    let appHandle = process.env.SHOPIFY_APP_HANDLE || "ads-autopilot-ai", planSelectionUrl = `https://admin.shopify.com/store/${shopName}/charges/${appHandle}/pricing_plans`;
+    let appHandle = process.env.SHOPIFY_APP_HANDLE || "adsautopilot-autopilot", planSelectionUrl = `https://admin.shopify.com/store/${shopName}/charges/${appHandle}/pricing_plans`;
     return (0, import_node14.json)({
       message: "AI-powered Google Ads optimization on autopilot",
       timestamp: (/* @__PURE__ */ new Date()).toISOString(),
@@ -150666,22 +150563,7 @@ function AppIndex() {
       });
     }, 800);
     return () => clearTimeout(timer);
-  }, [subscriptionInfo]), import_react36.default.useEffect(() => {
-    let chargeId = new URLSearchParams(window.location.search).get("charge_id"), isPostSubscription = !!chargeId;
-    if (subscriptionInfo?.needsSubscription && planSelectionUrl && !isPostSubscription) {
-      console.log("Client-side redirect to plan selection:", planSelectionUrl);
-      let redirectMessage = {
-        message: "Shopify.API.remoteRedirect",
-        data: { location: planSelectionUrl }
-      };
-      try {
-        window.parent && window.parent !== window ? (window.parent.postMessage(JSON.stringify(redirectMessage), "*"), console.log("PostMessage sent to parent window")) : window.top.location.href = planSelectionUrl;
-      } catch (error) {
-        console.error("Redirect failed:", error), alert(`Please visit: ${planSelectionUrl}`);
-      }
-    } else
-      isPostSubscription && console.log(`Post-subscription detected, staying on dashboard (charge_id: ${chargeId})`);
-  }, [subscriptionInfo, planSelectionUrl]);
+  }, [subscriptionInfo]);
   let renderSubscriptionBanner = () => subscriptionInfo ? subscriptionInfo.isInTrial ? /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("div", { style: {
     background: "#fff3cd",
     border: "1px solid #ffc107",
@@ -150710,6 +150592,35 @@ function AppIndex() {
       " Plan Active"
     ] }),
     /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("p", { style: { margin: "0", fontSize: "14px", color: "#155724" }, children: "Full access to all features" })
+  ] }) : subscriptionInfo.needsSubscription ? /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)("div", { style: {
+    background: "#fff3cd",
+    border: "1px solid #ffc107",
+    borderRadius: "8px",
+    padding: "24px",
+    marginBottom: "24px",
+    textAlign: "center"
+  }, children: [
+    /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("h3", { style: { margin: "0 0 12px 0", fontSize: "20px", color: "#856404" }, children: "Start Your 14-Day Free Trial" }),
+    /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("p", { style: { margin: "0 0 16px 0", fontSize: "16px", color: "#856404" }, children: "Get AI-powered Google Ads optimization for your store. No credit card required to start." }),
+    /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(
+      "a",
+      {
+        href: planSelectionUrl,
+        target: "_top",
+        style: {
+          background: "#28a745",
+          color: "white",
+          padding: "14px 32px",
+          textDecoration: "none",
+          borderRadius: "8px",
+          display: "inline-block",
+          fontSize: "18px",
+          fontWeight: "bold",
+          boxShadow: "0 2px 8px rgba(40, 167, 69, 0.3)"
+        },
+        children: "Choose a Plan"
+      }
+    )
   ] }) : null : null, renderDataRetentionInfo = () => {
     if (!subscriptionInfo?.subscriptionTier)
       return null;
@@ -150739,9 +150650,10 @@ function AppIndex() {
         ] })
       ] }),
       upgradeMessage && /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(
-        import_react37.Link,
+        "a",
         {
-          to: planSelectionUrl,
+          href: planSelectionUrl,
+          target: "_top",
           style: {
             background: "#007bff",
             color: "white",
@@ -150874,111 +150786,6 @@ function AppIndex() {
                   border: "1px solid #ddd",
                   borderRadius: "8px",
                   padding: "1.5rem",
-                  background: "#f8f9fa",
-                  position: "relative"
-                },
-                children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("h3", { children: "Custom Dashboards" }),
-                  /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("p", { children: "Enterprise-exclusive custom analytics dashboards" }),
-                  /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(
-                    "div",
-                    {
-                      style: {
-                        position: "absolute",
-                        top: "8px",
-                        right: "8px",
-                        background: "#6f42c1",
-                        color: "white",
-                        padding: "4px 8px",
-                        borderRadius: "12px",
-                        fontSize: "12px",
-                        fontWeight: "bold"
-                      },
-                      children: "ENTERPRISE"
-                    }
-                  ),
-                  /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(
-                    import_react37.Link,
-                    {
-                      to: "/app/dashboards",
-                      style: {
-                        background: "#6f42c1",
-                        color: "white",
-                        padding: "12px 24px",
-                        textDecoration: "none",
-                        borderRadius: "6px",
-                        display: "inline-block",
-                        fontSize: "16px",
-                        fontWeight: "bold",
-                        boxShadow: "0 2px 8px rgba(111, 66, 193, 0.3)",
-                        transition: "all 0.2s ease"
-                      },
-                      children: "Custom Dashboards"
-                    }
-                  )
-                ]
-              }
-            ),
-            /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)(
-              "div",
-              {
-                style: {
-                  border: "1px solid #ddd",
-                  borderRadius: "8px",
-                  padding: "1.5rem",
-                  background: "#f8f9fa",
-                  opacity: 0.7,
-                  position: "relative"
-                },
-                children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("h3", { children: "Smart Website Features" }),
-                  /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("p", { children: "Advanced conversion optimization tools" }),
-                  /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(
-                    "div",
-                    {
-                      style: {
-                        position: "absolute",
-                        top: "8px",
-                        right: "8px",
-                        background: "#fff3cd",
-                        color: "#856404",
-                        padding: "4px 8px",
-                        borderRadius: "12px",
-                        fontSize: "12px",
-                        fontWeight: "bold"
-                      },
-                      children: "Coming Q1 2026"
-                    }
-                  ),
-                  /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(
-                    import_react37.Link,
-                    {
-                      to: "/app/intent-os",
-                      style: {
-                        background: "#6c757d",
-                        color: "white",
-                        padding: "10px 20px",
-                        textDecoration: "none",
-                        borderRadius: "6px",
-                        display: "inline-block",
-                        fontSize: "14px",
-                        fontWeight: "bold",
-                        opacity: 0.8,
-                        transition: "all 0.2s ease"
-                      },
-                      children: "Preview Features"
-                    }
-                  )
-                ]
-              }
-            ),
-            /* @__PURE__ */ (0, import_jsx_runtime28.jsxs)(
-              "div",
-              {
-                style: {
-                  border: "1px solid #ddd",
-                  borderRadius: "8px",
-                  padding: "1.5rem",
                   background: "#f8f9fa"
                 },
                 children: [
@@ -151018,7 +150825,7 @@ function AppIndex() {
                 },
                 children: [
                   /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("div", { style: { position: "absolute", top: "8px", right: "8px" }, children: /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(AIStatusIndicator, { shopName, compact: !0 }) }),
-                  /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("h3", { children: "\u{1F916} AI Dashboard" }),
+                  /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("h3", { children: "AI Dashboard" }),
                   /* @__PURE__ */ (0, import_jsx_runtime28.jsx)("p", { children: "Manage AI-generated content and monitor automation" }),
                   /* @__PURE__ */ (0, import_jsx_runtime28.jsx)(
                     import_react37.Link,
@@ -151411,7 +151218,7 @@ async function loader17({ request: request2 }) {
     redirect_uri: redirectUri,
     state: crypto.randomUUID()
   }), authUrl = `https://${shopDomain}/admin/oauth/authorize?${params.toString()}`;
-  return console.log(`\u{1F517} Redirecting to Shopify OAuth for shop: ${shop}`), console.log(`\u{1F517} Auth URL: ${authUrl}`), (0, import_node17.redirect)(authUrl);
+  return (0, import_node17.redirect)(authUrl);
 }
 function Install() {
   return null;
@@ -152499,11 +152306,11 @@ var loader20 = async ({ request: request2 }) => {
         } catch {
         }
     }
-    console.log(`\u{1F510} Shopify OAuth request for shop: ${shopName || "unknown"}`), (!host || !url.searchParams.get("id")) && shopName && !url.searchParams.get("shop") && url.searchParams.set("shop", `${shopName}.myshopify.com`);
+    (!host || !url.searchParams.get("id")) && shopName && !url.searchParams.get("shop") && url.searchParams.set("shop", `${shopName}.myshopify.com`);
     let auth = await authenticate.admin(request2);
     return auth instanceof Response ? auth : null;
   } catch (error) {
-    return console.error("\u{1F6A8} Auth route error:", error), console.error("Request URL:", request2.url), console.error("Request headers:", Object.fromEntries(request2.headers.entries())), (0, import_node20.redirect)(`/auth/login?error=auth_failed&shop=${extractShopFromRequest(request2) || "unknown"}`);
+    return console.error("Auth route error:", error), console.error("Request URL:", request2.url), console.error("Request headers:", Object.fromEntries(request2.headers.entries())), (0, import_node20.redirect)(`/auth/login?error=auth_failed&shop=${extractShopFromRequest(request2) || "unknown"}`);
   }
 };
 
@@ -153462,16 +153269,15 @@ var import_react46 = __toESM(require_react()), import_jsx_runtime42 = __toESM(re
 // app/routes/app.tsx
 var import_jsx_runtime43 = __toESM(require_jsx_runtime()), links2 = () => [{ rel: "stylesheet", href: styles_default }], loader23 = async ({ request: request2 }) => {
   try {
-    console.log(`\u{1F3EA} Dashboard loaded for shop: ${new URL(request2.url).searchParams.get("shop") || "unknown"}`);
     let { session } = await authenticate.admin(request2), shopName = session?.shop?.replace(".myshopify.com", "");
     if (!shopName)
       throw console.error("No shop name found in session:", session), new Error("Unable to determine shop name from Shopify session");
-    return console.log(`\u{1F3EA} Shopify app authenticated for shop: ${shopName}`), (0, import_node23.json)({
+    return (0, import_node23.json)({
       apiKey: process.env.SHOPIFY_API_KEY || "",
       shopName
     });
   } catch (error) {
-    console.error("\u{1F6A8} App route authentication error:", error), console.error("Request URL:", request2.url);
+    console.error("App route authentication error:", error), console.error("Request URL:", request2.url);
     let url = new URL(request2.url), shop = url.searchParams.get("shop") || url.searchParams.get("host"), authUrl = shop ? `/auth/login?shop=${shop}` : "/auth/login";
     throw new Response(null, {
       status: 302,
@@ -153506,7 +153312,7 @@ function App2() {
 var ErrorBoundary5 = boundary.error, headers = (headersArgs) => boundary.headers(headersArgs);
 
 // server-assets-manifest:@remix-run/dev/assets-manifest
-var assets_manifest_default = { entry: { module: "/assets/entry.client-NEDKIYA6.js", imports: ["/assets/_shared/chunk-HAMHSZSO.js", "/assets/_shared/chunk-ZYYQ3RDD.js", "/assets/_shared/chunk-TXQSRDID.js", "/assets/_shared/chunk-P23QBOGJ.js"] }, routes: { root: { id: "root", parentId: void 0, path: "", index: void 0, caseSensitive: void 0, module: "/assets/root-7ZDBBPNQ.js", imports: ["/assets/_shared/chunk-LXK74B4C.js", "/assets/_shared/chunk-SUCM6EVT.js"], hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/_health": { id: "routes/_health", parentId: "root", path: void 0, index: void 0, caseSensitive: void 0, module: "/assets/routes/_health-A5T2YZUT.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/_index": { id: "routes/_index", parentId: "root", path: void 0, index: !0, caseSensitive: void 0, module: "/assets/routes/_index-73J7LGV3.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/api.generate-script": { id: "routes/api.generate-script", parentId: "root", path: "api/generate-script", index: void 0, caseSensitive: void 0, module: "/assets/routes/api.generate-script-3DUZY66Z.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/api.proxy.$": { id: "routes/api.proxy.$", parentId: "root", path: "api/proxy/*", index: void 0, caseSensitive: void 0, module: "/assets/routes/api.proxy.$-44OW55O3.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/api.script-proxy": { id: "routes/api.script-proxy", parentId: "root", path: "api/script-proxy", index: void 0, caseSensitive: void 0, module: "/assets/routes/api.script-proxy-D7CGEASX.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app": { id: "routes/app", parentId: "root", path: "app", index: void 0, caseSensitive: void 0, module: "/assets/routes/app-H7ZLOLDU.js", imports: ["/assets/_shared/chunk-PCQUX7PX.js", "/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/app._index": { id: "routes/app._index", parentId: "routes/app", path: void 0, index: !0, caseSensitive: void 0, module: "/assets/routes/app._index-DVE23OVO.js", imports: ["/assets/_shared/chunk-QJVHAVDT.js", "/assets/_shared/chunk-XGZ5RCNR.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.additional": { id: "routes/app.additional", parentId: "routes/app", path: "additional", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.additional-OWYYDPK3.js", imports: ["/assets/_shared/chunk-SUCM6EVT.js"], hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.advanced": { id: "routes/app.advanced", parentId: "routes/app", path: "advanced", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.advanced-BE5OVC5T.js", imports: ["/assets/_shared/chunk-XGZ5RCNR.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.ai-dashboard": { id: "routes/app.ai-dashboard", parentId: "routes/app", path: "ai-dashboard", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.ai-dashboard-VANDPRGL.js", imports: ["/assets/_shared/chunk-XGZ5RCNR.js", "/assets/_shared/chunk-SUCM6EVT.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.autopilot": { id: "routes/app.autopilot", parentId: "routes/app", path: "autopilot", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.autopilot-5DAWX3Y7.js", imports: ["/assets/_shared/chunk-XGZ5RCNR.js", "/assets/_shared/chunk-YO2XKRKB.js", "/assets/_shared/chunk-SUCM6EVT.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.billing": { id: "routes/app.billing", parentId: "routes/app", path: "billing", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.billing-I7YL7X6Q.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/app.dashboards": { id: "routes/app.dashboards", parentId: "routes/app", path: "dashboards", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.dashboards-HP4F5CMG.js", imports: ["/assets/_shared/chunk-SUCM6EVT.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.intent-os": { id: "routes/app.intent-os", parentId: "routes/app", path: "intent-os", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.intent-os-YVHHU3E5.js", imports: ["/assets/_shared/chunk-QJVHAVDT.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.reports": { id: "routes/app.reports", parentId: "routes/app", path: "reports", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.reports-HDY4DXEW.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/app.setup": { id: "routes/app.setup", parentId: "routes/app", path: "setup", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.setup-JWL3BGKB.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.support": { id: "routes/app.support", parentId: "routes/app", path: "support", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.support-S5L6YTSY.js", imports: ["/assets/_shared/chunk-SUCM6EVT.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/auth.$": { id: "routes/auth.$", parentId: "root", path: "auth/*", index: void 0, caseSensitive: void 0, module: "/assets/routes/auth.$-D4HZOJGU.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/auth.session-token": { id: "routes/auth.session-token", parentId: "root", path: "auth/session-token", index: void 0, caseSensitive: void 0, module: "/assets/routes/auth.session-token-IZRALWIP.js", imports: ["/assets/_shared/chunk-PCQUX7PX.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/debug": { id: "routes/debug", parentId: "root", path: "debug", index: void 0, caseSensitive: void 0, module: "/assets/routes/debug-5ZDPCOZX.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/health": { id: "routes/health", parentId: "root", path: "health", index: void 0, caseSensitive: void 0, module: "/assets/routes/health-FBV7EBK7.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/install": { id: "routes/install", parentId: "root", path: "install", index: void 0, caseSensitive: void 0, module: "/assets/routes/install-YL2XNGMC.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/local.autopilot": { id: "routes/local.autopilot", parentId: "root", path: "local/autopilot", index: void 0, caseSensitive: void 0, module: "/assets/routes/local.autopilot-53IAOLIK.js", imports: ["/assets/_shared/chunk-YO2XKRKB.js", "/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/privacy": { id: "routes/privacy", parentId: "root", path: "privacy", index: void 0, caseSensitive: void 0, module: "/assets/routes/privacy-FAMCBMFP.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/support": { id: "routes/support", parentId: "root", path: "support", index: void 0, caseSensitive: void 0, module: "/assets/routes/support-5ENTISHI.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/terms": { id: "routes/terms", parentId: "root", path: "terms", index: void 0, caseSensitive: void 0, module: "/assets/routes/terms-T6ZZOXSF.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 } }, version: "d214acf4", hmr: void 0, url: "/assets/manifest-D214ACF4.js" };
+var assets_manifest_default = { entry: { module: "/assets/entry.client-NEDKIYA6.js", imports: ["/assets/_shared/chunk-HAMHSZSO.js", "/assets/_shared/chunk-ZYYQ3RDD.js", "/assets/_shared/chunk-TXQSRDID.js", "/assets/_shared/chunk-P23QBOGJ.js"] }, routes: { root: { id: "root", parentId: void 0, path: "", index: void 0, caseSensitive: void 0, module: "/assets/root-XXZ7BVZ6.js", imports: ["/assets/_shared/chunk-LXK74B4C.js", "/assets/_shared/chunk-SUCM6EVT.js"], hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/_health": { id: "routes/_health", parentId: "root", path: void 0, index: void 0, caseSensitive: void 0, module: "/assets/routes/_health-A5T2YZUT.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/_index": { id: "routes/_index", parentId: "root", path: void 0, index: !0, caseSensitive: void 0, module: "/assets/routes/_index-73J7LGV3.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/api.generate-script": { id: "routes/api.generate-script", parentId: "root", path: "api/generate-script", index: void 0, caseSensitive: void 0, module: "/assets/routes/api.generate-script-3DUZY66Z.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/api.proxy.$": { id: "routes/api.proxy.$", parentId: "root", path: "api/proxy/*", index: void 0, caseSensitive: void 0, module: "/assets/routes/api.proxy.$-44OW55O3.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/api.script-proxy": { id: "routes/api.script-proxy", parentId: "root", path: "api/script-proxy", index: void 0, caseSensitive: void 0, module: "/assets/routes/api.script-proxy-D7CGEASX.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app": { id: "routes/app", parentId: "root", path: "app", index: void 0, caseSensitive: void 0, module: "/assets/routes/app-H7ZLOLDU.js", imports: ["/assets/_shared/chunk-PCQUX7PX.js", "/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/app._index": { id: "routes/app._index", parentId: "routes/app", path: void 0, index: !0, caseSensitive: void 0, module: "/assets/routes/app._index-LYU4HKNT.js", imports: ["/assets/_shared/chunk-QJVHAVDT.js", "/assets/_shared/chunk-XGZ5RCNR.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.additional": { id: "routes/app.additional", parentId: "routes/app", path: "additional", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.additional-OWYYDPK3.js", imports: ["/assets/_shared/chunk-SUCM6EVT.js"], hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.advanced": { id: "routes/app.advanced", parentId: "routes/app", path: "advanced", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.advanced-6NBZFQ6D.js", imports: ["/assets/_shared/chunk-XGZ5RCNR.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.ai-dashboard": { id: "routes/app.ai-dashboard", parentId: "routes/app", path: "ai-dashboard", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.ai-dashboard-BMNIKW4J.js", imports: ["/assets/_shared/chunk-XGZ5RCNR.js", "/assets/_shared/chunk-SUCM6EVT.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.autopilot": { id: "routes/app.autopilot", parentId: "routes/app", path: "autopilot", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.autopilot-BKS5G3UI.js", imports: ["/assets/_shared/chunk-XGZ5RCNR.js", "/assets/_shared/chunk-YO2XKRKB.js", "/assets/_shared/chunk-SUCM6EVT.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.billing": { id: "routes/app.billing", parentId: "routes/app", path: "billing", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.billing-476IIESS.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/app.dashboards": { id: "routes/app.dashboards", parentId: "routes/app", path: "dashboards", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.dashboards-HP4F5CMG.js", imports: ["/assets/_shared/chunk-SUCM6EVT.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.intent-os": { id: "routes/app.intent-os", parentId: "routes/app", path: "intent-os", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.intent-os-DXKA7GHE.js", imports: ["/assets/_shared/chunk-QJVHAVDT.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.reports": { id: "routes/app.reports", parentId: "routes/app", path: "reports", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.reports-HDY4DXEW.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/app.setup": { id: "routes/app.setup", parentId: "routes/app", path: "setup", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.setup-JWL3BGKB.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.support": { id: "routes/app.support", parentId: "routes/app", path: "support", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.support-S5L6YTSY.js", imports: ["/assets/_shared/chunk-SUCM6EVT.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/auth.$": { id: "routes/auth.$", parentId: "root", path: "auth/*", index: void 0, caseSensitive: void 0, module: "/assets/routes/auth.$-D4HZOJGU.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/auth.session-token": { id: "routes/auth.session-token", parentId: "root", path: "auth/session-token", index: void 0, caseSensitive: void 0, module: "/assets/routes/auth.session-token-VO5NUU2V.js", imports: ["/assets/_shared/chunk-PCQUX7PX.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/debug": { id: "routes/debug", parentId: "root", path: "debug", index: void 0, caseSensitive: void 0, module: "/assets/routes/debug-5ZDPCOZX.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/health": { id: "routes/health", parentId: "root", path: "health", index: void 0, caseSensitive: void 0, module: "/assets/routes/health-FBV7EBK7.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/install": { id: "routes/install", parentId: "root", path: "install", index: void 0, caseSensitive: void 0, module: "/assets/routes/install-YL2XNGMC.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/local.autopilot": { id: "routes/local.autopilot", parentId: "root", path: "local/autopilot", index: void 0, caseSensitive: void 0, module: "/assets/routes/local.autopilot-53IAOLIK.js", imports: ["/assets/_shared/chunk-YO2XKRKB.js", "/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/privacy": { id: "routes/privacy", parentId: "root", path: "privacy", index: void 0, caseSensitive: void 0, module: "/assets/routes/privacy-FAMCBMFP.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/support": { id: "routes/support", parentId: "root", path: "support", index: void 0, caseSensitive: void 0, module: "/assets/routes/support-5ENTISHI.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/terms": { id: "routes/terms", parentId: "root", path: "terms", index: void 0, caseSensitive: void 0, module: "/assets/routes/terms-T6ZZOXSF.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 } }, version: "24ab2332", hmr: void 0, url: "/assets/manifest-24AB2332.js" };
 
 // server-entry-module:@remix-run/dev/server-build
 var mode = "production", assetsBuildDirectory = "public/assets", future = { v3_fetcherPersist: !1, v3_relativeSplatPath: !1, v3_throwAbortReason: !1, v3_routeConfig: !1, v3_singleFetch: !1, v3_lazyRouteDiscovery: !1, unstable_optimizeDeps: !1 }, publicPath = "/assets/", entry = { module: entry_server_exports }, routes = {

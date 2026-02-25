@@ -17,7 +17,7 @@ import {
 } from "../utils/shop-config";
 import { ShopSetupBanner } from "../components/ShopSetupBanner";
 import { ClientOnly } from "../components/ClientOnly";
-import { checkSubscriptionStatus, hasFeatureAccess } from "../utils/subscription.server";
+import { checkSubscriptionStatus, hasFeatureAccess, type SubscriptionInfo } from "../utils/subscription.server";
 import { CampaignSetupForm } from "../components/CampaignSetupForm";
 import { MLAutopilotDashboard } from "../components/MLAutopilotDashboard";
 
@@ -35,7 +35,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     console.log(`Autopilot loaded for shop: ${shopName}`);
 
     // Check subscription status for feature access control (with error handling)
-    let subscriptionInfo = {
+    let subscriptionInfo: SubscriptionInfo = {
       hasActivePayment: false,
       isInTrial: false,
       trialDaysRemaining: null,
@@ -79,6 +79,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
       limit: 5, // Default to starter limit
       tier: subscriptionInfo.subscriptionTier || 'starter',
       canCreate: true,
+      remaining: 5,
       upgradeUrl: '/app/billing'
     };
 
@@ -87,14 +88,15 @@ export async function loader({ request }: LoaderFunctionArgs) {
       const { backendFetch } = await import("../server/hmac.server");
       const limitsResponse = await backendFetch("/campaign-limits", "GET", undefined, shopName);
       
-      if (limitsResponse.ok) {
-        const limits = await limitsResponse.json();
+      if (limitsResponse.status >= 200 && limitsResponse.status < 300) {
+        const limits = limitsResponse.json;
         campaignLimits = {
-          current: limits.currentCount || 0,
-          limit: limits.limit || 5,
-          tier: limits.tier || 'starter',
-          canCreate: limits.allowed || false,
-          upgradeUrl: limits.upgradeUrl || '/app/billing'
+          current: limits?.currentCount || 0,
+          limit: limits?.limit || 5,
+          tier: limits?.tier || 'starter',
+          canCreate: limits?.allowed !== false,
+          remaining: (limits?.limit || 5) - (limits?.currentCount || 0),
+          upgradeUrl: limits?.upgradeUrl || '/app/billing'
         };
       }
     } catch (limitsError) {
@@ -201,14 +203,14 @@ export async function action({ request }: ActionFunctionArgs) {
 
           if (advancedConfig) {
             // Generate campaign elements based on user config
-            const generateKeywords = (config) => {
+            const generateKeywords = (config: Record<string, any>) => {
               const { mainProducts, businessType, keywordStrategy, customKeywords, businessName } = config;
               if (keywordStrategy === 'custom' && customKeywords) {
-                return customKeywords.split(',').map(k => k.trim());
+                return customKeywords.split(',').map((k: string) => k.trim());
               }
 
               const keywords = [];
-              const products = mainProducts.toLowerCase().split(',').map(p => p.trim());
+              const products: string[] = mainProducts.toLowerCase().split(',').map((p: string) => p.trim());
 
               switch (keywordStrategy) {
                 case 'brand':
@@ -217,14 +219,14 @@ export async function action({ request }: ActionFunctionArgs) {
                   keywords.push(`${businessName.toLowerCase()} online`);
                   break;
                 case 'competitor':
-                  products.forEach(product => {
+                  products.forEach((product: string) => {
                     keywords.push(`best ${product}`);
                     keywords.push(`${product} reviews`);
                     keywords.push(`${product} comparison`);
                   });
                   break;
                 default: // 'auto'
-                  products.forEach(product => {
+                  products.forEach((product: string) => {
                     keywords.push(product);
                     keywords.push(`buy ${product}`);
                     keywords.push(`${product} online`);
@@ -234,7 +236,7 @@ export async function action({ request }: ActionFunctionArgs) {
               return keywords;
             };
 
-            const generateHeadlines = (config) => {
+            const generateHeadlines = (config: Record<string, any>) => {
               const { businessName, mainProducts, adTone, hasOffer, offerText, goal } = config;
               const headlines = [];
               const products = mainProducts.split(',')[0].trim();
@@ -274,7 +276,7 @@ export async function action({ request }: ActionFunctionArgs) {
               return headlines.map(h => h.substring(0, 30)).slice(0, 15);
             };
 
-            const generateDescriptions = (config) => {
+            const generateDescriptions = (config: Record<string, any>) => {
               const { targetAudience, mainProducts, adTone, hasOffer, offerText, businessType } = config;
               const descriptions = [];
 
@@ -387,23 +389,17 @@ ${customizedScript}
           );
           return json({
             success: false,
-            error: "Failed to fetch complete script from backend",
-            debug: {
-              length: realScript?.length || 0,
-              isHTML: realScript?.includes("<html") || false,
-              preview: realScript?.substring(0, 200) || "No content"
-            }
+            error: "Failed to fetch complete script. Please try again."
           });
         }
-      } catch (error) {
+      } catch (error: unknown) {
         console.error(
           `Action script fetch failed for ${currentShopName}:`,
-          error.message,
+          error instanceof Error ? error.message : error,
         );
-        return json({ 
-          success: false, 
-          error: error.message || "Backend fetch failed",
-          stack: error.stack
+        return json({
+          success: false,
+          error: "Failed to generate script. Please try again."
         });
       }
     }
@@ -473,21 +469,21 @@ export default function Autopilot() {
         descriptionCount: 4
       }, shopName);
 
-      if (response.ok) {
-        const result = await response.json();
-        if (result.ok) {
+      if (response.status >= 200 && response.status < 300) {
+        const result = response.json;
+        if (result?.ok) {
           setGeneratedAds(result);
           setShowGeneratedAds(true);
           setToast(`Generated ${result.headlines?.length || 0} headlines and ${result.descriptions?.length || 0} descriptions`);
         } else {
-          setToast("Error: " + result.error);
+          setToast("Error: " + (result?.error || "Unknown error"));
         }
       } else {
         setToast("Error: Failed to generate AI ads");
       }
-    } catch (error) {
+    } catch (error: unknown) {
       console.error("AI ads generation error:", error);
-      setToast("Error: " + error.message);
+      setToast("Error: " + (error instanceof Error ? error.message : "Unknown error"));
     } finally {
       setIsGeneratingAds(false);
     }
@@ -503,9 +499,9 @@ export default function Autopilot() {
         nonce: Date.now()
       }, shopName + "?dry=1"); // Dry run to get insights
 
-      if (response.ok) {
-        const result = await response.json();
-        if (result.ok && result.ml) {
+      if (response.status >= 200 && response.status < 300) {
+        const result = response.json;
+        if (result?.ok && result?.ml) {
           setMLState(result.ml);
           setToast("ML state updated");
         }
@@ -534,21 +530,21 @@ export default function Autopilot() {
         }]
       }, shopName);
 
-      if (response.ok) {
-        const result = await response.json();
-        if (result.ok && result.accepted > 0) {
+      if (response.status >= 200 && response.status < 300) {
+        const result = response.json;
+        if (result?.ok && result?.accepted > 0) {
           setToast(`Accepted ${result.accepted} AI-generated ad sets`);
           setShowGeneratedAds(false);
           setGeneratedAds(null);
         } else {
-          setToast("Error: " + (result.error || "Failed to accept ads"));
+          setToast("Error: " + (result?.error || "Failed to accept ads"));
         }
       } else {
         setToast("Error: Failed to accept AI ads");
       }
-    } catch (error) {
+    } catch (error: unknown) {
       console.error("AI ads acceptance error:", error);
-      setToast("Error: " + error.message);
+      setToast("Error: " + (error instanceof Error ? error.message : "Unknown error"));
     }
   };
 
@@ -559,24 +555,25 @@ export default function Autopilot() {
 
   // Handle action data from server with localStorage persistence
   React.useEffect(() => {
-    if (actionData?.success) {
-      setScriptCode(actionData.script);
+    const data = actionData as { success?: boolean; script?: string; size?: number; shopName?: string; error?: string } | undefined;
+    if (data?.success && data.script) {
+      setScriptCode(data.script);
       setShowScript(true);
-      setToast(`Script generated: ${actionData.size}KB`);
-      
+      setToast(`Script generated: ${data.size}KB`);
+
       // Store in localStorage for persistence (client-side only)
       try {
-        localStorage.setItem('adsautopilot_generated_script', actionData.script);
+        localStorage.setItem('adsautopilot_generated_script', data.script);
         localStorage.setItem('adsautopilot_script_meta', JSON.stringify({
-          size: actionData.size,
-          shopName: actionData.shopName,
+          size: data.size,
+          shopName: data.shopName,
           timestamp: Date.now()
         }));
       } catch (e) {
         console.warn('Failed to store script:', e);
       }
-    } else if (actionData?.error) {
-      setToast("Error: " + actionData.error);
+    } else if (data?.error) {
+      setToast("Error: " + data.error);
     }
   }, [actionData]);
 
@@ -603,17 +600,7 @@ export default function Autopilot() {
   }, []);
 
   function run() {
-    // Demo functionality - shows configuration
-    const config = `Configuration:
-Mode: ${mode}
-Budget: $${budget}/day
-CPC: $${cpc}
-URL: ${url}
-Shop: ${shopName || "unknown"}`;
-    alert(
-      `Autopilot would be enabled with:\n\n${config}\n\nIn production, this would start the automation.`,
-    );
-    setToast("Demo: Configuration shown (would enable in production)");
+    setToast("Settings saved. Generate your script below to activate optimization.");
   }
 
   // Script generation now handled by server action - no client-side function needed
@@ -831,12 +818,13 @@ Shop: ${shopName || "unknown"}`;
         style={{
           marginTop: 8,
           padding: 12,
-          background: "#e7f3ff",
+          background: showScript ? "#d4edda" : "#e7f3ff",
           borderRadius: 4,
           marginBottom: 16,
+          border: showScript ? "1px solid #c3e6cb" : "1px solid #bee5eb",
         }}
       >
-        <h4 style={{ margin: "0 0 8px 0", color: "#0c5460" }}>
+        <h4 style={{ margin: "0 0 8px 0", color: showScript ? "#155724" : "#0c5460" }}>
           Autopilot Status
         </h4>
         <div
@@ -849,27 +837,34 @@ Shop: ${shopName || "unknown"}`;
         >
           <span
             style={{
-              background: "#28a745",
+              background: showScript ? "#28a745" : "#6c757d",
               color: "white",
               padding: "4px 8px",
               borderRadius: "12px",
               fontSize: "12px",
             }}
           >
-            ACTIVE
+            {showScript ? "SCRIPT READY" : "SETUP NEEDED"}
           </span>
           <span>
-            Automation running for:{" "}
+            Shop:{" "}
             <strong>{shopName || serverShopName || "Loading..."}</strong>
           </span>
         </div>
         <div style={{ fontSize: "14px", color: "#666" }}>
-          Budget optimization: Active
-          <br />
-          AI analysis: Running every 15min
-          <br />
-          Performance monitoring: Continuous
-          <br />Script updates: Available below
+          {showScript ? (
+            <>
+              Your script has been generated. Copy it into Google Ads to activate.
+              <br />
+              <strong>Next:</strong> Google Ads → Tools → Scripts → + New script → Paste → Authorize → Run
+            </>
+          ) : (
+            <>
+              Configure your settings below and generate your Google Ads script.
+              <br />
+              Once pasted into Google Ads, it will optimize your campaigns automatically.
+            </>
+          )}
         </div>
       </div>
 
@@ -940,22 +935,22 @@ Shop: ${shopName || "unknown"}`;
           </div>
         </div>
       )}
-      {/* Temporarily show script directly from action data for testing */}
-      {actionData?.success && (
-        <div style={{ 
-          background: "#d4edda", 
-          border: "1px solid #c3e6cb", 
-          padding: "12px", 
+      {/* Show script from action data */}
+      {(actionData as any)?.success && (actionData as any)?.script && (
+        <div style={{
+          background: "#d4edda",
+          border: "1px solid #c3e6cb",
+          padding: "12px",
           marginTop: "12px",
           borderRadius: "4px"
         }}>
           <h3>Script Generated Successfully!</h3>
-          <p>Size: {actionData.size}KB for shop: {actionData.shopName}</p>
+          <p>Size: {(actionData as any).size}KB for shop: {(actionData as any).shopName}</p>
           <details>
             <summary>View Script (Click to expand)</summary>
             <textarea
               readOnly
-              value={actionData.script}
+              value={(actionData as any).script}
               style={{
                 width: "100%",
                 height: 300,
@@ -1028,7 +1023,7 @@ Shop: ${shopName || "unknown"}`;
                 borderRadius: "4px",
                 padding: "8px"
               }}>
-                {generatedAds.headlines?.map((headline, index) => (
+                {generatedAds.headlines?.map((headline: string, index: number) => (
                   <div key={index} style={{
                     padding: "4px 8px",
                     borderBottom: index < (generatedAds.headlines?.length || 0) - 1 ? "1px solid #eee" : "none",
@@ -1050,7 +1045,7 @@ Shop: ${shopName || "unknown"}`;
                 borderRadius: "4px",
                 padding: "8px"
               }}>
-                {generatedAds.descriptions?.map((description, index) => (
+                {generatedAds.descriptions?.map((description: string, index: number) => (
                   <div key={index} style={{
                     padding: "4px 8px",
                     borderBottom: index < (generatedAds.descriptions?.length || 0) - 1 ? "1px solid #eee" : "none",
@@ -1073,11 +1068,13 @@ Shop: ${shopName || "unknown"}`;
       {/* ML Autopilot Dashboard */}
       {showMLDashboard && (
         <ClientOnly>
-          <MLAutopilotDashboard
-            shopName={shopName || serverShopName || ""}
-            mlState={mlState}
-            onRefresh={fetchMLState}
-          />
+          {() => (
+            <MLAutopilotDashboard
+              shopName={shopName || serverShopName || ""}
+              mlState={mlState ?? undefined}
+              onRefresh={fetchMLState}
+            />
+          )}
         </ClientOnly>
       )}
 

@@ -6,7 +6,22 @@ import { useLoaderData, useActionData, Form, useNavigation } from "@remix-run/re
 import { authenticate } from "../shopify.server";
 
 // Pricing tiers exactly matching Shopify Partner Dashboard descriptions
-const PRICING_TIERS = {
+interface PricingTier {
+  id: string;
+  name: string;
+  price: number;
+  yearlyPrice: number;
+  yearlyDiscount: number;
+  badge?: string;
+  features: string[];
+  limits: {
+    campaigns: number;
+    dataRetentionDays: number;
+    supportType: string;
+  };
+}
+
+const PRICING_TIERS: Record<string, PricingTier> = {
   STARTER: {
     id: "starter",
     name: "Starter Plan",
@@ -26,11 +41,11 @@ const PRICING_TIERS = {
     limits: {
       campaigns: 5,
       dataRetentionDays: 7,
-      supportType: "email"
+      supportType: "Email"
     },
   },
   PROFESSIONAL: {
-    id: "professional", 
+    id: "professional",
     name: "Professional Plan",
     price: 79,
     yearlyPrice: 695,
@@ -40,7 +55,7 @@ const PRICING_TIERS = {
       "Advanced AI optimization",
       "Real-time performance analytics",
       "Up to 25 campaigns",
-      "Priority email support", 
+      "Priority email support",
       "30-day data retention",
       "Advanced ROAS analytics",
       "Automated bid management",
@@ -49,7 +64,7 @@ const PRICING_TIERS = {
     limits: {
       campaigns: 25,
       dataRetentionDays: 30,
-      supportType: "priority_email"
+      supportType: "Priority email"
     },
   },
   ENTERPRISE: {
@@ -71,7 +86,7 @@ const PRICING_TIERS = {
     limits: {
       campaigns: -1, // unlimited
       dataRetentionDays: 90,
-      supportType: "priority_phone_email"
+      supportType: "Priority phone + email"
     },
   },
 };
@@ -160,7 +175,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
       console.error("Error fetching subscription status:", error);
     }
 
-    const appHandle = process.env.SHOPIFY_APP_HANDLE || "ads-autopilot-ai";
+    const appHandle = process.env.SHOPIFY_APP_HANDLE || "adsautopilot-autopilot";
     const managedPricingUrl = `https://admin.shopify.com/store/${shopName}/charges/${appHandle}/pricing_plans`;
 
     return json({
@@ -212,7 +227,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 };
 
 export default function Billing() {
-  const { 
+  const {
     shopName,
     hasActivePayment,
     currentSubscription,
@@ -221,10 +236,12 @@ export default function Billing() {
     trialDaysRemaining,
     pricingTiers,
     appHandle,
+    managedPricingUrl,
     shouldRedirectToPlans
   } = useLoaderData<typeof loader>();
   
-  const actionData = useActionData<typeof action>();
+  const rawActionData = useActionData<typeof action>();
+  const actionData = rawActionData as { success?: boolean; redirectUrl?: string; error?: string } | undefined;
   const navigation = useNavigation();
   const isSubmitting = navigation.state === "submitting";
 
@@ -237,20 +254,25 @@ export default function Billing() {
 
   // Redirect to Shopify's managed pricing page
   const redirectToManagedPricing = () => {
-    console.log('Redirecting to managed pricing');
-    console.log('App handle:', appHandle);
-    console.log('Shop name:', shopName);
-    console.log('Managed pricing URL:', managedPricingUrl);
-    
-    // Use the correct URL format from loader
+    // Use Shopify's native navigation for embedded apps
     try {
-      window.open(managedPricingUrl, '_blank');
-      console.log('Opened pricing page in new tab');
+      if (window.top && window.top !== window) {
+        window.top.location.assign(managedPricingUrl);
+      } else {
+        window.location.assign(managedPricingUrl);
+      }
     } catch (error) {
-      console.error('Failed to open pricing page:', error);
-      
-      // Show instructions to user
-      alert(`Please visit your Shopify admin and go to:\nSettings → Apps → Ads Autopilot AI\n\nOr visit: ${managedPricingUrl}`);
+      // Cross-origin fallback: use postMessage for Shopify embedded redirect
+      try {
+        const redirectMessage = JSON.stringify({
+          message: "Shopify.API.remoteRedirect",
+          data: { location: managedPricingUrl }
+        });
+        window.parent.postMessage(redirectMessage, '*');
+      } catch (postError) {
+        // Final fallback: navigate current frame
+        window.location.href = managedPricingUrl;
+      }
     }
   };
 
@@ -480,12 +502,7 @@ export default function Billing() {
 
               <div style={{ marginBottom: "16px" }}>
                 <h4 style={{ margin: "0 0 12px 0" }}>Features:</h4>
-                {renderFeatureList(tier.features.slice(0, 5))}
-                {tier.features.length > 5 && (
-                  <p style={{ color: "#666", fontSize: "14px", margin: "8px 0 0 0" }}>
-                    + {tier.features.length - 5} more features
-                  </p>
-                )}
+                {renderFeatureList(tier.features)}
               </div>
 
               <hr style={{ border: "none", borderTop: "1px solid #e0e0e0", margin: "16px 0" }} />
@@ -493,10 +510,9 @@ export default function Billing() {
               <div style={{ marginBottom: "24px" }}>
                 <h4 style={{ margin: "0 0 12px 0" }}>Limits:</h4>
                 <ul style={{ margin: 0, paddingLeft: "20px" }}>
-                  <li>Campaigns: {tier.limits.campaigns}</li>
-                  <li>Ad Groups: {tier.limits.adGroups}</li>
-                  <li>Keywords: {tier.limits.keywords}</li>
-                  <li>Monthly Spend: {formatPrice(tier.limits.monthlySpend)}</li>
+                  <li>Campaigns: {tier.limits.campaigns === -1 ? 'Unlimited' : tier.limits.campaigns}</li>
+                  <li>Data Retention: {tier.limits.dataRetentionDays} days</li>
+                  <li>Support: {tier.limits.supportType}</li>
                 </ul>
               </div>
             </div>
@@ -546,25 +562,9 @@ export default function Billing() {
           <li>14-day free trial on all plans</li>
         </ul>
 
-        {/* Debug information */}
-        <div style={{ marginTop: "16px", padding: "16px", backgroundColor: "#f0f0f0", borderRadius: "4px", fontSize: "12px" }}>
-          <h4>Debug Info:</h4>
-          <p>App Handle: {appHandle}</p>
-          <p>Shop: {shopName}</p>
-          <p>Has Active Payment: {hasActivePayment ? 'Yes' : 'No'}</p>
-          <p>Subscription Tier: {subscriptionTier || 'None'}</p>
-          <p>In Trial: {isInTrial ? 'Yes' : 'No'}</p>
-          <p>Trial Days Remaining: {trialDaysRemaining || 'N/A'}</p>
-          <p>Should Redirect to Plans: {shouldRedirectToPlans ? 'Yes' : 'No'}</p>
-          {currentSubscription && (
-            <p>Subscription ID: {currentSubscription.id}</p>
-          )}
-        </div>
-        
         {currentSubscription && (
           <div style={{ marginTop: "16px", padding: "16px", backgroundColor: "#f5f5f5", borderRadius: "4px" }}>
             <h4>Current Subscription Details:</h4>
-            <p>Subscription ID: {currentSubscription.id}</p>
             <p>Next billing: {new Date(currentSubscription.currentPeriodEnd).toLocaleDateString()}</p>
           </div>
         )}

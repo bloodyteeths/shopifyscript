@@ -5,7 +5,7 @@ import { useLoaderData, Link } from "@remix-run/react";
 import { authenticate } from "../shopify.server";
 import { checkTenantSetup } from "../utils/tenant.server";
 import { useShopContext, buildAppUrl } from "../utils/navigation";
-import { checkSubscriptionStatus, shouldRedirectToPlans, getPlanSelectionUrl } from "../utils/subscription.server";
+import { checkSubscriptionStatus, shouldRedirectToPlans, getPlanSelectionUrl, type SubscriptionInfo } from "../utils/subscription.server";
 import { SkeletonCard, Toast } from "../components/LoadingStates";
 import { AIStatusIndicator } from "../components/AIStatusIndicator";
 
@@ -32,7 +32,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     }
 
     // Check subscription status for feature access control (with error handling)
-    let subscriptionInfo = {
+    let subscriptionInfo: SubscriptionInfo = {
       hasActivePayment: false,
       isInTrial: false,
       trialDaysRemaining: null,
@@ -97,7 +97,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
       // Allow app access if subscription check fails to prevent installation crashes
     }
 
-    const appHandle = process.env.SHOPIFY_APP_HANDLE || "ads-autopilot-ai";
+    const appHandle = process.env.SHOPIFY_APP_HANDLE || "adsautopilot-autopilot";
     const planSelectionUrl = `https://admin.shopify.com/store/${shopName}/charges/${appHandle}/pricing_plans`;
 
     return json({
@@ -149,40 +149,8 @@ export default function AppIndex() {
     return () => clearTimeout(timer);
   }, [subscriptionInfo]);
 
-  // Automatic redirect to plan selection if no subscription (but not after subscription completion)
-  React.useEffect(() => {
-    // Check if we just returned from subscription selection
-    const urlParams = new URLSearchParams(window.location.search);
-    const chargeId = urlParams.get('charge_id');
-    const isPostSubscription = !!chargeId;
-    
-    if (subscriptionInfo?.needsSubscription && planSelectionUrl && !isPostSubscription) {
-      console.log('Client-side redirect to plan selection:', planSelectionUrl);
-      
-      // Use postMessage to break out of embedded iframe
-      const redirectMessage = {
-        message: "Shopify.API.remoteRedirect", 
-        data: { location: planSelectionUrl }
-      };
-      
-      try {
-        // Try to redirect parent window
-        if (window.parent && window.parent !== window) {
-          window.parent.postMessage(JSON.stringify(redirectMessage), '*');
-          console.log('PostMessage sent to parent window');
-        } else {
-          // Fallback: direct redirect
-          window.top.location.href = planSelectionUrl;
-        }
-      } catch (error) {
-        console.error('Redirect failed:', error);
-        // Final fallback: show user the link
-        alert(`Please visit: ${planSelectionUrl}`);
-      }
-    } else if (isPostSubscription) {
-      console.log(`Post-subscription detected, staying on dashboard (charge_id: ${chargeId})`);
-    }
-  }, [subscriptionInfo, planSelectionUrl]);
+  // Show subscription prompt inline instead of broken redirect loop
+  // Users can navigate to billing via the nav link or the inline CTA
 
   const renderSubscriptionBanner = () => {
     if (!subscriptionInfo) return null;
@@ -226,7 +194,44 @@ export default function AppIndex() {
       );
     }
 
-    // Don't show red banner for needsSubscription since they get auto-redirected
+    // Show subscription CTA for users without a plan
+    if (subscriptionInfo.needsSubscription) {
+      return (
+        <div style={{
+          background: "#fff3cd",
+          border: "1px solid #ffc107",
+          borderRadius: "8px",
+          padding: "24px",
+          marginBottom: "24px",
+          textAlign: "center",
+        }}>
+          <h3 style={{ margin: "0 0 12px 0", fontSize: "20px", color: "#856404" }}>
+            Start Your 14-Day Free Trial
+          </h3>
+          <p style={{ margin: "0 0 16px 0", fontSize: "16px", color: "#856404" }}>
+            Get AI-powered Google Ads optimization for your store. No credit card required to start.
+          </p>
+          <a
+            href={planSelectionUrl}
+            target="_top"
+            style={{
+              background: "#28a745",
+              color: "white",
+              padding: "14px 32px",
+              textDecoration: "none",
+              borderRadius: "8px",
+              display: "inline-block",
+              fontSize: "18px",
+              fontWeight: "bold",
+              boxShadow: "0 2px 8px rgba(40, 167, 69, 0.3)",
+            }}
+          >
+            Choose a Plan
+          </a>
+        </div>
+      );
+    }
+
     return null;
   };
 
@@ -257,8 +262,9 @@ export default function AppIndex() {
           </p>
         </div>
         {upgradeMessage && (
-          <Link
-            to={planSelectionUrl}
+          <a
+            href={planSelectionUrl}
+            target="_top"
             style={{
               background: "#007bff",
               color: "white",
@@ -271,7 +277,7 @@ export default function AppIndex() {
             }}
           >
             {upgradeMessage}
-          </Link>
+          </a>
         )}
       </div>
     );
