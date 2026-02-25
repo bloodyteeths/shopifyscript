@@ -29,7 +29,7 @@ export async function getTenantFromRequest(request: Request): Promise<string> {
 
         return tenantId;
       }
-    } catch (authError) {
+    } catch (authError: unknown) {
       // Authentication failed, try other methods
       console.log(
         "🔐 Shopify authentication failed, trying alternative methods",
@@ -76,8 +76,8 @@ export async function getTenantFromRequest(request: Request): Promise<string> {
 
     // Production: no valid tenant found - this should not happen with proper Shopify authentication
     throw new Error("No valid shop found - Shopify authentication required");
-  } catch (error) {
-    console.error("Tenant detection failed:", error.message);
+  } catch (error: unknown) {
+    console.error("Tenant detection failed:", error instanceof Error ? error.message : String(error));
 
     // Only use fallback in development
     if (process.env.NODE_ENV === "development") {
@@ -139,8 +139,8 @@ export async function validateTenantAccess(
     const sessionTenantId = session?.shop?.replace(".myshopify.com", "");
 
     return sessionTenantId === tenantId;
-  } catch (error) {
-    console.error("Tenant access validation failed:", error.message);
+  } catch (error: unknown) {
+    console.error("Tenant access validation failed:", error instanceof Error ? error.message : String(error));
     return false;
   }
 }

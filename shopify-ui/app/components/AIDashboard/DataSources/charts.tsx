@@ -24,7 +24,7 @@ import {
   ResponsiveContainer,
   ReferenceLine
 } from 'recharts';
-import { Card, Box, Text, Stack, ButtonGroup, Button } from '@shopify/polaris';
+import { Card, Box, Text, BlockStack, InlineStack, ButtonGroup, Button } from '@shopify/polaris';
 import { ChartDataPoint, FilterOption } from './types';
 
 // ========================
@@ -69,54 +69,54 @@ export function BaseChart({
 }: BaseChartProps) {
   return (
     <Card>
-      <Box padding="4">
-        <Stack alignment="center" distribution="equalSpacing">
-          <Stack vertical spacing="tight">
+      <Box padding="400">
+        <InlineStack align="space-between" blockAlign="center">
+          <BlockStack gap="200">
             <Text variant="headingMd" as="h3">
               {title}
             </Text>
             {subtitle && (
-              <Text variant="bodySm" color="subdued">
+              <Text variant="bodySm" as="span" tone="subdued">
                 {subtitle}
               </Text>
             )}
-          </Stack>
+          </BlockStack>
           {actions && <Box>{actions}</Box>}
-        </Stack>
+        </InlineStack>
 
-        <Box paddingBlockStart="4">
+        <Box paddingBlockStart="400">
           {loading ? (
             <Box
               minHeight={`${height}px`}
-              background="surface"
-              borderRadius="1"
-              padding="4"
+              background="bg-surface"
+              borderRadius="200"
+              padding="400"
             >
-              <Stack alignment="center" distribution="center">
-                <Text variant="bodySm" color="subdued">
+              <InlineStack align="center" blockAlign="center">
+                <Text variant="bodySm" as="span" tone="subdued">
                   Loading chart data...
                 </Text>
-              </Stack>
+              </InlineStack>
             </Box>
           ) : error ? (
             <Box
               minHeight={`${height}px`}
-              background="surface"
-              borderRadius="1"
-              padding="4"
+              background="bg-surface"
+              borderRadius="200"
+              padding="400"
             >
-              <Stack alignment="center" distribution="center">
-                <Text variant="bodySm" color="critical">
+              <InlineStack align="center" blockAlign="center">
+                <Text variant="bodySm" as="span" tone="critical">
                   Error loading chart: {error}
                 </Text>
-              </Stack>
+              </InlineStack>
             </Box>
           ) : (
-            <Box height={`${height}px`} className={className}>
+            <div style={{ height: `${height}px` }} className={className}>
               <ResponsiveContainer width="100%" height="100%">
-                {children}
+                {children as React.ReactElement}
               </ResponsiveContainer>
-            </Box>
+            </div>
           )}
         </Box>
       </Box>
@@ -148,35 +148,38 @@ export function CustomTooltip({
   }
 
   return (
-    <Box
-      background="surface"
-      padding="2"
-      borderRadius="1"
-      shadow="md"
-      borderWidth="1"
-      borderColor="border"
+    <div
+      style={{
+        background: 'white',
+        padding: '8px',
+        borderRadius: '4px',
+        boxShadow: '0 2px 8px rgba(0,0,0,0.15)',
+        border: '1px solid #e1e3e5'
+      }}
     >
       {label && (
-        <Text variant="bodyMd" fontWeight="medium">
+        <Text variant="bodyMd" as="span" fontWeight="semibold">
           {labelFormatter ? labelFormatter(label) : label}
         </Text>
       )}
-      <Stack vertical spacing="extraTight">
-        {payload.map((entry, index) => (
-          <Stack key={index} spacing="tight" alignment="center">
-            <Box
-              width="12px"
-              height="12px"
-              borderRadius="1"
-              background={entry.color}
+      <BlockStack gap="100">
+        {payload.map((entry: any, index: number) => (
+          <InlineStack key={index} gap="200" blockAlign="center">
+            <div
+              style={{
+                width: '12px',
+                height: '12px',
+                borderRadius: '4px',
+                backgroundColor: entry.color
+              }}
             />
-            <Text variant="bodySm">
+            <Text variant="bodySm" as="span">
               {entry.name}: {formatter ? formatter(entry.value, entry.name)[0] : entry.value}
             </Text>
-          </Stack>
+          </InlineStack>
         ))}
-      </Stack>
-    </Box>
+      </BlockStack>
+    </div>
   );
 }
 
@@ -580,12 +583,12 @@ export function HeatmapChart({
         <div style={{ display: 'grid', gridTemplateColumns: `auto repeat(${uniqueX.length}, 1fr)`, gap: '2px' }}>
           <div></div>
           {uniqueX.map(x => (
-            <div key={x} style={{ textAlign: 'center', fontSize: '12px', padding: '4px' }}>
+            <div key={String(x)} style={{ textAlign: 'center', fontSize: '12px', padding: '4px' }}>
               {x}
             </div>
           ))}
           {uniqueY.map(y => (
-            <React.Fragment key={y}>
+            <React.Fragment key={String(y)}>
               <div style={{ display: 'flex', alignItems: 'center', fontSize: '12px', padding: '4px' }}>
                 {y}
               </div>

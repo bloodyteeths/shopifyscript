@@ -83,7 +83,7 @@ export function UserDashboard({ shopName, hasFeatureAccess = false, onNavigateTo
       } else {
         throw new Error(`Failed to fetch metrics: ${response.status}`);
       }
-    } catch (err) {
+    } catch (err: unknown) {
       console.error("Failed to fetch metrics:", err);
       setError(err instanceof Error ? err.message : "Failed to load campaign metrics");
       setMetrics(null);
@@ -107,7 +107,7 @@ export function UserDashboard({ shopName, hasFeatureAccess = false, onNavigateTo
           setAIStatus(null);
         }
       }
-    } catch (err) {
+    } catch (err: unknown) {
       console.error("Failed to fetch AI status:", err);
       setAIStatus(null);
     }
@@ -199,13 +199,13 @@ export function UserDashboard({ shopName, hasFeatureAccess = false, onNavigateTo
           </InlineStack>
         </Card>
         <Layout>
-          <Layout.Section oneThird>
+          <Layout.Section variant="oneThird">
             <LoadingSkeleton />
           </Layout.Section>
-          <Layout.Section oneThird>
+          <Layout.Section variant="oneThird">
             <LoadingSkeleton />
           </Layout.Section>
-          <Layout.Section oneThird>
+          <Layout.Section variant="oneThird">
             <LoadingSkeleton />
           </Layout.Section>
         </Layout>
@@ -280,7 +280,7 @@ export function UserDashboard({ shopName, hasFeatureAccess = false, onNavigateTo
             </BlockStack>
             <BlockStack gap="200" align="end">
               <Badge tone={aiStatus?.status === 'active' ? 'success' : 'warning'}>
-                AI {aiStatus?.status === 'active' ? 'Active' : 'Paused'}
+                {`AI ${aiStatus?.status === 'active' ? 'Active' : 'Paused'}`}
               </Badge>
               {aiStatus?.lastOptimization && (
                 <Text variant="bodySm" as="p" tone="subdued">
@@ -339,7 +339,7 @@ export function UserDashboard({ shopName, hasFeatureAccess = false, onNavigateTo
       {/* Key Performance Metrics */}
       {hasData && (
         <Layout>
-          <Layout.Section oneThird>
+          <Layout.Section variant="oneThird">
             <Card>
               <BlockStack gap="300">
                 <Text variant="headingMd" as="h3">{getPeriodLabel(selectedPeriod)} Performance</Text>
@@ -349,7 +349,7 @@ export function UserDashboard({ shopName, hasFeatureAccess = false, onNavigateTo
                   {/* Impressions */}
                   <BlockStack gap="100">
                     <InlineStack align="space-between">
-                      <Text variant="bodyMd" tone="subdued">Impressions</Text>
+                      <Text variant="bodyMd" as="span" tone="subdued">Impressions</Text>
                       <Text variant="headingMd" as="p" fontWeight="bold">
                         {formatNumber(metrics?.impressions || 0)}
                       </Text>
@@ -360,23 +360,23 @@ export function UserDashboard({ shopName, hasFeatureAccess = false, onNavigateTo
                   {/* Clicks */}
                   <BlockStack gap="100">
                     <InlineStack align="space-between">
-                      <Text variant="bodyMd" tone="subdued">Clicks</Text>
+                      <Text variant="bodyMd" as="span" tone="subdued">Clicks</Text>
                       <Text variant="headingMd" as="p" fontWeight="bold">
                         {formatNumber(metrics?.clicks || 0)}
                       </Text>
                     </InlineStack>
-                    <Badge tone="success">CTR: {formatPercent(metrics?.ctr || 0)}</Badge>
+                    <Badge tone="success">{`CTR: ${formatPercent(metrics?.ctr || 0)}`}</Badge>
                   </BlockStack>
 
                   {/* Conversions */}
                   <BlockStack gap="100">
                     <InlineStack align="space-between">
-                      <Text variant="bodyMd" tone="subdued">Conversions</Text>
+                      <Text variant="bodyMd" as="span" tone="subdued">Conversions</Text>
                       <Text variant="headingMd" as="p" fontWeight="bold" tone="success">
                         {metrics?.conversions || 0}
                       </Text>
                     </InlineStack>
-                    <Text variant="bodySm" tone="subdued">
+                    <Text variant="bodySm" as="span" tone="subdued">
                       CPA: {formatCurrency(metrics?.cpa || 0)}
                     </Text>
                   </BlockStack>
@@ -385,7 +385,7 @@ export function UserDashboard({ shopName, hasFeatureAccess = false, onNavigateTo
             </Card>
           </Layout.Section>
 
-        <Layout.Section oneThird>
+        <Layout.Section variant="oneThird">
           <Card>
             <BlockStack gap="300">
               <Text variant="headingMd" as="h3">AI Optimization Impact</Text>
@@ -397,23 +397,23 @@ export function UserDashboard({ shopName, hasFeatureAccess = false, onNavigateTo
                   <Text variant="headingXl" as="p" tone="success">
                     +{formatPercent(aiStatus?.improvementRate || 0)}
                   </Text>
-                  <Text variant="bodyMd" tone="subdued">
+                  <Text variant="bodyMd" as="span" tone="subdued">
                     Performance Improvement
                   </Text>
                 </Box>
 
                 {/* Optimizations Applied */}
                 <InlineStack align="space-between">
-                  <Text variant="bodyMd" tone="subdued">
+                  <Text variant="bodyMd" as="span" tone="subdued">
                     Optimizations Today
                   </Text>
-                  <Badge>{aiStatus?.optimizationsApplied || 0}</Badge>
+                  <Badge>{String(aiStatus?.optimizationsApplied || 0)}</Badge>
                 </InlineStack>
 
                 {/* ROAS */}
                 <Box background="bg-surface-secondary" padding="300" borderRadius="200">
                   <InlineStack align="space-between">
-                    <Text variant="bodyMd">ROAS</Text>
+                    <Text variant="bodyMd" as="span">ROAS</Text>
                     <Text variant="headingMd" as="p" fontWeight="bold" tone="success">
                       {metrics?.roas?.toFixed(1)}x
                     </Text>
@@ -424,7 +424,7 @@ export function UserDashboard({ shopName, hasFeatureAccess = false, onNavigateTo
           </Card>
         </Layout.Section>
 
-        <Layout.Section oneThird>
+        <Layout.Section variant="oneThird">
           <Card>
             <BlockStack gap="300">
               <Text variant="headingMd" as="h3">Budget & Spend</Text>
@@ -433,27 +433,27 @@ export function UserDashboard({ shopName, hasFeatureAccess = false, onNavigateTo
               <BlockStack gap="300">
                 {/* Today's Spend */}
                 <BlockStack gap="100">
-                  <Text variant="bodyMd" tone="subdued">Today's Spend</Text>
+                  <Text variant="bodyMd" as="span" tone="subdued">Today's Spend</Text>
                   <Text variant="headingLg" as="p" fontWeight="bold">
                     {formatCurrency(metrics?.spend || 0)}
                   </Text>
-                  <ProgressBar progress={65} tone="info" size="small" />
-                  <Text variant="bodySm" tone="subdued">
+                  <ProgressBar progress={65} tone="highlight" size="small" />
+                  <Text variant="bodySm" as="span" tone="subdued">
                     65% of daily budget
                   </Text>
                 </BlockStack>
 
                 {/* CPC */}
                 <InlineStack align="space-between">
-                  <Text variant="bodyMd" tone="subdued">Avg. CPC</Text>
-                  <Text variant="bodyMd" fontWeight="bold">
+                  <Text variant="bodyMd" as="span" tone="subdued">Avg. CPC</Text>
+                  <Text variant="bodyMd" as="span" fontWeight="bold">
                     {formatCurrency(metrics?.cpc || 0)}
                   </Text>
                 </InlineStack>
 
                 {/* Budget Recommendation */}
                 <Box background="bg-surface-warning" padding="200" borderRadius="200">
-                  <Text variant="bodySm">
+                  <Text variant="bodySm" as="span">
                     AI suggests increasing budget by 20% for better results
                   </Text>
                 </Box>
@@ -490,7 +490,7 @@ export function UserDashboard({ shopName, hasFeatureAccess = false, onNavigateTo
 
           <BlockStack gap="200">
             <Box padding="400" background="bg-surface-secondary" borderRadius="200">
-              <Text variant="bodyMd" tone="subdued" alignment="center">
+              <Text variant="bodyMd" as="p" tone="subdued" alignment="center">
                 Recent AI activity will appear here once campaigns are active.
               </Text>
             </Box>

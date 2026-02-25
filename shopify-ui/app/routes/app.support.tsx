@@ -17,6 +17,9 @@ import {
   DataTable,
   EmptyState,
   Spinner,
+  BlockStack,
+  InlineStack,
+  Box,
 } from "@shopify/polaris";
 
 export const meta: MetaFunction = () => {
@@ -36,7 +39,7 @@ export const loader: LoaderFunction = async ({ request }) => {
   // 5. Get contact methods for tier
 
   // Mock data for demonstration
-  const mockTier = "professional"; // Could be "starter", "professional", "enterprise"
+  const mockTier: string = "professional"; // Could be "starter", "professional", "enterprise"
   const mockContactMethods = {
     subscription_tier: mockTier,
     email_support: true,
@@ -130,7 +133,7 @@ export default function AppSupport() {
   const { tier, contactMethods, tickets, tenant } = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const navigation = useNavigation();
-  
+
   const [showCreateForm, setShowCreateForm] = useState(false);
   const [selectedTicket, setSelectedTicket] = useState<number | null>(null);
   const [formData, setFormData] = useState<TicketFormData>({
@@ -164,35 +167,35 @@ export default function AppSupport() {
   const getTierDisplayName = (tier: string) => {
     const tierNames = {
       starter: "Starter Plan",
-      professional: "Professional Plan", 
+      professional: "Professional Plan",
       enterprise: "Enterprise Plan"
     };
     return tierNames[tier as keyof typeof tierNames] || "Unknown Plan";
   };
 
-  const getTierBadgeStatus = (tier: string) => {
-    return tier === "enterprise" ? "warning" : tier === "professional" ? "info" : "default";
+  const getTierBadgeTone = (tier: string): "warning" | "info" | undefined => {
+    return tier === "enterprise" ? "warning" : tier === "professional" ? "info" : undefined;
   };
 
   const getStatusBadge = (status: string) => {
-    const statusMap = {
-      open: { status: "default" as const, label: "Open" },
-      in_progress: { status: "info" as const, label: "In Progress" },
-      pending_customer: { status: "attention" as const, label: "Pending Customer" },
-      resolved: { status: "success" as const, label: "Resolved" },
-      closed: { status: "default" as const, label: "Closed" }
+    const statusMap: Record<string, { tone: "info" | "success" | "warning" | "critical" | "attention" | undefined; label: string }> = {
+      open: { tone: undefined, label: "Open" },
+      in_progress: { tone: "info", label: "In Progress" },
+      pending_customer: { tone: "attention", label: "Pending Customer" },
+      resolved: { tone: "success", label: "Resolved" },
+      closed: { tone: undefined, label: "Closed" }
     };
-    return statusMap[status as keyof typeof statusMap] || { status: "default" as const, label: status };
+    return statusMap[status] || { tone: undefined, label: status };
   };
 
   const getPriorityBadge = (priority: string) => {
-    const priorityMap = {
-      low: { status: "default" as const, label: "Low" },
-      normal: { status: "info" as const, label: "Normal" },
-      high: { status: "attention" as const, label: "High" },
-      urgent: { status: "critical" as const, label: "Urgent" }
+    const priorityMap: Record<string, { tone: "info" | "success" | "warning" | "critical" | "attention" | undefined; label: string }> = {
+      low: { tone: undefined, label: "Low" },
+      normal: { tone: "info", label: "Normal" },
+      high: { tone: "attention", label: "High" },
+      urgent: { tone: "critical", label: "Urgent" }
     };
-    return priorityMap[priority as keyof typeof priorityMap] || { status: "default" as const, label: priority };
+    return priorityMap[priority] || { tone: undefined, label: priority };
   };
 
   const formatDate = (dateString: string) => {
@@ -206,21 +209,25 @@ export default function AppSupport() {
   };
 
   // Prepare tickets data for DataTable
-  const ticketRows = tickets.map((ticket: any) => [
-    ticket.ticket_number,
-    ticket.subject,
-    <Badge key={ticket.id} {...getStatusBadge(ticket.status)}>{getStatusBadge(ticket.status).label}</Badge>,
-    <Badge key={`priority-${ticket.id}`} {...getPriorityBadge(ticket.priority)}>{getPriorityBadge(ticket.priority).label}</Badge>,
-    ticket.category,
-    formatDate(ticket.created_at),
-    <Button
-      key={`view-${ticket.id}`}
-      size="slim"
-      onClick={() => setSelectedTicket(ticket.id)}
-    >
-      View
-    </Button>
-  ]);
+  const ticketRows = tickets.map((ticket: any) => {
+    const statusBadge = getStatusBadge(ticket.status);
+    const priorityBadge = getPriorityBadge(ticket.priority);
+    return [
+      ticket.ticket_number,
+      ticket.subject,
+      <Badge key={ticket.id} tone={statusBadge.tone}>{statusBadge.label}</Badge>,
+      <Badge key={`priority-${ticket.id}`} tone={priorityBadge.tone}>{priorityBadge.label}</Badge>,
+      ticket.category,
+      formatDate(ticket.created_at),
+      <Button
+        key={`view-${ticket.id}`}
+        size="slim"
+        onClick={() => setSelectedTicket(ticket.id)}
+      >
+        View
+      </Button>
+    ];
+  });
 
   return (
     <Page
@@ -230,7 +237,7 @@ export default function AppSupport() {
       {actionData?.success && (
         <Banner
           title="Success"
-          status="success"
+          tone="success"
           onDismiss={() => {}}
         >
           <p>{actionData.message}</p>
@@ -242,8 +249,8 @@ export default function AppSupport() {
 
       {actionData?.success === false && (
         <Banner
-          title="Error" 
-          status="critical"
+          title="Error"
+          tone="critical"
           onDismiss={() => {}}
         >
           <p>{actionData.message}</p>
@@ -254,65 +261,58 @@ export default function AppSupport() {
         {/* Support Level Overview */}
         <Layout.Section>
           <Card>
-            <div style={{ padding: "1.5rem" }}>
-              <Stack vertical spacing="loose">
-                <Stack alignment="center">
-                  <Stack.Item fill>
-                    <Text variant="headingLg" as="h2">
-                      Your Support Level
-                    </Text>
-                  </Stack.Item>
-                  <Badge {...{ status: getTierBadgeStatus(tier) }}>
+            <Box padding="500">
+              <BlockStack gap="400">
+                <InlineStack align="space-between" blockAlign="center">
+                  <Text variant="headingLg" as="h2">
+                    Your Support Level
+                  </Text>
+                  <Badge tone={getTierBadgeTone(tier)}>
                     {getTierDisplayName(tier)}
                   </Badge>
-                </Stack>
+                </InlineStack>
 
-                <Stack distribution="fillEvenly" spacing="loose">
+                <InlineStack gap="400" align="space-evenly">
                   {contactMethods.email_support && (
-                    <Stack vertical spacing="tight">
-                      <EmailMajor />
-                      <Text variant="bodyMd" fontWeight="semibold">Email Support</Text>
-                      <Text variant="bodySm" color="subdued">
+                    <BlockStack gap="200">
+                      <Text variant="bodyMd" as="p" fontWeight="semibold">Email Support</Text>
+                      <Text variant="bodySm" as="span" tone="subdued">
                         Response within {contactMethods.guaranteed_response_hours}h
                       </Text>
-                    </Stack>
+                    </BlockStack>
                   )}
 
                   {contactMethods.phone_support && (
-                    <Stack vertical spacing="tight">
-                      <PhoneMajor />
-                      <Text variant="bodyMd" fontWeight="semibold">Phone Support</Text>
-                      <Text variant="bodySm" color="subdued">
+                    <BlockStack gap="200">
+                      <Text variant="bodyMd" as="p" fontWeight="semibold">Phone Support</Text>
+                      <Text variant="bodySm" as="span" tone="subdued">
                         {contactMethods.support_phone}
                       </Text>
-                    </Stack>
+                    </BlockStack>
                   )}
 
                   {contactMethods.priority_routing && (
-                    <Stack vertical spacing="tight">
-                      <AlertMajor />
-                      <Text variant="bodyMd" fontWeight="semibold">Priority Routing</Text>
-                      <Text variant="bodySm" color="subdued">
+                    <BlockStack gap="200">
+                      <Text variant="bodyMd" as="p" fontWeight="semibold">Priority Routing</Text>
+                      <Text variant="bodySm" as="span" tone="subdued">
                         Fast-tracked support
                       </Text>
-                    </Stack>
+                    </BlockStack>
                   )}
 
                   {contactMethods.dedicated_manager && (
-                    <Stack vertical spacing="tight">
-                      <CustomersMajor />
-                      <Text variant="bodyMd" fontWeight="semibold">Account Manager</Text>
-                      <Text variant="bodySm" color="subdued">
+                    <BlockStack gap="200">
+                      <Text variant="bodyMd" as="p" fontWeight="semibold">Account Manager</Text>
+                      <Text variant="bodySm" as="span" tone="subdued">
                         Dedicated support contact
                       </Text>
-                    </Stack>
+                    </BlockStack>
                   )}
-                </Stack>
+                </InlineStack>
 
                 <ButtonGroup>
                   <Button
-                    primary
-                    icon={TicketMajor}
+                    variant="primary"
                     onClick={() => setShowCreateForm(true)}
                   >
                     Create Support Ticket
@@ -320,7 +320,6 @@ export default function AppSupport() {
                   <Button
                     url={`mailto:${contactMethods.support_email}`}
                     external
-                    icon={EmailMajor}
                   >
                     Email Support
                   </Button>
@@ -328,29 +327,28 @@ export default function AppSupport() {
                     <Button
                       url={`tel:${contactMethods.support_phone}`}
                       external
-                      icon={PhoneMajor}
                     >
                       Call Support
                     </Button>
                   )}
                 </ButtonGroup>
-              </Stack>
-            </div>
+              </BlockStack>
+            </Box>
           </Card>
         </Layout.Section>
 
         {/* Support Tickets */}
         <Layout.Section>
           <Card>
-            <div style={{ padding: "1.5rem" }}>
-              <Stack vertical spacing="loose">
+            <Box padding="500">
+              <BlockStack gap="400">
                 <Text variant="headingLg" as="h2">Your Support Tickets</Text>
-                
+
                 {tickets.length > 0 ? (
                   <DataTable
                     columnContentTypes={[
                       'text',
-                      'text', 
+                      'text',
                       'text',
                       'text',
                       'text',
@@ -376,55 +374,53 @@ export default function AppSupport() {
                   >
                     <p>When you create support tickets, they'll appear here.</p>
                     <Button
-                      primary
+                      variant="primary"
                       onClick={() => setShowCreateForm(true)}
                     >
                       Create Your First Ticket
                     </Button>
                   </EmptyState>
                 )}
-              </Stack>
-            </div>
+              </BlockStack>
+            </Box>
           </Card>
         </Layout.Section>
 
         {/* SLA Information */}
-        <Layout.Section secondary>
+        <Layout.Section variant="oneThird">
           <Card>
-            <div style={{ padding: "1.5rem" }}>
-              <Stack vertical spacing="loose">
+            <Box padding="500">
+              <BlockStack gap="400">
                 <Text variant="headingMd" as="h3">Service Level Agreement</Text>
-                
-                <Stack vertical spacing="tight">
-                  <Stack alignment="center">
-                    <ClockMajor />
-                    <Text variant="bodyMd">
+
+                <BlockStack gap="200">
+                  <InlineStack blockAlign="center" gap="200">
+                    <Text variant="bodyMd" as="p">
                       <strong>Response Time:</strong> {contactMethods.guaranteed_response_hours} hours
                     </Text>
-                  </Stack>
-                  
+                  </InlineStack>
+
                   {contactMethods.guaranteed_resolution_hours && (
-                    <Stack alignment="center">
-                      <ClockMajor />
-                      <Text variant="bodyMd">
+                    <InlineStack blockAlign="center" gap="200">
+                      <Text variant="bodyMd" as="p">
                         <strong>Resolution Time:</strong> {contactMethods.guaranteed_resolution_hours} hours
                       </Text>
-                    </Stack>
+                    </InlineStack>
                   )}
-                </Stack>
+                </BlockStack>
 
-                <Text variant="bodySm" color="subdued">
+                <Text variant="bodySm" as="span" tone="subdued">
                   All times are calculated during business hours (Monday-Friday, 9 AM - 6 PM EST).
                   {tier !== "starter" && " Priority routing ensures your tickets are handled by senior support staff."}
                 </Text>
 
                 {tier === "starter" && (
-                  <Banner status="info">
+                  <Banner tone="info">
                     <p>Upgrade to Professional or Enterprise for faster response times and additional support channels.</p>
                   </Banner>
                 )}
-              </Stack>
-            </div>
+              </BlockStack>
+            </Box>
           </Card>
         </Layout.Section>
       </Layout>
@@ -450,21 +446,21 @@ export default function AppSupport() {
             onAction: () => setShowCreateForm(false)
           }
         ]}
-        large
+        size="large"
       >
         <Modal.Section>
           <Form method="post" id="support-ticket-form">
             <input type="hidden" name="intent" value="create_ticket" />
             <input type="hidden" name="tenant" value={tenant} />
-            
-            <Stack vertical spacing="loose">
+
+            <BlockStack gap="400">
               <TextField
                 label="Your Name"
                 value={formData.customer_name}
                 onChange={(value) => setFormData(prev => ({ ...prev, customer_name: value }))}
                 name="customer_name"
                 autoComplete="name"
-                required
+                requiredIndicator
               />
 
               <TextField
@@ -474,7 +470,7 @@ export default function AppSupport() {
                 onChange={(value) => setFormData(prev => ({ ...prev, customer_email: value }))}
                 name="customer_email"
                 autoComplete="email"
-                required
+                requiredIndicator
               />
 
               {tier === "enterprise" && (
@@ -489,8 +485,8 @@ export default function AppSupport() {
                 />
               )}
 
-              <Stack distribution="fillEvenly">
-                <Stack.Item fill>
+              <InlineStack gap="400">
+                <div style={{ flex: 1 }}>
                   <Select
                     label="Category"
                     options={[
@@ -503,9 +499,9 @@ export default function AppSupport() {
                     onChange={(value) => setFormData(prev => ({ ...prev, category: value }))}
                     name="category"
                   />
-                </Stack.Item>
+                </div>
 
-                <Stack.Item fill>
+                <div style={{ flex: 1 }}>
                   <Select
                     label="Priority"
                     options={[
@@ -518,8 +514,8 @@ export default function AppSupport() {
                     onChange={(value) => setFormData(prev => ({ ...prev, priority: value }))}
                     name="priority"
                   />
-                </Stack.Item>
-              </Stack>
+                </div>
+              </InlineStack>
 
               <TextField
                 label="Subject"
@@ -527,7 +523,8 @@ export default function AppSupport() {
                 onChange={(value) => setFormData(prev => ({ ...prev, subject: value }))}
                 name="subject"
                 placeholder="Brief description of your issue"
-                required
+                autoComplete="off"
+                requiredIndicator
               />
 
               <TextField
@@ -538,21 +535,22 @@ export default function AppSupport() {
                 multiline={6}
                 placeholder="Please provide detailed information about your issue, including any error messages, steps to reproduce, and what you expected to happen..."
                 helpText="The more details you provide, the faster we can help resolve your issue."
-                required
+                autoComplete="off"
+                requiredIndicator
               />
 
               {tier === "starter" && (formData.priority === "high" || formData.priority === "urgent") && (
-                <Banner status="info">
+                <Banner tone="info">
                   <p>High and Urgent priorities are available for Professional and Enterprise customers. Your ticket will be processed as Normal priority.</p>
                 </Banner>
               )}
 
               {tier !== "enterprise" && formData.category === "urgent" && (
-                <Banner status="info">
+                <Banner tone="info">
                   <p>Urgent category is available for Enterprise customers only. Your ticket will be processed as Technical category.</p>
                 </Banner>
               )}
-            </Stack>
+            </BlockStack>
           </Form>
         </Modal.Section>
       </Modal>

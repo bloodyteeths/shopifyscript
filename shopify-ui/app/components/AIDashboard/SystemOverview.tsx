@@ -95,7 +95,7 @@ export function SystemOverview({ shopName, hasFeatureAccess = false }: SystemOve
           setSystemHealth(data.health);
         }
       }
-    } catch (err) {
+    } catch (err: unknown) {
       console.error("Failed to fetch system health:", err);
       // Fallback data for demo purposes
       setSystemHealth({
@@ -119,7 +119,7 @@ export function SystemOverview({ shopName, hasFeatureAccess = false }: SystemOve
           setOptimizationStats(data.stats);
         }
       }
-    } catch (err) {
+    } catch (err: unknown) {
       console.error("Failed to fetch optimization stats:", err);
       // Fallback data
       setOptimizationStats({
@@ -141,7 +141,7 @@ export function SystemOverview({ shopName, hasFeatureAccess = false }: SystemOve
           setDataSources(data.sources);
         }
       }
-    } catch (err) {
+    } catch (err: unknown) {
       console.error("Failed to fetch data sources:", err);
       // Fallback data
       setDataSources([
@@ -164,7 +164,7 @@ export function SystemOverview({ shopName, hasFeatureAccess = false }: SystemOve
           setQuickStats(data.stats);
         }
       }
-    } catch (err) {
+    } catch (err: unknown) {
       console.error("Failed to fetch quick stats:", err);
       // Fallback data
       setQuickStats({
@@ -188,7 +188,7 @@ export function SystemOverview({ shopName, hasFeatureAccess = false }: SystemOve
           setAutomationStatus(data.automation);
         }
       }
-    } catch (err) {
+    } catch (err: unknown) {
       console.error("Failed to fetch automation status:", err);
       // Fallback data
       setAutomationStatus({
@@ -210,7 +210,7 @@ export function SystemOverview({ shopName, hasFeatureAccess = false }: SystemOve
           setIngestionStatus(data.tables || null);
         }
       }
-    } catch (err) {
+    } catch (err: unknown) {
       console.error("Failed to fetch ingestion status:", err);
       setIngestionStatus(null);
     }
@@ -226,7 +226,7 @@ export function SystemOverview({ shopName, hasFeatureAccess = false }: SystemOve
           setLogMetrics(data.metrics || null);
         }
       }
-    } catch (err) {
+    } catch (err: unknown) {
       console.error("Failed to fetch log metrics:", err);
       setLogMetrics(null);
     }
@@ -247,7 +247,7 @@ export function SystemOverview({ shopName, hasFeatureAccess = false }: SystemOve
         fetchLogMetrics()
       ]);
       setLastRefresh(new Date());
-    } catch (err) {
+    } catch (err: unknown) {
       setError("Failed to refresh dashboard data");
     } finally {
       setLoading(false);
@@ -383,7 +383,7 @@ export function SystemOverview({ shopName, hasFeatureAccess = false }: SystemOve
 
       <Layout>
         {/* System Health & Status */}
-        <Layout.Section oneThird>
+        <Layout.Section variant="oneThird">
           <Card>
             <Box padding="400">
               <BlockStack gap="300">
@@ -410,7 +410,7 @@ export function SystemOverview({ shopName, hasFeatureAccess = false }: SystemOve
         </Layout.Section>
 
         {/* Active Optimizations */}
-        <Layout.Section oneThird>
+        <Layout.Section variant="oneThird">
           <Card>
             <Box padding="400">
               <BlockStack gap="300">
@@ -419,7 +419,7 @@ export function SystemOverview({ shopName, hasFeatureAccess = false }: SystemOve
                 {optimizationStats && (
                   <BlockStack gap="200">
                     <Box>
-                      <Text variant="heading2xl" as="div" tone="success">
+                      <Text variant="heading2xl" as="p" tone="success">
                         {optimizationStats.activeCount}
                       </Text>
                       <Text variant="bodyMd" as="p" tone="subdued">
@@ -450,7 +450,7 @@ export function SystemOverview({ shopName, hasFeatureAccess = false }: SystemOve
         </Layout.Section>
 
         {/* Automation Status */}
-        <Layout.Section oneThird>
+        <Layout.Section variant="oneThird">
           <Card>
             <Box padding="400">
               <BlockStack gap="300">
@@ -506,7 +506,7 @@ export function SystemOverview({ shopName, hasFeatureAccess = false }: SystemOve
 
             <Layout>
               {dataSources.map((source, index) => (
-                <Layout.Section key={index} oneThird>
+                <Layout.Section key={index} variant="oneThird">
                   <Box padding="300" borderWidth="025" borderRadius="200" borderColor="border">
                     <BlockStack gap="200">
                       <InlineStack align="space-between">
@@ -514,9 +514,9 @@ export function SystemOverview({ shopName, hasFeatureAccess = false }: SystemOve
                           {source.name}
                         </Text>
                         <Badge tone={getStatusTone(source.status)}>
-                          {source.status === 'connected' ? <CheckCircleIcon /> :
-                           source.status === 'warning' ? <AlertCircleIcon /> :
-                           <InfoIcon />}
+                          {source.status === 'connected' ? 'Connected' :
+                           source.status === 'warning' ? 'Warning' :
+                           'Error'}
                         </Badge>
                       </InlineStack>
 
@@ -549,11 +549,11 @@ export function SystemOverview({ shopName, hasFeatureAccess = false }: SystemOve
 
             {quickStats && (
               <Layout>
-                <Layout.Section oneThird>
+                <Layout.Section variant="oneThird">
                   <Box padding="300" borderWidth="025" borderRadius="200" borderColor="border">
                     <BlockStack gap="100">
                       <Text variant="bodyMd" as="span" tone="subdued">Click-through Rate</Text>
-                      <Text variant="headingLg" as="div" color="success">
+                      <Text variant="headingLg" as="p" tone="success">
                         {quickStats.ctr}%
                       </Text>
                       <InlineStack gap="100">
@@ -564,11 +564,11 @@ export function SystemOverview({ shopName, hasFeatureAccess = false }: SystemOve
                   </Box>
                 </Layout.Section>
 
-                <Layout.Section oneThird>
+                <Layout.Section variant="oneThird">
                   <Box padding="300" borderWidth="025" borderRadius="200" borderColor="border">
                     <BlockStack gap="100">
                       <Text variant="bodyMd" as="span" tone="subdued">Return on Ad Spend</Text>
-                      <Text variant="headingLg" as="div" color="success">
+                      <Text variant="headingLg" as="p" tone="success">
                         {quickStats.roas}x
                       </Text>
                       <InlineStack gap="100">
@@ -579,11 +579,11 @@ export function SystemOverview({ shopName, hasFeatureAccess = false }: SystemOve
                   </Box>
                 </Layout.Section>
 
-                <Layout.Section oneThird>
+                <Layout.Section variant="oneThird">
                   <Box padding="300" borderWidth="025" borderRadius="200" borderColor="border">
                     <BlockStack gap="100">
                       <Text variant="bodyMd" as="span" tone="subdued">Conversions</Text>
-                      <Text variant="headingLg" as="div">
+                      <Text variant="headingLg" as="p">
                         {formatNumber(quickStats.conversions)}
                       </Text>
                       <InlineStack gap="100">
@@ -594,11 +594,11 @@ export function SystemOverview({ shopName, hasFeatureAccess = false }: SystemOve
                   </Box>
                 </Layout.Section>
 
-                <Layout.Section oneThird>
+                <Layout.Section variant="oneThird">
                   <Box padding="300" borderWidth="025" borderRadius="200" borderColor="border">
                     <BlockStack gap="100">
                       <Text variant="bodyMd" as="span" tone="subdued">Ad Spend</Text>
-                      <Text variant="headingLg" as="div">
+                      <Text variant="headingLg" as="p">
                         {formatCurrency(quickStats.adSpend)}
                       </Text>
                       <Text variant="bodyMd" as="span" tone="subdued">This month</Text>
@@ -606,11 +606,11 @@ export function SystemOverview({ shopName, hasFeatureAccess = false }: SystemOve
                   </Box>
                 </Layout.Section>
 
-                <Layout.Section oneThird>
+                <Layout.Section variant="oneThird">
                   <Box padding="300" borderWidth="025" borderRadius="200" borderColor="border">
                     <BlockStack gap="100">
                       <Text variant="bodyMd" as="span" tone="subdued">Impressions</Text>
-                      <Text variant="headingLg" as="div">
+                      <Text variant="headingLg" as="p">
                         {formatNumber(quickStats.impressions)}
                       </Text>
                       <Text variant="bodyMd" as="span" tone="subdued">Last 7 days</Text>
@@ -618,11 +618,11 @@ export function SystemOverview({ shopName, hasFeatureAccess = false }: SystemOve
                   </Box>
                 </Layout.Section>
 
-                <Layout.Section oneThird>
+                <Layout.Section variant="oneThird">
                   <Box padding="300" borderWidth="025" borderRadius="200" borderColor="border">
                     <BlockStack gap="100">
                       <Text variant="bodyMd" as="span" tone="subdued">Clicks</Text>
-                      <Text variant="headingLg" as="div">
+                      <Text variant="headingLg" as="p">
                         {formatNumber(quickStats.clicks)}
                       </Text>
                       <Text variant="bodyMd" as="span" tone="subdued">Last 7 days</Text>
@@ -655,7 +655,7 @@ export function SystemOverview({ shopName, hasFeatureAccess = false }: SystemOve
                   { key: 'search_terms', label: 'Search Terms' },
                   { key: 'run_logs', label: 'Run Logs' }
                 ].map(({ key, label }) => (
-                  <Layout.Section key={key} oneFifth>
+                  <Layout.Section key={key} variant="oneThird">
                     <Box padding="300" borderWidth="025" borderRadius="200" borderColor="border">
                       <BlockStack gap="100">
                         <Text variant="bodySm" as="span" tone="subdued">{label}</Text>

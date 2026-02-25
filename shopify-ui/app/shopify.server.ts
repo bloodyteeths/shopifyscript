@@ -1,9 +1,6 @@
 import "@shopify/shopify-app-remix/adapters/node";
-import {
-  ApiVersion,
-  AppDistribution,
-  shopifyApp,
-} from "@shopify/shopify-app-remix/server";
+// @ts-ignore moduleResolution mismatch with shopify-app-remix
+import { ApiVersion, AppDistribution, shopifyApp } from "@shopify/shopify-app-remix/server";
 import { MemorySessionStorage } from "@shopify/shopify-app-session-storage-memory";
 import { RedisSessionStorage } from "@shopify/shopify-app-session-storage-redis";
 
@@ -57,7 +54,7 @@ const shopify = shopifyApp({
     v3_webhookAdminContext: true,
   },
   hooks: {
-    afterAuth: async ({ session }) => {
+    afterAuth: async ({ session }: { session: any }) => {
       try {
         console.log(`✅ Authentication successful for shop: ${session.shop}`);
       } catch (error) {

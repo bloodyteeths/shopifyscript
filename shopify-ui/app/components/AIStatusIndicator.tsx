@@ -65,8 +65,8 @@ export function AIStatusIndicator({ shopName, compact = false, showTokenUsage = 
 
       // Fetch AI health status
       const healthResponse = await backendFetch("/ai/health", "GET", undefined, shopName);
-      if (healthResponse.ok) {
-        const healthData = await healthResponse.json();
+      if (healthResponse.status >= 200 && healthResponse.status < 300) {
+        const healthData = healthResponse.json;
         if (healthData.ok) {
           setStatus(healthData.health);
         }
@@ -75,8 +75,8 @@ export function AIStatusIndicator({ shopName, compact = false, showTokenUsage = 
       // Fetch token usage if requested
       if (showTokenUsage) {
         const tokenResponse = await backendFetch("/ai/tokens/usage", "GET", undefined, shopName);
-        if (tokenResponse.ok) {
-          const tokenData = await tokenResponse.json();
+        if (tokenResponse.status >= 200 && tokenResponse.status < 300) {
+          const tokenData = tokenResponse.json;
           if (tokenData.ok) {
             setTokenUsage(tokenData.usage);
           }

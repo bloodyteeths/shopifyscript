@@ -7,7 +7,8 @@
 import React, { useState, useEffect } from 'react';
 import {
   Card,
-  Stack,
+  InlineStack,
+  BlockStack,
   Text,
   Button,
   Badge,
@@ -19,17 +20,18 @@ import {
   Tooltip,
   ButtonGroup,
   Frame,
-  Toast
+  Toast,
+  Box
 } from '@shopify/polaris';
 import {
-  ChecklistMajor,
-  CircleTickMajor,
-  CircleAlertMajor,
-  ChevronRightMinor,
-  ChevronLeftMinor,
-  StarFilledMinor,
-  PlayMajor,
-  TipsMajor
+  CheckIcon,
+  CheckCircleIcon,
+  AlertCircleIcon,
+  ChevronRightIcon,
+  ChevronLeftIcon,
+  StarFilledIcon,
+  PlayIcon,
+  LightbulbIcon
 } from '@shopify/polaris-icons';
 
 interface OnboardingStep {
@@ -54,213 +56,223 @@ interface OnboardingFlowProps {
 
 // Onboarding step components
 const WelcomeStep: React.FC<{ tier: string; onNext: () => void }> = ({ tier, onNext }) => (
-  <Stack vertical spacing="loose">
+  <BlockStack gap="400">
     <div style={{ textAlign: 'center' }}>
-      <Icon source={StarFilledMinor} />
+      <Icon source={StarFilledIcon} />
       <Text variant="headingLg" as="h2">Welcome to Ads Autopilot AI!</Text>
-      <Text variant="bodyMd" color="subdued">
+      <Text variant="bodyMd" as="p" tone="subdued">
         Let's get you set up with {tier} features in just a few steps.
       </Text>
     </div>
-    
-    <Card sectioned>
-      <Stack vertical spacing="tight">
-        <Text variant="headingMd">What you'll accomplish:</Text>
-        <List type="bullet">
-          <List.Item>Connect your advertising accounts</List.Item>
-          <List.Item>Configure your first campaign</List.Item>
-          <List.Item>Set up automated reporting</List.Item>
-          {tier !== 'starter' && <List.Item>Explore advanced analytics</List.Item>}
-          {tier === 'enterprise' && <List.Item>Build custom dashboards</List.Item>}
-        </List>
-      </Stack>
+
+    <Card>
+      <Box padding="400">
+        <BlockStack gap="200">
+          <Text as="h3" variant="headingMd">What you'll accomplish:</Text>
+          <List type="bullet">
+            <List.Item>Connect your advertising accounts</List.Item>
+            <List.Item>Configure your first campaign</List.Item>
+            <List.Item>Set up automated reporting</List.Item>
+            {tier !== 'starter' && <List.Item>Explore advanced analytics</List.Item>}
+            {tier === 'enterprise' && <List.Item>Build custom dashboards</List.Item>}
+          </List>
+        </BlockStack>
+      </Box>
     </Card>
-    
+
     <div style={{ textAlign: 'center' }}>
-      <Button primary size="large" onClick={onNext}>
+      <Button variant="primary" size="large" onClick={onNext}>
         Let's Get Started
       </Button>
       <div style={{ marginTop: '0.5rem' }}>
-        <Text variant="bodySm" color="subdued">Takes about 5-10 minutes</Text>
+        <Text as="span" variant="bodySm" tone="subdued">Takes about 5-10 minutes</Text>
       </div>
     </div>
-  </Stack>
+  </BlockStack>
 );
 
 const AccountSetupStep: React.FC<{ onNext: () => void; onPrev: () => void }> = ({ onNext, onPrev }) => (
-  <Stack vertical spacing="loose">
+  <BlockStack gap="400">
     <Text variant="headingLg" as="h2">Connect Your Accounts</Text>
-    <Text variant="bodyMd">
+    <Text as="p" variant="bodyMd">
       Connect your advertising platforms to start optimizing your campaigns.
     </Text>
-    
-    <Card sectioned>
-      <Stack vertical spacing="loose">
-        <Banner status="info">
-          <p>Your account credentials are encrypted and stored securely. We never access your account without permission.</p>
-        </Banner>
-        
-        <Stack vertical spacing="tight">
-          <Button fullWidth outline icon={PlayMajor}>
-            Connect Google Ads Account
-          </Button>
-          <Button fullWidth outline icon={PlayMajor}>
-            Connect Microsoft Ads Account
-          </Button>
-          <Button fullWidth outline icon={PlayMajor}>
-            Connect Facebook Ads Account
-          </Button>
-        </Stack>
-        
-        <Text variant="bodySm" color="subdued">
-          You can skip this for now and connect accounts later in Settings.
-        </Text>
-      </Stack>
+
+    <Card>
+      <Box padding="400">
+        <BlockStack gap="400">
+          <Banner tone="info">
+            <p>Your account credentials are encrypted and stored securely. We never access your account without permission.</p>
+          </Banner>
+
+          <BlockStack gap="200">
+            <Button fullWidth icon={PlayIcon}>
+              Connect Google Ads Account
+            </Button>
+            <Button fullWidth icon={PlayIcon}>
+              Connect Microsoft Ads Account
+            </Button>
+            <Button fullWidth icon={PlayIcon}>
+              Connect Facebook Ads Account
+            </Button>
+          </BlockStack>
+
+          <Text as="span" variant="bodySm" tone="subdued">
+            You can skip this for now and connect accounts later in Settings.
+          </Text>
+        </BlockStack>
+      </Box>
     </Card>
-    
+
     <ButtonGroup>
       <Button onClick={onPrev}>Previous</Button>
-      <Button primary onClick={onNext}>Continue</Button>
+      <Button variant="primary" onClick={onNext}>Continue</Button>
     </ButtonGroup>
-  </Stack>
+  </BlockStack>
 );
 
 const CampaignSetupStep: React.FC<{ tier: string; onNext: () => void; onPrev: () => void }> = ({ tier, onNext, onPrev }) => (
-  <Stack vertical spacing="loose">
+  <BlockStack gap="400">
     <Text variant="headingLg" as="h2">Create Your First Campaign</Text>
-    <Text variant="bodyMd">
+    <Text as="p" variant="bodyMd">
       Start with our quick setup wizard or use advanced options.
     </Text>
-    
-    <Card sectioned>
-      <Stack vertical spacing="loose">
-        <div>
-          <Text variant="headingMd">Quick Setup (Recommended)</Text>
-          <Text variant="bodyMd" color="subdued">
-            Our AI will create optimized campaigns based on your business type.
-          </Text>
-        </div>
-        
-        <Stack>
-          <Button primary icon={TipsMajor} onClick={() => {
-            // This would trigger the autopilot quickstart
-            console.log('Starting autopilot quickstart...');
-          }}>
-            Start Autopilot Setup
-          </Button>
-          <Tooltip content="AI-powered campaign creation with smart defaults">
-            <Button plain monochrome>What's this?</Button>
-          </Tooltip>
-        </Stack>
-        
-        {tier !== 'starter' && (
-          <div style={{ marginTop: '1rem' }}>
-            <Text variant="headingMd">Advanced Setup</Text>
-            <Text variant="bodyMd" color="subdued">
-              Full control over campaign settings and targeting.
+
+    <Card>
+      <Box padding="400">
+        <BlockStack gap="400">
+          <div>
+            <Text as="h3" variant="headingMd">Quick Setup (Recommended)</Text>
+            <Text as="p" variant="bodyMd" tone="subdued">
+              Our AI will create optimized campaigns based on your business type.
             </Text>
-            <Button outline onClick={() => {
-              console.log('Opening advanced campaign builder...');
-            }}>
-              Advanced Campaign Builder
-            </Button>
           </div>
-        )}
-      </Stack>
+
+          <InlineStack gap="200">
+            <Button variant="primary" icon={LightbulbIcon} onClick={() => {
+              // This would trigger the autopilot quickstart
+              console.log('Starting autopilot quickstart...');
+            }}>
+              Start Autopilot Setup
+            </Button>
+            <Tooltip content="AI-powered campaign creation with smart defaults">
+              <Button variant="plain">What's this?</Button>
+            </Tooltip>
+          </InlineStack>
+
+          {tier !== 'starter' && (
+            <div style={{ marginTop: '1rem' }}>
+              <Text as="h3" variant="headingMd">Advanced Setup</Text>
+              <Text as="p" variant="bodyMd" tone="subdued">
+                Full control over campaign settings and targeting.
+              </Text>
+              <Button onClick={() => {
+                console.log('Opening advanced campaign builder...');
+              }}>
+                Advanced Campaign Builder
+              </Button>
+            </div>
+          )}
+        </BlockStack>
+      </Box>
     </Card>
-    
+
     <ButtonGroup>
       <Button onClick={onPrev}>Previous</Button>
-      <Button primary onClick={onNext}>Continue</Button>
+      <Button variant="primary" onClick={onNext}>Continue</Button>
     </ButtonGroup>
-  </Stack>
+  </BlockStack>
 );
 
 const AnalyticsSetupStep: React.FC<{ tier: string; onNext: () => void; onPrev: () => void }> = ({ tier, onNext, onPrev }) => (
-  <Stack vertical spacing="loose">
+  <BlockStack gap="400">
     <Text variant="headingLg" as="h2">Set Up Analytics & Reporting</Text>
-    <Text variant="bodyMd">
+    <Text as="p" variant="bodyMd">
       Configure your analytics preferences and automated reporting.
     </Text>
-    
-    <Card sectioned>
-      <Stack vertical spacing="loose">
-        <div>
-          <Stack horizontal alignment="center">
-            <Text variant="headingMd">Automated Reports</Text>
-            <Badge status={tier === 'starter' ? 'default' : tier === 'professional' ? 'info' : 'attention'}>
-              {tier === 'starter' ? 'Monthly' : tier === 'professional' ? 'Weekly' : 'Daily'}
-            </Badge>
-          </Stack>
-          <Text variant="bodyMd" color="subdued">
-            Get insights delivered to your inbox automatically.
-          </Text>
-        </div>
-        
-        <Button outline>Configure Email Preferences</Button>
-        
-        {tier !== 'starter' && (
+
+    <Card>
+      <Box padding="400">
+        <BlockStack gap="400">
           <div>
-            <Text variant="headingMd">Real-time Analytics</Text>
-            <Text variant="bodyMd" color="subdued">
-              Track performance with live data updates.
+            <InlineStack gap="200" blockAlign="center">
+              <Text as="h3" variant="headingMd">Automated Reports</Text>
+              <Badge tone={tier === 'starter' ? undefined : tier === 'professional' ? 'info' : 'attention'}>
+                {tier === 'starter' ? 'Monthly' : tier === 'professional' ? 'Weekly' : 'Daily'}
+              </Badge>
+            </InlineStack>
+            <Text as="p" variant="bodyMd" tone="subdued">
+              Get insights delivered to your inbox automatically.
             </Text>
-            <Button outline>Enable Real-time Updates</Button>
           </div>
-        )}
-        
-        {tier === 'enterprise' && (
-          <div>
-            <Text variant="headingMd">Custom Dashboards</Text>
-            <Text variant="bodyMd" color="subdued">
-              Create personalized analytics views.
-            </Text>
-            <Button outline>Build First Dashboard</Button>
-          </div>
-        )}
-      </Stack>
+
+          <Button>Configure Email Preferences</Button>
+
+          {tier !== 'starter' && (
+            <div>
+              <Text as="h3" variant="headingMd">Real-time Analytics</Text>
+              <Text as="p" variant="bodyMd" tone="subdued">
+                Track performance with live data updates.
+              </Text>
+              <Button>Enable Real-time Updates</Button>
+            </div>
+          )}
+
+          {tier === 'enterprise' && (
+            <div>
+              <Text as="h3" variant="headingMd">Custom Dashboards</Text>
+              <Text as="p" variant="bodyMd" tone="subdued">
+                Create personalized analytics views.
+              </Text>
+              <Button>Build First Dashboard</Button>
+            </div>
+          )}
+        </BlockStack>
+      </Box>
     </Card>
-    
+
     <ButtonGroup>
       <Button onClick={onPrev}>Previous</Button>
-      <Button primary onClick={onNext}>Continue</Button>
+      <Button variant="primary" onClick={onNext}>Continue</Button>
     </ButtonGroup>
-  </Stack>
+  </BlockStack>
 );
 
 const CompletionStep: React.FC<{ tier: string; onComplete: () => void }> = ({ tier, onComplete }) => (
-  <Stack vertical spacing="loose">
+  <BlockStack gap="400">
     <div style={{ textAlign: 'center' }}>
-      <Icon source={CircleTickMajor} />
+      <Icon source={CheckCircleIcon} />
       <Text variant="headingLg" as="h2">You're All Set!</Text>
-      <Text variant="bodyMd" color="subdued">
+      <Text as="p" variant="bodyMd" tone="subdued">
         Your Ads Autopilot AI {tier} account is ready to optimize your campaigns.
       </Text>
     </div>
-    
-    <Card sectioned>
-      <Stack vertical spacing="loose">
-        <Text variant="headingMd">Next Steps:</Text>
-        <List type="bullet">
-          <List.Item>Monitor your campaigns in the Dashboard</List.Item>
-          <List.Item>Review AI suggestions in Insights</List.Item>
-          <List.Item>Check your email for the first automated report</List.Item>
-          {tier !== 'starter' && <List.Item>Explore advanced ROAS analytics</List.Item>}
-          {tier === 'enterprise' && <List.Item>Set up custom performance dashboards</List.Item>}
-        </List>
-      </Stack>
+
+    <Card>
+      <Box padding="400">
+        <BlockStack gap="400">
+          <Text as="h3" variant="headingMd">Next Steps:</Text>
+          <List type="bullet">
+            <List.Item>Monitor your campaigns in the Dashboard</List.Item>
+            <List.Item>Review AI suggestions in Insights</List.Item>
+            <List.Item>Check your email for the first automated report</List.Item>
+            {tier !== 'starter' && <List.Item>Explore advanced ROAS analytics</List.Item>}
+            {tier === 'enterprise' && <List.Item>Set up custom performance dashboards</List.Item>}
+          </List>
+        </BlockStack>
+      </Box>
     </Card>
-    
-    <Banner status="success">
+
+    <Banner tone="success">
       <p>Need help? Access our knowledge base anytime or contact our {tier === 'enterprise' ? 'dedicated' : 'support'} team.</p>
     </Banner>
-    
+
     <div style={{ textAlign: 'center' }}>
-      <Button primary size="large" onClick={onComplete}>
+      <Button variant="primary" size="large" onClick={onComplete}>
         Go to Dashboard
       </Button>
     </div>
-  </Stack>
+  </BlockStack>
 );
 
 export const OnboardingFlow: React.FC<OnboardingFlowProps> = ({
@@ -331,8 +343,8 @@ export const OnboardingFlow: React.FC<OnboardingFlowProps> = ({
   ];
 
   // Filter steps based on tier
-  const availableSteps = steps.filter(step => 
-    !step.tierRequired || 
+  const availableSteps = steps.filter(step =>
+    !step.tierRequired ||
     (step.tierRequired === 'starter') ||
     (step.tierRequired === 'professional' && userTier !== 'starter') ||
     (step.tierRequired === 'enterprise' && userTier === 'enterprise')
@@ -378,7 +390,7 @@ export const OnboardingFlow: React.FC<OnboardingFlowProps> = ({
   if (!currentStepData) return null;
 
   const StepComponent = currentStepData.component;
-  
+
   const toastMarkup = showToast ? (
     <Toast
       content="Onboarding completed! Welcome to Ads Autopilot AI."
@@ -393,7 +405,7 @@ export const OnboardingFlow: React.FC<OnboardingFlowProps> = ({
         open={isOpen}
         onClose={onClose}
         title={`Getting Started - ${currentStepData.title}`}
-        large
+        size="large"
         primaryAction={undefined}
         secondaryActions={[
           {
@@ -403,62 +415,67 @@ export const OnboardingFlow: React.FC<OnboardingFlowProps> = ({
         ]}
       >
         <Modal.Section>
-          <Stack vertical spacing="loose">
+          <BlockStack gap="400">
             {/* Progress indicators */}
-            <Card sectioned>
-              <Stack vertical spacing="tight">
-                <Stack distribution="equalSpacing" alignment="center">
-                  <Text variant="headingMd">
-                    Step {currentStep + 1} of {availableSteps.length}
-                  </Text>
-                  <Badge status={userTier === 'starter' ? 'default' : userTier === 'professional' ? 'info' : 'attention'}>
-                    {userTier.toUpperCase()} PLAN
-                  </Badge>
-                </Stack>
-                <ProgressBar progress={progress} size="small" />
-                <Stack distribution="equalSpacing">
-                  <Text variant="bodySm" color="subdued">
-                    {currentStepData.estimatedTime} estimated
-                  </Text>
-                  <Text variant="bodySm" color="subdued">
-                    {Math.round(progress)}% complete
-                  </Text>
-                </Stack>
-              </Stack>
+            <Card>
+              <Box padding="400">
+                <BlockStack gap="200">
+                  <InlineStack align="space-between" blockAlign="center">
+                    <Text as="h3" variant="headingMd">
+                      Step {currentStep + 1} of {availableSteps.length}
+                    </Text>
+                    <Badge tone={userTier === 'starter' ? undefined : userTier === 'professional' ? 'info' : 'attention'}>
+                      {`${userTier.toUpperCase()} PLAN`}
+                    </Badge>
+                  </InlineStack>
+                  <ProgressBar progress={progress} size="small" />
+                  <InlineStack align="space-between">
+                    <Text as="span" variant="bodySm" tone="subdued">
+                      {currentStepData.estimatedTime} estimated
+                    </Text>
+                    <Text as="span" variant="bodySm" tone="subdued">
+                      {Math.round(progress)}% complete
+                    </Text>
+                  </InlineStack>
+                </BlockStack>
+              </Box>
             </Card>
 
             {/* Step navigation breadcrumb */}
-            <Card sectioned>
-              <Stack>
-                {availableSteps.map((step, index) => (
-                  <React.Fragment key={step.id}>
-                    <Stack alignment="center" spacing="extraTight">
-                      <Icon 
-                        source={
-                          localCompletedSteps.has(step.id) ? CircleTickMajor :
-                          index === currentStep ? CircleAlertMajor :
-                          ChecklistMajor
-                        }
-                        color={
-                          localCompletedSteps.has(step.id) ? 'success' :
-                          index === currentStep ? 'highlight' :
-                          'subdued'
-                        }
-                      />
-                      <Text 
-                        variant="bodySm" 
-                        color={index === currentStep ? 'default' : 'subdued'}
-                        fontWeight={index === currentStep ? 'semibold' : 'regular'}
-                      >
-                        {step.title}
-                      </Text>
-                    </Stack>
-                    {index < availableSteps.length - 1 && (
-                      <Icon source={ChevronRightMinor} color="subdued" />
-                    )}
-                  </React.Fragment>
-                ))}
-              </Stack>
+            <Card>
+              <Box padding="400">
+                <InlineStack gap="200">
+                  {availableSteps.map((step, index) => (
+                    <React.Fragment key={step.id}>
+                      <InlineStack blockAlign="center" gap="100">
+                        <Icon
+                          source={
+                            localCompletedSteps.has(step.id) ? CheckCircleIcon :
+                            index === currentStep ? AlertCircleIcon :
+                            CheckIcon
+                          }
+                          tone={
+                            localCompletedSteps.has(step.id) ? 'success' :
+                            index === currentStep ? 'info' :
+                            'subdued'
+                          }
+                        />
+                        <Text
+                          as="span"
+                          variant="bodySm"
+                          tone={index === currentStep ? undefined : 'subdued'}
+                          fontWeight={index === currentStep ? 'semibold' : 'regular'}
+                        >
+                          {step.title}
+                        </Text>
+                      </InlineStack>
+                      {index < availableSteps.length - 1 && (
+                        <Icon source={ChevronRightIcon} tone="subdued" />
+                      )}
+                    </React.Fragment>
+                  ))}
+                </InlineStack>
+              </Box>
             </Card>
 
             {/* Current step content */}
@@ -468,21 +485,23 @@ export const OnboardingFlow: React.FC<OnboardingFlowProps> = ({
               onPrev={handlePrev}
               onComplete={handleComplete}
             />
-            
+
             {/* Benefits sidebar */}
             {currentStepData.benefits.length > 0 && (
-              <Card sectioned>
-                <Stack vertical spacing="tight">
-                  <Text variant="headingMd">Benefits of this step:</Text>
-                  <List type="bullet">
-                    {currentStepData.benefits.map((benefit, index) => (
-                      <List.Item key={index}>{benefit}</List.Item>
-                    ))}
-                  </List>
-                </Stack>
+              <Card>
+                <Box padding="400">
+                  <BlockStack gap="200">
+                    <Text as="h3" variant="headingMd">Benefits of this step:</Text>
+                    <List type="bullet">
+                      {currentStepData.benefits.map((benefit, index) => (
+                        <List.Item key={index}>{benefit}</List.Item>
+                      ))}
+                    </List>
+                  </BlockStack>
+                </Box>
               </Card>
             )}
-          </Stack>
+          </BlockStack>
         </Modal.Section>
       </Modal>
       {toastMarkup}

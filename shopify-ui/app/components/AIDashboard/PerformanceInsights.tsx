@@ -52,7 +52,7 @@ export function PerformanceInsights({ shopName, hasFeatureAccess = false }: Perf
       case '1d': return 'TODAY';
       case '7d': return 'LAST_7_DAYS';
       case '30d': return 'LAST_30_DAYS';
-      case '90d': return 'LAST_90_DAYS';
+      case '90d': return 'LAST_30_DAYS';
       case 'month': return 'LAST_30_DAYS';
       case 'year': return 'ALL_TIME';
       case 'all': return 'ALL_TIME';
@@ -96,7 +96,7 @@ export function PerformanceInsights({ shopName, hasFeatureAccess = false }: Perf
       } else {
         throw new Error(`Failed to fetch performance data: ${response.status}`);
       }
-    } catch (err) {
+    } catch (err: unknown) {
       console.error("Failed to fetch performance data:", err);
       setError(err instanceof Error ? err.message : "Failed to load performance insights");
       setPerformanceData([]);
@@ -121,7 +121,7 @@ export function PerformanceInsights({ shopName, hasFeatureAccess = false }: Perf
           setRecommendations([]);
         }
       }
-    } catch (e) {
+    } catch (e: unknown) {
       setRecommendations([]);
     }
   }, [shopName, timeRange]);
@@ -140,7 +140,7 @@ export function PerformanceInsights({ shopName, hasFeatureAccess = false }: Perf
           setInsightTemplates([]);
         }
       }
-    } catch (e) {
+    } catch (e: unknown) {
       setInsightTemplates([]);
     }
   }, [shopName, timeRange]);
@@ -228,11 +228,11 @@ export function PerformanceInsights({ shopName, hasFeatureAccess = false }: Perf
           <BlockStack gap="200">
             <Text variant="headingLg" as="h2">Performance Insights</Text>
             <InlineStack gap="200" blockAlign="center">
-              <Text variant="bodyMd" tone="subdued">Showing data for: {getPeriodFromTimeRange(timeRange)}</Text>
+              <Text variant="bodyMd" as="p" tone="subdued">Showing data for: {getPeriodFromTimeRange(timeRange)}</Text>
               {lastUpdated && (
                 <>
-                  <Text variant="bodyMd" tone="subdued">•</Text>
-                  <Text variant="bodySm" tone="subdued">Updated {formatTimeAgo(lastUpdated)}</Text>
+                  <Text variant="bodyMd" as="p" tone="subdued">•</Text>
+                  <Text variant="bodySm" as="span" tone="subdued">Updated {formatTimeAgo(lastUpdated)}</Text>
                 </>
               )}
             </InlineStack>
@@ -260,7 +260,7 @@ export function PerformanceInsights({ shopName, hasFeatureAccess = false }: Perf
           <InlineStack align="space-between" blockAlign="center">
             <BlockStack gap="200">
               <Text variant="headingLg" as="h2">Performance Insights</Text>
-              <Text variant="bodyMd" tone="subdued">Loading performance insights...</Text>
+              <Text variant="bodyMd" as="p" tone="subdued">Loading performance insights...</Text>
             </BlockStack>
             <Spinner size="small" />
           </InlineStack>
@@ -282,8 +282,8 @@ export function PerformanceInsights({ shopName, hasFeatureAccess = false }: Perf
     <Card>
       <Box padding="600">
         <BlockStack gap="400" align="center">
-          <Text variant="headingMd" alignment="center">No performance data yet</Text>
-          <Text variant="bodyMd" tone="subdued" alignment="center">
+          <Text variant="headingMd" as="h3" alignment="center">No performance data yet</Text>
+          <Text variant="bodyMd" as="p" tone="subdued" alignment="center">
             We haven't received impressions or clicks for this period. Try a longer range or check back once your Google Ads campaigns have activity.
           </Text>
           <Button onClick={handleRefresh} loading={refreshing}>
@@ -312,17 +312,17 @@ export function PerformanceInsights({ shopName, hasFeatureAccess = false }: Perf
           <BlockStack gap="200">
             <Text variant="headingLg" as="h2">Performance Insights</Text>
             <InlineStack gap="200" blockAlign="center">
-              <Text variant="bodyMd" tone="subdued">
+              <Text variant="bodyMd" as="p" tone="subdued">
                 Deep analytics and AI performance tracking
               </Text>
-              <Text variant="bodyMd" tone="subdued">•</Text>
-              <Text variant="bodySm" tone="subdued">
+              <Text variant="bodyMd" as="p" tone="subdued">•</Text>
+              <Text variant="bodySm" as="span" tone="subdued">
                 Showing data for: {getPeriodFromTimeRange(timeRange)}
               </Text>
               {lastUpdated && (
                 <>
-                  <Text variant="bodyMd" tone="subdued">•</Text>
-                  <Text variant="bodySm" tone="subdued">
+                  <Text variant="bodyMd" as="p" tone="subdued">•</Text>
+                  <Text variant="bodySm" as="span" tone="subdued">
                     Updated {formatTimeAgo(lastUpdated)}
                   </Text>
                 </>
@@ -371,24 +371,24 @@ export function PerformanceInsights({ shopName, hasFeatureAccess = false }: Perf
         <Card>
           <InlineStack gap="400">
             <BlockStack gap="100">
-              <Text variant="headingSm" tone="subdued">Impressions</Text>
-              <Text variant="headingLg">{formatNumber(summary.impressions || 0)}</Text>
+              <Text variant="headingSm" as="h4" tone="subdued">Impressions</Text>
+              <Text variant="headingLg" as="h2">{formatNumber(summary.impressions || 0)}</Text>
             </BlockStack>
             <BlockStack gap="100">
-              <Text variant="headingSm" tone="subdued">Clicks</Text>
-              <Text variant="headingLg">{formatNumber(summary.clicks || 0)}</Text>
+              <Text variant="headingSm" as="h4" tone="subdued">Clicks</Text>
+              <Text variant="headingLg" as="h2">{formatNumber(summary.clicks || 0)}</Text>
             </BlockStack>
             <BlockStack gap="100">
-              <Text variant="headingSm" tone="subdued">Conversions</Text>
-              <Text variant="headingLg">{formatNumber(summary.conversions || 0)}</Text>
+              <Text variant="headingSm" as="h4" tone="subdued">Conversions</Text>
+              <Text variant="headingLg" as="h2">{formatNumber(summary.conversions || 0)}</Text>
             </BlockStack>
             <BlockStack gap="100">
-              <Text variant="headingSm" tone="subdued">Spend</Text>
-              <Text variant="headingLg">{formatCurrency(summary.cost || 0)}</Text>
+              <Text variant="headingSm" as="h4" tone="subdued">Spend</Text>
+              <Text variant="headingLg" as="h2">{formatCurrency(summary.cost || 0)}</Text>
             </BlockStack>
             <BlockStack gap="100">
-              <Text variant="headingSm" tone="subdued">ROAS</Text>
-              <Text variant="headingLg">{Number(summary.roas || 0).toFixed(2)}x</Text>
+              <Text variant="headingSm" as="h4" tone="subdued">ROAS</Text>
+              <Text variant="headingLg" as="h2">{Number(summary.roas || 0).toFixed(2)}x</Text>
             </BlockStack>
           </InlineStack>
         </Card>
@@ -398,49 +398,49 @@ export function PerformanceInsights({ shopName, hasFeatureAccess = false }: Perf
       {hasData && (
       <Card>
         <BlockStack gap="400">
-          <Text variant="headingMd">AI Optimization Impact</Text>
+          <Text variant="headingMd" as="h3">AI Optimization Impact</Text>
 {aiImpact ? (
             <Grid>
               <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 3, lg: 3 }}>
                 <BlockStack gap="100">
-                  <Text variant="headingLg" tone="success">
+                  <Text variant="headingLg" as="h2" tone="success">
                     +{aiImpact.ctrImprovement || 0}%
                   </Text>
-                  <Text variant="bodySm" tone="subdued">CTR Improvement</Text>
+                  <Text variant="bodySm" as="span" tone="subdued">CTR Improvement</Text>
                   <ProgressBar progress={aiImpact.ctrImprovement || 0} size="small" tone="success" />
                 </BlockStack>
               </Grid.Cell>
               <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 3, lg: 3 }}>
                 <BlockStack gap="100">
-                  <Text variant="headingLg" tone="success">
+                  <Text variant="headingLg" as="h2" tone="success">
                     +{aiImpact.conversionImprovement || 0}%
                   </Text>
-                  <Text variant="bodySm" tone="subdued">More Conversions</Text>
+                  <Text variant="bodySm" as="span" tone="subdued">More Conversions</Text>
                   <ProgressBar progress={aiImpact.conversionImprovement || 0} size="small" tone="success" />
                 </BlockStack>
               </Grid.Cell>
               <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 3, lg: 3 }}>
                 <BlockStack gap="100">
-                  <Text variant="headingLg" tone="success">
+                  <Text variant="headingLg" as="h2" tone="success">
                     -{aiImpact.costReduction || 0}%
                   </Text>
-                  <Text variant="bodySm" tone="subdued">Cost Reduction</Text>
+                  <Text variant="bodySm" as="span" tone="subdued">Cost Reduction</Text>
                   <ProgressBar progress={aiImpact.costReduction || 0} size="small" tone="success" />
                 </BlockStack>
               </Grid.Cell>
               <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 3, lg: 3 }}>
                 <BlockStack gap="100">
-                  <Text variant="headingLg" tone="success">
+                  <Text variant="headingLg" as="h2" tone="success">
                     +{aiImpact.roasIncrease || 0}%
                   </Text>
-                  <Text variant="bodySm" tone="subdued">ROAS Increase</Text>
+                  <Text variant="bodySm" as="span" tone="subdued">ROAS Increase</Text>
                   <ProgressBar progress={aiImpact.roasIncrease || 0} size="small" tone="success" />
                 </BlockStack>
               </Grid.Cell>
             </Grid>
           ) : (
             <Box padding="400" background="bg-surface-secondary" borderRadius="200">
-              <Text variant="bodyMd" tone="subdued" alignment="center">
+              <Text variant="bodyMd" as="p" tone="subdued" alignment="center">
                 AI impact data will appear here once campaigns are active and optimized.
               </Text>
             </Box>
@@ -454,7 +454,7 @@ export function PerformanceInsights({ shopName, hasFeatureAccess = false }: Perf
       <Card>
         <BlockStack gap="400">
           <InlineStack align="space-between">
-            <Text variant="headingMd">Performance Trend</Text>
+            <Text variant="headingMd" as="h3">Performance Trend</Text>
             <InlineStack gap="200">
               <Badge>Impressions</Badge>
               <Badge tone="info">Clicks</Badge>
@@ -489,7 +489,7 @@ export function PerformanceInsights({ shopName, hasFeatureAccess = false }: Perf
               </ResponsiveContainer>
             ) : (
               <Box padding="600">
-                <Text variant="bodyMd" tone="subdued" alignment="center">
+                <Text variant="bodyMd" as="p" tone="subdued" alignment="center">
                   Performance trend data will appear here once campaigns start generating traffic.
                 </Text>
               </Box>
@@ -502,10 +502,10 @@ export function PerformanceInsights({ shopName, hasFeatureAccess = false }: Perf
       {hasData && (
       <Layout>
         {/* Device Breakdown */}
-        <Layout.Section oneHalf>
+        <Layout.Section variant="oneHalf">
           <Card>
             <BlockStack gap="400">
-              <Text variant="headingMd">Traffic by Device</Text>
+              <Text variant="headingMd" as="h3">Traffic by Device</Text>
               <Box padding="200">
                 {deviceBreakdown.length > 0 ? (
                   <ResponsiveContainer width="100%" height={200}>
@@ -528,14 +528,14 @@ export function PerformanceInsights({ shopName, hasFeatureAccess = false }: Perf
                   </ResponsiveContainer>
                 ) : (
                   <Box padding="400">
-                    <Text variant="bodyMd" tone="subdued" alignment="center">
+                    <Text variant="bodyMd" as="p" tone="subdued" alignment="center">
                       Device breakdown data will appear here once campaigns generate traffic.
                     </Text>
                   </Box>
                 )}
               </Box>
               <Box background="bg-surface-secondary" padding="300" borderRadius="200">
-                <Text variant="bodySm" tone="subdued">
+                <Text variant="bodySm" as="span" tone="subdued">
                   Mobile traffic converts 25% better with AI-optimized responsive ads
                 </Text>
               </Box>
@@ -544,34 +544,34 @@ export function PerformanceInsights({ shopName, hasFeatureAccess = false }: Perf
         </Layout.Section>
 
         {/* Top Keywords */}
-        <Layout.Section oneHalf>
+        <Layout.Section variant="oneHalf">
           <Card>
             <BlockStack gap="400">
-              <Text variant="headingMd">Top Performing Keywords</Text>
+              <Text variant="headingMd" as="h3">Top Performing Keywords</Text>
               <BlockStack gap="200">
                 {topKeywords.length > 0 ? (
                   topKeywords.slice(0, 5).map((kw, index) => (
                     <Box key={index} padding="200" background="bg-surface-secondary" borderRadius="200">
                       <InlineStack align="space-between">
                         <BlockStack gap="100">
-                          <Text variant="bodyMd" fontWeight="bold">{kw.keyword}</Text>
+                          <Text variant="bodyMd" as="p" fontWeight="bold">{kw.keyword}</Text>
                           <InlineStack gap="200">
-                            <Text variant="bodySm" tone="subdued">
+                            <Text variant="bodySm" as="span" tone="subdued">
                               {formatNumber(kw.impressions)} imp
                             </Text>
-                            <Badge>{kw.ctr}% CTR</Badge>
+                            <Badge>{`${kw.ctr}% CTR`}</Badge>
                           </InlineStack>
                         </BlockStack>
                         <BlockStack gap="100" align="end">
-                          <Badge tone="success">{kw.conversions} conv</Badge>
-                          <Text variant="bodySm">{formatCurrency(kw.cpc)} CPC</Text>
+                          <Badge tone="success">{`${kw.conversions} conv`}</Badge>
+                          <Text variant="bodySm" as="span">{formatCurrency(kw.cpc)} CPC</Text>
                         </BlockStack>
                       </InlineStack>
                     </Box>
                   ))
                 ) : (
                   <Box padding="400" background="bg-surface-secondary" borderRadius="200">
-                    <Text variant="bodyMd" tone="subdued" alignment="center">
+                    <Text variant="bodyMd" as="p" tone="subdued" alignment="center">
                       Top performing keywords will appear here once campaigns are active.
                     </Text>
                   </Box>
@@ -586,22 +586,22 @@ export function PerformanceInsights({ shopName, hasFeatureAccess = false }: Perf
       {/* Data-backed AI Recommendations */}
       <Card>
         <BlockStack gap="400">
-          <Text variant="headingMd">AI Recommendations</Text>
+          <Text variant="headingMd" as="h3">AI Recommendations</Text>
           {recommendations.length > 0 ? (
             <Grid>
               {recommendations.map((rec, idx) => (
                 <Grid.Cell key={idx} columnSpan={{ xs: 6, sm: 6, md: 4, lg: 4 }}>
                   <Box padding="300" background={rec.type === 'cost_saving' ? 'bg-surface-warning' : rec.type === 'opportunity' ? 'bg-surface-success' : 'bg-surface-secondary'} borderRadius="200">
                     <BlockStack gap="200">
-                      <Text variant="headingSm">{rec.title}</Text>
-                      <Text variant="bodySm">{rec.description}</Text>
+                      <Text variant="headingSm" as="h4">{rec.title}</Text>
+                      <Text variant="bodySm" as="span">{rec.description}</Text>
                       <InlineStack gap="200">
                         <Badge tone={rec.type === 'cost_saving' ? 'warning' : rec.type === 'opportunity' ? 'success' : 'info'}>
                           {rec.type.replace('_',' ')}
                         </Badge>
-                        <Badge tone="info">Impact: {rec.impact || 'n/a'}</Badge>
+                        <Badge tone="info">{`Impact: ${rec.impact || 'n/a'}`}</Badge>
                       </InlineStack>
-                      <Button size="slim" onClick={() => openApplyModal({ ...ins, diff: { note: 'Preview only' } })}>Apply</Button>
+                      <Button size="slim" onClick={() => openApplyModal({ ...rec, diff: { note: 'Preview only' } })}>Apply</Button>
                     </BlockStack>
                   </Box>
                 </Grid.Cell>
@@ -609,7 +609,7 @@ export function PerformanceInsights({ shopName, hasFeatureAccess = false }: Perf
             </Grid>
           ) : (
             <Box padding="300" background="bg-surface-secondary" borderRadius="200">
-              <Text variant="bodySm" tone="subdued">No recommendations available for the selected period.</Text>
+              <Text variant="bodySm" as="span" tone="subdued">No recommendations available for the selected period.</Text>
             </Box>
           )}
         </BlockStack>
@@ -619,14 +619,14 @@ export function PerformanceInsights({ shopName, hasFeatureAccess = false }: Perf
       {applyModal.open && (
         <Card>
           <BlockStack gap="300">
-            <Text variant="headingMd">Confirm Automation</Text>
-            <Text variant="bodySm" tone="subdued">Review the change before applying.</Text>
+            <Text variant="headingMd" as="h3">Confirm Automation</Text>
+            <Text variant="bodySm" as="span" tone="subdued">Review the change before applying.</Text>
             <Box background="bg-surface-secondary" padding="300" borderRadius="200">
               <BlockStack gap="100">
-                <Text variant="bodySm"><strong>Title:</strong> {applyModal.recommendation?.title}</Text>
-                <Text variant="bodySm"><strong>Description:</strong> {applyModal.recommendation?.body}</Text>
+                <Text variant="bodySm" as="span"><strong>Title:</strong> {applyModal.recommendation?.title}</Text>
+                <Text variant="bodySm" as="span"><strong>Description:</strong> {applyModal.recommendation?.body}</Text>
                 {/* Simple diff preview area */}
-                <Text variant="bodySm" tone="subdued">This action will be logged and simulated for safety.</Text>
+                <Text variant="bodySm" as="span" tone="subdued">This action will be logged and simulated for safety.</Text>
               </BlockStack>
             </Box>
             <InlineStack gap="200">
@@ -640,7 +640,7 @@ export function PerformanceInsights({ shopName, hasFeatureAccess = false }: Perf
       {/* AI Insight Templates (narrative cards) */}
       <Card>
         <BlockStack gap="400">
-          <Text variant="headingMd">AI Insight Templates</Text>
+          <Text variant="headingMd" as="h3">AI Insight Templates</Text>
           {insightTemplates.length > 0 ? (
             <Grid>
               {insightTemplates.map((ins, idx) => (
@@ -648,12 +648,12 @@ export function PerformanceInsights({ shopName, hasFeatureAccess = false }: Perf
                   <Box padding="300" background={ins.severity === 'high' ? 'bg-surface-critical' : ins.severity === 'warning' ? 'bg-surface-warning' : 'bg-surface-secondary'} borderRadius="200">
                     <BlockStack gap="200">
                       <InlineStack align="space-between">
-                        <Text variant="headingSm">{ins.title}</Text>
+                        <Text variant="headingSm" as="h4">{ins.title}</Text>
                         <Badge tone={ins.severity === 'high' ? 'critical' : ins.severity === 'warning' ? 'warning' : 'info'}>
                           {ins.severity || 'info'}
                         </Badge>
                       </InlineStack>
-                      <Text variant="bodySm">{ins.body}</Text>
+                      <Text variant="bodySm" as="span">{ins.body}</Text>
                       <InlineStack gap="200">
                         {Array.isArray(ins.tags) && ins.tags.map((t: string, i: number) => (
                           <Badge key={i} tone="info">{t}</Badge>
@@ -666,7 +666,7 @@ export function PerformanceInsights({ shopName, hasFeatureAccess = false }: Perf
             </Grid>
           ) : (
             <Box padding="300" background="bg-surface-secondary" borderRadius="200">
-              <Text variant="bodySm" tone="subdued">No insight templates available for the selected period.</Text>
+              <Text variant="bodySm" as="span" tone="subdued">No insight templates available for the selected period.</Text>
             </Box>
           )}
         </BlockStack>

@@ -9,7 +9,7 @@ process.on('unhandledRejection', (reason, promise) => {
   console.error('Promise:', promise);
   console.error('Reason type:', typeof reason);
   console.error('Reason:', reason);
-  console.error('Stack trace:', reason?.stack || 'No stack trace');
+  console.error('Stack trace:', (reason as any)?.stack || 'No stack trace');
   console.error('String representation:', String(reason));
   
   // Try to extract more info if it's a function

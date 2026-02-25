@@ -16,7 +16,8 @@ import {
   Card,
   Text,
   Badge,
-  Stack,
+  InlineStack,
+  BlockStack,
   Button,
   TextField,
   Select,
@@ -34,19 +35,19 @@ import {
   Divider
 } from '@shopify/polaris';
 import {
-  SearchMinor,
-  FilterMinor,
-  RefreshMinor,
-  ExportMinor,
-  ChevronDownMinor,
-  ChevronUpMinor,
-  NotificationMajor,
-  CircleTickMajor,
-  CircleXMajor,
-  CircleAlertMajor,
-  CirclePlusMajor,
-  ClockMinor,
-  ViewMinor
+  SearchIcon,
+  FilterIcon,
+  RefreshIcon,
+  ExportIcon,
+  ChevronDownIcon,
+  ChevronUpIcon,
+  NotificationIcon,
+  CheckCircleIcon,
+  XCircleIcon,
+  AlertCircleIcon,
+  PlusCircleIcon,
+  ClockIcon,
+  ViewIcon
 } from '@shopify/polaris-icons';
 import { useWebSocket, WS_EVENTS, type WSEvent, type OptimizationEvent, type MetricsEvent, type SystemHealthEvent, type CompetitorEvent, type TrafficSpikeEvent, type ScriptExecutedEvent, type ErrorEvent, ConnectionState } from '../../hooks/useWebSocket';
 
@@ -464,15 +465,15 @@ export default function ActivityFeed({
   const getActivityIcon = (activity: Activity) => {
     switch (activity.status) {
       case 'success':
-        return CircleTickMajor;
+        return CheckCircleIcon;
       case 'error':
-        return CircleXMajor;
+        return XCircleIcon;
       case 'warning':
-        return CircleAlertMajor;
+        return AlertCircleIcon;
       case 'pending':
-        return ClockMinor;
+        return ClockIcon;
       default:
-        return CirclePlusMajor;
+        return PlusCircleIcon;
     }
   };
 
@@ -511,7 +512,7 @@ export default function ActivityFeed({
   // Connection status banner
   const connectionBanner = !isConnected && (
     <Banner
-      status="warning"
+      tone="warning"
       title="Real-time updates disconnected"
       action={{
         content: 'Reconnect',
@@ -529,7 +530,7 @@ export default function ActivityFeed({
       activator={
         <Button
           disclosure
-          icon={FilterMinor}
+          icon={FilterIcon}
           onClick={() => setShowFilterPopover(!showFilterPopover)}
         >
           Filters
@@ -538,7 +539,7 @@ export default function ActivityFeed({
       onClose={() => setShowFilterPopover(false)}
     >
       <div style={{ padding: '16px', width: '300px' }}>
-        <Stack vertical spacing="tight">
+        <BlockStack gap="200">
           <Select
             label="Category"
             options={CATEGORIES}
@@ -563,7 +564,7 @@ export default function ActivityFeed({
             value={filters.timeRange}
             onChange={(value) => setFilters(prev => ({ ...prev, timeRange: value }))}
           />
-        </Stack>
+        </BlockStack>
       </div>
     </Popover>
   );
@@ -572,28 +573,28 @@ export default function ActivityFeed({
     <Card>
       {connectionBanner}
 
-      <Stack vertical spacing="none">
+      <BlockStack gap="0">
         {/* Header */}
-        <Box padding="4">
-          <Stack alignment="center" distribution="equalSpacing">
-            <Stack alignment="center" spacing="tight">
-              <Icon source={NotificationMajor} />
+        <Box padding="400">
+          <InlineStack align="space-between" blockAlign="center">
+            <InlineStack blockAlign="center" gap="200">
+              <Icon source={NotificationIcon} />
               <Text variant="headingMd" as="h3">
                 Activity Feed
               </Text>
               {showNotificationBadge && unreadCount > 0 && (
-                <Badge tone="attention">{unreadCount}</Badge>
+                <Badge tone="attention">{String(unreadCount)}</Badge>
               )}
               <Badge tone={isConnected ? 'success' : 'critical'}>
                 {isConnected ? 'Live' : 'Offline'}
               </Badge>
-            </Stack>
+            </InlineStack>
 
-            <Stack spacing="tight">
+            <InlineStack gap="200">
               {!compact && (
                 <Button
                   size="slim"
-                  icon={isExpanded ? ChevronUpMinor : ChevronDownMinor}
+                  icon={isExpanded ? ChevronUpIcon : ChevronDownIcon}
                   onClick={() => setIsExpanded(!isExpanded)}
                 >
                   {isExpanded ? 'Collapse' : 'Expand'}
@@ -605,7 +606,7 @@ export default function ActivityFeed({
 
                 <Button
                   size="slim"
-                  icon={RefreshMinor}
+                  icon={RefreshIcon}
                   loading={isLoading}
                   onClick={() => window.location.reload()}
                   accessibilityLabel="Refresh feed"
@@ -614,25 +615,27 @@ export default function ActivityFeed({
                 {enableExport && (
                   <Button
                     size="slim"
-                    icon={ExportMinor}
+                    icon={ExportIcon}
                     onClick={exportActivities}
                     disabled={filteredActivities.length === 0}
                     accessibilityLabel="Export activities"
                   />
                 )}
               </ButtonGroup>
-            </Stack>
-          </Stack>
+            </InlineStack>
+          </InlineStack>
         </Box>
 
         {/* Search */}
         {isExpanded && enableSearch && (
-          <Box padding="4" paddingTop="0">
+          <Box padding="400" paddingBlockStart="0">
             <TextField
+              label="Search activities"
+              labelHidden
               placeholder="Search activities..."
               value={filters.search}
               onChange={(value) => setFilters(prev => ({ ...prev, search: value }))}
-              prefix={<Icon source={SearchMinor} />}
+              prefix={<Icon source={SearchIcon} />}
               clearButton
               onClearButtonClick={() => setFilters(prev => ({ ...prev, search: '' }))}
               autoComplete="off"
@@ -642,8 +645,8 @@ export default function ActivityFeed({
 
         {/* Actions */}
         {isExpanded && activities.length > 0 && (
-          <Box padding="4" paddingTop="0">
-            <Stack spacing="tight">
+          <Box padding="400" paddingBlockStart="0">
+            <InlineStack gap="200" blockAlign="center">
               <Button
                 size="slim"
                 onClick={markAllAsRead}
@@ -653,15 +656,15 @@ export default function ActivityFeed({
               </Button>
               <Button
                 size="slim"
-                destructive
+                tone="critical"
                 onClick={clearAll}
               >
                 Clear all
               </Button>
-              <Text variant="bodySm" color="subdued">
+              <Text variant="bodySm" as="span" tone="subdued">
                 Showing {filteredActivities.length} of {activities.length} activities
               </Text>
-            </Stack>
+            </InlineStack>
           </Box>
         )}
 
@@ -678,7 +681,7 @@ export default function ActivityFeed({
             onScroll={handleScroll}
           >
             {filteredActivities.length === 0 ? (
-              <Box padding="4">
+              <Box padding="400">
                 <EmptyState
                   heading="No activities yet"
                   image="https://cdn.shopify.com/s/files/1/0262/4071/2726/files/emptystate-files.png"
@@ -687,11 +690,11 @@ export default function ActivityFeed({
                 </EmptyState>
               </Box>
             ) : (
-              <Stack vertical spacing="none">
+              <BlockStack gap="0">
                 {filteredActivities.map((activity, index) => (
                   <div key={activity.id}>
-                    <Box padding="4">
-                      <Stack alignment="leading" spacing="tight">
+                    <Box padding="400">
+                      <InlineStack blockAlign="start" gap="200">
                         <div style={{ flexShrink: 0 }}>
                           <Icon
                             source={getActivityIcon(activity)}
@@ -701,50 +704,50 @@ export default function ActivityFeed({
                           />
                         </div>
 
-                        <Stack vertical spacing="extraTight" distribution="fill">
-                          <Stack alignment="center" distribution="equalSpacing">
-                            <Text variant="bodyMd" fontWeight="semibold">
+                        <BlockStack gap="100">
+                          <InlineStack align="space-between" blockAlign="center">
+                            <Text variant="bodyMd" as="p" fontWeight="semibold">
                               {activity.title}
                             </Text>
-                            <Stack spacing="extraTight">
+                            <InlineStack gap="100">
                               <Badge tone={getActivityBadgeTone(activity)}>
                                 {activity.priority}
                               </Badge>
-                              <Text variant="bodySm" color="subdued">
+                              <Text variant="bodySm" as="span" tone="subdued">
                                 {formatTimestamp(activity.timestamp)}
                               </Text>
-                            </Stack>
-                          </Stack>
+                            </InlineStack>
+                          </InlineStack>
 
-                          <Text variant="bodySm" color="subdued">
+                          <Text variant="bodySm" as="span" tone="subdued">
                             {activity.description}
                           </Text>
 
                           {activity.data && (
                             <Button
                               size="slim"
-                              plain
-                              icon={ViewMinor}
+                              variant="plain"
+                              icon={ViewIcon}
                               onClick={() => console.log('Activity data:', activity.data)}
                             >
                               View details
                             </Button>
                           )}
-                        </Stack>
-                      </Stack>
+                        </BlockStack>
+                      </InlineStack>
                     </Box>
 
                     {index < filteredActivities.length - 1 && <Divider />}
                   </div>
                 ))}
-              </Stack>
+              </BlockStack>
             )}
           </div>
         )}
 
         {/* Auto-scroll indicator */}
         {isExpanded && !autoScroll && activities.length > 0 && (
-          <Box padding="2">
+          <Box padding="200">
             <Banner
               tone="info"
               action={{
@@ -761,7 +764,7 @@ export default function ActivityFeed({
             </Banner>
           </Box>
         )}
-      </Stack>
+      </BlockStack>
     </Card>
   );
 }

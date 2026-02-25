@@ -1,5 +1,8 @@
+// @ts-expect-error - no type declarations for compression
 import compression from "compression";
+// @ts-expect-error - no type declarations for express
 import express from "express";
+// @ts-expect-error - no type declarations for morgan
 import morgan from "morgan";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -16,8 +19,8 @@ app.use(compression());
 app.use(morgan("tiny"));
 
 // health endpoints
-app.get("/health", (_req, res) => res.status(200).json({ ok: true }));
-app.get("/_health", (_req, res) => res.status(200).json({ ok: true }));
+app.get("/health", (_req: any, res: any) => res.status(200).json({ ok: true }));
+app.get("/_health", (_req: any, res: any) => res.status(200).json({ ok: true }));
 
 // static assets (client bundle) – served from public/build
 app.use(

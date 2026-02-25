@@ -3,7 +3,10 @@
  * Handles trial periods, plan tiers, and feature access
  */
 
-import type { AdminApiContext } from "@shopify/shopify-app-remix/server";
+// Use inline type instead of importing from missing module
+interface AdminApiContext {
+  graphql: (query: string, options?: { variables?: Record<string, unknown> }) => Promise<Response>;
+}
 
 export interface SubscriptionInfo {
   hasActivePayment: boolean;
@@ -71,14 +74,14 @@ export async function checkSubscriptionStatus(admin: AdminApiContext): Promise<S
     }
 
     const subscriptions = result.data?.currentAppInstallation?.activeSubscriptions || [];
-    
+
     if (subscriptions.length === 0) {
       console.log('No active subscriptions found');
       return defaultResult;
     }
 
     const subscription = subscriptions[0]; // Get the first (primary) subscription
-    
+
     // Determine subscription tier based on subscription name or price
     const subscriptionName = subscription.name?.toLowerCase() || '';
     const priceAmount = parseFloat(subscription.lineItems[0]?.plan?.pricingDetails?.price?.amount || 0);
@@ -116,7 +119,7 @@ export async function checkSubscriptionStatus(admin: AdminApiContext): Promise<S
       const createdAt = new Date(subscription.createdAt);
       const trialEndDate = new Date(createdAt.getTime() + (subscription.trialDays * 24 * 60 * 60 * 1000));
       const now = new Date();
-      
+
       isInTrial = now < trialEndDate;
       trialDaysRemaining = isInTrial ? Math.ceil((trialEndDate.getTime() - now.getTime()) / (24 * 60 * 60 * 1000)) : 0;
     }
@@ -135,7 +138,7 @@ export async function checkSubscriptionStatus(admin: AdminApiContext): Promise<S
       needsSubscription
     };
 
-  } catch (error) {
+  } catch (error: unknown) {
     console.error('Error checking subscription status:', error);
     return defaultResult;
   }
@@ -149,12 +152,12 @@ export function hasFeatureAccess(subscriptionInfo: SubscriptionInfo, feature: st
   if (subscriptionInfo.isInTrial && subscriptionInfo.subscriptionTier) {
     return checkTierFeatureAccess(subscriptionInfo.subscriptionTier, feature);
   }
-  
+
   // For active paid subscriptions, check tier access
   if (subscriptionInfo.hasActivePayment && subscriptionInfo.subscriptionTier) {
     return checkTierFeatureAccess(subscriptionInfo.subscriptionTier, feature);
   }
-  
+
   // No subscription or trial - only basic features
   return isBasicFeature(feature);
 }
@@ -162,11 +165,11 @@ export function hasFeatureAccess(subscriptionInfo: SubscriptionInfo, feature: st
 /**
  * Check if a feature is available for a specific tier (matching Shopify plan descriptions)
  */
-function checkTierFeatureAccess(tier: string, feature: string): boolean {
-  const tierFeatures = {
+function checkTierFeatureAccess(tier: 'starter' | 'professional' | 'enterprise', feature: string): boolean {
+  const tierFeatures: Record<'starter' | 'professional' | 'enterprise', string[]> = {
     starter: [
       'ai_campaign_optimization',
-      'basic_performance_analytics', 
+      'basic_performance_analytics',
       'campaign_monitoring',
       'email_support',
       'basic_roas_tracking',
@@ -176,14 +179,14 @@ function checkTierFeatureAccess(tier: string, feature: string): boolean {
       // All starter features plus professional features:
       'ai_campaign_optimization',
       'basic_performance_analytics',
-      'campaign_monitoring', 
+      'campaign_monitoring',
       'email_support',
       'basic_roas_tracking',
       'monthly_insights_reports',
       'advanced_ai_optimization',
       'real_time_performance_analytics',
       'priority_email_support',
-      'advanced_roas_analytics', 
+      'advanced_roas_analytics',
       'automated_bid_management',
       'weekly_insights_reports'
     ],
@@ -192,14 +195,14 @@ function checkTierFeatureAccess(tier: string, feature: string): boolean {
       'ai_campaign_optimization',
       'basic_performance_analytics',
       'campaign_monitoring',
-      'email_support', 
+      'email_support',
       'basic_roas_tracking',
       'monthly_insights_reports',
       'advanced_ai_optimization',
       'real_time_performance_analytics',
       'priority_email_support',
       'advanced_roas_analytics',
-      'automated_bid_management', 
+      'automated_bid_management',
       'weekly_insights_reports',
       'full_ai_automation_suite',
       'custom_performance_dashboards',
@@ -223,7 +226,7 @@ function isBasicFeature(feature: string): boolean {
     'app_navigation',
     'settings_access'
   ];
-  
+
   return basicFeatures.includes(feature);
 }
 
@@ -248,11 +251,11 @@ async function syncSubscriptionToSupabase(subscription: any, tier: string, shopN
   try {
     // This would typically be called from backend
     console.log(`🔄 Auto-syncing subscription for ${shopName} to Supabase`);
-    
+
     // Implementation would call backend API to sync subscription
     // For now, just log that sync should happen
-    
-  } catch (error) {
+
+  } catch (error: unknown) {
     console.error('Auto-sync subscription failed:', error);
   }
 }

@@ -5,7 +5,8 @@ import {
   Layout,
   DataTable,
   Button,
-  Stack,
+  BlockStack,
+  InlineStack,
   Text,
   Badge,
   Modal,
@@ -21,12 +22,12 @@ import {
   RangeSlider,
   Tabs,
   ProgressBar,
-  TextStyle,
   ButtonGroup,
   Tooltip,
   ResourceList,
   ResourceItem,
   Avatar,
+  Box,
 } from "@shopify/polaris";
 import {
   BarChart,
@@ -77,27 +78,27 @@ const CampaignRow: React.FC<{
 }> = ({ campaign, onEdit, onToggleStatus, onDelete }) => {
   const getStatusBadge = (status: string) => {
     const statusMap = {
-      active: { color: "success" as const, text: "Active" },
-      paused: { color: "warning" as const, text: "Paused" },
-      ended: { color: "subdued" as const, text: "Ended" },
+      active: { tone: "success" as const, text: "Active" },
+      paused: { tone: "warning" as const, text: "Paused" },
+      ended: { tone: "new" as const, text: "Ended" },
     };
 
     const config =
       statusMap[status as keyof typeof statusMap] || statusMap.ended;
-    return <Badge status={config.color}>{config.text}</Badge>;
+    return <Badge tone={config.tone}>{config.text}</Badge>;
   };
 
   const getTypeBadge = (type: string) => {
     const typeMap = {
-      search: { color: "info" as const, text: "Search" },
-      display: { color: "attention" as const, text: "Display" },
-      shopping: { color: "success" as const, text: "Shopping" },
-      video: { color: "warning" as const, text: "Video" },
+      search: { tone: "info" as const, text: "Search" },
+      display: { tone: "attention" as const, text: "Display" },
+      shopping: { tone: "success" as const, text: "Shopping" },
+      video: { tone: "warning" as const, text: "Video" },
     };
 
     const config = typeMap[type as keyof typeof typeMap];
     return config ? (
-      <Badge status={config.color}>{config.text}</Badge>
+      <Badge tone={config.tone}>{config.text}</Badge>
     ) : (
       <Badge>{type}</Badge>
     );
@@ -107,66 +108,67 @@ const CampaignRow: React.FC<{
   const formatPercent = (value: number) => `${value.toFixed(2)}%`;
 
   return [
-    <Stack vertical spacing="extraTight">
-      <Text variant="bodyMd" fontWeight="semibold">
+    <BlockStack gap="100">
+      <Text variant="bodyMd" as="p" fontWeight="semibold">
         {campaign.name}
       </Text>
-      <Stack spacing="tight">
+      <InlineStack gap="200">
         {getStatusBadge(campaign.status)}
         {getTypeBadge(campaign.type)}
-      </Stack>
-    </Stack>,
+      </InlineStack>
+    </BlockStack>,
 
-    <Stack vertical spacing="extraTight">
-      <Text variant="bodyMd">{formatCurrency(campaign.budget)}</Text>
-      <Text variant="bodySm" color="subdued">
+    <BlockStack gap="100">
+      <Text variant="bodyMd" as="p">{formatCurrency(campaign.budget)}</Text>
+      <Text variant="bodySm" as="span" tone="subdued">
         Spent: {formatCurrency(campaign.spent)}
       </Text>
       <ProgressBar
         progress={(campaign.spent / campaign.budget) * 100}
         size="small"
       />
-    </Stack>,
+    </BlockStack>,
 
-    <Stack vertical spacing="extraTight">
-      <Text variant="bodyMd">{campaign.impressions.toLocaleString()}</Text>
-      <Text variant="bodySm" color="subdued">
+    <BlockStack gap="100">
+      <Text variant="bodyMd" as="p">{campaign.impressions.toLocaleString()}</Text>
+      <Text variant="bodySm" as="span" tone="subdued">
         Impressions
       </Text>
-    </Stack>,
+    </BlockStack>,
 
-    <Stack vertical spacing="extraTight">
-      <Text variant="bodyMd">{campaign.clicks.toLocaleString()}</Text>
-      <Text variant="bodySm" color="subdued">
+    <BlockStack gap="100">
+      <Text variant="bodyMd" as="p">{campaign.clicks.toLocaleString()}</Text>
+      <Text variant="bodySm" as="span" tone="subdued">
         CTR: {formatPercent(campaign.ctr)}
       </Text>
-    </Stack>,
+    </BlockStack>,
 
-    <Stack vertical spacing="extraTight">
-      <Text variant="bodyMd">{campaign.conversions}</Text>
-      <Text variant="bodySm" color="subdued">
+    <BlockStack gap="100">
+      <Text variant="bodyMd" as="p">{campaign.conversions}</Text>
+      <Text variant="bodySm" as="span" tone="subdued">
         Rate: {formatPercent(campaign.conversionRate)}
       </Text>
-    </Stack>,
+    </BlockStack>,
 
-    <Stack vertical spacing="extraTight">
-      <Text variant="bodyMd">{formatCurrency(campaign.cpc)}</Text>
-      <Text variant="bodySm" color="subdued">
+    <BlockStack gap="100">
+      <Text variant="bodyMd" as="p">{formatCurrency(campaign.cpc)}</Text>
+      <Text variant="bodySm" as="span" tone="subdued">
         CPC
       </Text>
-    </Stack>,
+    </BlockStack>,
 
-    <Stack vertical spacing="extraTight">
+    <BlockStack gap="100">
       <Text
         variant="bodyMd"
-        color={campaign.roas >= 3 ? "success" : "critical"}
+        as="p"
+        tone={campaign.roas >= 3 ? "success" : "critical"}
       >
         {campaign.roas.toFixed(2)}x
       </Text>
-      <Text variant="bodySm" color="subdued">
+      <Text variant="bodySm" as="span" tone="subdued">
         ROAS
       </Text>
-    </Stack>,
+    </BlockStack>,
 
     <ButtonGroup>
       <Button size="slim" onClick={() => onEdit(campaign)}>
@@ -183,7 +185,7 @@ const CampaignRow: React.FC<{
       >
         {campaign.status === "active" ? "Pause" : "Activate"}
       </Button>
-      <Button size="slim" destructive onClick={() => onDelete(campaign.id)}>
+      <Button size="slim" tone="critical" onClick={() => onDelete(campaign.id)}>
         Delete
       </Button>
     </ButtonGroup>,
@@ -319,6 +321,7 @@ const CampaignForm: React.FC<{
         }
         prefix="$"
         placeholder="1000"
+        autoComplete="off"
       />
 
       <Select
@@ -330,142 +333,149 @@ const CampaignForm: React.FC<{
         }
       />
 
-      <Card title="Targeting">
-        <Card.Section>
-          <Stack vertical>
-            <Text variant="headingMd">Keywords</Text>
-            <Stack>
-              <TextField
-                value={keywordInput}
-                onChange={setKeywordInput}
-                placeholder="Add keyword"
-                connectedRight={
-                  <Button onClick={addKeyword} disabled={!keywordInput.trim()}>
-                    Add
-                  </Button>
-                }
-                onKeyPress={(e) => e.key === "Enter" && addKeyword()}
-              />
-            </Stack>
-
-            {formData.targeting.keywords.length > 0 && (
-              <Stack spacing="tight">
-                {formData.targeting.keywords.map((keyword) => (
-                  <Badge key={keyword} status="info">
-                    {keyword}
-                    <Button
-                      plain
-                      size="slim"
-                      onClick={() => removeKeyword(keyword)}
-                      accessibilityLabel={`Remove ${keyword}`}
-                    >
-                      ×
+      <Card>
+        <BlockStack gap="400">
+          <Text variant="headingMd" as="h3">Targeting</Text>
+          <Box padding="400">
+            <BlockStack gap="400">
+              <Text variant="headingMd" as="h3">Keywords</Text>
+              <InlineStack gap="200">
+                <TextField
+                  label="Add keyword"
+                  labelHidden
+                  value={keywordInput}
+                  onChange={setKeywordInput}
+                  placeholder="Add keyword"
+                  connectedRight={
+                    <Button onClick={addKeyword} disabled={!keywordInput.trim()}>
+                      Add
                     </Button>
-                  </Badge>
-                ))}
-              </Stack>
-            )}
-          </Stack>
-        </Card.Section>
+                  }
+                  autoComplete="off"
+                />
+              </InlineStack>
 
-        <Card.Section>
-          <Stack vertical>
-            <Text variant="headingMd">Locations</Text>
-            <Stack>
-              <TextField
-                value={locationInput}
-                onChange={setLocationInput}
-                placeholder="Add location"
-                connectedRight={
-                  <Button
-                    onClick={addLocation}
-                    disabled={!locationInput.trim()}
-                  >
-                    Add
-                  </Button>
-                }
-                onKeyPress={(e) => e.key === "Enter" && addLocation()}
-              />
-            </Stack>
+              {formData.targeting.keywords.length > 0 && (
+                <InlineStack gap="200">
+                  {formData.targeting.keywords.map((keyword) => (
+                    <InlineStack key={keyword} gap="100" blockAlign="center">
+                      <Badge tone="info">{keyword}</Badge>
+                      <Button
+                        variant="plain"
+                        size="slim"
+                        onClick={() => removeKeyword(keyword)}
+                        accessibilityLabel={`Remove ${keyword}`}
+                      >
+                        x
+                      </Button>
+                    </InlineStack>
+                  ))}
+                </InlineStack>
+              )}
+            </BlockStack>
+          </Box>
 
-            {formData.targeting.locations.length > 0 && (
-              <Stack spacing="tight">
-                {formData.targeting.locations.map((location) => (
-                  <Badge key={location} status="success">
-                    {location}
+          <Box padding="400">
+            <BlockStack gap="400">
+              <Text variant="headingMd" as="h3">Locations</Text>
+              <InlineStack gap="200">
+                <TextField
+                  label="Add location"
+                  labelHidden
+                  value={locationInput}
+                  onChange={setLocationInput}
+                  placeholder="Add location"
+                  connectedRight={
                     <Button
-                      plain
-                      size="slim"
-                      onClick={() => removeLocation(location)}
-                      accessibilityLabel={`Remove ${location}`}
+                      onClick={addLocation}
+                      disabled={!locationInput.trim()}
                     >
-                      ×
+                      Add
                     </Button>
-                  </Badge>
-                ))}
-              </Stack>
-            )}
-          </Stack>
-        </Card.Section>
+                  }
+                  autoComplete="off"
+                />
+              </InlineStack>
 
-        <Card.Section>
-          <Stack vertical>
-            <Text variant="headingMd">Demographics</Text>
+              {formData.targeting.locations.length > 0 && (
+                <InlineStack gap="200">
+                  {formData.targeting.locations.map((location) => (
+                    <InlineStack key={location} gap="100" blockAlign="center">
+                      <Badge tone="success">{location}</Badge>
+                      <Button
+                        variant="plain"
+                        size="slim"
+                        onClick={() => removeLocation(location)}
+                        accessibilityLabel={`Remove ${location}`}
+                      >
+                        x
+                      </Button>
+                    </InlineStack>
+                  ))}
+                </InlineStack>
+              )}
+            </BlockStack>
+          </Box>
 
-            <RangeSlider
-              label="Age Range"
-              value={[
-                formData.targeting.demographics.ageMin,
-                formData.targeting.demographics.ageMax,
-              ]}
-              min={18}
-              max={65}
-              step={1}
-              onChange={([min, max]) =>
-                setFormData((prev) => ({
-                  ...prev,
-                  targeting: {
-                    ...prev.targeting,
-                    demographics: {
-                      ...prev.targeting.demographics,
-                      ageMin: min,
-                      ageMax: max,
+          <Box padding="400">
+            <BlockStack gap="400">
+              <Text variant="headingMd" as="h3">Demographics</Text>
+
+              <RangeSlider
+                label="Age Range"
+                value={[
+                  formData.targeting.demographics.ageMin,
+                  formData.targeting.demographics.ageMax,
+                ]}
+                min={18}
+                max={65}
+                step={1}
+                onChange={([min, max]: [number, number]) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    targeting: {
+                      ...prev.targeting,
+                      demographics: {
+                        ...prev.targeting.demographics,
+                        ageMin: min,
+                        ageMax: max,
+                      },
                     },
-                  },
-                }))
-              }
-              output
-            />
+                  }))
+                }
+                output
+              />
 
-            <Select
-              label="Gender"
-              options={genderOptions}
-              value={formData.targeting.demographics.gender}
-              onChange={(value) =>
-                setFormData((prev) => ({
-                  ...prev,
-                  targeting: {
-                    ...prev.targeting,
-                    demographics: {
-                      ...prev.targeting.demographics,
-                      gender: value as any,
+              <Select
+                label="Gender"
+                options={genderOptions}
+                value={formData.targeting.demographics.gender}
+                onChange={(value) =>
+                  setFormData((prev) => ({
+                    ...prev,
+                    targeting: {
+                      ...prev.targeting,
+                      demographics: {
+                        ...prev.targeting.demographics,
+                        gender: value as any,
+                      },
                     },
-                  },
-                }))
-              }
-            />
-          </Stack>
-        </Card.Section>
+                  }))
+                }
+              />
+            </BlockStack>
+          </Box>
+        </BlockStack>
       </Card>
 
-      <Stack distribution="trailing">
+      <InlineStack align="end">
         <ButtonGroup>
           <Button onClick={onCancel}>Cancel</Button>
-          <Button primary onClick={handleSubmit} loading={loading}>
+          <Button variant="primary" onClick={handleSubmit} loading={loading}>
             {campaign ? "Update Campaign" : "Create Campaign"}
           </Button>
         </ButtonGroup>
-      </Stack>
+      </InlineStack>
     </FormLayout>
   );
 };
@@ -499,9 +509,9 @@ const CampaignPerformanceChart: React.FC<{
 
   return (
     <Card>
-      <Card.Section>
-        <Stack vertical>
-          <Text variant="headingMd">
+      <Box padding="400">
+        <BlockStack gap="400">
+          <Text variant="headingMd" as="h3">
             Campaign Performance - {getMetricLabel()}
           </Text>
           <div style={{ height: "300px", width: "100%" }}>
@@ -531,8 +541,8 @@ const CampaignPerformanceChart: React.FC<{
               </BarChart>
             </ResponsiveContainer>
           </div>
-        </Stack>
-      </Card.Section>
+        </BlockStack>
+      </Box>
     </Card>
   );
 };
@@ -578,7 +588,7 @@ export const Campaigns: React.FC<CampaignsProps> = ({
       } else {
         setError(data.error || "Failed to load campaigns");
       }
-    } catch (err) {
+    } catch (err: unknown) {
       setError("Network error while loading campaigns");
     } finally {
       setLoading(false);
@@ -645,7 +655,7 @@ export const Campaigns: React.FC<CampaignsProps> = ({
       } else {
         setError(result.error || "Failed to create campaign");
       }
-    } catch (err) {
+    } catch (err: unknown) {
       setError("Network error while creating campaign");
     } finally {
       setFormLoading(false);
@@ -674,7 +684,7 @@ export const Campaigns: React.FC<CampaignsProps> = ({
       } else {
         setError(result.error || "Failed to update campaign");
       }
-    } catch (err) {
+    } catch (err: unknown) {
       setError("Network error while updating campaign");
     } finally {
       setFormLoading(false);
@@ -701,7 +711,7 @@ export const Campaigns: React.FC<CampaignsProps> = ({
       } else {
         setError(result.error || "Failed to update campaign status");
       }
-    } catch (err) {
+    } catch (err: unknown) {
       setError("Network error while updating campaign status");
     }
   };
@@ -720,7 +730,7 @@ export const Campaigns: React.FC<CampaignsProps> = ({
       } else {
         setError(result.error || "Failed to delete campaign");
       }
-    } catch (err) {
+    } catch (err: unknown) {
       setError("Network error while deleting campaign");
     }
   };
@@ -791,7 +801,7 @@ export const Campaigns: React.FC<CampaignsProps> = ({
   if (error) {
     return (
       <Page title="Campaigns">
-        <Banner status="critical" title="Error loading campaigns">
+        <Banner tone="critical" title="Error loading campaigns">
           <p>{error}</p>
           <Button onClick={loadCampaigns}>Retry</Button>
         </Banner>
@@ -879,24 +889,25 @@ export const Campaigns: React.FC<CampaignsProps> = ({
                 </div>
 
                 {loading ? (
-                  <Card.Section>
-                    <Stack alignment="center">
+                  <Box padding="400">
+                    <InlineStack blockAlign="center" gap="200">
                       <Spinner size="large" />
-                      <Text>Loading campaigns...</Text>
-                    </Stack>
-                  </Card.Section>
+                      <Text as="span">Loading campaigns...</Text>
+                    </InlineStack>
+                  </Box>
                 ) : filteredCampaigns.length === 0 ? (
-                  <Card.Section>
+                  <Box padding="400">
                     <EmptyState
                       heading="No campaigns found"
-                      description="Create your first campaign to get started with advertising"
                       image="https://cdn.shopify.com/s/files/1/0262/4071/2726/files/emptystate-files.png"
-                      primaryAction={{
+                      action={{
                         content: "Create Campaign",
                         onAction: () => setShowCreateModal(true),
                       }}
-                    />
-                  </Card.Section>
+                    >
+                      <p>Create your first campaign to get started with advertising</p>
+                    </EmptyState>
+                  </Box>
                 ) : (
                   <DataTable
                     columnContentTypes={[
@@ -917,7 +928,7 @@ export const Campaigns: React.FC<CampaignsProps> = ({
                         onToggleStatus: handleToggleStatus,
                         onDelete: handleDeleteCampaign,
                       }),
-                    )}
+                    ) as any}
                     sortable={[
                       false,
                       true,
@@ -937,16 +948,16 @@ export const Campaigns: React.FC<CampaignsProps> = ({
               <Layout>
                 <Layout.Section>
                   <Card>
-                    <Card.Section>
-                      <Stack distribution="trailing">
+                    <Box padding="400">
+                      <InlineStack align="end">
                         <Select
                           label="Chart Metric"
                           options={chartMetricOptions}
                           value={chartMetric}
                           onChange={(value) => setChartMetric(value as any)}
                         />
-                      </Stack>
-                    </Card.Section>
+                      </InlineStack>
+                    </Box>
                   </Card>
                 </Layout.Section>
 
@@ -967,7 +978,7 @@ export const Campaigns: React.FC<CampaignsProps> = ({
         open={showCreateModal}
         onClose={() => setShowCreateModal(false)}
         title="Create New Campaign"
-        large
+        size="large"
       >
         <Modal.Section>
           <CampaignForm
@@ -983,7 +994,7 @@ export const Campaigns: React.FC<CampaignsProps> = ({
         open={!!editingCampaign}
         onClose={() => setEditingCampaign(null)}
         title="Edit Campaign"
-        large
+        size="large"
       >
         <Modal.Section>
           {editingCampaign && (

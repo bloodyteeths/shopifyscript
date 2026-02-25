@@ -29,7 +29,7 @@ export function ShopSetupTest() {
   const refreshStatus = React.useCallback(() => {
     setStatus({
       stored: getStoredShopName(),
-      current: getShopNameOrNull(),
+      current: getShopNameOrNull() ?? "",
       needsSetup: isShopSetupNeeded(),
     });
   }, []);

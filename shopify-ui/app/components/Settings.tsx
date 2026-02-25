@@ -8,7 +8,9 @@ import {
   Select,
   Checkbox,
   Button,
-  Stack,
+  BlockStack,
+  InlineStack,
+  Box,
   Text,
   Banner,
   Spinner,
@@ -67,33 +69,33 @@ const ConnectionCard: React.FC<{
 }) => {
   return (
     <Card>
-      <Card.Section>
-        <Stack distribution="equalSpacing">
-          <Stack vertical spacing="tight">
-            <Stack spacing="tight">
-              <Text variant="headingMd">{title}</Text>
-              <Badge status={connected ? "success" : "subdued"}>
+      <Box padding="400">
+        <InlineStack align="space-between">
+          <BlockStack gap="200">
+            <InlineStack gap="200">
+              <Text variant="headingMd" as="h3">{title}</Text>
+              <Badge tone={connected ? "success" : undefined}>
                 {connected ? "Connected" : "Not Connected"}
               </Badge>
-            </Stack>
+            </InlineStack>
 
-            <Text variant="bodyMd" color="subdued">
+            <Text variant="bodyMd" as="p" tone="subdued">
               {description}
             </Text>
 
             {details && <div style={{ marginTop: "8px" }}>{details}</div>}
-          </Stack>
+          </BlockStack>
 
           <Button
-            primary={!connected}
-            destructive={connected}
+            variant={!connected ? "primary" : undefined}
+            tone={connected ? "critical" : undefined}
             onClick={connected ? onDisconnect : onConnect}
             loading={loading}
           >
             {connected ? "Disconnect" : "Connect"}
           </Button>
-        </Stack>
-      </Card.Section>
+        </InlineStack>
+      </Box>
     </Card>
   );
 };
@@ -129,8 +131,11 @@ const TrackingSettings: React.FC<{
   ];
 
   return (
-    <Card title="Tracking & Analytics">
-      <Card.Section>
+    <Card>
+      <Box padding="400">
+        <Text variant="headingMd" as="h3">Tracking & Analytics</Text>
+      </Box>
+      <Box padding="400">
         <FormLayout>
           <TextField
             label="Google Analytics Pixel ID"
@@ -138,6 +143,7 @@ const TrackingSettings: React.FC<{
             onChange={setPixelId}
             placeholder="G-XXXXXXXXXX"
             helpText="Your Google Analytics 4 measurement ID"
+            autoComplete="off"
           />
 
           <Checkbox
@@ -163,11 +169,11 @@ const TrackingSettings: React.FC<{
             helpText="How to handle user consent for tracking"
           />
 
-          <Button primary onClick={handleSave}>
+          <Button variant="primary" onClick={handleSave}>
             Save Tracking Settings
           </Button>
         </FormLayout>
-      </Card.Section>
+      </Box>
     </Card>
   );
 };
@@ -192,8 +198,11 @@ const AutomationSettings: React.FC<{
   };
 
   return (
-    <Card title="Automation & Autopilot">
-      <Card.Section>
+    <Card>
+      <Box padding="400">
+        <Text variant="headingMd" as="h3">Automation & Autopilot</Text>
+      </Box>
+      <Box padding="400">
         <FormLayout>
           <SettingToggle
             action={{
@@ -202,8 +211,8 @@ const AutomationSettings: React.FC<{
             }}
             enabled={autopilotEnabled}
           >
-            <Text variant="headingMd">Autopilot Mode</Text>
-            <Text variant="bodyMd" color="subdued">
+            <Text variant="headingMd" as="h3">Autopilot Mode</Text>
+            <Text variant="bodyMd" as="p" tone="subdued">
               Let Ads Autopilot AI automatically optimize your campaigns based on
               performance data.
             </Text>
@@ -213,7 +222,7 @@ const AutomationSettings: React.FC<{
             <>
               <Divider />
 
-              <Banner status="info" title="Advanced Automation Features">
+              <Banner tone="info" title="Advanced Automation Features">
                 <p>
                   Additional automation features including bid optimization, budget
                   optimization, and keyword expansion are coming soon.
@@ -222,11 +231,11 @@ const AutomationSettings: React.FC<{
             </>
           )}
 
-          <Button primary onClick={handleSave}>
+          <Button variant="primary" onClick={handleSave}>
             Save Automation Settings
           </Button>
         </FormLayout>
-      </Card.Section>
+      </Box>
     </Card>
   );
 };
@@ -259,10 +268,13 @@ const AccountInfo: React.FC<{
   ];
 
   return (
-    <Card title="Account Information">
-      <Card.Section>
+    <Card>
+      <Box padding="400">
+        <Text variant="headingMd" as="h3">Account Information</Text>
+      </Box>
+      <Box padding="400">
         <DescriptionList items={accountDetails} />
-      </Card.Section>
+      </Box>
     </Card>
   );
 };
@@ -321,7 +333,7 @@ export const Settings: React.FC<SettingsProps> = ({ initialConfig }) => {
       } else {
         setError(data.error || "Failed to load configuration");
       }
-    } catch (err) {
+    } catch (err: unknown) {
       setError("Network error while loading configuration");
     } finally {
       setLoading(false);
@@ -355,7 +367,7 @@ export const Settings: React.FC<SettingsProps> = ({ initialConfig }) => {
       } else {
         setError(result.error || "Failed to save settings");
       }
-    } catch (err) {
+    } catch (err: unknown) {
       setError("Network error while saving settings");
     }
   };
@@ -372,7 +384,7 @@ export const Settings: React.FC<SettingsProps> = ({ initialConfig }) => {
       if (data.success) {
         window.location.href = data.authUrl;
       }
-    } catch (error) {
+    } catch (error: unknown) {
       setError("Failed to initiate Google Ads connection");
     }
   };
@@ -388,7 +400,7 @@ export const Settings: React.FC<SettingsProps> = ({ initialConfig }) => {
       if (data.success) {
         window.location.href = data.authUrl;
       }
-    } catch (error) {
+    } catch (error: unknown) {
       setError("Failed to initiate Google Sheets connection");
     }
   };
@@ -411,7 +423,7 @@ export const Settings: React.FC<SettingsProps> = ({ initialConfig }) => {
         );
         setToastActive(true);
       }
-    } catch (error) {
+    } catch (error: unknown) {
       setError(`Failed to disconnect ${service}`);
     }
   };
@@ -440,12 +452,12 @@ export const Settings: React.FC<SettingsProps> = ({ initialConfig }) => {
         <Layout>
           <Layout.Section>
             <Card>
-              <Card.Section>
-                <Stack alignment="center">
+              <Box padding="400">
+                <InlineStack blockAlign="center" gap="200">
                   <Spinner size="large" />
-                  <Text>Loading settings...</Text>
-                </Stack>
-              </Card.Section>
+                  <Text as="span">Loading settings...</Text>
+                </InlineStack>
+              </Box>
             </Card>
           </Layout.Section>
         </Layout>
@@ -456,7 +468,7 @@ export const Settings: React.FC<SettingsProps> = ({ initialConfig }) => {
   if (error || !config) {
     return (
       <Page title="Settings">
-        <Banner status="critical" title="Error loading settings">
+        <Banner tone="critical" title="Error loading settings">
           <p>{error || "Failed to load configuration"}</p>
           <Button onClick={loadConfig}>Retry</Button>
         </Banner>
@@ -486,42 +498,45 @@ export const Settings: React.FC<SettingsProps> = ({ initialConfig }) => {
               {selectedTab === 0 && (
                 <Layout>
                   <Layout.Section>
-                    <Card title="Shopify Connection">
-                      <Card.Section>
-                        <Stack distribution="equalSpacing">
-                          <Stack vertical spacing="tight">
-                            <Stack spacing="tight">
-                              <Text variant="headingMd">Shopify</Text>
-                              <Badge status="success">Connected</Badge>
-                            </Stack>
+                    <Card>
+                      <Box padding="400">
+                        <Text variant="headingMd" as="h3">Shopify Connection</Text>
+                      </Box>
+                      <Box padding="400">
+                        <InlineStack align="space-between">
+                          <BlockStack gap="200">
+                            <InlineStack gap="200">
+                              <Text variant="headingMd" as="h3">Shopify</Text>
+                              <Badge tone="success">Connected</Badge>
+                            </InlineStack>
 
-                            <Text variant="bodyMd" color="subdued">
+                            <Text variant="bodyMd" as="p" tone="subdued">
                               Your Shopify store is connected and active
                             </Text>
 
                             <div style={{ marginTop: "8px" }}>
-                              <Stack vertical spacing="extraTight">
-                                <Text variant="bodySm">
+                              <BlockStack gap="100">
+                                <Text variant="bodySm" as="span">
                                   Shop: {connectionStates.shopify.shop}
                                 </Text>
                                 {connectionStates.shopify.installedAt && (
-                                  <Text variant="bodySm" color="subdued">
+                                  <Text variant="bodySm" as="span" tone="subdued">
                                     Installed:{" "}
                                     {new Date(
                                       connectionStates.shopify.installedAt,
                                     ).toLocaleDateString()}
                                   </Text>
                                 )}
-                              </Stack>
+                              </BlockStack>
                             </div>
-                          </Stack>
-                        </Stack>
-                      </Card.Section>
+                          </BlockStack>
+                        </InlineStack>
+                      </Box>
                     </Card>
                   </Layout.Section>
 
                   <Layout.Section>
-                    <Stack vertical>
+                    <BlockStack gap="400">
                       <ConnectionCard
                         title="Google Ads"
                         description="Connect your Google Ads account to sync campaigns and performance data"
@@ -530,22 +545,22 @@ export const Settings: React.FC<SettingsProps> = ({ initialConfig }) => {
                         onDisconnect={() => handleDisconnect("google-ads")}
                         details={
                           connectionStates.googleAds.connected && (
-                            <Stack vertical spacing="extraTight">
+                            <BlockStack gap="100">
                               {connectionStates.googleAds.accountId && (
-                                <Text variant="bodySm">
+                                <Text variant="bodySm" as="span">
                                   Account ID:{" "}
                                   {connectionStates.googleAds.accountId}
                                 </Text>
                               )}
                               {connectionStates.googleAds.lastSync && (
-                                <Text variant="bodySm" color="subdued">
+                                <Text variant="bodySm" as="span" tone="subdued">
                                   Last sync:{" "}
                                   {new Date(
                                     connectionStates.googleAds.lastSync,
                                   ).toLocaleString()}
                                 </Text>
                               )}
-                            </Stack>
+                            </BlockStack>
                           )
                         }
                       />
@@ -558,18 +573,18 @@ export const Settings: React.FC<SettingsProps> = ({ initialConfig }) => {
                         onDisconnect={() => handleDisconnect("google-sheets")}
                         details={
                           connectionStates.googleSheets.connected && (
-                            <Stack vertical spacing="extraTight">
+                            <BlockStack gap="100">
                               {connectionStates.googleSheets.sheetName && (
-                                <Text variant="bodySm">
+                                <Text variant="bodySm" as="span">
                                   Sheet:{" "}
                                   {connectionStates.googleSheets.sheetName}
                                 </Text>
                               )}
-                            </Stack>
+                            </BlockStack>
                           )
                         }
                       />
-                    </Stack>
+                    </BlockStack>
                   </Layout.Section>
                 </Layout>
               )}

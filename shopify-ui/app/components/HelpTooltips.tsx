@@ -10,23 +10,24 @@ import {
   Button,
   Icon,
   Popover,
-  Stack,
+  BlockStack,
+  InlineStack,
+  Box,
   Text,
   Card,
   Badge,
   Link,
   ActionList,
-  Modal
+  Modal,
+  List
 } from '@shopify/polaris';
 import {
-  QuestionMarkMajor,
-  InfoMinor,
-  CircleInformationMajor,
-  ExternalMinor,
-  PlayCircleMajor,
-  StarFilledMinor,
-  LockMinor,
-  TipsMajor
+  QuestionCircleIcon,
+  InfoIcon,
+  ExternalIcon,
+  PlayCircleIcon,
+  StarFilledIcon,
+  LockIcon,
 } from '@shopify/polaris-icons';
 
 interface HelpContent {
@@ -200,97 +201,97 @@ export const TooltipHelp: React.FC<TooltipHelpProps> = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [showDetailModal, setShowDetailModal] = useState(false);
-  
+
   const helpContent = HELP_CONTENT[helpKey];
-  
+
   if (!helpContent) {
     console.warn(`Help content not found for key: ${helpKey}`);
     return <>{children}</>;
   }
 
   // Check if feature requires higher tier
-  const needsUpgrade = helpContent.tierRequired && 
+  const needsUpgrade = helpContent.tierRequired &&
     ((helpContent.tierRequired === 'professional' && userTier === 'starter') ||
      (helpContent.tierRequired === 'enterprise' && userTier !== 'enterprise'));
 
-  const activatorButton = activator || (
+  const activatorButton = (activator || (
     <Button
-      plain
-      monochrome
-      icon={QuestionMarkMajor}
+      variant="monochromePlain"
+      icon={QuestionCircleIcon}
       onClick={() => setIsOpen(!isOpen)}
-      ariaLabel={`Help for ${helpContent.title}`}
+      accessibilityLabel={`Help for ${helpContent.title}`}
     />
-  );
+  )) as React.ReactElement;
 
   const popoverContent = (
-    <Card sectioned>
-      <Stack vertical spacing="tight">
-        <Stack horizontal alignment="center">
-          <Text variant="headingMd">{helpContent.title}</Text>
-          {needsUpgrade && (
-            <Badge status="attention">
-              <Stack horizontal alignment="center" spacing="extraTight">
-                <Icon source={LockMinor} />
-                <Text variant="bodySm">{helpContent.tierRequired?.toUpperCase()}</Text>
-              </Stack>
-            </Badge>
-          )}
-        </Stack>
-        
-        <Text variant="bodyMd">{helpContent.content}</Text>
-        
-        {needsUpgrade && helpContent.upgradePrompt && (
-          <Card sectioned subdued>
-            <Stack vertical spacing="tight">
-              <Stack horizontal alignment="center">
-                <Icon source={StarFilledMinor} />
-                <Text variant="headingXs">{helpContent.upgradePrompt.title}</Text>
-              </Stack>
-              <Text variant="bodySm">{helpContent.upgradePrompt.message}</Text>
-              <Button size="slim" primary url={helpContent.upgradePrompt.upgradeUrl}>
-                Upgrade Now
-              </Button>
-            </Stack>
-          </Card>
-        )}
-        
-        {(helpContent.actions || helpContent.videoUrl || helpContent.relatedFeatures) && (
-          <Stack vertical spacing="tight">
-            {helpContent.videoUrl && (
-              <Button
-                size="slim"
-                icon={PlayCircleMajor}
-                onClick={() => console.log(`Play video: ${helpContent.videoUrl}`)}
-              >
-                Watch Tutorial
-              </Button>
+    <Card>
+      <Box padding="400">
+        <BlockStack gap="200">
+          <InlineStack blockAlign="center" gap="200">
+            <Text variant="headingMd" as="h3">{helpContent.title}</Text>
+            {needsUpgrade && (
+              <Badge tone="attention" icon={LockIcon}>
+                {helpContent.tierRequired?.toUpperCase()}
+              </Badge>
             )}
-            
-            {helpContent.actions && (
-              <Stack>
-                {helpContent.actions.map((action, index) => (
-                  <Button
-                    key={index}
-                    size="slim"
-                    plain
-                    url={action.url}
-                    onClick={action.action}
-                    external={action.external}
-                    icon={action.external ? ExternalMinor : undefined}
-                  >
-                    {action.label}
+          </InlineStack>
+
+          <Text variant="bodyMd" as="p">{helpContent.content}</Text>
+
+          {needsUpgrade && helpContent.upgradePrompt && (
+            <Card background="bg-surface-secondary">
+              <Box padding="400">
+                <BlockStack gap="200">
+                  <InlineStack blockAlign="center" gap="200">
+                    <Icon source={StarFilledIcon} />
+                    <Text variant="headingSm" as="h4">{helpContent.upgradePrompt.title}</Text>
+                  </InlineStack>
+                  <Text variant="bodySm" as="span">{helpContent.upgradePrompt.message}</Text>
+                  <Button size="slim" variant="primary" url={helpContent.upgradePrompt.upgradeUrl}>
+                    Upgrade Now
                   </Button>
-                ))}
-              </Stack>
-            )}
-            
-            <Button size="slim" plain onClick={() => setShowDetailModal(true)}>
-              Learn More
-            </Button>
-          </Stack>
-        )}
-      </Stack>
+                </BlockStack>
+              </Box>
+            </Card>
+          )}
+
+          {(helpContent.actions || helpContent.videoUrl || helpContent.relatedFeatures) && (
+            <BlockStack gap="200">
+              {helpContent.videoUrl && (
+                <Button
+                  size="slim"
+                  icon={PlayCircleIcon}
+                  onClick={() => console.log(`Play video: ${helpContent.videoUrl}`)}
+                >
+                  Watch Tutorial
+                </Button>
+              )}
+
+              {helpContent.actions && (
+                <InlineStack gap="200">
+                  {helpContent.actions.map((action, index) => (
+                    <Button
+                      key={index}
+                      size="slim"
+                      variant="plain"
+                      url={action.url}
+                      onClick={action.action}
+                      external={action.external}
+                      icon={action.external ? ExternalIcon : undefined}
+                    >
+                      {action.label}
+                    </Button>
+                  ))}
+                </InlineStack>
+              )}
+
+              <Button size="slim" variant="plain" onClick={() => setShowDetailModal(true)}>
+                Learn More
+              </Button>
+            </BlockStack>
+          )}
+        </BlockStack>
+      </Box>
     </Card>
   );
 
@@ -305,16 +306,16 @@ export const TooltipHelp: React.FC<TooltipHelpProps> = ({
       }}
     >
       <Modal.Section>
-        <Stack vertical spacing="loose">
-          <Text variant="bodyLg">{helpContent.content}</Text>
-          
+        <BlockStack gap="400">
+          <Text variant="bodyLg" as="p">{helpContent.content}</Text>
+
           {helpContent.relatedFeatures && helpContent.relatedFeatures.length > 0 && (
             <div>
-              <Text variant="headingMd">Related Features:</Text>
+              <Text variant="headingMd" as="h3">Related Features:</Text>
               <List type="bullet">
                 {helpContent.relatedFeatures.map((feature, index) => (
                   <List.Item key={index}>
-                    <Button plain monochrome onClick={() => console.log(`Show help for ${feature}`)}>
+                    <Button variant="plain" onClick={() => console.log(`Show help for ${feature}`)}>
                       {feature.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
                     </Button>
                   </List.Item>
@@ -322,15 +323,15 @@ export const TooltipHelp: React.FC<TooltipHelpProps> = ({
               </List>
             </div>
           )}
-          
+
           {helpContent.actions && (
             <div>
-              <Text variant="headingMd">Quick Actions:</Text>
-              <Stack>
+              <Text variant="headingMd" as="h3">Quick Actions:</Text>
+              <InlineStack gap="200">
                 {helpContent.actions.map((action, index) => (
                   <Button
                     key={index}
-                    primary={index === 0}
+                    variant={index === 0 ? "primary" : undefined}
                     url={action.url}
                     onClick={action.action}
                     external={action.external}
@@ -338,10 +339,10 @@ export const TooltipHelp: React.FC<TooltipHelpProps> = ({
                     {action.label}
                   </Button>
                 ))}
-              </Stack>
+              </InlineStack>
             </div>
           )}
-        </Stack>
+        </BlockStack>
       </Modal.Section>
     </Modal>
   ) : null;
@@ -364,21 +365,21 @@ export const TooltipHelp: React.FC<TooltipHelpProps> = ({
 };
 
 // Quick help button for common questions
-export const QuickHelp: React.FC<{ 
-  currentPath?: string; 
+export const QuickHelp: React.FC<{
+  currentPath?: string;
   userTier?: 'starter' | 'professional' | 'enterprise';
-}> = ({ 
-  currentPath = '/', 
-  userTier = 'starter' 
+}> = ({
+  currentPath = '/',
+  userTier = 'starter'
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  
+
   // Get contextual help suggestions
   const suggestions = CONTEXTUAL_HELP[currentPath] || ['campaign_budget', 'autopilot_mode', 'support_tiers'];
-  
+
   const activator = (
     <Button
-      icon={TipsMajor}
+      icon={QuestionCircleIcon}
       onClick={() => setIsOpen(!isOpen)}
     >
       Quick Help
@@ -388,22 +389,22 @@ export const QuickHelp: React.FC<{
   const actionListItems = suggestions.map(helpKey => {
     const content = HELP_CONTENT[helpKey];
     if (!content) return null;
-    
-    const needsUpgrade = content.tierRequired && 
+
+    const needsUpgrade = content.tierRequired &&
       ((content.tierRequired === 'professional' && userTier === 'starter') ||
        (content.tierRequired === 'enterprise' && userTier !== 'enterprise'));
 
     return {
       content: (
-        <Stack horizontal alignment="center" distribution="equalSpacing">
-          <Text variant="bodyMd">{content.title}</Text>
+        <InlineStack blockAlign="center" align="space-between">
+          <Text variant="bodyMd" as="span">{content.title}</Text>
           {needsUpgrade && (
-            <Badge status="attention">
-              <Icon source={LockMinor} />
+            <Badge tone="attention" icon={LockIcon}>
+              {content.tierRequired?.toUpperCase()}
             </Badge>
           )}
-        </Stack>
-      ),
+        </InlineStack>
+      ) as unknown as string,
       onAction: () => console.log(`Show help for ${helpKey}`)
     };
   }).filter(Boolean);
@@ -416,7 +417,7 @@ export const QuickHelp: React.FC<{
       preferredPosition="below"
     >
       <ActionList
-        items={actionListItems}
+        items={actionListItems as any}
         actionRole="menuitem"
       />
     </Popover>
@@ -429,17 +430,17 @@ export const InlineHelp: React.FC<{
   userTier?: 'starter' | 'professional' | 'enterprise';
 }> = ({ helpKey, userTier = 'starter' }) => {
   const helpContent = HELP_CONTENT[helpKey];
-  
+
   if (!helpContent) return null;
 
-  const needsUpgrade = helpContent.tierRequired && 
+  const needsUpgrade = helpContent.tierRequired &&
     ((helpContent.tierRequired === 'professional' && userTier === 'starter') ||
      (helpContent.tierRequired === 'enterprise' && userTier !== 'enterprise'));
 
   return (
-    <Stack horizontal alignment="center" spacing="tight">
-      <Icon source={InfoMinor} color="subdued" />
-      <Text variant="bodySm" color="subdued">
+    <InlineStack blockAlign="center" gap="200">
+      <Icon source={InfoIcon} tone="subdued" />
+      <Text variant="bodySm" as="span" tone="subdued">
         {helpContent.content}
       </Text>
       {needsUpgrade && (
@@ -447,7 +448,7 @@ export const InlineHelp: React.FC<{
           Upgrade for this feature
         </Link>
       )}
-    </Stack>
+    </InlineStack>
   );
 };
 

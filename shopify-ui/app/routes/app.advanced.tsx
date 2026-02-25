@@ -20,10 +20,10 @@ import { checkSubscriptionStatus, hasFeatureAccess } from "../utils/subscription
 
 export async function loader({ request }: LoaderFunctionArgs) {
   let shopName: string;
-  
+
   try {
     console.log(`Advanced page loading for: ${new URL(request.url).searchParams.get('shop') || 'unknown'}`);
-    
+
     // Standard Shopify authentication following best practices
     const { session, admin } = await authenticate.admin(request);
 
@@ -38,11 +38,11 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
     // Check subscription status for advanced features
     const subscriptionInfo = await checkSubscriptionStatus(admin);
-    
+
     // Check if user has access to advanced features
     const hasAdvancedAccess = hasFeatureAccess(subscriptionInfo, 'advanced_ai_optimization');
     const hasCustomRules = hasFeatureAccess(subscriptionInfo, 'custom_ai_optimization_rules');
-    
+
     console.log(`Advanced feature access for ${shopName}:`, {
       hasAdvancedAccess,
       hasCustomRules,
@@ -54,15 +54,15 @@ export async function loader({ request }: LoaderFunctionArgs) {
       console.log(`Redirecting ${shopName} from advanced page - requires Professional+ plan (current: ${subscriptionInfo.subscriptionTier})`);
       return redirect("/app/billing?upgrade=professional&feature=advanced_settings");
     }
-  } catch (error) {
+  } catch (error: unknown) {
     console.error("Advanced page authentication error:", error);
     console.error("Request URL:", request.url);
-    
+
     // Redirect to auth with shop context if possible
     const url = new URL(request.url);
     const shop = url.searchParams.get('shop') || url.searchParams.get('host');
     const authUrl = shop ? `/auth/login?shop=${shop}` : '/auth/login';
-    
+
     throw new Response(null, {
       status: 302,
       headers: { Location: authUrl }
@@ -115,8 +115,9 @@ export async function loader({ request }: LoaderFunctionArgs) {
           ? "Failed to load configuration - check backend connection"
           : null,
     });
-  } catch (error) {
-    console.error("Advanced settings data fetch error:", error.message);
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    console.error("Advanced settings data fetch error:", errorMessage);
 
     return json(
       {
@@ -126,7 +127,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
         summary: {},
         suggestions: generateSuggestions({}, {}, {}),
         shopName: shopName,
-        error: `Failed to load data: ${error.message}`,
+        error: `Failed to load data: ${errorMessage}`,
       },
       { status: 500 },
     );
@@ -286,7 +287,7 @@ function generateSuggestions(insights: any, campaigns: any, summary: any) {
 }
 
 export async function action({ request }: ActionFunctionArgs) {
-  let shopName: string;
+  let shopName: string = "";
 
   try {
     // Use Shopify authentication to get shop name
@@ -296,10 +297,11 @@ export async function action({ request }: ActionFunctionArgs) {
       if (!shopName) {
         throw new Error("No shop name found in Shopify session");
       }
-    } catch (shopNameError) {
+    } catch (shopNameError: unknown) {
+      const shopNameErrorMessage = shopNameError instanceof Error ? shopNameError.message : String(shopNameError);
       console.warn(
         "Shop name detection failed in action:",
-        shopNameError.message,
+        shopNameErrorMessage,
       );
       shopName = process.env.TENANT_ID || "adsautopilot";
     }
@@ -468,8 +470,10 @@ export async function action({ request }: ActionFunctionArgs) {
       message: "Settings saved successfully!",
       shopName: shopName,
     });
-  } catch (error) {
-    console.error("Action critical error:", error.message, error.stack);
+  } catch (error: unknown) {
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorStack = error instanceof Error ? error.stack : undefined;
+    console.error("Action critical error:", errorMessage, errorStack);
 
     // Ensure we have a shop name for error response
     const errorShopName = shopName || process.env.TENANT_ID || "adsautopilot";
@@ -477,9 +481,9 @@ export async function action({ request }: ActionFunctionArgs) {
     return json(
       {
         ok: false,
-        error: `Action failed: ${error.message}`,
+        error: `Action failed: ${errorMessage}`,
         shopName: errorShopName,
-        debug: process.env.NODE_ENV === "development" ? error.stack : undefined,
+        debug: process.env.NODE_ENV === "development" ? errorStack : undefined,
       },
       { status: 500 },
     );
@@ -488,7 +492,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
 export default function Advanced() {
   const data = useLoaderData<typeof loader>() as any;
-  const actionData = useActionData<typeof action>();
+  const actionData = useActionData<typeof action>() as any;
   const cfg = data?.cfg || {};
   const suggestions = data?.suggestions || {};
   const insights = data?.insights || {};

@@ -13,17 +13,16 @@ import {
   DataTable,
   Button,
   ButtonGroup,
-  Stack,
+  BlockStack,
+  InlineStack,
   Box,
   Spinner,
   EmptyState,
   Tabs,
-  Tab,
   TextField,
   Select,
   ChoiceList,
   Modal,
-  TextContainer,
   List,
   Tooltip,
   Icon,
@@ -39,13 +38,13 @@ import {
   RefreshIcon,
   ViewIcon,
   InfoIcon,
-  TrendingUpIcon,
-  TrendingDownIcon,
+  ArrowUpIcon,
+  ArrowDownIcon,
   MinusIcon,
   ExternalIcon,
   StarIcon,
   LocationIcon,
-  QuestionMarkIcon
+  QuestionCircleIcon
 } from '@shopify/polaris-icons';
 import {
   SERPMonitorData,
@@ -116,7 +115,7 @@ export function SERPMonitor({
       } else {
         console.error('Failed to fetch SERP data:', result.error);
       }
-    } catch (err) {
+    } catch (err: unknown) {
       console.error('Error fetching SERP data:', err);
     } finally {
       setLoading(false);
@@ -168,6 +167,7 @@ export function SERPMonitor({
 
     return serpData.trends.positionTrends.map(trend => ({
       date: trend.date,
+      value: trend.value,
       avgPosition: trend.value,
       visibility: serpData.trends.visibilityTrends.find(v => v.date === trend.date)?.value || 0
     }));
@@ -178,6 +178,7 @@ export function SERPMonitor({
 
     return serpData.trends.visibilityTrends.map(trend => ({
       date: trend.date,
+      value: trend.value,
       visibility: trend.value
     }));
   }, [serpData?.trends.visibilityTrends]);
@@ -212,6 +213,7 @@ export function SERPMonitor({
 
     return Object.entries(features).map(([feature, data]) => ({
       name: feature,
+      value: data.total - data.owned,
       total: data.total,
       owned: data.owned,
       opportunity: data.total - data.owned,
@@ -234,6 +236,7 @@ export function SERPMonitor({
 
     return Object.entries(competitors).map(([competitor, data]) => ({
       name: competitor,
+      value: data.positions.reduce((sum, pos) => sum + pos, 0) / data.positions.length,
       avgPosition: data.positions.reduce((sum, pos) => sum + pos, 0) / data.positions.length,
       visibility: data.visibility / data.count,
       keywords: data.count,
@@ -262,9 +265,9 @@ export function SERPMonitor({
 
   // Helper functions
   const getPositionChangeIcon = (change: number) => {
-    if (change > 0) return { icon: TrendingUpIcon, color: 'success' };
-    if (change < 0) return { icon: TrendingDownIcon, color: 'critical' };
-    return { icon: MinusIcon, color: 'subdued' };
+    if (change > 0) return { icon: ArrowUpIcon, tone: 'success' as const };
+    if (change < 0) return { icon: ArrowDownIcon, tone: 'critical' as const };
+    return { icon: MinusIcon, tone: 'subdued' as const };
   };
 
   const getPositionBadgeColor = (position: number) => {
@@ -278,30 +281,28 @@ export function SERPMonitor({
     const keywordTableData = filteredKeywords.slice(0, showTopKeywords).map(keyword => {
       const changeIcon = getPositionChangeIcon(keyword.positionChange);
       return [
-        <Stack alignment="center" spacing="tight" key={keyword.id}>
-          <Text variant="bodyMd" fontWeight="medium">{keyword.keyword}</Text>
+        <InlineStack align="center" gap="200" key={keyword.id}>
+          <Text as="p" variant="bodyMd" fontWeight="medium">{keyword.keyword}</Text>
           <Badge tone="info">{keyword.category}</Badge>
-        </Stack>,
-        <Badge tone={getPositionBadgeColor(keyword.currentPosition)}>
-          #{keyword.currentPosition}
-        </Badge>,
-        <Stack alignment="center" spacing="tight">
-          <Icon source={changeIcon.icon} color={changeIcon.color} />
-          <Text variant="bodySm" color={changeIcon.color}>
+        </InlineStack>,
+        <Badge tone={getPositionBadgeColor(keyword.currentPosition)}>{`#${keyword.currentPosition}`}</Badge>,
+        <InlineStack align="center" gap="200">
+          <Icon source={changeIcon.icon} tone={changeIcon.tone} />
+          <Text as="span" variant="bodySm" tone={changeIcon.tone}>
             {keyword.positionChange > 0 ? '+' : ''}{keyword.positionChange}
           </Text>
-        </Stack>,
-        <Text>{formatters.compact(keyword.searchVolume)}</Text>,
-        <Stack alignment="center" spacing="tight">
+        </InlineStack>,
+        <Text as="span">{formatters.compact(keyword.searchVolume)}</Text>,
+        <InlineStack align="center" gap="200">
           <ProgressBar progress={keyword.difficulty} size="small" />
-          <Text variant="bodySm">{keyword.difficulty}%</Text>
-        </Stack>,
-        <Text>{formatters.currency(keyword.cpc)}</Text>,
+          <Text as="span" variant="bodySm">{keyword.difficulty}%</Text>
+        </InlineStack>,
+        <Text as="span">{formatters.currency(keyword.cpc)}</Text>,
         <Badge tone="info">{keyword.intent}</Badge>,
-        <Text variant="bodySm">{formatters.date(keyword.lastUpdated)}</Text>,
-        <Stack spacing="extraTight">
+        <Text as="span" variant="bodySm">{formatters.date(keyword.lastUpdated)}</Text>,
+        <InlineStack gap="100">
           <Button
-            plain
+            variant="plain"
             icon={ViewIcon}
             onClick={() => {
               setSelectedKeyword(keyword);
@@ -310,13 +311,13 @@ export function SERPMonitor({
             accessibilityLabel={`View details for ${keyword.keyword}`}
           />
           <Button
-            plain
+            variant="plain"
             icon={ExternalIcon}
             url={keyword.url}
             external
             accessibilityLabel={`View ranking page for ${keyword.keyword}`}
           />
-        </Stack>
+        </InlineStack>
       ];
     });
 
@@ -339,18 +340,18 @@ export function SERPMonitor({
     if (!serpData?.competitorPositions) return null;
 
     const competitorTableData = competitorPerformanceData.map(competitor => [
-      <Text key={competitor.name} fontWeight="medium">{competitor.name}</Text>,
-      <Text>{competitor.avgPosition.toFixed(1)}</Text>,
-      <Stack alignment="center" spacing="tight">
+      <Text as="span" key={competitor.name} fontWeight="medium">{competitor.name}</Text>,
+      <Text as="span">{competitor.avgPosition.toFixed(1)}</Text>,
+      <InlineStack align="center" gap="200">
         <ProgressBar progress={competitor.visibility} size="small" />
-        <Text variant="bodySm">{competitor.visibility.toFixed(1)}%</Text>
-      </Stack>,
-      <Text>{competitor.keywords}</Text>
+        <Text as="span" variant="bodySm">{competitor.visibility.toFixed(1)}%</Text>
+      </InlineStack>,
+      <Text as="span">{competitor.keywords}</Text>
     ]);
 
     return (
       <Layout>
-        <Layout.Section oneHalf>
+        <Layout.Section variant="oneHalf">
           <BarChartComponent
             title="Competitor Performance"
             subtitle="Average positions vs visibility"
@@ -364,17 +365,17 @@ export function SERPMonitor({
           />
         </Layout.Section>
 
-        <Layout.Section oneHalf>
+        <Layout.Section variant="oneHalf">
           <Card>
-            <Box padding="4">
-              <Stack vertical spacing="loose">
-                <Text variant="headingMd">Competitor Analysis</Text>
+            <Box padding="400">
+              <BlockStack gap="400">
+                <Text as="h3" variant="headingMd">Competitor Analysis</Text>
                 <DataTable
                   columnContentTypes={['text', 'text', 'text', 'text']}
                   headings={['Competitor', 'Avg Position', 'Visibility', 'Keywords']}
                   rows={competitorTableData}
                 />
-              </Stack>
+              </BlockStack>
             </Box>
           </Card>
         </Layout.Section>
@@ -386,19 +387,19 @@ export function SERPMonitor({
     if (!serpData?.serpFeatures) return null;
 
     const featureTableData = serpFeatureData.map(feature => [
-      <Text key={feature.name} fontWeight="medium">{feature.name}</Text>,
-      <Text>{feature.total}</Text>,
-      <Badge tone="success">{feature.owned}</Badge>,
-      <Badge tone="attention">{feature.opportunity}</Badge>,
-      <Stack alignment="center" spacing="tight">
+      <Text as="span" key={feature.name} fontWeight="medium">{feature.name}</Text>,
+      <Text as="span">{feature.total}</Text>,
+      <Badge tone="success">{String(feature.owned)}</Badge>,
+      <Badge tone="attention">{String(feature.opportunity)}</Badge>,
+      <InlineStack align="center" gap="200">
         <ProgressBar progress={(feature.owned / feature.total) * 100} size="small" />
-        <Text variant="bodySm">{((feature.owned / feature.total) * 100).toFixed(1)}%</Text>
-      </Stack>
+        <Text as="span" variant="bodySm">{((feature.owned / feature.total) * 100).toFixed(1)}%</Text>
+      </InlineStack>
     ]);
 
     return (
       <Layout>
-        <Layout.Section oneHalf>
+        <Layout.Section variant="oneHalf">
           <BarChartComponent
             title="SERP Features Presence"
             subtitle="Opportunities vs current ownership"
@@ -412,17 +413,17 @@ export function SERPMonitor({
           />
         </Layout.Section>
 
-        <Layout.Section oneHalf>
+        <Layout.Section variant="oneHalf">
           <Card>
-            <Box padding="4">
-              <Stack vertical spacing="loose">
-                <Text variant="headingMd">SERP Features Overview</Text>
+            <Box padding="400">
+              <BlockStack gap="400">
+                <Text as="h3" variant="headingMd">SERP Features Overview</Text>
                 <DataTable
                   columnContentTypes={['text', 'text', 'text', 'text', 'text']}
                   headings={['Feature', 'Total', 'Owned', 'Opportunity', 'Coverage']}
                   rows={featureTableData}
                 />
-              </Stack>
+              </BlockStack>
             </Box>
           </Card>
         </Layout.Section>
@@ -434,16 +435,14 @@ export function SERPMonitor({
     if (!serpData?.bidLandscape) return null;
 
     const bidTableData = serpData.bidLandscape.slice(0, 10).map(bid => [
-      <Text key={bid.keyword} fontWeight="medium">{bid.keyword}</Text>,
-      <Text>#{bid.position}</Text>,
-      <Text>{formatters.currency(bid.estimatedBid)}</Text>,
-      <Text>{formatters.currency(bid.estimatedCPC)}</Text>,
-      <Text>{formatters.currency(bid.recommendedBid)}</Text>,
-      <Badge tone={bid.budgetImpact > 0 ? 'critical' : 'success'}>
-        {bid.budgetImpact > 0 ? '+' : ''}{formatters.currency(bid.budgetImpact)}
-      </Badge>,
+      <Text as="span" key={bid.keyword} fontWeight="medium">{bid.keyword}</Text>,
+      <Text as="span">#{bid.position}</Text>,
+      <Text as="span">{formatters.currency(bid.estimatedBid)}</Text>,
+      <Text as="span">{formatters.currency(bid.estimatedCPC)}</Text>,
+      <Text as="span">{formatters.currency(bid.recommendedBid)}</Text>,
+      <Badge tone={bid.budgetImpact > 0 ? 'critical' : 'success'}>{`${bid.budgetImpact > 0 ? '+' : ''}${formatters.currency(bid.budgetImpact)}`}</Badge>,
       <Button
-        plain
+        variant="plain"
         icon={ViewIcon}
         onClick={() => {
           setSelectedBidData(bid);
@@ -457,15 +456,15 @@ export function SERPMonitor({
       <Layout>
         <Layout.Section>
           <Card>
-            <Box padding="4">
-              <Stack vertical spacing="loose">
-                <Text variant="headingMd">Bid Landscape Analysis</Text>
+            <Box padding="400">
+              <BlockStack gap="400">
+                <Text as="h3" variant="headingMd">Bid Landscape Analysis</Text>
                 <DataTable
                   columnContentTypes={['text', 'text', 'text', 'text', 'text', 'text', 'text']}
                   headings={['Keyword', 'Position', 'Current Bid', 'Est. CPC', 'Recommended', 'Impact', 'Actions']}
                   rows={bidTableData}
                 />
-              </Stack>
+              </BlockStack>
             </Box>
           </Card>
         </Layout.Section>
@@ -485,46 +484,46 @@ export function SERPMonitor({
 
     return (
       <Layout>
-        <Layout.Section oneHalf>
+        <Layout.Section variant="oneHalf">
           <Card>
-            <Box padding="4">
-              <Stack vertical spacing="loose">
-                <Text variant="headingMd">Visibility Scores</Text>
-                <Stack vertical spacing="tight">
+            <Box padding="400">
+              <BlockStack gap="400">
+                <Text as="h3" variant="headingMd">Visibility Scores</Text>
+                <BlockStack gap="200">
                   {visibilityMetrics.map(metric => (
-                    <Stack key={metric.name} distribution="spaceBetween" alignment="center">
-                      <Stack spacing="tight" alignment="center">
-                        <Box width="12px" height="12px" background={metric.color} borderRadius="1" />
-                        <Text variant="bodyMd" fontWeight="medium">{metric.name}</Text>
-                      </Stack>
-                      <Stack spacing="tight" alignment="center">
+                    <InlineStack key={metric.name} align="space-between" blockAlign="center">
+                      <InlineStack gap="200" blockAlign="center">
+                        <div style={{ width: '12px', height: '12px', backgroundColor: metric.color, borderRadius: '2px' }} />
+                        <Text as="p" variant="bodyMd" fontWeight="medium">{metric.name}</Text>
+                      </InlineStack>
+                      <InlineStack gap="200" blockAlign="center">
                         <ProgressBar progress={metric.value} size="small" />
-                        <Text variant="bodyMd" fontWeight="medium">{metric.value.toFixed(1)}%</Text>
-                      </Stack>
-                    </Stack>
+                        <Text as="p" variant="bodyMd" fontWeight="medium">{metric.value.toFixed(1)}%</Text>
+                      </InlineStack>
+                    </InlineStack>
                   ))}
-                </Stack>
+                </BlockStack>
 
                 <Divider />
 
-                <Stack distribution="spaceBetween" alignment="center">
-                  <Text variant="bodyMd" fontWeight="medium">Overall Change</Text>
-                  <Stack spacing="tight" alignment="center">
+                <InlineStack align="space-between" blockAlign="center">
+                  <Text as="p" variant="bodyMd" fontWeight="medium">Overall Change</Text>
+                  <InlineStack gap="200" blockAlign="center">
                     <Icon
-                      source={serpData.visibilityScore.change > 0 ? TrendingUpIcon : serpData.visibilityScore.change < 0 ? TrendingDownIcon : MinusIcon}
-                      color={serpData.visibilityScore.change > 0 ? 'success' : serpData.visibilityScore.change < 0 ? 'critical' : 'subdued'}
+                      source={serpData.visibilityScore.change > 0 ? ArrowUpIcon : serpData.visibilityScore.change < 0 ? ArrowDownIcon : MinusIcon}
+                      tone={serpData.visibilityScore.change > 0 ? 'success' : serpData.visibilityScore.change < 0 ? 'critical' : 'subdued'}
                     />
-                    <Text variant="bodyMd" fontWeight="medium">
+                    <Text as="p" variant="bodyMd" fontWeight="medium">
                       {serpData.visibilityScore.change > 0 ? '+' : ''}{serpData.visibilityScore.change.toFixed(1)}%
                     </Text>
-                  </Stack>
-                </Stack>
-              </Stack>
+                  </InlineStack>
+                </InlineStack>
+              </BlockStack>
             </Box>
           </Card>
         </Layout.Section>
 
-        <Layout.Section oneHalf>
+        <Layout.Section variant="oneHalf">
           <TrendLineChart
             title="Visibility Trends"
             subtitle="Visibility score over time"
@@ -544,11 +543,11 @@ export function SERPMonitor({
   if (loading && !serpData) {
     return (
       <Card>
-        <Box padding="8">
-          <Stack alignment="center" distribution="center">
+        <Box padding="800">
+          <InlineStack align="center" blockAlign="center">
             <Spinner size="large" />
-            <Text variant="bodyLg">Loading SERP monitoring data...</Text>
-          </Stack>
+            <Text as="p" variant="bodyLg">Loading SERP monitoring data...</Text>
+          </InlineStack>
         </Box>
       </Card>
     );
@@ -599,7 +598,7 @@ export function SERPMonitor({
         ...(showExport ? [{
           content: 'Export',
           icon: ExportIcon,
-          onAction: () => handleExport({ format: 'csv', filename: 'serp-monitor' })
+          onAction: () => handleExport({ format: 'csv' as const, filename: 'serp-monitor' })
         }] : [])
       ]}
     >
@@ -607,11 +606,11 @@ export function SERPMonitor({
         {showFilters && (
           <Layout.Section>
             <Card>
-              <Box padding="4">
-                <Stack vertical spacing="tight">
-                  <Text variant="headingMd">Filters</Text>
+              <Box padding="400">
+                <BlockStack gap="200">
+                  <Text as="h3" variant="headingMd">Filters</Text>
 
-                  <Stack spacing="tight">
+                  <InlineStack gap="200">
                     <Box minWidth="200px">
                       <TextField
                         label="Search"
@@ -621,6 +620,7 @@ export function SERPMonitor({
                         placeholder="Search keywords..."
                         clearButton
                         onClearButtonClick={() => setSearchQuery('')}
+                        autoComplete="off"
                       />
                     </Box>
 
@@ -643,7 +643,7 @@ export function SERPMonitor({
                       <RangeSlider
                         label="Position Range"
                         value={positionRange}
-                        onChange={setPositionRange}
+                        onChange={(value) => setPositionRange(value as [number, number])}
                         min={1}
                         max={100}
                         step={1}
@@ -655,15 +655,15 @@ export function SERPMonitor({
                       <RangeSlider
                         label="Difficulty Range"
                         value={difficultyRange}
-                        onChange={setDifficultyRange}
+                        onChange={(value) => setDifficultyRange(value as [number, number])}
                         min={0}
                         max={100}
                         step={1}
                         output
                       />
                     </Box>
-                  </Stack>
-                </Stack>
+                  </InlineStack>
+                </BlockStack>
               </Box>
             </Card>
           </Layout.Section>
@@ -672,67 +672,59 @@ export function SERPMonitor({
         <Layout.Section>
           <Card>
             <Tabs tabs={tabs} selected={selectedTab} onSelect={setSelectedTab}>
-              <Box padding="4">
+              <Box padding="400">
                 {selectedTab === 0 && (
-                  <Stack vertical spacing="loose">
-                    <Text variant="headingLg">SERP Monitoring Overview</Text>
+                  <BlockStack gap="400">
+                    <Text as="h2" variant="headingLg">SERP Monitoring Overview</Text>
 
                     <Card>
-                      <Box padding="4">
-                        <Stack vertical spacing="tight">
-                          <Text variant="headingMd">Summary Statistics</Text>
-                          <Layout>
-                            <Layout.Section oneQuarter>
-                              <Stack vertical spacing="extraTight">
-                                <Text variant="headingXl">{serpData.summary.totalKeywords}</Text>
-                                <Text variant="bodySm" color="subdued">Total Keywords</Text>
-                              </Stack>
-                            </Layout.Section>
-                            <Layout.Section oneQuarter>
-                              <Stack vertical spacing="extraTight">
-                                <Text variant="headingXl">#{serpData.summary.averagePosition.toFixed(1)}</Text>
-                                <Text variant="bodySm" color="subdued">Avg Position</Text>
-                              </Stack>
-                            </Layout.Section>
-                            <Layout.Section oneQuarter>
-                              <Stack vertical spacing="extraTight">
-                                <Text variant="headingXl">{serpData.summary.topPositions}</Text>
-                                <Text variant="bodySm" color="subdued">Top 3 Positions</Text>
-                              </Stack>
-                            </Layout.Section>
-                            <Layout.Section oneQuarter>
-                              <Stack vertical spacing="extraTight">
-                                <Text variant="headingXl">{serpData.visibilityScore.overall.toFixed(1)}%</Text>
-                                <Text variant="bodySm" color="subdued">Visibility Score</Text>
-                              </Stack>
-                            </Layout.Section>
-                          </Layout>
+                      <Box padding="400">
+                        <BlockStack gap="200">
+                          <Text as="h3" variant="headingMd">Summary Statistics</Text>
+                          <InlineStack gap="400" align="space-between">
+                            <BlockStack gap="100">
+                              <Text as="h1" variant="headingXl">{serpData.summary.totalKeywords}</Text>
+                              <Text as="span" variant="bodySm" tone="subdued">Total Keywords</Text>
+                            </BlockStack>
+                            <BlockStack gap="100">
+                              <Text as="h1" variant="headingXl">{`#${serpData.summary.averagePosition.toFixed(1)}`}</Text>
+                              <Text as="span" variant="bodySm" tone="subdued">Avg Position</Text>
+                            </BlockStack>
+                            <BlockStack gap="100">
+                              <Text as="h1" variant="headingXl">{serpData.summary.topPositions}</Text>
+                              <Text as="span" variant="bodySm" tone="subdued">Top 3 Positions</Text>
+                            </BlockStack>
+                            <BlockStack gap="100">
+                              <Text as="h1" variant="headingXl">{`${serpData.visibilityScore.overall.toFixed(1)}%`}</Text>
+                              <Text as="span" variant="bodySm" tone="subdued">Visibility Score</Text>
+                            </BlockStack>
+                          </InlineStack>
 
                           <Divider />
 
                           <Layout>
-                            <Layout.Section oneThird>
-                              <Stack vertical spacing="extraTight">
-                                <Text variant="bodyMd" fontWeight="medium">Position Changes</Text>
-                                <Stack spacing="tight">
-                                  <Stack spacing="extraTight" alignment="center">
-                                    <Icon source={TrendingUpIcon} color="success" />
-                                    <Text variant="bodySm">{serpData.summary.improvedPositions} improved</Text>
-                                  </Stack>
-                                  <Stack spacing="extraTight" alignment="center">
-                                    <Icon source={TrendingDownIcon} color="critical" />
-                                    <Text variant="bodySm">{serpData.summary.declinedPositions} declined</Text>
-                                  </Stack>
-                                </Stack>
-                              </Stack>
+                            <Layout.Section variant="oneThird">
+                              <BlockStack gap="100">
+                                <Text as="p" variant="bodyMd" fontWeight="medium">Position Changes</Text>
+                                <InlineStack gap="200">
+                                  <InlineStack gap="100" blockAlign="center">
+                                    <Icon source={ArrowUpIcon} tone="success" />
+                                    <Text as="span" variant="bodySm">{serpData.summary.improvedPositions} improved</Text>
+                                  </InlineStack>
+                                  <InlineStack gap="100" blockAlign="center">
+                                    <Icon source={ArrowDownIcon} tone="critical" />
+                                    <Text as="span" variant="bodySm">{serpData.summary.declinedPositions} declined</Text>
+                                  </InlineStack>
+                                </InlineStack>
+                              </BlockStack>
                             </Layout.Section>
                           </Layout>
-                        </Stack>
+                        </BlockStack>
                       </Box>
                     </Card>
 
                     <Layout>
-                      <Layout.Section oneThird>
+                      <Layout.Section variant="oneThird">
                         <PieChartComponent
                           title="Search Intent Distribution"
                           subtitle="Keywords by search intent"
@@ -745,7 +737,7 @@ export function SERPMonitor({
                         />
                       </Layout.Section>
 
-                      <Layout.Section twoThirds>
+                      <Layout.Section>
                         <MultiLineChart
                           title="Position & Visibility Trends"
                           subtitle="Average position and visibility over time"
@@ -764,13 +756,13 @@ export function SERPMonitor({
                         />
                       </Layout.Section>
                     </Layout>
-                  </Stack>
+                  </BlockStack>
                 )}
 
                 {selectedTab === 1 && (
-                  <Stack vertical spacing="loose">
-                    <Stack distribution="spaceBetween" alignment="center">
-                      <Text variant="headingLg">Keyword Performance</Text>
+                  <BlockStack gap="400">
+                    <InlineStack align="space-between" blockAlign="center">
+                      <Text as="h2" variant="headingLg">Keyword Performance</Text>
                       <Select
                         label=""
                         options={[
@@ -782,7 +774,7 @@ export function SERPMonitor({
                         value={showTopKeywords.toString()}
                         onChange={(value) => setShowTopKeywords(parseInt(value))}
                       />
-                    </Stack>
+                    </InlineStack>
                     {renderKeywordsTable()}
 
                     <Layout>
@@ -807,35 +799,35 @@ export function SERPMonitor({
                         />
                       </Layout.Section>
                     </Layout>
-                  </Stack>
+                  </BlockStack>
                 )}
 
                 {selectedTab === 2 && (
-                  <Stack vertical spacing="loose">
-                    <Text variant="headingLg">Visibility Analysis</Text>
+                  <BlockStack gap="400">
+                    <Text as="h2" variant="headingLg">Visibility Analysis</Text>
                     {renderVisibilityAnalysis()}
-                  </Stack>
+                  </BlockStack>
                 )}
 
                 {selectedTab === 3 && (
-                  <Stack vertical spacing="loose">
-                    <Text variant="headingLg">Competitor Position Analysis</Text>
+                  <BlockStack gap="400">
+                    <Text as="h2" variant="headingLg">Competitor Position Analysis</Text>
                     {renderCompetitorPositions()}
-                  </Stack>
+                  </BlockStack>
                 )}
 
                 {selectedTab === 4 && (
-                  <Stack vertical spacing="loose">
-                    <Text variant="headingLg">SERP Features Analysis</Text>
+                  <BlockStack gap="400">
+                    <Text as="h2" variant="headingLg">SERP Features Analysis</Text>
                     {renderSerpFeatures()}
-                  </Stack>
+                  </BlockStack>
                 )}
 
                 {selectedTab === 5 && (
-                  <Stack vertical spacing="loose">
-                    <Text variant="headingLg">Bid Landscape Analysis</Text>
+                  <BlockStack gap="400">
+                    <Text as="h2" variant="headingLg">Bid Landscape Analysis</Text>
                     {renderBidLandscape()}
-                  </Stack>
+                  </BlockStack>
                 )}
               </Box>
             </Tabs>
@@ -849,12 +841,12 @@ export function SERPMonitor({
           open={showKeywordModal}
           onClose={() => setShowKeywordModal(false)}
           title={selectedKeyword.keyword}
-          large
+          size="large"
         >
           <Modal.Section>
-            <Stack vertical spacing="loose">
-              <TextContainer>
-                <Text variant="headingMd">Keyword Analysis</Text>
+            <BlockStack gap="400">
+              <BlockStack gap="400">
+                <Text as="h3" variant="headingMd">Keyword Analysis</Text>
                 <p><strong>Current Position:</strong> #{selectedKeyword.currentPosition}</p>
                 <p><strong>Previous Position:</strong> #{selectedKeyword.previousPosition}</p>
                 <p><strong>Position Change:</strong> {selectedKeyword.positionChange > 0 ? '+' : ''}{selectedKeyword.positionChange}</p>
@@ -866,15 +858,15 @@ export function SERPMonitor({
                 <p><strong>Ranking URL:</strong> <Link external url={selectedKeyword.url}>{selectedKeyword.url}</Link></p>
                 <p><strong>Last Updated:</strong> {formatters.dateTime(selectedKeyword.lastUpdated)}</p>
 
-                <Text variant="headingMd">Optimization Recommendations</Text>
+                <Text as="h3" variant="headingMd">Optimization Recommendations</Text>
                 <List type="bullet">
                   <List.Item>Monitor position changes and investigate any significant drops</List.Item>
                   <List.Item>Optimize the ranking page for better user experience and relevance</List.Item>
                   <List.Item>Consider increasing content depth and quality for this keyword</List.Item>
                   <List.Item>Analyze competitor content to identify improvement opportunities</List.Item>
                 </List>
-              </TextContainer>
-            </Stack>
+              </BlockStack>
+            </BlockStack>
           </Modal.Section>
         </Modal>
       )}
@@ -885,19 +877,19 @@ export function SERPMonitor({
           open={showBidModal}
           onClose={() => setShowBidModal(false)}
           title={`Bid Analysis: ${selectedBidData.keyword}`}
-          large
+          size="large"
         >
           <Modal.Section>
-            <Stack vertical spacing="loose">
-              <TextContainer>
-                <Text variant="headingMd">Bid Landscape Analysis</Text>
+            <BlockStack gap="400">
+              <BlockStack gap="400">
+                <Text as="h3" variant="headingMd">Bid Landscape Analysis</Text>
                 <p><strong>Current Position:</strong> #{selectedBidData.position}</p>
                 <p><strong>Estimated Bid:</strong> {formatters.currency(selectedBidData.estimatedBid)}</p>
                 <p><strong>Estimated CPC:</strong> {formatters.currency(selectedBidData.estimatedCPC)}</p>
                 <p><strong>Recommended Bid:</strong> {formatters.currency(selectedBidData.recommendedBid)}</p>
                 <p><strong>Budget Impact:</strong> {formatters.currency(selectedBidData.budgetImpact)}</p>
 
-                <Text variant="headingMd">Competitor Bids</Text>
+                <Text as="h3" variant="headingMd">Competitor Bids</Text>
                 <List type="bullet">
                   {selectedBidData.competitorBids.map((bid, index) => (
                     <List.Item key={index}>
@@ -906,10 +898,10 @@ export function SERPMonitor({
                   ))}
                 </List>
 
-                <Text variant="headingMd">Bidding Strategy</Text>
+                <Text as="h3" variant="headingMd">Bidding Strategy</Text>
                 <p>Based on the current competitive landscape, consider adjusting your bid strategy to improve position while maintaining cost efficiency.</p>
-              </TextContainer>
-            </Stack>
+              </BlockStack>
+            </BlockStack>
           </Modal.Section>
         </Modal>
       )}

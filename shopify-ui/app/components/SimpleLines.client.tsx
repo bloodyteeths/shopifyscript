@@ -110,7 +110,7 @@ export default function SimpleLines({ data }: { data: any[] }) {
             axisLine={false}
             tickLine={false}
             tick={{ fontSize: 12, fill: '#6b7280' }}
-            tickFormatter={(value) => value.toFixed(0)}
+            tickFormatter={(value: number) => value.toFixed(0)}
           />
           <Tooltip content={<CustomTooltip />} />
           <Area

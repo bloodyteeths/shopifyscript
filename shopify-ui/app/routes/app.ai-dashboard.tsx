@@ -22,7 +22,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     console.log(`AI Dashboard loaded for shop: ${shopName}`);
 
     // Check subscription status for feature access control
-    let subscriptionInfo = {
+    let subscriptionInfo: any = {
       hasActivePayment: false,
       isInTrial: false,
       trialDaysRemaining: null,

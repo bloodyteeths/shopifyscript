@@ -73,7 +73,7 @@ export function CampaignManager({ shopName, hasFeatureAccess = false }: Campaign
         setError("Failed to load campaigns");
         setCampaigns([]);
       }
-    } catch (err) {
+    } catch (err: unknown) {
       console.error("Failed to fetch campaigns:", err);
       setError("Failed to load campaigns");
       setCampaigns([]);
@@ -118,13 +118,13 @@ export function CampaignManager({ shopName, hasFeatureAccess = false }: Campaign
   };
 
   const getStatusBadge = (status: string) => {
-    const toneMap: Record<string, any> = {
+    const toneMap: Record<string, "success" | "warning" | "info"> = {
       'active': 'success',
       'paused': 'warning',
       'pending': 'info',
     };
     return (
-      <Badge tone={toneMap[status] || 'default'}>
+      <Badge tone={toneMap[status]}>
         {status.charAt(0).toUpperCase() + status.slice(1)}
       </Badge>
     );
@@ -163,7 +163,7 @@ export function CampaignManager({ shopName, hasFeatureAccess = false }: Campaign
       } else {
         alert('Failed to optimize campaigns. Please try again.');
       }
-    } catch (error) {
+    } catch (error: unknown) {
       console.error('Optimization error:', error);
       alert('Error optimizing campaigns');
     } finally {
@@ -206,39 +206,39 @@ export function CampaignManager({ shopName, hasFeatureAccess = false }: Campaign
       onChange={() => handleCampaignSelect(campaign.id)}
     />,
     <BlockStack gap="100">
-      <Text variant="bodyMd" fontWeight="bold">{campaign.name}</Text>
+      <Text variant="bodyMd" as="span" fontWeight="bold">{campaign.name}</Text>
       {campaign.aiOptimized && (
         <InlineStack gap="100">
           <Badge tone="success">AI Optimized</Badge>
-          <Text variant="bodySm" tone="subdued">{formatTimeAgo(campaign.lastOptimized)}</Text>
+          <Text variant="bodySm" as="span" tone="subdued">{formatTimeAgo(campaign.lastOptimized)}</Text>
         </InlineStack>
       )}
     </BlockStack>,
     getStatusBadge(campaign.status),
     <BlockStack gap="100">
-      <Text variant="bodyMd">{formatCurrency(campaign.spent)}</Text>
-      <Text variant="bodySm" tone="subdued">of {formatCurrency(campaign.budget)}</Text>
+      <Text variant="bodyMd" as="span">{formatCurrency(campaign.spent)}</Text>
+      <Text variant="bodySm" as="span" tone="subdued">of {formatCurrency(campaign.budget)}</Text>
       <ProgressBar
         progress={(campaign.spent / campaign.budget) * 100}
         size="small"
-        tone={campaign.spent / campaign.budget > 0.9 ? 'warning' : 'primary'}
+        tone={campaign.spent / campaign.budget > 0.9 ? 'critical' : 'primary'}
       />
     </BlockStack>,
     <BlockStack gap="100">
-      <Text variant="bodyMd">{formatNumber(campaign.impressions)}</Text>
-      <Text variant="bodySm" tone="subdued">{formatNumber(campaign.clicks)} clicks</Text>
+      <Text variant="bodyMd" as="span">{formatNumber(campaign.impressions)}</Text>
+      <Text variant="bodySm" as="span" tone="subdued">{formatNumber(campaign.clicks)} clicks</Text>
     </BlockStack>,
     <BlockStack gap="100">
-      <Text variant="bodyMd" fontWeight="bold" tone="success">{campaign.conversions}</Text>
-      <Badge tone={campaign.ctr > 4 ? 'success' : 'default'}>
-        {campaign.ctr.toFixed(1)}% CTR
+      <Text variant="bodyMd" as="span" fontWeight="bold" tone="success">{campaign.conversions}</Text>
+      <Badge tone={campaign.ctr > 4 ? 'success' : undefined}>
+        {`${campaign.ctr.toFixed(1)}% CTR`}
       </Badge>
     </BlockStack>,
     <BlockStack gap="100">
-      <Text variant="headingMd" fontWeight="bold" tone={campaign.roas > 3 ? 'success' : 'default'}>
+      <Text variant="headingMd" as="span" fontWeight="bold" tone={campaign.roas > 3 ? 'success' : undefined}>
         {campaign.roas.toFixed(1)}x
       </Text>
-      <Text variant="bodySm" tone="subdued">
+      <Text variant="bodySm" as="span" tone="subdued">
         CPC: {formatCurrency(campaign.cpc)}
       </Text>
     </BlockStack>,
@@ -261,7 +261,7 @@ export function CampaignManager({ shopName, hasFeatureAccess = false }: Campaign
           <BlockStack gap="400">
             <Text variant="headingLg" as="h2">Campaign Manager</Text>
             <Box padding="600">
-              <Text variant="bodyMd" alignment="center">Loading campaigns...</Text>
+              <Text variant="bodyMd" as="p" alignment="center">Loading campaigns...</Text>
             </Box>
           </BlockStack>
         </Card>
@@ -302,8 +302,8 @@ export function CampaignManager({ shopName, hasFeatureAccess = false }: Campaign
             </InlineStack>
             <Box padding="600">
               <BlockStack gap="400" align="center">
-                <Text variant="headingMd" alignment="center">No campaigns found</Text>
-                <Text variant="bodyMd" alignment="center" tone="subdued">
+                <Text variant="headingMd" as="h3" alignment="center">No campaigns found</Text>
+                <Text variant="bodyMd" as="p" alignment="center" tone="subdued">
                   Get started by creating your first AI-powered campaign or importing existing campaigns from Google Ads.
                 </Text>
                 <InlineStack gap="200">
@@ -326,7 +326,7 @@ export function CampaignManager({ shopName, hasFeatureAccess = false }: Campaign
           <InlineStack align="space-between">
             <BlockStack gap="200">
               <Text variant="headingLg" as="h2">Campaign Manager</Text>
-              <Text variant="bodyMd" tone="subdued">
+              <Text variant="bodyMd" as="p" tone="subdued">
                 Showing data for: {getPeriodLabel(selectedPeriod)}
               </Text>
             </BlockStack>
@@ -424,29 +424,29 @@ export function CampaignManager({ shopName, hasFeatureAccess = false }: Campaign
       <Card>
         <InlineStack align="space-between">
           <BlockStack gap="100">
-            <Text variant="headingMd" fontWeight="bold">
+            <Text variant="headingMd" as="h3" fontWeight="bold">
               {formatCurrency(campaigns.reduce((sum, c) => sum + c.spent, 0))}
             </Text>
-            <Text variant="bodySm" tone="subdued">Total Spend Today</Text>
+            <Text variant="bodySm" as="span" tone="subdued">Total Spend Today</Text>
           </BlockStack>
           <BlockStack gap="100">
-            <Text variant="headingMd" fontWeight="bold" tone="success">
+            <Text variant="headingMd" as="h3" fontWeight="bold" tone="success">
               {campaigns.reduce((sum, c) => sum + c.conversions, 0)}
             </Text>
-            <Text variant="bodySm" tone="subdued">Total Conversions</Text>
+            <Text variant="bodySm" as="span" tone="subdued">Total Conversions</Text>
           </BlockStack>
           <BlockStack gap="100">
-            <Text variant="headingMd" fontWeight="bold">
+            <Text variant="headingMd" as="h3" fontWeight="bold">
               {(campaigns.reduce((sum, c) => sum + c.roas * c.spent, 0) /
                 campaigns.reduce((sum, c) => sum + c.spent, 0) || 0).toFixed(1)}x
             </Text>
-            <Text variant="bodySm" tone="subdued">Average ROAS</Text>
+            <Text variant="bodySm" as="span" tone="subdued">Average ROAS</Text>
           </BlockStack>
           <BlockStack gap="100">
-            <Text variant="headingMd" fontWeight="bold">
+            <Text variant="headingMd" as="h3" fontWeight="bold">
               {campaigns.filter(c => c.aiOptimized).length}/{campaigns.length}
             </Text>
-            <Text variant="bodySm" tone="subdued">AI Optimized</Text>
+            <Text variant="bodySm" as="span" tone="subdued">AI Optimized</Text>
           </BlockStack>
         </InlineStack>
       </Card>

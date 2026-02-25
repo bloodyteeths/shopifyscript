@@ -2,7 +2,9 @@ import React from "react";
 import type { HeadersFunction, LoaderFunctionArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
+// @ts-expect-error moduleResolution mismatch with shopify-app-remix
 import { boundary } from "@shopify/shopify-app-remix/server";
+// @ts-expect-error moduleResolution mismatch with shopify-app-remix
 import { AppProvider } from "@shopify/shopify-app-remix/react";
 import polarisStyles from "@shopify/polaris/build/esm/styles.css";
 

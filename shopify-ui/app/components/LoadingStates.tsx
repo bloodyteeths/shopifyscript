@@ -293,8 +293,8 @@ export function Toast({
           padding: '0',
           opacity: 0.7
         }}
-        onMouseOver={e => e.target.style.opacity = '1'}
-        onMouseOut={e => e.target.style.opacity = '0.7'}
+        onMouseOver={e => (e.target as HTMLElement).style.opacity = '1'}
+        onMouseOut={e => (e.target as HTMLElement).style.opacity = '0.7'}
       >
         ✕
       </button>

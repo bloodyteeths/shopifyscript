@@ -28,7 +28,10 @@ import {
   Popover,
   ActionList,
   Tooltip,
-  ProgressBar
+  ProgressBar,
+  BlockStack,
+  InlineStack,
+  Box
 } from "@shopify/polaris";
 import {
   PlusIcon,
@@ -36,7 +39,7 @@ import {
   DeleteIcon,
   ExportIcon,
   ShareIcon,
-  TemplateIcon,
+  ThemeTemplateIcon,
   ViewIcon,
   SettingsIcon
 } from "@shopify/polaris-icons";
@@ -127,10 +130,10 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
         fetch(`${backendUrl}/api/dashboards/templates`, { headers })
       ]);
 
-      const dashboards = dashboardsResponse.ok ? 
+      const dashboards = dashboardsResponse.ok ?
         (await dashboardsResponse.json()).data || [] : [];
-      
-      const templates = templatesResponse.ok ? 
+
+      const templates = templatesResponse.ok ?
         (await templatesResponse.json()).data || [] : [];
 
       return json<LoaderData>({
@@ -141,7 +144,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
         shopName
       });
 
-    } catch (backendError) {
+    } catch (backendError: unknown) {
       console.error("Backend API error:", backendError);
       return json<LoaderData>({
         dashboards: [],
@@ -153,7 +156,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
       });
     }
 
-  } catch (error) {
+  } catch (error: unknown) {
     console.error("Dashboard loader error:", error);
     throw redirect("/app");
   }
@@ -181,7 +184,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       case "create_dashboard": {
         const name = formData.get("dashboard_name");
         const description = formData.get("description");
-        
+
         const response = await fetch(`${backendUrl}/api/dashboards`, {
           method: 'POST',
           headers,
@@ -197,7 +200,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       case "create_from_template": {
         const templateId = formData.get("template_id");
         const name = formData.get("dashboard_name");
-        
+
         const response = await fetch(`${backendUrl}/api/dashboards/from-template`, {
           method: 'POST',
           headers,
@@ -212,7 +215,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
       case "delete_dashboard": {
         const dashboardId = formData.get("dashboard_id");
-        
+
         const response = await fetch(`${backendUrl}/api/dashboards/${dashboardId}`, {
           method: 'DELETE',
           headers
@@ -224,7 +227,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       case "export_dashboard": {
         const dashboardId = formData.get("dashboard_id");
         const format = formData.get("format") || "json";
-        
+
         const response = await fetch(`${backendUrl}/api/dashboards/${dashboardId}/export`, {
           method: 'POST',
           headers,
@@ -238,23 +241,23 @@ export const action = async ({ request }: ActionFunctionArgs) => {
         return json({ success: false, error: "Unknown action" });
     }
 
-  } catch (error) {
+  } catch (error: unknown) {
     console.error("Dashboard action error:", error);
-    return json({ success: false, error: error.message });
+    return json({ success: false, error: (error as Error).message });
   }
 };
 
 // Main component
 export default function CustomDashboards() {
-  const { 
-    dashboards, 
-    templates, 
-    hasEnterpriseAccess, 
-    currentTier, 
+  const {
+    dashboards,
+    templates,
+    hasEnterpriseAccess,
+    currentTier,
     shopName,
-    error: loaderError 
+    error: loaderError
   } = useLoaderData<typeof loader>();
-  
+
   const navigate = useNavigate();
   const submit = useSubmit();
   const fetcher = useFetcher();
@@ -285,7 +288,7 @@ export default function CustomDashboards() {
     formData.append("description", newDashboardDescription);
 
     submit(formData, { method: "post" });
-    
+
     setShowCreateModal(false);
     setNewDashboardName("");
     setNewDashboardDescription("");
@@ -319,7 +322,7 @@ export default function CustomDashboards() {
       const formData = new FormData();
       formData.append("action", "delete_dashboard");
       formData.append("dashboard_id", dashboardId.toString());
-      
+
       submit(formData, { method: "post" });
     }
   }, [submit]);
@@ -330,7 +333,7 @@ export default function CustomDashboards() {
     formData.append("action", "export_dashboard");
     formData.append("dashboard_id", dashboardId.toString());
     formData.append("format", format);
-    
+
     submit(formData, { method: "post" });
   }, [submit]);
 
@@ -384,7 +387,7 @@ export default function CustomDashboards() {
                   </ul>
                 </div>
                 <div style={{ marginTop: "1rem" }}>
-                  <Badge status="warning">Current Plan: {currentTier.toUpperCase()}</Badge>
+                  <Badge tone="warning">{`Current Plan: ${currentTier.toUpperCase()}`}</Badge>
                 </div>
               </EmptyState>
             </Card>
@@ -396,9 +399,9 @@ export default function CustomDashboards() {
 
   // Main dashboard interface
   return (
-    <Page 
+    <Page
       title="Custom Dashboards"
-      subtitle={`Enterprise feature • ${dashboards.length} dashboard${dashboards.length !== 1 ? 's' : ''}`}
+      subtitle={`Enterprise feature \u2022 ${dashboards.length} dashboard${dashboards.length !== 1 ? 's' : ''}`}
       primaryAction={{
         content: "Create Dashboard",
         onAction: () => setShowCreateModal(true)
@@ -416,7 +419,7 @@ export default function CustomDashboards() {
           <Layout.Section>
             <Banner
               title="Error"
-              status="critical"
+              tone="critical"
               onDismiss={() => setError("")}
             >
               <p>{error}</p>
@@ -431,7 +434,7 @@ export default function CustomDashboards() {
               <div style={{ textAlign: "center", padding: "2rem" }}>
                 <Spinner size="large" />
                 <div style={{ marginTop: "1rem" }}>
-                  <Text variant="bodyMd">Processing dashboard operation...</Text>
+                  <Text variant="bodyMd" as="p">Processing dashboard operation...</Text>
                 </div>
               </div>
             </Card>
@@ -502,39 +505,38 @@ export default function CustomDashboards() {
                       url={`/app/dashboards/${id}`}
                       accessibilityLabel={`View dashboard ${dashboard_name}`}
                       media={
-                        <Avatar 
-                          customer={false} 
-                          size="medium"
+                        <Avatar
+                          size="md"
                           name={dashboard_name}
                         />
                       }
                       shortcutActions={shortcutActions}
                     >
-                      <Stack distribution="fill" alignment="center">
-                        <Stack vertical spacing="tight">
-                          <Stack spacing="tight">
-                            <Text variant="bodyMd" fontWeight="semibold">
+                      <InlineStack align="space-between" blockAlign="center">
+                        <BlockStack gap="200">
+                          <InlineStack gap="200">
+                            <Text variant="bodyMd" as="p" fontWeight="semibold">
                               {dashboard_name}
                             </Text>
                             {is_default && (
-                              <Badge status="info">Default</Badge>
+                              <Badge tone="info">Default</Badge>
                             )}
-                          </Stack>
+                          </InlineStack>
                           {description && (
-                            <Text variant="bodySm" color="subdued">
+                            <Text variant="bodySm" as="span" tone="subdued">
                               {description}
                             </Text>
                           )}
-                          <Stack spacing="tight">
-                            <Text variant="bodySm" color="subdued">
-                              {widgets?.length || 0} widgets • {view_count} views
+                          <InlineStack gap="200">
+                            <Text variant="bodySm" as="span" tone="subdued">
+                              {widgets?.length || 0} widgets \u2022 {view_count} views
                             </Text>
-                            <Text variant="bodySm" color="subdued">
+                            <Text variant="bodySm" as="span" tone="subdued">
                               Updated {new Date(updated_at).toLocaleDateString()}
                             </Text>
-                          </Stack>
-                        </Stack>
-                        
+                          </InlineStack>
+                        </BlockStack>
+
                         <Popover
                           active={popoverActive[id] || false}
                           activator={
@@ -586,7 +588,7 @@ export default function CustomDashboards() {
                             ]}
                           />
                         </Popover>
-                      </Stack>
+                      </InlineStack>
                     </ResourceItem>
                   );
                 }}
@@ -613,7 +615,7 @@ export default function CustomDashboards() {
           ]}
         >
           <Modal.Section>
-            <Stack vertical spacing="loose">
+            <BlockStack gap="400">
               <TextField
                 label="Dashboard Name"
                 value={newDashboardName}
@@ -629,7 +631,7 @@ export default function CustomDashboards() {
                 multiline={3}
                 autoComplete="off"
               />
-            </Stack>
+            </BlockStack>
           </Modal.Section>
         </Modal>
 
@@ -650,10 +652,10 @@ export default function CustomDashboards() {
               onAction: () => setShowTemplateModal(false)
             }
           ]}
-          large
+          size="large"
         >
           <Modal.Section>
-            <Stack vertical spacing="loose">
+            <BlockStack gap="400">
               <TextField
                 label="Dashboard Name"
                 value={newDashboardName}
@@ -661,48 +663,48 @@ export default function CustomDashboards() {
                 placeholder="e.g., My Performance Dashboard"
                 autoComplete="off"
               />
-              
-              <Text variant="headingMd">Available Templates</Text>
-              
-              <div style={{ 
-                display: "grid", 
-                gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", 
-                gap: "1rem" 
+
+              <Text variant="headingMd" as="h3">Available Templates</Text>
+
+              <div style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
+                gap: "1rem"
               }}>
                 {templates.map((template) => (
-                  <Card 
+                  <Card
                     key={template.id}
-                    subdued={selectedTemplate?.id !== template.id}
+                    background={selectedTemplate?.id !== template.id ? "bg-surface-secondary" : undefined}
                   >
                     <div
                       style={{
                         padding: "1rem",
                         cursor: "pointer",
-                        border: selectedTemplate?.id === template.id 
-                          ? "2px solid #5C6AC4" 
+                        border: selectedTemplate?.id === template.id
+                          ? "2px solid #5C6AC4"
                           : "2px solid transparent"
                       }}
                       onClick={() => setSelectedTemplate(template)}
                     >
-                      <Stack vertical spacing="tight">
-                        <Stack distribution="equalSpacing">
-                          <Text variant="bodyMd" fontWeight="semibold">
+                      <BlockStack gap="200">
+                        <InlineStack align="space-between">
+                          <Text variant="bodyMd" as="p" fontWeight="semibold">
                             {template.template_name}
                           </Text>
                           <Badge>{template.template_category}</Badge>
-                        </Stack>
-                        <Text variant="bodySm" color="subdued">
+                        </InlineStack>
+                        <Text variant="bodySm" as="span" tone="subdued">
                           {template.template_description}
                         </Text>
-                        <Badge status="info">
-                          {template.tier_requirement.toUpperCase()} tier
+                        <Badge tone="info">
+                          {`${template.tier_requirement.toUpperCase()} tier`}
                         </Badge>
-                      </Stack>
+                      </BlockStack>
                     </div>
                   </Card>
                 ))}
               </div>
-            </Stack>
+            </BlockStack>
           </Modal.Section>
         </Modal>
       </Layout>

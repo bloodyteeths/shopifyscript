@@ -136,10 +136,11 @@ export async function backendFetch(
 
     return { status: res.status, json };
   } catch (fetchError) {
-    console.error(`💥 Fetch error for ${pathname}:`, fetchError.message);
+    const errMsg = fetchError instanceof Error ? fetchError.message : String(fetchError);
+    console.error(`💥 Fetch error for ${pathname}:`, errMsg);
     return {
       status: 500,
-      json: { ok: false, error: `Network error: ${fetchError.message}` },
+      json: { ok: false, error: `Network error: ${errMsg}` },
     };
   }
 }

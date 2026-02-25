@@ -6,7 +6,6 @@ import {
   FormLayout,
   TextField,
   Button,
-  Stack,
   Text,
   Banner,
   Spinner,
@@ -15,7 +14,6 @@ import {
   Divider,
   ButtonGroup,
   Modal,
-  TextContainer,
   List,
   Toast,
   Frame,
@@ -29,7 +27,7 @@ import {
   BlockStack,
   Collapsible,
 } from "@shopify/polaris";
-import { ViewIcon, AnalyticsIcon, EditIcon, CheckIcon } from "@shopify/polaris-icons";
+import { ViewIcon, ChartVerticalIcon, EditIcon, CheckIcon } from "@shopify/polaris-icons";
 
 interface LandingPageOptimizerProps {
   tenant?: string;
@@ -103,7 +101,7 @@ export default function LandingPageOptimizer({ tenant, shopifySession }: Landing
         // Load the most recent analysis
         setAnalysisResult(data.suggestions[0]);
       }
-    } catch (error) {
+    } catch (error: unknown) {
       console.warn("Failed to load existing suggestions:", error);
     }
   }, [tenant]);
@@ -152,7 +150,7 @@ export default function LandingPageOptimizer({ tenant, shopifySession }: Landing
         setError(data.error || "Analysis failed");
         setToast({ content: data.error || "Analysis failed", error: true });
       }
-    } catch (error) {
+    } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : "Analysis failed";
       setError(errorMessage);
       setToast({ content: errorMessage, error: true });
@@ -195,7 +193,7 @@ export default function LandingPageOptimizer({ tenant, shopifySession }: Landing
         setError(data.error || "Draft creation failed");
         setToast({ content: data.error || "Draft creation failed", error: true });
       }
-    } catch (error) {
+    } catch (error: unknown) {
       const errorMessage = error instanceof Error ? error.message : "Draft creation failed";
       setError(errorMessage);
       setToast({ content: errorMessage, error: true });
@@ -204,7 +202,7 @@ export default function LandingPageOptimizer({ tenant, shopifySession }: Landing
     }
   }, [analysisResult, tenant, shopifySession]);
 
-  const getScoreColor = (score: number) => {
+  const getScoreColor = (score: number): "success" | "warning" | "critical" => {
     if (score >= 8) return "success";
     if (score >= 6) return "warning";
     return "critical";
@@ -238,7 +236,7 @@ export default function LandingPageOptimizer({ tenant, shopifySession }: Landing
             <Text variant="headingMd" as="h2">
               Landing Page AI Analyzer
             </Text>
-            <Text color="subdued">
+            <Text as="p" tone="subdued">
               Enter a URL to analyze your landing page and receive AI-powered optimization suggestions.
               This PRO tier feature analyzes conversion potential and suggests improvements.
             </Text>
@@ -254,14 +252,15 @@ export default function LandingPageOptimizer({ tenant, shopifySession }: Landing
                 helpText="Enter the full URL of the page you want to analyze"
                 error={error}
                 disabled={analyzing}
+                autoComplete="off"
               />
 
               <Button
-                primary
+                variant="primary"
                 loading={analyzing}
                 onClick={analyzePage}
                 disabled={!pageUrl.trim() || analyzing}
-                icon={AnalyticsIcon}
+                icon={ChartVerticalIcon}
               >
                 {analyzing ? "Analyzing Page..." : "Analyze Page"}
               </Button>
@@ -271,7 +270,7 @@ export default function LandingPageOptimizer({ tenant, shopifySession }: Landing
               <Card>
                 <BlockStack gap="200" align="center">
                   <Spinner size="large" />
-                  <Text>Analyzing page content and generating optimization suggestions...</Text>
+                  <Text as="span">Analyzing page content and generating optimization suggestions...</Text>
                   <ProgressBar progress={75} />
                 </BlockStack>
               </Card>
@@ -287,7 +286,7 @@ export default function LandingPageOptimizer({ tenant, shopifySession }: Landing
               </Text>
               <Box padding="300" background="bg-surface-secondary" borderRadius="200">
                 <InlineStack align="space-between">
-                  <Text variant="bodyMd">
+                  <Text variant="bodyMd" as="p">
                     <strong>URL:</strong> {analysisResult.url}
                   </Text>
                   <Badge tone="info">
@@ -316,11 +315,11 @@ export default function LandingPageOptimizer({ tenant, shopifySession }: Landing
                 Page Analysis Results
               </Text>
               <Badge tone={getScoreColor(analysisResult.analysis.overallScore)}>
-                Score: {analysisResult.analysis.overallScore}/10
+                {`Score: ${analysisResult.analysis.overallScore}/10`}
               </Badge>
             </InlineStack>
 
-            <Text color="subdued">
+            <Text as="p" tone="subdued">
               URL: {analysisResult.url}
             </Text>
 
@@ -328,19 +327,17 @@ export default function LandingPageOptimizer({ tenant, shopifySession }: Landing
               variant="plain"
               onClick={() => toggleSection('analysis')}
               textAlign="left"
+              icon={ViewIcon}
             >
-              <InlineStack gap="200">
-                <Icon source={ViewIcon} />
-                <Text variant="bodyMd">Analysis Details</Text>
-              </InlineStack>
+              Analysis Details
             </Button>
 
-            <Collapsible open={expandedSections.analysis}>
+            <Collapsible open={expandedSections.analysis} id="analysis-section">
               <BlockStack gap="300">
                 <InlineStack gap="500" wrap={false}>
                   <Card>
                     <BlockStack gap="200">
-                      <Text variant="headingSm" color="success">
+                      <Text variant="headingSm" as="h4" tone="success">
                         Strengths
                       </Text>
                       <List type="bullet">
@@ -353,7 +350,7 @@ export default function LandingPageOptimizer({ tenant, shopifySession }: Landing
 
                   <Card>
                     <BlockStack gap="200">
-                      <Text variant="headingSm" color="critical">
+                      <Text variant="headingSm" as="h4" tone="critical">
                         Areas for Improvement
                       </Text>
                       <List type="bullet">
@@ -399,25 +396,23 @@ export default function LandingPageOptimizer({ tenant, shopifySession }: Landing
               variant="plain"
               onClick={() => toggleSection('suggestions')}
               textAlign="left"
+              icon={EditIcon}
             >
-              <InlineStack gap="200">
-                <Icon source={EditIcon} />
-                <Text variant="headingMd">AI Optimization Suggestions</Text>
-              </InlineStack>
+              AI Optimization Suggestions
             </Button>
 
-            <Collapsible open={expandedSections.suggestions}>
+            <Collapsible open={expandedSections.suggestions} id="suggestions-section">
               <BlockStack gap="400">
                 {/* Title Suggestions */}
                 {analysisResult.suggestions.titleSuggestions?.length > 0 && (
                   <Card>
                     <BlockStack gap="200">
-                      <Text variant="headingSm">Title Optimizations</Text>
+                      <Text variant="headingSm" as="h4">Title Optimizations</Text>
                       {analysisResult.suggestions.titleSuggestions.map((suggestion, index) => (
                         <Box key={index} padding="300" background="bg-surface-secondary" borderRadius="200">
                           <BlockStack gap="100">
-                            <Text variant="bodyMd"><strong>{suggestion.suggestion}</strong></Text>
-                            <Text color="subdued">{suggestion.reason}</Text>
+                            <Text variant="bodyMd" as="p"><strong>{suggestion.suggestion}</strong></Text>
+                            <Text as="span" tone="subdued">{suggestion.reason}</Text>
                           </BlockStack>
                         </Box>
                       ))}
@@ -429,12 +424,12 @@ export default function LandingPageOptimizer({ tenant, shopifySession }: Landing
                 {analysisResult.suggestions.ctaSuggestions?.length > 0 && (
                   <Card>
                     <BlockStack gap="200">
-                      <Text variant="headingSm">Call-to-Action Improvements</Text>
+                      <Text variant="headingSm" as="h4">Call-to-Action Improvements</Text>
                       {analysisResult.suggestions.ctaSuggestions.map((suggestion, index) => (
                         <Box key={index} padding="300" background="bg-surface-secondary" borderRadius="200">
                           <BlockStack gap="100">
-                            <Text variant="bodyMd"><strong>{suggestion.suggestion}</strong></Text>
-                            <Text color="subdued">{suggestion.reason}</Text>
+                            <Text variant="bodyMd" as="p"><strong>{suggestion.suggestion}</strong></Text>
+                            <Text as="span" tone="subdued">{suggestion.reason}</Text>
                           </BlockStack>
                         </Box>
                       ))}
@@ -446,12 +441,12 @@ export default function LandingPageOptimizer({ tenant, shopifySession }: Landing
                 {analysisResult.suggestions.aboveTheFoldSuggestions?.length > 0 && (
                   <Card>
                     <BlockStack gap="200">
-                      <Text variant="headingSm">Above-the-Fold Content</Text>
+                      <Text variant="headingSm" as="h4">Above-the-Fold Content</Text>
                       {analysisResult.suggestions.aboveTheFoldSuggestions.map((suggestion, index) => (
                         <Box key={index} padding="300" background="bg-surface-secondary" borderRadius="200">
                           <BlockStack gap="100">
-                            <Text variant="bodyMd"><strong>{suggestion.suggestion}</strong></Text>
-                            <Text color="subdued">{suggestion.reason}</Text>
+                            <Text variant="bodyMd" as="p"><strong>{suggestion.suggestion}</strong></Text>
+                            <Text as="span" tone="subdued">{suggestion.reason}</Text>
                           </BlockStack>
                         </Box>
                       ))}
@@ -464,12 +459,12 @@ export default function LandingPageOptimizer({ tenant, shopifySession }: Landing
                   {analysisResult.suggestions.trustSuggestions?.length > 0 && (
                     <Card>
                       <BlockStack gap="200">
-                        <Text variant="headingSm">Trust Building</Text>
+                        <Text variant="headingSm" as="h4">Trust Building</Text>
                         {analysisResult.suggestions.trustSuggestions.slice(0, 2).map((suggestion, index) => (
                           <Box key={index} padding="200" background="bg-surface-secondary" borderRadius="200">
                             <BlockStack gap="100">
-                              <Text variant="bodyMd">{suggestion.suggestion}</Text>
-                              <Text color="subdued" variant="bodySm">{suggestion.reason}</Text>
+                              <Text variant="bodyMd" as="p">{suggestion.suggestion}</Text>
+                              <Text tone="subdued" variant="bodySm" as="span">{suggestion.reason}</Text>
                             </BlockStack>
                           </Box>
                         ))}
@@ -480,12 +475,12 @@ export default function LandingPageOptimizer({ tenant, shopifySession }: Landing
                   {analysisResult.suggestions.urgencySuggestions?.length > 0 && (
                     <Card>
                       <BlockStack gap="200">
-                        <Text variant="headingSm">Urgency Elements</Text>
+                        <Text variant="headingSm" as="h4">Urgency Elements</Text>
                         {analysisResult.suggestions.urgencySuggestions.slice(0, 2).map((suggestion, index) => (
                           <Box key={index} padding="200" background="bg-surface-secondary" borderRadius="200">
                             <BlockStack gap="100">
-                              <Text variant="bodyMd">{suggestion.suggestion}</Text>
-                              <Text color="subdued" variant="bodySm">{suggestion.reason}</Text>
+                              <Text variant="bodyMd" as="p">{suggestion.suggestion}</Text>
+                              <Text tone="subdued" variant="bodySm" as="span">{suggestion.reason}</Text>
                             </BlockStack>
                           </Box>
                         ))}
@@ -505,14 +500,12 @@ export default function LandingPageOptimizer({ tenant, shopifySession }: Landing
               variant="plain"
               onClick={() => toggleSection('priorities')}
               textAlign="left"
+              icon={CheckIcon}
             >
-              <InlineStack gap="200">
-                <Icon source={CheckIcon} />
-                <Text variant="headingMd">Priority Actions</Text>
-              </InlineStack>
+              Priority Actions
             </Button>
 
-            <Collapsible open={expandedSections.priorities}>
+            <Collapsible open={expandedSections.priorities} id="priorities-section">
               <BlockStack gap="300">
                 {analysisResult.suggestions.priorityChanges?.map((change, index) => (
                   <CalloutCard
@@ -522,17 +515,16 @@ export default function LandingPageOptimizer({ tenant, shopifySession }: Landing
                     primaryAction={{
                       content: "Create Draft",
                       onAction: createDraft,
-                      loading: creating
                     }}
                   >
-                    <Text>
+                    <Text as="p">
                       <strong>Priority:</strong> {change.priority} | <strong>Expected Lift:</strong> {change.expectedLift}
                     </Text>
                   </CalloutCard>
                 ))}
 
                 <Banner tone="info">
-                  <Text>
+                  <Text as="p">
                     <strong>Important:</strong> Drafts are created for review only and never auto-published.
                     You maintain full control over what changes go live.
                   </Text>
@@ -548,8 +540,8 @@ export default function LandingPageOptimizer({ tenant, shopifySession }: Landing
       <Layout.Section>
         <Card>
           <BlockStack gap="300" align="center">
-            <Text variant="headingMd">No Analysis Results</Text>
-            <Text color="subdued">
+            <Text variant="headingMd" as="h3">No Analysis Results</Text>
+            <Text as="p" tone="subdued">
               Analyze a landing page first to see AI-powered optimization suggestions.
             </Text>
             <Button onClick={() => setSelectedTab(0)}>

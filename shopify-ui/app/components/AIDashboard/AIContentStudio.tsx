@@ -15,7 +15,6 @@ import {
   Checkbox,
   RadioButton,
   Modal,
-  TextContainer,
   Divider,
   Icon,
   Thumbnail,
@@ -102,7 +101,7 @@ export function AIContentStudio({ shopName, hasFeatureAccess = false }: AIConten
       } else {
         throw new Error(`Failed to load ad drafts: ${response.status}`);
       }
-    } catch (err) {
+    } catch (err: unknown) {
       console.error("Failed to fetch drafts:", err);
       setError(err instanceof Error ? err.message : "Failed to load ad drafts");
       setDrafts([]);
@@ -153,7 +152,7 @@ export function AIContentStudio({ shopName, hasFeatureAccess = false }: AIConten
             setStatusBanner({ tone: 'critical', message: `AI generation failed${error ? `: ${String(error)}` : ''}` });
           }
         }
-      } catch (e) {
+      } catch (e: unknown) {
         // Non-fatal; continue polling
       }
     };
@@ -197,7 +196,7 @@ export function AIContentStudio({ shopName, hasFeatureAccess = false }: AIConten
       await navigator.clipboard.writeText(text);
       setStatusBanner({ tone: 'success', message: successMsg });
       setTimeout(() => setStatusBanner(null), 1500);
-    } catch (e) {
+    } catch (e: unknown) {
       setStatusBanner({ tone: 'critical', message: 'Failed to copy' });
     }
   };
@@ -270,7 +269,7 @@ export function AIContentStudio({ shopName, hasFeatureAccess = false }: AIConten
       setStatusBanner({ tone: 'critical', message: 'Failed to submit AI generation request. Please try again.' });
       setIsGenerating(false);
     }
-  } catch (err) {
+  } catch (err: unknown) {
     console.error("Error generating ads:", err);
     setStatusBanner({ tone: 'critical', message: `AI generation failed: ${err instanceof Error ? err.message : String(err)}` });
     setIsGenerating(false);
@@ -329,7 +328,7 @@ export function AIContentStudio({ shopName, hasFeatureAccess = false }: AIConten
           <InlineStack align="space-between" blockAlign="center">
             <BlockStack gap="200">
               <Text variant="headingLg" as="h2">AI Content Studio</Text>
-              <Text variant="bodyMd" tone="subdued">Loading ad drafts...</Text>
+              <Text variant="bodyMd" as="p" tone="subdued">Loading ad drafts...</Text>
             </BlockStack>
             <Spinner size="small" />
           </InlineStack>
@@ -369,13 +368,13 @@ export function AIContentStudio({ shopName, hasFeatureAccess = false }: AIConten
             <BlockStack gap="200">
               <Text variant="headingLg" as="h2">AI Content Studio</Text>
               <InlineStack gap="200" blockAlign="center">
-                <Text variant="bodyMd" tone="subdued">
+                <Text variant="bodyMd" as="p" tone="subdued">
                   Create, test, and optimize ad content with AI
                 </Text>
                 {lastUpdated && (
                   <>
-                    <Text variant="bodyMd" tone="subdued">•</Text>
-                    <Text variant="bodySm" tone="subdued">
+                    <Text variant="bodyMd" as="p" tone="subdued">•</Text>
+                    <Text variant="bodySm" as="span" tone="subdued">
                       Updated {formatTimeAgo(lastUpdated)}
                     </Text>
                   </>
@@ -429,7 +428,7 @@ export function AIContentStudio({ shopName, hasFeatureAccess = false }: AIConten
               </InlineStack>
               {selectedDrafts.length > 0 && (
                 <InlineStack gap="200">
-                  <Text variant="bodyMd">{selectedDrafts.length} selected</Text>
+                  <Text variant="bodyMd" as="p">{selectedDrafts.length} selected</Text>
                   <Button onClick={() => alert(`Deploy ${selectedDrafts.length} ads to campaign - feature coming soon`)}>
                     Deploy to Campaign
                   </Button>
@@ -477,15 +476,15 @@ export function AIContentStudio({ shopName, hasFeatureAccess = false }: AIConten
                       </InlineStack>
 
                       <BlockStack gap="200">
-                        <Text variant="headingMd" fontWeight="bold">{draft.theme}</Text>
+                        <Text variant="headingMd" as="h3" fontWeight="bold">{draft.theme}</Text>
                         <Box background="bg-surface-secondary" padding="200" borderRadius="200">
                           <BlockStack gap="200">
-                            <Text variant="bodySm" fontWeight="semibold">Headlines:</Text>
+                            <Text variant="bodySm" as="span" fontWeight="semibold">Headlines:</Text>
                             {draft.headlines.slice(0, 2).map((headline, i) => (
-                              <Text key={i} variant="bodySm">• {headline}</Text>
+                              <Text key={i} variant="bodySm" as="span">• {headline}</Text>
                             ))}
                             {draft.headlines.length > 2 && (
-                              <Text variant="bodySm" tone="subdued">
+                              <Text variant="bodySm" as="span" tone="subdued">
                                 +{draft.headlines.length - 2} more
                               </Text>
                             )}
@@ -496,18 +495,18 @@ export function AIContentStudio({ shopName, hasFeatureAccess = false }: AIConten
                       {draft.performance ? (
                         <InlineStack gap="400">
                           <BlockStack gap="100">
-                            <Text variant="headingSm">{draft.performance.ctr?.toFixed(1) || '0.0'}%</Text>
-                            <Text variant="bodySm" tone="subdued">CTR</Text>
+                            <Text variant="headingSm" as="h4">{draft.performance.ctr?.toFixed(1) || '0.0'}%</Text>
+                            <Text variant="bodySm" as="span" tone="subdued">CTR</Text>
                           </BlockStack>
                           <BlockStack gap="100">
-                            <Text variant="headingSm" tone="success">
+                            <Text variant="headingSm" as="h4" tone="success">
                               {draft.performance.conversions || 0}
                             </Text>
-                            <Text variant="bodySm" tone="subdued">Conversions</Text>
+                            <Text variant="bodySm" as="span" tone="subdued">Conversions</Text>
                           </BlockStack>
                         </InlineStack>
                       ) : (
-                        <Text variant="bodySm" tone="subdued">
+                        <Text variant="bodySm" as="span" tone="subdued">
                           Performance data will appear once ads are deployed and active.
                         </Text>
                       )}
@@ -516,8 +515,7 @@ export function AIContentStudio({ shopName, hasFeatureAccess = false }: AIConten
                         <Button
                           size="slim"
                           variant="plain"
-                          onClick={(e) => {
-                            e.stopPropagation();
+                          onClick={() => {
                             alert(`Preview ad: ${draft.theme}\n\nHeadlines:\n${draft.headlines.join('\n')}\n\nDescriptions:\n${draft.descriptions.join('\n')}`);
                           }}
                         >
@@ -526,8 +524,7 @@ export function AIContentStudio({ shopName, hasFeatureAccess = false }: AIConten
                         <Button
                           size="slim"
                           variant="plain"
-                          onClick={(e) => {
-                            e.stopPropagation();
+                          onClick={() => {
                             copyFullAd(draft);
                           }}
                         >
@@ -536,8 +533,7 @@ export function AIContentStudio({ shopName, hasFeatureAccess = false }: AIConten
                         <Button
                           size="slim"
                           variant="plain"
-                          onClick={(e) => {
-                            e.stopPropagation();
+                          onClick={() => {
                             alert('Edit functionality coming soon');
                           }}
                         >
@@ -546,8 +542,7 @@ export function AIContentStudio({ shopName, hasFeatureAccess = false }: AIConten
                         <Button
                           size="slim"
                           variant="plain"
-                          onClick={(e) => {
-                            e.stopPropagation();
+                          onClick={() => {
                             alert('Duplicate functionality coming soon');
                           }}
                         >
@@ -563,11 +558,11 @@ export function AIContentStudio({ shopName, hasFeatureAccess = false }: AIConten
             <Card>
               <Box padding="600">
                 <BlockStack gap="400" align="center">
-                  <Text variant="headingMd" alignment="center">No ad drafts found</Text>
-                  <Text variant="bodyMd" alignment="center" tone="subdued">
+                  <Text variant="headingMd" as="h3" alignment="center">No ad drafts found</Text>
+                  <Text variant="bodyMd" as="p" alignment="center" tone="subdued">
                     Create your first AI-generated ad variations to get started.
                   </Text>
-                  <Text variant="bodySm" alignment="center" tone="subdued">
+                  <Text variant="bodySm" as="span" alignment="center" tone="subdued">
                     AI will analyze your business and create compelling ad copy in under 60 seconds.
                   </Text>
                   <InlineStack gap="200">
@@ -589,7 +584,7 @@ export function AIContentStudio({ shopName, hasFeatureAccess = false }: AIConten
         /* Generate New Tab */
         <Card>
           <BlockStack gap="600">
-            <Text variant="headingMd">Quick Generate</Text>
+            <Text variant="headingMd" as="h3">Quick Generate</Text>
 
             <BlockStack gap="400">
               <TextField
@@ -598,6 +593,7 @@ export function AIContentStudio({ shopName, hasFeatureAccess = false }: AIConten
                 onChange={setTheme}
                 placeholder="e.g., Summer Sale, New Product Launch"
                 helpText="Describe what you're advertising"
+                autoComplete="off"
               />
 
               <TextField
@@ -607,6 +603,7 @@ export function AIContentStudio({ shopName, hasFeatureAccess = false }: AIConten
                 placeholder="e.g., affordable, quality, fast shipping"
                 helpText="Keywords to include in the ad copy"
                 multiline={2}
+                autoComplete="off"
               />
 
               <InlineStack gap="400">
@@ -637,7 +634,7 @@ export function AIContentStudio({ shopName, hasFeatureAccess = false }: AIConten
 
               <Box background="bg-surface-secondary" padding="400" borderRadius="200">
                 <BlockStack gap="300">
-                  <Text variant="headingSm">AI Generation Mode</Text>
+                  <Text variant="headingSm" as="h4">AI Generation Mode</Text>
                   <BlockStack gap="200">
                     <RadioButton
                       label="Creative - Generate unique, attention-grabbing copy"
@@ -696,20 +693,20 @@ export function AIContentStudio({ shopName, hasFeatureAccess = false }: AIConten
 
           <Card>
             <BlockStack gap="400">
-              <Text variant="headingMd">Active A/B Tests</Text>
+              <Text variant="headingMd" as="h3">Active A/B Tests</Text>
               <Divider />
               {drafts.filter(d => d.performance?.status === 'testing').slice(0, 3).map(draft => (
                 <Box key={draft.id} padding="300" background="bg-surface-secondary" borderRadius="200">
                   <InlineStack align="space-between">
                     <BlockStack gap="100">
-                      <Text variant="bodyMd" fontWeight="bold">{draft.theme}</Text>
-                      <Text variant="bodySm" tone="subdued">
+                      <Text variant="bodyMd" as="p" fontWeight="bold">{draft.theme}</Text>
+                      <Text variant="bodySm" as="span" tone="subdued">
                         Testing {draft.headlines.length} headlines × {draft.descriptions.length} descriptions
                       </Text>
                     </BlockStack>
                     <BlockStack gap="100" align="end">
                       <Badge tone="info">Testing</Badge>
-                      <Text variant="bodySm">72% confidence</Text>
+                      <Text variant="bodySm" as="span">72% confidence</Text>
                     </BlockStack>
                   </InlineStack>
                 </Box>
@@ -725,24 +722,24 @@ export function AIContentStudio({ shopName, hasFeatureAccess = false }: AIConten
           <Grid.Cell columnSpan={{ xs: 6, sm: 6, md: 6, lg: 6 }}>
             <Card>
               <BlockStack gap="300">
-                <Text variant="headingMd">Top Performing Elements</Text>
+                <Text variant="headingMd" as="h3">Top Performing Elements</Text>
                 <Divider />
                 <BlockStack gap="200">
                   <Box padding="200" background="bg-surface-success" borderRadius="200">
                     <InlineStack align="space-between">
-                      <Text variant="bodyMd">"Free Shipping" in headline</Text>
+                      <Text variant="bodyMd" as="p">"Free Shipping" in headline</Text>
                       <Badge tone="success">+45% CTR</Badge>
                     </InlineStack>
                   </Box>
                   <Box padding="200" background="bg-surface-success" borderRadius="200">
                     <InlineStack align="space-between">
-                      <Text variant="bodyMd">"Limited Time" urgency</Text>
+                      <Text variant="bodyMd" as="p">"Limited Time" urgency</Text>
                       <Badge tone="success">+32% conversions</Badge>
                     </InlineStack>
                   </Box>
                   <Box padding="200" background="bg-surface-success" borderRadius="200">
                     <InlineStack align="space-between">
-                      <Text variant="bodyMd">Price in description</Text>
+                      <Text variant="bodyMd" as="p">Price in description</Text>
                       <Badge tone="success">+28% ROAS</Badge>
                     </InlineStack>
                   </Box>
@@ -754,21 +751,21 @@ export function AIContentStudio({ shopName, hasFeatureAccess = false }: AIConten
           <Grid.Cell columnSpan={{ xs: 6, sm: 6, md: 6, lg: 6 }}>
             <Card>
               <BlockStack gap="300">
-                <Text variant="headingMd">AI Recommendations</Text>
+                <Text variant="headingMd" as="h3">AI Recommendations</Text>
                 <Divider />
                 <BlockStack gap="200">
                   <Box padding="200" background="bg-surface-warning" borderRadius="200">
-                    <Text variant="bodySm">
+                    <Text variant="bodySm" as="span">
                       Try emphasizing sustainability - competitors seeing 25% better engagement
                     </Text>
                   </Box>
                   <Box padding="200" background="bg-surface-warning" borderRadius="200">
-                    <Text variant="bodySm">
+                    <Text variant="bodySm" as="span">
                       Test shorter headlines (5-7 words) for mobile optimization
                     </Text>
                   </Box>
                   <Box padding="200" background="bg-surface-warning" borderRadius="200">
-                    <Text variant="bodySm">
+                    <Text variant="bodySm" as="span">
                       Include customer testimonials in descriptions for trust signals
                     </Text>
                   </Box>
@@ -789,21 +786,21 @@ export function AIContentStudio({ shopName, hasFeatureAccess = false }: AIConten
         <Modal.Section>
           {isGenerating ? (
             <BlockStack gap="400">
-              <Text variant="bodyMd" fontWeight="semibold">🔍 AI is analyzing your business...</Text>
+              <Text variant="bodyMd" as="p" fontWeight="semibold">AI is analyzing your business...</Text>
               <BlockStack gap="200">
-                <Text variant="bodySm">✓ Scraping your website for products and offers</Text>
-                <Text variant="bodySm">✓ Analyzing competitor strategies</Text>
-                <Text variant="bodySm">✓ Reviewing your Google Ads performance</Text>
-                <Text variant="bodySm">✓ Generating data-driven ad copy</Text>
+                <Text variant="bodySm" as="span">Scraping your website for products and offers</Text>
+                <Text variant="bodySm" as="span">Analyzing competitor strategies</Text>
+                <Text variant="bodySm" as="span">Reviewing your Google Ads performance</Text>
+                <Text variant="bodySm" as="span">Generating data-driven ad copy</Text>
               </BlockStack>
-              <Text variant="bodySm" tone="subdued">
+              <Text variant="bodySm" as="span" tone="subdued">
                 This comprehensive analysis takes 30-60 seconds but creates much better ads!
               </Text>
             </BlockStack>
           ) : (
             <BlockStack gap="400">
-              <Text variant="bodyMd">Ready to generate ads!</Text>
-              <Text variant="bodySm">
+              <Text variant="bodyMd" as="p">Ready to generate ads!</Text>
+              <Text variant="bodySm" as="span">
                 Click generate to create {numberOfVariants} unique ad variations using {aiMode} mode.
               </Text>
               <Button variant="primary" onClick={handleGenerateAds}>

@@ -13,12 +13,12 @@ import {
   DataTable,
   Button,
   ButtonGroup,
-  Stack,
+  BlockStack,
+  InlineStack,
   Box,
   Spinner,
   EmptyState,
   Tabs,
-  Tab,
   TextField,
   Select,
   Modal,
@@ -31,7 +31,6 @@ import {
   Collapsible,
   Divider,
   ProgressBar,
-  Choice,
   ChoiceList
 } from '@shopify/polaris';
 import {
@@ -41,8 +40,8 @@ import {
   ViewIcon,
   InfoIcon,
   AlertTriangleIcon,
-  TrendingUpIcon,
-  TrendingDownIcon,
+  ChevronUpIcon,
+  ChevronDownIcon,
   ExternalIcon
 } from '@shopify/polaris-icons';
 import {
@@ -116,8 +115,8 @@ export function CompetitorIntel({
       } else {
         console.error('Failed to fetch competitor intelligence:', result.error);
       }
-    } catch (err) {
-      console.error('Error fetching competitor intelligence:', err);
+    } catch (error: unknown) {
+      console.error('Error fetching competitor intelligence:', error instanceof Error ? error.message : String(error));
     } finally {
       setLoading(false);
     }
@@ -244,7 +243,7 @@ export function CompetitorIntel({
 
     return (
       <Layout>
-        <Layout.Section oneHalf>
+        <Layout.Section variant="oneHalf">
           <PieChartComponent
             title="Threat Level Distribution"
             subtitle="Competitors categorized by threat level"
@@ -256,11 +255,11 @@ export function CompetitorIntel({
             tooltipFormatter={(value, name) => [`${value} competitors`, name]}
           />
         </Layout.Section>
-        <Layout.Section oneHalf>
+        <Layout.Section variant="oneHalf">
           <Card>
-            <Box padding="4">
-              <Stack vertical spacing="loose">
-                <Text variant="headingMd">Threat Matrix Details</Text>
+            <Box padding="400">
+              <BlockStack gap="400">
+                <Text as="h3" variant="headingMd">Threat Matrix Details</Text>
                 {threatLevels.map(({ level, data, color, title }) => (
                   <Collapsible
                     key={level}
@@ -268,45 +267,46 @@ export function CompetitorIntel({
                     id={level}
                     transition={{duration: '150ms', timingFunction: 'ease'}}
                   >
-                    <Button
-                      plain
-                      fullWidth
-                      textAlign="left"
+                    <div
+                      role="button"
+                      tabIndex={0}
+                      style={{ cursor: 'pointer', width: '100%' }}
                       onClick={() => setExpandedSections(prev => ({ ...prev, [level]: !prev[level] }))}
+                      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setExpandedSections(prev => ({ ...prev, [level]: !prev[level] })); }}
                     >
-                      <Stack distribution="spaceBetween" alignment="center">
-                        <Stack spacing="tight" alignment="center">
-                          <Box width="12px" height="12px" background={color} borderRadius="1" />
-                          <Text variant="bodyMd" fontWeight="medium">{title}</Text>
+                      <InlineStack align="space-between" blockAlign="center">
+                        <InlineStack gap="200" blockAlign="center">
+                          <div style={{ width: '12px', height: '12px', backgroundColor: color, borderRadius: '4px' }} />
+                          <Text as="p" variant="bodyMd" fontWeight="medium">{title}</Text>
                           <Badge tone={level === 'high' ? 'critical' : level === 'medium' ? 'attention' : 'success'}>
-                            {data.length}
+                            {String(data.length)}
                           </Badge>
-                        </Stack>
-                        <Icon source={expandedSections[level] ? TrendingUpIcon : TrendingDownIcon} />
-                      </Stack>
-                    </Button>
-                    <Box paddingBlockStart="2">
-                      <Stack vertical spacing="tight">
+                        </InlineStack>
+                        <Icon source={expandedSections[level] ? ChevronUpIcon : ChevronDownIcon} />
+                      </InlineStack>
+                    </div>
+                    <Box paddingBlockStart="200">
+                      <BlockStack gap="200">
                         {data.slice(0, 5).map(competitor => (
-                          <Stack key={competitor.id} distribution="spaceBetween" alignment="center">
-                            <Stack spacing="tight" alignment="center">
-                              <Avatar size="small" name={competitor.name} />
-                              <Stack vertical spacing="extraTight">
-                                <Text variant="bodySm" fontWeight="medium">{competitor.name}</Text>
-                                <Text variant="caption" color="subdued">{competitor.domain}</Text>
-                              </Stack>
-                            </Stack>
-                            <Text variant="bodySm">{formatters.compact(competitor.estimatedRevenue)}</Text>
-                          </Stack>
+                          <InlineStack key={competitor.id} align="space-between" blockAlign="center">
+                            <InlineStack gap="200" blockAlign="center">
+                              <Avatar size="sm" name={competitor.name} />
+                              <BlockStack gap="100">
+                                <Text as="span" variant="bodySm" fontWeight="medium">{competitor.name}</Text>
+                                <Text as="span" variant="bodySm" tone="subdued">{competitor.domain}</Text>
+                              </BlockStack>
+                            </InlineStack>
+                            <Text as="span" variant="bodySm">{formatters.compact(competitor.estimatedRevenue)}</Text>
+                          </InlineStack>
                         ))}
                         {data.length > 5 && (
-                          <Text variant="caption" color="subdued">+{data.length - 5} more...</Text>
+                          <Text as="span" variant="bodySm" tone="subdued">+{data.length - 5} more...</Text>
                         )}
-                      </Stack>
+                      </BlockStack>
                     </Box>
                   </Collapsible>
                 ))}
-              </Stack>
+              </BlockStack>
             </Box>
           </Card>
         </Layout.Section>
@@ -316,25 +316,25 @@ export function CompetitorIntel({
 
   const renderCompetitorsTable = () => {
     const competitorTableData = filteredCompetitors.map(competitor => [
-      <Stack alignment="center" spacing="tight" key={competitor.id}>
-        <Avatar size="small" name={competitor.name} />
+      <InlineStack blockAlign="center" gap="200" key={competitor.id}>
+        <Avatar size="sm" name={competitor.name} />
         <Box>
-          <Text variant="bodyMd" fontWeight="medium">{competitor.name}</Text>
-          <Text variant="bodySm" color="subdued">{competitor.domain}</Text>
+          <Text as="p" variant="bodyMd" fontWeight="medium">{competitor.name}</Text>
+          <Text as="span" variant="bodySm" tone="subdued">{competitor.domain}</Text>
         </Box>
-      </Stack>,
+      </InlineStack>,
       <Badge tone={competitor.threatLevel === 'high' ? 'critical' : competitor.threatLevel === 'medium' ? 'attention' : 'success'}>
         {competitor.threatLevel}
       </Badge>,
-      <Text>{formatters.currency(competitor.estimatedRevenue)}</Text>,
-      <Text>{formatters.compact(competitor.employeeCount)} employees</Text>,
-      <Stack spacing="tight">
-        <Text variant="bodySm">Share: {competitor.marketPosition.x}%</Text>
-        <Text variant="bodySm">Growth: {competitor.marketPosition.y}%</Text>
-      </Stack>,
-      <Text variant="bodySm">{formatters.date(competitor.lastUpdated)}</Text>,
+      <Text as="span">{formatters.currency(competitor.estimatedRevenue)}</Text>,
+      <Text as="span">{formatters.compact(competitor.employeeCount)} employees</Text>,
+      <InlineStack gap="200">
+        <Text as="span" variant="bodySm">Share: {competitor.marketPosition.x}%</Text>
+        <Text as="span" variant="bodySm">Growth: {competitor.marketPosition.y}%</Text>
+      </InlineStack>,
+      <Text as="span" variant="bodySm">{formatters.date(competitor.lastUpdated)}</Text>,
       <Button
-        plain
+        variant="plain"
         icon={ViewIcon}
         onClick={() => {
           setSelectedCompetitor(competitor);
@@ -363,24 +363,24 @@ export function CompetitorIntel({
     const adCopyTableData = filteredAdCopies.map(adCopy => {
       const competitor = intelData?.competitors.find(c => c.id === adCopy.competitorId);
       return [
-        <Stack vertical spacing="extraTight" key={adCopy.id}>
-          <Text variant="bodyMd" fontWeight="medium">{adCopy.headline}</Text>
-          <Text variant="bodySm" color="subdued">{competitor?.name || 'Unknown'}</Text>
-        </Stack>,
-        <Text>{adCopy.description.substring(0, 100)}...</Text>,
+        <BlockStack gap="100" key={adCopy.id}>
+          <Text as="p" variant="bodyMd" fontWeight="medium">{adCopy.headline}</Text>
+          <Text as="span" variant="bodySm" tone="subdued">{competitor?.name || 'Unknown'}</Text>
+        </BlockStack>,
+        <Text as="span">{adCopy.description.substring(0, 100)}...</Text>,
         <Badge tone="info">{adCopy.platform}</Badge>,
-        <Stack vertical spacing="extraTight">
-          <Text variant="bodySm">CTR: {(adCopy.performance.estimatedCTR * 100).toFixed(2)}%</Text>
-          <Text variant="caption" color="subdued">
+        <BlockStack gap="100">
+          <Text as="span" variant="bodySm">CTR: {(adCopy.performance.estimatedCTR * 100).toFixed(2)}%</Text>
+          <Text as="span" variant="bodySm" tone="subdued">
             {formatters.compact(adCopy.performance.estimatedImpressions)} impressions
           </Text>
-        </Stack>,
+        </BlockStack>,
         <Badge tone={adCopy.status === 'active' ? 'success' : adCopy.status === 'paused' ? 'attention' : 'critical'}>
           {adCopy.status}
         </Badge>,
-        <Text variant="bodySm">{formatters.date(adCopy.firstSeen)}</Text>,
+        <Text as="span" variant="bodySm">{formatters.date(adCopy.firstSeen)}</Text>,
         <Button
-          plain
+          variant="plain"
           icon={ViewIcon}
           onClick={() => {
             setSelectedAdCopy(adCopy);
@@ -405,63 +405,63 @@ export function CompetitorIntel({
 
     return (
       <Layout>
-        <Layout.Section oneHalf>
+        <Layout.Section variant="oneHalf">
           <Card>
-            <Box padding="4">
-              <Stack vertical spacing="loose">
-                <Text variant="headingMd">Competitive Advantages</Text>
-                <Stack vertical spacing="tight">
+            <Box padding="400">
+              <BlockStack gap="400">
+                <Text as="h3" variant="headingMd">Competitive Advantages</Text>
+                <BlockStack gap="200">
                   {intelData.advantages.slice(0, 5).map(advantage => (
-                    <Card key={advantage.id} background="surface-success-subdued">
-                      <Box padding="3">
-                        <Stack vertical spacing="tight">
-                          <Stack distribution="spaceBetween" alignment="center">
-                            <Text variant="bodyMd" fontWeight="medium">{advantage.advantage}</Text>
+                    <Card key={advantage.id}>
+                      <Box padding="300">
+                        <BlockStack gap="200">
+                          <InlineStack align="space-between" blockAlign="center">
+                            <Text as="p" variant="bodyMd" fontWeight="medium">{advantage.advantage}</Text>
                             <Badge tone="success">{advantage.importance}</Badge>
-                          </Stack>
-                          <Text variant="bodySm" color="subdued">{advantage.description}</Text>
+                          </InlineStack>
+                          <Text as="p" variant="bodySm" tone="subdued">{advantage.description}</Text>
                           {advantage.actionable && (
-                            <Box paddingBlockStart="2">
-                              <Text variant="bodySm" fontWeight="medium">{advantage.recommendation}</Text>
+                            <Box paddingBlockStart="200">
+                              <Text as="p" variant="bodySm" fontWeight="medium">{advantage.recommendation}</Text>
                             </Box>
                           )}
-                        </Stack>
+                        </BlockStack>
                       </Box>
                     </Card>
                   ))}
-                </Stack>
-              </Stack>
+                </BlockStack>
+              </BlockStack>
             </Box>
           </Card>
         </Layout.Section>
 
-        <Layout.Section oneHalf>
+        <Layout.Section variant="oneHalf">
           <Card>
-            <Box padding="4">
-              <Stack vertical spacing="loose">
-                <Text variant="headingMd">Competitive Gaps</Text>
-                <Stack vertical spacing="tight">
+            <Box padding="400">
+              <BlockStack gap="400">
+                <Text as="h3" variant="headingMd">Competitive Gaps</Text>
+                <BlockStack gap="200">
                   {intelData.gaps.slice(0, 5).map(gap => (
-                    <Card key={gap.id} background="surface-warning-subdued">
-                      <Box padding="3">
-                        <Stack vertical spacing="tight">
-                          <Stack distribution="spaceBetween" alignment="center">
-                            <Text variant="bodyMd" fontWeight="medium">{gap.gap}</Text>
-                            <Stack spacing="extraTight">
+                    <Card key={gap.id}>
+                      <Box padding="300">
+                        <BlockStack gap="200">
+                          <InlineStack align="space-between" blockAlign="center">
+                            <Text as="p" variant="bodyMd" fontWeight="medium">{gap.gap}</Text>
+                            <InlineStack gap="100">
                               <Badge tone="attention">{gap.impact}</Badge>
                               <Badge tone="info">{gap.difficulty}</Badge>
-                            </Stack>
-                          </Stack>
-                          <Text variant="bodySm" color="subdued">{gap.description}</Text>
-                          <Box paddingBlockStart="2">
-                            <Text variant="bodySm" fontWeight="medium">{gap.recommendation}</Text>
+                            </InlineStack>
+                          </InlineStack>
+                          <Text as="p" variant="bodySm" tone="subdued">{gap.description}</Text>
+                          <Box paddingBlockStart="200">
+                            <Text as="p" variant="bodySm" fontWeight="medium">{gap.recommendation}</Text>
                           </Box>
-                        </Stack>
+                        </BlockStack>
                       </Box>
                     </Card>
                   ))}
-                </Stack>
-              </Stack>
+                </BlockStack>
+              </BlockStack>
             </Box>
           </Card>
         </Layout.Section>
@@ -474,43 +474,43 @@ export function CompetitorIntel({
 
     return (
       <Card>
-        <Box padding="4">
-          <Stack vertical spacing="loose">
-            <Text variant="headingMd">Recent Competitor Changes</Text>
-            <Stack vertical spacing="tight">
+        <Box padding="400">
+          <BlockStack gap="400">
+            <Text as="h3" variant="headingMd">Recent Competitor Changes</Text>
+            <BlockStack gap="200">
               {intelData.recentChanges.slice(0, 10).map(change => {
                 const competitor = intelData.competitors.find(c => c.id === change.competitorId);
                 return (
                   <Card key={change.id}>
-                    <Box padding="3">
-                      <Stack vertical spacing="tight">
-                        <Stack distribution="spaceBetween" alignment="center">
-                          <Stack spacing="tight" alignment="center">
-                            <Avatar size="small" name={competitor?.name || 'Unknown'} />
-                            <Stack vertical spacing="extraTight">
-                              <Text variant="bodyMd" fontWeight="medium">{competitor?.name || 'Unknown Competitor'}</Text>
-                              <Text variant="bodySm" color="subdued">{change.changeType}</Text>
-                            </Stack>
-                          </Stack>
-                          <Stack spacing="tight" alignment="center">
+                    <Box padding="300">
+                      <BlockStack gap="200">
+                        <InlineStack align="space-between" blockAlign="center">
+                          <InlineStack gap="200" blockAlign="center">
+                            <Avatar size="sm" name={competitor?.name || 'Unknown'} />
+                            <BlockStack gap="100">
+                              <Text as="p" variant="bodyMd" fontWeight="medium">{competitor?.name || 'Unknown Competitor'}</Text>
+                              <Text as="span" variant="bodySm" tone="subdued">{change.changeType}</Text>
+                            </BlockStack>
+                          </InlineStack>
+                          <InlineStack gap="200" blockAlign="center">
                             <Badge tone={change.impact === 'positive' ? 'success' : change.impact === 'negative' ? 'critical' : 'attention'}>
                               {change.impact}
                             </Badge>
-                            <Text variant="caption" color="subdued">{formatters.date(change.detectedDate)}</Text>
-                          </Stack>
-                        </Stack>
-                        <Text variant="bodySm">{change.description}</Text>
+                            <Text as="span" variant="bodySm" tone="subdued">{formatters.date(change.detectedDate)}</Text>
+                          </InlineStack>
+                        </InlineStack>
+                        <Text as="p" variant="bodySm">{change.description}</Text>
                         <Collapsible
                           open={expandedSections[`change-${change.id}`]}
                           id={`change-${change.id}`}
                           transition={{duration: '150ms', timingFunction: 'ease'}}
                         >
-                          <Box paddingBlockStart="2">
-                            <Text variant="bodySm" color="subdued">{change.details}</Text>
+                          <Box paddingBlockStart="200">
+                            <Text as="p" variant="bodySm" tone="subdued">{change.details}</Text>
                           </Box>
                         </Collapsible>
                         <Button
-                          plain
+                          variant="plain"
                           size="slim"
                           onClick={() => setExpandedSections(prev => ({
                             ...prev,
@@ -519,13 +519,13 @@ export function CompetitorIntel({
                         >
                           {expandedSections[`change-${change.id}`] ? 'Show less' : 'Show details'}
                         </Button>
-                      </Stack>
+                      </BlockStack>
                     </Box>
                   </Card>
                 );
               })}
-            </Stack>
-          </Stack>
+            </BlockStack>
+          </BlockStack>
         </Box>
       </Card>
     );
@@ -535,11 +535,11 @@ export function CompetitorIntel({
   if (loading && !intelData) {
     return (
       <Card>
-        <Box padding="8">
-          <Stack alignment="center" distribution="center">
+        <Box padding="800">
+          <InlineStack align="center" blockAlign="center">
             <Spinner size="large" />
-            <Text variant="bodyLg">Loading competitor intelligence...</Text>
-          </Stack>
+            <Text as="p" variant="bodyLg">Loading competitor intelligence...</Text>
+          </InlineStack>
         </Box>
       </Card>
     );
@@ -599,11 +599,11 @@ export function CompetitorIntel({
         {showFilters && (
           <Layout.Section>
             <Card>
-              <Box padding="4">
-                <Stack vertical spacing="tight">
-                  <Text variant="headingMd">Filters</Text>
+              <Box padding="400">
+                <BlockStack gap="200">
+                  <Text as="h3" variant="headingMd">Filters</Text>
 
-                  <Stack spacing="tight">
+                  <InlineStack gap="200">
                     <Box minWidth="200px">
                       <TextField
                         label="Search"
@@ -613,6 +613,7 @@ export function CompetitorIntel({
                         placeholder="Search competitors, ad copies..."
                         clearButton
                         onClearButtonClick={() => setSearchQuery('')}
+                        autoComplete="off"
                       />
                     </Box>
 
@@ -644,8 +645,8 @@ export function CompetitorIntel({
                         allowMultiple
                       />
                     </Box>
-                  </Stack>
-                </Stack>
+                  </InlineStack>
+                </BlockStack>
               </Box>
             </Card>
           </Layout.Section>
@@ -654,13 +655,13 @@ export function CompetitorIntel({
         <Layout.Section>
           <Card>
             <Tabs tabs={tabs} selected={selectedTab} onSelect={setSelectedTab}>
-              <Box padding="4">
+              <Box padding="400">
                 {selectedTab === 0 && (
-                  <Stack vertical spacing="loose">
-                    <Text variant="headingLg">Competitor Intelligence Overview</Text>
+                  <BlockStack gap="400">
+                    <Text as="h2" variant="headingLg">Competitor Intelligence Overview</Text>
 
                     <Layout>
-                      <Layout.Section oneThird>
+                      <Layout.Section variant="oneThird">
                         <PieChartComponent
                           title="Platform Distribution"
                           subtitle="Ad copies by platform"
@@ -673,7 +674,7 @@ export function CompetitorIntel({
                         />
                       </Layout.Section>
 
-                      <Layout.Section twoThirds>
+                      <Layout.Section>
                         <BarChartComponent
                           title="Top Performing Ad Copies"
                           subtitle="Estimated CTR for active ad copies"
@@ -689,51 +690,51 @@ export function CompetitorIntel({
                     </Layout>
 
                     <Card>
-                      <Box padding="4">
-                        <Stack vertical spacing="tight">
-                          <Text variant="headingMd">Quick Stats</Text>
+                      <Box padding="400">
+                        <BlockStack gap="200">
+                          <Text as="h3" variant="headingMd">Quick Stats</Text>
                           <Layout>
-                            <Layout.Section oneQuarter>
-                              <Stack vertical spacing="extraTight">
-                                <Text variant="headingXl">{intelData.competitors.length}</Text>
-                                <Text variant="bodySm" color="subdued">Competitors Tracked</Text>
-                              </Stack>
+                            <Layout.Section variant="oneThird">
+                              <BlockStack gap="100">
+                                <Text as="h1" variant="headingXl">{intelData.competitors.length}</Text>
+                                <Text as="span" variant="bodySm" tone="subdued">Competitors Tracked</Text>
+                              </BlockStack>
                             </Layout.Section>
-                            <Layout.Section oneQuarter>
-                              <Stack vertical spacing="extraTight">
-                                <Text variant="headingXl">{intelData.adCopies.filter(ad => ad.status === 'active').length}</Text>
-                                <Text variant="bodySm" color="subdued">Active Ad Copies</Text>
-                              </Stack>
+                            <Layout.Section variant="oneThird">
+                              <BlockStack gap="100">
+                                <Text as="h1" variant="headingXl">{intelData.adCopies.filter(ad => ad.status === 'active').length}</Text>
+                                <Text as="span" variant="bodySm" tone="subdued">Active Ad Copies</Text>
+                              </BlockStack>
                             </Layout.Section>
-                            <Layout.Section oneQuarter>
-                              <Stack vertical spacing="extraTight">
-                                <Text variant="headingXl">{intelData.advantages.length}</Text>
-                                <Text variant="bodySm" color="subdued">Advantages Identified</Text>
-                              </Stack>
-                            </Layout.Section>
-                            <Layout.Section oneQuarter>
-                              <Stack vertical spacing="extraTight">
-                                <Text variant="headingXl">{intelData.gaps.length}</Text>
-                                <Text variant="bodySm" color="subdued">Gaps to Address</Text>
-                              </Stack>
+                            <Layout.Section variant="oneThird">
+                              <BlockStack gap="100">
+                                <Text as="h1" variant="headingXl">{intelData.advantages.length}</Text>
+                                <Text as="span" variant="bodySm" tone="subdued">Advantages Identified</Text>
+                              </BlockStack>
                             </Layout.Section>
                           </Layout>
-                        </Stack>
+                          <Box paddingBlockStart="200">
+                            <BlockStack gap="100">
+                              <Text as="h1" variant="headingXl">{intelData.gaps.length}</Text>
+                              <Text as="span" variant="bodySm" tone="subdued">Gaps to Address</Text>
+                            </BlockStack>
+                          </Box>
+                        </BlockStack>
                       </Box>
                     </Card>
-                  </Stack>
+                  </BlockStack>
                 )}
 
                 {selectedTab === 1 && (
-                  <Stack vertical spacing="loose">
-                    <Text variant="headingLg">Competitor Threat Matrix</Text>
+                  <BlockStack gap="400">
+                    <Text as="h2" variant="headingLg">Competitor Threat Matrix</Text>
                     {renderThreatMatrix()}
-                  </Stack>
+                  </BlockStack>
                 )}
 
                 {selectedTab === 2 && (
-                  <Stack vertical spacing="loose">
-                    <Text variant="headingLg">Market Positioning Map</Text>
+                  <BlockStack gap="400">
+                    <Text as="h2" variant="headingLg">Market Positioning Map</Text>
                     <ScatterPlot
                       title="Market Position Analysis"
                       subtitle="Market share vs. growth rate"
@@ -751,35 +752,35 @@ export function CompetitorIntel({
                         name === 'x' ? 'Market Share' : 'Growth Rate'
                       ]}
                     />
-                  </Stack>
+                  </BlockStack>
                 )}
 
                 {selectedTab === 3 && (
-                  <Stack vertical spacing="loose">
-                    <Text variant="headingLg">Competitor Profiles</Text>
+                  <BlockStack gap="400">
+                    <Text as="h2" variant="headingLg">Competitor Profiles</Text>
                     {renderCompetitorsTable()}
-                  </Stack>
+                  </BlockStack>
                 )}
 
                 {selectedTab === 4 && (
-                  <Stack vertical spacing="loose">
-                    <Text variant="headingLg">Ad Copy Analysis</Text>
+                  <BlockStack gap="400">
+                    <Text as="h2" variant="headingLg">Ad Copy Analysis</Text>
                     {renderAdCopiesTable()}
-                  </Stack>
+                  </BlockStack>
                 )}
 
                 {selectedTab === 5 && (
-                  <Stack vertical spacing="loose">
-                    <Text variant="headingLg">Competitive Analysis</Text>
+                  <BlockStack gap="400">
+                    <Text as="h2" variant="headingLg">Competitive Analysis</Text>
                     {renderAdvantagesAndGaps()}
-                  </Stack>
+                  </BlockStack>
                 )}
 
                 {selectedTab === 6 && (
-                  <Stack vertical spacing="loose">
-                    <Text variant="headingLg">Recent Competitor Activity</Text>
+                  <BlockStack gap="400">
+                    <Text as="h2" variant="headingLg">Recent Competitor Activity</Text>
                     {renderRecentChanges()}
-                  </Stack>
+                  </BlockStack>
                 )}
               </Box>
             </Tabs>
@@ -793,12 +794,12 @@ export function CompetitorIntel({
           open={showCompetitorModal}
           onClose={() => setShowCompetitorModal(false)}
           title={selectedCompetitor.name}
-          large
+          size="large"
         >
           <Modal.Section>
-            <Stack vertical spacing="loose">
+            <BlockStack gap="400">
               <TextContainer>
-                <Text variant="headingMd">Competitor Profile</Text>
+                <Text as="h3" variant="headingMd">Competitor Profile</Text>
                 <p><strong>Domain:</strong> <Link external url={`https://${selectedCompetitor.domain}`}>{selectedCompetitor.domain}</Link></p>
                 <p><strong>Threat Level:</strong> {selectedCompetitor.threatLevel}</p>
                 <p><strong>Estimated Revenue:</strong> {formatters.currency(selectedCompetitor.estimatedRevenue)}</p>
@@ -807,7 +808,7 @@ export function CompetitorIntel({
                 <p><strong>Growth Rate:</strong> {selectedCompetitor.marketPosition.y}%</p>
                 <p><strong>Last Updated:</strong> {formatters.dateTime(selectedCompetitor.lastUpdated)}</p>
               </TextContainer>
-            </Stack>
+            </BlockStack>
           </Modal.Section>
         </Modal>
       )}
@@ -818,28 +819,28 @@ export function CompetitorIntel({
           open={showAdCopyModal}
           onClose={() => setShowAdCopyModal(false)}
           title="Ad Copy Details"
-          large
+          size="large"
         >
           <Modal.Section>
-            <Stack vertical spacing="loose">
+            <BlockStack gap="400">
               <TextContainer>
-                <Text variant="headingMd">Ad Copy Analysis</Text>
+                <Text as="h3" variant="headingMd">Ad Copy Analysis</Text>
                 <p><strong>Headline:</strong> {selectedAdCopy.headline}</p>
                 <p><strong>Description:</strong> {selectedAdCopy.description}</p>
                 <p><strong>CTA:</strong> {selectedAdCopy.cta}</p>
                 <p><strong>Platform:</strong> {selectedAdCopy.platform}</p>
                 <p><strong>Status:</strong> {selectedAdCopy.status}</p>
 
-                <Text variant="headingMd">Performance Metrics</Text>
+                <Text as="h3" variant="headingMd">Performance Metrics</Text>
                 <p><strong>Estimated Impressions:</strong> {formatters.compact(selectedAdCopy.performance.estimatedImpressions)}</p>
                 <p><strong>Estimated Clicks:</strong> {formatters.compact(selectedAdCopy.performance.estimatedClicks)}</p>
                 <p><strong>Estimated CTR:</strong> {(selectedAdCopy.performance.estimatedCTR * 100).toFixed(2)}%</p>
 
-                <Text variant="headingMd">Timeline</Text>
+                <Text as="h3" variant="headingMd">Timeline</Text>
                 <p><strong>First Seen:</strong> {formatters.dateTime(selectedAdCopy.firstSeen)}</p>
                 <p><strong>Last Seen:</strong> {formatters.dateTime(selectedAdCopy.lastSeen)}</p>
               </TextContainer>
-            </Stack>
+            </BlockStack>
           </Modal.Section>
         </Modal>
       )}

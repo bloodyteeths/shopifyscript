@@ -4,7 +4,8 @@ import {
   Card,
   Layout,
   Button,
-  Stack,
+  BlockStack,
+  InlineStack,
   Text,
   Badge,
   Modal,
@@ -26,10 +27,9 @@ import {
   Icon,
   Tag,
   Collapsible,
-  TextContainer,
-  DisplayText,
   ProgressBar,
   Divider,
+  Box,
 } from "@shopify/polaris";
 import {
   PieChart,
@@ -123,6 +123,8 @@ const ConditionBuilder: React.FC<{
     if (isMultiple) {
       return (
         <TextField
+          label="Value"
+          labelHidden
           value={
             Array.isArray(condition.value)
               ? condition.value.join(", ")
@@ -139,12 +141,15 @@ const ConditionBuilder: React.FC<{
           }
           placeholder="value1, value2, value3"
           helpText="Separate multiple values with commas"
+          autoComplete="off"
         />
       );
     }
 
     return (
       <TextField
+        label="Value"
+        labelHidden
         type={isNumeric ? "number" : "text"}
         value={condition.value?.toString() || ""}
         onChange={(value) =>
@@ -154,15 +159,16 @@ const ConditionBuilder: React.FC<{
           })
         }
         placeholder={isNumeric ? "100" : "Enter value"}
+        autoComplete="off"
       />
     );
   };
 
   return (
     <Card>
-      <Card.Section>
-        <Stack distribution="fill">
-          <Stack.Item fill>
+      <Box padding="400">
+        <InlineStack align="space-between">
+          <div style={{ flex: 1 }}>
             <FormLayout>
               <FormLayout.Group>
                 <Select
@@ -183,21 +189,21 @@ const ConditionBuilder: React.FC<{
               </FormLayout.Group>
 
               <div>
-                <Text variant="bodyMd" fontWeight="medium">
+                <Text variant="bodyMd" as="p" fontWeight="medium">
                   Value
                 </Text>
                 {getValueInput()}
               </div>
             </FormLayout>
-          </Stack.Item>
+          </div>
 
-          <Stack.Item>
-            <Button destructive onClick={onRemove} size="slim">
+          <div>
+            <Button tone="critical" onClick={onRemove} size="slim">
               Remove
             </Button>
-          </Stack.Item>
-        </Stack>
-      </Card.Section>
+          </div>
+        </InlineStack>
+      </Box>
     </Card>
   );
 };
@@ -275,7 +281,7 @@ const AudienceBuilder: React.FC<AudienceBuilderProps> = ({
       if (data.success) {
         setEstimatedSize(data.size);
       }
-    } catch (error) {
+    } catch (error: unknown) {
       console.error("Error estimating audience size:", error);
     } finally {
       setSizeLoading(false);
@@ -305,6 +311,7 @@ const AudienceBuilder: React.FC<AudienceBuilderProps> = ({
         }
         placeholder="Customers who have made purchases over $500"
         multiline={3}
+        autoComplete="off"
       />
 
       <Select
@@ -316,15 +323,15 @@ const AudienceBuilder: React.FC<AudienceBuilderProps> = ({
         }
       />
 
-      <Card title="Audience Rules">
-        <Card.Section>
-          <Stack vertical>
-            <Stack distribution="equalSpacing">
-              <Text variant="headingMd">Conditions</Text>
+      <Card>
+        <Box padding="400">
+          <BlockStack gap="400">
+            <InlineStack align="space-between">
+              <Text variant="headingMd" as="h3">Conditions</Text>
               <Button onClick={addCondition} size="slim">
                 Add Condition
               </Button>
-            </Stack>
+            </InlineStack>
 
             <Select
               label="Logic"
@@ -339,12 +346,12 @@ const AudienceBuilder: React.FC<AudienceBuilderProps> = ({
               helpText="How should multiple conditions be combined?"
             />
 
-            <Stack vertical>
+            <BlockStack gap="300">
               {formData.rules.conditions.map((condition, index) => (
                 <div key={index}>
                   {index > 0 && (
                     <div style={{ textAlign: "center", margin: "8px 0" }}>
-                      <Badge status="info">
+                      <Badge tone="info">
                         {formData.rules.logic.toUpperCase()}
                       </Badge>
                     </div>
@@ -356,33 +363,33 @@ const AudienceBuilder: React.FC<AudienceBuilderProps> = ({
                   />
                 </div>
               ))}
-            </Stack>
-          </Stack>
-        </Card.Section>
+            </BlockStack>
+          </BlockStack>
+        </Box>
 
-        <Card.Section>
-          <Stack distribution="equalSpacing">
+        <Box padding="400">
+          <InlineStack align="space-between">
             <Button onClick={estimateAudienceSize} loading={sizeLoading}>
               Estimate Audience Size
             </Button>
 
             {estimatedSize !== null && (
-              <Stack spacing="tight">
-                <Text variant="bodyMd">Estimated size:</Text>
-                <Badge status="success">
-                  {estimatedSize.toLocaleString()} users
+              <InlineStack gap="200">
+                <Text variant="bodyMd" as="p">Estimated size:</Text>
+                <Badge tone="success">
+                  {`${estimatedSize.toLocaleString()} users`}
                 </Badge>
-              </Stack>
+              </InlineStack>
             )}
-          </Stack>
-        </Card.Section>
+          </InlineStack>
+        </Box>
       </Card>
 
-      <Stack distribution="trailing">
+      <InlineStack align="end">
         <ButtonGroup>
           <Button onClick={onCancel}>Cancel</Button>
           <Button
-            primary
+            variant="primary"
             onClick={handleSubmit}
             loading={loading}
             disabled={!formData.name || formData.rules.conditions.length === 0}
@@ -390,7 +397,7 @@ const AudienceBuilder: React.FC<AudienceBuilderProps> = ({
             {audience ? "Update Audience" : "Create Audience"}
           </Button>
         </ButtonGroup>
-      </Stack>
+      </InlineStack>
     </FormLayout>
   );
 };
@@ -405,26 +412,26 @@ const AudienceCard: React.FC<{
 
   const getStatusBadge = (status: string) => {
     const statusMap = {
-      active: { color: "success" as const, text: "Active" },
-      inactive: { color: "subdued" as const, text: "Inactive" },
+      active: { tone: "success" as const, text: "Active" },
+      inactive: { tone: "new" as const, text: "Inactive" },
     };
 
     const config =
       statusMap[status as keyof typeof statusMap] || statusMap.inactive;
-    return <Badge status={config.color}>{config.text}</Badge>;
+    return <Badge tone={config.tone}>{config.text}</Badge>;
   };
 
   const getTypeBadge = (type: string) => {
     const typeMap = {
-      custom: { color: "info" as const, text: "Custom" },
-      lookalike: { color: "attention" as const, text: "Lookalike" },
-      interest: { color: "success" as const, text: "Interest" },
-      behavioral: { color: "warning" as const, text: "Behavioral" },
+      custom: { tone: "info" as const, text: "Custom" },
+      lookalike: { tone: "attention" as const, text: "Lookalike" },
+      interest: { tone: "success" as const, text: "Interest" },
+      behavioral: { tone: "warning" as const, text: "Behavioral" },
     };
 
     const config = typeMap[type as keyof typeof typeMap];
     return config ? (
-      <Badge status={config.color}>{config.text}</Badge>
+      <Badge tone={config.tone}>{config.text}</Badge>
     ) : (
       <Badge>{type}</Badge>
     );
@@ -446,46 +453,46 @@ const AudienceCard: React.FC<{
 
   return (
     <Card>
-      <Card.Section>
-        <Stack distribution="equalSpacing">
-          <Stack vertical spacing="tight">
-            <Stack spacing="tight">
-              <Text variant="headingMd" fontWeight="semibold">
+      <Box padding="400">
+        <InlineStack align="space-between">
+          <BlockStack gap="200">
+            <InlineStack gap="200">
+              <Text variant="headingMd" as="h3" fontWeight="semibold">
                 {audience.name}
               </Text>
               {getStatusBadge(audience.status)}
               {getTypeBadge(audience.type)}
-            </Stack>
+            </InlineStack>
 
             {audience.description && (
-              <Text variant="bodyMd" color="subdued">
+              <Text variant="bodyMd" as="p" tone="subdued">
                 {audience.description}
               </Text>
             )}
 
-            <Stack spacing="tight">
-              <Text variant="bodySm" color="subdued">
+            <InlineStack gap="200">
+              <Text variant="bodySm" as="span" tone="subdued">
                 Size: <strong>{audience.size.toLocaleString()}</strong> users
               </Text>
-              <Text variant="bodySm" color="subdued">
+              <Text variant="bodySm" as="span" tone="subdued">
                 Created: {new Date(audience.createdAt).toLocaleDateString()}
               </Text>
-            </Stack>
+            </InlineStack>
 
             {audience.performance && (
-              <Stack spacing="tight">
-                <Text variant="bodySm">
+              <InlineStack gap="200">
+                <Text variant="bodySm" as="span">
                   CTR: <strong>{audience.performance.ctr.toFixed(2)}%</strong>
                 </Text>
-                <Text variant="bodySm">
+                <Text variant="bodySm" as="span">
                   Conv. Rate:{" "}
                   <strong>
                     {audience.performance.conversionRate.toFixed(2)}%
                   </strong>
                 </Text>
-              </Stack>
+              </InlineStack>
             )}
-          </Stack>
+          </BlockStack>
 
           <ButtonGroup>
             <Button size="slim" onClick={() => onEdit(audience)}>
@@ -496,24 +503,23 @@ const AudienceCard: React.FC<{
             </Button>
             <Button
               size="slim"
-              destructive
+              tone="critical"
               onClick={() => onDelete(audience.id)}
             >
               Delete
             </Button>
           </ButtonGroup>
-        </Stack>
-      </Card.Section>
+        </InlineStack>
+      </Box>
 
-      <Card.Section>
+      <Box padding="400">
         <Button
-          plain
+          variant="plain"
           onClick={() => setExpanded(!expanded)}
           ariaExpanded={expanded}
           ariaControls="audience-rules"
         >
-          {expanded ? "Hide" : "Show"} Rules ({audience.rules.conditions.length}
-          )
+          {`${expanded ? "Hide" : "Show"} Rules (${audience.rules.conditions.length})`}
         </Button>
 
         <Collapsible
@@ -522,25 +528,25 @@ const AudienceCard: React.FC<{
           transition={{ duration: "150ms", timingFunction: "ease" }}
         >
           <div style={{ marginTop: "16px" }}>
-            <Stack vertical spacing="tight">
-              <Text variant="bodyMd" fontWeight="medium">
+            <BlockStack gap="200">
+              <Text variant="bodyMd" as="p" fontWeight="medium">
                 Logic: {audience.rules.logic.toUpperCase()}
               </Text>
 
               {audience.rules.conditions.map((condition, index) => (
                 <div key={index}>
                   {index > 0 && (
-                    <Text variant="bodySm" color="subdued">
+                    <Text variant="bodySm" as="span" tone="subdued">
                       {audience.rules.logic.toUpperCase()}
                     </Text>
                   )}
                   <Tag>{formatCondition(condition)}</Tag>
                 </div>
               ))}
-            </Stack>
+            </BlockStack>
           </div>
         </Collapsible>
-      </Card.Section>
+      </Box>
     </Card>
   );
 };
@@ -562,9 +568,9 @@ const AudiencePerformanceChart: React.FC<{
 
   return (
     <Card>
-      <Card.Section>
-        <Stack vertical>
-          <Text variant="headingMd">Audience Performance</Text>
+      <Box padding="400">
+        <BlockStack gap="400">
+          <Text variant="headingMd" as="h3">Audience Performance</Text>
           <div style={{ height: "300px", width: "100%" }}>
             <ResponsiveContainer>
               <BarChart
@@ -595,8 +601,8 @@ const AudiencePerformanceChart: React.FC<{
               </BarChart>
             </ResponsiveContainer>
           </div>
-        </Stack>
-      </Card.Section>
+        </BlockStack>
+      </Box>
     </Card>
   );
 };
@@ -621,9 +627,9 @@ const AudienceTypeDistribution: React.FC<{
 
   return (
     <Card>
-      <Card.Section>
-        <Stack vertical>
-          <Text variant="headingMd">Audience Types</Text>
+      <Box padding="400">
+        <BlockStack gap="400">
+          <Text variant="headingMd" as="h3">Audience Types</Text>
           <div style={{ height: "250px", width: "100%" }}>
             <ResponsiveContainer>
               <PieChart>
@@ -648,8 +654,8 @@ const AudienceTypeDistribution: React.FC<{
               </PieChart>
             </ResponsiveContainer>
           </div>
-        </Stack>
-      </Card.Section>
+        </BlockStack>
+      </Box>
     </Card>
   );
 };
@@ -686,7 +692,7 @@ export const Audiences: React.FC<AudiencesProps> = ({
       } else {
         setError(data.error || "Failed to load audiences");
       }
-    } catch (err) {
+    } catch (err: unknown) {
       setError("Network error while loading audiences");
     } finally {
       setLoading(false);
@@ -742,7 +748,7 @@ export const Audiences: React.FC<AudiencesProps> = ({
       } else {
         setError(result.error || "Failed to create audience");
       }
-    } catch (err) {
+    } catch (err: unknown) {
       setError("Network error while creating audience");
     } finally {
       setFormLoading(false);
@@ -771,7 +777,7 @@ export const Audiences: React.FC<AudiencesProps> = ({
       } else {
         setError(result.error || "Failed to update audience");
       }
-    } catch (err) {
+    } catch (err: unknown) {
       setError("Network error while updating audience");
     } finally {
       setFormLoading(false);
@@ -800,7 +806,7 @@ export const Audiences: React.FC<AudiencesProps> = ({
       } else {
         setError(result.error || "Failed to update audience status");
       }
-    } catch (err) {
+    } catch (err: unknown) {
       setError("Network error while updating audience status");
     }
   };
@@ -819,7 +825,7 @@ export const Audiences: React.FC<AudiencesProps> = ({
       } else {
         setError(result.error || "Failed to delete audience");
       }
-    } catch (err) {
+    } catch (err: unknown) {
       setError("Network error while deleting audience");
     }
   };
@@ -870,7 +876,7 @@ export const Audiences: React.FC<AudiencesProps> = ({
   if (error) {
     return (
       <Page title="Audiences">
-        <Banner status="critical" title="Error loading audiences">
+        <Banner tone="critical" title="Error loading audiences">
           <p>{error}</p>
           <Button onClick={loadAudiences}>Retry</Button>
         </Banner>
@@ -945,24 +951,25 @@ export const Audiences: React.FC<AudiencesProps> = ({
                 </div>
 
                 {loading ? (
-                  <Card.Section>
-                    <Stack alignment="center">
+                  <Box padding="400">
+                    <InlineStack align="center" gap="200">
                       <Spinner size="large" />
-                      <Text>Loading audiences...</Text>
-                    </Stack>
-                  </Card.Section>
+                      <Text as="span">Loading audiences...</Text>
+                    </InlineStack>
+                  </Box>
                 ) : filteredAudiences.length === 0 ? (
-                  <Card.Section>
+                  <Box padding="400">
                     <EmptyState
                       heading="No audiences found"
-                      description="Create your first audience to start targeting specific customer segments"
                       image="https://cdn.shopify.com/s/files/1/0262/4071/2726/files/emptystate-files.png"
-                      primaryAction={{
+                      action={{
                         content: "Create Audience",
                         onAction: () => setShowCreateModal(true),
                       }}
-                    />
-                  </Card.Section>
+                    >
+                      <p>Create your first audience to start targeting specific customer segments</p>
+                    </EmptyState>
+                  </Box>
                 ) : (
                   <Layout>
                     {filteredAudiences.map((audience) => (
@@ -982,11 +989,11 @@ export const Audiences: React.FC<AudiencesProps> = ({
 
             {selectedTab === 1 && (
               <Layout>
-                <Layout.Section oneHalf>
+                <Layout.Section variant="oneHalf">
                   <AudiencePerformanceChart audiences={filteredAudiences} />
                 </Layout.Section>
 
-                <Layout.Section oneHalf>
+                <Layout.Section variant="oneHalf">
                   <AudienceTypeDistribution audiences={filteredAudiences} />
                 </Layout.Section>
               </Layout>
@@ -1000,7 +1007,7 @@ export const Audiences: React.FC<AudiencesProps> = ({
         open={showCreateModal}
         onClose={() => setShowCreateModal(false)}
         title="Create New Audience"
-        large
+        size="large"
       >
         <Modal.Section>
           <AudienceBuilder
@@ -1016,7 +1023,7 @@ export const Audiences: React.FC<AudiencesProps> = ({
         open={!!editingAudience}
         onClose={() => setEditingAudience(null)}
         title="Edit Audience"
-        large
+        size="large"
       >
         <Modal.Section>
           {editingAudience && (

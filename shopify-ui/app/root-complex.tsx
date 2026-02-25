@@ -19,9 +19,14 @@ export const links: LinksFunction = () => [
   { rel: "stylesheet", href: polarisStyles },
 ];
 
+// Local helper to build app URL when shopContext is disabled
+function buildAppUrl(path: string, _shopContext: unknown): string {
+  return path;
+}
+
 export default function App() {
   console.log('🔄 App component initializing...');
-  
+
   // let shopContext;
   // try {
   //   shopContext = useShopContext();
@@ -31,9 +36,9 @@ export default function App() {
   //   shopContext = null;
   // }
   const shopContext = null; // Temporarily disabled for debugging
-  
+
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  
+
   // Handle unhandled promise rejections globally to prevent serverless crashes
   React.useEffect(() => {
     console.log('🔄 Setting up global error handlers...');
@@ -43,7 +48,7 @@ export default function App() {
       // Prevent the default behavior which crashes the Node.js process
       event.preventDefault();
     };
-    
+
     if (typeof window !== 'undefined') {
       window.addEventListener('unhandledrejection', handleUnhandledRejection);
       console.log('✅ Client-side error handlers registered');
@@ -52,7 +57,7 @@ export default function App() {
       };
     }
   }, []);
-  
+
   return (
     <html lang="en">
       <head>
@@ -132,18 +137,18 @@ export default function App() {
           >
             {/* Mobile Header */}
             <div className="mobile-header">
-              <button 
+              <button
                 className="hamburger"
                 onClick={() => setMobileMenuOpen(true)}
                 aria-label="Open navigation menu"
               >
                 ☰
               </button>
-              <h1 style={{ 
-                fontSize: "18px", 
-                fontWeight: "bold", 
-                color: "#202223", 
-                margin: 0 
+              <h1 style={{
+                fontSize: "18px",
+                fontWeight: "bold",
+                color: "#202223",
+                margin: 0
               }}>
                 Ads Autopilot AI
               </h1>
@@ -151,7 +156,7 @@ export default function App() {
             </div>
 
             {/* Mobile Overlay */}
-            <div 
+            <div
               className="mobile-overlay"
               onClick={() => setMobileMenuOpen(false)}
             />
@@ -295,9 +300,9 @@ export default function App() {
                   borderRight: "1px solid var(--p-color-border)",
                 }}
               >
-                <div style={{ 
-                  display: "flex", 
-                  justifyContent: "space-between", 
+                <div style={{
+                  display: "flex",
+                  justifyContent: "space-between",
                   alignItems: "center",
                   marginBottom: 20,
                   paddingBottom: 12,
@@ -313,7 +318,7 @@ export default function App() {
                   >
                     Ads Autopilot AI
                   </h3>
-                  <button 
+                  <button
                     onClick={() => setMobileMenuOpen(false)}
                     style={{
                       background: "none",
@@ -440,14 +445,14 @@ export default function App() {
                 </ul>
               </nav>
 
-              <main 
+              <main
                 className="main-content-mobile"
                 style={{ flex: 1, padding: 24, display: "flex", flexDirection: "column" }}
               >
               <div style={{ flex: 1 }}>
                 <Outlet />
               </div>
-              <footer style={{ 
+              <footer style={{
                 marginTop: "auto",
                 paddingTop: "24px",
                 borderTop: "1px solid #e1e3e5",
@@ -456,33 +461,33 @@ export default function App() {
                 color: "#6d7175"
               }}>
                 <div style={{ marginBottom: "12px" }}>
-                  <a 
-                    href="/privacy" 
+                  <a
+                    href="/privacy"
                     target="_blank"
-                    style={{ 
-                      color: "#006fbb", 
+                    style={{
+                      color: "#006fbb",
                       textDecoration: "none",
                       marginRight: "16px"
                     }}
                   >
                     Privacy Policy
                   </a>
-                  <a 
-                    href="/terms" 
+                  <a
+                    href="/terms"
                     target="_blank"
-                    style={{ 
-                      color: "#006fbb", 
+                    style={{
+                      color: "#006fbb",
                       textDecoration: "none",
                       marginRight: "16px"
                     }}
                   >
                     Terms of Service
                   </a>
-                  <a 
-                    href="/support" 
+                  <a
+                    href="/support"
                     target="_blank"
-                    style={{ 
-                      color: "#006fbb", 
+                    style={{
+                      color: "#006fbb",
                       textDecoration: "none"
                     }}
                   >

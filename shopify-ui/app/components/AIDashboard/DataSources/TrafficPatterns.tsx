@@ -13,22 +13,22 @@ import {
   DataTable,
   Button,
   ButtonGroup,
-  Stack,
+  BlockStack,
+  InlineStack,
   Box,
   Spinner,
   EmptyState,
   Tabs,
-  Tab,
   TextField,
   Select,
   ChoiceList,
   RangeSlider,
   Modal,
-  TextContainer,
   Tooltip,
   Icon,
   Divider,
-  ProgressBar
+  ProgressBar,
+  List
 } from '@shopify/polaris';
 import {
   SearchIcon,
@@ -38,9 +38,9 @@ import {
   InfoIcon,
   CalendarIcon,
   LocationIcon,
-  DeviceDesktopIcon,
-  DeviceMobileIcon,
-  DeviceTabletIcon
+  DesktopIcon,
+  MobileIcon,
+  TabletIcon
 } from '@shopify/polaris-icons';
 import {
   TrafficPatternsData,
@@ -108,7 +108,7 @@ export function TrafficPatterns({
       } else {
         console.error('Failed to fetch traffic patterns:', result.error);
       }
-    } catch (err) {
+    } catch (err: unknown) {
       console.error('Error fetching traffic patterns:', err);
     } finally {
       setLoading(false);
@@ -142,6 +142,7 @@ export function TrafficPatterns({
 
     return patternsData.dailyTrends.map(trend => ({
       date: trend.date,
+      value: trend.sessions,
       sessions: trend.sessions,
       conversions: trend.conversions,
       revenue: trend.revenue,
@@ -155,6 +156,7 @@ export function TrafficPatterns({
 
     return patternsData.weeklyTrends.map(trend => ({
       date: trend.date,
+      value: trend.sessions,
       sessions: trend.sessions,
       conversions: trend.conversions,
       revenue: trend.revenue,
@@ -197,6 +199,7 @@ export function TrafficPatterns({
 
     return patternsData.seasonalTrends.map(trend => ({
       date: `${trend.month} ${trend.year}`,
+      value: trend.sessions,
       sessions: trend.sessions,
       conversions: trend.conversions,
       revenue: trend.revenue,
@@ -209,6 +212,7 @@ export function TrafficPatterns({
 
     return patternsData.peakTimes.map(peak => ({
       name: peak.period,
+      value: peak.sessions,
       sessions: peak.sessions,
       conversions: peak.conversions,
       conversionRate: peak.conversionRate,
@@ -231,10 +235,10 @@ export function TrafficPatterns({
       <Layout>
         <Layout.Section>
           <Card>
-            <Box padding="4">
-              <Stack vertical spacing="loose">
-                <Stack distribution="spaceBetween" alignment="center">
-                  <Text variant="headingMd">Traffic Heatmap by Hour and Day</Text>
+            <Box padding="400">
+              <BlockStack gap="400">
+                <InlineStack align="space-between" blockAlign="center">
+                  <Text variant="headingMd" as="h3">Traffic Heatmap by Hour and Day</Text>
                   <Select
                     label=""
                     options={[
@@ -245,7 +249,7 @@ export function TrafficPatterns({
                     value={selectedMetric}
                     onChange={setSelectedMetric}
                   />
-                </Stack>
+                </InlineStack>
 
                 <HeatmapChart
                   title=""
@@ -255,12 +259,12 @@ export function TrafficPatterns({
                   yAxisLabel="Day of Week"
                 />
 
-                <Box paddingBlockStart="4">
-                  <Text variant="bodySm" color="subdued">
+                <Box paddingBlockStart="400">
+                  <Text variant="bodySm" as="span" tone="subdued">
                     Darker colors indicate higher {selectedMetric}. Hover over cells to see exact values.
                   </Text>
                 </Box>
-              </Stack>
+              </BlockStack>
             </Box>
           </Card>
         </Layout.Section>
@@ -317,16 +321,16 @@ export function TrafficPatterns({
     if (!patternsData?.peakTimes) return null;
 
     const peakTimesTableData = patternsData.peakTimes.map(peak => [
-      <Text key={peak.period} fontWeight="medium">{peak.period}</Text>,
+      <Text key={peak.period} as="span" fontWeight="medium">{peak.period}</Text>,
       <Badge tone="info">{peak.type}</Badge>,
-      <Text>{formatters.compact(peak.sessions)}</Text>,
-      <Text>{formatters.compact(peak.conversions)}</Text>,
-      <Stack alignment="center" spacing="tight">
+      <Text as="span">{formatters.compact(peak.sessions)}</Text>,
+      <Text as="span">{formatters.compact(peak.conversions)}</Text>,
+      <InlineStack blockAlign="center" gap="200">
         <ProgressBar progress={peak.conversionRate} size="small" />
-        <Text variant="bodySm">{(peak.conversionRate * 100).toFixed(2)}%</Text>
-      </Stack>,
+        <Text variant="bodySm" as="span">{(peak.conversionRate * 100).toFixed(2)}%</Text>
+      </InlineStack>,
       <Button
-        plain
+        variant="plain"
         icon={ViewIcon}
         onClick={() => {
           setSelectedPeakTime(peak);
@@ -338,7 +342,7 @@ export function TrafficPatterns({
 
     return (
       <Layout>
-        <Layout.Section oneHalf>
+        <Layout.Section variant="oneHalf">
           <BarChartComponent
             title="Peak Performance Periods"
             subtitle="Sessions during peak times"
@@ -352,17 +356,17 @@ export function TrafficPatterns({
           />
         </Layout.Section>
 
-        <Layout.Section oneHalf>
+        <Layout.Section variant="oneHalf">
           <Card>
-            <Box padding="4">
-              <Stack vertical spacing="loose">
-                <Text variant="headingMd">Peak Times Analysis</Text>
+            <Box padding="400">
+              <BlockStack gap="400">
+                <Text variant="headingMd" as="h3">Peak Times Analysis</Text>
                 <DataTable
                   columnContentTypes={['text', 'text', 'text', 'text', 'text', 'text']}
                   headings={['Period', 'Type', 'Sessions', 'Conversions', 'Conv. Rate', 'Actions']}
                   rows={peakTimesTableData}
                 />
-              </Stack>
+              </BlockStack>
             </Box>
           </Card>
         </Layout.Section>
@@ -375,12 +379,12 @@ export function TrafficPatterns({
 
     return (
       <Layout>
-        <Layout.Section oneHalf>
+        <Layout.Section variant="oneHalf">
           <Card>
-            <Box padding="4">
-              <Stack vertical spacing="loose">
-                <Stack distribution="spaceBetween" alignment="center">
-                  <Text variant="headingMd">Device Breakdown</Text>
+            <Box padding="400">
+              <BlockStack gap="400">
+                <InlineStack align="space-between" blockAlign="center">
+                  <Text variant="headingMd" as="h3">Device Breakdown</Text>
                   <ChoiceList
                     title=""
                     choices={[
@@ -392,7 +396,7 @@ export function TrafficPatterns({
                     onChange={setSelectedDevices}
                     allowMultiple
                   />
-                </Stack>
+                </InlineStack>
 
                 <PieChartComponent
                   title=""
@@ -404,39 +408,39 @@ export function TrafficPatterns({
                   tooltipFormatter={(value, name) => [formatters.compact(value), 'Sessions']}
                 />
 
-                <Stack vertical spacing="tight">
+                <BlockStack gap="200">
                   {patternsData.deviceBreakdown
                     .filter(device => selectedDevices.includes(device.device))
                     .map(device => (
-                      <Stack key={device.device} distribution="spaceBetween" alignment="center">
-                        <Stack spacing="tight" alignment="center">
+                      <InlineStack key={device.device} align="space-between" blockAlign="center">
+                        <InlineStack gap="200" blockAlign="center">
                           <Icon source={
-                            device.device === 'desktop' ? DeviceDesktopIcon :
-                            device.device === 'mobile' ? DeviceMobileIcon :
-                            DeviceTabletIcon
+                            device.device === 'desktop' ? DesktopIcon :
+                            device.device === 'mobile' ? MobileIcon :
+                            TabletIcon
                           } />
-                          <Text variant="bodyMd" fontWeight="medium">{device.device}</Text>
-                        </Stack>
-                        <Stack spacing="tight">
-                          <Text variant="bodySm">{device.percentage.toFixed(1)}%</Text>
-                          <Text variant="bodySm" color="subdued">
+                          <Text variant="bodyMd" as="p" fontWeight="medium">{device.device}</Text>
+                        </InlineStack>
+                        <InlineStack gap="200">
+                          <Text variant="bodySm" as="span">{device.percentage.toFixed(1)}%</Text>
+                          <Text variant="bodySm" as="span" tone="subdued">
                             {(device.conversionRate * 100).toFixed(2)}% CVR
                           </Text>
-                        </Stack>
-                      </Stack>
+                        </InlineStack>
+                      </InlineStack>
                     ))}
-                </Stack>
-              </Stack>
+                </BlockStack>
+              </BlockStack>
             </Box>
           </Card>
         </Layout.Section>
 
-        <Layout.Section oneHalf>
+        <Layout.Section variant="oneHalf">
           <Card>
-            <Box padding="4">
-              <Stack vertical spacing="loose">
-                <Stack distribution="spaceBetween" alignment="center">
-                  <Text variant="headingMd">Top Locations</Text>
+            <Box padding="400">
+              <BlockStack gap="400">
+                <InlineStack align="space-between" blockAlign="center">
+                  <Text variant="headingMd" as="h3">Top Locations</Text>
                   <Select
                     label=""
                     options={[
@@ -448,7 +452,7 @@ export function TrafficPatterns({
                     value={showTopCountries.toString()}
                     onChange={(value) => setShowTopCountries(parseInt(value))}
                   />
-                </Stack>
+                </InlineStack>
 
                 <BarChartComponent
                   title=""
@@ -462,25 +466,25 @@ export function TrafficPatterns({
                   tooltipFormatter={(value, name) => [formatters.compact(value), 'Sessions']}
                 />
 
-                <Stack vertical spacing="tight">
+                <BlockStack gap="200">
                   {patternsData.locationBreakdown
                     .slice(0, 5)
                     .map((location, index) => (
-                      <Stack key={location.country} distribution="spaceBetween" alignment="center">
-                        <Stack spacing="tight" alignment="center">
-                          <Badge tone="info">#{index + 1}</Badge>
-                          <Text variant="bodyMd" fontWeight="medium">{location.country}</Text>
-                        </Stack>
-                        <Stack spacing="tight">
-                          <Text variant="bodySm">{location.percentage.toFixed(1)}%</Text>
-                          <Text variant="bodySm" color="subdued">
+                      <InlineStack key={location.country} align="space-between" blockAlign="center">
+                        <InlineStack gap="200" blockAlign="center">
+                          <Badge tone="info">{`#${index + 1}`}</Badge>
+                          <Text variant="bodyMd" as="p" fontWeight="medium">{location.country}</Text>
+                        </InlineStack>
+                        <InlineStack gap="200">
+                          <Text variant="bodySm" as="span">{location.percentage.toFixed(1)}%</Text>
+                          <Text variant="bodySm" as="span" tone="subdued">
                             {formatters.currency(location.revenue / location.sessions)} avg
                           </Text>
-                        </Stack>
-                      </Stack>
+                        </InlineStack>
+                      </InlineStack>
                     ))}
-                </Stack>
-              </Stack>
+                </BlockStack>
+              </BlockStack>
             </Box>
           </Card>
         </Layout.Section>
@@ -517,31 +521,31 @@ export function TrafficPatterns({
 
         <Layout.Section>
           <Card>
-            <Box padding="4">
-              <Stack vertical spacing="loose">
-                <Text variant="headingMd">Seasonal Insights</Text>
-                <Stack vertical spacing="tight">
+            <Box padding="400">
+              <BlockStack gap="400">
+                <Text variant="headingMd" as="h3">Seasonal Insights</Text>
+                <BlockStack gap="200">
                   {patternsData.seasonalTrends
                     .sort((a, b) => b.changeFromPrevious - a.changeFromPrevious)
                     .slice(0, 6)
                     .map(trend => (
-                      <Stack key={`${trend.month}-${trend.year}`} distribution="spaceBetween" alignment="center">
-                        <Stack spacing="tight" alignment="center">
-                          <Text variant="bodyMd" fontWeight="medium">{trend.month} {trend.year}</Text>
+                      <InlineStack key={`${trend.month}-${trend.year}`} align="space-between" blockAlign="center">
+                        <InlineStack gap="200" blockAlign="center">
+                          <Text variant="bodyMd" as="p" fontWeight="medium">{trend.month} {trend.year}</Text>
                           <Badge tone={trend.changeFromPrevious > 0 ? 'success' : 'critical'}>
-                            {trend.changeFromPrevious > 0 ? '+' : ''}{trend.changeFromPrevious.toFixed(1)}%
+                            {`${trend.changeFromPrevious > 0 ? '+' : ''}${trend.changeFromPrevious.toFixed(1)}%`}
                           </Badge>
-                        </Stack>
-                        <Stack spacing="tight">
-                          <Text variant="bodySm">{formatters.compact(trend.sessions)} sessions</Text>
-                          <Text variant="bodySm" color="subdued">
+                        </InlineStack>
+                        <InlineStack gap="200">
+                          <Text variant="bodySm" as="span">{formatters.compact(trend.sessions)} sessions</Text>
+                          <Text variant="bodySm" as="span" tone="subdued">
                             {formatters.currency(trend.revenue)}
                           </Text>
-                        </Stack>
-                      </Stack>
+                        </InlineStack>
+                      </InlineStack>
                     ))}
-                </Stack>
-              </Stack>
+                </BlockStack>
+              </BlockStack>
             </Box>
           </Card>
         </Layout.Section>
@@ -553,11 +557,11 @@ export function TrafficPatterns({
   if (loading && !patternsData) {
     return (
       <Card>
-        <Box padding="8">
-          <Stack alignment="center" distribution="center">
+        <Box padding="800">
+          <InlineStack align="center" blockAlign="center">
             <Spinner size="large" />
-            <Text variant="bodyLg">Loading traffic patterns...</Text>
-          </Stack>
+            <Text variant="bodyLg" as="p">Loading traffic patterns...</Text>
+          </InlineStack>
         </Box>
       </Card>
     );
@@ -608,7 +612,7 @@ export function TrafficPatterns({
         ...(showExport ? [{
           content: 'Export',
           icon: ExportIcon,
-          onAction: () => handleExport({ format: 'csv', filename: 'traffic-patterns' })
+          onAction: () => handleExport({ format: 'csv' as const, filename: 'traffic-patterns' })
         }] : [])
       ]}
     >
@@ -616,10 +620,10 @@ export function TrafficPatterns({
         {showFilters && (
           <Layout.Section>
             <Card>
-              <Box padding="4">
-                <Stack vertical spacing="tight">
-                  <Text variant="headingMd">Time Range</Text>
-                  <ButtonGroup segmented>
+              <Box padding="400">
+                <BlockStack gap="200">
+                  <Text variant="headingMd" as="h3">Time Range</Text>
+                  <ButtonGroup variant="segmented">
                     {['7d', '30d', '90d'].map(range => (
                       <Button
                         key={range}
@@ -630,7 +634,7 @@ export function TrafficPatterns({
                       </Button>
                     ))}
                   </ButtonGroup>
-                </Stack>
+                </BlockStack>
               </Box>
             </Card>
           </Layout.Section>
@@ -639,66 +643,69 @@ export function TrafficPatterns({
         <Layout.Section>
           <Card>
             <Tabs tabs={tabs} selected={selectedTab} onSelect={setSelectedTab}>
-              <Box padding="4">
+              <Box padding="400">
                 {selectedTab === 0 && (
-                  <Stack vertical spacing="loose">
-                    <Text variant="headingLg">Traffic Patterns Overview</Text>
+                  <BlockStack gap="400">
+                    <Text variant="headingLg" as="h2">Traffic Patterns Overview</Text>
 
                     <Card>
-                      <Box padding="4">
-                        <Stack vertical spacing="tight">
-                          <Text variant="headingMd">Summary Statistics</Text>
+                      <Box padding="400">
+                        <BlockStack gap="200">
+                          <Text variant="headingMd" as="h3">Summary Statistics</Text>
                           <Layout>
-                            <Layout.Section oneQuarter>
-                              <Stack vertical spacing="extraTight">
-                                <Text variant="headingXl">{formatters.compact(patternsData.summary.totalSessions)}</Text>
-                                <Text variant="bodySm" color="subdued">Total Sessions</Text>
-                              </Stack>
+                            <Layout.Section variant="oneThird">
+                              <BlockStack gap="100">
+                                <Text variant="headingXl" as="h1">{formatters.compact(patternsData.summary.totalSessions)}</Text>
+                                <Text variant="bodySm" as="span" tone="subdued">Total Sessions</Text>
+                              </BlockStack>
                             </Layout.Section>
-                            <Layout.Section oneQuarter>
-                              <Stack vertical spacing="extraTight">
-                                <Text variant="headingXl">{formatters.compact(patternsData.summary.totalConversions)}</Text>
-                                <Text variant="bodySm" color="subdued">Total Conversions</Text>
-                              </Stack>
+                            <Layout.Section variant="oneThird">
+                              <BlockStack gap="100">
+                                <Text variant="headingXl" as="h1">{formatters.compact(patternsData.summary.totalConversions)}</Text>
+                                <Text variant="bodySm" as="span" tone="subdued">Total Conversions</Text>
+                              </BlockStack>
                             </Layout.Section>
-                            <Layout.Section oneQuarter>
-                              <Stack vertical spacing="extraTight">
-                                <Text variant="headingXl">{formatters.currency(patternsData.summary.totalRevenue)}</Text>
-                                <Text variant="bodySm" color="subdued">Total Revenue</Text>
-                              </Stack>
+                            <Layout.Section variant="oneThird">
+                              <BlockStack gap="100">
+                                <Text variant="headingXl" as="h1">{formatters.currency(patternsData.summary.totalRevenue)}</Text>
+                                <Text variant="bodySm" as="span" tone="subdued">Total Revenue</Text>
+                              </BlockStack>
                             </Layout.Section>
-                            <Layout.Section oneQuarter>
-                              <Stack vertical spacing="extraTight">
-                                <Text variant="headingXl">{(patternsData.summary.avgConversionRate * 100).toFixed(2)}%</Text>
-                                <Text variant="bodySm" color="subdued">Avg Conversion Rate</Text>
-                              </Stack>
+                          </Layout>
+
+                          <Layout>
+                            <Layout.Section variant="oneThird">
+                              <BlockStack gap="100">
+                                <Text variant="headingXl" as="h1">{(patternsData.summary.avgConversionRate * 100).toFixed(2)}%</Text>
+                                <Text variant="bodySm" as="span" tone="subdued">Avg Conversion Rate</Text>
+                              </BlockStack>
                             </Layout.Section>
                           </Layout>
 
                           <Divider />
 
                           <Layout>
-                            <Layout.Section oneHalf>
-                              <Stack vertical spacing="extraTight">
-                                <Text variant="bodyMd" fontWeight="medium">Peak Hour</Text>
-                                <Text variant="headingMd">{patternsData.summary.peakHour}:00</Text>
-                                <Text variant="bodySm" color="subdued">Highest traffic volume</Text>
-                              </Stack>
+                            <Layout.Section variant="oneHalf">
+                              <BlockStack gap="100">
+                                <Text variant="bodyMd" as="p" fontWeight="medium">Peak Hour</Text>
+                                <Text variant="headingMd" as="h3">{patternsData.summary.peakHour}:00</Text>
+                                <Text variant="bodySm" as="span" tone="subdued">Highest traffic volume</Text>
+                              </BlockStack>
                             </Layout.Section>
-                            <Layout.Section oneHalf>
-                              <Stack vertical spacing="extraTight">
-                                <Text variant="bodyMd" fontWeight="medium">Peak Day</Text>
-                                <Text variant="headingMd">{patternsData.summary.peakDay}</Text>
-                                <Text variant="bodySm" color="subdued">Highest conversion day</Text>
-                              </Stack>
+                            <Layout.Section variant="oneHalf">
+                              <BlockStack gap="100">
+                                <Text variant="bodyMd" as="p" fontWeight="medium">Peak Day</Text>
+                                <Text variant="headingMd" as="h3">{patternsData.summary.peakDay}</Text>
+                                <Text variant="bodySm" as="span" tone="subdued">Highest conversion day</Text>
+                              </BlockStack>
                             </Layout.Section>
                           </Layout>
-                        </Stack>
+                        </BlockStack>
                       </Box>
                     </Card>
 
                     <Layout>
-                      <Layout.Section oneHalf>
+                      <Layout.Section variant="oneHalf">
                         <TrendLineChart
                           title="Traffic Trend"
                           subtitle="Sessions over time"
@@ -711,7 +718,7 @@ export function TrafficPatterns({
                         />
                       </Layout.Section>
 
-                      <Layout.Section oneHalf>
+                      <Layout.Section variant="oneHalf">
                         <TrendLineChart
                           title="Revenue Trend"
                           subtitle="Revenue over time"
@@ -724,42 +731,42 @@ export function TrafficPatterns({
                         />
                       </Layout.Section>
                     </Layout>
-                  </Stack>
+                  </BlockStack>
                 )}
 
                 {selectedTab === 1 && (
-                  <Stack vertical spacing="loose">
-                    <Text variant="headingLg">Hourly Traffic Heatmap</Text>
+                  <BlockStack gap="400">
+                    <Text variant="headingLg" as="h2">Hourly Traffic Heatmap</Text>
                     {renderHourlyHeatmap()}
-                  </Stack>
+                  </BlockStack>
                 )}
 
                 {selectedTab === 2 && (
-                  <Stack vertical spacing="loose">
-                    <Text variant="headingLg">Daily Traffic Trends</Text>
+                  <BlockStack gap="400">
+                    <Text variant="headingLg" as="h2">Daily Traffic Trends</Text>
                     {renderTrendAnalysis()}
-                  </Stack>
+                  </BlockStack>
                 )}
 
                 {selectedTab === 3 && (
-                  <Stack vertical spacing="loose">
-                    <Text variant="headingLg">Peak Traffic Times</Text>
+                  <BlockStack gap="400">
+                    <Text variant="headingLg" as="h2">Peak Traffic Times</Text>
                     {renderPeakTimes()}
-                  </Stack>
+                  </BlockStack>
                 )}
 
                 {selectedTab === 4 && (
-                  <Stack vertical spacing="loose">
-                    <Text variant="headingLg">Device & Location Breakdown</Text>
+                  <BlockStack gap="400">
+                    <Text variant="headingLg" as="h2">Device & Location Breakdown</Text>
                     {renderDeviceLocationBreakdown()}
-                  </Stack>
+                  </BlockStack>
                 )}
 
                 {selectedTab === 5 && (
-                  <Stack vertical spacing="loose">
-                    <Text variant="headingLg">Seasonal Traffic Patterns</Text>
+                  <BlockStack gap="400">
+                    <Text variant="headingLg" as="h2">Seasonal Traffic Patterns</Text>
                     {renderSeasonalTrends()}
-                  </Stack>
+                  </BlockStack>
                 )}
               </Box>
             </Tabs>
@@ -773,19 +780,19 @@ export function TrafficPatterns({
           open={showPeakTimeModal}
           onClose={() => setShowPeakTimeModal(false)}
           title={`Peak Time: ${selectedPeakTime.period}`}
-          large
+          size="large"
         >
-          <Modal.Section>
-            <Stack vertical spacing="loose">
-              <TextContainer>
-                <Text variant="headingMd">Peak Time Analysis</Text>
+          <Box padding="400">
+            <BlockStack gap="400">
+              <BlockStack gap="200">
+                <Text variant="headingMd" as="h3">Peak Time Analysis</Text>
                 <p><strong>Period:</strong> {selectedPeakTime.period}</p>
                 <p><strong>Type:</strong> {selectedPeakTime.type}</p>
                 <p><strong>Sessions:</strong> {formatters.compact(selectedPeakTime.sessions)}</p>
                 <p><strong>Conversions:</strong> {formatters.compact(selectedPeakTime.conversions)}</p>
                 <p><strong>Conversion Rate:</strong> {(selectedPeakTime.conversionRate * 100).toFixed(2)}%</p>
 
-                <Text variant="headingMd">Recommendations</Text>
+                <Text variant="headingMd" as="h3">Recommendations</Text>
                 <p>This is a high-performance period. Consider:</p>
                 <List type="bullet">
                   <List.Item>Increasing ad spend during this time</List.Item>
@@ -793,9 +800,9 @@ export function TrafficPatterns({
                   <List.Item>Ensuring adequate inventory and support coverage</List.Item>
                   <List.Item>Testing new products or offers</List.Item>
                 </List>
-              </TextContainer>
-            </Stack>
-          </Modal.Section>
+              </BlockStack>
+            </BlockStack>
+          </Box>
         </Modal>
       )}
     </Page>

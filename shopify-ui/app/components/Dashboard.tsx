@@ -8,9 +8,9 @@ import {
   Button,
   Select,
   Spinner,
-  Stack,
-  DisplayText,
-  TextStyle,
+  BlockStack,
+  InlineStack,
+  Box,
   ResourceList,
   ResourceItem,
   Avatar,
@@ -89,7 +89,7 @@ const MetricCard: React.FC<MetricCardProps> = ({
     return val;
   };
 
-  const getTrendColor = (
+  const getTrendTone = (
     trend: "up" | "down" | "neutral",
   ): "success" | "critical" | "subdued" => {
     switch (trend) {
@@ -104,44 +104,44 @@ const MetricCard: React.FC<MetricCardProps> = ({
 
   return (
     <Card>
-      <Card.Section>
-        <Stack vertical spacing="tight">
+      <Box padding="400">
+        <BlockStack gap="200">
           <Text variant="headingMd" as="h3">
             {title}
           </Text>
 
           {loading ? (
-            <Stack alignment="center">
+            <InlineStack blockAlign="center" gap="200">
               <Spinner size="small" />
-              <Text variant="bodyMd" color="subdued">
+              <Text variant="bodyMd" as="p" tone="subdued">
                 Loading...
               </Text>
-            </Stack>
+            </InlineStack>
           ) : (
             <>
-              <DisplayText size="medium">
+              <Text variant="headingXl" as="h1">
                 {prefix}
                 {formatValue(value)}
                 {suffix}
-              </DisplayText>
+              </Text>
 
               {change && (
-                <Stack spacing="extraTight" alignment="center">
-                  <TextStyle variation={getTrendColor(change.trend)}>
-                    {change.trend === "up" && "↗"}
-                    {change.trend === "down" && "↘"}
-                    {change.trend === "neutral" && "→"}
+                <InlineStack gap="100" blockAlign="center">
+                  <Text variant="bodyMd" as="span" tone={getTrendTone(change.trend)}>
+                    {change.trend === "up" && "\u2197"}
+                    {change.trend === "down" && "\u2198"}
+                    {change.trend === "neutral" && "\u2192"}
                     {Math.abs(change.value)}%
-                  </TextStyle>
-                  <Text variant="bodySm" color="subdued">
+                  </Text>
+                  <Text variant="bodySm" as="span" tone="subdued">
                     vs {change.period}
                   </Text>
-                </Stack>
+                </InlineStack>
               )}
             </>
           )}
-        </Stack>
-      </Card.Section>
+        </BlockStack>
+      </Box>
     </Card>
   );
 };
@@ -154,8 +154,8 @@ const TrendChart: React.FC<{
 }> = ({ data, title, color = chartColors.primary, type = "line" }) => {
   return (
     <Card>
-      <Card.Section>
-        <Stack vertical>
+      <Box padding="400">
+        <BlockStack gap="400">
           <Text variant="headingMd" as="h3">
             {title}
           </Text>
@@ -220,8 +220,8 @@ const TrendChart: React.FC<{
               )}
             </ResponsiveContainer>
           </div>
-        </Stack>
-      </Card.Section>
+        </BlockStack>
+      </Box>
     </Card>
   );
 };
@@ -232,8 +232,8 @@ const PerformanceDonut: React.FC<{
 }> = ({ data, title }) => {
   return (
     <Card>
-      <Card.Section>
-        <Stack vertical>
+      <Box padding="400">
+        <BlockStack gap="400">
           <Text variant="headingMd" as="h3">
             {title}
           </Text>
@@ -261,8 +261,8 @@ const PerformanceDonut: React.FC<{
               </PieChart>
             </ResponsiveContainer>
           </div>
-        </Stack>
-      </Card.Section>
+        </BlockStack>
+      </Box>
     </Card>
   );
 };
@@ -280,21 +280,21 @@ const QuickActions: React.FC<{
 }) => {
   return (
     <Card>
-      <Card.Section>
-        <Stack vertical>
+      <Box padding="400">
+        <BlockStack gap="400">
           <Text variant="headingMd" as="h3">
             Quick Actions
           </Text>
-          <Stack vertical spacing="tight">
-            <Button primary onClick={onCreateCampaign}>
+          <BlockStack gap="200">
+            <Button variant="primary" onClick={onCreateCampaign}>
               Create Campaign
             </Button>
             <Button onClick={onCreateAudience}>Build Audience</Button>
             <Button onClick={onViewInsights}>View Insights</Button>
             <Button onClick={onRunAutopilot}>Run Autopilot</Button>
-          </Stack>
-        </Stack>
-      </Card.Section>
+          </BlockStack>
+        </BlockStack>
+      </Box>
     </Card>
   );
 };
@@ -318,7 +318,7 @@ const RecentActivity: React.FC<{
       case "conversion":
         return "";
       case "optimization":
-        return "⚡";
+        return "\u26A1";
       default:
         return "";
     }
@@ -328,19 +328,19 @@ const RecentActivity: React.FC<{
     if (!status) return null;
 
     const statusMap = {
-      success: { color: "success" as const, text: "Success" },
-      warning: { color: "warning" as const, text: "Warning" },
-      critical: { color: "critical" as const, text: "Error" },
+      success: { tone: "success" as const, text: "Success" },
+      warning: { tone: "warning" as const, text: "Warning" },
+      critical: { tone: "critical" as const, text: "Error" },
     };
 
     const config = statusMap[status as keyof typeof statusMap];
-    return config ? <Badge status={config.color}>{config.text}</Badge> : null;
+    return config ? <Badge tone={config.tone}>{config.text}</Badge> : null;
   };
 
   return (
     <Card>
-      <Card.Section>
-        <Stack vertical>
+      <Box padding="400">
+        <BlockStack gap="400">
           <Text variant="headingMd" as="h3">
             Recent Activity
           </Text>
@@ -354,35 +354,35 @@ const RecentActivity: React.FC<{
               return (
                 <ResourceItem
                   id={id}
+                  onClick={() => {}}
                   media={
                     <Avatar
-                      customer={false}
-                      size="medium"
+                      size="md"
                       initials={getActivityIcon(type)}
                     />
                   }
                   accessibilityLabel={`View details for ${title}`}
                 >
-                  <Stack distribution="fillEvenly">
-                    <Stack vertical spacing="extraTight">
-                      <Text variant="bodyMd" fontWeight="semibold">
+                  <InlineStack align="space-evenly">
+                    <BlockStack gap="100">
+                      <Text variant="bodyMd" as="p" fontWeight="semibold">
                         {title}
                       </Text>
-                      <Text variant="bodySm" color="subdued">
+                      <Text variant="bodySm" as="span" tone="subdued">
                         {description}
                       </Text>
-                      <Text variant="bodySm" color="subdued">
+                      <Text variant="bodySm" as="span" tone="subdued">
                         {new Date(timestamp).toLocaleString()}
                       </Text>
-                    </Stack>
+                    </BlockStack>
                     {getStatusBadge(status)}
-                  </Stack>
+                  </InlineStack>
                 </ResourceItem>
               );
             }}
           />
-        </Stack>
-      </Card.Section>
+        </BlockStack>
+      </Box>
     </Card>
   );
 };
@@ -414,7 +414,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
       } else {
         setError(data.error || "Failed to fetch metrics");
       }
-    } catch (err) {
+    } catch (err: unknown) {
       setError("Network error while fetching metrics");
     } finally {
       setLoading(false);
@@ -450,7 +450,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
       try {
         await fetch("/api/autopilot/run", { method: "POST" });
         // Show success notification
-      } catch (err) {
+      } catch (err: unknown) {
         // Show error notification
       }
     },
@@ -486,7 +486,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
   if (error) {
     return (
       <Page title="Dashboard">
-        <Banner status="critical" title="Error loading dashboard">
+        <Banner tone="critical" title="Error loading dashboard">
           <p>{error}</p>
           <Button onClick={refreshMetrics}>Retry</Button>
         </Banner>
@@ -508,20 +508,20 @@ export const Dashboard: React.FC<DashboardProps> = ({
     >
       <Layout>
         <Layout.Section>
-          <Stack distribution="trailing">
+          <InlineStack align="end">
             <Select
               label="Date range"
               options={dateRangeOptions}
               value={dateRange}
               onChange={(value) => setDateRange(value)}
             />
-          </Stack>
+          </InlineStack>
         </Layout.Section>
 
         {/* Primary Metrics - Top 3 */}
         <Layout.Section>
           <Layout>
-            <Layout.Section oneThird>
+            <Layout.Section variant="oneThird">
               <MetricCard
                 title="Revenue"
                 value={metrics?.revenue || 0}
@@ -539,7 +539,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
               />
             </Layout.Section>
 
-            <Layout.Section oneThird>
+            <Layout.Section variant="oneThird">
               <MetricCard
                 title="Conversions"
                 value={metrics?.conversions || 0}
@@ -556,7 +556,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
               />
             </Layout.Section>
 
-            <Layout.Section oneThird>
+            <Layout.Section variant="oneThird">
               <MetricCard
                 title="ROAS"
                 value={metrics?.performance?.avgCpc ? ((metrics?.revenue || 0) / (metrics?.performance?.avgCpc * (metrics?.totalVisitors || 1))).toFixed(2) : 0}
@@ -591,7 +591,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
         {/* Collapsible More Metrics Section */}
         <Layout.Section>
           <Card>
-            <Card.Section>
+            <Box padding="400">
               <Button
                 onClick={() => setShowMoreMetrics(!showMoreMetrics)}
                 disclosure={showMoreMetrics ? "up" : "down"}
@@ -599,12 +599,12 @@ export const Dashboard: React.FC<DashboardProps> = ({
               >
                 {showMoreMetrics ? "Hide" : "View More Metrics"}
               </Button>
-            </Card.Section>
+            </Box>
             {showMoreMetrics && (
               <>
-                <Card.Section>
+                <Box padding="400">
                   <Layout>
-                    <Layout.Section oneThird>
+                    <Layout.Section variant="oneThird">
                       <MetricCard
                         title="Total Visitors"
                         value={metrics?.totalVisitors || 0}
@@ -621,7 +621,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
                       />
                     </Layout.Section>
 
-                    <Layout.Section oneThird>
+                    <Layout.Section variant="oneThird">
                       <MetricCard
                         title="Conversion Rate"
                         value={metrics?.conversionRate || 0}
@@ -639,7 +639,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
                       />
                     </Layout.Section>
 
-                    <Layout.Section oneThird>
+                    <Layout.Section variant="oneThird">
                       <MetricCard
                         title="Average CPC"
                         value={metrics?.performance?.avgCpc || 0}
@@ -657,11 +657,11 @@ export const Dashboard: React.FC<DashboardProps> = ({
                       />
                     </Layout.Section>
                   </Layout>
-                </Card.Section>
+                </Box>
 
-                <Card.Section>
+                <Box padding="400">
                   <Layout>
-                    <Layout.Section oneHalf>
+                    <Layout.Section variant="oneHalf">
                       <MetricCard
                         title="Click-Through Rate"
                         value={metrics?.performance?.ctr || 0}
@@ -679,7 +679,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
                       />
                     </Layout.Section>
 
-                    <Layout.Section oneHalf>
+                    <Layout.Section variant="oneHalf">
                       <PerformanceDonut
                         title="Campaign Status"
                         data={[
@@ -697,7 +697,7 @@ export const Dashboard: React.FC<DashboardProps> = ({
                       />
                     </Layout.Section>
                   </Layout>
-                </Card.Section>
+                </Box>
               </>
             )}
           </Card>

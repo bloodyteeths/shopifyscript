@@ -33,7 +33,7 @@ export const loader: LoaderFunction = async ({ request }) => {
     // In production, this would check the subscription via API
     // For now, we'll determine tier based on tenant or use environment
     let tier = "starter";
-    let contactMethods = {
+    let contactMethods: Record<string, any> = {
       email_support: true,
       phone_support: false,
       priority_routing: false,

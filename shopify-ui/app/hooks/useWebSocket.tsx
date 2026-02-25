@@ -13,6 +13,7 @@
  */
 
 import { useEffect, useRef, useState, useCallback, useMemo } from 'react';
+// @ts-expect-error moduleResolution mismatch with shopify-app-remix
 import { useAuthenticatedFetch } from '@shopify/shopify-app-remix/react';
 
 // WebSocket Event Types (matching backend)

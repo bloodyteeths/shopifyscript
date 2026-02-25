@@ -146,7 +146,7 @@ export function CampaignSetupForm({
             <RangeSlider
               label={`Daily budget: $${config.dailyBudget}`}
               value={config.dailyBudget}
-              onChange={(value) => setConfig({...config, dailyBudget: value})}
+              onChange={(value) => setConfig({...config, dailyBudget: value as number})}
               min={5}
               max={500}
               output
@@ -155,7 +155,7 @@ export function CampaignSetupForm({
             <RangeSlider
               label={`Target cost per click: $${config.targetCPC.toFixed(2)}`}
               value={config.targetCPC * 100}
-              onChange={(value) => setConfig({...config, targetCPC: value / 100})}
+              onChange={(value) => setConfig({...config, targetCPC: (value as number) / 100})}
               min={10}
               max={500}
               output
@@ -281,19 +281,23 @@ export function CampaignSetupForm({
 
           <InlineGrid columns={4} gap="400">
             {toneCards.map((tone) => (
-              <Box
+              <div
                 key={tone.id}
-                padding="400"
-                background={config.adTone === tone.id ? 'bg-surface-selected' : 'bg-surface'}
-                borderColor="border"
-                borderWidth="025"
-                borderRadius="200"
                 onClick={() => setConfig({...config, adTone: tone.id})}
+                style={{ cursor: 'pointer' }}
               >
-                <BlockStack gap="200" inlineAlign="center">
-                  <Text variant="bodyMd" as="p">{tone.label}</Text>
-                </BlockStack>
-              </Box>
+                <Box
+                  padding="400"
+                  background={config.adTone === tone.id ? 'bg-surface-selected' : 'bg-surface'}
+                  borderColor="border"
+                  borderWidth="025"
+                  borderRadius="200"
+                >
+                  <BlockStack gap="200" inlineAlign="center">
+                    <Text variant="bodyMd" as="p">{tone.label}</Text>
+                  </BlockStack>
+                </Box>
+              </div>
             ))}
           </InlineGrid>
         </BlockStack>

@@ -35847,7 +35847,7 @@ var require_Box_css = __commonJS({
 var require_Box = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Box/Box.js"(exports) {
     "use strict";
-    var React27 = require_react(), css = require_css(), Box_module = require_Box_css(), Box10 = /* @__PURE__ */ React27.forwardRef(({
+    var React27 = require_react(), css = require_css(), Box_module = require_Box_css(), Box12 = /* @__PURE__ */ React27.forwardRef(({
       as = "div",
       background,
       borderColor,
@@ -35943,8 +35943,8 @@ var require_Box = __commonJS({
         ...restProps
       }, children);
     });
-    Box10.displayName = "Box";
-    exports.Box = Box10;
+    Box12.displayName = "Box";
+    exports.Box = Box12;
   }
 });
 
@@ -35952,7 +35952,7 @@ var require_Box = __commonJS({
 var require_Card = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Card/Card.js"(exports) {
     "use strict";
-    var React27 = require_react(), breakpoints = require_breakpoints2(), withinContentContext = require_within_content_context(), ShadowBevel = require_ShadowBevel(), Box10 = require_Box(), Card12 = ({
+    var React27 = require_react(), breakpoints = require_breakpoints2(), withinContentContext = require_within_content_context(), ShadowBevel = require_ShadowBevel(), Box12 = require_Box(), Card12 = ({
       children,
       background = "bg-surface",
       padding = {
@@ -35967,7 +35967,7 @@ var require_Card = __commonJS({
         boxShadow: "100",
         borderRadius: hasBorderRadius ? defaultBorderRadius : "0",
         zIndex: "32"
-      }, /* @__PURE__ */ React27.createElement(Box10.Box, {
+      }, /* @__PURE__ */ React27.createElement(Box12.Box, {
         background,
         padding,
         overflowX: "clip",
@@ -36030,7 +36030,7 @@ var require_InlineStack_css = __commonJS({
 var require_InlineStack = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/InlineStack/InlineStack.js"(exports) {
     "use strict";
-    var React27 = require_react(), css = require_css(), InlineStack_module = require_InlineStack_css(), InlineStack9 = function({
+    var React27 = require_react(), css = require_css(), InlineStack_module = require_InlineStack_css(), InlineStack11 = function({
       as: Element2 = "div",
       align,
       direction = "row",
@@ -36051,7 +36051,7 @@ var require_InlineStack = __commonJS({
         style
       }, children);
     };
-    exports.InlineStack = InlineStack9;
+    exports.InlineStack = InlineStack11;
   }
 });
 
@@ -36073,7 +36073,7 @@ var require_BlockStack_css = __commonJS({
 var require_BlockStack = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/BlockStack/BlockStack.js"(exports) {
     "use strict";
-    var React27 = require_react(), css = require_css(), BlockStack_module = require_BlockStack_css(), BlockStack11 = ({
+    var React27 = require_react(), css = require_css(), BlockStack_module = require_BlockStack_css(), BlockStack13 = ({
       as = "div",
       children,
       align,
@@ -36096,7 +36096,7 @@ var require_BlockStack = __commonJS({
         ...restProps
       }, children);
     };
-    exports.BlockStack = BlockStack11;
+    exports.BlockStack = BlockStack13;
   }
 });
 
@@ -36264,7 +36264,7 @@ var require_Avatar = __commonJS({
 var require_AccountConnection = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/AccountConnection/AccountConnection.js"(exports) {
     "use strict";
-    var React27 = require_react(), breakpoints = require_breakpoints2(), utils = require_utils5(), Card12 = require_Card(), SettingAction = require_SettingAction(), InlineStack9 = require_InlineStack(), BlockStack11 = require_BlockStack(), Avatar2 = require_Avatar(), Box10 = require_Box(), Text13 = require_Text();
+    var React27 = require_react(), breakpoints = require_breakpoints2(), utils = require_utils5(), Card12 = require_Card(), SettingAction = require_SettingAction(), InlineStack11 = require_InlineStack(), BlockStack13 = require_BlockStack(), Avatar2 = require_Avatar(), Box12 = require_Box(), Text13 = require_Text();
     function AccountConnection({
       connected = !1,
       action: action11,
@@ -36286,7 +36286,7 @@ var require_AccountConnection = __commonJS({
         as: "span",
         variant: "bodyMd",
         tone: "subdued"
-      }, details) : null, termsOfServiceMarkup = termsOfService ? /* @__PURE__ */ React27.createElement(Box10.Box, {
+      }, details) : null, termsOfServiceMarkup = termsOfService ? /* @__PURE__ */ React27.createElement(Box12.Box, {
         paddingBlockStart: breakpoints$1.mdUp ? "400" : "500"
       }, /* @__PURE__ */ React27.createElement(Text13.Text, {
         as: "span",
@@ -36296,9 +36296,9 @@ var require_AccountConnection = __commonJS({
       }) : null;
       return /* @__PURE__ */ React27.createElement(Card12.Card, null, /* @__PURE__ */ React27.createElement(SettingAction.SettingAction, {
         action: actionElement
-      }, /* @__PURE__ */ React27.createElement(InlineStack9.InlineStack, {
+      }, /* @__PURE__ */ React27.createElement(InlineStack11.InlineStack, {
         gap: "400"
-      }, avatarMarkup, /* @__PURE__ */ React27.createElement(BlockStack11.BlockStack, {
+      }, avatarMarkup, /* @__PURE__ */ React27.createElement(BlockStack13.BlockStack, {
         gap: "100"
       }, titleMarkup, detailsMarkup))), termsOfServiceMarkup);
     }
@@ -37317,7 +37317,7 @@ var require_Tooltip = __commonJS({
 var require_Item = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/ActionList/components/Item/Item.js"(exports) {
     "use strict";
-    var React27 = require_react(), css = require_css(), ActionList_module = require_ActionList_css(), focus = require_focus(), useIsomorphicLayoutEffect = require_use_isomorphic_layout_effect(), useTheme = require_use_theme(), Badge12 = require_Badge(), Tooltip6 = require_Tooltip(), Icon7 = require_Icon(), Box10 = require_Box(), Text13 = require_Text(), Scrollable = require_Scrollable(), UnstyledLink = require_UnstyledLink(), InlineStack9 = require_InlineStack();
+    var React27 = require_react(), css = require_css(), ActionList_module = require_ActionList_css(), focus = require_focus(), useIsomorphicLayoutEffect = require_use_isomorphic_layout_effect(), useTheme = require_use_theme(), Badge12 = require_Badge(), Tooltip6 = require_Tooltip(), Icon7 = require_Icon(), Box12 = require_Box(), Text13 = require_Text(), Scrollable = require_Scrollable(), UnstyledLink = require_UnstyledLink(), InlineStack11 = require_InlineStack();
     function Item({
       id,
       badge,
@@ -37356,7 +37356,7 @@ var require_Item = __commonJS({
       }));
       let contentText = content || "";
       truncate && content ? contentText = /* @__PURE__ */ React27.createElement(TruncateText, null, content) : ellipsis && (contentText = `${content}\u2026`);
-      let contentMarkup = helpText ? /* @__PURE__ */ React27.createElement(React27.Fragment, null, /* @__PURE__ */ React27.createElement(Box10.Box, null, contentText), /* @__PURE__ */ React27.createElement(Text13.Text, {
+      let contentMarkup = helpText ? /* @__PURE__ */ React27.createElement(React27.Fragment, null, /* @__PURE__ */ React27.createElement(Box12.Box, null, contentText), /* @__PURE__ */ React27.createElement(Text13.Text, {
         as: "span",
         variant: "bodySm",
         tone: active || disabled ? void 0 : "subdued"
@@ -37368,7 +37368,7 @@ var require_Item = __commonJS({
         className: ActionList_module.default.Suffix
       }, /* @__PURE__ */ React27.createElement(Badge12.Badge, {
         tone: badge.tone
-      }, badge.content)), suffixMarkup = suffix && /* @__PURE__ */ React27.createElement(Box10.Box, null, /* @__PURE__ */ React27.createElement("span", {
+      }, badge.content)), suffixMarkup = suffix && /* @__PURE__ */ React27.createElement(Box12.Box, null, /* @__PURE__ */ React27.createElement("span", {
         className: ActionList_module.default.Suffix
       }, suffix)), textMarkup = /* @__PURE__ */ React27.createElement("span", {
         className: ActionList_module.default.Text
@@ -37376,11 +37376,11 @@ var require_Item = __commonJS({
         as: "span",
         variant: "bodyMd",
         fontWeight: active ? "semibold" : "regular"
-      }, contentMarkup)), contentElement = /* @__PURE__ */ React27.createElement(InlineStack9.InlineStack, {
+      }, contentMarkup)), contentElement = /* @__PURE__ */ React27.createElement(InlineStack11.InlineStack, {
         blockAlign: "center",
         gap: "150",
         wrap: !1
-      }, prefixMarkup, textMarkup, badgeMarkup, suffixMarkup), contentWrapper = /* @__PURE__ */ React27.createElement(Box10.Box, {
+      }, prefixMarkup, textMarkup, badgeMarkup, suffixMarkup), contentWrapper = /* @__PURE__ */ React27.createElement(Box12.Box, {
         width: "100%"
       }, contentElement), scrollMarkup = active ? /* @__PURE__ */ React27.createElement(Scrollable.Scrollable.ScrollTo, null) : null, control = url ? /* @__PURE__ */ React27.createElement(UnstyledLink.UnstyledLink, {
         id,
@@ -37413,7 +37413,7 @@ var require_Item = __commonJS({
       let text = /* @__PURE__ */ React27.createElement(Text13.Text, {
         as: "span",
         truncate: !0
-      }, /* @__PURE__ */ React27.createElement(Box10.Box, {
+      }, /* @__PURE__ */ React27.createElement(Box12.Box, {
         width: "100%",
         ref: textRef
       }, children));
@@ -37437,7 +37437,7 @@ var require_Item = __commonJS({
 var require_Section = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/ActionList/components/Section/Section.js"(exports) {
     "use strict";
-    var React27 = require_react(), Item = require_Item(), Box10 = require_Box(), InlineStack9 = require_InlineStack(), Text13 = require_Text(), BlockStack11 = require_BlockStack();
+    var React27 = require_react(), Item = require_Item(), Box12 = require_Box(), InlineStack11 = require_InlineStack(), Text13 = require_Text(), BlockStack13 = require_BlockStack();
     function Section({
       section,
       hasMultipleSections,
@@ -37459,15 +37459,15 @@ var require_Section = __commonJS({
           role: actionRole,
           onAction: handleAction(onAction)
         }, item));
-        return /* @__PURE__ */ React27.createElement(Box10.Box, {
+        return /* @__PURE__ */ React27.createElement(Box12.Box, {
           as: "li",
           key: `${content}-${index}`,
           role: actionRole === "menuitem" ? "presentation" : void 0
-        }, /* @__PURE__ */ React27.createElement(InlineStack9.InlineStack, {
+        }, /* @__PURE__ */ React27.createElement(InlineStack11.InlineStack, {
           wrap: !1
         }, itemMarkup));
       }), titleMarkup = null;
-      section.title && (titleMarkup = typeof section.title == "string" ? /* @__PURE__ */ React27.createElement(Box10.Box, {
+      section.title && (titleMarkup = typeof section.title == "string" ? /* @__PURE__ */ React27.createElement(Box12.Box, {
         paddingBlockStart: "300",
         paddingBlockEnd: "100",
         paddingInlineStart: "300",
@@ -37475,7 +37475,7 @@ var require_Section = __commonJS({
       }, /* @__PURE__ */ React27.createElement(Text13.Text, {
         as: "p",
         variant: "headingSm"
-      }, section.title)) : /* @__PURE__ */ React27.createElement(Box10.Box, {
+      }, section.title)) : /* @__PURE__ */ React27.createElement(Box12.Box, {
         padding: "200",
         paddingInlineEnd: "150"
       }, section.title));
@@ -37491,20 +37491,20 @@ var require_Section = __commonJS({
           sectionRole = void 0;
           break;
       }
-      let sectionMarkup = /* @__PURE__ */ React27.createElement(React27.Fragment, null, titleMarkup, /* @__PURE__ */ React27.createElement(Box10.Box, Object.assign({
+      let sectionMarkup = /* @__PURE__ */ React27.createElement(React27.Fragment, null, titleMarkup, /* @__PURE__ */ React27.createElement(Box12.Box, Object.assign({
         as: "div",
         padding: "150"
       }, hasMultipleSections && {
         paddingBlockStart: "0"
       }, {
         tabIndex: hasMultipleSections ? void 0 : -1
-      }), /* @__PURE__ */ React27.createElement(BlockStack11.BlockStack, Object.assign({
+      }), /* @__PURE__ */ React27.createElement(BlockStack13.BlockStack, Object.assign({
         gap: "050",
         as: "ul"
       }, sectionRole && {
         role: sectionRole
       }), actionMarkup)));
-      return hasMultipleSections ? /* @__PURE__ */ React27.createElement(Box10.Box, Object.assign({
+      return hasMultipleSections ? /* @__PURE__ */ React27.createElement(Box12.Box, Object.assign({
         as: "li",
         role: "presentation",
         borderColor: "border-secondary"
@@ -38267,7 +38267,7 @@ var require_TextField = __commonJS({
 var require_ActionList = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/ActionList/ActionList.js"(exports) {
     "use strict";
-    var React27 = require_react(), polarisIcons = require_dist3(), types4 = require_types(), focus = require_focus(), FilterActionsProvider = require_FilterActionsProvider(), Section = require_Section(), KeypressListener = require_KeypressListener(), TextField6 = require_TextField(), hooks = require_hooks2(), Box10 = require_Box(), Icon7 = require_Icon(), Item = require_Item(), FILTER_ACTIONS_THRESHOLD = 8;
+    var React27 = require_react(), polarisIcons = require_dist3(), types4 = require_types(), focus = require_focus(), FilterActionsProvider = require_FilterActionsProvider(), Section = require_Section(), KeypressListener = require_KeypressListener(), TextField6 = require_TextField(), hooks = require_hooks2(), Box12 = require_Box(), Icon7 = require_Icon(), Item = require_Item(), FILTER_ACTIONS_THRESHOLD = 8;
     function ActionList3({
       items,
       sections = [],
@@ -38304,7 +38304,7 @@ var require_ActionList = __commonJS({
         keyCode: types4.Key.UpArrow,
         handler: handleFocusPreviousItem
       })) : null, totalFilteredActions = React27.useMemo(() => filteredSections?.reduce((acc, section) => acc + section.items.length, 0) || 0, [filteredSections]), hasManyActions = (finalSections?.reduce((acc, section) => acc + section.items.length, 0) || 0) >= FILTER_ACTIONS_THRESHOLD;
-      return /* @__PURE__ */ React27.createElement(React27.Fragment, null, (allowFiltering || filterActions) && hasManyActions && isFilterable && /* @__PURE__ */ React27.createElement(Box10.Box, {
+      return /* @__PURE__ */ React27.createElement(React27.Fragment, null, (allowFiltering || filterActions) && hasManyActions && isFilterable && /* @__PURE__ */ React27.createElement(Box12.Box, {
         padding: "200",
         paddingBlockEnd: totalFilteredActions > 0 ? "0" : "200"
       }, /* @__PURE__ */ React27.createElement(TextField6.TextField, {
@@ -38319,7 +38319,7 @@ var require_ActionList = __commonJS({
           source: polarisIcons.SearchIcon
         }),
         onClearButtonClick: () => setSearchText("")
-      })), /* @__PURE__ */ React27.createElement(Box10.Box, {
+      })), /* @__PURE__ */ React27.createElement(Box12.Box, {
         as: hasMultipleSections ? "ul" : "div",
         ref: actionListRef,
         role: elementRole,
@@ -38448,13 +38448,13 @@ var require_Popover_css = __commonJS({
 var require_Section2 = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Popover/components/Section/Section.js"(exports) {
     "use strict";
-    var React27 = require_react(), Popover_module = require_Popover_css(), Box10 = require_Box();
+    var React27 = require_react(), Popover_module = require_Popover_css(), Box12 = require_Box();
     function Section({
       children
     }) {
       return /* @__PURE__ */ React27.createElement("div", {
         className: Popover_module.default.Section
-      }, /* @__PURE__ */ React27.createElement(Box10.Box, {
+      }, /* @__PURE__ */ React27.createElement(Box12.Box, {
         paddingInlineStart: "300",
         paddingInlineEnd: "300",
         paddingBlockStart: "200",
@@ -39592,20 +39592,20 @@ var require_Checkbox = __commonJS({
 var require_TextOption = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Listbox/components/TextOption/TextOption.js"(exports) {
     "use strict";
-    var React27 = require_react(), polarisIcons = require_dist3(), css = require_css(), context = require_context11(), context$1 = require_context12(), TextOption_module = require_TextOption_css(), Checkbox4 = require_Checkbox(), Box10 = require_Box(), InlineStack9 = require_InlineStack(), Icon7 = require_Icon(), TextOption = /* @__PURE__ */ React27.memo(function({
+    var React27 = require_react(), polarisIcons = require_dist3(), css = require_css(), context = require_context11(), context$1 = require_context12(), TextOption_module = require_TextOption_css(), Checkbox4 = require_Checkbox(), Box12 = require_Box(), InlineStack11 = require_InlineStack(), Icon7 = require_Icon(), TextOption = /* @__PURE__ */ React27.memo(function({
       children,
       selected,
       disabled
     }) {
       let {
         allowMultiple
-      } = React27.useContext(context.ComboboxListboxOptionContext), isAction = React27.useContext(context$1.ActionContext), textOptionClassName = css.classNames(TextOption_module.default.TextOption, selected && !allowMultiple && TextOption_module.default.selected, disabled && TextOption_module.default.disabled, allowMultiple && TextOption_module.default.allowMultiple, isAction && TextOption_module.default.isAction), optionMarkup = selected ? /* @__PURE__ */ React27.createElement(Box10.Box, {
+      } = React27.useContext(context.ComboboxListboxOptionContext), isAction = React27.useContext(context$1.ActionContext), textOptionClassName = css.classNames(TextOption_module.default.TextOption, selected && !allowMultiple && TextOption_module.default.selected, disabled && TextOption_module.default.disabled, allowMultiple && TextOption_module.default.allowMultiple, isAction && TextOption_module.default.isAction), optionMarkup = selected ? /* @__PURE__ */ React27.createElement(Box12.Box, {
         width: "100%"
-      }, /* @__PURE__ */ React27.createElement(InlineStack9.InlineStack, {
+      }, /* @__PURE__ */ React27.createElement(InlineStack11.InlineStack, {
         wrap: !1,
         align: "space-between",
         gap: "200"
-      }, children, /* @__PURE__ */ React27.createElement(InlineStack9.InlineStack, {
+      }, children, /* @__PURE__ */ React27.createElement(InlineStack11.InlineStack, {
         align: "end"
       }, /* @__PURE__ */ React27.createElement(Icon7.Icon, {
         source: polarisIcons.CheckIcon
@@ -39761,11 +39761,11 @@ var require_hooks7 = __commonJS({
 var require_Header = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Listbox/components/Header/Header.js"(exports) {
     "use strict";
-    var React27 = require_react(), hooks = require_hooks7(), Box10 = require_Box(), Text13 = require_Text();
+    var React27 = require_react(), hooks = require_hooks7(), Box12 = require_Box(), Text13 = require_Text();
     function Header2({
       children
     }) {
-      let sectionId = hooks.useSection() || "", content = typeof children == "string" ? /* @__PURE__ */ React27.createElement(Box10.Box, {
+      let sectionId = hooks.useSection() || "", content = typeof children == "string" ? /* @__PURE__ */ React27.createElement(Box12.Box, {
         paddingBlockStart: "200",
         paddingInlineStart: "400",
         paddingBlockEnd: "200",
@@ -40751,7 +40751,7 @@ var require_ButtonGroup = __commonJS({
 var require_Banner = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Banner/Banner.js"(exports) {
     "use strict";
-    var React27 = require_react(), polarisIcons = require_dist3(), bannerContext = require_banner_context(), withinContentContext = require_within_content_context(), css = require_css(), breakpoints = require_breakpoints2(), useEventListener = require_use_event_listener(), Banner_module = require_Banner_css(), utilities = require_utilities3(), ButtonGroup4 = require_ButtonGroup(), hooks = require_hooks2(), Text13 = require_Text(), Icon7 = require_Icon(), Button11 = require_Button(), Box10 = require_Box(), BlockStack11 = require_BlockStack(), InlineStack9 = require_InlineStack(), Banner9 = /* @__PURE__ */ React27.forwardRef(function(props, bannerRef) {
+    var React27 = require_react(), polarisIcons = require_dist3(), bannerContext = require_banner_context(), withinContentContext = require_within_content_context(), css = require_css(), breakpoints = require_breakpoints2(), useEventListener = require_use_event_listener(), Banner_module = require_Banner_css(), utilities = require_utilities3(), ButtonGroup4 = require_ButtonGroup(), hooks = require_hooks2(), Text13 = require_Text(), Icon7 = require_Icon(), Button11 = require_Button(), Box12 = require_Box(), BlockStack13 = require_BlockStack(), InlineStack11 = require_InlineStack(), Banner9 = /* @__PURE__ */ React27.forwardRef(function(props, bannerRef) {
       let {
         tone,
         stopAnnouncements
@@ -40831,11 +40831,11 @@ var require_Banner = __commonJS({
       let {
         smUp
       } = breakpoints.useBreakpoints(), hasContent = children || actionButtons;
-      return /* @__PURE__ */ React27.createElement(Box10.Box, {
+      return /* @__PURE__ */ React27.createElement(Box12.Box, {
         width: "100%"
-      }, /* @__PURE__ */ React27.createElement(BlockStack11.BlockStack, {
+      }, /* @__PURE__ */ React27.createElement(BlockStack13.BlockStack, {
         align: "space-between"
-      }, /* @__PURE__ */ React27.createElement(Box10.Box, {
+      }, /* @__PURE__ */ React27.createElement(Box12.Box, {
         background: backgroundColor,
         color: textColor,
         borderStartStartRadius: smUp ? "300" : void 0,
@@ -40843,21 +40843,21 @@ var require_Banner = __commonJS({
         borderEndStartRadius: !hasContent && smUp ? "300" : void 0,
         borderEndEndRadius: !hasContent && smUp ? "300" : void 0,
         padding: "300"
-      }, /* @__PURE__ */ React27.createElement(InlineStack9.InlineStack, {
+      }, /* @__PURE__ */ React27.createElement(InlineStack11.InlineStack, {
         align: "space-between",
         blockAlign: "center",
         gap: "200",
         wrap: !1
-      }, /* @__PURE__ */ React27.createElement(InlineStack9.InlineStack, {
+      }, /* @__PURE__ */ React27.createElement(InlineStack11.InlineStack, {
         gap: "100",
         wrap: !1
-      }, bannerIcon, bannerTitle), dismissButton)), hasContent && /* @__PURE__ */ React27.createElement(Box10.Box, {
+      }, bannerIcon, bannerTitle), dismissButton)), hasContent && /* @__PURE__ */ React27.createElement(Box12.Box, {
         padding: {
           xs: "300",
           md: "400"
         },
         paddingBlockStart: "300"
-      }, /* @__PURE__ */ React27.createElement(BlockStack11.BlockStack, {
+      }, /* @__PURE__ */ React27.createElement(BlockStack13.BlockStack, {
         gap: "200"
       }, /* @__PURE__ */ React27.createElement("div", null, children), actionButtons))));
     }
@@ -40872,30 +40872,30 @@ var require_Banner = __commonJS({
         let contentHeight = contentNode.current?.offsetHeight, iconBoxHeight = iconNode.current?.offsetHeight || dismissIconNode.current?.offsetHeight;
         !contentHeight || !iconBoxHeight || (contentHeight > iconBoxHeight ? setBlockAlign("start") : setBlockAlign("center"));
       }, []);
-      return React27.useEffect(() => handleResize(), [handleResize]), useEventListener.useEventListener("resize", handleResize), /* @__PURE__ */ React27.createElement(Box10.Box, {
+      return React27.useEffect(() => handleResize(), [handleResize]), useEventListener.useEventListener("resize", handleResize), /* @__PURE__ */ React27.createElement(Box12.Box, {
         width: "100%",
         padding: "300",
         borderRadius: "300"
-      }, /* @__PURE__ */ React27.createElement(InlineStack9.InlineStack, {
+      }, /* @__PURE__ */ React27.createElement(InlineStack11.InlineStack, {
         align: "space-between",
         blockAlign,
         wrap: !1
-      }, /* @__PURE__ */ React27.createElement(Box10.Box, {
+      }, /* @__PURE__ */ React27.createElement(Box12.Box, {
         width: "100%"
-      }, /* @__PURE__ */ React27.createElement(InlineStack9.InlineStack, {
+      }, /* @__PURE__ */ React27.createElement(InlineStack11.InlineStack, {
         gap: "200",
         wrap: !1,
         blockAlign
       }, bannerIcon ? /* @__PURE__ */ React27.createElement("div", {
         ref: iconNode
-      }, /* @__PURE__ */ React27.createElement(Box10.Box, {
+      }, /* @__PURE__ */ React27.createElement(Box12.Box, {
         background: backgroundColor,
         borderRadius: "200",
         padding: "100"
-      }, bannerIcon)) : null, /* @__PURE__ */ React27.createElement(Box10.Box, {
+      }, bannerIcon)) : null, /* @__PURE__ */ React27.createElement(Box12.Box, {
         ref: contentNode,
         width: "100%"
-      }, /* @__PURE__ */ React27.createElement(BlockStack11.BlockStack, {
+      }, /* @__PURE__ */ React27.createElement(BlockStack13.BlockStack, {
         gap: "200"
       }, /* @__PURE__ */ React27.createElement("div", null, children), actionButtons)))), /* @__PURE__ */ React27.createElement("div", {
         ref: dismissIconNode,
@@ -40911,25 +40911,25 @@ var require_Banner = __commonJS({
       dismissButton,
       children
     }) {
-      return /* @__PURE__ */ React27.createElement(Box10.Box, {
+      return /* @__PURE__ */ React27.createElement(Box12.Box, {
         width: "100%",
         background: backgroundColor,
         padding: "200",
         borderRadius: "200",
         color: textColor
-      }, /* @__PURE__ */ React27.createElement(InlineStack9.InlineStack, {
+      }, /* @__PURE__ */ React27.createElement(InlineStack11.InlineStack, {
         align: "space-between",
         blockAlign: "start",
         wrap: !1,
         gap: "200"
-      }, /* @__PURE__ */ React27.createElement(InlineStack9.InlineStack, {
+      }, /* @__PURE__ */ React27.createElement(InlineStack11.InlineStack, {
         gap: "150",
         wrap: !1
-      }, bannerIcon, /* @__PURE__ */ React27.createElement(Box10.Box, {
+      }, bannerIcon, /* @__PURE__ */ React27.createElement(Box12.Box, {
         width: "100%"
-      }, /* @__PURE__ */ React27.createElement(BlockStack11.BlockStack, {
+      }, /* @__PURE__ */ React27.createElement(BlockStack13.BlockStack, {
         gap: "200"
-      }, /* @__PURE__ */ React27.createElement(BlockStack11.BlockStack, {
+      }, /* @__PURE__ */ React27.createElement(BlockStack13.BlockStack, {
         gap: "050"
       }, bannerTitle, /* @__PURE__ */ React27.createElement("div", null, children)), actionButtons))), dismissButton));
     }
@@ -41334,7 +41334,7 @@ var require_BulkActionsMeasurer = __commonJS({
 var require_BulkActions = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/BulkActions/BulkActions.js"(exports) {
     "use strict";
-    var React27 = require_react(), css = require_css(), utilities = require_utilities4(), BulkActions_module = require_BulkActions_css(), BulkActionMenu = require_BulkActionMenu(), CheckableButton = require_CheckableButton(), BulkActionsMeasurer = require_BulkActionsMeasurer(), hooks = require_hooks2(), UnstyledButton = require_UnstyledButton(), Text13 = require_Text(), BulkActionButton = require_BulkActionButton(), Popover3 = require_Popover(), ActionList3 = require_ActionList(), InlineStack9 = require_InlineStack(), BulkActions = /* @__PURE__ */ React27.forwardRef(function({
+    var React27 = require_react(), css = require_css(), utilities = require_utilities4(), BulkActions_module = require_BulkActions_css(), BulkActionMenu = require_BulkActionMenu(), CheckableButton = require_CheckableButton(), BulkActionsMeasurer = require_BulkActionsMeasurer(), hooks = require_hooks2(), UnstyledButton = require_UnstyledButton(), Text13 = require_Text(), BulkActionButton = require_BulkActionButton(), Popover3 = require_Popover(), ActionList3 = require_ActionList(), InlineStack11 = require_InlineStack(), BulkActions = /* @__PURE__ */ React27.forwardRef(function({
       promotedActions,
       actions,
       disabled,
@@ -41481,14 +41481,14 @@ var require_BulkActions = __commonJS({
         style: width ? {
           width
         } : void 0
-      }, /* @__PURE__ */ React27.createElement(InlineStack9.InlineStack, {
+      }, /* @__PURE__ */ React27.createElement(InlineStack11.InlineStack, {
         gap: "400",
         blockAlign: "center"
       }, /* @__PURE__ */ React27.createElement("div", {
         className: BulkActions_module.default.BulkActionsSelectAllWrapper
       }, /* @__PURE__ */ React27.createElement(CheckableButton.CheckableButton, checkableButtonProps), paginatedSelectAllMarkup), selectMode ? /* @__PURE__ */ React27.createElement("div", {
         className: BulkActions_module.default.BulkActionsPromotedActionsWrapper
-      }, /* @__PURE__ */ React27.createElement(InlineStack9.InlineStack, {
+      }, /* @__PURE__ */ React27.createElement(InlineStack11.InlineStack, {
         gap: "100",
         blockAlign: "center"
       }, /* @__PURE__ */ React27.createElement("div", {
@@ -41551,7 +41551,7 @@ var require_LegacyCard_css = __commonJS({
 var require_Header2 = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/LegacyCard/components/Header/Header.js"(exports) {
     "use strict";
-    var React27 = require_react(), LegacyCard_module = require_LegacyCard_css(), utils = require_utils5(), ButtonGroup4 = require_ButtonGroup(), InlineStack9 = require_InlineStack(), Text13 = require_Text();
+    var React27 = require_react(), LegacyCard_module = require_LegacyCard_css(), utils = require_utils5(), ButtonGroup4 = require_ButtonGroup(), InlineStack11 = require_InlineStack(), Text13 = require_Text();
     function Header2({
       children,
       title,
@@ -41562,12 +41562,12 @@ var require_Header2 = __commonJS({
       })) : null, titleMarkup = /* @__PURE__ */ React27.isValidElement(title) ? title : /* @__PURE__ */ React27.createElement(Text13.Text, {
         variant: "headingSm",
         as: "h2"
-      }, title), headingMarkup = actionMarkup || children ? /* @__PURE__ */ React27.createElement(InlineStack9.InlineStack, {
+      }, title), headingMarkup = actionMarkup || children ? /* @__PURE__ */ React27.createElement(InlineStack11.InlineStack, {
         wrap: !1,
         gap: "200",
         align: "space-between",
         blockAlign: "center"
-      }, titleMarkup, /* @__PURE__ */ React27.createElement(InlineStack9.InlineStack, {
+      }, titleMarkup, /* @__PURE__ */ React27.createElement(InlineStack11.InlineStack, {
         wrap: !1,
         gap: "400",
         blockAlign: "center"
@@ -41805,7 +41805,7 @@ var require_LegacyCard = __commonJS({
 var require_CalloutCard = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/CalloutCard/CalloutCard.js"(exports) {
     "use strict";
-    var React27 = require_react(), polarisIcons = require_dist3(), css = require_css(), CalloutCard_module = require_CalloutCard_css(), LegacyCard = require_LegacyCard(), utils = require_utils5(), Button11 = require_Button(), Text13 = require_Text(), BlockStack11 = require_BlockStack(), Image = require_Image(), ButtonGroup4 = require_ButtonGroup();
+    var React27 = require_react(), polarisIcons = require_dist3(), css = require_css(), CalloutCard_module = require_CalloutCard_css(), LegacyCard = require_LegacyCard(), utils = require_utils5(), Button11 = require_Button(), Text13 = require_Text(), BlockStack13 = require_BlockStack(), Image = require_Image(), ButtonGroup4 = require_ButtonGroup();
     function CalloutCard({
       title,
       children,
@@ -41838,7 +41838,7 @@ var require_CalloutCard = __commonJS({
       }, title)), /* @__PURE__ */ React27.createElement(Text13.Text, {
         as: "span",
         variant: "bodyMd"
-      }, /* @__PURE__ */ React27.createElement(BlockStack11.BlockStack, null, children)), /* @__PURE__ */ React27.createElement("div", {
+      }, /* @__PURE__ */ React27.createElement(BlockStack13.BlockStack, null, children)), /* @__PURE__ */ React27.createElement("div", {
         className: CalloutCard_module.default.Buttons
       }, buttonMarkup)), /* @__PURE__ */ React27.createElement(Image.Image, {
         alt: "",
@@ -41958,7 +41958,7 @@ var require_RadioButton = __commonJS({
 var require_ChoiceList = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/ChoiceList/ChoiceList.js"(exports) {
     "use strict";
-    var React27 = require_react(), ChoiceList_module = require_ChoiceList_css(), Bleed = require_Bleed(), RadioButton3 = require_RadioButton(), Box10 = require_Box(), InlineError = require_InlineError(), BlockStack11 = require_BlockStack(), Checkbox4 = require_Checkbox(), Text13 = require_Text();
+    var React27 = require_react(), ChoiceList_module = require_ChoiceList_css(), Bleed = require_Bleed(), RadioButton3 = require_RadioButton(), Box12 = require_Box(), InlineError = require_InlineError(), BlockStack13 = require_BlockStack(), Checkbox4 = require_Checkbox(), Text13 = require_Text();
     function ChoiceList2({
       title,
       titleHidden,
@@ -41971,7 +41971,7 @@ var require_ChoiceList = __commonJS({
       name: nameProp,
       tone
     }) {
-      let ControlComponent = allowMultiple ? Checkbox4.Checkbox : RadioButton3.RadioButton, uniqName = React27.useId(), name = nameProp ?? uniqName, finalName = allowMultiple ? `${name}[]` : name, titleMarkup = title ? /* @__PURE__ */ React27.createElement(Box10.Box, {
+      let ControlComponent = allowMultiple ? Checkbox4.Checkbox : RadioButton3.RadioButton, uniqName = React27.useId(), name = nameProp ?? uniqName, finalName = allowMultiple ? `${name}[]` : name, titleMarkup = title ? /* @__PURE__ */ React27.createElement(Box12.Box, {
         as: "legend",
         paddingBlockEnd: {
           xs: "0",
@@ -41995,7 +41995,7 @@ var require_ChoiceList = __commonJS({
         }
         let isSelected = choiceIsSelected(choice, selected), renderedChildren = choice.renderChildren ? choice.renderChildren(isSelected) : null, children = renderedChildren ? /* @__PURE__ */ React27.createElement("div", {
           className: ChoiceList_module.default.ChoiceChildren
-        }, /* @__PURE__ */ React27.createElement(Box10.Box, {
+        }, /* @__PURE__ */ React27.createElement(Box12.Box, {
           paddingBlockStart: {
             xs: "400",
             md: "0"
@@ -42026,7 +42026,7 @@ var require_ChoiceList = __commonJS({
           ariaDescribedBy: error && describedByError ? InlineError.errorTextID(finalName) : null,
           tone
         }), children));
-      }), errorMarkup = error && /* @__PURE__ */ React27.createElement(Box10.Box, {
+      }), errorMarkup = error && /* @__PURE__ */ React27.createElement(Box12.Box, {
         paddingBlockStart: {
           xs: "0",
           md: "100"
@@ -42036,7 +42036,7 @@ var require_ChoiceList = __commonJS({
         message: error,
         fieldID: finalName
       }));
-      return /* @__PURE__ */ React27.createElement(BlockStack11.BlockStack, {
+      return /* @__PURE__ */ React27.createElement(BlockStack13.BlockStack, {
         as: "fieldset",
         gap: {
           xs: "400",
@@ -42044,7 +42044,7 @@ var require_ChoiceList = __commonJS({
         },
         "aria-invalid": error != null,
         id: finalName
-      }, titleMarkup, /* @__PURE__ */ React27.createElement(BlockStack11.BlockStack, {
+      }, titleMarkup, /* @__PURE__ */ React27.createElement(BlockStack13.BlockStack, {
         as: "ul",
         gap: {
           xs: "400",
@@ -43002,7 +43002,7 @@ var require_Pagination_css = __commonJS({
 var require_Pagination = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Pagination/Pagination.js"(exports) {
     "use strict";
-    var polarisIcons = require_dist3(), React27 = require_react(), isInputFocused = require_is_input_focused(), css = require_css(), Pagination_module = require_Pagination_css(), hooks = require_hooks2(), KeypressListener = require_KeypressListener(), Box10 = require_Box(), InlineStack9 = require_InlineStack(), ButtonGroup4 = require_ButtonGroup(), Tooltip6 = require_Tooltip(), Text13 = require_Text(), Button11 = require_Button();
+    var polarisIcons = require_dist3(), React27 = require_react(), isInputFocused = require_is_input_focused(), css = require_css(), Pagination_module = require_Pagination_css(), hooks = require_hooks2(), KeypressListener = require_KeypressListener(), Box12 = require_Box(), InlineStack11 = require_InlineStack(), ButtonGroup4 = require_ButtonGroup(), Tooltip6 = require_Tooltip(), Text13 = require_Text(), Button11 = require_Button();
     function Pagination({
       hasNext,
       hasPrevious,
@@ -43051,7 +43051,7 @@ var require_Pagination = __commonJS({
         handler: handleCallback(nextURL ? clickPaginationLink("nextURL", node) : nextHandler)
       }));
       if (type === "table") {
-        let labelMarkup2 = label ? /* @__PURE__ */ React27.createElement(Box10.Box, {
+        let labelMarkup2 = label ? /* @__PURE__ */ React27.createElement(Box12.Box, {
           padding: "300",
           paddingBlockStart: "0",
           paddingBlockEnd: "0"
@@ -43064,13 +43064,13 @@ var require_Pagination = __commonJS({
           "aria-label": navLabel,
           ref: node,
           className: css.classNames(Pagination_module.default.Pagination, Pagination_module.default.table)
-        }, previousButtonEvents, nextButtonEvents, /* @__PURE__ */ React27.createElement(Box10.Box, {
+        }, previousButtonEvents, nextButtonEvents, /* @__PURE__ */ React27.createElement(Box12.Box, {
           background: "bg-surface-secondary",
           paddingBlockStart: "150",
           paddingBlockEnd: "150",
           paddingInlineStart: "300",
           paddingInlineEnd: "200"
-        }, /* @__PURE__ */ React27.createElement(InlineStack9.InlineStack, {
+        }, /* @__PURE__ */ React27.createElement(InlineStack11.InlineStack, {
           align: "center",
           blockAlign: "center"
         }, /* @__PURE__ */ React27.createElement("div", {
@@ -43081,7 +43081,7 @@ var require_Pagination = __commonJS({
       let labelTextMarkup = hasNext && hasPrevious ? /* @__PURE__ */ React27.createElement("span", null, label) : /* @__PURE__ */ React27.createElement(Text13.Text, {
         tone: "subdued",
         as: "span"
-      }, label), labelMarkup = label ? /* @__PURE__ */ React27.createElement(Box10.Box, {
+      }, label), labelMarkup = label ? /* @__PURE__ */ React27.createElement(Box12.Box, {
         padding: "300",
         paddingBlockStart: "0",
         paddingBlockEnd: "0"
@@ -44480,7 +44480,7 @@ var require_FileUpload_css = __commonJS({
 var require_FileUpload = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/DropZone/components/FileUpload/FileUpload.js"(exports) {
     "use strict";
-    var React27 = require_react(), polarisIcons = require_dist3(), css = require_css(), capitalize = require_capitalize(), context = require_context16(), index = require_utils7(), FileUpload_module = require_FileUpload_css(), hooks = require_hooks2(), Icon7 = require_Icon(), BlockStack11 = require_BlockStack(), Button11 = require_Button(), Text13 = require_Text();
+    var React27 = require_react(), polarisIcons = require_dist3(), css = require_css(), capitalize = require_capitalize(), context = require_context16(), index = require_utils7(), FileUpload_module = require_FileUpload_css(), hooks = require_hooks2(), Icon7 = require_Icon(), BlockStack13 = require_BlockStack(), Button11 = require_Button(), Text13 = require_Text();
     function FileUpload(props) {
       let i18n = hooks.useI18n(), {
         size,
@@ -44501,7 +44501,7 @@ var require_FileUpload = __commonJS({
       switch (size) {
         case "large":
         case "medium":
-          viewMarkup = /* @__PURE__ */ React27.createElement(BlockStack11.BlockStack, {
+          viewMarkup = /* @__PURE__ */ React27.createElement(BlockStack13.BlockStack, {
             inlineAlign: "center",
             gap: "200"
           }, actionMarkup, actionHintMarkup);
@@ -44526,7 +44526,7 @@ var require_FileUpload = __commonJS({
 var require_DropZone = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/DropZone/DropZone.js"(exports) {
     "use strict";
-    var React27 = require_react(), polarisIcons = require_dist3(), debounce = require_debounce(), css = require_css(), capitalize = require_capitalize(), target = require_target(), useComponentDidMount = require_use_component_did_mount(), useToggle = require_use_toggle(), useEventListener = require_use_event_listener(), context = require_context16(), index = require_utils7(), DropZone_module = require_DropZone_css(), FileUpload = require_FileUpload(), hooks = require_hooks2(), BlockStack11 = require_BlockStack(), Icon7 = require_Icon(), Text13 = require_Text(), Labelled = require_Labelled(), DropZone = function({
+    var React27 = require_react(), polarisIcons = require_dist3(), debounce = require_debounce(), css = require_css(), capitalize = require_capitalize(), target = require_target(), useComponentDidMount = require_use_component_did_mount(), useToggle = require_use_toggle(), useEventListener = require_use_event_listener(), context = require_context16(), index = require_utils7(), DropZone_module = require_DropZone_css(), FileUpload = require_FileUpload(), hooks = require_hooks2(), BlockStack13 = require_BlockStack(), Icon7 = require_Icon(), Text13 = require_Text(), Labelled = require_Labelled(), DropZone = function({
       dropOnPage,
       label,
       labelAction,
@@ -44624,7 +44624,7 @@ var require_DropZone = __commonJS({
       function overlayMarkup(icon, text, color) {
         return /* @__PURE__ */ React27.createElement("div", {
           className: DropZone_module.default.Overlay
-        }, /* @__PURE__ */ React27.createElement(BlockStack11.BlockStack, {
+        }, /* @__PURE__ */ React27.createElement(BlockStack13.BlockStack, {
           gap: "200",
           inlineAlign: "center"
         }, size === "small" && /* @__PURE__ */ React27.createElement(Icon7.Icon, {
@@ -44743,7 +44743,7 @@ var require_EmptyState_css = __commonJS({
 var require_EmptyState = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/EmptyState/EmptyState.js"(exports) {
     "use strict";
-    var React27 = require_react(), css = require_css(), EmptyState_module = require_EmptyState_css(), utils = require_utils5(), Box10 = require_Box(), BlockStack11 = require_BlockStack(), Image = require_Image(), Text13 = require_Text(), InlineStack9 = require_InlineStack();
+    var React27 = require_react(), css = require_css(), EmptyState_module = require_EmptyState_css(), utils = require_utils5(), Box12 = require_Box(), BlockStack13 = require_BlockStack(), Image = require_Image(), Text13 = require_Text(), InlineStack11 = require_InlineStack();
     function EmptyState4({
       children,
       heading,
@@ -44781,7 +44781,7 @@ var require_EmptyState = __commonJS({
         className: imageContainerClassNames
       }, loadedImageMarkup, /* @__PURE__ */ React27.createElement("div", {
         className: skeletonImageClassNames
-      })), secondaryActionMarkup = secondaryAction ? utils.buttonFrom(secondaryAction, {}) : null, footerContentMarkup = footerContent ? /* @__PURE__ */ React27.createElement(Box10.Box, {
+      })), secondaryActionMarkup = secondaryAction ? utils.buttonFrom(secondaryAction, {}) : null, footerContentMarkup = footerContent ? /* @__PURE__ */ React27.createElement(Box12.Box, {
         paddingBlockStart: "400"
       }, /* @__PURE__ */ React27.createElement(Text13.Text, {
         as: "span",
@@ -44790,7 +44790,7 @@ var require_EmptyState = __commonJS({
       }, footerContent)) : null, primaryActionMarkup = action11 ? utils.buttonFrom(action11, {
         variant: "primary",
         size: "medium"
-      }) : null, headingMarkup = heading ? /* @__PURE__ */ React27.createElement(Box10.Box, {
+      }) : null, headingMarkup = heading ? /* @__PURE__ */ React27.createElement(Box12.Box, {
         paddingBlockEnd: "150"
       }, /* @__PURE__ */ React27.createElement(Text13.Text, {
         variant: "headingMd",
@@ -44800,22 +44800,22 @@ var require_EmptyState = __commonJS({
         as: "span",
         alignment: "center",
         variant: "bodySm"
-      }, children) : null, textContentMarkup = headingMarkup || children ? /* @__PURE__ */ React27.createElement(Box10.Box, {
+      }, children) : null, textContentMarkup = headingMarkup || children ? /* @__PURE__ */ React27.createElement(Box12.Box, {
         paddingBlockEnd: "400"
-      }, headingMarkup, childrenMarkup) : null, actionsMarkup = primaryActionMarkup || secondaryActionMarkup ? /* @__PURE__ */ React27.createElement(InlineStack9.InlineStack, {
+      }, headingMarkup, childrenMarkup) : null, actionsMarkup = primaryActionMarkup || secondaryActionMarkup ? /* @__PURE__ */ React27.createElement(InlineStack11.InlineStack, {
         align: "center",
         gap: "200"
-      }, secondaryActionMarkup, primaryActionMarkup) : null, detailsMarkup = textContentMarkup || actionsMarkup || footerContentMarkup ? /* @__PURE__ */ React27.createElement(Box10.Box, {
+      }, secondaryActionMarkup, primaryActionMarkup) : null, detailsMarkup = textContentMarkup || actionsMarkup || footerContentMarkup ? /* @__PURE__ */ React27.createElement(Box12.Box, {
         maxWidth: fullWidth ? "100%" : "400px"
-      }, /* @__PURE__ */ React27.createElement(BlockStack11.BlockStack, {
+      }, /* @__PURE__ */ React27.createElement(BlockStack13.BlockStack, {
         inlineAlign: "center"
       }, textContentMarkup, actionsMarkup, footerContentMarkup)) : null;
-      return /* @__PURE__ */ React27.createElement(Box10.Box, {
+      return /* @__PURE__ */ React27.createElement(Box12.Box, {
         paddingInlineStart: "0",
         paddingInlineEnd: "0",
         paddingBlockStart: "500",
         paddingBlockEnd: "1600"
-      }, /* @__PURE__ */ React27.createElement(BlockStack11.BlockStack, {
+      }, /* @__PURE__ */ React27.createElement(BlockStack13.BlockStack, {
         inlineAlign: "center"
       }, imageMarkup, detailsMarkup));
     }
@@ -45032,7 +45032,7 @@ var require_FilterPill_css = __commonJS({
 var require_FilterPill = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Filters/components/FilterPill/FilterPill.js"(exports) {
     "use strict";
-    var React27 = require_react(), polarisIcons = require_dist3(), useToggle = require_use_toggle(), css = require_css(), FilterPill_module = require_FilterPill_css(), hooks = require_hooks2(), Icon7 = require_Icon(), UnstyledButton = require_UnstyledButton(), InlineStack9 = require_InlineStack(), Button11 = require_Button(), Popover3 = require_Popover(), BlockStack11 = require_BlockStack(), Box10 = require_Box(), Text13 = require_Text();
+    var React27 = require_react(), polarisIcons = require_dist3(), useToggle = require_use_toggle(), css = require_css(), FilterPill_module = require_FilterPill_css(), hooks = require_hooks2(), Icon7 = require_Icon(), UnstyledButton = require_UnstyledButton(), InlineStack11 = require_InlineStack(), Button11 = require_Button(), Popover3 = require_Popover(), BlockStack13 = require_BlockStack(), Box12 = require_Box(), Text13 = require_Text();
     function FilterPill({
       unsavedChanges = !1,
       filterKey,
@@ -45071,14 +45071,14 @@ var require_FilterPill = __commonJS({
       }, /* @__PURE__ */ React27.createElement(Icon7.Icon, {
         source: polarisIcons.ChevronDownIcon,
         tone: "base"
-      })), labelMarkup = /* @__PURE__ */ React27.createElement(Box10.Box, {
+      })), labelMarkup = /* @__PURE__ */ React27.createElement(Box12.Box, {
         paddingInlineStart: unsavedChanges ? "0" : "050"
-      }, /* @__PURE__ */ React27.createElement(InlineStack9.InlineStack, null, /* @__PURE__ */ React27.createElement(Text13.Text, {
+      }, /* @__PURE__ */ React27.createElement(InlineStack11.InlineStack, null, /* @__PURE__ */ React27.createElement(Text13.Text, {
         variant: "bodySm",
         as: "span"
-      }, label))), unsavedPip = unsavedChanges ? /* @__PURE__ */ React27.createElement(Box10.Box, {
+      }, label))), unsavedPip = unsavedChanges ? /* @__PURE__ */ React27.createElement(Box12.Box, {
         paddingInlineEnd: "150"
-      }, /* @__PURE__ */ React27.createElement(Box10.Box, {
+      }, /* @__PURE__ */ React27.createElement(Box12.Box, {
         background: "bg-fill-emphasis",
         borderRadius: "050",
         width: "6px",
@@ -45095,7 +45095,7 @@ var require_FilterPill = __commonJS({
         tone: "base"
       }))) : null, activator = /* @__PURE__ */ React27.createElement("div", {
         className: buttonClasses
-      }, /* @__PURE__ */ React27.createElement(InlineStack9.InlineStack, {
+      }, /* @__PURE__ */ React27.createElement(InlineStack11.InlineStack, {
         gap: "0",
         wrap: !1
       }, /* @__PURE__ */ React27.createElement(UnstyledButton.UnstyledButton, {
@@ -45107,7 +45107,7 @@ var require_FilterPill = __commonJS({
         accessibilityLabel: unsavedChanges ? i18n.translate("Polaris.FilterPill.unsavedChanges", {
           label
         }) : label
-      }, /* @__PURE__ */ React27.createElement(InlineStack9.InlineStack, {
+      }, /* @__PURE__ */ React27.createElement(InlineStack11.InlineStack, {
         wrap: !1,
         align: "center",
         blockAlign: "center",
@@ -45131,7 +45131,7 @@ var require_FilterPill = __commonJS({
         preventCloseOnChildOverlayClick: !closeOnChildOverlayClick
       }, /* @__PURE__ */ React27.createElement("div", {
         className: FilterPill_module.default.PopoverWrapper
-      }, /* @__PURE__ */ React27.createElement(Popover3.Popover.Section, null, /* @__PURE__ */ React27.createElement(BlockStack11.BlockStack, {
+      }, /* @__PURE__ */ React27.createElement(Popover3.Popover.Section, null, /* @__PURE__ */ React27.createElement(BlockStack13.BlockStack, {
         gap: "100"
       }, filter, clearButtonMarkup)))));
     }
@@ -45143,7 +45143,7 @@ var require_FilterPill = __commonJS({
 var require_FiltersBar = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Filters/components/FiltersBar/FiltersBar.js"(exports) {
     "use strict";
-    var React27 = require_react(), polarisIcons = require_dist3(), useOnValueChange = require_use_on_value_change(), css = require_css(), Filters_module = require_Filters_css(), FilterPill = require_FilterPill(), hooks = require_hooks2(), UnstyledButton = require_UnstyledButton(), Text13 = require_Text(), Popover3 = require_Popover(), ActionList3 = require_ActionList(), Button11 = require_Button(), Box10 = require_Box(), InlineStack9 = require_InlineStack();
+    var React27 = require_react(), polarisIcons = require_dist3(), useOnValueChange = require_use_on_value_change(), css = require_css(), Filters_module = require_Filters_css(), FilterPill = require_FilterPill(), hooks = require_hooks2(), UnstyledButton = require_UnstyledButton(), Text13 = require_Text(), Popover3 = require_Popover(), ActionList3 = require_ActionList(), Button11 = require_Button(), Box12 = require_Box(), InlineStack11 = require_InlineStack();
     function FiltersBar({
       filters,
       appliedFilters,
@@ -45259,11 +45259,11 @@ var require_FiltersBar = __commonJS({
         className: css.classNames(Filters_module.default.FiltersInner)
       }, /* @__PURE__ */ React27.createElement("div", {
         className: css.classNames(Filters_module.default.FiltersStickyArea)
-      }, pinnedFiltersMarkup, addButton, clearAllMarkup)), hideQueryField ? /* @__PURE__ */ React27.createElement(Box10.Box, {
+      }, pinnedFiltersMarkup, addButton, clearAllMarkup)), hideQueryField ? /* @__PURE__ */ React27.createElement(Box12.Box, {
         paddingInlineEnd: "300",
         paddingBlockStart: "200",
         paddingBlockEnd: "200"
-      }, /* @__PURE__ */ React27.createElement(InlineStack9.InlineStack, {
+      }, /* @__PURE__ */ React27.createElement(InlineStack11.InlineStack, {
         align: "start",
         blockAlign: "center",
         gap: {
@@ -45280,7 +45280,7 @@ var require_FiltersBar = __commonJS({
 var require_Filters = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Filters/Filters.js"(exports) {
     "use strict";
-    var React27 = require_react(), css = require_css(), Filters_module = require_Filters_css(), SearchField = require_SearchField(), FiltersBar = require_FiltersBar(), Box10 = require_Box(), InlineStack9 = require_InlineStack(), TRANSITION_DURATION = "var(--p-motion-duration-150)", TRANSITION_MARGIN = "-36px", defaultStyle = {
+    var React27 = require_react(), css = require_css(), Filters_module = require_Filters_css(), SearchField = require_SearchField(), FiltersBar = require_FiltersBar(), Box12 = require_Box(), InlineStack11 = require_InlineStack(), TRANSITION_DURATION = "var(--p-motion-duration-150)", TRANSITION_MARGIN = "-36px", defaultStyle = {
       transition: `opacity ${TRANSITION_DURATION} var(--p-motion-ease)`,
       opacity: 0
     }, transitionStyles = {
@@ -45351,9 +45351,9 @@ var require_Filters = __commonJS({
     }) {
       let hideFilterBar = hideFilters || filters.length === 0, queryFieldMarkup = hideQueryField ? null : /* @__PURE__ */ React27.createElement("div", {
         className: Filters_module.default.Container
-      }, /* @__PURE__ */ React27.createElement(Box10.Box, {
+      }, /* @__PURE__ */ React27.createElement(Box12.Box, {
         padding: "200"
-      }, /* @__PURE__ */ React27.createElement(InlineStack9.InlineStack, {
+      }, /* @__PURE__ */ React27.createElement(InlineStack11.InlineStack, {
         align: "start",
         blockAlign: "center",
         gap: {
@@ -45543,7 +45543,7 @@ var require_Item5 = __commonJS({
 var require_Group = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/FormLayout/components/Group/Group.js"(exports) {
     "use strict";
-    var React27 = require_react(), components = require_components2(), Item = require_Item5(), BlockStack11 = require_BlockStack(), InlineStack9 = require_InlineStack(), Box10 = require_Box(), Text13 = require_Text();
+    var React27 = require_react(), components = require_components2(), Item = require_Item5(), BlockStack13 = require_BlockStack(), InlineStack11 = require_InlineStack(), Box12 = require_Box(), Text13 = require_Text();
     function Group({
       children,
       condensed,
@@ -45551,7 +45551,7 @@ var require_Group = __commonJS({
       helpText
     }) {
       let id = React27.useId(), helpTextElement = null, helpTextId, titleElement = null, titleId;
-      helpText && (helpTextId = `${id}HelpText`, helpTextElement = /* @__PURE__ */ React27.createElement(Box10.Box, {
+      helpText && (helpTextId = `${id}HelpText`, helpTextElement = /* @__PURE__ */ React27.createElement(Box12.Box, {
         id: helpTextId,
         color: "text-secondary"
       }, helpText)), title && (titleId = `${id}Title`, titleElement = /* @__PURE__ */ React27.createElement(Text13.Text, {
@@ -45561,12 +45561,12 @@ var require_Group = __commonJS({
       let itemsMarkup = React27.Children.map(children, (child) => components.wrapWithComponent(child, Item.Item, {
         condensed
       }));
-      return /* @__PURE__ */ React27.createElement(BlockStack11.BlockStack, {
+      return /* @__PURE__ */ React27.createElement(BlockStack13.BlockStack, {
         role: "group",
         gap: "200",
         "aria-labelledby": titleId,
         "aria-describedby": helpTextId
-      }, titleElement, /* @__PURE__ */ React27.createElement(InlineStack9.InlineStack, {
+      }, titleElement, /* @__PURE__ */ React27.createElement(InlineStack11.InlineStack, {
         gap: "300"
       }, itemsMarkup), helpTextElement);
     }
@@ -45578,10 +45578,10 @@ var require_Group = __commonJS({
 var require_FormLayout = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/FormLayout/FormLayout.js"(exports) {
     "use strict";
-    var React27 = require_react(), components = require_components2(), Group = require_Group(), BlockStack11 = require_BlockStack(), Item = require_Item5(), FormLayout2 = /* @__PURE__ */ React27.memo(function({
+    var React27 = require_react(), components = require_components2(), Group = require_Group(), BlockStack13 = require_BlockStack(), Item = require_Item5(), FormLayout2 = /* @__PURE__ */ React27.memo(function({
       children
     }) {
-      return /* @__PURE__ */ React27.createElement(BlockStack11.BlockStack, {
+      return /* @__PURE__ */ React27.createElement(BlockStack13.BlockStack, {
         gap: "400"
       }, React27.Children.map(children, wrapChildren));
     });
@@ -46746,7 +46746,7 @@ var require_Section_css2 = __commonJS({
 var require_Section5 = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Modal/components/Section/Section.js"(exports) {
     "use strict";
-    var React27 = require_react(), css = require_css(), Section_module = require_Section_css2(), Box10 = require_Box();
+    var React27 = require_react(), css = require_css(), Section_module = require_Section_css2(), Box12 = require_Box();
     function Section({
       children,
       flush = !1,
@@ -46756,7 +46756,7 @@ var require_Section5 = __commonJS({
       let className = css.classNames(Section_module.default.Section, titleHidden && Section_module.default.titleHidden);
       return /* @__PURE__ */ React27.createElement("div", {
         className
-      }, /* @__PURE__ */ React27.createElement(Box10.Box, Object.assign({
+      }, /* @__PURE__ */ React27.createElement(Box12.Box, Object.assign({
         as: "section",
         padding: flush ? "0" : "400"
       }, titleHidden && {
@@ -46977,7 +46977,7 @@ var require_CloseButton = __commonJS({
 var require_Header3 = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Modal/components/Header/Header.js"(exports) {
     "use strict";
-    var React27 = require_react(), CloseButton = require_CloseButton(), InlineGrid2 = require_InlineGrid(), Box10 = require_Box(), InlineStack9 = require_InlineStack(), Text13 = require_Text();
+    var React27 = require_react(), CloseButton = require_CloseButton(), InlineGrid2 = require_InlineGrid(), Box12 = require_Box(), InlineStack11 = require_InlineStack(), Text13 = require_Text();
     function Header2({
       id,
       children,
@@ -46986,14 +46986,14 @@ var require_Header3 = __commonJS({
       onClose
     }) {
       let headerPaddingInline = "400", headerPaddingBlock = "400";
-      return titleHidden || !children ? /* @__PURE__ */ React27.createElement(Box10.Box, {
+      return titleHidden || !children ? /* @__PURE__ */ React27.createElement(Box12.Box, {
         position: "absolute",
         insetInlineEnd: headerPaddingInline,
         insetBlockStart: headerPaddingBlock,
         zIndex: "1"
       }, /* @__PURE__ */ React27.createElement(CloseButton.CloseButton, {
         onClick: onClose
-      })) : /* @__PURE__ */ React27.createElement(Box10.Box, {
+      })) : /* @__PURE__ */ React27.createElement(Box12.Box, {
         paddingBlockStart: "400",
         paddingBlockEnd: "400",
         paddingInlineStart: headerPaddingInline,
@@ -47006,7 +47006,7 @@ var require_Header3 = __commonJS({
           xs: "1fr auto"
         },
         gap: "400"
-      }, /* @__PURE__ */ React27.createElement(InlineStack9.InlineStack, {
+      }, /* @__PURE__ */ React27.createElement(InlineStack11.InlineStack, {
         gap: "400",
         blockAlign: "center"
       }, /* @__PURE__ */ React27.createElement(Text13.Text, {
@@ -47027,7 +47027,7 @@ var require_Header3 = __commonJS({
 var require_Footer = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Modal/components/Footer/Footer.js"(exports) {
     "use strict";
-    var React27 = require_react(), utils = require_utils5(), InlineStack9 = require_InlineStack(), Box10 = require_Box();
+    var React27 = require_react(), utils = require_utils5(), InlineStack11 = require_InlineStack(), Box12 = require_Box();
     function Footer({
       primaryAction,
       secondaryActions,
@@ -47035,22 +47035,22 @@ var require_Footer = __commonJS({
     }) {
       let primaryActionButton = primaryAction && utils.buttonsFrom(primaryAction, {
         variant: "primary"
-      }) || null, secondaryActionButtons = secondaryActions && utils.buttonsFrom(secondaryActions) || null, actions = primaryActionButton || secondaryActionButtons ? /* @__PURE__ */ React27.createElement(InlineStack9.InlineStack, {
+      }) || null, secondaryActionButtons = secondaryActions && utils.buttonsFrom(secondaryActions) || null, actions = primaryActionButton || secondaryActionButtons ? /* @__PURE__ */ React27.createElement(InlineStack11.InlineStack, {
         gap: "200"
       }, secondaryActionButtons, primaryActionButton) : null;
-      return /* @__PURE__ */ React27.createElement(InlineStack9.InlineStack, {
+      return /* @__PURE__ */ React27.createElement(InlineStack11.InlineStack, {
         gap: "400",
         blockAlign: "center"
-      }, /* @__PURE__ */ React27.createElement(Box10.Box, {
+      }, /* @__PURE__ */ React27.createElement(Box12.Box, {
         borderColor: "border",
         borderBlockStartWidth: "025",
         padding: "400",
         width: "100%"
-      }, /* @__PURE__ */ React27.createElement(InlineStack9.InlineStack, {
+      }, /* @__PURE__ */ React27.createElement(InlineStack11.InlineStack, {
         gap: "400",
         blockAlign: "center",
         align: "space-between"
-      }, /* @__PURE__ */ React27.createElement(Box10.Box, null, children), actions)));
+      }, /* @__PURE__ */ React27.createElement(Box12.Box, null, children), actions)));
     }
     exports.Footer = Footer;
   }
@@ -47060,7 +47060,7 @@ var require_Footer = __commonJS({
 var require_Modal = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Modal/Modal.js"(exports) {
     "use strict";
-    var React27 = require_react(), reactTransitionGroup = require_cjs2(), focus = require_focus(), withinContentContext = require_within_content_context(), components = require_components2(), Modal_module = require_Modal_css(), Section = require_Section5(), Dialog = require_Dialog(), Header2 = require_Header3(), Backdrop = require_Backdrop(), Footer = require_Footer(), hooks = require_hooks2(), Box10 = require_Box(), Scrollable = require_Scrollable(), Portal = require_Portal(), InlineStack9 = require_InlineStack(), Spinner7 = require_Spinner(), IFRAME_LOADING_HEIGHT = 200, DEFAULT_IFRAME_CONTENT_HEIGHT = 400, Modal5 = function({
+    var React27 = require_react(), reactTransitionGroup = require_cjs2(), focus = require_focus(), withinContentContext = require_within_content_context(), components = require_components2(), Modal_module = require_Modal_css(), Section = require_Section5(), Dialog = require_Dialog(), Header2 = require_Header3(), Backdrop = require_Backdrop(), Footer = require_Footer(), hooks = require_hooks2(), Box12 = require_Box(), Scrollable = require_Scrollable(), Portal = require_Portal(), InlineStack11 = require_InlineStack(), Spinner7 = require_Spinner(), IFRAME_LOADING_HEIGHT = 200, DEFAULT_IFRAME_CONTENT_HEIGHT = 400, Modal5 = function({
       children,
       title,
       titleHidden = !1,
@@ -47105,15 +47105,15 @@ var require_Modal = __commonJS({
           secondaryActions
         }, footer), content = sectioned ? components.wrapWithComponent(children, Section.Section, {
           titleHidden
-        }) : children, body = loading ? /* @__PURE__ */ React27.createElement(Box10.Box, {
+        }) : children, body = loading ? /* @__PURE__ */ React27.createElement(Box12.Box, {
           padding: "400"
-        }, /* @__PURE__ */ React27.createElement(InlineStack9.InlineStack, {
+        }, /* @__PURE__ */ React27.createElement(InlineStack11.InlineStack, {
           gap: "400",
           align: "center",
           blockAlign: "center"
         }, /* @__PURE__ */ React27.createElement(Spinner7.Spinner, null))) : content, scrollContainerMarkup = noScroll ? /* @__PURE__ */ React27.createElement("div", {
           className: Modal_module.default.NoScrollBody
-        }, /* @__PURE__ */ React27.createElement(Box10.Box, {
+        }, /* @__PURE__ */ React27.createElement(Box12.Box, {
           width: "100%",
           overflowX: "hidden",
           overflowY: "hidden"
@@ -47150,7 +47150,7 @@ var require_Modal = __commonJS({
           onClick: onClose
         });
       }
-      let animated = !instant, activatorMarkup = activator && !isRef(activator) ? /* @__PURE__ */ React27.createElement(Box10.Box, {
+      let animated = !instant, activatorMarkup = activator && !isRef(activator) ? /* @__PURE__ */ React27.createElement(Box12.Box, {
         ref: activatorRef,
         as: activatorWrapper
       }, activator) : null;
@@ -47362,7 +47362,7 @@ var require_Toast_css = __commonJS({
 var require_Toast = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Frame/components/Toast/Toast.js"(exports) {
     "use strict";
-    var React27 = require_react(), polarisIcons = require_dist3(), css = require_css(), types4 = require_types(), Toast_module = require_Toast_css(), Icon7 = require_Icon(), Button11 = require_Button(), KeypressListener = require_KeypressListener(), InlineStack9 = require_InlineStack(), Text13 = require_Text(), DEFAULT_TOAST_DURATION = 5e3, DEFAULT_TOAST_DURATION_WITH_ACTION = 1e4;
+    var React27 = require_react(), polarisIcons = require_dist3(), css = require_css(), types4 = require_types(), Toast_module = require_Toast_css(), Icon7 = require_Icon(), Button11 = require_Button(), KeypressListener = require_KeypressListener(), InlineStack11 = require_InlineStack(), Text13 = require_Text(), DEFAULT_TOAST_DURATION = 5e3, DEFAULT_TOAST_DURATION_WITH_ACTION = 1e4;
     function Toast2({
       content,
       onDismiss,
@@ -47425,7 +47425,7 @@ var require_Toast = __commonJS({
       }, /* @__PURE__ */ React27.createElement(KeypressListener.KeypressListener, {
         keyCode: types4.Key.Escape,
         handler: onDismiss
-      }), leadingIconMarkup, /* @__PURE__ */ React27.createElement(InlineStack9.InlineStack, {
+      }), leadingIconMarkup, /* @__PURE__ */ React27.createElement(InlineStack11.InlineStack, {
         gap: "400",
         blockAlign: "center"
       }, /* @__PURE__ */ React27.createElement(Text13.Text, Object.assign({
@@ -47440,7 +47440,7 @@ var require_Toast = __commonJS({
       }, /* @__PURE__ */ React27.createElement(KeypressListener.KeypressListener, {
         keyCode: types4.Key.Escape,
         handler: onDismiss
-      }), leadingIconMarkup, /* @__PURE__ */ React27.createElement(InlineStack9.InlineStack, {
+      }), leadingIconMarkup, /* @__PURE__ */ React27.createElement(InlineStack11.InlineStack, {
         gap: "400",
         blockAlign: "center"
       }, /* @__PURE__ */ React27.createElement(Text13.Text, Object.assign({
@@ -48058,7 +48058,7 @@ var require_use_is_touch_device = __commonJS({
 var require_UpdateButtons = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/IndexFilters/components/UpdateButtons/UpdateButtons.js"(exports) {
     "use strict";
-    var React27 = require_react(), focus = require_focus(), useIsTouchDevice = require_use_is_touch_device(), hooks = require_hooks2(), Button11 = require_Button(), InlineStack9 = require_InlineStack(), Modal5 = require_Modal(), Form7 = require_Form(), FormLayout2 = require_FormLayout(), TextField6 = require_TextField(), MAX_VIEW_NAME_LENGTH = 40;
+    var React27 = require_react(), focus = require_focus(), useIsTouchDevice = require_use_is_touch_device(), hooks = require_hooks2(), Button11 = require_Button(), InlineStack11 = require_InlineStack(), Modal5 = require_Modal(), Form7 = require_Form(), FormLayout2 = require_FormLayout(), TextField6 = require_TextField(), MAX_VIEW_NAME_LENGTH = 40;
     function UpdateButtons({
       primaryAction,
       cancelAction,
@@ -48102,12 +48102,12 @@ var require_UpdateButtons = __commonJS({
         onClick: cancelAction.onAction,
         disabled
       }, i18n.translate("Polaris.IndexFilters.UpdateButtons.cancel")) : null;
-      return primaryAction ? /* @__PURE__ */ React27.createElement(InlineStack9.InlineStack, {
+      return primaryAction ? /* @__PURE__ */ React27.createElement(InlineStack11.InlineStack, {
         align: "start",
         blockAlign: "center",
         gap: "100"
       }, cancelButtonMarkup, primaryAction.type === "save-as" ? /* @__PURE__ */ React27.createElement(Modal5.Modal, {
-        activator: /* @__PURE__ */ React27.createElement(InlineStack9.InlineStack, null, saveButton),
+        activator: /* @__PURE__ */ React27.createElement(InlineStack11.InlineStack, null, saveButton),
         open: savedViewModalOpen,
         title: i18n.translate("Polaris.IndexFilters.UpdateButtons.modal.title"),
         onClose: handleCloseModal,
@@ -48189,7 +48189,7 @@ var require_DirectionButton = __commonJS({
 var require_SortButton = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/IndexFilters/components/SortButton/SortButton.js"(exports) {
     "use strict";
-    var React27 = require_react(), polarisIcons = require_dist3(), ChoiceList2 = require_ChoiceList(), DirectionButton = require_DirectionButton(), hooks = require_hooks2(), Tooltip6 = require_Tooltip(), Button11 = require_Button(), Popover3 = require_Popover(), Box10 = require_Box();
+    var React27 = require_react(), polarisIcons = require_dist3(), ChoiceList2 = require_ChoiceList(), DirectionButton = require_DirectionButton(), hooks = require_hooks2(), Tooltip6 = require_Tooltip(), Button11 = require_Button(), Popover3 = require_Popover(), Box12 = require_Box();
     exports.SortButtonDirection = void 0;
     (function(SortButtonDirection) {
       SortButtonDirection.Asc = "asc", SortButtonDirection.Desc = "desc";
@@ -48247,7 +48247,7 @@ var require_SortButton = __commonJS({
         onClose: handleClose,
         preferredAlignment: "right",
         fluidContent: !0
-      }, /* @__PURE__ */ React27.createElement(Box10.Box, {
+      }, /* @__PURE__ */ React27.createElement(Box12.Box, {
         minWidth: "148px",
         paddingInlineStart: "300",
         paddingInlineEnd: "300",
@@ -48260,7 +48260,7 @@ var require_SortButton = __commonJS({
         choices: choiceListChoices,
         selected,
         onChange: handleChangeChoiceList
-      })), /* @__PURE__ */ React27.createElement(Box10.Box, {
+      })), /* @__PURE__ */ React27.createElement(Box12.Box, {
         paddingInlineStart: "150",
         paddingInlineEnd: "150",
         paddingBlockStart: "200",
@@ -48520,7 +48520,7 @@ var require_RenameModal = __commonJS({
 var require_Tab = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Tabs/components/Tab/Tab.js"(exports) {
     "use strict";
-    var React27 = require_react(), polarisIcons = require_dist3(), css = require_css(), focus = require_focus(), Tabs_module = require_Tabs_css(), DuplicateModal = require_DuplicateModal(), RenameModal = require_RenameModal(), hooks = require_hooks2(), Icon7 = require_Icon(), Modal5 = require_Modal(), Popover3 = require_Popover(), ActionList3 = require_ActionList(), InlineStack9 = require_InlineStack(), Text13 = require_Text(), UnstyledLink = require_UnstyledLink(), UnstyledButton = require_UnstyledButton(), Badge12 = require_Badge(), Tab = /* @__PURE__ */ React27.forwardRef(({
+    var React27 = require_react(), polarisIcons = require_dist3(), css = require_css(), focus = require_focus(), Tabs_module = require_Tabs_css(), DuplicateModal = require_DuplicateModal(), RenameModal = require_RenameModal(), hooks = require_hooks2(), Icon7 = require_Icon(), Modal5 = require_Modal(), Popover3 = require_Popover(), ActionList3 = require_ActionList(), InlineStack11 = require_InlineStack(), Text13 = require_Text(), UnstyledLink = require_UnstyledLink(), UnstyledButton = require_UnstyledButton(), Badge12 = require_Badge(), Tab = /* @__PURE__ */ React27.forwardRef(({
       content,
       accessibilityLabel,
       badge,
@@ -48630,7 +48630,7 @@ var require_Tab = __commonJS({
         onMouseUp: focus.handleMouseUpByBlurring,
         onClick: handleClick,
         onKeyDown: handleKeyDown
-      }, /* @__PURE__ */ React27.createElement(InlineStack9.InlineStack, {
+      }, /* @__PURE__ */ React27.createElement(InlineStack11.InlineStack, {
         gap: "200",
         align: "center",
         blockAlign: "center",
@@ -48928,7 +48928,7 @@ var require_CreateViewModal = __commonJS({
 var require_Tabs = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Tabs/Tabs.js"(exports) {
     "use strict";
-    var React27 = require_react(), polarisIcons = require_dist3(), css = require_css(), breakpoints = require_breakpoints2(), usePrevious = require_use_previous(), utilities = require_utilities9(), Tabs_module = require_Tabs_css(), Tab = require_Tab(), TabMeasurer = require_TabMeasurer(), Panel = require_Panel(), List2 = require_List(), CreateViewModal = require_CreateViewModal(), hooks = require_hooks2(), Text13 = require_Text(), Icon7 = require_Icon(), UnstyledButton = require_UnstyledButton(), Box10 = require_Box(), Popover3 = require_Popover(), Tooltip6 = require_Tooltip(), CREATE_NEW_VIEW_ID = "create-new-view", Tabs3 = ({
+    var React27 = require_react(), polarisIcons = require_dist3(), css = require_css(), breakpoints = require_breakpoints2(), usePrevious = require_use_previous(), utilities = require_utilities9(), Tabs_module = require_Tabs_css(), Tab = require_Tab(), TabMeasurer = require_TabMeasurer(), Panel = require_Panel(), List2 = require_List(), CreateViewModal = require_CreateViewModal(), hooks = require_hooks2(), Text13 = require_Text(), Icon7 = require_Icon(), UnstyledButton = require_UnstyledButton(), Box12 = require_Box(), Popover3 = require_Popover(), Tooltip6 = require_Tooltip(), CREATE_NEW_VIEW_ID = "create-new-view", Tabs3 = ({
       tabs,
       children,
       selected,
@@ -49189,7 +49189,7 @@ var require_Tabs = __commonJS({
       })) : null;
       return /* @__PURE__ */ React27.createElement("div", {
         className: Tabs_module.default.Outer
-      }, /* @__PURE__ */ React27.createElement(Box10.Box, {
+      }, /* @__PURE__ */ React27.createElement(Box12.Box, {
         padding: {
           md: "200"
         }
@@ -49244,7 +49244,7 @@ var require_Tabs = __commonJS({
 var require_SearchFilterButton = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/IndexFilters/components/SearchFilterButton/SearchFilterButton.js"(exports) {
     "use strict";
-    var React27 = require_react(), polarisIcons = require_dist3(), Tooltip6 = require_Tooltip(), Button11 = require_Button(), Text13 = require_Text(), InlineStack9 = require_InlineStack(), Icon7 = require_Icon();
+    var React27 = require_react(), polarisIcons = require_dist3(), Tooltip6 = require_Tooltip(), Button11 = require_Button(), Text13 = require_Text(), InlineStack11 = require_InlineStack(), Icon7 = require_Icon();
     function SearchFilterButton({
       onClick,
       label,
@@ -49254,7 +49254,7 @@ var require_SearchFilterButton = __commonJS({
       hideFilters,
       hideQueryField
     }) {
-      let iconMarkup = /* @__PURE__ */ React27.createElement(InlineStack9.InlineStack, {
+      let iconMarkup = /* @__PURE__ */ React27.createElement(InlineStack11.InlineStack, {
         gap: "0"
       }, hideQueryField ? null : /* @__PURE__ */ React27.createElement(Icon7.Icon, {
         source: polarisIcons.SearchIcon,
@@ -49319,7 +49319,7 @@ var require_EditColumnsButton = __commonJS({
 var require_IndexFilters = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/IndexFilters/IndexFilters.js"(exports) {
     "use strict";
-    var React27 = require_react(), reactTransitionGroup = require_cjs2(), css = require_css(), useEventListener = require_use_event_listener(), useToggle = require_use_toggle(), useOnValueChange = require_use_on_value_change(), breakpoints = require_breakpoints2(), types4 = require_types3(), IndexFilters_module = require_IndexFilters_css(), useIsSticky = require_useIsSticky(), UpdateButtons = require_UpdateButtons(), SortButton = require_SortButton(), Container = require_Container(), Tabs3 = require_Tabs(), SearchFilterButton = require_SearchFilterButton(), Filters = require_Filters(), EditColumnsButton = require_EditColumnsButton(), hooks = require_hooks2(), InlineStack9 = require_InlineStack(), Spinner7 = require_Spinner(), DEFAULT_IGNORED_TAGS = ["INPUT", "SELECT", "TEXTAREA"], TRANSITION_DURATION = 150, defaultStyle = {
+    var React27 = require_react(), reactTransitionGroup = require_cjs2(), css = require_css(), useEventListener = require_use_event_listener(), useToggle = require_use_toggle(), useOnValueChange = require_use_on_value_change(), breakpoints = require_breakpoints2(), types4 = require_types3(), IndexFilters_module = require_IndexFilters_css(), useIsSticky = require_useIsSticky(), UpdateButtons = require_UpdateButtons(), SortButton = require_SortButton(), Container = require_Container(), Tabs3 = require_Tabs(), SearchFilterButton = require_SearchFilterButton(), Filters = require_Filters(), EditColumnsButton = require_EditColumnsButton(), hooks = require_hooks2(), InlineStack11 = require_InlineStack(), Spinner7 = require_Spinner(), DEFAULT_IGNORED_TAGS = ["INPUT", "SELECT", "TEXTAREA"], TRANSITION_DURATION = 150, defaultStyle = {
       transition: `opacity ${TRANSITION_DURATION}ms var(--p-motion-ease)`,
       opacity: 0
     }, transitionStyles = {
@@ -49477,7 +49477,7 @@ var require_IndexFilters = __commonJS({
         timeout: TRANSITION_DURATION
       }, (state) => /* @__PURE__ */ React27.createElement("div", {
         ref: defaultRef
-      }, mode2 !== types4.IndexFiltersMode.Filtering ? /* @__PURE__ */ React27.createElement(Container.Container, null, /* @__PURE__ */ React27.createElement(InlineStack9.InlineStack, {
+      }, mode2 !== types4.IndexFiltersMode.Filtering ? /* @__PURE__ */ React27.createElement(Container.Container, null, /* @__PURE__ */ React27.createElement(InlineStack11.InlineStack, {
         align: "start",
         blockAlign: "center",
         gap: {
@@ -49549,7 +49549,7 @@ var require_IndexFilters = __commonJS({
         closeOnChildOverlayClick
       }, /* @__PURE__ */ React27.createElement("div", {
         className: IndexFilters_module.default.ButtonWrap
-      }, /* @__PURE__ */ React27.createElement(InlineStack9.InlineStack, {
+      }, /* @__PURE__ */ React27.createElement(InlineStack11.InlineStack, {
         gap: "200",
         align: "start",
         blockAlign: "center"
@@ -50624,7 +50624,7 @@ var require_TextContainer = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/TextContainer/TextContainer.js"(exports) {
     "use strict";
     var React27 = require_react(), css = require_css(), TextContainer_module = require_TextContainer_css();
-    function TextContainer2({
+    function TextContainer({
       spacing,
       children
     }) {
@@ -50633,7 +50633,7 @@ var require_TextContainer = __commonJS({
         className
       }, children);
     }
-    exports.TextContainer = TextContainer2;
+    exports.TextContainer = TextContainer;
   }
 });
 
@@ -50641,7 +50641,7 @@ var require_TextContainer = __commonJS({
 var require_AnnotatedSection = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Layout/components/AnnotatedSection/AnnotatedSection.js"(exports) {
     "use strict";
-    var React27 = require_react(), Layout_module = require_Layout_css(), TextContainer2 = require_TextContainer(), Text13 = require_Text(), Box10 = require_Box();
+    var React27 = require_react(), Layout_module = require_Layout_css(), TextContainer = require_TextContainer(), Text13 = require_Text(), Box12 = require_Box();
     function AnnotatedSection({
       children,
       title,
@@ -50658,13 +50658,13 @@ var require_AnnotatedSection = __commonJS({
         className: Layout_module.default.AnnotationWrapper
       }, /* @__PURE__ */ React27.createElement("div", {
         className: Layout_module.default.Annotation
-      }, /* @__PURE__ */ React27.createElement(TextContainer2.TextContainer, {
+      }, /* @__PURE__ */ React27.createElement(TextContainer.TextContainer, {
         spacing: "tight"
       }, /* @__PURE__ */ React27.createElement(Text13.Text, {
         id,
         variant: "headingMd",
         as: "h2"
-      }, title), descriptionMarkup && /* @__PURE__ */ React27.createElement(Box10.Box, {
+      }, title), descriptionMarkup && /* @__PURE__ */ React27.createElement(Box12.Box, {
         color: "text-secondary"
       }, descriptionMarkup))), /* @__PURE__ */ React27.createElement("div", {
         className: Layout_module.default.AnnotationContent
@@ -51707,7 +51707,7 @@ var require_Item8 = __commonJS({
 var require_List2 = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/LegacyTabs/components/List/List.js"(exports) {
     "use strict";
-    var React27 = require_react(), Item = require_Item8(), Box10 = require_Box();
+    var React27 = require_react(), Item = require_Item8(), Box12 = require_Box();
     function List2({
       focusIndex,
       disclosureTabs,
@@ -51728,7 +51728,7 @@ var require_List2 = __commonJS({
       return /* @__PURE__ */ React27.createElement("div", {
         onKeyDown: handleKeyDown,
         onKeyUp: onKeyPress
-      }, /* @__PURE__ */ React27.createElement(Box10.Box, {
+      }, /* @__PURE__ */ React27.createElement(Box12.Box, {
         as: "ul",
         padding: "200"
       }, tabs));
@@ -51749,7 +51749,7 @@ var require_List2 = __commonJS({
 var require_LegacyTabs = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/LegacyTabs/LegacyTabs.js"(exports) {
     "use strict";
-    var React27 = require_react(), polarisIcons = require_dist3(), css = require_css(), utilities = require_utilities11(), LegacyTabs_module = require_LegacyTabs_css(), Panel = require_Panel2(), TabMeasurer = require_TabMeasurer2(), List2 = require_List2(), hooks = require_hooks2(), Tab = require_Tab2(), Icon7 = require_Icon(), Box10 = require_Box(), Popover3 = require_Popover(), TabsInner = class extends React27.PureComponent {
+    var React27 = require_react(), polarisIcons = require_dist3(), css = require_css(), utilities = require_utilities11(), LegacyTabs_module = require_LegacyTabs_css(), Panel = require_Panel2(), TabMeasurer = require_TabMeasurer2(), List2 = require_List2(), hooks = require_hooks2(), Tab = require_Tab2(), Icon7 = require_Icon(), Box12 = require_Box(), Popover3 = require_Popover(), TabsInner = class extends React27.PureComponent {
       constructor(...args) {
         super(...args), this.state = {
           disclosureWidth: 0,
@@ -51918,7 +51918,7 @@ var require_LegacyTabs = __commonJS({
         }, disclosureButtonContent)), activator = disclosureText ? /* @__PURE__ */ React27.createElement("div", {
           className: LegacyTabs_module.default.TabContainer
         }, disclosureButton) : disclosureButton;
-        return /* @__PURE__ */ React27.createElement("div", null, /* @__PURE__ */ React27.createElement(Box10.Box, {
+        return /* @__PURE__ */ React27.createElement("div", null, /* @__PURE__ */ React27.createElement(Box12.Box, {
           borderBlockEndWidth: "025",
           borderColor: "border-secondary",
           paddingInlineStart: "200",
@@ -52117,7 +52117,7 @@ var require_MediaCard_css = __commonJS({
 var require_MediaCard = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/MediaCard/MediaCard.js"(exports) {
     "use strict";
-    var React27 = require_react(), polarisIcons = require_dist3(), useToggle = require_use_toggle(), css = require_css(), MediaCard_module = require_MediaCard_css(), hooks = require_hooks2(), Button11 = require_Button(), InlineStack9 = require_InlineStack(), Popover3 = require_Popover(), ActionList3 = require_ActionList(), utils = require_utils5(), LegacyCard = require_LegacyCard(), Box10 = require_Box(), BlockStack11 = require_BlockStack(), Text13 = require_Text(), ButtonGroup4 = require_ButtonGroup();
+    var React27 = require_react(), polarisIcons = require_dist3(), useToggle = require_use_toggle(), css = require_css(), MediaCard_module = require_MediaCard_css(), hooks = require_hooks2(), Button11 = require_Button(), InlineStack11 = require_InlineStack(), Popover3 = require_Popover(), ActionList3 = require_ActionList(), utils = require_utils5(), LegacyCard = require_LegacyCard(), Box12 = require_Box(), BlockStack13 = require_BlockStack(), Text13 = require_Text(), ButtonGroup4 = require_ButtonGroup();
     function MediaCard({
       title,
       children,
@@ -52146,7 +52146,7 @@ var require_MediaCard = __commonJS({
         size: "slim",
         accessibilityLabel: i18n.translate("Polaris.MediaCard.dismissButton"),
         variant: "tertiary"
-      }) : null, popoverActivator = /* @__PURE__ */ React27.createElement(InlineStack9.InlineStack, {
+      }) : null, popoverActivator = /* @__PURE__ */ React27.createElement(InlineStack11.InlineStack, {
         blockAlign: "center"
       }, /* @__PURE__ */ React27.createElement(Button11.Button, {
         icon: polarisIcons.MenuHorizontalIcon,
@@ -52165,11 +52165,11 @@ var require_MediaCard = __commonJS({
         onActionAnyItem: togglePopoverActive
       })) : null, primaryActionMarkup = primaryAction ? /* @__PURE__ */ React27.createElement("div", null, utils.buttonFrom(primaryAction)) : null, secondaryActionMarkup = secondaryAction ? /* @__PURE__ */ React27.createElement("div", null, utils.buttonFrom(secondaryAction)) : null, actionClassName = css.classNames(MediaCard_module.default.ActionContainer, portrait && MediaCard_module.default.portrait), actionMarkup = primaryActionMarkup || secondaryActionMarkup ? /* @__PURE__ */ React27.createElement("div", {
         className: actionClassName
-      }, /* @__PURE__ */ React27.createElement(ButtonGroup4.ButtonGroup, null, primaryActionMarkup, secondaryActionMarkup)) : null, mediaCardClassName = css.classNames(MediaCard_module.default.MediaCard, portrait && MediaCard_module.default.portrait), mediaContainerClassName = css.classNames(MediaCard_module.default.MediaContainer, portrait && MediaCard_module.default.portrait, size === "small" && MediaCard_module.default.sizeSmall), infoContainerClassName = css.classNames(MediaCard_module.default.InfoContainer, portrait && MediaCard_module.default.portrait, size === "small" && MediaCard_module.default.sizeSmall), popoverOrDismissMarkup = popoverActionsMarkup || dismissButtonMarkup ? /* @__PURE__ */ React27.createElement(Box10.Box, {
+      }, /* @__PURE__ */ React27.createElement(ButtonGroup4.ButtonGroup, null, primaryActionMarkup, secondaryActionMarkup)) : null, mediaCardClassName = css.classNames(MediaCard_module.default.MediaCard, portrait && MediaCard_module.default.portrait), mediaContainerClassName = css.classNames(MediaCard_module.default.MediaContainer, portrait && MediaCard_module.default.portrait, size === "small" && MediaCard_module.default.sizeSmall), infoContainerClassName = css.classNames(MediaCard_module.default.InfoContainer, portrait && MediaCard_module.default.portrait, size === "small" && MediaCard_module.default.sizeSmall), popoverOrDismissMarkup = popoverActionsMarkup || dismissButtonMarkup ? /* @__PURE__ */ React27.createElement(Box12.Box, {
         position: "absolute",
         insetInlineEnd: "500",
         zIndex: "var(--p-z-index-2)"
-      }, /* @__PURE__ */ React27.createElement(InlineStack9.InlineStack, {
+      }, /* @__PURE__ */ React27.createElement(InlineStack11.InlineStack, {
         gap: "100",
         wrap: !1
       }, popoverActionsMarkup, dismissButtonMarkup)) : null;
@@ -52179,11 +52179,11 @@ var require_MediaCard = __commonJS({
         className: mediaContainerClassName
       }, children), /* @__PURE__ */ React27.createElement("div", {
         className: infoContainerClassName
-      }, /* @__PURE__ */ React27.createElement(Box10.Box, {
+      }, /* @__PURE__ */ React27.createElement(Box12.Box, {
         padding: "500"
-      }, /* @__PURE__ */ React27.createElement(BlockStack11.BlockStack, {
+      }, /* @__PURE__ */ React27.createElement(BlockStack13.BlockStack, {
         gap: "200"
-      }, /* @__PURE__ */ React27.createElement(InlineStack9.InlineStack, {
+      }, /* @__PURE__ */ React27.createElement(InlineStack11.InlineStack, {
         wrap: !1,
         align: "space-between",
         gap: "200"
@@ -52754,7 +52754,7 @@ var require_Option_css2 = __commonJS({
 var require_Option2 = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/OptionList/components/Option/Option.js"(exports) {
     "use strict";
-    var React27 = require_react(), polarisIcons = require_dist3(), useToggle = require_use_toggle(), css = require_css(), Option_module = require_Option_css2(), Checkbox4 = require_Checkbox(), InlineStack9 = require_InlineStack(), Icon7 = require_Icon(), Scrollable = require_Scrollable();
+    var React27 = require_react(), polarisIcons = require_dist3(), useToggle = require_use_toggle(), css = require_css(), Option_module = require_Option_css2(), Checkbox4 = require_Checkbox(), InlineStack11 = require_InlineStack(), Icon7 = require_Icon(), Scrollable = require_Scrollable();
     function Option({
       label,
       value,
@@ -52806,7 +52806,7 @@ var require_Option2 = __commonJS({
         onFocus: handleFocus,
         onBlur: toggleFocused,
         "aria-pressed": active || select
-      }, /* @__PURE__ */ React27.createElement(React27.Fragment, null, /* @__PURE__ */ React27.createElement(InlineStack9.InlineStack, {
+      }, /* @__PURE__ */ React27.createElement(React27.Fragment, null, /* @__PURE__ */ React27.createElement(InlineStack11.InlineStack, {
         wrap: !1,
         blockAlign: verticalAlignToBlockAlign(verticalAlign)
       }, mediaMarkup, label), (select || active) && /* @__PURE__ */ React27.createElement("span", {
@@ -52841,7 +52841,7 @@ var require_Option2 = __commonJS({
 var require_OptionList = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/OptionList/OptionList.js"(exports) {
     "use strict";
-    var React27 = require_react(), options = require_options(), arrays = require_arrays(), useDeepEffect = require_use_deep_effect(), Option = require_Option2(), Box10 = require_Box(), BlockStack11 = require_BlockStack(), Text13 = require_Text();
+    var React27 = require_react(), options = require_options(), arrays = require_arrays(), useDeepEffect = require_use_deep_effect(), Option = require_Option2(), Box12 = require_Box(), BlockStack13 = require_BlockStack(), Text13 = require_Text();
     function OptionList({
       options: options2,
       sections,
@@ -52881,7 +52881,7 @@ var require_OptionList = __commonJS({
         title: title2,
         options: options3
       }, sectionIndex) => {
-        let isFirstOption = sectionIndex === 0, titleLevel = isFirstOption ? "h2" : "h3", titleMarkup = title2 ? /* @__PURE__ */ React27.createElement(Box10.Box, {
+        let isFirstOption = sectionIndex === 0, titleLevel = isFirstOption ? "h2" : "h3", titleMarkup = title2 ? /* @__PURE__ */ React27.createElement(Box12.Box, {
           paddingBlockStart: isFirstOption ? "050" : "300",
           paddingInlineStart: "150",
           paddingBlockEnd: "100",
@@ -52905,20 +52905,20 @@ var require_OptionList = __commonJS({
             onPointerEnter: handlePointerEnter,
             onFocus: handleFocus
           }));
-        }), option = /* @__PURE__ */ React27.createElement(Box10.Box, {
+        }), option = /* @__PURE__ */ React27.createElement(Box12.Box, {
           as: "ul",
           id: `${id}-${sectionIndex}`,
           role
         }, optionsMarkup2), blockStartPadding = isFirstOption ? title2 ? "100" : "0" : title2 ? "050" : "0";
-        return /* @__PURE__ */ React27.createElement(Box10.Box, {
+        return /* @__PURE__ */ React27.createElement(Box12.Box, {
           key: title2 || `noTitle-${sectionIndex}`,
           as: "li",
           paddingBlockStart: blockStartPadding
-        }, /* @__PURE__ */ React27.createElement(BlockStack11.BlockStack, {
+        }, /* @__PURE__ */ React27.createElement(BlockStack13.BlockStack, {
           gap: isFirstOption && sections ? void 0 : "0"
         }, titleMarkup, option));
       }) : null;
-      return /* @__PURE__ */ React27.createElement(Box10.Box, {
+      return /* @__PURE__ */ React27.createElement(Box12.Box, {
         as: "ul",
         role,
         padding: "150"
@@ -53075,7 +53075,7 @@ var require_Title = __commonJS({
 var require_Header4 = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Page/components/Header/Header.js"(exports) {
     "use strict";
-    var React27 = require_react(), css = require_css(), components = require_components2(), isInterface = require_is_interface(), isReactElement = require_is_react_element(), Header_module = require_Header_css(), Breadcrumbs = require_Breadcrumbs(), Title = require_Title(), ActionMenu = require_ActionMenu(), FilterActionsProvider = require_FilterActionsProvider(), hooks = require_hooks2(), hooks$1 = require_hooks11(), Box10 = require_Box(), Pagination = require_Pagination(), Text13 = require_Text(), InlineStack9 = require_InlineStack(), utils = require_utils5(), Tooltip6 = require_Tooltip(), SHORT_TITLE = 20, REALLY_SHORT_TITLE = 8, LONG_TITLE = 34;
+    var React27 = require_react(), css = require_css(), components = require_components2(), isInterface = require_is_interface(), isReactElement = require_is_react_element(), Header_module = require_Header_css(), Breadcrumbs = require_Breadcrumbs(), Title = require_Title(), ActionMenu = require_ActionMenu(), FilterActionsProvider = require_FilterActionsProvider(), hooks = require_hooks2(), hooks$1 = require_hooks11(), Box12 = require_Box(), Pagination = require_Pagination(), Text13 = require_Text(), InlineStack11 = require_InlineStack(), utils = require_utils5(), Tooltip6 = require_Tooltip(), SHORT_TITLE = 20, REALLY_SHORT_TITLE = 8, LONG_TITLE = 34;
     function Header2({
       title,
       subtitle,
@@ -53096,7 +53096,7 @@ var require_Header4 = __commonJS({
         isNavigationCollapsed
       } = hooks$1.useMediaQuery(), isSingleRow = !primaryAction && !pagination && (isInterface.isInterface(secondaryActions) && !secondaryActions.length || isReactElement.isReactElement(secondaryActions)) && !actionGroups.length, hasActionGroupsOrSecondaryActions = actionGroups.length > 0 || isInterface.isInterface(secondaryActions) && secondaryActions.length > 0 || isReactElement.isReactElement(secondaryActions), breadcrumbMarkup = backAction ? /* @__PURE__ */ React27.createElement("div", {
         className: Header_module.default.BreadcrumbWrapper
-      }, /* @__PURE__ */ React27.createElement(Box10.Box, {
+      }, /* @__PURE__ */ React27.createElement(Box12.Box, {
         maxWidth: "100%",
         paddingInlineEnd: "100",
         printHidden: !0
@@ -53104,7 +53104,7 @@ var require_Header4 = __commonJS({
         backAction
       }))) : null, paginationMarkup = pagination && !isNavigationCollapsed ? /* @__PURE__ */ React27.createElement("div", {
         className: Header_module.default.PaginationWrapper
-      }, /* @__PURE__ */ React27.createElement(Box10.Box, {
+      }, /* @__PURE__ */ React27.createElement(Box12.Box, {
         printHidden: !0
       }, /* @__PURE__ */ React27.createElement(Pagination.Pagination, Object.assign({}, pagination, {
         hasPrevious: pagination.hasPrevious,
@@ -53136,11 +53136,11 @@ var require_Header4 = __commonJS({
         }) : void 0,
         onActionRollup
       }) : isReactElement.isReactElement(secondaryActions) && (actionMenuMarkup = /* @__PURE__ */ React27.createElement(React27.Fragment, null, secondaryActions));
-      let navigationMarkup = breadcrumbMarkup || paginationMarkup ? /* @__PURE__ */ React27.createElement(Box10.Box, {
+      let navigationMarkup = breadcrumbMarkup || paginationMarkup ? /* @__PURE__ */ React27.createElement(Box12.Box, {
         printHidden: !0,
         paddingBlockEnd: "100",
         paddingInlineEnd: actionMenuMarkup && isNavigationCollapsed ? "1000" : void 0
-      }, /* @__PURE__ */ React27.createElement(InlineStack9.InlineStack, {
+      }, /* @__PURE__ */ React27.createElement(InlineStack11.InlineStack, {
         gap: "400",
         align: "space-between",
         blockAlign: "center"
@@ -53166,7 +53166,7 @@ var require_Header4 = __commonJS({
         primaryActionMarkup,
         title
       });
-      return /* @__PURE__ */ React27.createElement(Box10.Box, {
+      return /* @__PURE__ */ React27.createElement(Box12.Box, {
         position: "relative",
         paddingBlockStart: {
           xs: "400",
@@ -53206,7 +53206,7 @@ var require_Header4 = __commonJS({
         condition: [slot5].some(notNull)
       }, /* @__PURE__ */ React27.createElement("div", {
         className: Header_module.default.Row
-      }, /* @__PURE__ */ React27.createElement(InlineStack9.InlineStack, {
+      }, /* @__PURE__ */ React27.createElement(InlineStack11.InlineStack, {
         gap: "400"
       }, slot5))))));
     }
@@ -53230,7 +53230,7 @@ var require_Header4 = __commonJS({
         actionMarkup = primaryAction;
       return /* @__PURE__ */ React27.createElement("div", {
         className: Header_module.default.PrimaryActionWrapper
-      }, /* @__PURE__ */ React27.createElement(Box10.Box, {
+      }, /* @__PURE__ */ React27.createElement(Box12.Box, {
         printHidden: !0
       }, actionMarkup));
     }
@@ -53401,7 +53401,7 @@ var require_Activator_css = __commonJS({
 var require_Activator = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Picker/components/Activator/Activator.js"(exports) {
     "use strict";
-    var polarisIcons = require_dist3(), React27 = require_react(), css = require_css(), Activator_module = require_Activator_css(), BlockStack11 = require_BlockStack(), Text13 = require_Text(), Icon7 = require_Icon(), Activator = /* @__PURE__ */ React27.forwardRef(({
+    var polarisIcons = require_dist3(), React27 = require_react(), css = require_css(), Activator_module = require_Activator_css(), BlockStack13 = require_BlockStack(), Text13 = require_Text(), Icon7 = require_Icon(), Activator = /* @__PURE__ */ React27.forwardRef(({
       disabled,
       label,
       placeholder,
@@ -53412,7 +53412,7 @@ var require_Activator = __commonJS({
       disabled,
       onClick,
       className: css.classNames(Activator_module.default.Activator, disabled && Activator_module.default.disabled)
-    }, /* @__PURE__ */ React27.createElement(BlockStack11.BlockStack, {
+    }, /* @__PURE__ */ React27.createElement(BlockStack13.BlockStack, {
       as: "span",
       gap: "100"
     }, label && /* @__PURE__ */ React27.createElement(Text13.Text, {
@@ -53450,7 +53450,7 @@ var require_SearchField_css = __commonJS({
 var require_SearchField2 = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Picker/components/SearchField/SearchField.js"(exports) {
     "use strict";
-    var React27 = require_react(), SearchField_module = require_SearchField_css(), hooks = require_hooks5(), Label = require_Label(), InlineStack9 = require_InlineStack(), Text13 = require_Text();
+    var React27 = require_react(), SearchField_module = require_SearchField_css(), hooks = require_hooks5(), Label = require_Label(), InlineStack11 = require_InlineStack(), Text13 = require_Text();
     function SearchField({
       value,
       id: idProp,
@@ -53482,7 +53482,7 @@ var require_SearchField2 = __commonJS({
       }, [onBlur, onTextFieldBlur, setTextFieldFocused]), handleChange = React27.useCallback((value2, id) => {
         onChange && onChange(value2, id), onTextFieldChange && onTextFieldChange(value2);
       }, [onChange, onTextFieldChange]);
-      return focused && document.activeElement !== inputRef.current && inputRef.current?.focus(), /* @__PURE__ */ React27.createElement(InlineStack9.InlineStack, {
+      return focused && document.activeElement !== inputRef.current && inputRef.current?.focus(), /* @__PURE__ */ React27.createElement(InlineStack11.InlineStack, {
         gap: "100",
         blockAlign: "center"
       }, /* @__PURE__ */ React27.createElement(Label.Label, {
@@ -53518,7 +53518,7 @@ var require_SearchField2 = __commonJS({
 var require_Picker = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Picker/Picker.js"(exports) {
     "use strict";
-    var React27 = require_react(), polarisIcons = require_dist3(), string = require_string(), Activator = require_Activator(), SearchField = require_SearchField2(), Popover3 = require_Popover(), Box10 = require_Box(), context = require_context11(), Icon7 = require_Icon(), Listbox = require_Listbox(), FILTER_REGEX = (value) => new RegExp(value, "i"), QUERY_REGEX = (value) => new RegExp(`^${string.escapeRegex(value)}$`, "i");
+    var React27 = require_react(), polarisIcons = require_dist3(), string = require_string(), Activator = require_Activator(), SearchField = require_SearchField2(), Popover3 = require_Popover(), Box12 = require_Box(), context = require_context11(), Icon7 = require_Icon(), Listbox = require_Listbox(), FILTER_REGEX = (value) => new RegExp(value, "i"), QUERY_REGEX = (value) => new RegExp(`^${string.escapeRegex(value)}$`, "i");
     function Picker({
       activator,
       allowMultiple,
@@ -53591,7 +53591,7 @@ var require_Picker = __commonJS({
       }, /* @__PURE__ */ React27.createElement(Popover3.Popover.Pane, {
         onScrolledToBottom,
         height
-      }, searchField ? /* @__PURE__ */ React27.createElement(Box10.Box, {
+      }, searchField ? /* @__PURE__ */ React27.createElement(Box12.Box, {
         paddingBlockStart: "200",
         paddingBlockEnd: "100",
         paddingInline: "200",
@@ -53613,7 +53613,7 @@ var require_Picker = __commonJS({
         value: listboxContextValue
       }, /* @__PURE__ */ React27.createElement(context.ComboboxListboxOptionContext.Provider, {
         value: listboxOptionContextValue
-      }, /* @__PURE__ */ React27.createElement(Box10.Box, {
+      }, /* @__PURE__ */ React27.createElement(Box12.Box, {
         paddingBlock: "200"
       }, /* @__PURE__ */ React27.createElement(Listbox.Listbox, Object.assign({}, listboxProps, {
         onSelect: handleSelect
@@ -54315,7 +54315,7 @@ var require_types6 = __commonJS({
 var require_ResourceItem = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/ResourceItem/ResourceItem.js"(exports) {
     "use strict";
-    var React27 = require_react(), polarisIcons = require_dist3(), isEqual = require_react_fast_compare(), breakpoints = require_breakpoints2(), css = require_css(), ResourceItem_module = require_ResourceItem_css(), types4 = require_types6(), context = require_context19(), hooks = require_hooks2(), Checkbox4 = require_Checkbox(), ButtonGroup4 = require_ButtonGroup(), utils = require_utils5(), Popover3 = require_Popover(), Button11 = require_Button(), ActionList3 = require_ActionList(), Box10 = require_Box(), InlineGrid2 = require_InlineGrid(), InlineStack9 = require_InlineStack(), UnstyledLink = require_UnstyledLink(), BaseResourceItem = class extends React27.Component {
+    var React27 = require_react(), polarisIcons = require_dist3(), isEqual = require_react_fast_compare(), breakpoints = require_breakpoints2(), css = require_css(), ResourceItem_module = require_ResourceItem_css(), types4 = require_types6(), context = require_context19(), hooks = require_hooks2(), Checkbox4 = require_Checkbox(), ButtonGroup4 = require_ButtonGroup(), utils = require_utils5(), Popover3 = require_Popover(), Button11 = require_Button(), ActionList3 = require_ActionList(), Box12 = require_Box(), InlineGrid2 = require_InlineGrid(), InlineStack11 = require_InlineStack(), UnstyledLink = require_UnstyledLink(), BaseResourceItem = class extends React27.Component {
       constructor(...args) {
         super(...args), this.state = {
           actionsMenuVisible: !1,
@@ -54480,7 +54480,7 @@ var require_ResourceItem = __commonJS({
             labelClassName: ResourceItem_module.default.CheckboxLabel
           })));
         }
-        (media || selectable) && (ownedMarkup = /* @__PURE__ */ React27.createElement(InlineStack9.InlineStack, {
+        (media || selectable) && (ownedMarkup = /* @__PURE__ */ React27.createElement(InlineStack11.InlineStack, {
           gap: "300",
           blockAlign: media && selectable ? "center" : getAlignment(verticalAlignment)
         }, handleMarkup, media));
@@ -54514,7 +54514,7 @@ var require_ResourceItem = __commonJS({
             breakpoints2?.lgUp && (actionsMarkup = /* @__PURE__ */ React27.createElement("div", {
               className: ResourceItem_module.default.Actions,
               onClick: stopPropagation
-            }, /* @__PURE__ */ React27.createElement(Box10.Box, {
+            }, /* @__PURE__ */ React27.createElement(Box12.Box, {
               position: "absolute",
               insetBlockStart: "400",
               insetInlineEnd: "500"
@@ -54523,7 +54523,7 @@ var require_ResourceItem = __commonJS({
             }, utils.buttonsFrom(shortcutActions, {
               size: "slim"
             })))));
-        let containerMarkup = /* @__PURE__ */ React27.createElement(Box10.Box, {
+        let containerMarkup = /* @__PURE__ */ React27.createElement(Box12.Box, {
           id: this.props.id,
           position: "relative",
           paddingInlineStart: "300",
@@ -54540,9 +54540,9 @@ var require_ResourceItem = __commonJS({
             xs: media || selectable ? "auto 1fr" : "1fr"
           },
           gap: "300"
-        }, ownedMarkup, /* @__PURE__ */ React27.createElement(InlineStack9.InlineStack, {
+        }, ownedMarkup, /* @__PURE__ */ React27.createElement(InlineStack11.InlineStack, {
           blockAlign: getAlignment(verticalAlignment)
-        }, /* @__PURE__ */ React27.createElement(Box10.Box, {
+        }, /* @__PURE__ */ React27.createElement(Box12.Box, {
           width: "100%",
           padding: "0"
         }, children))), actionsMarkup, disclosureMarkup)), tabIndex = loading ? -1 : 0, ariaLabel = accessibilityLabel || i18n.translate("Polaris.ResourceList.Item.viewItem", {
@@ -54695,7 +54695,7 @@ var require_Select_css = __commonJS({
 var require_Select = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/Select/Select.js"(exports) {
     "use strict";
-    var React27 = require_react(), polarisIcons = require_dist3(), css = require_css(), useToggle = require_use_toggle(), Select_module = require_Select_css(), Icon7 = require_Icon(), Labelled = require_Labelled(), Box10 = require_Box(), Text13 = require_Text(), PLACEHOLDER_VALUE = "";
+    var React27 = require_react(), polarisIcons = require_dist3(), css = require_css(), useToggle = require_use_toggle(), Select_module = require_Select_css(), Icon7 = require_Icon(), Labelled = require_Labelled(), Box12 = require_Box(), Text13 = require_Text(), PLACEHOLDER_VALUE = "";
     function Select8({
       options: optionsProp,
       label,
@@ -54730,7 +54730,7 @@ var require_Select = __commonJS({
         value: PLACEHOLDER_VALUE,
         disabled: !0
       }, ...normalizedOptions]);
-      let inlineLabelMarkup = labelInline && /* @__PURE__ */ React27.createElement(Box10.Box, {
+      let inlineLabelMarkup = labelInline && /* @__PURE__ */ React27.createElement(Box12.Box, {
         paddingInlineEnd: "100"
       }, /* @__PURE__ */ React27.createElement(Text13.Text, {
         as: "span",
@@ -55122,7 +55122,7 @@ var require_SelectAllActions_css = __commonJS({
 var require_SelectAllActions = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/SelectAllActions/SelectAllActions.js"(exports) {
     "use strict";
-    var React27 = require_react(), reactTransitionGroup = require_cjs2(), css = require_css(), SelectAllActions_module = require_SelectAllActions_css(), UnstyledButton = require_UnstyledButton(), Text13 = require_Text(), CheckableButton = require_CheckableButton(), Box10 = require_Box(), InlineStack9 = require_InlineStack(), SelectAllActions = /* @__PURE__ */ React27.forwardRef(function({
+    var React27 = require_react(), reactTransitionGroup = require_cjs2(), css = require_css(), SelectAllActions_module = require_SelectAllActions_css(), UnstyledButton = require_UnstyledButton(), Text13 = require_Text(), CheckableButton = require_CheckableButton(), Box12 = require_Box(), InlineStack11 = require_InlineStack(), SelectAllActions = /* @__PURE__ */ React27.forwardRef(function({
       label,
       selectMode,
       paginatedSelectAllText,
@@ -55162,7 +55162,7 @@ var require_SelectAllActions = __commonJS({
         return /* @__PURE__ */ React27.createElement("div", {
           className: wrapperClasses,
           ref: nodeRef
-        }, /* @__PURE__ */ React27.createElement(Box10.Box, {
+        }, /* @__PURE__ */ React27.createElement(Box12.Box, {
           background: "bg-surface-secondary",
           borderBlockStartWidth: "025",
           borderColor: "border",
@@ -55171,7 +55171,7 @@ var require_SelectAllActions = __commonJS({
           paddingBlockEnd: "300",
           paddingInlineStart: "300",
           paddingInlineEnd: "400"
-        }, /* @__PURE__ */ React27.createElement(InlineStack9.InlineStack, {
+        }, /* @__PURE__ */ React27.createElement(InlineStack11.InlineStack, {
           gap: "200",
           align: "start",
           blockAlign: "center"
@@ -55301,7 +55301,7 @@ var require_SkeletonPage_css = __commonJS({
 var require_SkeletonPage = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/SkeletonPage/SkeletonPage.js"(exports) {
     "use strict";
-    var React27 = require_react(), SkeletonPage_module = require_SkeletonPage_css(), hooks = require_hooks2(), Text13 = require_Text(), Box10 = require_Box(), BlockStack11 = require_BlockStack(), InlineStack9 = require_InlineStack();
+    var React27 = require_react(), SkeletonPage_module = require_SkeletonPage_css(), hooks = require_hooks2(), Text13 = require_Text(), Box12 = require_Box(), BlockStack13 = require_BlockStack(), InlineStack11 = require_InlineStack();
     function SkeletonPage({
       children,
       fullWidth,
@@ -55316,28 +55316,28 @@ var require_SkeletonPage = __commonJS({
         fontWeight: "bold"
       }, title) : /* @__PURE__ */ React27.createElement("div", {
         className: SkeletonPage_module.default.SkeletonTitle
-      }, /* @__PURE__ */ React27.createElement(Box10.Box, {
+      }, /* @__PURE__ */ React27.createElement(Box12.Box, {
         background: "bg-fill-tertiary",
         minWidth: "120px",
         minHeight: "28px",
         borderRadius: "100"
-      })), primaryActionMarkup = primaryAction ? /* @__PURE__ */ React27.createElement(Box10.Box, {
+      })), primaryActionMarkup = primaryAction ? /* @__PURE__ */ React27.createElement(Box12.Box, {
         id: "SkeletonPage-PrimaryAction",
         borderRadius: "100",
         background: "bg-fill-tertiary",
         minHeight: "2.25rem",
         minWidth: "6.25rem"
-      }) : null, backActionMarkup = backAction ? /* @__PURE__ */ React27.createElement(Box10.Box, {
+      }) : null, backActionMarkup = backAction ? /* @__PURE__ */ React27.createElement(Box12.Box, {
         borderRadius: "100",
         background: "bg-fill-tertiary",
         minHeight: "2.25rem",
         minWidth: "2.25rem",
         maxWidth: "2.25rem"
       }) : null;
-      return /* @__PURE__ */ React27.createElement(BlockStack11.BlockStack, {
+      return /* @__PURE__ */ React27.createElement(BlockStack13.BlockStack, {
         gap: "400",
         inlineAlign: "center"
-      }, /* @__PURE__ */ React27.createElement(Box10.Box, Object.assign({
+      }, /* @__PURE__ */ React27.createElement(Box12.Box, Object.assign({
         width: "100%",
         padding: "0",
         paddingInlineStart: {
@@ -55353,7 +55353,7 @@ var require_SkeletonPage = __commonJS({
         maxWidth: "var(--pc-skeleton-page-max-width-narrow)"
       }, fullWidth && {
         maxWidth: "none"
-      }), /* @__PURE__ */ React27.createElement(BlockStack11.BlockStack, null, /* @__PURE__ */ React27.createElement(Box10.Box, {
+      }), /* @__PURE__ */ React27.createElement(BlockStack13.BlockStack, null, /* @__PURE__ */ React27.createElement(Box12.Box, {
         paddingBlockStart: {
           xs: "400",
           md: "500"
@@ -55371,16 +55371,16 @@ var require_SkeletonPage = __commonJS({
           sm: "0"
         },
         width: "100%"
-      }, /* @__PURE__ */ React27.createElement(InlineStack9.InlineStack, {
+      }, /* @__PURE__ */ React27.createElement(InlineStack11.InlineStack, {
         gap: "400",
         align: "space-between",
         blockAlign: "center"
-      }, /* @__PURE__ */ React27.createElement(InlineStack9.InlineStack, {
+      }, /* @__PURE__ */ React27.createElement(InlineStack11.InlineStack, {
         gap: "400"
-      }, backActionMarkup, /* @__PURE__ */ React27.createElement(Box10.Box, {
+      }, backActionMarkup, /* @__PURE__ */ React27.createElement(Box12.Box, {
         paddingBlockStart: "100",
         paddingBlockEnd: "100"
-      }, titleContent)), primaryActionMarkup)), /* @__PURE__ */ React27.createElement(Box10.Box, {
+      }, titleContent)), primaryActionMarkup)), /* @__PURE__ */ React27.createElement(Box12.Box, {
         paddingBlockEnd: "200",
         width: "100%"
       }, children))));
@@ -55802,7 +55802,7 @@ var require_Message_css = __commonJS({
 var require_Message = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/TopBar/components/Menu/components/Message/Message.js"(exports) {
     "use strict";
-    var React27 = require_react(), Message_module = require_Message_css(), Link6 = require_Link(), Badge12 = require_Badge(), Popover3 = require_Popover(), LegacyStack = require_LegacyStack(), TextContainer2 = require_TextContainer(), Text13 = require_Text(), Button11 = require_Button();
+    var React27 = require_react(), Message_module = require_Message_css(), Link6 = require_Link(), Badge12 = require_Badge(), Popover3 = require_Popover(), LegacyStack = require_LegacyStack(), TextContainer = require_TextContainer(), Text13 = require_Text(), Button11 = require_Button();
     function Message({
       title,
       description,
@@ -55824,7 +55824,7 @@ var require_Message = __commonJS({
       }, /* @__PURE__ */ React27.createElement(Popover3.Popover.Section, null, /* @__PURE__ */ React27.createElement(LegacyStack.LegacyStack, {
         vertical: !0,
         spacing: "tight"
-      }, /* @__PURE__ */ React27.createElement(TextContainer2.TextContainer, null, /* @__PURE__ */ React27.createElement(Text13.Text, {
+      }, /* @__PURE__ */ React27.createElement(TextContainer.TextContainer, null, /* @__PURE__ */ React27.createElement(Text13.Text, {
         variant: "headingMd",
         as: "h2"
       }, title, badgeMarkup), /* @__PURE__ */ React27.createElement("p", null, description)), /* @__PURE__ */ React27.createElement(Link6.Link, {
@@ -55842,7 +55842,7 @@ var require_Message = __commonJS({
 var require_Menu = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/components/TopBar/components/Menu/Menu.js"(exports) {
     "use strict";
-    var React27 = require_react(), css = require_css(), Menu_module = require_Menu_css(), Message = require_Message(), Popover3 = require_Popover(), Box10 = require_Box(), ActionList3 = require_ActionList();
+    var React27 = require_react(), css = require_css(), Menu_module = require_Menu_css(), Message = require_Message(), Popover3 = require_Popover(), Box12 = require_Box(), ActionList3 = require_ActionList();
     function Menu(props) {
       let {
         actions,
@@ -55886,7 +55886,7 @@ var require_Menu = __commonJS({
         preferredAlignment: "right"
       }, /* @__PURE__ */ React27.createElement("div", {
         className: Menu_module.default.MenuItems
-      }, /* @__PURE__ */ React27.createElement(Box10.Box, {
+      }, /* @__PURE__ */ React27.createElement(Box12.Box, {
         width: customWidth
       }, /* @__PURE__ */ React27.createElement(ActionList3.ActionList, {
         actionRole: "menuitem",
@@ -56236,7 +56236,7 @@ var require_hooks14 = __commonJS({
 var require_cjs3 = __commonJS({
   "../node_modules/@shopify/polaris/build/cjs/index.js"(exports) {
     "use strict";
-    var configure = require_configure(), types4 = require_types(), shared = require_shared(), ThemeProvider = require_ThemeProvider(), colorTransformers = require_color_transformers(), withinContentContext = require_within_content_context(), useCopyToClipboard = require_use_copy_to_clipboard(), useEventListener = require_use_event_listener(), useFocus = require_use_focus(), useHover = require_use_hover(), useMediaQuery = require_use_media_query(), useTheme = require_use_theme(), useIndexResourceState = require_use_index_resource_state(), breakpoints = require_breakpoints2(), AppProvider3 = require_AppProvider(), AccountConnection = require_AccountConnection(), ActionList3 = require_ActionList(), ActionMenu = require_ActionMenu(), Autocomplete = require_Autocomplete(), Avatar2 = require_Avatar(), Backdrop = require_Backdrop(), Badge12 = require_Badge(), types$1 = require_types2(), Banner9 = require_Banner(), Bleed = require_Bleed(), Box10 = require_Box(), Breadcrumbs = require_Breadcrumbs(), BulkActions = require_BulkActions(), Button11 = require_Button(), utils = require_utils5(), ButtonGroup4 = require_ButtonGroup(), CalloutCard = require_CalloutCard(), Card12 = require_Card(), Checkbox4 = require_Checkbox(), ChoiceList2 = require_ChoiceList(), Collapsible = require_Collapsible(), ColorPicker = require_ColorPicker(), InlineGrid2 = require_InlineGrid(), Combobox = require_Combobox(), Connected = require_Connected(), ContextualSaveBar = require_ContextualSaveBar(), DataTable3 = require_DataTable(), DatePicker = require_DatePicker(), DescriptionList = require_DescriptionList(), Divider6 = require_Divider(), DropZone = require_DropZone(), EmptySearchResult = require_EmptySearchResult(), EmptyState4 = require_EmptyState(), EventListener = require_EventListener(), ExceptionList = require_ExceptionList(), Filters = require_Filters(), Focus = require_Focus(), FooterHelp = require_FooterHelp(), Form7 = require_Form(), FormLayout2 = require_FormLayout(), Frame = require_Frame(), Toast2 = require_Toast(), FullscreenBar = require_FullscreenBar(), Grid4 = require_Grid(), Icon7 = require_Icon(), Image = require_Image(), IndexFilters = require_IndexFilters(), useSetIndexFiltersMode = require_useSetIndexFiltersMode(), types$2 = require_types3(), IndexTable = require_IndexTable(), Indicator = require_Indicator(), InlineStack9 = require_InlineStack(), InlineCode = require_InlineCode(), InlineError = require_InlineError(), KeyboardKey = require_KeyboardKey(), KeypressListener = require_KeypressListener(), Label = require_Label(), Labelled = require_Labelled(), Layout9 = require_Layout(), LegacyCard = require_LegacyCard(), LegacyFilters = require_LegacyFilters(), LegacyStack = require_LegacyStack(), LegacyTabs = require_LegacyTabs(), Link6 = require_Link(), List2 = require_List3(), Listbox = require_Listbox(), Loading = require_Loading3(), MediaCard = require_MediaCard(), Modal5 = require_Modal(), Navigation = require_Navigation2(), Item = require_Item10(), OptionList = require_OptionList(), Page5 = require_Page(), PageActions = require_PageActions(), Pagination = require_Pagination(), Picker = require_Picker(), PolarisTestProvider = require_PolarisTestProvider(), Popover3 = require_Popover(), PopoverOverlay = require_PopoverOverlay(), Portal = require_Portal(), PortalsManager = require_PortalsManager(), PositionedOverlay = require_PositionedOverlay(), ProgressBar8 = require_ProgressBar(), RadioButton3 = require_RadioButton(), RangeSlider2 = require_RangeSlider(), ResourceItem2 = require_ResourceItem(), ResourceList2 = require_ResourceList(), Scrollable = require_Scrollable(), ScrollLock = require_ScrollLock(), Select8 = require_Select(), SelectAllActions = require_SelectAllActions(), SettingToggle = require_SettingToggle(), Sheet = require_Sheet(), SkeletonBodyText4 = require_SkeletonBodyText(), SkeletonDisplayText4 = require_SkeletonDisplayText(), SkeletonPage = require_SkeletonPage(), SkeletonTabs = require_SkeletonTabs(), SkeletonThumbnail = require_SkeletonThumbnail(), Spinner7 = require_Spinner(), Sticky = require_Sticky(), Tabs3 = require_Tabs(), Tag = require_Tag(), Text13 = require_Text(), TextContainer2 = require_TextContainer(), TextField6 = require_TextField(), Thumbnail2 = require_Thumbnail(), Toast$1 = require_Toast2(), Tooltip6 = require_Tooltip(), TopBar = require_TopBar(), TrapFocus = require_TrapFocus(), Truncate = require_Truncate(), UnstyledButton = require_UnstyledButton(), utils$1 = require_utils8(), UnstyledLink = require_UnstyledLink(), BlockStack11 = require_BlockStack(), VideoThumbnail = require_VideoThumbnail(), hooks = require_hooks9(), context = require_context15(), context$1 = require_context3(), hooks$1 = require_hooks14(), types$3 = require_types4(), hooks$2 = require_hooks3();
+    var configure = require_configure(), types4 = require_types(), shared = require_shared(), ThemeProvider = require_ThemeProvider(), colorTransformers = require_color_transformers(), withinContentContext = require_within_content_context(), useCopyToClipboard = require_use_copy_to_clipboard(), useEventListener = require_use_event_listener(), useFocus = require_use_focus(), useHover = require_use_hover(), useMediaQuery = require_use_media_query(), useTheme = require_use_theme(), useIndexResourceState = require_use_index_resource_state(), breakpoints = require_breakpoints2(), AppProvider3 = require_AppProvider(), AccountConnection = require_AccountConnection(), ActionList3 = require_ActionList(), ActionMenu = require_ActionMenu(), Autocomplete = require_Autocomplete(), Avatar2 = require_Avatar(), Backdrop = require_Backdrop(), Badge12 = require_Badge(), types$1 = require_types2(), Banner9 = require_Banner(), Bleed = require_Bleed(), Box12 = require_Box(), Breadcrumbs = require_Breadcrumbs(), BulkActions = require_BulkActions(), Button11 = require_Button(), utils = require_utils5(), ButtonGroup4 = require_ButtonGroup(), CalloutCard = require_CalloutCard(), Card12 = require_Card(), Checkbox4 = require_Checkbox(), ChoiceList2 = require_ChoiceList(), Collapsible = require_Collapsible(), ColorPicker = require_ColorPicker(), InlineGrid2 = require_InlineGrid(), Combobox = require_Combobox(), Connected = require_Connected(), ContextualSaveBar = require_ContextualSaveBar(), DataTable3 = require_DataTable(), DatePicker = require_DatePicker(), DescriptionList = require_DescriptionList(), Divider6 = require_Divider(), DropZone = require_DropZone(), EmptySearchResult = require_EmptySearchResult(), EmptyState4 = require_EmptyState(), EventListener = require_EventListener(), ExceptionList = require_ExceptionList(), Filters = require_Filters(), Focus = require_Focus(), FooterHelp = require_FooterHelp(), Form7 = require_Form(), FormLayout2 = require_FormLayout(), Frame = require_Frame(), Toast2 = require_Toast(), FullscreenBar = require_FullscreenBar(), Grid4 = require_Grid(), Icon7 = require_Icon(), Image = require_Image(), IndexFilters = require_IndexFilters(), useSetIndexFiltersMode = require_useSetIndexFiltersMode(), types$2 = require_types3(), IndexTable = require_IndexTable(), Indicator = require_Indicator(), InlineStack11 = require_InlineStack(), InlineCode = require_InlineCode(), InlineError = require_InlineError(), KeyboardKey = require_KeyboardKey(), KeypressListener = require_KeypressListener(), Label = require_Label(), Labelled = require_Labelled(), Layout9 = require_Layout(), LegacyCard = require_LegacyCard(), LegacyFilters = require_LegacyFilters(), LegacyStack = require_LegacyStack(), LegacyTabs = require_LegacyTabs(), Link6 = require_Link(), List2 = require_List3(), Listbox = require_Listbox(), Loading = require_Loading3(), MediaCard = require_MediaCard(), Modal5 = require_Modal(), Navigation = require_Navigation2(), Item = require_Item10(), OptionList = require_OptionList(), Page5 = require_Page(), PageActions = require_PageActions(), Pagination = require_Pagination(), Picker = require_Picker(), PolarisTestProvider = require_PolarisTestProvider(), Popover3 = require_Popover(), PopoverOverlay = require_PopoverOverlay(), Portal = require_Portal(), PortalsManager = require_PortalsManager(), PositionedOverlay = require_PositionedOverlay(), ProgressBar8 = require_ProgressBar(), RadioButton3 = require_RadioButton(), RangeSlider2 = require_RangeSlider(), ResourceItem2 = require_ResourceItem(), ResourceList2 = require_ResourceList(), Scrollable = require_Scrollable(), ScrollLock = require_ScrollLock(), Select8 = require_Select(), SelectAllActions = require_SelectAllActions(), SettingToggle = require_SettingToggle(), Sheet = require_Sheet(), SkeletonBodyText4 = require_SkeletonBodyText(), SkeletonDisplayText4 = require_SkeletonDisplayText(), SkeletonPage = require_SkeletonPage(), SkeletonTabs = require_SkeletonTabs(), SkeletonThumbnail = require_SkeletonThumbnail(), Spinner7 = require_Spinner(), Sticky = require_Sticky(), Tabs3 = require_Tabs(), Tag = require_Tag(), Text13 = require_Text(), TextContainer = require_TextContainer(), TextField6 = require_TextField(), Thumbnail2 = require_Thumbnail(), Toast$1 = require_Toast2(), Tooltip6 = require_Tooltip(), TopBar = require_TopBar(), TrapFocus = require_TrapFocus(), Truncate = require_Truncate(), UnstyledButton = require_UnstyledButton(), utils$1 = require_utils8(), UnstyledLink = require_UnstyledLink(), BlockStack13 = require_BlockStack(), VideoThumbnail = require_VideoThumbnail(), hooks = require_hooks9(), context = require_context15(), context$1 = require_context3(), hooks$1 = require_hooks14(), types$3 = require_types4(), hooks$2 = require_hooks3();
     exports.DEFAULT_LOCALE = configure.DEFAULT_LOCALE;
     exports.SUPPORTED_LOCALES = configure.SUPPORTED_LOCALES;
     Object.defineProperty(exports, "Key", {
@@ -56288,7 +56288,7 @@ var require_cjs3 = __commonJS({
     });
     exports.Banner = Banner9.Banner;
     exports.Bleed = Bleed.Bleed;
-    exports.Box = Box10.Box;
+    exports.Box = Box12.Box;
     exports.Breadcrumbs = Breadcrumbs.Breadcrumbs;
     exports.UnstableBulkActions = BulkActions.BulkActions;
     exports.Button = Button11.Button;
@@ -56336,7 +56336,7 @@ var require_cjs3 = __commonJS({
     });
     exports.IndexTable = IndexTable.IndexTable;
     exports.Indicator = Indicator.Indicator;
-    exports.InlineStack = InlineStack9.InlineStack;
+    exports.InlineStack = InlineStack11.InlineStack;
     exports.InlineCode = InlineCode.InlineCode;
     exports.InlineError = InlineError.InlineError;
     exports.errorTextID = InlineError.errorTextID;
@@ -56401,7 +56401,7 @@ var require_cjs3 = __commonJS({
     exports.Tabs = Tabs3.Tabs;
     exports.Tag = Tag.Tag;
     exports.Text = Text13.Text;
-    exports.TextContainer = TextContainer2.TextContainer;
+    exports.TextContainer = TextContainer.TextContainer;
     exports.TextField = TextField6.TextField;
     exports.Thumbnail = Thumbnail2.Thumbnail;
     exports.Toast = Toast$1.Toast;
@@ -56412,7 +56412,7 @@ var require_cjs3 = __commonJS({
     exports.UnstyledButton = UnstyledButton.UnstyledButton;
     exports.unstyledButtonFrom = utils$1.unstyledButtonFrom;
     exports.UnstyledLink = UnstyledLink.UnstyledLink;
-    exports.BlockStack = BlockStack11.BlockStack;
+    exports.BlockStack = BlockStack13.BlockStack;
     exports.VideoThumbnail = VideoThumbnail.VideoThumbnail;
     exports.useFrame = hooks.useFrame;
     exports.FrameContext = context.FrameContext;
@@ -75158,9 +75158,10 @@ async function backendFetch(pathname, method, body, shopNameOverride) {
       json20?.ok ? "OK" : "Response received"
     ) : console.error(`\u274C HTTP error ${res.status} for ${pathname}:`, json20), { status: res.status, json: json20 };
   } catch (fetchError) {
-    return console.error(`\u{1F4A5} Fetch error for ${pathname}:`, fetchError.message), {
+    let errMsg = fetchError instanceof Error ? fetchError.message : String(fetchError);
+    return console.error(`\u{1F4A5} Fetch error for ${pathname}:`, errMsg), {
       status: 500,
-      json: { ok: !1, error: `Network error: ${fetchError.message}` }
+      json: { ok: !1, error: `Network error: ${errMsg}` }
     };
   }
 }
@@ -111109,16 +111110,16 @@ var require_stackSet = __commonJS({
 var require_Stack = __commonJS({
   "../node_modules/lodash/_Stack.js"(exports, module2) {
     var ListCache = require_ListCache(), stackClear = require_stackClear(), stackDelete = require_stackDelete(), stackGet = require_stackGet(), stackHas = require_stackHas(), stackSet = require_stackSet();
-    function Stack2(entries) {
+    function Stack(entries) {
       var data = this.__data__ = new ListCache(entries);
       this.size = data.size;
     }
-    Stack2.prototype.clear = stackClear;
-    Stack2.prototype.delete = stackDelete;
-    Stack2.prototype.get = stackGet;
-    Stack2.prototype.has = stackHas;
-    Stack2.prototype.set = stackSet;
-    module2.exports = Stack2;
+    Stack.prototype.clear = stackClear;
+    Stack.prototype.delete = stackDelete;
+    Stack.prototype.get = stackGet;
+    Stack.prototype.has = stackHas;
+    Stack.prototype.set = stackSet;
+    module2.exports = Stack;
   }
 });
 
@@ -111680,7 +111681,7 @@ var require_getTag = __commonJS({
 // ../node_modules/lodash/_baseIsEqualDeep.js
 var require_baseIsEqualDeep = __commonJS({
   "../node_modules/lodash/_baseIsEqualDeep.js"(exports, module2) {
-    var Stack2 = require_Stack(), equalArrays = require_equalArrays(), equalByTag = require_equalByTag(), equalObjects = require_equalObjects(), getTag = require_getTag(), isArray = require_isArray(), isBuffer = require_isBuffer(), isTypedArray = require_isTypedArray(), COMPARE_PARTIAL_FLAG = 1, argsTag = "[object Arguments]", arrayTag = "[object Array]", objectTag = "[object Object]", objectProto = Object.prototype, hasOwnProperty = objectProto.hasOwnProperty;
+    var Stack = require_Stack(), equalArrays = require_equalArrays(), equalByTag = require_equalByTag(), equalObjects = require_equalObjects(), getTag = require_getTag(), isArray = require_isArray(), isBuffer = require_isBuffer(), isTypedArray = require_isTypedArray(), COMPARE_PARTIAL_FLAG = 1, argsTag = "[object Arguments]", arrayTag = "[object Array]", objectTag = "[object Object]", objectProto = Object.prototype, hasOwnProperty = objectProto.hasOwnProperty;
     function baseIsEqualDeep(object, other, bitmask, customizer, equalFunc, stack) {
       var objIsArr = isArray(object), othIsArr = isArray(other), objTag = objIsArr ? arrayTag : getTag(object), othTag = othIsArr ? arrayTag : getTag(other);
       objTag = objTag == argsTag ? objectTag : objTag, othTag = othTag == argsTag ? objectTag : othTag;
@@ -111691,15 +111692,15 @@ var require_baseIsEqualDeep = __commonJS({
         objIsArr = !0, objIsObj = !1;
       }
       if (isSameTag && !objIsObj)
-        return stack || (stack = new Stack2()), objIsArr || isTypedArray(object) ? equalArrays(object, other, bitmask, customizer, equalFunc, stack) : equalByTag(object, other, objTag, bitmask, customizer, equalFunc, stack);
+        return stack || (stack = new Stack()), objIsArr || isTypedArray(object) ? equalArrays(object, other, bitmask, customizer, equalFunc, stack) : equalByTag(object, other, objTag, bitmask, customizer, equalFunc, stack);
       if (!(bitmask & COMPARE_PARTIAL_FLAG)) {
         var objIsWrapped = objIsObj && hasOwnProperty.call(object, "__wrapped__"), othIsWrapped = othIsObj && hasOwnProperty.call(other, "__wrapped__");
         if (objIsWrapped || othIsWrapped) {
           var objUnwrapped = objIsWrapped ? object.value() : object, othUnwrapped = othIsWrapped ? other.value() : other;
-          return stack || (stack = new Stack2()), equalFunc(objUnwrapped, othUnwrapped, bitmask, customizer, stack);
+          return stack || (stack = new Stack()), equalFunc(objUnwrapped, othUnwrapped, bitmask, customizer, stack);
         }
       }
-      return isSameTag ? (stack || (stack = new Stack2()), equalObjects(object, other, bitmask, customizer, equalFunc, stack)) : !1;
+      return isSameTag ? (stack || (stack = new Stack()), equalObjects(object, other, bitmask, customizer, equalFunc, stack)) : !1;
     }
     module2.exports = baseIsEqualDeep;
   }
@@ -111719,7 +111720,7 @@ var require_baseIsEqual = __commonJS({
 // ../node_modules/lodash/_baseIsMatch.js
 var require_baseIsMatch = __commonJS({
   "../node_modules/lodash/_baseIsMatch.js"(exports, module2) {
-    var Stack2 = require_Stack(), baseIsEqual = require_baseIsEqual(), COMPARE_PARTIAL_FLAG = 1, COMPARE_UNORDERED_FLAG = 2;
+    var Stack = require_Stack(), baseIsEqual = require_baseIsEqual(), COMPARE_PARTIAL_FLAG = 1, COMPARE_UNORDERED_FLAG = 2;
     function baseIsMatch(object, source, matchData, customizer) {
       var index = matchData.length, length = index, noCustomizer = !customizer;
       if (object == null)
@@ -111736,7 +111737,7 @@ var require_baseIsMatch = __commonJS({
           if (objValue === void 0 && !(key in object))
             return !1;
         } else {
-          var stack = new Stack2();
+          var stack = new Stack();
           if (customizer)
             var result = customizer(objValue, srcValue, key, object, source, stack);
           if (!(result === void 0 ? baseIsEqual(srcValue, objValue, COMPARE_PARTIAL_FLAG | COMPARE_UNORDERED_FLAG, customizer, stack) : result))
@@ -137207,7 +137208,7 @@ var require_isSet = __commonJS({
 // ../node_modules/lodash/_baseClone.js
 var require_baseClone = __commonJS({
   "../node_modules/lodash/_baseClone.js"(exports, module2) {
-    var Stack2 = require_Stack(), arrayEach = require_arrayEach(), assignValue = require_assignValue(), baseAssign = require_baseAssign(), baseAssignIn = require_baseAssignIn(), cloneBuffer = require_cloneBuffer(), copyArray = require_copyArray(), copySymbols = require_copySymbols(), copySymbolsIn = require_copySymbolsIn(), getAllKeys = require_getAllKeys(), getAllKeysIn = require_getAllKeysIn(), getTag = require_getTag(), initCloneArray = require_initCloneArray(), initCloneByTag = require_initCloneByTag(), initCloneObject = require_initCloneObject(), isArray = require_isArray(), isBuffer = require_isBuffer(), isMap = require_isMap(), isObject2 = require_isObject(), isSet = require_isSet(), keys = require_keys(), keysIn = require_keysIn(), CLONE_DEEP_FLAG = 1, CLONE_FLAT_FLAG = 2, CLONE_SYMBOLS_FLAG = 4, argsTag = "[object Arguments]", arrayTag = "[object Array]", boolTag = "[object Boolean]", dateTag = "[object Date]", errorTag = "[object Error]", funcTag = "[object Function]", genTag = "[object GeneratorFunction]", mapTag = "[object Map]", numberTag = "[object Number]", objectTag = "[object Object]", regexpTag = "[object RegExp]", setTag = "[object Set]", stringTag = "[object String]", symbolTag = "[object Symbol]", weakMapTag = "[object WeakMap]", arrayBufferTag = "[object ArrayBuffer]", dataViewTag = "[object DataView]", float32Tag = "[object Float32Array]", float64Tag = "[object Float64Array]", int8Tag = "[object Int8Array]", int16Tag = "[object Int16Array]", int32Tag = "[object Int32Array]", uint8Tag = "[object Uint8Array]", uint8ClampedTag = "[object Uint8ClampedArray]", uint16Tag = "[object Uint16Array]", uint32Tag = "[object Uint32Array]", cloneableTags = {};
+    var Stack = require_Stack(), arrayEach = require_arrayEach(), assignValue = require_assignValue(), baseAssign = require_baseAssign(), baseAssignIn = require_baseAssignIn(), cloneBuffer = require_cloneBuffer(), copyArray = require_copyArray(), copySymbols = require_copySymbols(), copySymbolsIn = require_copySymbolsIn(), getAllKeys = require_getAllKeys(), getAllKeysIn = require_getAllKeysIn(), getTag = require_getTag(), initCloneArray = require_initCloneArray(), initCloneByTag = require_initCloneByTag(), initCloneObject = require_initCloneObject(), isArray = require_isArray(), isBuffer = require_isBuffer(), isMap = require_isMap(), isObject2 = require_isObject(), isSet = require_isSet(), keys = require_keys(), keysIn = require_keysIn(), CLONE_DEEP_FLAG = 1, CLONE_FLAT_FLAG = 2, CLONE_SYMBOLS_FLAG = 4, argsTag = "[object Arguments]", arrayTag = "[object Array]", boolTag = "[object Boolean]", dateTag = "[object Date]", errorTag = "[object Error]", funcTag = "[object Function]", genTag = "[object GeneratorFunction]", mapTag = "[object Map]", numberTag = "[object Number]", objectTag = "[object Object]", regexpTag = "[object RegExp]", setTag = "[object Set]", stringTag = "[object String]", symbolTag = "[object Symbol]", weakMapTag = "[object WeakMap]", arrayBufferTag = "[object ArrayBuffer]", dataViewTag = "[object DataView]", float32Tag = "[object Float32Array]", float64Tag = "[object Float64Array]", int8Tag = "[object Int8Array]", int16Tag = "[object Int16Array]", int32Tag = "[object Int32Array]", uint8Tag = "[object Uint8Array]", uint8ClampedTag = "[object Uint8ClampedArray]", uint16Tag = "[object Uint16Array]", uint32Tag = "[object Uint32Array]", cloneableTags = {};
     cloneableTags[argsTag] = cloneableTags[arrayTag] = cloneableTags[arrayBufferTag] = cloneableTags[dataViewTag] = cloneableTags[boolTag] = cloneableTags[dateTag] = cloneableTags[float32Tag] = cloneableTags[float64Tag] = cloneableTags[int8Tag] = cloneableTags[int16Tag] = cloneableTags[int32Tag] = cloneableTags[mapTag] = cloneableTags[numberTag] = cloneableTags[objectTag] = cloneableTags[regexpTag] = cloneableTags[setTag] = cloneableTags[stringTag] = cloneableTags[symbolTag] = cloneableTags[uint8Tag] = cloneableTags[uint8ClampedTag] = cloneableTags[uint16Tag] = cloneableTags[uint32Tag] = !0;
     cloneableTags[errorTag] = cloneableTags[funcTag] = cloneableTags[weakMapTag] = !1;
     function baseClone(value, bitmask, customizer, key, object, stack) {
@@ -137233,7 +137234,7 @@ var require_baseClone = __commonJS({
           result = initCloneByTag(value, tag2, isDeep);
         }
       }
-      stack || (stack = new Stack2());
+      stack || (stack = new Stack());
       var stacked = stack.get(value);
       if (stacked)
         return stacked;
@@ -141036,7 +141037,7 @@ function ActiveTasks({ shopName, hasFeatureAccess: hasFeatureAccess2 = !1 }) {
 }
 
 // app/components/AIDashboard/SystemOverview.tsx
-var import_jsx_runtime6 = __toESM(require_jsx_runtime()), CheckCircleIcon2 = () => /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { style: { color: "#00a047" }, children: "\u25CF" }), AlertCircleIcon = () => /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { style: { color: "#ff6d6d" }, children: "\u25CF" }), InfoIcon = () => /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { style: { color: "#006fbb" }, children: "\u25CF" });
+var import_jsx_runtime6 = __toESM(require_jsx_runtime());
 var TrendingUpIcon2 = () => /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", {}), ActivityIcon2 = () => /* @__PURE__ */ (0, import_jsx_runtime6.jsx)("span", { children: "\u26A1" });
 function SystemOverview({ shopName, hasFeatureAccess: hasFeatureAccess2 = !1 }) {
   let [systemHealth, setSystemHealth] = (0, import_react5.useState)(null), [optimizationStats, setOptimizationStats] = (0, import_react5.useState)(null), [dataSources, setDataSources] = (0, import_react5.useState)([]), [quickStats, setQuickStats] = (0, import_react5.useState)(null), [automationStatus, setAutomationStatus] = (0, import_react5.useState)(null), [ingestionStatus, setIngestionStatus] = (0, import_react5.useState)(null), [logMetrics, setLogMetrics] = (0, import_react5.useState)(null), [alertMessage, setAlertMessage] = (0, import_react5.useState)(null), [loading, setLoading] = (0, import_react5.useState)(!0), [error, setError] = (0, import_react5.useState)(null), [lastRefresh, setLastRefresh] = (0, import_react5.useState)(/* @__PURE__ */ new Date()), fetchSystemHealth = (0, import_react5.useCallback)(async () => {
@@ -141232,7 +141233,7 @@ function SystemOverview({ shopName, hasFeatureAccess: hasFeatureAccess2 = !1 }) 
       }
     ),
     /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(import_polaris4.Layout, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Layout.Section, { oneThird: !0, children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Box, { padding: "400", children: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(import_polaris4.BlockStack, { gap: "300", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Layout.Section, { variant: "oneThird", children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Box, { padding: "400", children: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(import_polaris4.BlockStack, { gap: "300", children: [
         /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(import_polaris4.InlineStack, { align: "space-between", children: [
           /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Text, { variant: "headingMd", as: "h3", children: "System Health" }),
           systemHealth && systemHealth.status && /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Badge, { tone: getStatusTone(systemHealth.status), children: systemHealth.status.charAt(0).toUpperCase() + systemHealth.status.slice(1) })
@@ -141247,11 +141248,11 @@ function SystemOverview({ shopName, hasFeatureAccess: hasFeatureAccess2 = !1 }) 
           }
         )
       ] }) }) }) }),
-      /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Layout.Section, { oneThird: !0, children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Box, { padding: "400", children: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(import_polaris4.BlockStack, { gap: "300", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Layout.Section, { variant: "oneThird", children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Box, { padding: "400", children: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(import_polaris4.BlockStack, { gap: "300", children: [
         /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Text, { variant: "headingMd", as: "h3", children: "Active Optimizations" }),
         optimizationStats && /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(import_polaris4.BlockStack, { gap: "200", children: [
           /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(import_polaris4.Box, { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Text, { variant: "heading2xl", as: "div", tone: "success", children: optimizationStats.activeCount }),
+            /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Text, { variant: "heading2xl", as: "p", tone: "success", children: optimizationStats.activeCount }),
             /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Text, { variant: "bodyMd", as: "p", tone: "subdued", children: "Currently running" })
           ] }),
           /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Divider, {}),
@@ -141268,7 +141269,7 @@ function SystemOverview({ shopName, hasFeatureAccess: hasFeatureAccess2 = !1 }) 
           ] })
         ] })
       ] }) }) }) }),
-      /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Layout.Section, { oneThird: !0, children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Box, { padding: "400", children: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(import_polaris4.BlockStack, { gap: "300", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Layout.Section, { variant: "oneThird", children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Box, { padding: "400", children: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(import_polaris4.BlockStack, { gap: "300", children: [
         /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Text, { variant: "headingMd", as: "h3", children: "AI Automation" }),
         automationStatus && /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(import_polaris4.BlockStack, { gap: "200", children: [
           /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(import_polaris4.InlineStack, { align: "space-between", children: [
@@ -141298,10 +141299,10 @@ function SystemOverview({ shopName, hasFeatureAccess: hasFeatureAccess2 = !1 }) 
           formatTimeAgo(lastRefresh.toISOString())
         ] })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Layout, { children: dataSources.map((source, index) => /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Layout.Section, { oneThird: !0, children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Box, { padding: "300", borderWidth: "025", borderRadius: "200", borderColor: "border", children: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(import_polaris4.BlockStack, { gap: "200", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Layout, { children: dataSources.map((source, index) => /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Layout.Section, { variant: "oneThird", children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Box, { padding: "300", borderWidth: "025", borderRadius: "200", borderColor: "border", children: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(import_polaris4.BlockStack, { gap: "200", children: [
         /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(import_polaris4.InlineStack, { align: "space-between", children: [
           /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Text, { variant: "bodyMd", as: "span", fontWeight: "semibold", children: source.name }),
-          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Badge, { tone: getStatusTone(source.status), children: source.status === "connected" ? /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(CheckCircleIcon2, {}) : source.status === "warning" ? /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(AlertCircleIcon, {}) : /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(InfoIcon, {}) })
+          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Badge, { tone: getStatusTone(source.status), children: source.status === "connected" ? "Connected" : source.status === "warning" ? "Warning" : "Error" })
         ] }),
         /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(import_polaris4.InlineStack, { align: "space-between", children: [
           /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Text, { variant: "bodyMd", as: "span", tone: "subdued", children: "Response time:" }),
@@ -141319,9 +141320,9 @@ function SystemOverview({ shopName, hasFeatureAccess: hasFeatureAccess2 = !1 }) 
     /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Box, { padding: "400", children: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(import_polaris4.BlockStack, { gap: "400", children: [
       /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Text, { variant: "headingMd", as: "h3", children: "Performance Metrics" }),
       quickStats && /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(import_polaris4.Layout, { children: [
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Layout.Section, { oneThird: !0, children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Box, { padding: "300", borderWidth: "025", borderRadius: "200", borderColor: "border", children: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(import_polaris4.BlockStack, { gap: "100", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Layout.Section, { variant: "oneThird", children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Box, { padding: "300", borderWidth: "025", borderRadius: "200", borderColor: "border", children: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(import_polaris4.BlockStack, { gap: "100", children: [
           /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Text, { variant: "bodyMd", as: "span", tone: "subdued", children: "Click-through Rate" }),
-          /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(import_polaris4.Text, { variant: "headingLg", as: "div", color: "success", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(import_polaris4.Text, { variant: "headingLg", as: "p", tone: "success", children: [
             quickStats.ctr,
             "%"
           ] }),
@@ -141330,9 +141331,9 @@ function SystemOverview({ shopName, hasFeatureAccess: hasFeatureAccess2 = !1 }) 
             /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Text, { variant: "bodyMd", as: "span", tone: "success", children: "+0.3% vs last week" })
           ] })
         ] }) }) }),
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Layout.Section, { oneThird: !0, children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Box, { padding: "300", borderWidth: "025", borderRadius: "200", borderColor: "border", children: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(import_polaris4.BlockStack, { gap: "100", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Layout.Section, { variant: "oneThird", children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Box, { padding: "300", borderWidth: "025", borderRadius: "200", borderColor: "border", children: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(import_polaris4.BlockStack, { gap: "100", children: [
           /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Text, { variant: "bodyMd", as: "span", tone: "subdued", children: "Return on Ad Spend" }),
-          /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(import_polaris4.Text, { variant: "headingLg", as: "div", color: "success", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(import_polaris4.Text, { variant: "headingLg", as: "p", tone: "success", children: [
             quickStats.roas,
             "x"
           ] }),
@@ -141341,27 +141342,27 @@ function SystemOverview({ shopName, hasFeatureAccess: hasFeatureAccess2 = !1 }) 
             /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Text, { variant: "bodyMd", as: "span", tone: "success", children: "+12% vs last week" })
           ] })
         ] }) }) }),
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Layout.Section, { oneThird: !0, children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Box, { padding: "300", borderWidth: "025", borderRadius: "200", borderColor: "border", children: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(import_polaris4.BlockStack, { gap: "100", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Layout.Section, { variant: "oneThird", children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Box, { padding: "300", borderWidth: "025", borderRadius: "200", borderColor: "border", children: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(import_polaris4.BlockStack, { gap: "100", children: [
           /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Text, { variant: "bodyMd", as: "span", tone: "subdued", children: "Conversions" }),
-          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Text, { variant: "headingLg", as: "div", children: formatNumber(quickStats.conversions) }),
+          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Text, { variant: "headingLg", as: "p", children: formatNumber(quickStats.conversions) }),
           /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(import_polaris4.InlineStack, { gap: "100", children: [
             /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(TrendingUpIcon2, {}),
             /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Text, { variant: "bodyMd", as: "span", tone: "success", children: "+8% vs last week" })
           ] })
         ] }) }) }),
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Layout.Section, { oneThird: !0, children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Box, { padding: "300", borderWidth: "025", borderRadius: "200", borderColor: "border", children: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(import_polaris4.BlockStack, { gap: "100", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Layout.Section, { variant: "oneThird", children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Box, { padding: "300", borderWidth: "025", borderRadius: "200", borderColor: "border", children: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(import_polaris4.BlockStack, { gap: "100", children: [
           /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Text, { variant: "bodyMd", as: "span", tone: "subdued", children: "Ad Spend" }),
-          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Text, { variant: "headingLg", as: "div", children: formatCurrency(quickStats.adSpend) }),
+          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Text, { variant: "headingLg", as: "p", children: formatCurrency(quickStats.adSpend) }),
           /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Text, { variant: "bodyMd", as: "span", tone: "subdued", children: "This month" })
         ] }) }) }),
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Layout.Section, { oneThird: !0, children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Box, { padding: "300", borderWidth: "025", borderRadius: "200", borderColor: "border", children: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(import_polaris4.BlockStack, { gap: "100", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Layout.Section, { variant: "oneThird", children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Box, { padding: "300", borderWidth: "025", borderRadius: "200", borderColor: "border", children: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(import_polaris4.BlockStack, { gap: "100", children: [
           /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Text, { variant: "bodyMd", as: "span", tone: "subdued", children: "Impressions" }),
-          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Text, { variant: "headingLg", as: "div", children: formatNumber(quickStats.impressions) }),
+          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Text, { variant: "headingLg", as: "p", children: formatNumber(quickStats.impressions) }),
           /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Text, { variant: "bodyMd", as: "span", tone: "subdued", children: "Last 7 days" })
         ] }) }) }),
-        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Layout.Section, { oneThird: !0, children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Box, { padding: "300", borderWidth: "025", borderRadius: "200", borderColor: "border", children: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(import_polaris4.BlockStack, { gap: "100", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Layout.Section, { variant: "oneThird", children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Box, { padding: "300", borderWidth: "025", borderRadius: "200", borderColor: "border", children: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(import_polaris4.BlockStack, { gap: "100", children: [
           /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Text, { variant: "bodyMd", as: "span", tone: "subdued", children: "Clicks" }),
-          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Text, { variant: "headingLg", as: "div", children: formatNumber(quickStats.clicks) }),
+          /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Text, { variant: "headingLg", as: "p", children: formatNumber(quickStats.clicks) }),
           /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Text, { variant: "bodyMd", as: "span", tone: "subdued", children: "Last 7 days" })
         ] }) }) })
       ] })
@@ -141380,7 +141381,7 @@ function SystemOverview({ shopName, hasFeatureAccess: hasFeatureAccess2 = !1 }) 
         { key: "ad_group_metrics", label: "Ad Group Metrics" },
         { key: "search_terms", label: "Search Terms" },
         { key: "run_logs", label: "Run Logs" }
-      ].map(({ key, label }) => /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Layout.Section, { oneFifth: !0, children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Box, { padding: "300", borderWidth: "025", borderRadius: "200", borderColor: "border", children: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(import_polaris4.BlockStack, { gap: "100", children: [
+      ].map(({ key, label }) => /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Layout.Section, { variant: "oneThird", children: /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Box, { padding: "300", borderWidth: "025", borderRadius: "200", borderColor: "border", children: /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(import_polaris4.BlockStack, { gap: "100", children: [
         /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Text, { variant: "bodySm", as: "span", tone: "subdued", children: label }),
         /* @__PURE__ */ (0, import_jsx_runtime6.jsxs)(import_polaris4.InlineStack, { align: "space-between", children: [
           /* @__PURE__ */ (0, import_jsx_runtime6.jsx)(import_polaris4.Text, { variant: "headingMd", as: "span", children: ingestionStatus?.[key]?.count ?? 0 }),
@@ -141571,9 +141572,9 @@ function UserDashboard({ shopName, hasFeatureAccess: hasFeatureAccess2 = !1, onN
       /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.Spinner, { size: "small" })
     ] }) }),
     /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_polaris6.Layout, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.Layout.Section, { oneThird: !0, children: /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(LoadingSkeleton, {}) }),
-      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.Layout.Section, { oneThird: !0, children: /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(LoadingSkeleton, {}) }),
-      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.Layout.Section, { oneThird: !0, children: /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(LoadingSkeleton, {}) })
+      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.Layout.Section, { variant: "oneThird", children: /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(LoadingSkeleton, {}) }),
+      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.Layout.Section, { variant: "oneThird", children: /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(LoadingSkeleton, {}) }),
+      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.Layout.Section, { variant: "oneThird", children: /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(LoadingSkeleton, {}) })
     ] })
   ] }) : /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_polaris6.BlockStack, { gap: "600", children: [
     error && /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_polaris6.Banner, { tone: "critical", title: "Error loading data", children: [
@@ -141625,10 +141626,7 @@ function UserDashboard({ shopName, hasFeatureAccess: hasFeatureAccess2 = !1, onN
           /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.Text, { variant: "bodyMd", as: "p", tone: "subdued", children: "Your Google Ads campaigns powered by AI optimization" })
         ] }),
         /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_polaris6.BlockStack, { gap: "200", align: "end", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_polaris6.Badge, { tone: aiStatus?.status === "active" ? "success" : "warning", children: [
-            "AI ",
-            aiStatus?.status === "active" ? "Active" : "Paused"
-          ] }),
+          /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.Badge, { tone: aiStatus?.status === "active" ? "success" : "warning", children: `AI ${aiStatus?.status === "active" ? "Active" : "Paused"}` }),
           aiStatus?.lastOptimization && /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_polaris6.Text, { variant: "bodySm", as: "p", tone: "subdued", children: [
             "Last optimization: ",
             formatTimeAgo(aiStatus.lastOptimization)
@@ -141659,7 +141657,7 @@ function UserDashboard({ shopName, hasFeatureAccess: hasFeatureAccess2 = !1, onN
       ] })
     ] }) }) }),
     hasData && /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_polaris6.Layout, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.Layout.Section, { oneThird: !0, children: /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_polaris6.BlockStack, { gap: "300", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.Layout.Section, { variant: "oneThird", children: /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_polaris6.BlockStack, { gap: "300", children: [
         /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_polaris6.Text, { variant: "headingMd", as: "h3", children: [
           getPeriodLabel(selectedPeriod),
           " Performance"
@@ -141668,34 +141666,31 @@ function UserDashboard({ shopName, hasFeatureAccess: hasFeatureAccess2 = !1, onN
         /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_polaris6.BlockStack, { gap: "300", children: [
           /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_polaris6.BlockStack, { gap: "100", children: [
             /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_polaris6.InlineStack, { align: "space-between", children: [
-              /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.Text, { variant: "bodyMd", tone: "subdued", children: "Impressions" }),
+              /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.Text, { variant: "bodyMd", as: "span", tone: "subdued", children: "Impressions" }),
               /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.Text, { variant: "headingMd", as: "p", fontWeight: "bold", children: formatNumber(metrics?.impressions || 0) })
             ] }),
             /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.ProgressBar, { progress: 75, size: "small" })
           ] }),
           /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_polaris6.BlockStack, { gap: "100", children: [
             /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_polaris6.InlineStack, { align: "space-between", children: [
-              /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.Text, { variant: "bodyMd", tone: "subdued", children: "Clicks" }),
+              /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.Text, { variant: "bodyMd", as: "span", tone: "subdued", children: "Clicks" }),
               /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.Text, { variant: "headingMd", as: "p", fontWeight: "bold", children: formatNumber(metrics?.clicks || 0) })
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_polaris6.Badge, { tone: "success", children: [
-              "CTR: ",
-              formatPercent(metrics?.ctr || 0)
-            ] })
+            /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.Badge, { tone: "success", children: `CTR: ${formatPercent(metrics?.ctr || 0)}` })
           ] }),
           /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_polaris6.BlockStack, { gap: "100", children: [
             /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_polaris6.InlineStack, { align: "space-between", children: [
-              /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.Text, { variant: "bodyMd", tone: "subdued", children: "Conversions" }),
+              /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.Text, { variant: "bodyMd", as: "span", tone: "subdued", children: "Conversions" }),
               /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.Text, { variant: "headingMd", as: "p", fontWeight: "bold", tone: "success", children: metrics?.conversions || 0 })
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_polaris6.Text, { variant: "bodySm", tone: "subdued", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_polaris6.Text, { variant: "bodySm", as: "span", tone: "subdued", children: [
               "CPA: ",
               formatCurrency(metrics?.cpa || 0)
             ] })
           ] })
         ] })
       ] }) }) }),
-      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.Layout.Section, { oneThird: !0, children: /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_polaris6.BlockStack, { gap: "300", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.Layout.Section, { variant: "oneThird", children: /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_polaris6.BlockStack, { gap: "300", children: [
         /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.Text, { variant: "headingMd", as: "h3", children: "AI Optimization Impact" }),
         /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.Divider, {}),
         /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_polaris6.BlockStack, { gap: "300", children: [
@@ -141704,14 +141699,14 @@ function UserDashboard({ shopName, hasFeatureAccess: hasFeatureAccess2 = !1, onN
               "+",
               formatPercent(aiStatus?.improvementRate || 0)
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.Text, { variant: "bodyMd", tone: "subdued", children: "Performance Improvement" })
+            /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.Text, { variant: "bodyMd", as: "span", tone: "subdued", children: "Performance Improvement" })
           ] }),
           /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_polaris6.InlineStack, { align: "space-between", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.Text, { variant: "bodyMd", tone: "subdued", children: "Optimizations Today" }),
-            /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.Badge, { children: aiStatus?.optimizationsApplied || 0 })
+            /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.Text, { variant: "bodyMd", as: "span", tone: "subdued", children: "Optimizations Today" }),
+            /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.Badge, { children: String(aiStatus?.optimizationsApplied || 0) })
           ] }),
           /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.Box, { background: "bg-surface-secondary", padding: "300", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_polaris6.InlineStack, { align: "space-between", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.Text, { variant: "bodyMd", children: "ROAS" }),
+            /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.Text, { variant: "bodyMd", as: "span", children: "ROAS" }),
             /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_polaris6.Text, { variant: "headingMd", as: "p", fontWeight: "bold", tone: "success", children: [
               metrics?.roas?.toFixed(1),
               "x"
@@ -141719,21 +141714,21 @@ function UserDashboard({ shopName, hasFeatureAccess: hasFeatureAccess2 = !1, onN
           ] }) })
         ] })
       ] }) }) }),
-      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.Layout.Section, { oneThird: !0, children: /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_polaris6.BlockStack, { gap: "300", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.Layout.Section, { variant: "oneThird", children: /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_polaris6.BlockStack, { gap: "300", children: [
         /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.Text, { variant: "headingMd", as: "h3", children: "Budget & Spend" }),
         /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.Divider, {}),
         /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_polaris6.BlockStack, { gap: "300", children: [
           /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_polaris6.BlockStack, { gap: "100", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.Text, { variant: "bodyMd", tone: "subdued", children: "Today's Spend" }),
+            /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.Text, { variant: "bodyMd", as: "span", tone: "subdued", children: "Today's Spend" }),
             /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.Text, { variant: "headingLg", as: "p", fontWeight: "bold", children: formatCurrency(metrics?.spend || 0) }),
-            /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.ProgressBar, { progress: 65, tone: "info", size: "small" }),
-            /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.Text, { variant: "bodySm", tone: "subdued", children: "65% of daily budget" })
+            /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.ProgressBar, { progress: 65, tone: "highlight", size: "small" }),
+            /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.Text, { variant: "bodySm", as: "span", tone: "subdued", children: "65% of daily budget" })
           ] }),
           /* @__PURE__ */ (0, import_jsx_runtime8.jsxs)(import_polaris6.InlineStack, { align: "space-between", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.Text, { variant: "bodyMd", tone: "subdued", children: "Avg. CPC" }),
-            /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.Text, { variant: "bodyMd", fontWeight: "bold", children: formatCurrency(metrics?.cpc || 0) })
+            /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.Text, { variant: "bodyMd", as: "span", tone: "subdued", children: "Avg. CPC" }),
+            /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.Text, { variant: "bodyMd", as: "span", fontWeight: "bold", children: formatCurrency(metrics?.cpc || 0) })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.Box, { background: "bg-surface-warning", padding: "200", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.Text, { variant: "bodySm", children: "AI suggests increasing budget by 20% for better results" }) })
+          /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.Box, { background: "bg-surface-warning", padding: "200", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.Text, { variant: "bodySm", as: "span", children: "AI suggests increasing budget by 20% for better results" }) })
         ] })
       ] }) }) })
     ] }),
@@ -141754,7 +141749,7 @@ function UserDashboard({ shopName, hasFeatureAccess: hasFeatureAccess2 = !1, onN
         /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.Text, { variant: "headingMd", as: "h3", children: "Recent AI Activity" }),
         /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.Button, { variant: "plain", onClick: () => window.location.href = "/app/ai-dashboard?view=admin", children: "View All" })
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.BlockStack, { gap: "200", children: /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.Box, { padding: "400", background: "bg-surface-secondary", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.Text, { variant: "bodyMd", tone: "subdued", alignment: "center", children: "Recent AI activity will appear here once campaigns are active." }) }) })
+      /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.BlockStack, { gap: "200", children: /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.Box, { padding: "400", background: "bg-surface-secondary", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime8.jsx)(import_polaris6.Text, { variant: "bodyMd", as: "p", tone: "subdued", alignment: "center", children: "Recent AI activity will appear here once campaigns are active." }) }) })
     ] }) })
   ] });
 }
@@ -141801,7 +141796,7 @@ function CampaignManager({ shopName, hasFeatureAccess: hasFeatureAccess2 = !1 })
     active: "success",
     paused: "warning",
     pending: "info"
-  }[status] || "default", children: status.charAt(0).toUpperCase() + status.slice(1) }), handleCampaignSelect = (campaignId) => {
+  }[status], children: status.charAt(0).toUpperCase() + status.slice(1) }), handleCampaignSelect = (campaignId) => {
     setSelectedCampaigns(
       (prev) => prev.includes(campaignId) ? prev.filter((id) => id !== campaignId) : [...prev, campaignId]
     );
@@ -141853,16 +141848,16 @@ function CampaignManager({ shopName, hasFeatureAccess: hasFeatureAccess2 = !1 })
       }
     ),
     /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris7.BlockStack, { gap: "100", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris7.Text, { variant: "bodyMd", fontWeight: "bold", children: campaign.name }),
+      /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris7.Text, { variant: "bodyMd", as: "span", fontWeight: "bold", children: campaign.name }),
       campaign.aiOptimized && /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris7.InlineStack, { gap: "100", children: [
         /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris7.Badge, { tone: "success", children: "AI Optimized" }),
-        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris7.Text, { variant: "bodySm", tone: "subdued", children: formatTimeAgo(campaign.lastOptimized) })
+        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris7.Text, { variant: "bodySm", as: "span", tone: "subdued", children: formatTimeAgo(campaign.lastOptimized) })
       ] })
     ] }),
     getStatusBadge(campaign.status),
     /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris7.BlockStack, { gap: "100", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris7.Text, { variant: "bodyMd", children: formatCurrency(campaign.spent) }),
-      /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris7.Text, { variant: "bodySm", tone: "subdued", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris7.Text, { variant: "bodyMd", as: "span", children: formatCurrency(campaign.spent) }),
+      /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris7.Text, { variant: "bodySm", as: "span", tone: "subdued", children: [
         "of ",
         formatCurrency(campaign.budget)
       ] }),
@@ -141871,30 +141866,27 @@ function CampaignManager({ shopName, hasFeatureAccess: hasFeatureAccess2 = !1 })
         {
           progress: campaign.spent / campaign.budget * 100,
           size: "small",
-          tone: campaign.spent / campaign.budget > 0.9 ? "warning" : "primary"
+          tone: campaign.spent / campaign.budget > 0.9 ? "critical" : "primary"
         }
       )
     ] }),
     /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris7.BlockStack, { gap: "100", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris7.Text, { variant: "bodyMd", children: formatNumber(campaign.impressions) }),
-      /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris7.Text, { variant: "bodySm", tone: "subdued", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris7.Text, { variant: "bodyMd", as: "span", children: formatNumber(campaign.impressions) }),
+      /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris7.Text, { variant: "bodySm", as: "span", tone: "subdued", children: [
         formatNumber(campaign.clicks),
         " clicks"
       ] })
     ] }),
     /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris7.BlockStack, { gap: "100", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris7.Text, { variant: "bodyMd", fontWeight: "bold", tone: "success", children: campaign.conversions }),
-      /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris7.Badge, { tone: campaign.ctr > 4 ? "success" : "default", children: [
-        campaign.ctr.toFixed(1),
-        "% CTR"
-      ] })
+      /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris7.Text, { variant: "bodyMd", as: "span", fontWeight: "bold", tone: "success", children: campaign.conversions }),
+      /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris7.Badge, { tone: campaign.ctr > 4 ? "success" : void 0, children: `${campaign.ctr.toFixed(1)}% CTR` })
     ] }),
     /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris7.BlockStack, { gap: "100", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris7.Text, { variant: "headingMd", fontWeight: "bold", tone: campaign.roas > 3 ? "success" : "default", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris7.Text, { variant: "headingMd", as: "span", fontWeight: "bold", tone: campaign.roas > 3 ? "success" : void 0, children: [
         campaign.roas.toFixed(1),
         "x"
       ] }),
-      /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris7.Text, { variant: "bodySm", tone: "subdued", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris7.Text, { variant: "bodySm", as: "span", tone: "subdued", children: [
         "CPC: ",
         formatCurrency(campaign.cpc)
       ] })
@@ -141918,7 +141910,7 @@ function CampaignManager({ shopName, hasFeatureAccess: hasFeatureAccess2 = !1 })
   ]);
   return loading ? /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris7.BlockStack, { gap: "400", children: /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris7.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris7.BlockStack, { gap: "400", children: [
     /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris7.Text, { variant: "headingLg", as: "h2", children: "Campaign Manager" }),
-    /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris7.Box, { padding: "600", children: /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris7.Text, { variant: "bodyMd", alignment: "center", children: "Loading campaigns..." }) })
+    /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris7.Box, { padding: "600", children: /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris7.Text, { variant: "bodyMd", as: "p", alignment: "center", children: "Loading campaigns..." }) })
   ] }) }) }) : error ? /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris7.BlockStack, { gap: "400", children: /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris7.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris7.BlockStack, { gap: "400", children: [
     /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris7.Text, { variant: "headingLg", as: "h2", children: "Campaign Manager" }),
     /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris7.Banner, { tone: "critical", title: "Error loading campaigns", children: /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)("p", { children: [
@@ -141934,8 +141926,8 @@ function CampaignManager({ shopName, hasFeatureAccess: hasFeatureAccess2 = !1 })
       ] })
     ] }),
     /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris7.Box, { padding: "600", children: /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris7.BlockStack, { gap: "400", align: "center", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris7.Text, { variant: "headingMd", alignment: "center", children: "No campaigns found" }),
-      /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris7.Text, { variant: "bodyMd", alignment: "center", tone: "subdued", children: "Get started by creating your first AI-powered campaign or importing existing campaigns from Google Ads." }),
+      /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris7.Text, { variant: "headingMd", as: "h3", alignment: "center", children: "No campaigns found" }),
+      /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris7.Text, { variant: "bodyMd", as: "p", alignment: "center", tone: "subdued", children: "Get started by creating your first AI-powered campaign or importing existing campaigns from Google Ads." }),
       /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris7.InlineStack, { gap: "200", children: [
         /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris7.Button, { variant: "primary", onClick: handleCreateCampaign, children: "Create First Campaign" }),
         /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris7.Button, { onClick: handleImportCampaigns, children: "Import from Google Ads" })
@@ -141946,7 +141938,7 @@ function CampaignManager({ shopName, hasFeatureAccess: hasFeatureAccess2 = !1 })
       /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris7.InlineStack, { align: "space-between", children: [
         /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris7.BlockStack, { gap: "200", children: [
           /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris7.Text, { variant: "headingLg", as: "h2", children: "Campaign Manager" }),
-          /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris7.Text, { variant: "bodyMd", tone: "subdued", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris7.Text, { variant: "bodyMd", as: "p", tone: "subdued", children: [
             "Showing data for: ",
             getPeriodLabel(selectedPeriod)
           ] })
@@ -142044,27 +142036,27 @@ function CampaignManager({ shopName, hasFeatureAccess: hasFeatureAccess2 = !1 })
     ) }),
     /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris7.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris7.InlineStack, { align: "space-between", children: [
       /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris7.BlockStack, { gap: "100", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris7.Text, { variant: "headingMd", fontWeight: "bold", children: formatCurrency(campaigns.reduce((sum, c) => sum + c.spent, 0)) }),
-        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris7.Text, { variant: "bodySm", tone: "subdued", children: "Total Spend Today" })
+        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris7.Text, { variant: "headingMd", as: "h3", fontWeight: "bold", children: formatCurrency(campaigns.reduce((sum, c) => sum + c.spent, 0)) }),
+        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris7.Text, { variant: "bodySm", as: "span", tone: "subdued", children: "Total Spend Today" })
       ] }),
       /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris7.BlockStack, { gap: "100", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris7.Text, { variant: "headingMd", fontWeight: "bold", tone: "success", children: campaigns.reduce((sum, c) => sum + c.conversions, 0) }),
-        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris7.Text, { variant: "bodySm", tone: "subdued", children: "Total Conversions" })
+        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris7.Text, { variant: "headingMd", as: "h3", fontWeight: "bold", tone: "success", children: campaigns.reduce((sum, c) => sum + c.conversions, 0) }),
+        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris7.Text, { variant: "bodySm", as: "span", tone: "subdued", children: "Total Conversions" })
       ] }),
       /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris7.BlockStack, { gap: "100", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris7.Text, { variant: "headingMd", fontWeight: "bold", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris7.Text, { variant: "headingMd", as: "h3", fontWeight: "bold", children: [
           (campaigns.reduce((sum, c) => sum + c.roas * c.spent, 0) / campaigns.reduce((sum, c) => sum + c.spent, 0) || 0).toFixed(1),
           "x"
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris7.Text, { variant: "bodySm", tone: "subdued", children: "Average ROAS" })
+        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris7.Text, { variant: "bodySm", as: "span", tone: "subdued", children: "Average ROAS" })
       ] }),
       /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris7.BlockStack, { gap: "100", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris7.Text, { variant: "headingMd", fontWeight: "bold", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime9.jsxs)(import_polaris7.Text, { variant: "headingMd", as: "h3", fontWeight: "bold", children: [
           campaigns.filter((c) => c.aiOptimized).length,
           "/",
           campaigns.length
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris7.Text, { variant: "bodySm", tone: "subdued", children: "AI Optimized" })
+        /* @__PURE__ */ (0, import_jsx_runtime9.jsx)(import_polaris7.Text, { variant: "bodySm", as: "span", tone: "subdued", children: "AI Optimized" })
       ] })
     ] }) })
   ] });
@@ -142226,7 +142218,7 @@ Descriptions:
     /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris8.InlineStack, { align: "space-between", blockAlign: "center", children: [
       /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris8.BlockStack, { gap: "200", children: [
         /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "headingLg", as: "h2", children: "AI Content Studio" }),
-        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "bodyMd", tone: "subdued", children: "Loading ad drafts..." })
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "bodyMd", as: "p", tone: "subdued", children: "Loading ad drafts..." })
       ] }),
       /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Spinner, { size: "small" })
     ] }) }),
@@ -142246,10 +142238,10 @@ Descriptions:
         /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris8.BlockStack, { gap: "200", children: [
           /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "headingLg", as: "h2", children: "AI Content Studio" }),
           /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris8.InlineStack, { gap: "200", blockAlign: "center", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "bodyMd", tone: "subdued", children: "Create, test, and optimize ad content with AI" }),
+            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "bodyMd", as: "p", tone: "subdued", children: "Create, test, and optimize ad content with AI" }),
             lastUpdated && /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_jsx_runtime10.Fragment, { children: [
-              /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "bodyMd", tone: "subdued", children: "\u2022" }),
-              /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris8.Text, { variant: "bodySm", tone: "subdued", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "bodyMd", as: "p", tone: "subdued", children: "\u2022" }),
+              /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris8.Text, { variant: "bodySm", as: "span", tone: "subdued", children: [
                 "Updated ",
                 formatTimeAgo(lastUpdated)
               ] })
@@ -142302,7 +142294,7 @@ Descriptions:
           )
         ] }),
         selectedDrafts.length > 0 && /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris8.InlineStack, { gap: "200", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris8.Text, { variant: "bodyMd", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris8.Text, { variant: "bodyMd", as: "p", children: [
             selectedDrafts.length,
             " selected"
           ] }),
@@ -142338,14 +142330,14 @@ Descriptions:
           draft.performance && getPerformanceBadge(draft.performance.status)
         ] }),
         /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris8.BlockStack, { gap: "200", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "headingMd", fontWeight: "bold", children: draft.theme }),
+          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "headingMd", as: "h3", fontWeight: "bold", children: draft.theme }),
           /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Box, { background: "bg-surface-secondary", padding: "200", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris8.BlockStack, { gap: "200", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "bodySm", fontWeight: "semibold", children: "Headlines:" }),
-            draft.headlines.slice(0, 2).map((headline, i) => /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris8.Text, { variant: "bodySm", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "bodySm", as: "span", fontWeight: "semibold", children: "Headlines:" }),
+            draft.headlines.slice(0, 2).map((headline, i) => /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris8.Text, { variant: "bodySm", as: "span", children: [
               "\u2022 ",
               headline
             ] }, i)),
-            draft.headlines.length > 2 && /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris8.Text, { variant: "bodySm", tone: "subdued", children: [
+            draft.headlines.length > 2 && /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris8.Text, { variant: "bodySm", as: "span", tone: "subdued", children: [
               "+",
               draft.headlines.length - 2,
               " more"
@@ -142354,25 +142346,25 @@ Descriptions:
         ] }),
         draft.performance ? /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris8.InlineStack, { gap: "400", children: [
           /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris8.BlockStack, { gap: "100", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris8.Text, { variant: "headingSm", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris8.Text, { variant: "headingSm", as: "h4", children: [
               draft.performance.ctr?.toFixed(1) || "0.0",
               "%"
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "bodySm", tone: "subdued", children: "CTR" })
+            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "bodySm", as: "span", tone: "subdued", children: "CTR" })
           ] }),
           /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris8.BlockStack, { gap: "100", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "headingSm", tone: "success", children: draft.performance.conversions || 0 }),
-            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "bodySm", tone: "subdued", children: "Conversions" })
+            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "headingSm", as: "h4", tone: "success", children: draft.performance.conversions || 0 }),
+            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "bodySm", as: "span", tone: "subdued", children: "Conversions" })
           ] })
-        ] }) : /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "bodySm", tone: "subdued", children: "Performance data will appear once ads are deployed and active." }),
+        ] }) : /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "bodySm", as: "span", tone: "subdued", children: "Performance data will appear once ads are deployed and active." }),
         /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris8.InlineStack, { gap: "200", children: [
           /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
             import_polaris8.Button,
             {
               size: "slim",
               variant: "plain",
-              onClick: (e) => {
-                e.stopPropagation(), alert(`Preview ad: ${draft.theme}
+              onClick: () => {
+                alert(`Preview ad: ${draft.theme}
 
 Headlines:
 ${draft.headlines.join(`
@@ -142390,8 +142382,8 @@ ${draft.descriptions.join(`
             {
               size: "slim",
               variant: "plain",
-              onClick: (e) => {
-                e.stopPropagation(), copyFullAd(draft);
+              onClick: () => {
+                copyFullAd(draft);
               },
               children: "Copy"
             }
@@ -142401,8 +142393,8 @@ ${draft.descriptions.join(`
             {
               size: "slim",
               variant: "plain",
-              onClick: (e) => {
-                e.stopPropagation(), alert("Edit functionality coming soon");
+              onClick: () => {
+                alert("Edit functionality coming soon");
               },
               children: "Edit"
             }
@@ -142412,17 +142404,17 @@ ${draft.descriptions.join(`
             {
               size: "slim",
               variant: "plain",
-              onClick: (e) => {
-                e.stopPropagation(), alert("Duplicate functionality coming soon");
+              onClick: () => {
+                alert("Duplicate functionality coming soon");
               },
               children: "Duplicate"
             }
           )
         ] })
       ] }) }) }, draft.id)) }) : /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Box, { padding: "600", children: /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris8.BlockStack, { gap: "400", align: "center", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "headingMd", alignment: "center", children: "No ad drafts found" }),
-        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "bodyMd", alignment: "center", tone: "subdued", children: "Create your first AI-generated ad variations to get started." }),
-        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "bodySm", alignment: "center", tone: "subdued", children: "AI will analyze your business and create compelling ad copy in under 60 seconds." }),
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "headingMd", as: "h3", alignment: "center", children: "No ad drafts found" }),
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "bodyMd", as: "p", alignment: "center", tone: "subdued", children: "Create your first AI-generated ad variations to get started." }),
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "bodySm", as: "span", alignment: "center", tone: "subdued", children: "AI will analyze your business and create compelling ad copy in under 60 seconds." }),
         /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris8.InlineStack, { gap: "200", children: [
           /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Button, { variant: "primary", onClick: () => setGenerationModal(!0), children: "Generate First Ads" }),
           hasFeatureAccess2 === !1 && /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Badge, { tone: "attention", children: "Requires Professional+ Plan" })
@@ -142431,7 +142423,7 @@ ${draft.descriptions.join(`
     ] }),
     selectedTab === 1 && /* Generate New Tab */
     /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris8.BlockStack, { gap: "600", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "headingMd", children: "Quick Generate" }),
+      /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "headingMd", as: "h3", children: "Quick Generate" }),
       /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris8.BlockStack, { gap: "400", children: [
         /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
           import_polaris8.TextField,
@@ -142440,7 +142432,8 @@ ${draft.descriptions.join(`
             value: theme,
             onChange: setTheme,
             placeholder: "e.g., Summer Sale, New Product Launch",
-            helpText: "Describe what you're advertising"
+            helpText: "Describe what you're advertising",
+            autoComplete: "off"
           }
         ),
         /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
@@ -142451,7 +142444,8 @@ ${draft.descriptions.join(`
             onChange: setKeywords,
             placeholder: "e.g., affordable, quality, fast shipping",
             helpText: "Keywords to include in the ad copy",
-            multiline: 2
+            multiline: 2,
+            autoComplete: "off"
           }
         ),
         /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris8.InlineStack, { gap: "400", children: [
@@ -142485,7 +142479,7 @@ ${draft.descriptions.join(`
           )
         ] }),
         /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Box, { background: "bg-surface-secondary", padding: "400", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris8.BlockStack, { gap: "300", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "headingSm", children: "AI Generation Mode" }),
+          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "headingSm", as: "h4", children: "AI Generation Mode" }),
           /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris8.BlockStack, { gap: "200", children: [
             /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(
               import_polaris8.RadioButton,
@@ -142547,12 +142541,12 @@ ${draft.descriptions.join(`
         }
       ),
       /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris8.BlockStack, { gap: "400", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "headingMd", children: "Active A/B Tests" }),
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "headingMd", as: "h3", children: "Active A/B Tests" }),
         /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Divider, {}),
         drafts.filter((d) => d.performance?.status === "testing").slice(0, 3).map((draft) => /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Box, { padding: "300", background: "bg-surface-secondary", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris8.InlineStack, { align: "space-between", children: [
           /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris8.BlockStack, { gap: "100", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "bodyMd", fontWeight: "bold", children: draft.theme }),
-            /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris8.Text, { variant: "bodySm", tone: "subdued", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "bodyMd", as: "p", fontWeight: "bold", children: draft.theme }),
+            /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris8.Text, { variant: "bodySm", as: "span", tone: "subdued", children: [
               "Testing ",
               draft.headlines.length,
               " headlines \xD7 ",
@@ -142562,7 +142556,7 @@ ${draft.descriptions.join(`
           ] }),
           /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris8.BlockStack, { gap: "100", align: "end", children: [
             /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Badge, { tone: "info", children: "Testing" }),
-            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "bodySm", children: "72% confidence" })
+            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "bodySm", as: "span", children: "72% confidence" })
           ] })
         ] }) }, draft.id))
       ] }) })
@@ -142570,30 +142564,30 @@ ${draft.descriptions.join(`
     selectedTab === 3 && /* Performance Insights Tab */
     /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris8.Grid, { children: [
       /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Grid.Cell, { columnSpan: { xs: 6, sm: 6, md: 6, lg: 6 }, children: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris8.BlockStack, { gap: "300", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "headingMd", children: "Top Performing Elements" }),
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "headingMd", as: "h3", children: "Top Performing Elements" }),
         /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Divider, {}),
         /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris8.BlockStack, { gap: "200", children: [
           /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Box, { padding: "200", background: "bg-surface-success", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris8.InlineStack, { align: "space-between", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "bodyMd", children: '"Free Shipping" in headline' }),
+            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "bodyMd", as: "p", children: '"Free Shipping" in headline' }),
             /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Badge, { tone: "success", children: "+45% CTR" })
           ] }) }),
           /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Box, { padding: "200", background: "bg-surface-success", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris8.InlineStack, { align: "space-between", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "bodyMd", children: '"Limited Time" urgency' }),
+            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "bodyMd", as: "p", children: '"Limited Time" urgency' }),
             /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Badge, { tone: "success", children: "+32% conversions" })
           ] }) }),
           /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Box, { padding: "200", background: "bg-surface-success", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris8.InlineStack, { align: "space-between", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "bodyMd", children: "Price in description" }),
+            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "bodyMd", as: "p", children: "Price in description" }),
             /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Badge, { tone: "success", children: "+28% ROAS" })
           ] }) })
         ] })
       ] }) }) }),
       /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Grid.Cell, { columnSpan: { xs: 6, sm: 6, md: 6, lg: 6 }, children: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris8.BlockStack, { gap: "300", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "headingMd", children: "AI Recommendations" }),
+        /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "headingMd", as: "h3", children: "AI Recommendations" }),
         /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Divider, {}),
         /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris8.BlockStack, { gap: "200", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Box, { padding: "200", background: "bg-surface-warning", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "bodySm", children: "Try emphasizing sustainability - competitors seeing 25% better engagement" }) }),
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Box, { padding: "200", background: "bg-surface-warning", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "bodySm", children: "Test shorter headlines (5-7 words) for mobile optimization" }) }),
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Box, { padding: "200", background: "bg-surface-warning", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "bodySm", children: "Include customer testimonials in descriptions for trust signals" }) })
+          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Box, { padding: "200", background: "bg-surface-warning", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "bodySm", as: "span", children: "Try emphasizing sustainability - competitors seeing 25% better engagement" }) }),
+          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Box, { padding: "200", background: "bg-surface-warning", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "bodySm", as: "span", children: "Test shorter headlines (5-7 words) for mobile optimization" }) }),
+          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Box, { padding: "200", background: "bg-surface-warning", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "bodySm", as: "span", children: "Include customer testimonials in descriptions for trust signals" }) })
         ] })
       ] }) }) })
     ] }),
@@ -142605,17 +142599,17 @@ ${draft.descriptions.join(`
         title: "Generating AI Content",
         loading: isGenerating,
         children: /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Modal.Section, { children: isGenerating ? /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris8.BlockStack, { gap: "400", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "bodyMd", fontWeight: "semibold", children: "\u{1F50D} AI is analyzing your business..." }),
+          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "bodyMd", as: "p", fontWeight: "semibold", children: "AI is analyzing your business..." }),
           /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris8.BlockStack, { gap: "200", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "bodySm", children: "\u2713 Scraping your website for products and offers" }),
-            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "bodySm", children: "\u2713 Analyzing competitor strategies" }),
-            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "bodySm", children: "\u2713 Reviewing your Google Ads performance" }),
-            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "bodySm", children: "\u2713 Generating data-driven ad copy" })
+            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "bodySm", as: "span", children: "Scraping your website for products and offers" }),
+            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "bodySm", as: "span", children: "Analyzing competitor strategies" }),
+            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "bodySm", as: "span", children: "Reviewing your Google Ads performance" }),
+            /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "bodySm", as: "span", children: "Generating data-driven ad copy" })
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "bodySm", tone: "subdued", children: "This comprehensive analysis takes 30-60 seconds but creates much better ads!" })
+          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "bodySm", as: "span", tone: "subdued", children: "This comprehensive analysis takes 30-60 seconds but creates much better ads!" })
         ] }) : /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris8.BlockStack, { gap: "400", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "bodyMd", children: "Ready to generate ads!" }),
-          /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris8.Text, { variant: "bodySm", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime10.jsx)(import_polaris8.Text, { variant: "bodyMd", as: "p", children: "Ready to generate ads!" }),
+          /* @__PURE__ */ (0, import_jsx_runtime10.jsxs)(import_polaris8.Text, { variant: "bodySm", as: "span", children: [
             "Click generate to create ",
             numberOfVariants,
             " unique ad variations using ",
@@ -142643,7 +142637,7 @@ function PerformanceInsights({ shopName, hasFeatureAccess: hasFeatureAccess2 = !
       case "30d":
         return "LAST_30_DAYS";
       case "90d":
-        return "LAST_90_DAYS";
+        return "LAST_30_DAYS";
       case "month":
         return "LAST_30_DAYS";
       case "year":
@@ -142738,13 +142732,13 @@ function PerformanceInsights({ shopName, hasFeatureAccess: hasFeatureAccess2 = !
         /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris9.BlockStack, { gap: "200", children: [
           /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "headingLg", as: "h2", children: "Performance Insights" }),
           /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris9.InlineStack, { gap: "200", blockAlign: "center", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris9.Text, { variant: "bodyMd", tone: "subdued", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris9.Text, { variant: "bodyMd", as: "p", tone: "subdued", children: [
               "Showing data for: ",
               getPeriodFromTimeRange(timeRange)
             ] }),
             lastUpdated && /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_jsx_runtime11.Fragment, { children: [
-              /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "bodyMd", tone: "subdued", children: "\u2022" }),
-              /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris9.Text, { variant: "bodySm", tone: "subdued", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "bodyMd", as: "p", tone: "subdued", children: "\u2022" }),
+              /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris9.Text, { variant: "bodySm", as: "span", tone: "subdued", children: [
                 "Updated ",
                 formatTimeAgo(lastUpdated)
               ] })
@@ -142773,7 +142767,7 @@ function PerformanceInsights({ shopName, hasFeatureAccess: hasFeatureAccess2 = !
       /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris9.InlineStack, { align: "space-between", blockAlign: "center", children: [
         /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris9.BlockStack, { gap: "200", children: [
           /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "headingLg", as: "h2", children: "Performance Insights" }),
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "bodyMd", tone: "subdued", children: "Loading performance insights..." })
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "bodyMd", as: "p", tone: "subdued", children: "Loading performance insights..." })
         ] }),
         /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Spinner, { size: "small" })
       ] }) }),
@@ -142783,8 +142777,8 @@ function PerformanceInsights({ shopName, hasFeatureAccess: hasFeatureAccess2 = !
       ] })
     ] });
   let EmptyState4 = () => /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Box, { padding: "600", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris9.BlockStack, { gap: "400", align: "center", children: [
-    /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "headingMd", alignment: "center", children: "No performance data yet" }),
-    /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "bodyMd", tone: "subdued", alignment: "center", children: "We haven't received impressions or clicks for this period. Try a longer range or check back once your Google Ads campaigns have activity." }),
+    /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "headingMd", as: "h3", alignment: "center", children: "No performance data yet" }),
+    /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "bodyMd", as: "p", tone: "subdued", alignment: "center", children: "We haven't received impressions or clicks for this period. Try a longer range or check back once your Google Ads campaigns have activity." }),
     /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Button, { onClick: handleRefresh, loading: refreshing, children: "Refresh Data" })
   ] }) }) });
   return /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris9.BlockStack, { gap: "600", children: [
@@ -142796,15 +142790,15 @@ function PerformanceInsights({ shopName, hasFeatureAccess: hasFeatureAccess2 = !
       /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris9.BlockStack, { gap: "200", children: [
         /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "headingLg", as: "h2", children: "Performance Insights" }),
         /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris9.InlineStack, { gap: "200", blockAlign: "center", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "bodyMd", tone: "subdued", children: "Deep analytics and AI performance tracking" }),
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "bodyMd", tone: "subdued", children: "\u2022" }),
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris9.Text, { variant: "bodySm", tone: "subdued", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "bodyMd", as: "p", tone: "subdued", children: "Deep analytics and AI performance tracking" }),
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "bodyMd", as: "p", tone: "subdued", children: "\u2022" }),
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris9.Text, { variant: "bodySm", as: "span", tone: "subdued", children: [
             "Showing data for: ",
             getPeriodFromTimeRange(timeRange)
           ] }),
           lastUpdated && /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_jsx_runtime11.Fragment, { children: [
-            /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "bodyMd", tone: "subdued", children: "\u2022" }),
-            /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris9.Text, { variant: "bodySm", tone: "subdued", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "bodyMd", as: "p", tone: "subdued", children: "\u2022" }),
+            /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris9.Text, { variant: "bodySm", as: "span", tone: "subdued", children: [
               "Updated ",
               formatTimeAgo(lastUpdated)
             ] })
@@ -142851,73 +142845,73 @@ function PerformanceInsights({ shopName, hasFeatureAccess: hasFeatureAccess2 = !
     !hasData && !loading && /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(EmptyState4, {}),
     hasData && summary && /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris9.InlineStack, { gap: "400", children: [
       /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris9.BlockStack, { gap: "100", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "headingSm", tone: "subdued", children: "Impressions" }),
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "headingLg", children: formatNumber(summary.impressions || 0) })
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "headingSm", as: "h4", tone: "subdued", children: "Impressions" }),
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "headingLg", as: "h2", children: formatNumber(summary.impressions || 0) })
       ] }),
       /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris9.BlockStack, { gap: "100", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "headingSm", tone: "subdued", children: "Clicks" }),
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "headingLg", children: formatNumber(summary.clicks || 0) })
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "headingSm", as: "h4", tone: "subdued", children: "Clicks" }),
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "headingLg", as: "h2", children: formatNumber(summary.clicks || 0) })
       ] }),
       /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris9.BlockStack, { gap: "100", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "headingSm", tone: "subdued", children: "Conversions" }),
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "headingLg", children: formatNumber(summary.conversions || 0) })
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "headingSm", as: "h4", tone: "subdued", children: "Conversions" }),
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "headingLg", as: "h2", children: formatNumber(summary.conversions || 0) })
       ] }),
       /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris9.BlockStack, { gap: "100", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "headingSm", tone: "subdued", children: "Spend" }),
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "headingLg", children: formatCurrency(summary.cost || 0) })
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "headingSm", as: "h4", tone: "subdued", children: "Spend" }),
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "headingLg", as: "h2", children: formatCurrency(summary.cost || 0) })
       ] }),
       /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris9.BlockStack, { gap: "100", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "headingSm", tone: "subdued", children: "ROAS" }),
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris9.Text, { variant: "headingLg", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "headingSm", as: "h4", tone: "subdued", children: "ROAS" }),
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris9.Text, { variant: "headingLg", as: "h2", children: [
           Number(summary.roas || 0).toFixed(2),
           "x"
         ] })
       ] })
     ] }) }),
     hasData && /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris9.BlockStack, { gap: "400", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "headingMd", children: "AI Optimization Impact" }),
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "headingMd", as: "h3", children: "AI Optimization Impact" }),
       aiImpact ? /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris9.Grid, { children: [
         /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Grid.Cell, { columnSpan: { xs: 6, sm: 3, md: 3, lg: 3 }, children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris9.BlockStack, { gap: "100", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris9.Text, { variant: "headingLg", tone: "success", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris9.Text, { variant: "headingLg", as: "h2", tone: "success", children: [
             "+",
             aiImpact.ctrImprovement || 0,
             "%"
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "bodySm", tone: "subdued", children: "CTR Improvement" }),
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "bodySm", as: "span", tone: "subdued", children: "CTR Improvement" }),
           /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.ProgressBar, { progress: aiImpact.ctrImprovement || 0, size: "small", tone: "success" })
         ] }) }),
         /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Grid.Cell, { columnSpan: { xs: 6, sm: 3, md: 3, lg: 3 }, children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris9.BlockStack, { gap: "100", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris9.Text, { variant: "headingLg", tone: "success", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris9.Text, { variant: "headingLg", as: "h2", tone: "success", children: [
             "+",
             aiImpact.conversionImprovement || 0,
             "%"
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "bodySm", tone: "subdued", children: "More Conversions" }),
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "bodySm", as: "span", tone: "subdued", children: "More Conversions" }),
           /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.ProgressBar, { progress: aiImpact.conversionImprovement || 0, size: "small", tone: "success" })
         ] }) }),
         /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Grid.Cell, { columnSpan: { xs: 6, sm: 3, md: 3, lg: 3 }, children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris9.BlockStack, { gap: "100", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris9.Text, { variant: "headingLg", tone: "success", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris9.Text, { variant: "headingLg", as: "h2", tone: "success", children: [
             "-",
             aiImpact.costReduction || 0,
             "%"
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "bodySm", tone: "subdued", children: "Cost Reduction" }),
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "bodySm", as: "span", tone: "subdued", children: "Cost Reduction" }),
           /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.ProgressBar, { progress: aiImpact.costReduction || 0, size: "small", tone: "success" })
         ] }) }),
         /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Grid.Cell, { columnSpan: { xs: 6, sm: 3, md: 3, lg: 3 }, children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris9.BlockStack, { gap: "100", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris9.Text, { variant: "headingLg", tone: "success", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris9.Text, { variant: "headingLg", as: "h2", tone: "success", children: [
             "+",
             aiImpact.roasIncrease || 0,
             "%"
           ] }),
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "bodySm", tone: "subdued", children: "ROAS Increase" }),
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "bodySm", as: "span", tone: "subdued", children: "ROAS Increase" }),
           /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.ProgressBar, { progress: aiImpact.roasIncrease || 0, size: "small", tone: "success" })
         ] }) })
-      ] }) : /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Box, { padding: "400", background: "bg-surface-secondary", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "bodyMd", tone: "subdued", alignment: "center", children: "AI impact data will appear here once campaigns are active and optimized." }) })
+      ] }) : /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Box, { padding: "400", background: "bg-surface-secondary", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "bodyMd", as: "p", tone: "subdued", alignment: "center", children: "AI impact data will appear here once campaigns are active and optimized." }) })
     ] }) }),
     hasData && /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris9.BlockStack, { gap: "400", children: [
       /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris9.InlineStack, { align: "space-between", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "headingMd", children: "Performance Trend" }),
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "headingMd", as: "h3", children: "Performance Trend" }),
         /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris9.InlineStack, { gap: "200", children: [
           /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Badge, { children: "Impressions" }),
           /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Badge, { tone: "info", children: "Clicks" }),
@@ -142940,11 +142934,11 @@ function PerformanceInsights({ shopName, hasFeatureAccess: hasFeatureAccess2 = !
         /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_recharts.Legend, {}),
         /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_recharts.Line, { type: "monotone", dataKey: "conversions", stroke: "#00a047", strokeWidth: 2 }),
         /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_recharts.Line, { type: "monotone", dataKey: "clicks", stroke: "#006fbb", strokeWidth: 2 })
-      ] }) }) : /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Box, { padding: "600", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "bodyMd", tone: "subdued", alignment: "center", children: "Performance trend data will appear here once campaigns start generating traffic." }) }) })
+      ] }) }) : /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Box, { padding: "600", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "bodyMd", as: "p", tone: "subdued", alignment: "center", children: "Performance trend data will appear here once campaigns start generating traffic." }) }) })
     ] }) }),
     hasData && /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris9.Layout, { children: [
-      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Layout.Section, { oneHalf: !0, children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris9.BlockStack, { gap: "400", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "headingMd", children: "Traffic by Device" }),
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Layout.Section, { variant: "oneHalf", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris9.BlockStack, { gap: "400", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "headingMd", as: "h3", children: "Traffic by Device" }),
         /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Box, { padding: "200", children: deviceBreakdown.length > 0 ? /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_recharts.ResponsiveContainer, { width: "100%", height: 200, children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_recharts.PieChart, { children: [
           /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
             import_recharts.Pie,
@@ -142960,68 +142954,59 @@ function PerformanceInsights({ shopName, hasFeatureAccess: hasFeatureAccess2 = !
             }
           ),
           /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_recharts.Tooltip, {})
-        ] }) }) : /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Box, { padding: "400", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "bodyMd", tone: "subdued", alignment: "center", children: "Device breakdown data will appear here once campaigns generate traffic." }) }) }),
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Box, { background: "bg-surface-secondary", padding: "300", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "bodySm", tone: "subdued", children: "Mobile traffic converts 25% better with AI-optimized responsive ads" }) })
+        ] }) }) : /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Box, { padding: "400", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "bodyMd", as: "p", tone: "subdued", alignment: "center", children: "Device breakdown data will appear here once campaigns generate traffic." }) }) }),
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Box, { background: "bg-surface-secondary", padding: "300", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "bodySm", as: "span", tone: "subdued", children: "Mobile traffic converts 25% better with AI-optimized responsive ads" }) })
       ] }) }) }),
-      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Layout.Section, { oneHalf: !0, children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris9.BlockStack, { gap: "400", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "headingMd", children: "Top Performing Keywords" }),
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Layout.Section, { variant: "oneHalf", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris9.BlockStack, { gap: "400", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "headingMd", as: "h3", children: "Top Performing Keywords" }),
         /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.BlockStack, { gap: "200", children: topKeywords.length > 0 ? topKeywords.slice(0, 5).map((kw, index) => /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Box, { padding: "200", background: "bg-surface-secondary", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris9.InlineStack, { align: "space-between", children: [
           /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris9.BlockStack, { gap: "100", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "bodyMd", fontWeight: "bold", children: kw.keyword }),
+            /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "bodyMd", as: "p", fontWeight: "bold", children: kw.keyword }),
             /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris9.InlineStack, { gap: "200", children: [
-              /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris9.Text, { variant: "bodySm", tone: "subdued", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris9.Text, { variant: "bodySm", as: "span", tone: "subdued", children: [
                 formatNumber(kw.impressions),
                 " imp"
               ] }),
-              /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris9.Badge, { children: [
-                kw.ctr,
-                "% CTR"
-              ] })
+              /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Badge, { children: `${kw.ctr}% CTR` })
             ] })
           ] }),
           /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris9.BlockStack, { gap: "100", align: "end", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris9.Badge, { tone: "success", children: [
-              kw.conversions,
-              " conv"
-            ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris9.Text, { variant: "bodySm", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Badge, { tone: "success", children: `${kw.conversions} conv` }),
+            /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris9.Text, { variant: "bodySm", as: "span", children: [
               formatCurrency(kw.cpc),
               " CPC"
             ] })
           ] })
-        ] }) }, index)) : /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Box, { padding: "400", background: "bg-surface-secondary", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "bodyMd", tone: "subdued", alignment: "center", children: "Top performing keywords will appear here once campaigns are active." }) }) })
+        ] }) }, index)) : /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Box, { padding: "400", background: "bg-surface-secondary", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "bodyMd", as: "p", tone: "subdued", alignment: "center", children: "Top performing keywords will appear here once campaigns are active." }) }) })
       ] }) }) })
     ] }),
     /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris9.BlockStack, { gap: "400", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "headingMd", children: "AI Recommendations" }),
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "headingMd", as: "h3", children: "AI Recommendations" }),
       recommendations.length > 0 ? /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Grid, { children: recommendations.map((rec, idx) => /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Grid.Cell, { columnSpan: { xs: 6, sm: 6, md: 4, lg: 4 }, children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Box, { padding: "300", background: rec.type === "cost_saving" ? "bg-surface-warning" : rec.type === "opportunity" ? "bg-surface-success" : "bg-surface-secondary", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris9.BlockStack, { gap: "200", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "headingSm", children: rec.title }),
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "bodySm", children: rec.description }),
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "headingSm", as: "h4", children: rec.title }),
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "bodySm", as: "span", children: rec.description }),
         /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris9.InlineStack, { gap: "200", children: [
           /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Badge, { tone: rec.type === "cost_saving" ? "warning" : rec.type === "opportunity" ? "success" : "info", children: rec.type.replace("_", " ") }),
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris9.Badge, { tone: "info", children: [
-            "Impact: ",
-            rec.impact || "n/a"
-          ] })
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Badge, { tone: "info", children: `Impact: ${rec.impact || "n/a"}` })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Button, { size: "slim", onClick: () => openApplyModal({ ...ins, diff: { note: "Preview only" } }), children: "Apply" })
-      ] }) }) }, idx)) }) : /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Box, { padding: "300", background: "bg-surface-secondary", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "bodySm", tone: "subdued", children: "No recommendations available for the selected period." }) })
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Button, { size: "slim", onClick: () => openApplyModal({ ...rec, diff: { note: "Preview only" } }), children: "Apply" })
+      ] }) }) }, idx)) }) : /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Box, { padding: "300", background: "bg-surface-secondary", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "bodySm", as: "span", tone: "subdued", children: "No recommendations available for the selected period." }) })
     ] }) }),
     applyModal.open && /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris9.BlockStack, { gap: "300", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "headingMd", children: "Confirm Automation" }),
-      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "bodySm", tone: "subdued", children: "Review the change before applying." }),
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "headingMd", as: "h3", children: "Confirm Automation" }),
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "bodySm", as: "span", tone: "subdued", children: "Review the change before applying." }),
       /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Box, { background: "bg-surface-secondary", padding: "300", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris9.BlockStack, { gap: "100", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris9.Text, { variant: "bodySm", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris9.Text, { variant: "bodySm", as: "span", children: [
           /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("strong", { children: "Title:" }),
           " ",
           applyModal.recommendation?.title
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris9.Text, { variant: "bodySm", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris9.Text, { variant: "bodySm", as: "span", children: [
           /* @__PURE__ */ (0, import_jsx_runtime11.jsx)("strong", { children: "Description:" }),
           " ",
           applyModal.recommendation?.body
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "bodySm", tone: "subdued", children: "This action will be logged and simulated for safety." })
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "bodySm", as: "span", tone: "subdued", children: "This action will be logged and simulated for safety." })
       ] }) }),
       /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris9.InlineStack, { gap: "200", children: [
         /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Button, { onClick: closeApplyModal, disabled: applying, children: "Cancel" }),
@@ -143029,15 +143014,15 @@ function PerformanceInsights({ shopName, hasFeatureAccess: hasFeatureAccess2 = !
       ] })
     ] }) }),
     /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris9.BlockStack, { gap: "400", children: [
-      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "headingMd", children: "AI Insight Templates" }),
-      insightTemplates.length > 0 ? /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Grid, { children: insightTemplates.map((ins2, idx) => /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Grid.Cell, { columnSpan: { xs: 6, sm: 6, md: 4, lg: 4 }, children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Box, { padding: "300", background: ins2.severity === "high" ? "bg-surface-critical" : ins2.severity === "warning" ? "bg-surface-warning" : "bg-surface-secondary", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris9.BlockStack, { gap: "200", children: [
+      /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "headingMd", as: "h3", children: "AI Insight Templates" }),
+      insightTemplates.length > 0 ? /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Grid, { children: insightTemplates.map((ins, idx) => /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Grid.Cell, { columnSpan: { xs: 6, sm: 6, md: 4, lg: 4 }, children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Box, { padding: "300", background: ins.severity === "high" ? "bg-surface-critical" : ins.severity === "warning" ? "bg-surface-warning" : "bg-surface-secondary", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris9.BlockStack, { gap: "200", children: [
         /* @__PURE__ */ (0, import_jsx_runtime11.jsxs)(import_polaris9.InlineStack, { align: "space-between", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "headingSm", children: ins2.title }),
-          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Badge, { tone: ins2.severity === "high" ? "critical" : ins2.severity === "warning" ? "warning" : "info", children: ins2.severity || "info" })
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "headingSm", as: "h4", children: ins.title }),
+          /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Badge, { tone: ins.severity === "high" ? "critical" : ins.severity === "warning" ? "warning" : "info", children: ins.severity || "info" })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "bodySm", children: ins2.body }),
-        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.InlineStack, { gap: "200", children: Array.isArray(ins2.tags) && ins2.tags.map((t, i) => /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Badge, { tone: "info", children: t }, i)) })
-      ] }) }) }, idx)) }) : /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Box, { padding: "300", background: "bg-surface-secondary", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "bodySm", tone: "subdued", children: "No insight templates available for the selected period." }) })
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "bodySm", as: "span", children: ins.body }),
+        /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.InlineStack, { gap: "200", children: Array.isArray(ins.tags) && ins.tags.map((t, i) => /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Badge, { tone: "info", children: t }, i)) })
+      ] }) }) }, idx)) }) : /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Box, { padding: "300", background: "bg-surface-secondary", borderRadius: "200", children: /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(import_polaris9.Text, { variant: "bodySm", as: "span", tone: "subdued", children: "No insight templates available for the selected period." }) })
     ] }) }),
     hasData && aiImpact?.timeSaved && /* @__PURE__ */ (0, import_jsx_runtime11.jsx)(
       import_polaris9.Banner,
@@ -143857,7 +143842,7 @@ ${realScript}
           error: "Failed to fetch script from backend"
         });
     } catch (error) {
-      return (0, import_node5.json)({ success: !1, error: error.message });
+      return (0, import_node5.json)({ success: !1, error: error instanceof Error ? error.message : String(error) });
     }
   }
   return (0, import_node5.json)({ success: !1, error: "Unknown action" });
@@ -144388,14 +144373,14 @@ function CustomDashboards() {
           import_polaris12.Banner,
           {
             title: "Error",
-            status: "critical",
+            tone: "critical",
             onDismiss: () => setError(""),
             children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("p", { children: error })
           }
         ) }),
         loading && /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(import_polaris12.Layout.Section, { children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(import_polaris12.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)("div", { style: { textAlign: "center", padding: "2rem" }, children: [
           /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(import_polaris12.Spinner, { size: "large" }),
-          /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("div", { style: { marginTop: "1rem" }, children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(import_polaris12.Text, { variant: "bodyMd", children: "Processing dashboard operation..." }) })
+          /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("div", { style: { marginTop: "1rem" }, children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(import_polaris12.Text, { variant: "bodyMd", as: "p", children: "Processing dashboard operation..." }) })
         ] }) }) }),
         /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(import_polaris12.Layout.Section, { children: dashboards.length === 0 ? /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(import_polaris12.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
           import_polaris12.EmptyState,
@@ -144454,27 +144439,26 @@ function CustomDashboards() {
                   media: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
                     import_polaris12.Avatar,
                     {
-                      customer: !1,
-                      size: "medium",
+                      size: "md",
                       name: dashboard_name
                     }
                   ),
                   shortcutActions,
-                  children: /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(Stack, { distribution: "fill", alignment: "center", children: [
-                    /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(Stack, { vertical: !0, spacing: "tight", children: [
-                      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(Stack, { spacing: "tight", children: [
-                        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(import_polaris12.Text, { variant: "bodyMd", fontWeight: "semibold", children: dashboard_name }),
-                        is_default && /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(import_polaris12.Badge, { status: "info", children: "Default" })
+                  children: /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(import_polaris12.InlineStack, { align: "space-between", blockAlign: "center", children: [
+                    /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(import_polaris12.BlockStack, { gap: "200", children: [
+                      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(import_polaris12.InlineStack, { gap: "200", children: [
+                        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(import_polaris12.Text, { variant: "bodyMd", as: "p", fontWeight: "semibold", children: dashboard_name }),
+                        is_default && /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(import_polaris12.Badge, { tone: "info", children: "Default" })
                       ] }),
-                      description && /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(import_polaris12.Text, { variant: "bodySm", color: "subdued", children: description }),
-                      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(Stack, { spacing: "tight", children: [
-                        /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(import_polaris12.Text, { variant: "bodySm", color: "subdued", children: [
+                      description && /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(import_polaris12.Text, { variant: "bodySm", as: "span", tone: "subdued", children: description }),
+                      /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(import_polaris12.InlineStack, { gap: "200", children: [
+                        /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(import_polaris12.Text, { variant: "bodySm", as: "span", tone: "subdued", children: [
                           widgets?.length || 0,
-                          " widgets \u2022 ",
+                          " widgets \\u2022 ",
                           view_count,
                           " views"
                         ] }),
-                        /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(import_polaris12.Text, { variant: "bodySm", color: "subdued", children: [
+                        /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(import_polaris12.Text, { variant: "bodySm", as: "span", tone: "subdued", children: [
                           "Updated ",
                           new Date(updated_at).toLocaleDateString()
                         ] })
@@ -144555,7 +144539,7 @@ function CustomDashboards() {
                 onAction: () => setShowCreateModal(!1)
               }
             ],
-            children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(import_polaris12.Modal.Section, { children: /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(Stack, { vertical: !0, spacing: "loose", children: [
+            children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(import_polaris12.Modal.Section, { children: /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(import_polaris12.BlockStack, { gap: "400", children: [
               /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
                 import_polaris12.TextField,
                 {
@@ -144598,8 +144582,8 @@ function CustomDashboards() {
                 onAction: () => setShowTemplateModal(!1)
               }
             ],
-            large: !0,
-            children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(import_polaris12.Modal.Section, { children: /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(Stack, { vertical: !0, spacing: "loose", children: [
+            size: "large",
+            children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(import_polaris12.Modal.Section, { children: /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(import_polaris12.BlockStack, { gap: "400", children: [
               /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
                 import_polaris12.TextField,
                 {
@@ -144610,7 +144594,7 @@ function CustomDashboards() {
                   autoComplete: "off"
                 }
               ),
-              /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(import_polaris12.Text, { variant: "headingMd", children: "Available Templates" }),
+              /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(import_polaris12.Text, { variant: "headingMd", as: "h3", children: "Available Templates" }),
               /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("div", { style: {
                 display: "grid",
                 gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
@@ -144618,7 +144602,7 @@ function CustomDashboards() {
               }, children: templates.map((template) => /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
                 import_polaris12.Card,
                 {
-                  subdued: selectedTemplate?.id !== template.id,
+                  background: selectedTemplate?.id !== template.id ? "bg-surface-secondary" : void 0,
                   children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(
                     "div",
                     {
@@ -144628,16 +144612,13 @@ function CustomDashboards() {
                         border: selectedTemplate?.id === template.id ? "2px solid #5C6AC4" : "2px solid transparent"
                       },
                       onClick: () => setSelectedTemplate(template),
-                      children: /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(Stack, { vertical: !0, spacing: "tight", children: [
-                        /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(Stack, { distribution: "equalSpacing", children: [
-                          /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(import_polaris12.Text, { variant: "bodyMd", fontWeight: "semibold", children: template.template_name }),
+                      children: /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(import_polaris12.BlockStack, { gap: "200", children: [
+                        /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(import_polaris12.InlineStack, { align: "space-between", children: [
+                          /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(import_polaris12.Text, { variant: "bodyMd", as: "p", fontWeight: "semibold", children: template.template_name }),
                           /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(import_polaris12.Badge, { children: template.template_category })
                         ] }),
-                        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(import_polaris12.Text, { variant: "bodySm", color: "subdued", children: template.template_description }),
-                        /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(import_polaris12.Badge, { status: "info", children: [
-                          template.tier_requirement.toUpperCase(),
-                          " tier"
-                        ] })
+                        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(import_polaris12.Text, { variant: "bodySm", as: "span", tone: "subdued", children: template.template_description }),
+                        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(import_polaris12.Badge, { tone: "info", children: `${template.tier_requirement.toUpperCase()} tier` })
                       ] })
                     }
                   )
@@ -144671,10 +144652,7 @@ function CustomDashboards() {
             /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("li", { children: "Real-time data updates" })
           ] })
         ] }),
-        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("div", { style: { marginTop: "1rem" }, children: /* @__PURE__ */ (0, import_jsx_runtime16.jsxs)(import_polaris12.Badge, { status: "warning", children: [
-          "Current Plan: ",
-          currentTier.toUpperCase()
-        ] }) })
+        /* @__PURE__ */ (0, import_jsx_runtime16.jsx)("div", { style: { marginTop: "1rem" }, children: /* @__PURE__ */ (0, import_jsx_runtime16.jsx)(import_polaris12.Badge, { tone: "warning", children: `Current Plan: ${currentTier.toUpperCase()}` }) })
       ]
     }
   ) }) }) }) });
@@ -144919,15 +144897,21 @@ function CampaignSetupForm({
     /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(import_polaris13.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime18.jsxs)(import_polaris13.BlockStack, { gap: "400", children: [
       /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(import_polaris13.Text, { variant: "headingMd", as: "h2", children: "5. Ad Tone & Style" }),
       /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(import_polaris13.InlineGrid, { columns: 4, gap: "400", children: toneCards.map((tone) => /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
-        import_polaris13.Box,
+        "div",
         {
-          padding: "400",
-          background: config.adTone === tone.id ? "bg-surface-selected" : "bg-surface",
-          borderColor: "border",
-          borderWidth: "025",
-          borderRadius: "200",
           onClick: () => setConfig({ ...config, adTone: tone.id }),
-          children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(import_polaris13.BlockStack, { gap: "200", inlineAlign: "center", children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(import_polaris13.Text, { variant: "bodyMd", as: "p", children: tone.label }) })
+          style: { cursor: "pointer" },
+          children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(
+            import_polaris13.Box,
+            {
+              padding: "400",
+              background: config.adTone === tone.id ? "bg-surface-selected" : "bg-surface",
+              borderColor: "border",
+              borderWidth: "025",
+              borderRadius: "200",
+              children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(import_polaris13.BlockStack, { gap: "200", inlineAlign: "center", children: /* @__PURE__ */ (0, import_jsx_runtime18.jsx)(import_polaris13.Text, { variant: "bodyMd", as: "p", children: tone.label }) })
+            }
+          )
         },
         tone.id
       )) })
@@ -146634,7 +146618,8 @@ async function loader9({ request: request2 }) {
       error: cfg.status === "rejected" ? "Failed to load configuration - check backend connection" : null
     });
   } catch (error) {
-    return console.error("Advanced settings data fetch error:", error.message), (0, import_node9.json)(
+    let errorMessage = error instanceof Error ? error.message : String(error);
+    return console.error("Advanced settings data fetch error:", errorMessage), (0, import_node9.json)(
       {
         cfg: {},
         insights: {},
@@ -146642,7 +146627,7 @@ async function loader9({ request: request2 }) {
         summary: {},
         suggestions: generateSuggestions({}, {}, {}),
         shopName,
-        error: `Failed to load data: ${error.message}`
+        error: `Failed to load data: ${errorMessage}`
       },
       { status: 500 }
     );
@@ -146797,16 +146782,17 @@ Focus on converting existing traffic better.`,
   };
 }
 async function action5({ request: request2 }) {
-  let shopName;
+  let shopName = "";
   try {
     try {
       let { session } = await authenticate.admin(request2);
       if (shopName = session?.shop?.replace(".myshopify.com", "") || "", !shopName)
         throw new Error("No shop name found in Shopify session");
     } catch (shopNameError) {
+      let shopNameErrorMessage = shopNameError instanceof Error ? shopNameError.message : String(shopNameError);
       console.warn(
         "Shop name detection failed in action:",
-        shopNameError.message
+        shopNameErrorMessage
       ), shopName = process.env.TENANT_ID || "adsautopilot";
     }
     let fd = await request2.formData(), formShop = String(fd.get("shop") || "").trim();
@@ -146910,12 +146896,13 @@ async function action5({ request: request2 }) {
       shopName
     });
   } catch (error) {
-    console.error("Action critical error:", error.message, error.stack);
+    let errorMessage = error instanceof Error ? error.message : String(error), errorStack = error instanceof Error ? error.stack : void 0;
+    console.error("Action critical error:", errorMessage, errorStack);
     let errorShopName = shopName || process.env.TENANT_ID || "adsautopilot";
     return (0, import_node9.json)(
       {
         ok: !1,
-        error: `Action failed: ${error.message}`,
+        error: `Action failed: ${errorMessage}`,
         shopName: errorShopName,
         debug: void 0
       },
@@ -149714,40 +149701,43 @@ function AppSupport() {
     starter: "Starter Plan",
     professional: "Professional Plan",
     enterprise: "Enterprise Plan"
-  })[tier2] || "Unknown Plan", getTierBadgeStatus = (tier2) => tier2 === "enterprise" ? "warning" : tier2 === "professional" ? "info" : "default", getStatusBadge = (status) => ({
-    open: { status: "default", label: "Open" },
-    in_progress: { status: "info", label: "In Progress" },
-    pending_customer: { status: "attention", label: "Pending Customer" },
-    resolved: { status: "success", label: "Resolved" },
-    closed: { status: "default", label: "Closed" }
-  })[status] || { status: "default", label: status }, getPriorityBadge = (priority) => ({
-    low: { status: "default", label: "Low" },
-    normal: { status: "info", label: "Normal" },
-    high: { status: "attention", label: "High" },
-    urgent: { status: "critical", label: "Urgent" }
-  })[priority] || { status: "default", label: priority }, formatDate = (dateString) => new Date(dateString).toLocaleDateString("en-US", {
+  })[tier2] || "Unknown Plan", getTierBadgeTone = (tier2) => tier2 === "enterprise" ? "warning" : tier2 === "professional" ? "info" : void 0, getStatusBadge = (status) => ({
+    open: { tone: void 0, label: "Open" },
+    in_progress: { tone: "info", label: "In Progress" },
+    pending_customer: { tone: "attention", label: "Pending Customer" },
+    resolved: { tone: "success", label: "Resolved" },
+    closed: { tone: void 0, label: "Closed" }
+  })[status] || { tone: void 0, label: status }, getPriorityBadge = (priority) => ({
+    low: { tone: void 0, label: "Low" },
+    normal: { tone: "info", label: "Normal" },
+    high: { tone: "attention", label: "High" },
+    urgent: { tone: "critical", label: "Urgent" }
+  })[priority] || { tone: void 0, label: priority }, formatDate = (dateString) => new Date(dateString).toLocaleDateString("en-US", {
     year: "numeric",
     month: "short",
     day: "numeric",
     hour: "2-digit",
     minute: "2-digit"
-  }), ticketRows = tickets.map((ticket) => [
-    ticket.ticket_number,
-    ticket.subject,
-    /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(import_polaris14.Badge, { ...getStatusBadge(ticket.status), children: getStatusBadge(ticket.status).label }, ticket.id),
-    /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(import_polaris14.Badge, { ...getPriorityBadge(ticket.priority), children: getPriorityBadge(ticket.priority).label }, `priority-${ticket.id}`),
-    ticket.category,
-    formatDate(ticket.created_at),
-    /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(
-      import_polaris14.Button,
-      {
-        size: "slim",
-        onClick: () => setSelectedTicket(ticket.id),
-        children: "View"
-      },
-      `view-${ticket.id}`
-    )
-  ]);
+  }), ticketRows = tickets.map((ticket) => {
+    let statusBadge = getStatusBadge(ticket.status), priorityBadge = getPriorityBadge(ticket.priority);
+    return [
+      ticket.ticket_number,
+      ticket.subject,
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(import_polaris14.Badge, { tone: statusBadge.tone, children: statusBadge.label }, ticket.id),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(import_polaris14.Badge, { tone: priorityBadge.tone, children: priorityBadge.label }, `priority-${ticket.id}`),
+      ticket.category,
+      formatDate(ticket.created_at),
+      /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(
+        import_polaris14.Button,
+        {
+          size: "slim",
+          onClick: () => setSelectedTicket(ticket.id),
+          children: "View"
+        },
+        `view-${ticket.id}`
+      )
+    ];
+  });
   return /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)(
     import_polaris14.Page,
     {
@@ -149758,7 +149748,7 @@ function AppSupport() {
           import_polaris14.Banner,
           {
             title: "Success",
-            status: "success",
+            tone: "success",
             onDismiss: () => {
             },
             children: [
@@ -149774,50 +149764,45 @@ function AppSupport() {
           import_polaris14.Banner,
           {
             title: "Error",
-            status: "critical",
+            tone: "critical",
             onDismiss: () => {
             },
             children: /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("p", { children: actionData.message })
           }
         ),
         /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)(import_polaris14.Layout, { children: [
-          /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(import_polaris14.Layout.Section, { children: /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(import_polaris14.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("div", { style: { padding: "1.5rem" }, children: /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)(Stack, { vertical: !0, spacing: "loose", children: [
-            /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)(Stack, { alignment: "center", children: [
-              /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(Stack.Item, { fill: !0, children: /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(import_polaris14.Text, { variant: "headingLg", as: "h2", children: "Your Support Level" }) }),
-              /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(import_polaris14.Badge, { status: getTierBadgeStatus(tier), children: getTierDisplayName(tier) })
+          /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(import_polaris14.Layout.Section, { children: /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(import_polaris14.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(import_polaris14.Box, { padding: "500", children: /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)(import_polaris14.BlockStack, { gap: "400", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)(import_polaris14.InlineStack, { align: "space-between", blockAlign: "center", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(import_polaris14.Text, { variant: "headingLg", as: "h2", children: "Your Support Level" }),
+              /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(import_polaris14.Badge, { tone: getTierBadgeTone(tier), children: getTierDisplayName(tier) })
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)(Stack, { distribution: "fillEvenly", spacing: "loose", children: [
-              contactMethods.email_support && /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)(Stack, { vertical: !0, spacing: "tight", children: [
-                /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(EmailMajor, {}),
-                /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(import_polaris14.Text, { variant: "bodyMd", fontWeight: "semibold", children: "Email Support" }),
-                /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)(import_polaris14.Text, { variant: "bodySm", color: "subdued", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)(import_polaris14.InlineStack, { gap: "400", align: "space-evenly", children: [
+              contactMethods.email_support && /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)(import_polaris14.BlockStack, { gap: "200", children: [
+                /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(import_polaris14.Text, { variant: "bodyMd", as: "p", fontWeight: "semibold", children: "Email Support" }),
+                /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)(import_polaris14.Text, { variant: "bodySm", as: "span", tone: "subdued", children: [
                   "Response within ",
                   contactMethods.guaranteed_response_hours,
                   "h"
                 ] })
               ] }),
-              contactMethods.phone_support && /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)(Stack, { vertical: !0, spacing: "tight", children: [
-                /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(PhoneMajor, {}),
-                /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(import_polaris14.Text, { variant: "bodyMd", fontWeight: "semibold", children: "Phone Support" }),
-                /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(import_polaris14.Text, { variant: "bodySm", color: "subdued", children: contactMethods.support_phone })
+              contactMethods.phone_support && /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)(import_polaris14.BlockStack, { gap: "200", children: [
+                /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(import_polaris14.Text, { variant: "bodyMd", as: "p", fontWeight: "semibold", children: "Phone Support" }),
+                /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(import_polaris14.Text, { variant: "bodySm", as: "span", tone: "subdued", children: contactMethods.support_phone })
               ] }),
-              contactMethods.priority_routing && /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)(Stack, { vertical: !0, spacing: "tight", children: [
-                /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(AlertMajor, {}),
-                /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(import_polaris14.Text, { variant: "bodyMd", fontWeight: "semibold", children: "Priority Routing" }),
-                /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(import_polaris14.Text, { variant: "bodySm", color: "subdued", children: "Fast-tracked support" })
+              contactMethods.priority_routing && /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)(import_polaris14.BlockStack, { gap: "200", children: [
+                /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(import_polaris14.Text, { variant: "bodyMd", as: "p", fontWeight: "semibold", children: "Priority Routing" }),
+                /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(import_polaris14.Text, { variant: "bodySm", as: "span", tone: "subdued", children: "Fast-tracked support" })
               ] }),
-              contactMethods.dedicated_manager && /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)(Stack, { vertical: !0, spacing: "tight", children: [
-                /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(CustomersMajor, {}),
-                /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(import_polaris14.Text, { variant: "bodyMd", fontWeight: "semibold", children: "Account Manager" }),
-                /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(import_polaris14.Text, { variant: "bodySm", color: "subdued", children: "Dedicated support contact" })
+              contactMethods.dedicated_manager && /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)(import_polaris14.BlockStack, { gap: "200", children: [
+                /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(import_polaris14.Text, { variant: "bodyMd", as: "p", fontWeight: "semibold", children: "Account Manager" }),
+                /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(import_polaris14.Text, { variant: "bodySm", as: "span", tone: "subdued", children: "Dedicated support contact" })
               ] })
             ] }),
             /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)(import_polaris14.ButtonGroup, { children: [
               /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(
                 import_polaris14.Button,
                 {
-                  primary: !0,
-                  icon: TicketMajor,
+                  variant: "primary",
                   onClick: () => setShowCreateForm(!0),
                   children: "Create Support Ticket"
                 }
@@ -149827,7 +149812,6 @@ function AppSupport() {
                 {
                   url: `mailto:${contactMethods.support_email}`,
                   external: !0,
-                  icon: EmailMajor,
                   children: "Email Support"
                 }
               ),
@@ -149836,13 +149820,12 @@ function AppSupport() {
                 {
                   url: `tel:${contactMethods.support_phone}`,
                   external: !0,
-                  icon: PhoneMajor,
                   children: "Call Support"
                 }
               )
             ] })
           ] }) }) }) }),
-          /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(import_polaris14.Layout.Section, { children: /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(import_polaris14.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("div", { style: { padding: "1.5rem" }, children: /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)(Stack, { vertical: !0, spacing: "loose", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(import_polaris14.Layout.Section, { children: /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(import_polaris14.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(import_polaris14.Box, { padding: "500", children: /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)(import_polaris14.BlockStack, { gap: "400", children: [
             /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(import_polaris14.Text, { variant: "headingLg", as: "h2", children: "Your Support Tickets" }),
             tickets.length > 0 ? /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(
               import_polaris14.DataTable,
@@ -149878,7 +149861,7 @@ function AppSupport() {
                   /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(
                     import_polaris14.Button,
                     {
-                      primary: !0,
+                      variant: "primary",
                       onClick: () => setShowCreateForm(!0),
                       children: "Create Your First Ticket"
                     }
@@ -149887,33 +149870,27 @@ function AppSupport() {
               }
             )
           ] }) }) }) }),
-          /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(import_polaris14.Layout.Section, { secondary: !0, children: /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(import_polaris14.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("div", { style: { padding: "1.5rem" }, children: /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)(Stack, { vertical: !0, spacing: "loose", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(import_polaris14.Layout.Section, { variant: "oneThird", children: /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(import_polaris14.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(import_polaris14.Box, { padding: "500", children: /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)(import_polaris14.BlockStack, { gap: "400", children: [
             /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(import_polaris14.Text, { variant: "headingMd", as: "h3", children: "Service Level Agreement" }),
-            /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)(Stack, { vertical: !0, spacing: "tight", children: [
-              /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)(Stack, { alignment: "center", children: [
-                /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(ClockMajor, {}),
-                /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)(import_polaris14.Text, { variant: "bodyMd", children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("strong", { children: "Response Time:" }),
-                  " ",
-                  contactMethods.guaranteed_response_hours,
-                  " hours"
-                ] })
-              ] }),
-              contactMethods.guaranteed_resolution_hours && /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)(Stack, { alignment: "center", children: [
-                /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(ClockMajor, {}),
-                /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)(import_polaris14.Text, { variant: "bodyMd", children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("strong", { children: "Resolution Time:" }),
-                  " ",
-                  contactMethods.guaranteed_resolution_hours,
-                  " hours"
-                ] })
-              ] })
+            /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)(import_polaris14.BlockStack, { gap: "200", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(import_polaris14.InlineStack, { blockAlign: "center", gap: "200", children: /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)(import_polaris14.Text, { variant: "bodyMd", as: "p", children: [
+                /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("strong", { children: "Response Time:" }),
+                " ",
+                contactMethods.guaranteed_response_hours,
+                " hours"
+              ] }) }),
+              contactMethods.guaranteed_resolution_hours && /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(import_polaris14.InlineStack, { blockAlign: "center", gap: "200", children: /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)(import_polaris14.Text, { variant: "bodyMd", as: "p", children: [
+                /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("strong", { children: "Resolution Time:" }),
+                " ",
+                contactMethods.guaranteed_resolution_hours,
+                " hours"
+              ] }) })
             ] }),
-            /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)(import_polaris14.Text, { variant: "bodySm", color: "subdued", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)(import_polaris14.Text, { variant: "bodySm", as: "span", tone: "subdued", children: [
               "All times are calculated during business hours (Monday-Friday, 9 AM - 6 PM EST).",
               tier !== "starter" && " Priority routing ensures your tickets are handled by senior support staff."
             ] }),
-            tier === "starter" && /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(import_polaris14.Banner, { status: "info", children: /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("p", { children: "Upgrade to Professional or Enterprise for faster response times and additional support channels." }) })
+            tier === "starter" && /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(import_polaris14.Banner, { tone: "info", children: /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("p", { children: "Upgrade to Professional or Enterprise for faster response times and additional support channels." }) })
           ] }) }) }) })
         ] }),
         /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(
@@ -149936,11 +149913,11 @@ function AppSupport() {
                 onAction: () => setShowCreateForm(!1)
               }
             ],
-            large: !0,
+            size: "large",
             children: /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(import_polaris14.Modal.Section, { children: /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)(import_react32.Form, { method: "post", id: "support-ticket-form", children: [
               /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("input", { type: "hidden", name: "intent", value: "create_ticket" }),
               /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("input", { type: "hidden", name: "tenant", value: tenant }),
-              /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)(Stack, { vertical: !0, spacing: "loose", children: [
+              /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)(import_polaris14.BlockStack, { gap: "400", children: [
                 /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(
                   import_polaris14.TextField,
                   {
@@ -149949,7 +149926,7 @@ function AppSupport() {
                     onChange: (value) => setFormData((prev) => ({ ...prev, customer_name: value })),
                     name: "customer_name",
                     autoComplete: "name",
-                    required: !0
+                    requiredIndicator: !0
                   }
                 ),
                 /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(
@@ -149961,7 +149938,7 @@ function AppSupport() {
                     onChange: (value) => setFormData((prev) => ({ ...prev, customer_email: value })),
                     name: "customer_email",
                     autoComplete: "email",
-                    required: !0
+                    requiredIndicator: !0
                   }
                 ),
                 tier === "enterprise" && /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(
@@ -149976,8 +149953,8 @@ function AppSupport() {
                     helpText: "Enterprise customers can request a phone callback for urgent issues"
                   }
                 ),
-                /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)(Stack, { distribution: "fillEvenly", children: [
-                  /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(Stack.Item, { fill: !0, children: /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(
+                /* @__PURE__ */ (0, import_jsx_runtime25.jsxs)(import_polaris14.InlineStack, { gap: "400", children: [
+                  /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("div", { style: { flex: 1 }, children: /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(
                     import_polaris14.Select,
                     {
                       label: "Category",
@@ -149992,7 +149969,7 @@ function AppSupport() {
                       name: "category"
                     }
                   ) }),
-                  /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(Stack.Item, { fill: !0, children: /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(
+                  /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("div", { style: { flex: 1 }, children: /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(
                     import_polaris14.Select,
                     {
                       label: "Priority",
@@ -150016,7 +149993,8 @@ function AppSupport() {
                     onChange: (value) => setFormData((prev) => ({ ...prev, subject: value })),
                     name: "subject",
                     placeholder: "Brief description of your issue",
-                    required: !0
+                    autoComplete: "off",
+                    requiredIndicator: !0
                   }
                 ),
                 /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(
@@ -150029,11 +150007,12 @@ function AppSupport() {
                     multiline: 6,
                     placeholder: "Please provide detailed information about your issue, including any error messages, steps to reproduce, and what you expected to happen...",
                     helpText: "The more details you provide, the faster we can help resolve your issue.",
-                    required: !0
+                    autoComplete: "off",
+                    requiredIndicator: !0
                   }
                 ),
-                tier === "starter" && (formData.priority === "high" || formData.priority === "urgent") && /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(import_polaris14.Banner, { status: "info", children: /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("p", { children: "High and Urgent priorities are available for Professional and Enterprise customers. Your ticket will be processed as Normal priority." }) }),
-                tier !== "enterprise" && formData.category === "urgent" && /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(import_polaris14.Banner, { status: "info", children: /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("p", { children: "Urgent category is available for Enterprise customers only. Your ticket will be processed as Technical category." }) })
+                tier === "starter" && (formData.priority === "high" || formData.priority === "urgent") && /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(import_polaris14.Banner, { tone: "info", children: /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("p", { children: "High and Urgent priorities are available for Professional and Enterprise customers. Your ticket will be processed as Normal priority." }) }),
+                tier !== "enterprise" && formData.category === "urgent" && /* @__PURE__ */ (0, import_jsx_runtime25.jsx)(import_polaris14.Banner, { tone: "info", children: /* @__PURE__ */ (0, import_jsx_runtime25.jsx)("p", { children: "Urgent category is available for Enterprise customers only. Your ticket will be processed as Technical category." }) })
               ] })
             ] }) })
           }
@@ -150200,14 +150179,14 @@ function AIStatusIndicator({ shopName, compact = !1, showTokenUsage = !1 }) {
       setLoading(!0);
       try {
         let { backendFetch: backendFetch2 } = await Promise.resolve().then(() => (init_hmac_server(), hmac_server_exports)), healthResponse = await backendFetch2("/ai/health", "GET", void 0, shopName);
-        if (healthResponse.ok) {
-          let healthData = await healthResponse.json();
+        if (healthResponse.status >= 200 && healthResponse.status < 300) {
+          let healthData = healthResponse.json;
           healthData.ok && setStatus(healthData.health);
         }
         if (showTokenUsage) {
           let tokenResponse = await backendFetch2("/ai/tokens/usage", "GET", void 0, shopName);
-          if (tokenResponse.ok) {
-            let tokenData = await tokenResponse.json();
+          if (tokenResponse.status >= 200 && tokenResponse.status < 300) {
+            let tokenData = tokenResponse.json;
             tokenData.ok && setTokenUsage(tokenData.usage);
           }
         }
@@ -151003,7 +150982,7 @@ async function action10({ request: request2 }) {
       throw new Error("Unable to determine shop name from Shopify session");
     return await markSetupCompleted(shopName), console.log(`Setup completed for tenant: ${shopName}`), (0, import_node15.redirect)("/app");
   } catch (error) {
-    return console.error("Setup action error:", error), (0, import_node15.json)({ error: error.message }, { status: 500 });
+    return console.error("Setup action error:", error), (0, import_node15.json)({ error: error instanceof Error ? error.message : String(error) }, { status: 500 });
   }
 }
 function Setup() {
@@ -153312,7 +153291,7 @@ function App2() {
 var ErrorBoundary5 = boundary.error, headers = (headersArgs) => boundary.headers(headersArgs);
 
 // server-assets-manifest:@remix-run/dev/assets-manifest
-var assets_manifest_default = { entry: { module: "/assets/entry.client-NEDKIYA6.js", imports: ["/assets/_shared/chunk-HAMHSZSO.js", "/assets/_shared/chunk-ZYYQ3RDD.js", "/assets/_shared/chunk-TXQSRDID.js", "/assets/_shared/chunk-P23QBOGJ.js"] }, routes: { root: { id: "root", parentId: void 0, path: "", index: void 0, caseSensitive: void 0, module: "/assets/root-XXZ7BVZ6.js", imports: ["/assets/_shared/chunk-LXK74B4C.js", "/assets/_shared/chunk-SUCM6EVT.js"], hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/_health": { id: "routes/_health", parentId: "root", path: void 0, index: void 0, caseSensitive: void 0, module: "/assets/routes/_health-A5T2YZUT.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/_index": { id: "routes/_index", parentId: "root", path: void 0, index: !0, caseSensitive: void 0, module: "/assets/routes/_index-73J7LGV3.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/api.generate-script": { id: "routes/api.generate-script", parentId: "root", path: "api/generate-script", index: void 0, caseSensitive: void 0, module: "/assets/routes/api.generate-script-3DUZY66Z.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/api.proxy.$": { id: "routes/api.proxy.$", parentId: "root", path: "api/proxy/*", index: void 0, caseSensitive: void 0, module: "/assets/routes/api.proxy.$-44OW55O3.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/api.script-proxy": { id: "routes/api.script-proxy", parentId: "root", path: "api/script-proxy", index: void 0, caseSensitive: void 0, module: "/assets/routes/api.script-proxy-D7CGEASX.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app": { id: "routes/app", parentId: "root", path: "app", index: void 0, caseSensitive: void 0, module: "/assets/routes/app-H7ZLOLDU.js", imports: ["/assets/_shared/chunk-PCQUX7PX.js", "/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/app._index": { id: "routes/app._index", parentId: "routes/app", path: void 0, index: !0, caseSensitive: void 0, module: "/assets/routes/app._index-LYU4HKNT.js", imports: ["/assets/_shared/chunk-QJVHAVDT.js", "/assets/_shared/chunk-XGZ5RCNR.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.additional": { id: "routes/app.additional", parentId: "routes/app", path: "additional", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.additional-OWYYDPK3.js", imports: ["/assets/_shared/chunk-SUCM6EVT.js"], hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.advanced": { id: "routes/app.advanced", parentId: "routes/app", path: "advanced", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.advanced-6NBZFQ6D.js", imports: ["/assets/_shared/chunk-XGZ5RCNR.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.ai-dashboard": { id: "routes/app.ai-dashboard", parentId: "routes/app", path: "ai-dashboard", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.ai-dashboard-BMNIKW4J.js", imports: ["/assets/_shared/chunk-XGZ5RCNR.js", "/assets/_shared/chunk-SUCM6EVT.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.autopilot": { id: "routes/app.autopilot", parentId: "routes/app", path: "autopilot", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.autopilot-BKS5G3UI.js", imports: ["/assets/_shared/chunk-XGZ5RCNR.js", "/assets/_shared/chunk-YO2XKRKB.js", "/assets/_shared/chunk-SUCM6EVT.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.billing": { id: "routes/app.billing", parentId: "routes/app", path: "billing", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.billing-476IIESS.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/app.dashboards": { id: "routes/app.dashboards", parentId: "routes/app", path: "dashboards", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.dashboards-HP4F5CMG.js", imports: ["/assets/_shared/chunk-SUCM6EVT.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.intent-os": { id: "routes/app.intent-os", parentId: "routes/app", path: "intent-os", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.intent-os-DXKA7GHE.js", imports: ["/assets/_shared/chunk-QJVHAVDT.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.reports": { id: "routes/app.reports", parentId: "routes/app", path: "reports", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.reports-HDY4DXEW.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/app.setup": { id: "routes/app.setup", parentId: "routes/app", path: "setup", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.setup-JWL3BGKB.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.support": { id: "routes/app.support", parentId: "routes/app", path: "support", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.support-S5L6YTSY.js", imports: ["/assets/_shared/chunk-SUCM6EVT.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/auth.$": { id: "routes/auth.$", parentId: "root", path: "auth/*", index: void 0, caseSensitive: void 0, module: "/assets/routes/auth.$-D4HZOJGU.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/auth.session-token": { id: "routes/auth.session-token", parentId: "root", path: "auth/session-token", index: void 0, caseSensitive: void 0, module: "/assets/routes/auth.session-token-VO5NUU2V.js", imports: ["/assets/_shared/chunk-PCQUX7PX.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/debug": { id: "routes/debug", parentId: "root", path: "debug", index: void 0, caseSensitive: void 0, module: "/assets/routes/debug-5ZDPCOZX.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/health": { id: "routes/health", parentId: "root", path: "health", index: void 0, caseSensitive: void 0, module: "/assets/routes/health-FBV7EBK7.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/install": { id: "routes/install", parentId: "root", path: "install", index: void 0, caseSensitive: void 0, module: "/assets/routes/install-YL2XNGMC.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/local.autopilot": { id: "routes/local.autopilot", parentId: "root", path: "local/autopilot", index: void 0, caseSensitive: void 0, module: "/assets/routes/local.autopilot-53IAOLIK.js", imports: ["/assets/_shared/chunk-YO2XKRKB.js", "/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/privacy": { id: "routes/privacy", parentId: "root", path: "privacy", index: void 0, caseSensitive: void 0, module: "/assets/routes/privacy-FAMCBMFP.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/support": { id: "routes/support", parentId: "root", path: "support", index: void 0, caseSensitive: void 0, module: "/assets/routes/support-5ENTISHI.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/terms": { id: "routes/terms", parentId: "root", path: "terms", index: void 0, caseSensitive: void 0, module: "/assets/routes/terms-T6ZZOXSF.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 } }, version: "24ab2332", hmr: void 0, url: "/assets/manifest-24AB2332.js" };
+var assets_manifest_default = { entry: { module: "/assets/entry.client-NEDKIYA6.js", imports: ["/assets/_shared/chunk-HAMHSZSO.js", "/assets/_shared/chunk-ZYYQ3RDD.js", "/assets/_shared/chunk-TXQSRDID.js", "/assets/_shared/chunk-P23QBOGJ.js"] }, routes: { root: { id: "root", parentId: void 0, path: "", index: void 0, caseSensitive: void 0, module: "/assets/root-EELOJMAE.js", imports: ["/assets/_shared/chunk-LXK74B4C.js", "/assets/_shared/chunk-EKESS42A.js"], hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/_health": { id: "routes/_health", parentId: "root", path: void 0, index: void 0, caseSensitive: void 0, module: "/assets/routes/_health-A5T2YZUT.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/_index": { id: "routes/_index", parentId: "root", path: void 0, index: !0, caseSensitive: void 0, module: "/assets/routes/_index-73J7LGV3.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/api.generate-script": { id: "routes/api.generate-script", parentId: "root", path: "api/generate-script", index: void 0, caseSensitive: void 0, module: "/assets/routes/api.generate-script-3DUZY66Z.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/api.proxy.$": { id: "routes/api.proxy.$", parentId: "root", path: "api/proxy/*", index: void 0, caseSensitive: void 0, module: "/assets/routes/api.proxy.$-44OW55O3.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/api.script-proxy": { id: "routes/api.script-proxy", parentId: "root", path: "api/script-proxy", index: void 0, caseSensitive: void 0, module: "/assets/routes/api.script-proxy-D7CGEASX.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app": { id: "routes/app", parentId: "root", path: "app", index: void 0, caseSensitive: void 0, module: "/assets/routes/app-QZEKDLSP.js", imports: ["/assets/_shared/chunk-PCQUX7PX.js", "/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/app._index": { id: "routes/app._index", parentId: "routes/app", path: void 0, index: !0, caseSensitive: void 0, module: "/assets/routes/app._index-EPNV3W5O.js", imports: ["/assets/_shared/chunk-QJVHAVDT.js", "/assets/_shared/chunk-XGZ5RCNR.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.additional": { id: "routes/app.additional", parentId: "routes/app", path: "additional", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.additional-LXPHSBIY.js", imports: ["/assets/_shared/chunk-EKESS42A.js"], hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.advanced": { id: "routes/app.advanced", parentId: "routes/app", path: "advanced", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.advanced-6NBZFQ6D.js", imports: ["/assets/_shared/chunk-XGZ5RCNR.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.ai-dashboard": { id: "routes/app.ai-dashboard", parentId: "routes/app", path: "ai-dashboard", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.ai-dashboard-OFMBCLI7.js", imports: ["/assets/_shared/chunk-XGZ5RCNR.js", "/assets/_shared/chunk-EKESS42A.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.autopilot": { id: "routes/app.autopilot", parentId: "routes/app", path: "autopilot", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.autopilot-OOWSNNBV.js", imports: ["/assets/_shared/chunk-XGZ5RCNR.js", "/assets/_shared/chunk-YO2XKRKB.js", "/assets/_shared/chunk-EKESS42A.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.billing": { id: "routes/app.billing", parentId: "routes/app", path: "billing", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.billing-476IIESS.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/app.dashboards": { id: "routes/app.dashboards", parentId: "routes/app", path: "dashboards", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.dashboards-MBY7FASA.js", imports: ["/assets/_shared/chunk-EKESS42A.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.intent-os": { id: "routes/app.intent-os", parentId: "routes/app", path: "intent-os", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.intent-os-DXKA7GHE.js", imports: ["/assets/_shared/chunk-QJVHAVDT.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.reports": { id: "routes/app.reports", parentId: "routes/app", path: "reports", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.reports-HDY4DXEW.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/app.setup": { id: "routes/app.setup", parentId: "routes/app", path: "setup", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.setup-ZSUGD3A2.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.support": { id: "routes/app.support", parentId: "routes/app", path: "support", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.support-IMV32ERV.js", imports: ["/assets/_shared/chunk-EKESS42A.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/auth.$": { id: "routes/auth.$", parentId: "root", path: "auth/*", index: void 0, caseSensitive: void 0, module: "/assets/routes/auth.$-D4HZOJGU.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/auth.session-token": { id: "routes/auth.session-token", parentId: "root", path: "auth/session-token", index: void 0, caseSensitive: void 0, module: "/assets/routes/auth.session-token-VO5NUU2V.js", imports: ["/assets/_shared/chunk-PCQUX7PX.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/debug": { id: "routes/debug", parentId: "root", path: "debug", index: void 0, caseSensitive: void 0, module: "/assets/routes/debug-5ZDPCOZX.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/health": { id: "routes/health", parentId: "root", path: "health", index: void 0, caseSensitive: void 0, module: "/assets/routes/health-FBV7EBK7.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/install": { id: "routes/install", parentId: "root", path: "install", index: void 0, caseSensitive: void 0, module: "/assets/routes/install-YL2XNGMC.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/local.autopilot": { id: "routes/local.autopilot", parentId: "root", path: "local/autopilot", index: void 0, caseSensitive: void 0, module: "/assets/routes/local.autopilot-Y6XOQZCZ.js", imports: ["/assets/_shared/chunk-YO2XKRKB.js", "/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/privacy": { id: "routes/privacy", parentId: "root", path: "privacy", index: void 0, caseSensitive: void 0, module: "/assets/routes/privacy-FAMCBMFP.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/support": { id: "routes/support", parentId: "root", path: "support", index: void 0, caseSensitive: void 0, module: "/assets/routes/support-5ENTISHI.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/terms": { id: "routes/terms", parentId: "root", path: "terms", index: void 0, caseSensitive: void 0, module: "/assets/routes/terms-T6ZZOXSF.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 } }, version: "f376f906", hmr: void 0, url: "/assets/manifest-F376F906.js" };
 
 // server-entry-module:@remix-run/dev/server-build
 var mode = "production", assetsBuildDirectory = "public/assets", future = { v3_fetcherPersist: !1, v3_relativeSplatPath: !1, v3_throwAbortReason: !1, v3_routeConfig: !1, v3_singleFetch: !1, v3_lazyRouteDiscovery: !1, unstable_optimizeDeps: !1 }, publicPath = "/assets/", entry = { module: entry_server_exports }, routes = {

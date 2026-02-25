@@ -14,7 +14,9 @@ import {
   Layout,
   ProgressBar,
   Tooltip,
-  LegacyStack as Stack,
+  BlockStack,
+  InlineStack,
+  Box,
   Grid,
 } from '@shopify/polaris';
 import {
@@ -86,7 +88,7 @@ export function AnalyticsTier({
   const [realTimeData, setRealTimeData] = useState<AnalyticsData | null>(null);
   const [loading, setLoading] = useState(false);
   const [lastUpdate, setLastUpdate] = useState<Date>(new Date());
-  
+
   const tier = data.tierInfo?.tier || 'starter';
   const isRealTimeEnabled = data.tierInfo?.realTimeEnabled || false;
   const refreshInterval = data.tierInfo?.refreshInterval || 300000;
@@ -102,7 +104,7 @@ export function AnalyticsTier({
         // const newData = await response.json();
         // setRealTimeData(newData);
         setLastUpdate(new Date());
-      } catch (error) {
+      } catch (error: unknown) {
         console.error('Real-time update failed:', error);
       }
     }, refreshInterval);
@@ -110,12 +112,12 @@ export function AnalyticsTier({
     return () => clearInterval(interval);
   }, [tenant, isRealTimeEnabled, refreshInterval]);
 
-  const getTierBadgeColor = (tierName: string) => {
+  const getTierBadgeTone = (tierName: string) => {
     switch (tierName) {
-      case 'starter': return 'info';
-      case 'professional': return 'success';
-      case 'enterprise': return 'attention';
-      default: return 'info';
+      case 'starter': return 'info' as const;
+      case 'professional': return 'success' as const;
+      case 'enterprise': return 'attention' as const;
+      default: return 'info' as const;
     }
   };
 
@@ -136,90 +138,90 @@ export function AnalyticsTier({
 
   const renderBasicKPIs = () => {
     const { kpi } = data;
-    
+
     return (
       <Grid>
         <Grid.Cell columnSpan={{xs: 6, sm: 3, md: 2, lg: 2, xl: 2}}>
           <Card>
-            <Stack>
-              <Text variant="headingMd">Clicks</Text>
-              <Text variant="heading2xl" as="h2">
+            <BlockStack gap="200">
+              <Text variant="headingMd" as="h3">Clicks</Text>
+              <Text variant="headingXl" as="h1">
                 {formatNumber(kpi.clicks)}
               </Text>
-              <Text variant="bodyMd" color="subdued">
+              <Text variant="bodyMd" as="p" tone="subdued">
                 Total clicks
               </Text>
-            </Stack>
+            </BlockStack>
           </Card>
         </Grid.Cell>
 
         <Grid.Cell columnSpan={{xs: 6, sm: 3, md: 2, lg: 2, xl: 2}}>
           <Card>
-            <Stack>
-              <Text variant="headingMd">Cost</Text>
-              <Text variant="heading2xl" as="h2">
+            <BlockStack gap="200">
+              <Text variant="headingMd" as="h3">Cost</Text>
+              <Text variant="headingXl" as="h1">
                 {formatCurrency(kpi.cost)}
               </Text>
-              <Text variant="bodyMd" color="subdued">
+              <Text variant="bodyMd" as="p" tone="subdued">
                 Total spend
               </Text>
-            </Stack>
+            </BlockStack>
           </Card>
         </Grid.Cell>
 
         <Grid.Cell columnSpan={{xs: 6, sm: 3, md: 2, lg: 2, xl: 2}}>
           <Card>
-            <Stack>
-              <Text variant="headingMd">Conversions</Text>
-              <Text variant="heading2xl" as="h2">
+            <BlockStack gap="200">
+              <Text variant="headingMd" as="h3">Conversions</Text>
+              <Text variant="headingXl" as="h1">
                 {formatNumber(kpi.conversions)}
               </Text>
-              <Text variant="bodyMd" color="subdued">
+              <Text variant="bodyMd" as="p" tone="subdued">
                 Total conversions
               </Text>
-            </Stack>
+            </BlockStack>
           </Card>
         </Grid.Cell>
 
         <Grid.Cell columnSpan={{xs: 6, sm: 3, md: 2, lg: 2, xl: 2}}>
           <Card>
-            <Stack>
-              <Text variant="headingMd">CTR</Text>
-              <Text variant="heading2xl" as="h2">
+            <BlockStack gap="200">
+              <Text variant="headingMd" as="h3">CTR</Text>
+              <Text variant="headingXl" as="h1">
                 {(kpi.ctr * 100).toFixed(2)}%
               </Text>
-              <Text variant="bodyMd" color="subdued">
+              <Text variant="bodyMd" as="p" tone="subdued">
                 Click-through rate
               </Text>
-            </Stack>
+            </BlockStack>
           </Card>
         </Grid.Cell>
 
         <Grid.Cell columnSpan={{xs: 6, sm: 3, md: 2, lg: 2, xl: 2}}>
           <Card>
-            <Stack>
-              <Text variant="headingMd">CPC</Text>
-              <Text variant="heading2xl" as="h2">
+            <BlockStack gap="200">
+              <Text variant="headingMd" as="h3">CPC</Text>
+              <Text variant="headingXl" as="h1">
                 {formatCurrency(kpi.cpc)}
               </Text>
-              <Text variant="bodyMd" color="subdued">
+              <Text variant="bodyMd" as="p" tone="subdued">
                 Cost per click
               </Text>
-            </Stack>
+            </BlockStack>
           </Card>
         </Grid.Cell>
 
         <Grid.Cell columnSpan={{xs: 6, sm: 3, md: 2, lg: 2, xl: 2}}>
           <Card>
-            <Stack>
-              <Text variant="headingMd">CPA</Text>
-              <Text variant="heading2xl" as="h2">
+            <BlockStack gap="200">
+              <Text variant="headingMd" as="h3">CPA</Text>
+              <Text variant="headingXl" as="h1">
                 {formatCurrency(kpi.cpa)}
               </Text>
-              <Text variant="bodyMd" color="subdued">
+              <Text variant="bodyMd" as="p" tone="subdued">
                 Cost per acquisition
               </Text>
-            </Stack>
+            </BlockStack>
           </Card>
         </Grid.Cell>
       </Grid>
@@ -232,70 +234,72 @@ export function AnalyticsTier({
     const { basic, advanced } = data.roas;
 
     return (
-      <Card sectioned>
-        <Stack>
-          <Stack horizontal alignment="center">
-            <Text variant="headingLg">ROAS Analytics</Text>
-            <Badge status={getTierBadgeColor(tier) as any}>
-              {getTierDisplayName(tier)}
-            </Badge>
-          </Stack>
+      <Card>
+        <Box padding="400">
+          <BlockStack gap="400">
+            <InlineStack blockAlign="center" gap="200">
+              <Text variant="headingLg" as="h2">ROAS Analytics</Text>
+              <Badge tone={getTierBadgeTone(tier)}>
+                {getTierDisplayName(tier)}
+              </Badge>
+            </InlineStack>
 
-          <Grid>
-            <Grid.Cell columnSpan={{xs: 6, sm: 3, md: 4, lg: 4, xl: 4}}>
-              <Stack>
-                <Text variant="headingMd">Basic ROAS</Text>
-                <Text variant="heading2xl" as="h2" color={basic.roas >= 2 ? 'success' : 'critical'}>
-                  {basic.roas.toFixed(2)}x
-                </Text>
-                <Text variant="bodyMd" color="subdued">
-                  Revenue: {formatCurrency(basic.revenue)}
-                </Text>
-                <Text variant="bodyMd" color="subdued">
-                  Profit: {formatCurrency(basic.profit)}
-                </Text>
-              </Stack>
-            </Grid.Cell>
+            <Grid>
+              <Grid.Cell columnSpan={{xs: 6, sm: 3, md: 4, lg: 4, xl: 4}}>
+                <BlockStack gap="200">
+                  <Text variant="headingMd" as="h3">Basic ROAS</Text>
+                  <Text variant="headingXl" as="h1" tone={basic.roas >= 2 ? 'success' : 'critical'}>
+                    {basic.roas.toFixed(2)}x
+                  </Text>
+                  <Text variant="bodyMd" as="p" tone="subdued">
+                    Revenue: {formatCurrency(basic.revenue)}
+                  </Text>
+                  <Text variant="bodyMd" as="p" tone="subdued">
+                    Profit: {formatCurrency(basic.profit)}
+                  </Text>
+                </BlockStack>
+              </Grid.Cell>
 
-            {advanced && tier !== 'starter' && (
-              <>
-                <Grid.Cell columnSpan={{xs: 6, sm: 3, md: 4, lg: 4, xl: 4}}>
-                  <Stack>
-                    <Stack horizontal alignment="center">
-                      <Text variant="headingMd">LTV ROAS</Text>
-                      <Tooltip content="Lifetime Value based ROAS calculation">
-                        <Button plain monochrome icon={ViewIcon} />
-                      </Tooltip>
-                    </Stack>
-                    <Text variant="heading2xl" as="h2" color={advanced.ltvRoas >= 4 ? 'success' : 'warning'}>
-                      {advanced.ltvRoas.toFixed(2)}x
-                    </Text>
-                    <Text variant="bodyMd" color="subdued">
-                      Long-term profitability
-                    </Text>
-                  </Stack>
-                </Grid.Cell>
+              {advanced && tier !== 'starter' && (
+                <>
+                  <Grid.Cell columnSpan={{xs: 6, sm: 3, md: 4, lg: 4, xl: 4}}>
+                    <BlockStack gap="200">
+                      <InlineStack blockAlign="center" gap="200">
+                        <Text variant="headingMd" as="h3">LTV ROAS</Text>
+                        <Tooltip content="Lifetime Value based ROAS calculation">
+                          <Button variant="plain" icon={ViewIcon} accessibilityLabel="View LTV info" />
+                        </Tooltip>
+                      </InlineStack>
+                      <Text variant="headingXl" as="h1" tone={advanced.ltvRoas >= 4 ? 'success' : 'caution'}>
+                        {advanced.ltvRoas.toFixed(2)}x
+                      </Text>
+                      <Text variant="bodyMd" as="p" tone="subdued">
+                        Long-term profitability
+                      </Text>
+                    </BlockStack>
+                  </Grid.Cell>
 
-                <Grid.Cell columnSpan={{xs: 6, sm: 3, md: 4, lg: 4, xl: 4}}>
-                  <Stack>
-                    <Stack horizontal alignment="center">
-                      <Text variant="headingMd">Margin ROAS</Text>
-                      <Tooltip content="Profit margin adjusted ROAS">
-                        <Button plain monochrome icon={ChartLineIcon} />
-                      </Tooltip>
-                    </Stack>
-                    <Text variant="heading2xl" as="h2">
-                      {advanced.marginRoas.toFixed(2)}x
-                    </Text>
-                    <Text variant="bodyMd" color="subdued">
-                      After-margin profitability
-                    </Text>
-                  </Stack>
-                </Grid.Cell>
-              </>
-            )}
-          </Grid>
-        </Stack>
+                  <Grid.Cell columnSpan={{xs: 6, sm: 3, md: 4, lg: 4, xl: 4}}>
+                    <BlockStack gap="200">
+                      <InlineStack blockAlign="center" gap="200">
+                        <Text variant="headingMd" as="h3">Margin ROAS</Text>
+                        <Tooltip content="Profit margin adjusted ROAS">
+                          <Button variant="plain" icon={ChartLineIcon} accessibilityLabel="View Margin info" />
+                        </Tooltip>
+                      </InlineStack>
+                      <Text variant="headingXl" as="h1">
+                        {advanced.marginRoas.toFixed(2)}x
+                      </Text>
+                      <Text variant="bodyMd" as="p" tone="subdued">
+                        After-margin profitability
+                      </Text>
+                    </BlockStack>
+                  </Grid.Cell>
+                </>
+              )}
+            </Grid>
+          </BlockStack>
+        </Box>
       </Card>
     );
   };
@@ -304,34 +308,36 @@ export function AnalyticsTier({
     if (!isRealTimeEnabled) return null;
 
     return (
-      <Card sectioned>
-        <Stack horizontal alignment="center" distribution="equalSpacing">
-          <Stack horizontal alignment="center">
-            <div style={{ 
-              width: 8, 
-              height: 8, 
-              borderRadius: '50%', 
-              backgroundColor: '#00A47C',
-              animation: 'pulse 2s infinite'
-            }} />
-            <Text variant="bodyMd" color="success">
-              Real-time updates active
-            </Text>
-          </Stack>
-          <Stack horizontal alignment="center">
-            <Text variant="bodySm" color="subdued">
-              Last update: {lastUpdate.toLocaleTimeString()}
-            </Text>
-            <Button 
-              plain 
-              onClick={onDataRefresh}
-              loading={loading}
-              disabled={loading}
-            >
-              Refresh
-            </Button>
-          </Stack>
-        </Stack>
+      <Card>
+        <Box padding="400">
+          <InlineStack align="space-between" blockAlign="center">
+            <InlineStack blockAlign="center" gap="200">
+              <div style={{
+                width: 8,
+                height: 8,
+                borderRadius: '50%',
+                backgroundColor: '#00A47C',
+                animation: 'pulse 2s infinite'
+              }} />
+              <Text variant="bodyMd" as="p" tone="success">
+                Real-time updates active
+              </Text>
+            </InlineStack>
+            <InlineStack blockAlign="center" gap="200">
+              <Text variant="bodySm" as="span" tone="subdued">
+                Last update: {lastUpdate.toLocaleTimeString()}
+              </Text>
+              <Button
+                variant="plain"
+                onClick={onDataRefresh}
+                loading={loading}
+                disabled={loading}
+              >
+                Refresh
+              </Button>
+            </InlineStack>
+          </InlineStack>
+        </Box>
       </Card>
     );
   };
@@ -340,52 +346,54 @@ export function AnalyticsTier({
     if (!data.upgradePrompts || data.upgradePrompts.length === 0) return null;
 
     return (
-      <Stack sectioned>
+      <BlockStack gap="400">
         {data.upgradePrompts.map((prompt, index) => (
           <Banner
             key={index}
-            status="info"
+            tone="info"
             action={{
               content: `Upgrade to ${getTierDisplayName(prompt.requiredTier)}`,
               onAction: () => onUpgrade?.(prompt.requiredTier),
             }}
           >
-            <Text variant="bodyMd">{prompt.message}</Text>
+            <Text variant="bodyMd" as="p">{prompt.message}</Text>
           </Banner>
         ))}
-      </Stack>
+      </BlockStack>
     );
   };
 
   const renderTierStatus = () => (
-    <Card sectioned>
-      <Stack horizontal alignment="center" distribution="equalSpacing">
-        <Stack horizontal alignment="center">
-          <Text variant="headingMd">Analytics Tier</Text>
-          <Badge status={getTierBadgeColor(tier) as any}>
-            {getTierDisplayName(tier)}
-          </Badge>
-        </Stack>
-        
-        <Stack horizontal alignment="center">
-          {tier !== 'enterprise' && (
+    <Card>
+      <Box padding="400">
+        <InlineStack align="space-between" blockAlign="center">
+          <InlineStack blockAlign="center" gap="200">
+            <Text variant="headingMd" as="h3">Analytics Tier</Text>
+            <Badge tone={getTierBadgeTone(tier)}>
+              {getTierDisplayName(tier)}
+            </Badge>
+          </InlineStack>
+
+          <InlineStack blockAlign="center" gap="200">
+            {tier !== 'enterprise' && (
+              <Button
+                variant="primary"
+                onClick={() => onUpgrade?.(tier === 'starter' ? 'professional' : 'enterprise')}
+              >
+                {tier === 'starter' ? 'Upgrade to Professional' : 'Upgrade to Enterprise'}
+              </Button>
+            )}
+
             <Button
-              primary
-              onClick={() => onUpgrade?.(tier === 'starter' ? 'professional' : 'enterprise')}
+              variant="plain"
+              icon={SettingsIcon}
+              onClick={() => {/* Navigate to billing settings */}}
             >
-              {tier === 'starter' ? 'Upgrade to Professional' : 'Upgrade to Enterprise'}
+              Manage Plan
             </Button>
-          )}
-          
-          <Button
-            plain
-            icon={SettingsIcon}
-            onClick={() => {/* Navigate to billing settings */}}
-          >
-            Manage Plan
-          </Button>
-        </Stack>
-      </Stack>
+          </InlineStack>
+        </InlineStack>
+      </Box>
     </Card>
   );
 
@@ -401,39 +409,41 @@ export function AnalyticsTier({
     const nextTier = tier === 'starter' ? 'professional' : 'enterprise';
 
     return (
-      <Card sectioned>
-        <Stack>
-          <Text variant="headingMd">Unlock More Analytics Features</Text>
-          <Grid>
-            <Grid.Cell columnSpan={{xs: 6, sm: 6, md: 6, lg: 6, xl: 6}}>
-              <Stack>
-                <Text variant="headingXs">Current Plan: {getTierDisplayName(tier)}</Text>
-                {features[tier as keyof typeof features].map((feature, index) => (
-                  <Text key={index} variant="bodyMd" color="subdued">
-                    ✓ {feature}
-                  </Text>
-                ))}
-              </Stack>
-            </Grid.Cell>
-            <Grid.Cell columnSpan={{xs: 6, sm: 6, md: 6, lg: 6, xl: 6}}>
-              <Stack>
-                <Text variant="headingXs">{getTierDisplayName(nextTier)} Plan</Text>
-                {features[nextTier as keyof typeof features].map((feature, index) => (
-                  <Text key={index} variant="bodyMd">
-                    ✓ {feature}
-                  </Text>
-                ))}
-                <Button
-                  primary
-                  size="slim"
-                  onClick={() => onUpgrade?.(nextTier)}
-                >
-                  Upgrade to {getTierDisplayName(nextTier)}
-                </Button>
-              </Stack>
-            </Grid.Cell>
-          </Grid>
-        </Stack>
+      <Card>
+        <Box padding="400">
+          <BlockStack gap="400">
+            <Text variant="headingMd" as="h3">Unlock More Analytics Features</Text>
+            <Grid>
+              <Grid.Cell columnSpan={{xs: 6, sm: 6, md: 6, lg: 6, xl: 6}}>
+                <BlockStack gap="200">
+                  <Text variant="headingSm" as="h4">Current Plan: {getTierDisplayName(tier)}</Text>
+                  {features[tier as keyof typeof features].map((feature, index) => (
+                    <Text key={index} variant="bodyMd" as="p" tone="subdued">
+                      {feature}
+                    </Text>
+                  ))}
+                </BlockStack>
+              </Grid.Cell>
+              <Grid.Cell columnSpan={{xs: 6, sm: 6, md: 6, lg: 6, xl: 6}}>
+                <BlockStack gap="200">
+                  <Text variant="headingSm" as="h4">{getTierDisplayName(nextTier)} Plan</Text>
+                  {features[nextTier as keyof typeof features].map((feature, index) => (
+                    <Text key={index} variant="bodyMd" as="p">
+                      {feature}
+                    </Text>
+                  ))}
+                  <Button
+                    variant="primary"
+                    size="slim"
+                    onClick={() => onUpgrade?.(nextTier)}
+                  >
+                    Upgrade to {getTierDisplayName(nextTier)}
+                  </Button>
+                </BlockStack>
+              </Grid.Cell>
+            </Grid>
+          </BlockStack>
+        </Box>
       </Card>
     );
   };
@@ -441,14 +451,14 @@ export function AnalyticsTier({
   return (
     <Layout>
       <Layout.Section>
-        <Stack>
+        <BlockStack gap="400">
           {renderTierStatus()}
           {renderUpgradePrompts()}
           {renderRealTimeStatus()}
           {renderBasicKPIs()}
           {renderROASMetrics()}
           {renderTierComparison()}
-        </Stack>
+        </BlockStack>
       </Layout.Section>
     </Layout>
   );

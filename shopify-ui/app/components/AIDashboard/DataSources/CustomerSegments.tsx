@@ -13,12 +13,12 @@ import {
   DataTable,
   Button,
   ButtonGroup,
-  Stack,
+  BlockStack,
+  InlineStack,
   Box,
   Spinner,
   EmptyState,
   Tabs,
-  Tab,
   TextField,
   Select,
   ChoiceList,
@@ -39,10 +39,8 @@ import {
   ViewIcon,
   InfoIcon,
   PersonIcon,
-  TrendingUpIcon,
-  TrendingDownIcon,
-  MoneyIcon,
-  AnalyticsIcon
+  ChartVerticalIcon,
+  MoneyIcon
 } from '@shopify/polaris-icons';
 import {
   CustomerSegmentsData,
@@ -110,7 +108,7 @@ export function CustomerSegments({
       } else {
         console.error('Failed to fetch customer segments:', result.error);
       }
-    } catch (err) {
+    } catch (err: unknown) {
       console.error('Error fetching customer segments:', err);
     } finally {
       setLoading(false);
@@ -273,24 +271,24 @@ export function CustomerSegments({
   // Render helper functions
   const renderSegmentsTable = () => {
     const segmentTableData = filteredSegments.map(segment => [
-      <Stack alignment="center" spacing="tight" key={segment.id}>
-        <Avatar size="small" name={segment.name} />
+      <InlineStack blockAlign="center" gap="200" key={segment.id}>
+        <Avatar size="sm" name={segment.name} />
         <Box>
-          <Text variant="bodyMd" fontWeight="medium">{segment.name}</Text>
-          <Text variant="bodySm" color="subdued">{segment.description}</Text>
+          <Text as="p" variant="bodyMd" fontWeight="medium">{segment.name}</Text>
+          <Text as="span" variant="bodySm" tone="subdued">{segment.description}</Text>
         </Box>
-      </Stack>,
-      <Stack vertical spacing="extraTight">
-        <Text variant="bodyMd" fontWeight="medium">{formatters.compact(segment.size)}</Text>
-        <Text variant="caption" color="subdued">{segment.percentage.toFixed(1)}%</Text>
-      </Stack>,
-      <Text>{formatters.currency(segment.avgLifetimeValue)}</Text>,
-      <Text>{formatters.currency(segment.avgOrderValue)}</Text>,
-      <Text>{segment.purchaseFrequency.toFixed(1)}x</Text>,
-      <Stack alignment="center" spacing="tight">
+      </InlineStack>,
+      <BlockStack gap="100">
+        <Text as="p" variant="bodyMd" fontWeight="medium">{formatters.compact(segment.size)}</Text>
+        <Text as="span" variant="bodySm" tone="subdued">{segment.percentage.toFixed(1)}%</Text>
+      </BlockStack>,
+      <Text as="span">{formatters.currency(segment.avgLifetimeValue)}</Text>,
+      <Text as="span">{formatters.currency(segment.avgOrderValue)}</Text>,
+      <Text as="span">{segment.purchaseFrequency.toFixed(1)}x</Text>,
+      <InlineStack blockAlign="center" gap="200">
         <ProgressBar progress={segment.conversionRate * 100} size="small" />
-        <Text variant="bodySm">{(segment.conversionRate * 100).toFixed(1)}%</Text>
-      </Stack>,
+        <Text as="span" variant="bodySm">{(segment.conversionRate * 100).toFixed(1)}%</Text>
+      </InlineStack>,
       <Badge tone={segment.profitability === 'high' ? 'success' : segment.profitability === 'medium' ? 'attention' : 'critical'}>
         {segment.profitability}
       </Badge>,
@@ -298,7 +296,7 @@ export function CustomerSegments({
         {segment.growth}
       </Badge>,
       <Button
-        plain
+        variant="plain"
         icon={ViewIcon}
         onClick={() => {
           setSelectedSegment(segment);
@@ -330,29 +328,29 @@ export function CustomerSegments({
       <Layout>
         <Layout.Section>
           <Card>
-            <Box padding="4">
-              <Stack vertical spacing="loose">
-                <Text variant="headingMd">Behavior Patterns Analysis</Text>
-                <Stack vertical spacing="tight">
+            <Box padding="400">
+              <BlockStack gap="400">
+                <Text as="h3" variant="headingMd">Behavior Patterns Analysis</Text>
+                <BlockStack gap="200">
                   {segmentsData.behaviorPatterns
                     .sort((a, b) => b.frequency - a.frequency)
                     .slice(0, 8)
                     .map(pattern => (
-                      <Card key={pattern.id} background="surface-subdued">
-                        <Box padding="3">
-                          <Stack vertical spacing="tight">
-                            <Stack distribution="spaceBetween" alignment="center">
-                              <Text variant="bodyMd" fontWeight="medium">{pattern.pattern}</Text>
-                              <Stack spacing="tight">
+                      <Card key={pattern.id} background="bg-surface-secondary">
+                        <Box padding="300">
+                          <BlockStack gap="200">
+                            <InlineStack align="space-between" blockAlign="center">
+                              <Text as="p" variant="bodyMd" fontWeight="medium">{pattern.pattern}</Text>
+                              <InlineStack gap="200">
                                 <Badge tone={pattern.impact === 'high' ? 'critical' : pattern.impact === 'medium' ? 'attention' : 'info'}>
-                                  {pattern.impact} impact
+                                  {`${pattern.impact} impact`}
                                 </Badge>
-                                <Text variant="caption" color="subdued">{pattern.frequency}% frequency</Text>
-                              </Stack>
-                            </Stack>
-                            <Text variant="bodySm" color="subdued">{pattern.description}</Text>
-                            <Stack spacing="tight">
-                              <Text variant="caption" fontWeight="medium">Segments:</Text>
+                                <Text as="span" variant="bodySm" tone="subdued">{pattern.frequency}% frequency</Text>
+                              </InlineStack>
+                            </InlineStack>
+                            <Text as="span" variant="bodySm" tone="subdued">{pattern.description}</Text>
+                            <InlineStack gap="200">
+                              <Text as="span" variant="bodySm" fontWeight="medium">Segments:</Text>
                               {pattern.segments.slice(0, 3).map(segmentId => {
                                 const segment = segmentsData.segments.find(s => s.id === segmentId);
                                 return segment ? (
@@ -360,16 +358,16 @@ export function CustomerSegments({
                                 ) : null;
                               })}
                               {pattern.segments.length > 3 && (
-                                <Text variant="caption" color="subdued">+{pattern.segments.length - 3} more</Text>
+                                <Text as="span" variant="bodySm" tone="subdued">+{pattern.segments.length - 3} more</Text>
                               )}
-                            </Stack>
+                            </InlineStack>
                             {pattern.actionable && (
-                              <Box paddingBlockStart="2">
-                                <Text variant="bodySm" fontWeight="medium">💡 {pattern.recommendation}</Text>
+                              <Box paddingBlockStart="200">
+                                <Text as="span" variant="bodySm" fontWeight="medium">{pattern.recommendation}</Text>
                               </Box>
                             )}
                             <Button
-                              plain
+                              variant="plain"
                               size="slim"
                               onClick={() => {
                                 setSelectedBehaviorPattern(pattern);
@@ -378,12 +376,12 @@ export function CustomerSegments({
                             >
                               View details
                             </Button>
-                          </Stack>
+                          </BlockStack>
                         </Box>
                       </Card>
                     ))}
-                </Stack>
-              </Stack>
+                </BlockStack>
+              </BlockStack>
             </Box>
           </Card>
         </Layout.Section>
@@ -397,25 +395,25 @@ export function CustomerSegments({
     const projectionTableData = segmentsData.lifetimeValueProjections.map(projection => {
       const segment = segmentsData.segments.find(s => s.id === projection.segmentId);
       return [
-        <Text key={projection.segmentId} fontWeight="medium">{segment?.name || 'Unknown'}</Text>,
-        <Text>{formatters.currency(projection.currentLTV)}</Text>,
-        <Text>{formatters.currency(projection.projectedLTV)}</Text>,
-        <Stack alignment="center" spacing="tight">
-          <Text variant="bodyMd" fontWeight="medium" color={projection.projectedLTV > projection.currentLTV ? 'success' : 'critical'}>
+        <Text as="span" key={projection.segmentId} fontWeight="medium">{segment?.name || 'Unknown'}</Text>,
+        <Text as="span">{formatters.currency(projection.currentLTV)}</Text>,
+        <Text as="span">{formatters.currency(projection.projectedLTV)}</Text>,
+        <InlineStack blockAlign="center" gap="200">
+          <Text as="p" variant="bodyMd" fontWeight="medium" tone={projection.projectedLTV > projection.currentLTV ? 'success' : 'critical'}>
             {projection.projectedLTV > projection.currentLTV ? '+' : ''}
             {formatters.currency(projection.projectedLTV - projection.currentLTV)}
           </Text>
           <Badge tone={projection.projectedLTV > projection.currentLTV ? 'success' : 'critical'}>
-            {((projection.projectedLTV - projection.currentLTV) / projection.currentLTV * 100).toFixed(1)}%
+            {`${((projection.projectedLTV - projection.currentLTV) / projection.currentLTV * 100).toFixed(1)}%`}
           </Badge>
-        </Stack>,
-        <Text>{projection.timeframe}</Text>,
-        <Stack alignment="center" spacing="tight">
+        </InlineStack>,
+        <Text as="span">{projection.timeframe}</Text>,
+        <InlineStack blockAlign="center" gap="200">
           <ProgressBar progress={projection.confidence * 100} size="small" />
-          <Text variant="bodySm">{Math.round(projection.confidence * 100)}%</Text>
-        </Stack>,
+          <Text as="span" variant="bodySm">{Math.round(projection.confidence * 100)}%</Text>
+        </InlineStack>,
         <Box>
-          <Text variant="caption" color="subdued">
+          <Text as="span" variant="bodySm" tone="subdued">
             {projection.factors.slice(0, 2).join(', ')}
             {projection.factors.length > 2 && '...'}
           </Text>
@@ -427,15 +425,15 @@ export function CustomerSegments({
       <Layout>
         <Layout.Section>
           <Card>
-            <Box padding="4">
-              <Stack vertical spacing="loose">
-                <Text variant="headingMd">Lifetime Value Projections</Text>
+            <Box padding="400">
+              <BlockStack gap="400">
+                <Text as="h3" variant="headingMd">Lifetime Value Projections</Text>
                 <DataTable
                   columnContentTypes={['text', 'text', 'text', 'text', 'text', 'text', 'text']}
                   headings={['Segment', 'Current LTV', 'Projected LTV', 'Change', 'Timeframe', 'Confidence', 'Key Factors']}
                   rows={projectionTableData}
                 />
-              </Stack>
+              </BlockStack>
             </Box>
           </Card>
         </Layout.Section>
@@ -446,11 +444,11 @@ export function CustomerSegments({
   const renderDemographics = () => {
     return (
       <Layout>
-        <Layout.Section oneHalf>
+        <Layout.Section variant="oneHalf">
           <PieChartComponent
             title="Age Distribution"
             subtitle="Customer age groups"
-            data={demographicChartData.age}
+            data={demographicChartData.age || []}
             dataKey="value"
             nameKey="name"
             height={250}
@@ -459,11 +457,11 @@ export function CustomerSegments({
           />
         </Layout.Section>
 
-        <Layout.Section oneHalf>
+        <Layout.Section variant="oneHalf">
           <PieChartComponent
             title="Gender Distribution"
             subtitle="Customer gender breakdown"
-            data={demographicChartData.gender}
+            data={demographicChartData.gender || []}
             dataKey="value"
             nameKey="name"
             height={250}
@@ -472,11 +470,11 @@ export function CustomerSegments({
           />
         </Layout.Section>
 
-        <Layout.Section oneHalf>
+        <Layout.Section variant="oneHalf">
           <BarChartComponent
             title="Income Distribution"
             subtitle="Customer income levels"
-            data={demographicChartData.income}
+            data={demographicChartData.income || []}
             dataKey="value"
             xAxisKey="name"
             height={250}
@@ -486,11 +484,11 @@ export function CustomerSegments({
           />
         </Layout.Section>
 
-        <Layout.Section oneHalf>
+        <Layout.Section variant="oneHalf">
           <BarChartComponent
             title="Geographic Distribution"
             subtitle="Top customer locations"
-            data={demographicChartData.location}
+            data={demographicChartData.location || []}
             dataKey="value"
             xAxisKey="name"
             height={250}
@@ -530,33 +528,33 @@ export function CustomerSegments({
 
         <Layout.Section>
           <Card>
-            <Box padding="4">
-              <Stack vertical spacing="loose">
-                <Text variant="headingMd">Growth Summary</Text>
-                <Stack vertical spacing="tight">
+            <Box padding="400">
+              <BlockStack gap="400">
+                <Text as="h3" variant="headingMd">Growth Summary</Text>
+                <BlockStack gap="200">
                   {segmentsData.growthTrends
                     .sort((a, b) => b.growthRate - a.growthRate)
                     .map(trend => {
                       const segment = segmentsData.segments.find(s => s.id === trend.segmentId);
                       return segment ? (
-                        <Stack key={trend.segmentId} distribution="spaceBetween" alignment="center">
-                          <Stack spacing="tight" alignment="center">
-                            <Avatar size="small" name={segment.name} />
-                            <Text variant="bodyMd" fontWeight="medium">{segment.name}</Text>
-                          </Stack>
-                          <Stack spacing="tight" alignment="center">
+                        <InlineStack key={trend.segmentId} align="space-between" blockAlign="center">
+                          <InlineStack gap="200" blockAlign="center">
+                            <Avatar size="sm" name={segment.name} />
+                            <Text as="p" variant="bodyMd" fontWeight="medium">{segment.name}</Text>
+                          </InlineStack>
+                          <InlineStack gap="200" blockAlign="center">
                             <Badge tone={trend.trendDirection === 'up' ? 'success' : trend.trendDirection === 'down' ? 'critical' : 'attention'}>
                               {trend.trendDirection === 'up' ? '↗' : trend.trendDirection === 'down' ? '↘' : '→'}
                             </Badge>
-                            <Text variant="bodyMd" fontWeight="medium">
+                            <Text as="p" variant="bodyMd" fontWeight="medium">
                               {trend.growthRate > 0 ? '+' : ''}{trend.growthRate.toFixed(1)}%
                             </Text>
-                          </Stack>
-                        </Stack>
+                          </InlineStack>
+                        </InlineStack>
                       ) : null;
                     })}
-                </Stack>
-              </Stack>
+                </BlockStack>
+              </BlockStack>
             </Box>
           </Card>
         </Layout.Section>
@@ -568,11 +566,11 @@ export function CustomerSegments({
   if (loading && !segmentsData) {
     return (
       <Card>
-        <Box padding="8">
-          <Stack alignment="center" distribution="center">
+        <Box padding="800">
+          <InlineStack blockAlign="center" align="center">
             <Spinner size="large" />
-            <Text variant="bodyLg">Loading customer segments...</Text>
-          </Stack>
+            <Text as="p" variant="bodyLg">Loading customer segments...</Text>
+          </InlineStack>
         </Box>
       </Card>
     );
@@ -631,11 +629,11 @@ export function CustomerSegments({
         {showFilters && (
           <Layout.Section>
             <Card>
-              <Box padding="4">
-                <Stack vertical spacing="tight">
-                  <Text variant="headingMd">Filters</Text>
+              <Box padding="400">
+                <BlockStack gap="200">
+                  <Text as="h3" variant="headingMd">Filters</Text>
 
-                  <Stack spacing="tight">
+                  <InlineStack gap="200">
                     <Box minWidth="200px">
                       <TextField
                         label="Search"
@@ -645,6 +643,7 @@ export function CustomerSegments({
                         placeholder="Search segments..."
                         clearButton
                         onClearButtonClick={() => setSearchQuery('')}
+                        autoComplete="off"
                       />
                     </Box>
 
@@ -690,8 +689,8 @@ export function CustomerSegments({
                         allowMultiple
                       />
                     </Box>
-                  </Stack>
-                </Stack>
+                  </InlineStack>
+                </BlockStack>
               </Box>
             </Card>
           </Layout.Section>
@@ -700,47 +699,47 @@ export function CustomerSegments({
         <Layout.Section>
           <Card>
             <Tabs tabs={tabs} selected={selectedTab} onSelect={setSelectedTab}>
-              <Box padding="4">
+              <Box padding="400">
                 {selectedTab === 0 && (
-                  <Stack vertical spacing="loose">
-                    <Text variant="headingLg">Customer Segments Overview</Text>
+                  <BlockStack gap="400">
+                    <Text as="h2" variant="headingLg">Customer Segments Overview</Text>
 
                     <Card>
-                      <Box padding="4">
-                        <Stack vertical spacing="tight">
-                          <Text variant="headingMd">Summary Statistics</Text>
+                      <Box padding="400">
+                        <BlockStack gap="200">
+                          <Text as="h3" variant="headingMd">Summary Statistics</Text>
                           <Layout>
-                            <Layout.Section oneQuarter>
-                              <Stack vertical spacing="extraTight">
-                                <Text variant="headingXl">{formatters.compact(segmentsData.summary.totalCustomers)}</Text>
-                                <Text variant="bodySm" color="subdued">Total Customers</Text>
-                              </Stack>
+                            <Layout.Section variant="oneHalf">
+                              <BlockStack gap="100">
+                                <Text as="h1" variant="headingXl">{formatters.compact(segmentsData.summary.totalCustomers)}</Text>
+                                <Text as="span" variant="bodySm" tone="subdued">Total Customers</Text>
+                              </BlockStack>
                             </Layout.Section>
-                            <Layout.Section oneQuarter>
-                              <Stack vertical spacing="extraTight">
-                                <Text variant="headingXl">{segmentsData.summary.totalSegments}</Text>
-                                <Text variant="bodySm" color="subdued">Active Segments</Text>
-                              </Stack>
+                            <Layout.Section variant="oneHalf">
+                              <BlockStack gap="100">
+                                <Text as="h1" variant="headingXl">{segmentsData.summary.totalSegments}</Text>
+                                <Text as="span" variant="bodySm" tone="subdued">Active Segments</Text>
+                              </BlockStack>
                             </Layout.Section>
-                            <Layout.Section oneQuarter>
-                              <Stack vertical spacing="extraTight">
-                                <Text variant="headingXl">{formatters.currency(segmentsData.summary.avgLifetimeValue)}</Text>
-                                <Text variant="bodySm" color="subdued">Avg Lifetime Value</Text>
-                              </Stack>
+                            <Layout.Section variant="oneHalf">
+                              <BlockStack gap="100">
+                                <Text as="h1" variant="headingXl">{formatters.currency(segmentsData.summary.avgLifetimeValue)}</Text>
+                                <Text as="span" variant="bodySm" tone="subdued">Avg Lifetime Value</Text>
+                              </BlockStack>
                             </Layout.Section>
-                            <Layout.Section oneQuarter>
-                              <Stack vertical spacing="extraTight">
-                                <Text variant="headingXl">{segmentsData.summary.highValueSegments}</Text>
-                                <Text variant="bodySm" color="subdued">High-Value Segments</Text>
-                              </Stack>
+                            <Layout.Section variant="oneHalf">
+                              <BlockStack gap="100">
+                                <Text as="h1" variant="headingXl">{segmentsData.summary.highValueSegments}</Text>
+                                <Text as="span" variant="bodySm" tone="subdued">High-Value Segments</Text>
+                              </BlockStack>
                             </Layout.Section>
                           </Layout>
-                        </Stack>
+                        </BlockStack>
                       </Box>
                     </Card>
 
                     <Layout>
-                      <Layout.Section oneThird>
+                      <Layout.Section variant="oneThird">
                         <PieChartComponent
                           title="Segment Size Distribution"
                           subtitle="Customer distribution across segments"
@@ -753,7 +752,7 @@ export function CustomerSegments({
                         />
                       </Layout.Section>
 
-                      <Layout.Section oneThird>
+                      <Layout.Section variant="oneThird">
                         <PieChartComponent
                           title="Profitability Distribution"
                           subtitle="Segments by profitability level"
@@ -766,7 +765,7 @@ export function CustomerSegments({
                         />
                       </Layout.Section>
 
-                      <Layout.Section oneThird>
+                      <Layout.Section variant="oneThird">
                         <ScatterPlot
                           title="Size vs Lifetime Value"
                           subtitle="Segment positioning"
@@ -787,42 +786,42 @@ export function CustomerSegments({
                         />
                       </Layout.Section>
                     </Layout>
-                  </Stack>
+                  </BlockStack>
                 )}
 
                 {selectedTab === 1 && (
-                  <Stack vertical spacing="loose">
-                    <Text variant="headingLg">Customer Segment Details</Text>
+                  <BlockStack gap="400">
+                    <Text as="h2" variant="headingLg">Customer Segment Details</Text>
                     {renderSegmentsTable()}
-                  </Stack>
+                  </BlockStack>
                 )}
 
                 {selectedTab === 2 && (
-                  <Stack vertical spacing="loose">
-                    <Text variant="headingLg">Customer Demographics</Text>
+                  <BlockStack gap="400">
+                    <Text as="h2" variant="headingLg">Customer Demographics</Text>
                     {renderDemographics()}
-                  </Stack>
+                  </BlockStack>
                 )}
 
                 {selectedTab === 3 && (
-                  <Stack vertical spacing="loose">
-                    <Text variant="headingLg">Customer Behavior Patterns</Text>
+                  <BlockStack gap="400">
+                    <Text as="h2" variant="headingLg">Customer Behavior Patterns</Text>
                     {renderBehaviorPatterns()}
-                  </Stack>
+                  </BlockStack>
                 )}
 
                 {selectedTab === 4 && (
-                  <Stack vertical spacing="loose">
-                    <Text variant="headingLg">Lifetime Value Analysis</Text>
+                  <BlockStack gap="400">
+                    <Text as="h2" variant="headingLg">Lifetime Value Analysis</Text>
                     {renderLifetimeValueProjections()}
-                  </Stack>
+                  </BlockStack>
                 )}
 
                 {selectedTab === 5 && (
-                  <Stack vertical spacing="loose">
-                    <Text variant="headingLg">Segment Growth Analysis</Text>
+                  <BlockStack gap="400">
+                    <Text as="h2" variant="headingLg">Segment Growth Analysis</Text>
                     {renderGrowthTrends()}
-                  </Stack>
+                  </BlockStack>
                 )}
               </Box>
             </Tabs>
@@ -836,12 +835,12 @@ export function CustomerSegments({
           open={showSegmentModal}
           onClose={() => setShowSegmentModal(false)}
           title={selectedSegment.name}
-          large
+          size="large"
         >
           <Modal.Section>
-            <Stack vertical spacing="loose">
+            <BlockStack gap="400">
               <TextContainer>
-                <Text variant="headingMd">Segment Profile</Text>
+                <Text as="h3" variant="headingMd">Segment Profile</Text>
                 <p><strong>Description:</strong> {selectedSegment.description}</p>
                 <p><strong>Size:</strong> {formatters.compact(selectedSegment.size)} customers ({selectedSegment.percentage.toFixed(1)}%)</p>
                 <p><strong>Lifetime Value:</strong> {formatters.currency(selectedSegment.avgLifetimeValue)}</p>
@@ -851,13 +850,13 @@ export function CustomerSegments({
                 <p><strong>Profitability:</strong> {selectedSegment.profitability}</p>
                 <p><strong>Growth Trend:</strong> {selectedSegment.growth}</p>
 
-                <Text variant="headingMd">Behavior Insights</Text>
+                <Text as="h3" variant="headingMd">Behavior Insights</Text>
                 <p><strong>Top Channels:</strong> {selectedSegment.behavior.topChannels.join(', ')}</p>
                 <p><strong>Preferred Devices:</strong> {selectedSegment.behavior.preferredDevices.join(', ')}</p>
                 <p><strong>Avg Session Duration:</strong> {selectedSegment.behavior.averageSessionDuration} minutes</p>
                 <p><strong>Pages per Session:</strong> {selectedSegment.behavior.pagesPerSession.toFixed(1)}</p>
 
-                <Text variant="headingMd">Demographics</Text>
+                <Text as="h3" variant="headingMd">Demographics</Text>
                 <List type="bullet">
                   {selectedSegment.demographics.slice(0, 5).map((demo, index) => (
                     <List.Item key={index}>
@@ -870,7 +869,7 @@ export function CustomerSegments({
                   ))}
                 </List>
               </TextContainer>
-            </Stack>
+            </BlockStack>
           </Modal.Section>
         </Modal>
       )}
@@ -881,18 +880,18 @@ export function CustomerSegments({
           open={showBehaviorModal}
           onClose={() => setShowBehaviorModal(false)}
           title={selectedBehaviorPattern.pattern}
-          large
+          size="large"
         >
           <Modal.Section>
-            <Stack vertical spacing="loose">
+            <BlockStack gap="400">
               <TextContainer>
-                <Text variant="headingMd">Behavior Pattern Analysis</Text>
+                <Text as="h3" variant="headingMd">Behavior Pattern Analysis</Text>
                 <p><strong>Description:</strong> {selectedBehaviorPattern.description}</p>
                 <p><strong>Frequency:</strong> {selectedBehaviorPattern.frequency}% of customers exhibit this pattern</p>
                 <p><strong>Impact Level:</strong> {selectedBehaviorPattern.impact}</p>
                 <p><strong>Actionable:</strong> {selectedBehaviorPattern.actionable ? 'Yes' : 'No'}</p>
 
-                <Text variant="headingMd">Affected Segments</Text>
+                <Text as="h3" variant="headingMd">Affected Segments</Text>
                 <List type="bullet">
                   {selectedBehaviorPattern.segments.map(segmentId => {
                     const segment = segmentsData?.segments.find(s => s.id === segmentId);
@@ -904,12 +903,12 @@ export function CustomerSegments({
 
                 {selectedBehaviorPattern.actionable && (
                   <>
-                    <Text variant="headingMd">Recommended Actions</Text>
+                    <Text as="h3" variant="headingMd">Recommended Actions</Text>
                     <p>{selectedBehaviorPattern.recommendation}</p>
                   </>
                 )}
               </TextContainer>
-            </Stack>
+            </BlockStack>
           </Modal.Section>
         </Modal>
       )}

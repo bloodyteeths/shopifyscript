@@ -1,7 +1,7 @@
 /**
  * Enterprise Dashboard Builder Component
  * Drag-and-drop interface for building custom dashboards
- * 
+ *
  * Features:
  * - React Grid Layout for drag-and-drop positioning
  * - Widget library with various chart types
@@ -11,10 +11,12 @@
  */
 
 import React, { useState, useCallback, useMemo, useRef } from "react";
+// @ts-expect-error no type declarations for react-grid-layout
 import { Responsive, WidthProvider, Layout } from "react-grid-layout";
 import {
   Card,
-  Stack,
+  InlineStack,
+  BlockStack,
   Text,
   Button,
   Modal,
@@ -31,7 +33,8 @@ import {
   Checkbox,
   RangeSlider,
   Tabs,
-  Divider
+  Divider,
+  Box
 } from "@shopify/polaris";
 import {
   PlusIcon,
@@ -77,9 +80,9 @@ interface WidgetConfig {
   position: Layout;
 }
 
-type WidgetType = 
+type WidgetType =
   | 'metric_card'
-  | 'line_chart' 
+  | 'line_chart'
   | 'bar_chart'
   | 'area_chart'
   | 'pie_chart'
@@ -121,7 +124,12 @@ interface DashboardSettings {
 }
 
 // Widget type configurations
-const WIDGET_TYPES = {
+const WIDGET_TYPES: Record<string, {
+  name: string;
+  icon: string;
+  defaultSize: { w: number; h: number; minW: number; minH: number };
+  description: string;
+}> = {
   metric_card: {
     name: 'Metric Card',
     icon: 'Chart',
@@ -255,7 +263,7 @@ export const DashboardBuilder: React.FC<DashboardBuilderProps> = ({
 
   // Handle layout change (drag/resize)
   const handleLayoutChange = useCallback((newLayout: Layout[]) => {
-    setWidgets(prevWidgets => 
+    setWidgets(prevWidgets =>
       prevWidgets.map(widget => {
         const layoutItem = newLayout.find(item => item.i === widget.id);
         if (layoutItem) {
@@ -295,10 +303,10 @@ export const DashboardBuilder: React.FC<DashboardBuilderProps> = ({
     const currentLayout = getLayoutFromWidgets(widgets);
     let x = 0;
     let y = 0;
-    
+
     // Simple algorithm to find next available position
-    while (currentLayout.some(item => 
-      item.x === x && item.y === y && 
+    while (currentLayout.some(item =>
+      item.x === x && item.y === y &&
       item.x + item.w > x && item.y + item.h > y
     )) {
       x += 1;
@@ -326,9 +334,9 @@ export const DashboardBuilder: React.FC<DashboardBuilderProps> = ({
 
   // Update widget configuration
   const updateWidget = useCallback((widgetId: string, updates: Partial<WidgetConfig>) => {
-    setWidgets(prev => 
-      prev.map(widget => 
-        widget.id === widgetId 
+    setWidgets(prev =>
+      prev.map(widget =>
+        widget.id === widgetId
           ? { ...widget, ...updates }
           : widget
       )
@@ -383,8 +391,8 @@ export const DashboardBuilder: React.FC<DashboardBuilderProps> = ({
         case 'metric_card':
           return (
             <div style={{ padding: '1rem', textAlign: 'center' }}>
-              <Text variant="headingLg">{MOCK_DATA.kpi.clicks.toLocaleString()}</Text>
-              <Text variant="bodyMd" color="subdued">Clicks</Text>
+              <Text variant="headingLg" as="h2">{MOCK_DATA.kpi.clicks.toLocaleString()}</Text>
+              <Text variant="bodyMd" as="p" tone="subdued">Clicks</Text>
             </div>
           );
 
@@ -397,9 +405,9 @@ export const DashboardBuilder: React.FC<DashboardBuilderProps> = ({
                   <XAxis dataKey="date" fontSize={10} />
                   <YAxis fontSize={10} />
                   <RechartsTooltip />
-                  <Line 
-                    type="monotone" 
-                    dataKey="value" 
+                  <Line
+                    type="monotone"
+                    dataKey="value"
                     stroke={widget.config.chartColor || currentTheme.primaryColor}
                     strokeWidth={2}
                   />
@@ -417,8 +425,8 @@ export const DashboardBuilder: React.FC<DashboardBuilderProps> = ({
                   <XAxis dataKey="date" fontSize={10} />
                   <YAxis fontSize={10} />
                   <RechartsTooltip />
-                  <Bar 
-                    dataKey="value" 
+                  <Bar
+                    dataKey="value"
                     fill={widget.config.chartColor || currentTheme.primaryColor}
                   />
                 </BarChart>
@@ -428,39 +436,39 @@ export const DashboardBuilder: React.FC<DashboardBuilderProps> = ({
 
         case 'kpi_grid':
           return (
-            <div style={{ 
-              display: 'grid', 
-              gridTemplateColumns: 'repeat(auto-fit, minmax(100px, 1fr))', 
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(100px, 1fr))',
               gap: '1rem',
               padding: '1rem',
               height: '100%'
             }}>
               <div style={{ textAlign: 'center' }}>
-                <Text variant="headingMl">45.6K</Text>
-                <Text variant="bodySm" color="subdued">Clicks</Text>
+                <Text variant="headingMd" as="h3">45.6K</Text>
+                <Text variant="bodySm" as="span" tone="subdued">Clicks</Text>
               </div>
               <div style={{ textAlign: 'center' }}>
-                <Text variant="headingMl">$1.2K</Text>
-                <Text variant="bodySm" color="subdued">Cost</Text>
+                <Text variant="headingMd" as="h3">$1.2K</Text>
+                <Text variant="bodySm" as="span" tone="subdued">Cost</Text>
               </div>
               <div style={{ textAlign: 'center' }}>
-                <Text variant="headingMl">142</Text>
-                <Text variant="bodySm" color="subdued">Conversions</Text>
+                <Text variant="headingMd" as="h3">142</Text>
+                <Text variant="bodySm" as="span" tone="subdued">Conversions</Text>
               </div>
             </div>
           );
 
         default:
           return (
-            <div style={{ 
-              padding: '1rem', 
+            <div style={{
+              padding: '1rem',
               textAlign: 'center',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               height: '100%'
             }}>
-              <Text variant="bodyMd" color="subdued">
+              <Text variant="bodyMd" as="p" tone="subdued">
                 {WIDGET_TYPES[widget.type]?.name || 'Widget'} Preview
               </Text>
             </div>
@@ -490,15 +498,14 @@ export const DashboardBuilder: React.FC<DashboardBuilderProps> = ({
           alignItems: 'center',
           backgroundColor: '#f8f9fa'
         }}>
-          <Text variant="bodyMd" fontWeight="semibold">
+          <Text variant="bodyMd" as="p" fontWeight="semibold">
             {widget.title}
           </Text>
           <ButtonGroup>
             <Button
               size="micro"
               icon={EditIcon}
-              onClick={(e) => {
-                e.stopPropagation();
+              onClick={() => {
                 setSelectedWidget(widget);
                 setShowWidgetModal(true);
               }}
@@ -506,8 +513,7 @@ export const DashboardBuilder: React.FC<DashboardBuilderProps> = ({
             <Button
               size="micro"
               icon={DeleteIcon}
-              onClick={(e) => {
-                e.stopPropagation();
+              onClick={() => {
                 removeWidget(widget.id);
               }}
             />
@@ -537,7 +543,7 @@ export const DashboardBuilder: React.FC<DashboardBuilderProps> = ({
   }, [selectedWidget, currentTheme, removeWidget]);
 
   return (
-    <div style={{ 
+    <div style={{
       fontFamily: currentTheme.fontFamily,
       backgroundColor: currentTheme.backgroundColor,
       minHeight: '100vh'
@@ -551,7 +557,7 @@ export const DashboardBuilder: React.FC<DashboardBuilderProps> = ({
         justifyContent: 'space-between',
         alignItems: 'center'
       }}>
-        <Stack spacing="tight">
+        <InlineStack gap="200">
           <ButtonGroup>
             <Button
               icon={UndoIcon}
@@ -568,7 +574,7 @@ export const DashboardBuilder: React.FC<DashboardBuilderProps> = ({
               Redo
             </Button>
           </ButtonGroup>
-          
+
           <Button
             icon={PlusIcon}
             onClick={() => setShowWidgetModal(true)}
@@ -582,21 +588,21 @@ export const DashboardBuilder: React.FC<DashboardBuilderProps> = ({
           >
             Theme
           </Button>
-        </Stack>
+        </InlineStack>
 
-        <Stack spacing="tight">
+        <InlineStack gap="200">
           <Button onClick={onPreview}>
             Preview
           </Button>
           <Button
-            primary
+            variant="primary"
             icon={SaveIcon}
             onClick={handleSave}
             loading={isLoading}
           >
             Save Dashboard
           </Button>
-        </Stack>
+        </InlineStack>
       </div>
 
       {/* Dashboard Grid */}
@@ -630,15 +636,15 @@ export const DashboardBuilder: React.FC<DashboardBuilderProps> = ({
             padding: '4rem 2rem',
             color: '#637381'
           }}>
-            <Text variant="headingMd">Start building your dashboard</Text>
+            <Text variant="headingMd" as="h3">Start building your dashboard</Text>
             <div style={{ marginTop: '0.5rem' }}>
-              <Text variant="bodyMd">
+              <Text variant="bodyMd" as="p">
                 Add widgets to create your custom analytics dashboard
               </Text>
             </div>
             <div style={{ marginTop: '2rem' }}>
               <Button
-                primary
+                variant="primary"
                 icon={PlusIcon}
                 onClick={() => setShowWidgetModal(true)}
               >
@@ -654,10 +660,10 @@ export const DashboardBuilder: React.FC<DashboardBuilderProps> = ({
         open={showWidgetModal}
         onClose={() => setShowWidgetModal(false)}
         title="Add Widget"
-        large
+        size="large"
       >
         <Modal.Section>
-          <Text variant="headingMd">Choose Widget Type</Text>
+          <Text variant="headingMd" as="h3">Choose Widget Type</Text>
           <div style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
@@ -665,7 +671,7 @@ export const DashboardBuilder: React.FC<DashboardBuilderProps> = ({
             marginTop: '1rem'
           }}>
             {Object.entries(WIDGET_TYPES).map(([type, config]) => (
-              <Card key={type} subdued>
+              <Card key={type}>
                 <div
                   style={{ padding: '1rem', cursor: 'pointer' }}
                   onClick={() => {
@@ -673,18 +679,18 @@ export const DashboardBuilder: React.FC<DashboardBuilderProps> = ({
                     setShowWidgetModal(false);
                   }}
                 >
-                  <Stack vertical spacing="tight">
-                    <Stack spacing="tight">
-                      <Text variant="bodyLg">{config.icon}</Text>
-                      <Text variant="bodyMd" fontWeight="semibold">
+                  <BlockStack gap="200">
+                    <InlineStack gap="200">
+                      <Text variant="bodyLg" as="p">{config.icon}</Text>
+                      <Text variant="bodyMd" as="p" fontWeight="semibold">
                         {config.name}
                       </Text>
-                    </Stack>
-                    <Text variant="bodySm" color="subdued">
+                    </InlineStack>
+                    <Text variant="bodySm" as="span" tone="subdued">
                       {config.description}
                     </Text>
-                    <Badge>{`${config.defaultSize.w}×${config.defaultSize.h} grid`}</Badge>
-                  </Stack>
+                    <Badge>{`${config.defaultSize.w}x${config.defaultSize.h} grid`}</Badge>
+                  </BlockStack>
                 </div>
               </Card>
             ))}
@@ -703,9 +709,9 @@ export const DashboardBuilder: React.FC<DashboardBuilderProps> = ({
         }}
       >
         <Modal.Section>
-          <Stack vertical spacing="loose">
+          <BlockStack gap="400">
             <div>
-              <Text variant="bodyMd" fontWeight="semibold">Primary Color</Text>
+              <Text variant="bodyMd" as="p" fontWeight="semibold">Primary Color</Text>
               <div style={{ marginTop: '0.5rem' }}>
                 <input
                   type="color"
@@ -719,7 +725,7 @@ export const DashboardBuilder: React.FC<DashboardBuilderProps> = ({
             </div>
 
             <div>
-              <Text variant="bodyMd" fontWeight="semibold">Secondary Color</Text>
+              <Text variant="bodyMd" as="p" fontWeight="semibold">Secondary Color</Text>
               <div style={{ marginTop: '0.5rem' }}>
                 <input
                   type="color"
@@ -745,7 +751,7 @@ export const DashboardBuilder: React.FC<DashboardBuilderProps> = ({
                 cardStyle: value as any
               }))}
             />
-          </Stack>
+          </BlockStack>
         </Modal.Section>
       </Modal>
     </div>

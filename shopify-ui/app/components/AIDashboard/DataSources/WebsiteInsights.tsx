@@ -11,20 +11,18 @@ import {
   Text,
   Badge,
   DataTable,
-  Filters,
   Button,
   ButtonGroup,
-  Stack,
+  InlineStack,
+  BlockStack,
   Box,
   Spinner,
   EmptyState,
   Tabs,
-  Tab,
   TextField,
   Select,
   RangeSlider,
   Modal,
-  TextContainer,
   List,
   Thumbnail,
   Link,
@@ -115,7 +113,7 @@ export function WebsiteInsights({
       } else {
         console.error('Failed to fetch website insights:', result.error);
       }
-    } catch (err) {
+    } catch (err: unknown) {
       console.error('Error fetching website insights:', err);
     } finally {
       setLoading(false);
@@ -266,7 +264,7 @@ export function WebsiteInsights({
   // Render helper functions
   const renderProductsTable = () => {
     const productTableData = filteredProducts.map(product => [
-      <Stack alignment="center" spacing="tight" key={product.id}>
+      <InlineStack align="center" gap="200" key={product.id}>
         {product.imageUrl && (
           <Thumbnail
             source={product.imageUrl}
@@ -275,21 +273,21 @@ export function WebsiteInsights({
           />
         )}
         <Box>
-          <Text variant="bodyMd" fontWeight="medium">{product.name}</Text>
-          <Text variant="bodySm" color="subdued">{product.category}</Text>
+          <Text as="p" variant="bodyMd" fontWeight="medium">{product.name}</Text>
+          <Text as="span" variant="bodySm" tone="subdued">{product.category}</Text>
         </Box>
-      </Stack>,
-      <Text>{product.description.substring(0, 100)}...</Text>,
-      <Text>{formatters.currency(product.price, product.currency)}</Text>,
-      <Stack alignment="center" spacing="tight">
+      </InlineStack>,
+      <Text as="span">{product.description.substring(0, 100)}...</Text>,
+      <Text as="span">{formatters.currency(product.price, product.currency)}</Text>,
+      <InlineStack align="center" gap="200">
         <ProgressBar progress={product.qualityScore} size="small" />
-        <Text variant="bodySm">{product.qualityScore}%</Text>
-      </Stack>,
+        <Text as="span" variant="bodySm">{product.qualityScore}%</Text>
+      </InlineStack>,
       <Badge tone={product.qualityScore >= 80 ? 'success' : product.qualityScore >= 60 ? 'attention' : 'critical'}>
         {product.qualityScore >= 80 ? 'Excellent' : product.qualityScore >= 60 ? 'Good' : 'Needs Improvement'}
       </Badge>,
       <Button
-        plain
+        variant="plain"
         icon={ViewIcon}
         onClick={() => {
           setSelectedProduct(product);
@@ -316,14 +314,14 @@ export function WebsiteInsights({
 
   const renderUSPsTable = () => {
     const uspTableData = filteredUSPs.map(usp => [
-      <Text key={usp.id}>{usp.text}</Text>,
+      <Text as="span" key={usp.id}>{usp.text}</Text>,
       <Badge tone="info">{usp.category}</Badge>,
-      <Stack alignment="center" spacing="tight">
+      <InlineStack align="center" gap="200">
         <ProgressBar progress={usp.confidence * 100} size="small" />
-        <Text variant="bodySm">{Math.round(usp.confidence * 100)}%</Text>
-      </Stack>,
-      <Text variant="bodySm">{usp.source}</Text>,
-      <Text variant="bodySm">{formatters.date(usp.lastDetected)}</Text>
+        <Text as="span" variant="bodySm">{Math.round(usp.confidence * 100)}%</Text>
+      </InlineStack>,
+      <Text as="span" variant="bodySm">{usp.source}</Text>,
+      <Text as="span" variant="bodySm">{formatters.date(usp.lastDetected)}</Text>
     ]);
 
     return (
@@ -337,17 +335,17 @@ export function WebsiteInsights({
 
   const renderTestimonialsTable = () => {
     const testimonialTableData = filteredTestimonials.map(testimonial => [
-      <Text key={testimonial.id}>{testimonial.text.substring(0, 150)}...</Text>,
-      <Text>{testimonial.author}</Text>,
-      <Stack alignment="center" spacing="tight">
-        <Text>{'⭐'.repeat(testimonial.rating)}</Text>
-        <Text variant="bodySm">({testimonial.rating}/5)</Text>
-      </Stack>,
+      <Text as="span" key={testimonial.id}>{testimonial.text.substring(0, 150)}...</Text>,
+      <Text as="span">{testimonial.author}</Text>,
+      <InlineStack align="center" gap="200">
+        <Text as="span">{'⭐'.repeat(testimonial.rating)}</Text>
+        <Text as="span" variant="bodySm">({testimonial.rating}/5)</Text>
+      </InlineStack>,
       <Badge tone={testimonial.sentiment === 'positive' ? 'success' : testimonial.sentiment === 'negative' ? 'critical' : 'attention'}>
         {testimonial.sentiment}
       </Badge>,
-      <Text variant="bodySm">{testimonial.source}</Text>,
-      <Text variant="bodySm">{formatters.date(testimonial.extractedDate)}</Text>
+      <Text as="span" variant="bodySm">{testimonial.source}</Text>,
+      <Text as="span" variant="bodySm">{formatters.date(testimonial.extractedDate)}</Text>
     ]);
 
     return (
@@ -361,14 +359,14 @@ export function WebsiteInsights({
 
   const renderOffersTable = () => {
     const offerTableData = filteredOffers.map(offer => [
-      <Text key={offer.id} fontWeight="medium">{offer.title}</Text>,
-      <Text>{offer.description}</Text>,
+      <Text as="span" key={offer.id} fontWeight="medium">{offer.title}</Text>,
+      <Text as="span">{offer.description}</Text>,
       <Badge tone="info">{offer.type}</Badge>,
-      <Text fontWeight="medium">{offer.value}</Text>,
+      <Text as="span" fontWeight="medium">{offer.value}</Text>,
       <Badge tone={offer.urgency === 'high' ? 'critical' : offer.urgency === 'medium' ? 'attention' : 'success'}>
         {offer.urgency}
       </Badge>,
-      <Text variant="bodySm">{formatters.date(offer.lastSeen)}</Text>
+      <Text as="span" variant="bodySm">{formatters.date(offer.lastSeen)}</Text>
     ]);
 
     return (
@@ -394,7 +392,7 @@ export function WebsiteInsights({
 
     return (
       <Layout>
-        <Layout.Section oneHalf>
+        <Layout.Section variant="oneHalf">
           <BarChartComponent
             title="Content Quality Metrics"
             subtitle="Overall performance across different quality dimensions"
@@ -407,26 +405,26 @@ export function WebsiteInsights({
             tooltipFormatter={(value, name) => [`${value}%`, name]}
           />
         </Layout.Section>
-        <Layout.Section oneHalf>
+        <Layout.Section variant="oneHalf">
           <Card>
-            <Box padding="4">
-              <Stack vertical spacing="loose">
-                <Text variant="headingMd">Quality Details</Text>
-                <Stack vertical spacing="tight">
-                  <Stack distribution="spaceBetween">
-                    <Text>Word Count:</Text>
-                    <Text fontWeight="medium">{formatters.number(metrics.wordCount)}</Text>
-                  </Stack>
-                  <Stack distribution="spaceBetween">
-                    <Text>Heading Structure:</Text>
-                    <Text fontWeight="medium">{metrics.headingStructure}%</Text>
-                  </Stack>
-                  <Stack distribution="spaceBetween">
-                    <Text>Image Optimization:</Text>
-                    <Text fontWeight="medium">{metrics.imageOptimization}%</Text>
-                  </Stack>
-                </Stack>
-              </Stack>
+            <Box padding="400">
+              <BlockStack gap="400">
+                <Text as="h3" variant="headingMd">Quality Details</Text>
+                <BlockStack gap="200">
+                  <InlineStack align="space-between">
+                    <Text as="span">Word Count:</Text>
+                    <Text as="span" fontWeight="medium">{formatters.number(metrics.wordCount)}</Text>
+                  </InlineStack>
+                  <InlineStack align="space-between">
+                    <Text as="span">Heading Structure:</Text>
+                    <Text as="span" fontWeight="medium">{metrics.headingStructure}%</Text>
+                  </InlineStack>
+                  <InlineStack align="space-between">
+                    <Text as="span">Image Optimization:</Text>
+                    <Text as="span" fontWeight="medium">{metrics.imageOptimization}%</Text>
+                  </InlineStack>
+                </BlockStack>
+              </BlockStack>
             </Box>
           </Card>
         </Layout.Section>
@@ -438,11 +436,11 @@ export function WebsiteInsights({
   if (loading && !insightsData) {
     return (
       <Card>
-        <Box padding="8">
-          <Stack alignment="center" distribution="center">
+        <Box padding="800">
+          <InlineStack align="center" blockAlign="center">
             <Spinner size="large" />
-            <Text variant="bodyLg">Loading website insights...</Text>
-          </Stack>
+            <Text as="p" variant="bodyLg">Loading website insights...</Text>
+          </InlineStack>
         </Box>
       </Card>
     );
@@ -501,13 +499,13 @@ export function WebsiteInsights({
         {showFilters && (
           <Layout.Section>
             <Card>
-              <Box padding="4">
-                <Stack vertical spacing="tight">
-                  <Stack distribution="spaceBetween" alignment="center">
-                    <Text variant="headingMd">Filters</Text>
-                  </Stack>
+              <Box padding="400">
+                <BlockStack gap="200">
+                  <InlineStack align="space-between" blockAlign="center">
+                    <Text as="h3" variant="headingMd">Filters</Text>
+                  </InlineStack>
 
-                  <Stack spacing="tight">
+                  <InlineStack gap="200">
                     <Box minWidth="200px">
                       <TextField
                         label="Search"
@@ -517,6 +515,7 @@ export function WebsiteInsights({
                         placeholder="Search products, USPs, testimonials..."
                         clearButton
                         onClearButtonClick={() => setSearchQuery('')}
+                        autoComplete="off"
                       />
                     </Box>
 
@@ -524,15 +523,15 @@ export function WebsiteInsights({
                       <RangeSlider
                         label="Quality Score Range"
                         value={qualityScoreRange}
-                        onChange={setQualityScoreRange}
+                        onChange={(value) => setQualityScoreRange(value as [number, number])}
                         min={0}
                         max={100}
                         step={1}
                         output
                       />
                     </Box>
-                  </Stack>
-                </Stack>
+                  </InlineStack>
+                </BlockStack>
               </Box>
             </Card>
           </Layout.Section>
@@ -541,13 +540,13 @@ export function WebsiteInsights({
         <Layout.Section>
           <Card>
             <Tabs tabs={tabs} selected={selectedTab} onSelect={setSelectedTab}>
-              <Box padding="4">
+              <Box padding="400">
                 {selectedTab === 0 && (
-                  <Stack vertical spacing="loose">
-                    <Text variant="headingLg">Website Analysis Overview</Text>
+                  <BlockStack gap="400">
+                    <Text as="h2" variant="headingLg">Website Analysis Overview</Text>
 
                     <Layout>
-                      <Layout.Section oneThird>
+                      <Layout.Section variant="oneThird">
                         <PieChartComponent
                           title="Product Categories"
                           subtitle="Distribution of products by category"
@@ -560,7 +559,7 @@ export function WebsiteInsights({
                         />
                       </Layout.Section>
 
-                      <Layout.Section oneThird>
+                      <Layout.Section variant="oneThird">
                         <BarChartComponent
                           title="Quality Score Distribution"
                           subtitle="Products by quality score ranges"
@@ -574,7 +573,7 @@ export function WebsiteInsights({
                         />
                       </Layout.Section>
 
-                      <Layout.Section oneThird>
+                      <Layout.Section variant="oneThird">
                         <PieChartComponent
                           title="USP Categories"
                           subtitle="Types of unique selling propositions found"
@@ -589,74 +588,74 @@ export function WebsiteInsights({
                     </Layout>
 
                     <Card>
-                      <Box padding="4">
-                        <Stack vertical spacing="tight">
-                          <Text variant="headingMd">Quick Stats</Text>
+                      <Box padding="400">
+                        <BlockStack gap="200">
+                          <Text as="h3" variant="headingMd">Quick Stats</Text>
                           <Layout>
-                            <Layout.Section oneQuarter>
-                              <Stack vertical spacing="extraTight">
-                                <Text variant="headingXl">{insightsData.products.length}</Text>
-                                <Text variant="bodySm" color="subdued">Products Analyzed</Text>
-                              </Stack>
+                            <Layout.Section variant="oneThird">
+                              <BlockStack gap="100">
+                                <Text as="h1" variant="headingXl">{insightsData.products.length}</Text>
+                                <Text as="span" variant="bodySm" tone="subdued">Products Analyzed</Text>
+                              </BlockStack>
                             </Layout.Section>
-                            <Layout.Section oneQuarter>
-                              <Stack vertical spacing="extraTight">
-                                <Text variant="headingXl">{insightsData.usps.length}</Text>
-                                <Text variant="bodySm" color="subdued">USPs Found</Text>
-                              </Stack>
+                            <Layout.Section variant="oneThird">
+                              <BlockStack gap="100">
+                                <Text as="h1" variant="headingXl">{insightsData.usps.length}</Text>
+                                <Text as="span" variant="bodySm" tone="subdued">USPs Found</Text>
+                              </BlockStack>
                             </Layout.Section>
-                            <Layout.Section oneQuarter>
-                              <Stack vertical spacing="extraTight">
-                                <Text variant="headingXl">{insightsData.testimonials.length}</Text>
-                                <Text variant="bodySm" color="subdued">Testimonials</Text>
-                              </Stack>
+                            <Layout.Section variant="oneThird">
+                              <BlockStack gap="100">
+                                <Text as="h1" variant="headingXl">{insightsData.testimonials.length}</Text>
+                                <Text as="span" variant="bodySm" tone="subdued">Testimonials</Text>
+                              </BlockStack>
                             </Layout.Section>
-                            <Layout.Section oneQuarter>
-                              <Stack vertical spacing="extraTight">
-                                <Text variant="headingXl">{insightsData.offers.length}</Text>
-                                <Text variant="bodySm" color="subdued">Offers Detected</Text>
-                              </Stack>
+                            <Layout.Section variant="oneThird">
+                              <BlockStack gap="100">
+                                <Text as="h1" variant="headingXl">{insightsData.offers.length}</Text>
+                                <Text as="span" variant="bodySm" tone="subdued">Offers Detected</Text>
+                              </BlockStack>
                             </Layout.Section>
                           </Layout>
-                        </Stack>
+                        </BlockStack>
                       </Box>
                     </Card>
-                  </Stack>
+                  </BlockStack>
                 )}
 
                 {selectedTab === 1 && (
-                  <Stack vertical spacing="loose">
-                    <Text variant="headingLg">Extracted Products</Text>
+                  <BlockStack gap="400">
+                    <Text as="h2" variant="headingLg">Extracted Products</Text>
                     {renderProductsTable()}
-                  </Stack>
+                  </BlockStack>
                 )}
 
                 {selectedTab === 2 && (
-                  <Stack vertical spacing="loose">
-                    <Text variant="headingLg">Unique Selling Propositions</Text>
+                  <BlockStack gap="400">
+                    <Text as="h2" variant="headingLg">Unique Selling Propositions</Text>
                     {renderUSPsTable()}
-                  </Stack>
+                  </BlockStack>
                 )}
 
                 {selectedTab === 3 && (
-                  <Stack vertical spacing="loose">
-                    <Text variant="headingLg">Customer Testimonials</Text>
+                  <BlockStack gap="400">
+                    <Text as="h2" variant="headingLg">Customer Testimonials</Text>
                     {renderTestimonialsTable()}
-                  </Stack>
+                  </BlockStack>
                 )}
 
                 {selectedTab === 4 && (
-                  <Stack vertical spacing="loose">
-                    <Text variant="headingLg">Detected Offers</Text>
+                  <BlockStack gap="400">
+                    <Text as="h2" variant="headingLg">Detected Offers</Text>
                     {renderOffersTable()}
-                  </Stack>
+                  </BlockStack>
                 )}
 
                 {selectedTab === 5 && (
-                  <Stack vertical spacing="loose">
-                    <Text variant="headingLg">Content Quality Analysis</Text>
+                  <BlockStack gap="400">
+                    <Text as="h2" variant="headingLg">Content Quality Analysis</Text>
                     {renderContentQualityMetrics()}
-                  </Stack>
+                  </BlockStack>
                 )}
               </Box>
             </Tabs>
@@ -670,10 +669,10 @@ export function WebsiteInsights({
           open={showProductModal}
           onClose={() => setShowProductModal(false)}
           title={selectedProduct.name}
-          large
+          size="large"
         >
           <Modal.Section>
-            <Stack vertical spacing="loose">
+            <BlockStack gap="400">
               {selectedProduct.imageUrl && (
                 <Thumbnail
                   source={selectedProduct.imageUrl}
@@ -682,17 +681,17 @@ export function WebsiteInsights({
                 />
               )}
 
-              <TextContainer>
-                <Text variant="headingMd">Product Details</Text>
+              <BlockStack gap="200">
+                <Text as="h3" variant="headingMd">Product Details</Text>
                 <p><strong>Category:</strong> {selectedProduct.category}</p>
                 <p><strong>Price:</strong> {formatters.currency(selectedProduct.price, selectedProduct.currency)}</p>
                 <p><strong>Quality Score:</strong> {selectedProduct.qualityScore}%</p>
                 <p><strong>Last Updated:</strong> {formatters.dateTime(selectedProduct.lastUpdated)}</p>
 
-                <Text variant="headingMd">Description</Text>
+                <Text as="h3" variant="headingMd">Description</Text>
                 <p>{selectedProduct.description}</p>
-              </TextContainer>
-            </Stack>
+              </BlockStack>
+            </BlockStack>
           </Modal.Section>
         </Modal>
       )}
