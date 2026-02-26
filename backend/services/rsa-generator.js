@@ -715,3 +715,39 @@ export async function batchGenerateRSA(themes, options = {}) {
 
   return results;
 }
+
+/**
+ * Push a generated RSA (Responsive Search Ad) to Google Ads via API.
+ * @param {string} tenantId
+ * @param {string} adGroupId - The ad group to add the RSA to
+ * @param {object} rsa - { headlines: string[], descriptions: string[], finalUrl: string }
+ * @returns {Promise<object>}
+ */
+export async function pushRSAToGoogleAds(tenantId, adGroupId, rsa) {
+  const googleAdsClient = await import('./google-ads-client.js');
+
+  try {
+    const customer = await googleAdsClient.getCustomerClient(tenantId);
+
+    const adHeadlines = rsa.headlines.slice(0, 15).map(text => ({ text }));
+    const adDescriptions = rsa.descriptions.slice(0, 4).map(text => ({ text }));
+
+    const result = await customer.ads.create([{
+      ad_group: adGroupId,
+      status: 2, // ENABLED
+      ad: {
+        responsive_search_ad: {
+          headlines: adHeadlines,
+          descriptions: adDescriptions,
+        },
+        final_urls: [rsa.finalUrl],
+      },
+    }]);
+
+    console.log('✅ RSA pushed to Google Ads for ad group:', adGroupId);
+    return result;
+  } catch (error) {
+    console.error('❌ pushRSAToGoogleAds failed:', error.message);
+    throw error;
+  }
+}

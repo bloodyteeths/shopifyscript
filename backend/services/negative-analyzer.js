@@ -668,3 +668,23 @@ export async function batchAnalyzeNegatives(searchTermSets, options = {}) {
 
   return results;
 }
+
+/**
+ * Apply negative keyword suggestions via the Google Ads API.
+ * @param {string} tenantId
+ * @param {string} campaignId
+ * @param {string[]} keywords - Negative keywords to add
+ * @returns {Promise<object>}
+ */
+export async function applyNegatives(tenantId, campaignId, keywords) {
+  const googleAdsClient = await import('./google-ads-client.js');
+
+  try {
+    const result = await googleAdsClient.addNegativeKeywords(tenantId, campaignId, keywords);
+    console.log(`✅ Applied ${keywords.length} negative keywords to campaign ${campaignId}`);
+    return result;
+  } catch (error) {
+    console.error('❌ applyNegatives failed:', error.message);
+    throw error;
+  }
+}

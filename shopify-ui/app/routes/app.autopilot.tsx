@@ -1,1164 +1,886 @@
-import * as React from "react";
-import { useLoaderData, useActionData, useNavigation, Form } from "@remix-run/react";
+import { json, type LoaderFunctionArgs, type ActionFunctionArgs } from "@remix-run/node";
+import { useLoaderData, useActionData, useSubmit, useNavigation } from "@remix-run/react";
 import {
-  json,
-  redirect,
-  type ActionFunctionArgs,
-  type LoaderFunctionArgs,
-} from "@remix-run/node";
+  Page,
+  Card,
+  BlockStack,
+  Text,
+  Button,
+  Banner,
+  InlineStack,
+  Badge,
+  Box,
+  DataTable,
+  Tabs,
+  Spinner,
+  Modal,
+  TextField,
+} from "@shopify/polaris";
 import { authenticate } from "../shopify.server";
-import { checkTenantSetup } from "../utils/tenant.server";
-import { getServerShopName } from "../utils/shop-config";
-import { backendFetchText } from "../server/hmac.server";
-import {
-  getShopNameOrNull,
-  isShopSetupNeeded,
-  dismissShopSetupForSession,
-} from "../utils/shop-config";
-import { ShopSetupBanner } from "../components/ShopSetupBanner";
-import { ClientOnly } from "../components/ClientOnly";
-import { checkSubscriptionStatus, hasFeatureAccess, type SubscriptionInfo } from "../utils/subscription.server";
-import { CampaignSetupForm } from "../components/CampaignSetupForm";
-import { MLAutopilotDashboard } from "../components/MLAutopilotDashboard";
+import { backendFetch } from "../server/hmac.server";
+import { useState, useCallback } from "react";
 
+/* ------------------------------------------------------------------ */
+/*  Types                                                              */
+/* ------------------------------------------------------------------ */
+interface Campaign {
+  id: string;
+  name: string;
+  status: number; // 2=ENABLED, 3=PAUSED, 4=REMOVED
+  dailyBudget: number;
+  clicks: number;
+  impressions: number;
+  cost: number;
+  conversions: number;
+  ctr: number;
+}
+
+interface Metrics {
+  totalSpend: number;
+  totalClicks: number;
+  totalConversions: number;
+  averageCtr: number;
+  averageCpc: number;
+}
+
+interface LoaderData {
+  shopName: string;
+  connected: boolean;
+  campaigns: Campaign[];
+  metrics: Metrics;
+  connectionError: string | null;
+}
+
+interface ActionData {
+  success: boolean;
+  error?: string;
+  campaignId?: string;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Helpers                                                            */
+/* ------------------------------------------------------------------ */
+const STATUS_LABELS: Record<number, string> = {
+  2: "Enabled",
+  3: "Paused",
+  4: "Removed",
+};
+
+function statusBadge(status: number) {
+  switch (status) {
+    case 2:
+      return <Badge tone="success">Enabled</Badge>;
+    case 3:
+      return <Badge tone="attention">Paused</Badge>;
+    case 4:
+      return <Badge tone="critical">Removed</Badge>;
+    default:
+      return <Badge>Unknown</Badge>;
+  }
+}
+
+function formatMoney(value: number): string {
+  return `$${value.toFixed(2)}`;
+}
+
+function formatPercent(value: number): string {
+  return `${(value * 100).toFixed(2)}%`;
+}
+
+/* ------------------------------------------------------------------ */
+/*  Loader                                                             */
+/* ------------------------------------------------------------------ */
 export async function loader({ request }: LoaderFunctionArgs) {
   try {
-    // Standard Shopify authentication following best practices
-    const { session, admin } = await authenticate.admin(request);
-
+    const { session } = await authenticate.admin(request);
     const shopName = session?.shop?.replace(".myshopify.com", "");
 
     if (!shopName) {
       throw new Error("Unable to determine shop name from Shopify session");
     }
 
-    console.log(`Autopilot loaded for shop: ${shopName}`);
-
-    // Check subscription status for feature access control (with error handling)
-    let subscriptionInfo: SubscriptionInfo = {
-      hasActivePayment: false,
-      isInTrial: false,
-      trialDaysRemaining: null,
-      subscriptionTier: null,
-      subscriptionStatus: 'checking',
-      subscriptionId: null,
-      currentPeriodEnd: null,
-      needsSubscription: true
-    };
-    
-    let availableFeatures = {
-      scriptGeneration: true, // Allow basic script generation
-      advancedSettings: false,
-      realTimeAnalytics: false,
-      customRules: false
-    };
+    // 1. Check Google Ads connection status
+    let connected = false;
+    let connectionError: string | null = null;
 
     try {
-      subscriptionInfo = await checkSubscriptionStatus(admin);
-      
-      // Determine available features based on subscription
-      availableFeatures = {
-        scriptGeneration: hasFeatureAccess(subscriptionInfo, 'ai_campaign_optimization'),
-        advancedSettings: hasFeatureAccess(subscriptionInfo, 'advanced_ai_optimization'),
-        realTimeAnalytics: hasFeatureAccess(subscriptionInfo, 'real_time_performance_analytics'),
-        customRules: hasFeatureAccess(subscriptionInfo, 'custom_ai_optimization_rules')
-      };
+      const statusRes = await backendFetch(
+        "/google-ads/connection-status",
+        "GET",
+        undefined,
+        shopName,
+      );
 
-      if (process.env.NODE_ENV !== 'production') {
-        console.log(`🔐 Feature access for ${shopName}:`, availableFeatures);
+      if (statusRes.status >= 200 && statusRes.status < 300 && statusRes.json) {
+        connected = !!statusRes.json.connected;
+      } else {
+        connectionError =
+          statusRes.json?.error || `Connection check returned ${statusRes.status}`;
       }
-      
-    } catch (subscriptionError) {
-      console.error('Subscription check failed on autopilot, using basic access:', subscriptionError);
-      // Allow basic access if subscription check fails
+    } catch (err) {
+      console.error("Failed to check Google Ads connection status:", err);
+      connectionError = "Unable to check Google Ads connection status.";
     }
 
-    // Check campaign limits based on subscription tier
-    let campaignLimits = {
-      current: 0,
-      limit: 5, // Default to starter limit
-      tier: subscriptionInfo.subscriptionTier || 'starter',
-      canCreate: true,
-      remaining: 5,
-      upgradeUrl: '/app/billing'
+    // 2. If connected, fetch campaigns and metrics in parallel
+    let campaigns: Campaign[] = [];
+    let metrics: Metrics = {
+      totalSpend: 0,
+      totalClicks: 0,
+      totalConversions: 0,
+      averageCtr: 0,
+      averageCpc: 0,
     };
 
-    try {
-      // Call backend to check campaign limits
-      const { backendFetch } = await import("../server/hmac.server");
-      const limitsResponse = await backendFetch("/campaign-limits", "GET", undefined, shopName);
-      
-      if (limitsResponse.status >= 200 && limitsResponse.status < 300) {
-        const limits = limitsResponse.json;
-        campaignLimits = {
-          current: limits?.currentCount || 0,
-          limit: limits?.limit || 5,
-          tier: limits?.tier || 'starter',
-          canCreate: limits?.allowed !== false,
-          remaining: (limits?.limit || 5) - (limits?.currentCount || 0),
-          upgradeUrl: limits?.upgradeUrl || '/app/billing'
+    if (connected) {
+      const [campaignsRes, metricsRes] = await Promise.all([
+        backendFetch("/google-ads/campaigns", "GET", undefined, shopName).catch(
+          (err) => {
+            console.error("Failed to fetch campaigns:", err);
+            return { status: 500, json: { campaigns: [] } };
+          },
+        ),
+        backendFetch("/google-ads/metrics", "GET", undefined, shopName).catch(
+          (err) => {
+            console.error("Failed to fetch metrics:", err);
+            return { status: 500, json: {} };
+          },
+        ),
+      ]);
+
+      if (
+        campaignsRes.status >= 200 &&
+        campaignsRes.status < 300 &&
+        campaignsRes.json
+      ) {
+        const raw = campaignsRes.json.campaigns || campaignsRes.json || [];
+        campaigns = Array.isArray(raw) ? raw : [];
+      }
+
+      if (
+        metricsRes.status >= 200 &&
+        metricsRes.status < 300 &&
+        metricsRes.json
+      ) {
+        metrics = {
+          totalSpend: metricsRes.json.totalSpend ?? metricsRes.json.total_spend ?? 0,
+          totalClicks: metricsRes.json.totalClicks ?? metricsRes.json.total_clicks ?? 0,
+          totalConversions:
+            metricsRes.json.totalConversions ?? metricsRes.json.total_conversions ?? 0,
+          averageCtr: metricsRes.json.averageCtr ?? metricsRes.json.average_ctr ?? 0,
+          averageCpc: metricsRes.json.averageCpc ?? metricsRes.json.average_cpc ?? 0,
         };
       }
-    } catch (limitsError) {
-      console.error('Campaign limits check failed:', limitsError);
-      // Continue with default limits
     }
 
-    // Return config with authenticated shop name for client
-    const config = {
-      backendUrl:
-        process.env.BACKEND_PUBLIC_URL ||
-        "https://ads-autopilot-backend.vercel.app/api",
-      shopName, // Authenticated shop name from Shopify session
-    };
-
-    return json({ 
-      config, 
-      shopName, 
-      subscriptionInfo,
-      availableFeatures,
-      campaignLimits
+    return json<LoaderData>({
+      shopName,
+      connected,
+      campaigns,
+      metrics,
+      connectionError,
     });
-    
   } catch (authError) {
     console.error("Autopilot authentication error:", authError);
-    console.error("Request URL:", request.url);
-    
-    // Redirect to auth with shop context if possible
     const url = new URL(request.url);
-    const shop = url.searchParams.get('shop') || url.searchParams.get('host');
-    const authUrl = shop ? `/auth/login?shop=${shop}` : '/auth/login';
-    
+    const shop = url.searchParams.get("shop") || url.searchParams.get("host");
+    const authUrl = shop ? `/auth/login?shop=${shop}` : "/auth/login";
     throw new Response(null, {
       status: 302,
-      headers: { Location: authUrl }
+      headers: { Location: authUrl },
     });
   }
 }
 
+/* ------------------------------------------------------------------ */
+/*  Action                                                             */
+/* ------------------------------------------------------------------ */
 export async function action({ request }: ActionFunctionArgs) {
   try {
-    // Get authenticated shop name from Shopify session
     const { session } = await authenticate.admin(request);
-    const currentShopName = session?.shop?.replace(".myshopify.com", "");
+    const shopName = session?.shop?.replace(".myshopify.com", "");
 
-    if (!currentShopName) {
-      console.error("No shop name found in Shopify session");
-      return json({ success: false, error: "Authentication required" });
+    if (!shopName) {
+      return json<ActionData>({ success: false, error: "Authentication required" });
     }
 
     const formData = await request.formData();
-    const actionType = formData.get("actionType");
+    const intent = formData.get("intent") as string;
 
-    if (actionType === "generateScript") {
-      console.log(`Server action generating script for shop: ${currentShopName}`);
+    /* ---------- create-campaign ---------- */
+    if (intent === "create-campaign") {
+      const campaignName = formData.get("campaignName") as string;
+      const dailyBudget = formData.get("dailyBudget") as string;
+      const targetCpc = formData.get("targetCpc") as string;
+      const keywords = formData.get("keywords") as string;
+      const landingUrl = formData.get("landingUrl") as string;
 
-      const mode = formData.get("mode") || "protect";
-      const budget = formData.get("budget") || "20.00";
-      const cpc = formData.get("cpc") || "0.50";
-      const url = formData.get("url") || "";
-      const advancedConfigRaw = formData.get("advancedConfig");
-
-      // Parse advanced config if provided
-      let advancedConfig = null;
-      if (advancedConfigRaw) {
-        try {
-          advancedConfig = JSON.parse(advancedConfigRaw.toString());
-          console.log("Advanced config received:", advancedConfig);
-        } catch (e) {
-          console.error("Failed to parse advanced config:", e);
-        }
+      if (!campaignName || !dailyBudget) {
+        return json<ActionData>({
+          success: false,
+          error: "Campaign name and daily budget are required.",
+        });
       }
 
       try {
-        // Build query parameters to pass user settings
-        const scriptParams = new URLSearchParams({
-          budget: String(budget || "20.00"),
-          cpc: String(cpc || "0.50"),
-          landing_url: String(url || "")
-        }).toString();
-
-        // Fetch the real script using authenticated backend call with parameters
-        const realScript = await backendFetchText(
-          `/ads-script/raw?${scriptParams}`,
-          "GET",
-          undefined,
-          currentShopName,
+        const res = await backendFetch(
+          "/google-ads/campaigns/create",
+          "POST",
+          {
+            campaignName,
+            dailyBudget: parseFloat(dailyBudget),
+            targetCpc: targetCpc ? parseFloat(targetCpc) : undefined,
+            keywords: keywords
+              ? keywords.split(",").map((k: string) => k.trim())
+              : [],
+            landingUrl: landingUrl || undefined,
+            nonce: Date.now(),
+          },
+          shopName,
         );
 
-        console.log(
-          `Script fetch result for ${currentShopName}: length=${realScript?.length || 0}, isHTML=${realScript?.includes("<html") || false}`,
-        );
-        console.log(`Script preview (first 200 chars):`, realScript?.substring(0, 200));
-
-        if (
-          realScript &&
-          realScript.length > 1000 &&
-          !realScript.includes("<html")
-        ) {
-          console.log(`Script validation passed for ${currentShopName}`);
-
-          // If we have advanced config, inject the customized values into the script
-          let customizedScript = realScript;
-
-          if (advancedConfig) {
-            // Generate campaign elements based on user config
-            const generateKeywords = (config: Record<string, any>) => {
-              const { mainProducts, businessType, keywordStrategy, customKeywords, businessName } = config;
-              if (keywordStrategy === 'custom' && customKeywords) {
-                return customKeywords.split(',').map((k: string) => k.trim());
-              }
-
-              const keywords = [];
-              const products: string[] = mainProducts.toLowerCase().split(',').map((p: string) => p.trim());
-
-              switch (keywordStrategy) {
-                case 'brand':
-                  keywords.push(businessName.toLowerCase());
-                  keywords.push(`${businessName.toLowerCase()} store`);
-                  keywords.push(`${businessName.toLowerCase()} online`);
-                  break;
-                case 'competitor':
-                  products.forEach((product: string) => {
-                    keywords.push(`best ${product}`);
-                    keywords.push(`${product} reviews`);
-                    keywords.push(`${product} comparison`);
-                  });
-                  break;
-                default: // 'auto'
-                  products.forEach((product: string) => {
-                    keywords.push(product);
-                    keywords.push(`buy ${product}`);
-                    keywords.push(`${product} online`);
-                    keywords.push(`${product} sale`);
-                  });
-              }
-              return keywords;
-            };
-
-            const generateHeadlines = (config: Record<string, any>) => {
-              const { businessName, mainProducts, adTone, hasOffer, offerText, goal } = config;
-              const headlines = [];
-              const products = mainProducts.split(',')[0].trim();
-
-              headlines.push(`${businessName} Official Site`);
-              headlines.push(`Shop ${businessName} Today`);
-
-              switch (adTone) {
-                case 'professional':
-                  headlines.push('Trusted Quality Since 2020');
-                  headlines.push('Professional Solutions');
-                  headlines.push('Expert Recommended');
-                  break;
-                case 'urgent':
-                  headlines.push('Limited Time Offer!');
-                  headlines.push('Sale Ends Soon');
-                  headlines.push(`Don't Miss Out!`);
-                  break;
-                case 'luxury':
-                  headlines.push('Exclusive Collection');
-                  headlines.push('Premium Quality');
-                  headlines.push('Luxury Experience');
-                  break;
-                default: // 'friendly'
-                  headlines.push('Free Shipping Available');
-                  headlines.push('Loved by Customers');
-                  headlines.push('Join Our Community');
-              }
-
-              if (hasOffer && offerText) {
-                headlines.push(offerText.substring(0, 30));
-              }
-
-              headlines.push(`Best ${products} Online`);
-              headlines.push(`Shop ${products} Now`);
-
-              return headlines.map(h => h.substring(0, 30)).slice(0, 15);
-            };
-
-            const generateDescriptions = (config: Record<string, any>) => {
-              const { targetAudience, mainProducts, adTone, hasOffer, offerText, businessType } = config;
-              const descriptions = [];
-
-              switch (adTone) {
-                case 'professional':
-                  descriptions.push(`Professional service for ${targetAudience}. Quality guaranteed.`);
-                  descriptions.push('Industry expertise you can trust. Contact our specialists today.');
-                  break;
-                case 'urgent':
-                  descriptions.push(`Limited time offers for ${targetAudience}. Shop now before it's too late!`);
-                  descriptions.push(`Sale ends soon! Don't miss these incredible deals. Order today!`);
-                  break;
-                case 'luxury':
-                  descriptions.push(`Exclusive ${mainProducts} for discerning ${targetAudience}.`);
-                  descriptions.push('Experience luxury shopping. Premium quality, exceptional service.');
-                  break;
-                default: // 'friendly'
-                  descriptions.push(`Perfect ${mainProducts} for ${targetAudience}. Shop with confidence!`);
-                  descriptions.push('Join thousands of happy customers. Fast shipping & easy returns!');
-              }
-
-              if (hasOffer && offerText) {
-                descriptions.push(`Special offer: ${offerText}. Limited time only!`);
-              }
-
-              return descriptions.map(d => d.substring(0, 90)).slice(0, 4);
-            };
-
-            // Generate customized campaign elements
-            const keywords = generateKeywords(advancedConfig);
-            const headlines = generateHeadlines(advancedConfig);
-            const descriptions = generateDescriptions(advancedConfig);
-
-            // Inject the generated content into the script
-            // Simply prepend the configuration to the script
-            const configData = {
-              businessName: advancedConfig.businessName,
-              businessType: advancedConfig.businessType,
-              mainProducts: advancedConfig.mainProducts,
-              targetAudience: advancedConfig.targetAudience,
-              goal: advancedConfig.goal,
-              alwaysOn: advancedConfig.alwaysOn,
-              businessHours: advancedConfig.businessHours,
-              keywordStrategy: advancedConfig.keywordStrategy,
-              adTone: advancedConfig.adTone,
-              hasOffer: advancedConfig.hasOffer,
-              offerText: advancedConfig.offerText,
-              dailyBudget: advancedConfig.dailyBudget,
-              targetCPC: advancedConfig.targetCPC,
-              generatedKeywords: keywords,
-              generatedHeadlines: headlines,
-              generatedDescriptions: descriptions
-            };
-
-            const configScript = `// ========= USER CAMPAIGN CONFIGURATION =========
-// This configuration was generated from your Advanced Setup Form
-var USER_CONFIG = ${JSON.stringify(configData, null, 2)};
-
-// Use these values in campaign creation
-var USER_BUDGET = ${advancedConfig.dailyBudget};
-var USER_CPC = ${advancedConfig.targetCPC};
-var USER_KEYWORDS = ${JSON.stringify(keywords)};
-var USER_HEADLINES = ${JSON.stringify(headlines)};
-var USER_DESCRIPTIONS = ${JSON.stringify(descriptions)};
-// ================================================\n\n`;
-
-            customizedScript = configScript + realScript;
-          }
-
-          const personalizedScript = `/** Ads Autopilot AI - Google Ads Script (${advancedConfig ? 'Advanced' : mode} mode)
- * Shop: ${currentShopName}
- * Generated: ${new Date().toISOString()}
- * Budget Cap: $${advancedConfig ? advancedConfig.dailyBudget : budget}/day
- * CPC Ceiling: $${advancedConfig ? advancedConfig.targetCPC.toFixed(2) : cpc}
- * Landing URL: ${url || "Not specified"}
- * Script Size: ${Math.round(customizedScript.length / 1024)}KB
-${advancedConfig ? ` * Business Type: ${advancedConfig.businessType}
- * Target: ${advancedConfig.targetAudience}
- * Products: ${advancedConfig.mainProducts}` : ''}
- */
-
-${customizedScript}
-
-// Script personalized with your settings:
-// - Mode: ${advancedConfig ? 'Advanced' : mode}
-// - Budget: $${advancedConfig ? advancedConfig.dailyBudget : budget}/day
-// - CPC: $${advancedConfig ? advancedConfig.targetCPC.toFixed(2) : cpc}
-// - URL: ${url || "default"}${
-  advancedConfig ? `\n// - Business: ${advancedConfig.businessName}
-// - Products: ${advancedConfig.mainProducts}
-// - Goal: ${advancedConfig.goal}` : ''
-}`;
-
-          const response = {
+        if (res.status >= 200 && res.status < 300 && res.json) {
+          return json<ActionData>({
             success: true,
-            script: personalizedScript,
-            size: Math.round(personalizedScript.length / 1024),
-            shopName: currentShopName,
-          };
-          console.log(`Returning success response:`, { 
-            success: response.success, 
-            scriptLength: response.script.length, 
-            size: response.size, 
-            shopName: response.shopName 
-          });
-          return json(response);
-        } else {
-          console.log(
-            `Script validation failed for ${currentShopName}: length=${realScript?.length || 0}, hasHTML=${realScript?.includes("<html") || false}`,
-          );
-          return json({
-            success: false,
-            error: "Failed to fetch complete script. Please try again."
+            campaignId: res.json.campaignId || res.json.campaign_id,
           });
         }
-      } catch (error: unknown) {
-        console.error(
-          `Action script fetch failed for ${currentShopName}:`,
-          error instanceof Error ? error.message : error,
-        );
-        return json({
+
+        return json<ActionData>({
           success: false,
-          error: "Failed to generate script. Please try again."
+          error: res.json?.error || `Campaign creation failed (${res.status})`,
+        });
+      } catch (err) {
+        console.error("Failed to create campaign:", err);
+        return json<ActionData>({
+          success: false,
+          error: "Unable to create campaign. Please try again.",
         });
       }
     }
 
-    return json({ success: false, error: "Unknown action type" });
+    /* ---------- pause-campaign ---------- */
+    if (intent === "pause-campaign") {
+      const campaignId = formData.get("campaignId") as string;
+
+      if (!campaignId) {
+        return json<ActionData>({ success: false, error: "Campaign ID is required." });
+      }
+
+      try {
+        const res = await backendFetch(
+          `/google-ads/campaigns/${campaignId}/pause`,
+          "POST",
+          { nonce: Date.now() },
+          shopName,
+        );
+
+        if (res.status >= 200 && res.status < 300) {
+          return json<ActionData>({ success: true });
+        }
+
+        return json<ActionData>({
+          success: false,
+          error: res.json?.error || `Pause failed (${res.status})`,
+        });
+      } catch (err) {
+        console.error("Failed to pause campaign:", err);
+        return json<ActionData>({
+          success: false,
+          error: "Unable to pause campaign. Please try again.",
+        });
+      }
+    }
+
+    /* ---------- enable-campaign ---------- */
+    if (intent === "enable-campaign") {
+      const campaignId = formData.get("campaignId") as string;
+
+      if (!campaignId) {
+        return json<ActionData>({ success: false, error: "Campaign ID is required." });
+      }
+
+      try {
+        const res = await backendFetch(
+          `/google-ads/campaigns/${campaignId}/enable`,
+          "POST",
+          { nonce: Date.now() },
+          shopName,
+        );
+
+        if (res.status >= 200 && res.status < 300) {
+          return json<ActionData>({ success: true });
+        }
+
+        return json<ActionData>({
+          success: false,
+          error: res.json?.error || `Enable failed (${res.status})`,
+        });
+      } catch (err) {
+        console.error("Failed to enable campaign:", err);
+        return json<ActionData>({
+          success: false,
+          error: "Unable to enable campaign. Please try again.",
+        });
+      }
+    }
+
+    /* ---------- update-budget ---------- */
+    if (intent === "update-budget") {
+      const campaignId = formData.get("campaignId") as string;
+      const dailyBudget = formData.get("dailyBudget") as string;
+
+      if (!campaignId || !dailyBudget) {
+        return json<ActionData>({
+          success: false,
+          error: "Campaign ID and daily budget are required.",
+        });
+      }
+
+      try {
+        const res = await backendFetch(
+          `/google-ads/campaigns/${campaignId}/budget`,
+          "POST",
+          { dailyBudget: parseFloat(dailyBudget), nonce: Date.now() },
+          shopName,
+        );
+
+        if (res.status >= 200 && res.status < 300) {
+          return json<ActionData>({ success: true });
+        }
+
+        return json<ActionData>({
+          success: false,
+          error: res.json?.error || `Budget update failed (${res.status})`,
+        });
+      } catch (err) {
+        console.error("Failed to update budget:", err);
+        return json<ActionData>({
+          success: false,
+          error: "Unable to update budget. Please try again.",
+        });
+      }
+    }
+
+    return json<ActionData>({ success: false, error: "Unknown action" });
   } catch (authError) {
     console.error("Autopilot action authentication failed:", authError);
-    return json({ 
-      success: false, 
-      error: "Authentication failed - please reload the page" 
+    return json<ActionData>({
+      success: false,
+      error: "Authentication failed - please reload the page",
     });
   }
 }
 
+/* ------------------------------------------------------------------ */
+/*  Component                                                          */
+/* ------------------------------------------------------------------ */
 export default function Autopilot() {
-  const { config, shopName: serverShopName, campaignLimits } = useLoaderData<typeof loader>();
-  const actionData = useActionData<typeof action>();
+  const { shopName, connected, campaigns, metrics, connectionError } =
+    useLoaderData<typeof loader>() as LoaderData;
+  const actionData = useActionData<typeof action>() as ActionData | undefined;
+  const submit = useSubmit();
   const navigation = useNavigation();
-  const [mode, setMode] = React.useState("protect");
-  const [budget, setBudget] = React.useState("20.00");
-  const [cpc, setCpc] = React.useState("0.50");
-  const [url, setUrl] = React.useState("");
-  const [showAdvancedForm, setShowAdvancedForm] = React.useState(false);
-  // Shop setup banner removed - using Shopify authenticated shop name
 
-  const [toast, setToast] = React.useState("");
-  const [scriptCode, setScriptCode] = React.useState("");
-  const [showScript, setShowScript] = React.useState(false);
-  const [shopName, setShopName] = React.useState<string | null>(null);
-  const [generatedAds, setGeneratedAds] = React.useState<any>(null);
-  const [showGeneratedAds, setShowGeneratedAds] = React.useState(false);
-  const [isGeneratingAds, setIsGeneratingAds] = React.useState(false);
-  const [mlState, setMLState] = React.useState(null);
-  const [showMLDashboard, setShowMLDashboard] = React.useState(false);
-  
-  // Disable debug state changes that cause hydration issues
-  // React.useEffect(() => {
-  //   console.log('State update:', { 
-  //     showScript, 
-  //     scriptCodeLength: scriptCode.length,
-  //     shopName,
-  //     toast 
-  //   });
-  // }, [showScript, scriptCode, shopName, toast]);
-  
-  const isGeneratingScript = navigation.state === "submitting" &&
-    navigation.formData?.get("actionType") === "generateScript";
+  const isSubmitting = navigation.state === "submitting";
 
-  // Function to generate AI ads using the backend endpoint
-  const generateAIAds = async () => {
-    if (!shopName) {
-      setToast("Error: Shop name not available");
-      return;
+  /* ----- tab state ----- */
+  const [selectedTab, setSelectedTab] = useState(0);
+  const handleTabChange = useCallback((index: number) => setSelectedTab(index), []);
+
+  /* ----- create campaign modal ----- */
+  const [createModalOpen, setCreateModalOpen] = useState(false);
+  const [newCampaignName, setNewCampaignName] = useState("");
+  const [newDailyBudget, setNewDailyBudget] = useState("20.00");
+  const [newTargetCpc, setNewTargetCpc] = useState("0.50");
+  const [newKeywords, setNewKeywords] = useState("");
+  const [newLandingUrl, setNewLandingUrl] = useState("");
+
+  /* ----- edit budget modal ----- */
+  const [budgetModalOpen, setBudgetModalOpen] = useState(false);
+  const [editBudgetCampaignId, setEditBudgetCampaignId] = useState("");
+  const [editBudgetCampaignName, setEditBudgetCampaignName] = useState("");
+  const [editBudgetValue, setEditBudgetValue] = useState("");
+
+  /* ----- banner state ----- */
+  const [banner, setBanner] = useState<{
+    tone: "success" | "critical" | "info" | "warning";
+    message: string;
+  } | null>(null);
+
+  /* ----- handle action responses ----- */
+  const prevActionData = useState<ActionData | undefined>(undefined);
+  if (actionData && actionData !== prevActionData[0]) {
+    prevActionData[1](actionData);
+    if (actionData.success) {
+      setBanner({ tone: "success", message: "Action completed successfully." });
+      setCreateModalOpen(false);
+      setBudgetModalOpen(false);
+      // Reset create form
+      setNewCampaignName("");
+      setNewDailyBudget("20.00");
+      setNewTargetCpc("0.50");
+      setNewKeywords("");
+      setNewLandingUrl("");
+    } else if (actionData.error) {
+      setBanner({ tone: "critical", message: actionData.error });
     }
-
-    setIsGeneratingAds(true);
-    setToast("Generating AI ads...");
-
-    try {
-      const { backendFetch } = await import("../server/hmac.server");
-      const response = await backendFetch("/ai/generate/rsa", "POST", {
-        theme: "Business",
-        industry: "ecommerce",
-        keywords: ["shop", "online", "store"],
-        tone: "professional",
-        headlineCount: 15,
-        descriptionCount: 4
-      }, shopName);
-
-      if (response.status >= 200 && response.status < 300) {
-        const result = response.json;
-        if (result?.ok) {
-          setGeneratedAds(result);
-          setShowGeneratedAds(true);
-          setToast(`Generated ${result.headlines?.length || 0} headlines and ${result.descriptions?.length || 0} descriptions`);
-        } else {
-          setToast("Error: " + (result?.error || "Unknown error"));
-        }
-      } else {
-        setToast("Error: Failed to generate AI ads");
-      }
-    } catch (error: unknown) {
-      console.error("AI ads generation error:", error);
-      setToast("Error: " + (error instanceof Error ? error.message : "Unknown error"));
-    } finally {
-      setIsGeneratingAds(false);
-    }
-  };
-
-  // Function to fetch ML autopilot state
-  const fetchMLState = async () => {
-    if (!shopName) return;
-
-    try {
-      const { backendFetch } = await import("../server/hmac.server");
-      const response = await backendFetch("/jobs/autopilot_tick", "POST", {
-        nonce: Date.now()
-      }, shopName + "?dry=1"); // Dry run to get insights
-
-      if (response.status >= 200 && response.status < 300) {
-        const result = response.json;
-        if (result?.ok && result?.ml) {
-          setMLState(result.ml);
-          setToast("ML state updated");
-        }
-      }
-    } catch (error) {
-      console.error("Failed to fetch ML state:", error);
-      setToast("Error: Failed to fetch ML insights");
-    }
-  };
-
-  // Function to accept generated AI ads
-  const acceptAIAds = async () => {
-    if (!generatedAds || !shopName) {
-      setToast("Error: No ads to accept");
-      return;
-    }
-
-    try {
-      const { backendFetch } = await import("../server/hmac.server");
-      const response = await backendFetch("/ai/accept", "POST", {
-        items: [{
-          theme: "generated",
-          headlines_pipe: generatedAds.headlines?.join("|") || "",
-          descriptions_pipe: generatedAds.descriptions?.join("|") || "",
-          source: "ai_generated"
-        }]
-      }, shopName);
-
-      if (response.status >= 200 && response.status < 300) {
-        const result = response.json;
-        if (result?.ok && result?.accepted > 0) {
-          setToast(`Accepted ${result.accepted} AI-generated ad sets`);
-          setShowGeneratedAds(false);
-          setGeneratedAds(null);
-        } else {
-          setToast("Error: " + (result?.error || "Failed to accept ads"));
-        }
-      } else {
-        setToast("Error: Failed to accept AI ads");
-      }
-    } catch (error: unknown) {
-      console.error("AI ads acceptance error:", error);
-      setToast("Error: " + (error instanceof Error ? error.message : "Unknown error"));
-    }
-  };
-
-  // Use authenticated shop name from Shopify session
-  React.useEffect(() => {
-    setShopName(serverShopName); // Always use authenticated shop name
-  }, [serverShopName]);
-
-  // Handle action data from server with localStorage persistence
-  React.useEffect(() => {
-    const data = actionData as { success?: boolean; script?: string; size?: number; shopName?: string; error?: string } | undefined;
-    if (data?.success && data.script) {
-      setScriptCode(data.script);
-      setShowScript(true);
-      setToast(`Script generated: ${data.size}KB`);
-
-      // Store in localStorage for persistence (client-side only)
-      try {
-        localStorage.setItem('adsautopilot_generated_script', data.script);
-        localStorage.setItem('adsautopilot_script_meta', JSON.stringify({
-          size: data.size,
-          shopName: data.shopName,
-          timestamp: Date.now()
-        }));
-      } catch (e) {
-        console.warn('Failed to store script:', e);
-      }
-    } else if (data?.error) {
-      setToast("Error: " + data.error);
-    }
-  }, [actionData]);
-
-  // Load stored script on page load (client-side only)
-  React.useEffect(() => {
-    try {
-      const storedScript = localStorage.getItem('adsautopilot_generated_script');
-      const storedMeta = localStorage.getItem('adsautopilot_script_meta');
-      if (storedScript && storedMeta) {
-        const meta = JSON.parse(storedMeta);
-        const hourAgo = Date.now() - (60 * 60 * 1000);
-        if (meta.timestamp > hourAgo) {
-          setScriptCode(storedScript);
-          setShowScript(true);
-          setToast(`Loaded ${meta.size}KB script`);
-        } else {
-          localStorage.removeItem('adsautopilot_generated_script');
-          localStorage.removeItem('adsautopilot_script_meta');
-        }
-      }
-    } catch (e) {
-      console.warn('localStorage error:', e);
-    }
-  }, []);
-
-  function run() {
-    setToast("Settings saved. Generate your script below to activate optimization.");
   }
 
-  // Script generation now handled by server action - no client-side function needed
+  /* ----- handlers ----- */
+  const handleCreateCampaign = useCallback(() => {
+    const fd = new FormData();
+    fd.set("intent", "create-campaign");
+    fd.set("campaignName", newCampaignName);
+    fd.set("dailyBudget", newDailyBudget);
+    fd.set("targetCpc", newTargetCpc);
+    fd.set("keywords", newKeywords);
+    fd.set("landingUrl", newLandingUrl);
+    submit(fd, { method: "post" });
+  }, [submit, newCampaignName, newDailyBudget, newTargetCpc, newKeywords, newLandingUrl]);
+
+  const handlePauseCampaign = useCallback(
+    (campaignId: string) => {
+      const fd = new FormData();
+      fd.set("intent", "pause-campaign");
+      fd.set("campaignId", campaignId);
+      submit(fd, { method: "post" });
+    },
+    [submit],
+  );
+
+  const handleEnableCampaign = useCallback(
+    (campaignId: string) => {
+      const fd = new FormData();
+      fd.set("intent", "enable-campaign");
+      fd.set("campaignId", campaignId);
+      submit(fd, { method: "post" });
+    },
+    [submit],
+  );
+
+  const handleUpdateBudget = useCallback(() => {
+    const fd = new FormData();
+    fd.set("intent", "update-budget");
+    fd.set("campaignId", editBudgetCampaignId);
+    fd.set("dailyBudget", editBudgetValue);
+    submit(fd, { method: "post" });
+  }, [submit, editBudgetCampaignId, editBudgetValue]);
+
+  const openBudgetModal = useCallback(
+    (campaignId: string, campaignName: string, currentBudget: number) => {
+      setEditBudgetCampaignId(campaignId);
+      setEditBudgetCampaignName(campaignName);
+      setEditBudgetValue(currentBudget.toFixed(2));
+      setBudgetModalOpen(true);
+    },
+    [],
+  );
+
+  /* ================================================================ */
+  /*  Not connected state                                              */
+  /* ================================================================ */
+  if (!connected) {
+    return (
+      <Page title="Autopilot" backAction={{ content: "Dashboard", url: "/app" }}>
+        <BlockStack gap="400">
+          {connectionError && (
+            <Banner tone="warning" onDismiss={() => {}}>
+              <p>{connectionError}</p>
+            </Banner>
+          )}
+
+          <Banner
+            title="Google Ads account not connected"
+            tone="warning"
+            action={{ content: "Connect Google Ads", url: "/app/connect-google" }}
+          >
+            <p>
+              To use Autopilot, you need to connect your Google Ads account first.
+              This allows us to manage campaigns, read performance data, and
+              optimize bids on your behalf through the Google Ads API.
+            </p>
+          </Banner>
+
+          <Card>
+            <Box padding="400">
+              <BlockStack gap="300">
+                <Text as="h2" variant="headingMd">
+                  What Autopilot does
+                </Text>
+                <Text as="p" variant="bodyMd">
+                  Once connected, Autopilot gives you direct control over your
+                  Google Ads campaigns from within Shopify. You can create
+                  campaigns, pause or enable them, adjust budgets, and track
+                  performance metrics -- all without leaving your store admin.
+                </Text>
+                <Text as="p" variant="bodyMd">
+                  In a future update, Autopilot will also include AI-driven
+                  automatic optimization rules that adjust bids and budgets based
+                  on your store performance.
+                </Text>
+              </BlockStack>
+            </Box>
+          </Card>
+        </BlockStack>
+      </Page>
+    );
+  }
+
+  /* ================================================================ */
+  /*  Connected state                                                  */
+  /* ================================================================ */
+
+  /* ----- Campaign rows for DataTable ----- */
+  const campaignRows = campaigns.map((c) => [
+    c.name,
+    statusBadge(c.status),
+    formatMoney(c.dailyBudget),
+    String(c.clicks),
+    String(c.impressions),
+    formatMoney(c.cost),
+    String(c.conversions),
+    formatPercent(c.ctr),
+    <InlineStack gap="200" key={c.id}>
+      {c.status === 2 ? (
+        <Button
+          size="slim"
+          onClick={() => handlePauseCampaign(c.id)}
+          disabled={isSubmitting}
+        >
+          Pause
+        </Button>
+      ) : c.status === 3 ? (
+        <Button
+          size="slim"
+          variant="primary"
+          onClick={() => handleEnableCampaign(c.id)}
+          disabled={isSubmitting}
+        >
+          Enable
+        </Button>
+      ) : null}
+      {c.status !== 4 && (
+        <Button
+          size="slim"
+          onClick={() => openBudgetModal(c.id, c.name, c.dailyBudget)}
+          disabled={isSubmitting}
+        >
+          Edit Budget
+        </Button>
+      )}
+    </InlineStack>,
+  ]);
+
+  /* ----- Tab content ----- */
+  const tabs = [
+    { id: "campaigns", content: "Campaigns", panelID: "campaigns-panel" },
+    { id: "performance", content: "Performance", panelID: "performance-panel" },
+    { id: "settings", content: "Settings", panelID: "settings-panel" },
+  ];
+
+  const campaignsTab = (
+    <BlockStack gap="400">
+      <InlineStack align="space-between" blockAlign="center">
+        <Text as="h2" variant="headingMd">
+          Your Campaigns ({campaigns.length})
+        </Text>
+        <Button
+          variant="primary"
+          onClick={() => setCreateModalOpen(true)}
+          disabled={isSubmitting}
+        >
+          Create Campaign
+        </Button>
+      </InlineStack>
+
+      {campaigns.length === 0 ? (
+        <Card>
+          <Box padding="400">
+            <BlockStack gap="300" inlineAlign="center">
+              <Text as="p" variant="bodyMd" alignment="center">
+                No campaigns found in your Google Ads account. Create your first
+                campaign to get started.
+              </Text>
+              <Button
+                variant="primary"
+                onClick={() => setCreateModalOpen(true)}
+              >
+                Create Your First Campaign
+              </Button>
+            </BlockStack>
+          </Box>
+        </Card>
+      ) : (
+        <Card>
+          <DataTable
+            columnContentTypes={[
+              "text",
+              "text",
+              "numeric",
+              "numeric",
+              "numeric",
+              "numeric",
+              "numeric",
+              "numeric",
+              "text",
+            ]}
+            headings={[
+              "Name",
+              "Status",
+              "Budget",
+              "Clicks",
+              "Impressions",
+              "Cost",
+              "Conversions",
+              "CTR",
+              "Actions",
+            ]}
+            rows={campaignRows}
+            footerContent={`Showing ${campaigns.length} campaign${campaigns.length !== 1 ? "s" : ""}`}
+          />
+        </Card>
+      )}
+    </BlockStack>
+  );
+
+  const performanceTab = (
+    <BlockStack gap="400">
+      <Text as="h2" variant="headingMd">
+        Performance Summary
+      </Text>
+
+      <InlineStack gap="400" wrap>
+        <Card>
+          <Box padding="400" minWidth="160px">
+            <BlockStack gap="200">
+              <Text as="p" variant="bodySm" tone="subdued">
+                Total Spend
+              </Text>
+              <Text as="p" variant="headingLg">
+                {formatMoney(metrics.totalSpend)}
+              </Text>
+            </BlockStack>
+          </Box>
+        </Card>
+
+        <Card>
+          <Box padding="400" minWidth="160px">
+            <BlockStack gap="200">
+              <Text as="p" variant="bodySm" tone="subdued">
+                Total Clicks
+              </Text>
+              <Text as="p" variant="headingLg">
+                {metrics.totalClicks.toLocaleString()}
+              </Text>
+            </BlockStack>
+          </Box>
+        </Card>
+
+        <Card>
+          <Box padding="400" minWidth="160px">
+            <BlockStack gap="200">
+              <Text as="p" variant="bodySm" tone="subdued">
+                Total Conversions
+              </Text>
+              <Text as="p" variant="headingLg">
+                {metrics.totalConversions.toLocaleString()}
+              </Text>
+            </BlockStack>
+          </Box>
+        </Card>
+
+        <Card>
+          <Box padding="400" minWidth="160px">
+            <BlockStack gap="200">
+              <Text as="p" variant="bodySm" tone="subdued">
+                Average CTR
+              </Text>
+              <Text as="p" variant="headingLg">
+                {formatPercent(metrics.averageCtr)}
+              </Text>
+            </BlockStack>
+          </Box>
+        </Card>
+
+        <Card>
+          <Box padding="400" minWidth="160px">
+            <BlockStack gap="200">
+              <Text as="p" variant="bodySm" tone="subdued">
+                Average CPC
+              </Text>
+              <Text as="p" variant="headingLg">
+                {formatMoney(metrics.averageCpc)}
+              </Text>
+            </BlockStack>
+          </Box>
+        </Card>
+      </InlineStack>
+    </BlockStack>
+  );
+
+  const settingsTab = (
+    <BlockStack gap="400">
+      <Text as="h2" variant="headingMd">
+        Autopilot Settings
+      </Text>
+
+      <Card>
+        <Box padding="400">
+          <BlockStack gap="300">
+            <InlineStack align="space-between" blockAlign="center">
+              <Text as="h3" variant="headingMd">
+                Automatic Optimization
+              </Text>
+              <Badge tone="info">Coming Soon</Badge>
+            </InlineStack>
+            <Text as="p" variant="bodyMd">
+              In Phase 4, Autopilot will include AI-powered automatic
+              optimization rules. These will monitor your campaign performance
+              and automatically adjust bids, budgets, and negative keywords to
+              maximize your return on ad spend.
+            </Text>
+            <Text as="p" variant="bodyMd" tone="subdued">
+              Features planned: automatic bid adjustments, budget reallocation
+              across campaigns, negative keyword discovery, ad schedule
+              optimization, and performance alerts.
+            </Text>
+          </BlockStack>
+        </Box>
+      </Card>
+    </BlockStack>
+  );
+
+  const tabContent = [campaignsTab, performanceTab, settingsTab];
 
   return (
-    <div>
-      <h1>Autopilot</h1>
+    <Page title="Autopilot" backAction={{ content: "Dashboard", url: "/app" }}>
+      <BlockStack gap="400">
+        {/* Banners */}
+        {banner && (
+          <Banner tone={banner.tone} onDismiss={() => setBanner(null)}>
+            <p>{banner.message}</p>
+          </Banner>
+        )}
 
-      {/* Campaign Limits Warning */}
-      {campaignLimits && !campaignLimits.canCreate && (
-        <div style={{ 
-          backgroundColor: '#fef2f2', 
-          border: '1px solid #fecaca', 
-          borderRadius: '6px', 
-          padding: '16px', 
-          margin: '16px 0',
-          color: '#dc2626'
-        }}>
-          <h3 style={{ margin: '0 0 8px 0', fontSize: '16px', fontWeight: 'bold' }}>
-            Campaign Limit Reached
-          </h3>
-          <p style={{ margin: '0 0 12px 0' }}>
-            Your {campaignLimits.tier} plan allows up to {campaignLimits.limit} campaigns. 
-            You currently have {campaignLimits.current} active campaigns.
-          </p>
-          <a 
-            href={campaignLimits.upgradeUrl} 
-            style={{ 
-              backgroundColor: '#dc2626', 
-              color: 'white', 
-              padding: '8px 16px', 
-              borderRadius: '4px', 
-              textDecoration: 'none',
-              display: 'inline-block'
-            }}
-          >
-            Upgrade Now
-          </a>
-        </div>
-      )}
+        {isSubmitting && (
+          <InlineStack gap="200" blockAlign="center">
+            <Spinner size="small" />
+            <Text as="span" variant="bodyMd">
+              Processing...
+            </Text>
+          </InlineStack>
+        )}
 
-      {/* Campaign Usage Display for Users Near Limit */}
-      {campaignLimits && campaignLimits.canCreate && campaignLimits.remaining <= 2 && campaignLimits.limit !== -1 && (
-        <div style={{ 
-          backgroundColor: '#fef3c7', 
-          border: '1px solid #fcd34d', 
-          borderRadius: '6px', 
-          padding: '16px', 
-          margin: '16px 0',
-          color: '#d97706'
-        }}>
-          <h3 style={{ margin: '0 0 8px 0', fontSize: '16px', fontWeight: 'bold' }}>
-            Campaign Usage Warning
-          </h3>
-          <p style={{ margin: '0 0 12px 0' }}>
-            You are using {campaignLimits.current} of {campaignLimits.limit} campaigns in your {campaignLimits.tier} plan.
-            {campaignLimits.remaining > 0 && ` You have ${campaignLimits.remaining} campaigns remaining.`}
-          </p>
-          <a 
-            href={campaignLimits.upgradeUrl} 
-            style={{ 
-              backgroundColor: '#d97706', 
-              color: 'white', 
-              padding: '8px 16px', 
-              borderRadius: '4px', 
-              textDecoration: 'none',
-              display: 'inline-block'
-            }}
-          >
-            Upgrade for More Campaigns
-          </a>
-        </div>
-      )}
+        {/* Tabs */}
+        <Tabs tabs={tabs} selected={selectedTab} onSelect={handleTabChange}>
+          <Box padding="400">{tabContent[selectedTab]}</Box>
+        </Tabs>
+      </BlockStack>
 
-      {/* Shop automatically detected from Shopify authentication */}
-
-      {/* Toggle between simple and advanced forms */}
-      {toast && <p style={{ color: "#28a745", padding: "8px", background: "#d4edda", borderRadius: "4px" }}>{toast}</p>}
-
-      <div style={{ marginBottom: 16 }}>
-        <button
-          onClick={() => setShowAdvancedForm(!showAdvancedForm)}
-          style={{
-            background: showAdvancedForm ? "#28a745" : "#007bff",
-            color: "white",
-            padding: "8px 16px",
-            border: "none",
-            borderRadius: "4px",
-            cursor: "pointer",
-            fontSize: "14px",
-          }}
-        >
-          {showAdvancedForm ? "Switch to Simple Mode" : "Switch to Advanced Setup"}
-        </button>
-      </div>
-
-      {showAdvancedForm ? (
-        <CampaignSetupForm
-          shopName={shopName || serverShopName || ""}
-          onGenerate={(config) => {
-            // Convert advanced config to simple form values
-            setBudget(config.dailyBudget.toString());
-            setCpc(config.targetCPC.toString());
-            setUrl(config.hasOffer ? config.offerText : url || "");
-
-            // Map goal correctly
-            let mappedMode = "protect";
-            if (config.goal === "sales") mappedMode = "scale";
-            else if (config.goal === "traffic") mappedMode = "grow";
-            else if (config.goal === "leads") mappedMode = "protect";
-            setMode(mappedMode);
-
-            // Create and submit form programmatically
-            const form = document.createElement("form");
-            form.method = "POST";
-            form.style.display = "none";
-
-            const fields = {
-              actionType: "generateScript",
-              mode: mappedMode,
-              budget: config.dailyBudget.toString(),
-              cpc: config.targetCPC.toString(),
-              url: url || "",
-              advancedConfig: JSON.stringify(config)
-            };
-
-            Object.entries(fields).forEach(([name, value]) => {
-              const input = document.createElement("input");
-              input.type = "hidden";
-              input.name = name;
-              input.value = value;
-              form.appendChild(input);
-            });
-
-            document.body.appendChild(form);
-            form.submit();
-          }}
-        />
-      ) : (
-        <>
-          <section style={{ border: "1px solid #eee", padding: 12 }}>
-            <h3>Goal</h3>
-            <label>
-              <input
-                type="radio"
-                name="goal"
-                value="protect"
-                checked={mode === "protect"}
-                onChange={() => setMode("protect")}
-              />{" "}
-              Protect (Conservative)
-            </label>
-            <br />
-            <label>
-              <input
-                type="radio"
-                name="goal"
-                value="grow"
-                checked={mode === "grow"}
-                onChange={() => setMode("grow")}
-              />{" "}
-              Grow (Balanced)
-            </label>
-            <br />
-            <label>
-              <input
-                type="radio"
-                name="goal"
-                value="scale"
-                checked={mode === "scale"}
-                onChange={() => setMode("scale")}
-              />{" "}
-              Scale (Aggressive)
-            </label>
-          </section>
-          <section style={{ border: "1px solid #eee", padding: 12 }}>
-            <h3>Budget & CPC</h3>
-            <div style={{ display: "flex", gap: "12px" }}>
-              <div style={{ flex: 1 }}>
-                <label style={{ fontSize: "14px", color: "#666" }}>Daily Budget</label>
-                <input
-                  type="number"
-                  step="0.01"
-                  value={budget}
-                  onChange={(e) => setBudget(e.target.value)}
-                  placeholder="$ per day"
-                  style={{ width: "100%", padding: "6px" }}
-                />
-              </div>
-              <div style={{ flex: 1 }}>
-                <label style={{ fontSize: "14px", color: "#666" }}>Max CPC</label>
-                <input
-                  type="number"
-                  step="0.01"
-                  value={cpc}
-                  onChange={(e) => setCpc(e.target.value)}
-                  placeholder="Max CPC"
-                  style={{ width: "100%", padding: "6px" }}
-                />
-              </div>
-            </div>
-          </section>
-          <section style={{ border: "1px solid #eee", padding: 12 }}>
-            <h3>Landing URL</h3>
-            <input
-              value={url}
-              onChange={(e) => setUrl(e.target.value)}
-              placeholder="https://example.com"
-              style={{ width: "100%", padding: "6px" }}
-            />
-          </section>
-        </>
-      )}
-      <div
-        style={{
-          marginTop: 8,
-          padding: 12,
-          background: showScript ? "#d4edda" : "#e7f3ff",
-          borderRadius: 4,
-          marginBottom: 16,
-          border: showScript ? "1px solid #c3e6cb" : "1px solid #bee5eb",
+      {/* ---- Create Campaign Modal ---- */}
+      <Modal
+        open={createModalOpen}
+        onClose={() => setCreateModalOpen(false)}
+        title="Create New Campaign"
+        primaryAction={{
+          content: "Create Campaign",
+          onAction: handleCreateCampaign,
+          loading: isSubmitting,
+          disabled: !newCampaignName || !newDailyBudget,
         }}
+        secondaryActions={[
+          {
+            content: "Cancel",
+            onAction: () => setCreateModalOpen(false),
+          },
+        ]}
       >
-        <h4 style={{ margin: "0 0 8px 0", color: showScript ? "#155724" : "#0c5460" }}>
-          Autopilot Status
-        </h4>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 8,
-            marginBottom: 8,
-          }}
-        >
-          <span
-            style={{
-              background: showScript ? "#28a745" : "#6c757d",
-              color: "white",
-              padding: "4px 8px",
-              borderRadius: "12px",
-              fontSize: "12px",
-            }}
-          >
-            {showScript ? "SCRIPT READY" : "SETUP NEEDED"}
-          </span>
-          <span>
-            Shop:{" "}
-            <strong>{shopName || serverShopName || "Loading..."}</strong>
-          </span>
-        </div>
-        <div style={{ fontSize: "14px", color: "#666" }}>
-          {showScript ? (
-            <>
-              Your script has been generated. Copy it into Google Ads to activate.
-              <br />
-              <strong>Next:</strong> Google Ads → Tools → Scripts → + New script → Paste → Authorize → Run
-            </>
-          ) : (
-            <>
-              Configure your settings below and generate your Google Ads script.
-              <br />
-              Once pasted into Google Ads, it will optimize your campaigns automatically.
-            </>
-          )}
-        </div>
-      </div>
-
-      {!showAdvancedForm && (
-        <div style={{ marginTop: 8 }}>
-          <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
-            <Form method="post">
-              <input type="hidden" name="actionType" value="generateScript" />
-              <input type="hidden" name="mode" value={mode} />
-              <input type="hidden" name="budget" value={budget} />
-              <input type="hidden" name="cpc" value={cpc} />
-              <input type="hidden" name="url" value={url} />
-              <button
-                type="submit"
-                disabled={isGeneratingScript || (campaignLimits && !campaignLimits.canCreate)}
-                style={{
-                  background: (isGeneratingScript || (campaignLimits && !campaignLimits.canCreate)) ? "#6c757d" : "#007bff",
-                  color: "white",
-                  padding: "12px 24px",
-                  border: "none",
-                  borderRadius: "4px",
-                  cursor: (isGeneratingScript || (campaignLimits && !campaignLimits.canCreate)) ? "not-allowed" : "pointer",
-                  fontSize: "16px",
-                }}
-                title={campaignLimits && !campaignLimits.canCreate ? `Campaign limit reached. Upgrade your ${campaignLimits.tier} plan to create more campaigns.` : undefined}
-              >
-                {isGeneratingScript ? "Generating..." :
-                 (campaignLimits && !campaignLimits.canCreate) ? "Campaign Limit Reached" :
-                 "Generate Current Script"}
-              </button>
-            </Form>
-            <button
-              onClick={generateAIAds}
-              disabled={isGeneratingAds || !shopName}
-              style={{
-                background: isGeneratingAds ? "#6c757d" : "#28a745",
-                color: "white",
-                padding: "12px 24px",
-                border: "none",
-                borderRadius: "4px",
-                cursor: (isGeneratingAds || !shopName) ? "not-allowed" : "pointer",
-                fontSize: "16px",
-              }}
-              title={!shopName ? "Shop name not available" : "Generate AI-powered ad content"}
-            >
-              {isGeneratingAds ? "Generating AI Ads..." : "Generate AI Ads"}
-            </button>
-            <button
-              onClick={() => {
-                setShowMLDashboard(!showMLDashboard);
-                if (!showMLDashboard && !mlState) {
-                  fetchMLState();
-                }
-              }}
-              style={{
-                background: "#6f42c1",
-                color: "white",
-                padding: "12px 24px",
-                border: "none",
-                borderRadius: "4px",
-                cursor: "pointer",
-                fontSize: "16px",
-              }}
-              title="View ML Autopilot insights and controls"
-            >
-              {showMLDashboard ? "Hide ML Dashboard" : "Show ML Dashboard"}
-            </button>
-          </div>
-        </div>
-      )}
-      {/* Show script from action data */}
-      {(actionData as any)?.success && (actionData as any)?.script && (
-        <div style={{
-          background: "#d4edda",
-          border: "1px solid #c3e6cb",
-          padding: "12px",
-          marginTop: "12px",
-          borderRadius: "4px"
-        }}>
-          <h3>Script Generated Successfully!</h3>
-          <p>Size: {(actionData as any).size}KB for shop: {(actionData as any).shopName}</p>
-          <details>
-            <summary>View Script (Click to expand)</summary>
-            <textarea
-              readOnly
-              value={(actionData as any).script}
-              style={{
-                width: "100%",
-                height: 300,
-                fontFamily: "monospace",
-                fontSize: "12px",
-                marginTop: "8px"
-              }}
+        <Modal.Section>
+          <BlockStack gap="400">
+            <TextField
+              label="Campaign Name"
+              value={newCampaignName}
+              onChange={setNewCampaignName}
+              autoComplete="off"
+              placeholder="e.g., Summer Sale 2025"
+              helpText="A descriptive name for your campaign."
             />
-          </details>
-        </div>
-      )}
-      {/* AI Generated Ads Display */}
-      {showGeneratedAds && generatedAds && (
-        <section style={{
-          border: "1px solid #28a745",
-          padding: 12,
-          marginTop: 12,
-          borderRadius: "4px",
-          background: "#f8fff9"
-        }}>
-          <div style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            marginBottom: 10,
-          }}>
-            <h3>AI Generated Ads</h3>
-            <div style={{ display: "flex", gap: "8px" }}>
-              <button
-                onClick={acceptAIAds}
-                style={{
-                  background: "#28a745",
-                  color: "white",
-                  padding: "8px 16px",
-                  border: "none",
-                  borderRadius: "4px",
-                  cursor: "pointer",
-                }}
-              >
-                Accept & Apply
-              </button>
-              <button
-                onClick={() => {
-                  setShowGeneratedAds(false);
-                  setGeneratedAds(null);
-                  setToast("AI ads cleared");
-                }}
-                style={{
-                  background: "#6c757d",
-                  color: "white",
-                  padding: "8px 16px",
-                  border: "none",
-                  borderRadius: "4px",
-                  cursor: "pointer",
-                }}
-              >
-                Reject
-              </button>
-            </div>
-          </div>
-
-          <div style={{ display: "grid", gap: "16px", gridTemplateColumns: "1fr 1fr" }}>
-            <div>
-              <h4 style={{ margin: "0 0 8px 0", color: "#28a745" }}>Headlines ({generatedAds.headlines?.length || 0})</h4>
-              <div style={{
-                maxHeight: 200,
-                overflowY: "auto",
-                background: "white",
-                border: "1px solid #ddd",
-                borderRadius: "4px",
-                padding: "8px"
-              }}>
-                {generatedAds.headlines?.map((headline: string, index: number) => (
-                  <div key={index} style={{
-                    padding: "4px 8px",
-                    borderBottom: index < (generatedAds.headlines?.length || 0) - 1 ? "1px solid #eee" : "none",
-                    fontSize: "14px"
-                  }}>
-                    {headline}
-                  </div>
-                )) || <p>No headlines generated</p>}
-              </div>
-            </div>
-
-            <div>
-              <h4 style={{ margin: "0 0 8px 0", color: "#28a745" }}>Descriptions ({generatedAds.descriptions?.length || 0})</h4>
-              <div style={{
-                maxHeight: 200,
-                overflowY: "auto",
-                background: "white",
-                border: "1px solid #ddd",
-                borderRadius: "4px",
-                padding: "8px"
-              }}>
-                {generatedAds.descriptions?.map((description: string, index: number) => (
-                  <div key={index} style={{
-                    padding: "4px 8px",
-                    borderBottom: index < (generatedAds.descriptions?.length || 0) - 1 ? "1px solid #eee" : "none",
-                    fontSize: "14px"
-                  }}>
-                    {description}
-                  </div>
-                )) || <p>No descriptions generated</p>}
-              </div>
-            </div>
-          </div>
-
-          <div style={{ marginTop: "12px", padding: "8px", background: "#e6f7ff", borderRadius: "4px", fontSize: "12px", color: "#0c5460" }}>
-            <strong>Preview:</strong> These AI-generated ads will be added to your asset library and can be used in your Google Ads campaigns.
-            Click "Accept & Apply" to save them or "Reject" to generate new ones.
-          </div>
-        </section>
-      )}
-
-      {/* ML Autopilot Dashboard */}
-      {showMLDashboard && (
-        <ClientOnly>
-          {() => (
-            <MLAutopilotDashboard
-              shopName={shopName || serverShopName || ""}
-              mlState={mlState ?? undefined}
-              onRefresh={fetchMLState}
+            <TextField
+              label="Daily Budget ($)"
+              type="number"
+              value={newDailyBudget}
+              onChange={setNewDailyBudget}
+              autoComplete="off"
+              min={1}
+              placeholder="20.00"
+              helpText="The maximum amount you want to spend per day."
             />
-          )}
-        </ClientOnly>
-      )}
+            <TextField
+              label="Target CPC ($)"
+              type="number"
+              value={newTargetCpc}
+              onChange={setNewTargetCpc}
+              autoComplete="off"
+              min={0.01}
+              step={0.01}
+              placeholder="0.50"
+              helpText="Maximum cost per click (optional)."
+            />
+            <TextField
+              label="Keywords"
+              value={newKeywords}
+              onChange={setNewKeywords}
+              autoComplete="off"
+              placeholder="keyword1, keyword2, keyword3"
+              helpText="Comma-separated list of keywords to target."
+              multiline={2}
+            />
+            <TextField
+              label="Landing URL"
+              value={newLandingUrl}
+              onChange={setNewLandingUrl}
+              autoComplete="off"
+              placeholder="https://your-store.myshopify.com/collections/sale"
+              helpText="The page users will land on after clicking your ad."
+            />
+          </BlockStack>
+        </Modal.Section>
+      </Modal>
 
-      {showScript && (
-        <section
-          style={{ border: "1px solid #eee", padding: 12, marginTop: 12 }}
-        >
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              marginBottom: 10,
-            }}
-          >
-            <h3>
-              Google Ads Script ({Math.round(scriptCode.length / 1024)}KB)
-            </h3>
-            <div style={{ display: "flex", gap: "8px" }}>
-              <button
-                onClick={() => {
-                  navigator.clipboard
-                    .writeText(scriptCode)
-                    .then(() => {
-                      setToast("Script copied to clipboard!");
-                    })
-                    .catch(() => {
-                      setToast("Copy failed - select text manually");
-                    });
-                }}
-                style={{
-                  background: "#28a745",
-                  color: "white",
-                  padding: "8px 16px",
-                  border: "none",
-                  borderRadius: "4px",
-                  cursor: "pointer",
-                }}
-              >
-                Copy Script
-              </button>
-              <button
-                onClick={() => {
-                  setShowScript(false);
-                  setScriptCode("");
-                  try {
-                    localStorage.removeItem('adsautopilot_generated_script');
-                    localStorage.removeItem('adsautopilot_script_meta');
-                  } catch (e) {
-                    console.warn('Failed to clear localStorage:', e);
-                  }
-                  setToast("Script cleared");
-                }}
-                style={{
-                  background: "#6c757d",
-                  color: "white",
-                  padding: "8px 16px",
-                  border: "none",
-                  borderRadius: "4px",
-                  cursor: "pointer",
-                }}
-              >
-                Clear
-              </button>
-            </div>
-          </div>
-          <textarea
-            readOnly
-            value={scriptCode}
-            style={{
-              width: "100%",
-              height: 300,
-              fontFamily: "monospace",
-              fontSize: "12px",
-            }}
-            placeholder="Script will appear here when loaded..."
-          />
-          <ol>
-            <li>Google Ads → Tools → Bulk actions → Scripts → + New script</li>
-            <li>Paste, Authorize, then Preview first</li>
-            <li>If ok, Run once, then Schedule daily</li>
-          </ol>
-        </section>
-      )}
-    </div>
+      {/* ---- Edit Budget Modal ---- */}
+      <Modal
+        open={budgetModalOpen}
+        onClose={() => setBudgetModalOpen(false)}
+        title={`Update Budget: ${editBudgetCampaignName}`}
+        primaryAction={{
+          content: "Update Budget",
+          onAction: handleUpdateBudget,
+          loading: isSubmitting,
+          disabled: !editBudgetValue,
+        }}
+        secondaryActions={[
+          {
+            content: "Cancel",
+            onAction: () => setBudgetModalOpen(false),
+          },
+        ]}
+      >
+        <Modal.Section>
+          <BlockStack gap="400">
+            <TextField
+              label="New Daily Budget ($)"
+              type="number"
+              value={editBudgetValue}
+              onChange={setEditBudgetValue}
+              autoComplete="off"
+              min={1}
+              placeholder="20.00"
+              helpText="The new maximum daily spend for this campaign."
+            />
+          </BlockStack>
+        </Modal.Section>
+      </Modal>
+    </Page>
   );
 }

@@ -267,5 +267,27 @@ function opKey(method: string, pathname: string): string {
   if (pathname.includes("/sessions/retrieve")) return "session_retrieve";
   if (pathname.includes("/sessions/delete")) return "session_delete";
   if (pathname.includes("/sessions/list")) return "session_list";
+  if (pathname.includes("/google-ads/auth/url")) return "gads_auth_url";
+  if (pathname.includes("/google-ads/connection-status")) return "gads_connection_status";
+  if (pathname.includes("/google-ads/accounts/select")) return "gads_accounts_select";
+  if (pathname.includes("/google-ads/accounts")) return "gads_accounts";
+  if (pathname.includes("/google-ads/disconnect")) return "gads_disconnect";
+  if (pathname.includes("/google-ads/quota")) return "gads_quota";
+  if (pathname.includes("/google-ads/campaigns/create")) return "gads_campaigns_create";
+  if (pathname.includes("/google-ads/campaigns") && pathname.includes("/pause")) return "gads_campaign_pause";
+  if (pathname.includes("/google-ads/campaigns") && pathname.includes("/enable")) return "gads_campaign_enable";
+  if (pathname.includes("/google-ads/campaigns") && pathname.includes("/budget")) return "gads_campaign_budget";
+  if (pathname.includes("/google-ads/campaigns") && pathname.includes("/negatives")) return "gads_campaign_negatives";
+  if (pathname.includes("/google-ads/campaigns") && pathname.includes("/search-terms")) return "gads_search_terms";
+  if (pathname.includes("/google-ads/campaigns") && pathname.includes("/keywords")) return "gads_keywords";
+  if (pathname.includes("/google-ads/campaigns") && pathname.includes("/details")) return "gads_campaign_details";
+  if (pathname.includes("/google-ads/campaigns") && pathname.includes("/auction-insights")) return "gads_auction_insights";
+  if (pathname.includes("/google-ads/campaigns")) return "gads_campaigns";
+  if (pathname.includes("/google-ads/metrics")) return "gads_metrics";
+  if (pathname.includes("/google-ads/sync")) return "gads_sync";
+  if (pathname.includes("/google-ads/optimize")) return "gads_optimize";
+  if (pathname.includes("/google-ads/autopilot/status")) return "gads_autopilot_status";
+  if (pathname.includes("/google-ads/autopilot/config")) return "gads_autopilot_config";
+  if (pathname.includes("/google-ads/autopilot/history")) return "gads_autopilot_history";
   return "unknown";
 }

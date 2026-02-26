@@ -7,25 +7,24 @@
  */
 
 import express from 'express';
-import { validateShopifyAccess } from '../middleware/shopify-auth.js';
-import { checkSubscriptionAccess } from '../middleware/subscription-check.js';
-import { responseOptimizer } from '../middleware/response-optimizer.js';
-import DashboardOrchestratorService from '../services/dashboard-orchestrator.js';
+import responseOptimizerMiddleware from '../middleware/response-optimizer.js';
+import dashboardOrchestrator from '../services/dashboard-orchestrator.js';
 import logger from '../services/logger.js';
 
 const router = express.Router();
-const dashboardOrchestrator = new DashboardOrchestratorService();
 
 /**
  * Common middleware for all insights routes
+ * Extracts tenant from headers or query params (set by the Shopify UI proxy)
  */
 router.use(async (req, res, next) => {
   try {
-    // Validate Shopify session
-    if (!req.session?.shopifySession) {
+    const tenant = req.headers['x-tenant-id'] || req.query.tenant || req.query.shop;
+
+    if (!tenant) {
       return res.status(401).json({
         success: false,
-        error: 'Authentication required',
+        error: 'Authentication required — missing tenant identifier',
         metadata: {
           timestamp: new Date().toISOString(),
           cache: 'MISS',
@@ -34,10 +33,8 @@ router.use(async (req, res, next) => {
       });
     }
 
-    await validateShopifyAccess(req.session.shopifySession);
-
-    // Attach shop domain for tenant access
-    req.shopDomain = req.session.shopifySession.shop;
+    // Attach tenant/shop domain for downstream handlers
+    req.shopDomain = String(tenant).replace('.myshopify.com', '');
 
     next();
   } catch (error) {
@@ -59,8 +56,7 @@ router.use(async (req, res, next) => {
  * Website content analysis and insights
  */
 router.get('/website',
-  checkSubscriptionAccess(['basic', 'professional', 'enterprise']),
-  responseOptimizer,
+  responseOptimizerMiddleware,
   async (req, res) => {
     const startTime = Date.now();
 
@@ -108,8 +104,7 @@ router.get('/website',
  * Competitor intelligence and analysis
  */
 router.get('/competitors',
-  checkSubscriptionAccess(['professional', 'enterprise']),
-  responseOptimizer,
+  responseOptimizerMiddleware,
   async (req, res) => {
     const startTime = Date.now();
 
@@ -158,8 +153,7 @@ router.get('/competitors',
  * Traffic patterns and user behavior analysis
  */
 router.get('/traffic',
-  checkSubscriptionAccess(['basic', 'professional', 'enterprise']),
-  responseOptimizer,
+  responseOptimizerMiddleware,
   async (req, res) => {
     const startTime = Date.now();
 
@@ -208,8 +202,7 @@ router.get('/traffic',
  * Customer segments and behavior analysis
  */
 router.get('/customers',
-  checkSubscriptionAccess(['professional', 'enterprise']),
-  responseOptimizer,
+  responseOptimizerMiddleware,
   async (req, res) => {
     const startTime = Date.now();
 
@@ -258,8 +251,7 @@ router.get('/customers',
  * SERP monitoring and ranking insights
  */
 router.get('/serp',
-  checkSubscriptionAccess(['professional', 'enterprise']),
-  responseOptimizer,
+  responseOptimizerMiddleware,
   async (req, res) => {
     const startTime = Date.now();
 
@@ -309,7 +301,6 @@ router.get('/serp',
  * Trigger a new website scan
  */
 router.post('/website/scan',
-  checkSubscriptionAccess(['professional', 'enterprise']),
   async (req, res) => {
     const startTime = Date.now();
 
@@ -356,7 +347,6 @@ router.post('/website/scan',
  * Add a new competitor for monitoring
  */
 router.post('/competitors/add',
-  checkSubscriptionAccess(['professional', 'enterprise']),
   async (req, res) => {
     const startTime = Date.now();
 
@@ -404,7 +394,6 @@ router.post('/competitors/add',
  * Remove a competitor from monitoring
  */
 router.delete('/competitors/:id',
-  checkSubscriptionAccess(['professional', 'enterprise']),
   async (req, res) => {
     const startTime = Date.now();
 

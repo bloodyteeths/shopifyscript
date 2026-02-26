@@ -15,6 +15,7 @@ import {
 import { authenticate } from "../shopify.server";
 import { checkTenantSetup } from "../utils/tenant.server";
 import { checkSubscriptionStatus, hasFeatureAccess } from "../utils/subscription.server";
+import { AutopilotControls } from "../components/AutopilotControls";
 
 // This function is no longer needed - replaced by shop name utilities
 
@@ -77,11 +78,13 @@ export async function loader({ request }: LoaderFunctionArgs) {
     console.log(`Fetching data for shop: ${shopName}`);
 
     // Fetch data with better error handling for each endpoint
-    const [cfg, insights, campaigns, summary] = await Promise.allSettled([
+    const [cfg, insights, campaigns, summary, autopilotStatus, autopilotHistory] = await Promise.allSettled([
       backendFetch("/config", "GET", undefined, shopName),
       backendFetch("/insights?w=7d", "GET", undefined, shopName),
       backendFetch("/campaigns", "GET", undefined, shopName),
       backendFetch("/summary", "GET", undefined, shopName),
+      backendFetch("/google-ads/autopilot/status", "GET", undefined, shopName),
+      backendFetch("/google-ads/autopilot/history", "GET", undefined, shopName),
     ]);
 
     const configData =
@@ -92,11 +95,23 @@ export async function loader({ request }: LoaderFunctionArgs) {
       campaigns.status === "fulfilled" ? campaigns.value.json || {} : {};
     const summaryData =
       summary.status === "fulfilled" ? summary.value.json || {} : {};
+    const autopilotStatusData =
+      autopilotStatus.status === "fulfilled" ? autopilotStatus.value.json || null : null;
+    const autopilotHistoryData =
+      autopilotHistory.status === "fulfilled"
+        ? autopilotHistory.value.json?.entries || []
+        : [];
+
+    // Extract campaign names for the exclude-campaigns selector
+    const campaignNamesList: string[] = (campaignsData.campaigns || []).map(
+      (c: any) => c.name || c.campaign_name || c.id || "",
+    ).filter(Boolean);
 
     console.log(`Data fetched successfully for ${shopName}:`, {
       configKeys: Object.keys(configData).length,
       hasInsights: !!insightsData.kpi,
       campaignCount: campaignsData.campaigns?.length || 0,
+      hasAutopilotStatus: !!autopilotStatusData,
     });
 
     return json({
@@ -110,6 +125,10 @@ export async function loader({ request }: LoaderFunctionArgs) {
         summaryData,
       ),
       shopName: shopName,
+      backendUrl: process.env.BACKEND_PUBLIC_URL || "https://ads-autopilot-backend.vercel.app/api",
+      autopilotStatus: autopilotStatusData,
+      autopilotHistory: autopilotHistoryData,
+      campaignNames: campaignNamesList,
       error:
         cfg.status === "rejected"
           ? "Failed to load configuration - check backend connection"
@@ -127,6 +146,10 @@ export async function loader({ request }: LoaderFunctionArgs) {
         summary: {},
         suggestions: generateSuggestions({}, {}, {}),
         shopName: shopName,
+        backendUrl: process.env.BACKEND_PUBLIC_URL || "https://ads-autopilot-backend.vercel.app/api",
+        autopilotStatus: null,
+        autopilotHistory: [],
+        campaignNames: [],
         error: `Failed to load data: ${errorMessage}`,
       },
       { status: 500 },
@@ -462,6 +485,58 @@ export async function action({ request }: ActionFunctionArgs) {
         shopName,
       );
       return json({ ok: r.json?.ok, updated: r.json?.updated || 0, shopName });
+    }
+
+    // ---- Autopilot Controls actions (from AutopilotControls component) ----
+    const autopilotAction = fd.get("_autopilotAction");
+    if (autopilotAction === "loadStatus") {
+      const tenant = String(fd.get("tenant") || shopName);
+      const r = await backendFetch(
+        "/google-ads/autopilot/status",
+        "GET",
+        undefined,
+        tenant,
+      );
+      return json(r.json || { ok: false, error: "No data" });
+    }
+    if (autopilotAction === "loadHistory") {
+      const tenant = String(fd.get("tenant") || shopName);
+      const r = await backendFetch(
+        "/google-ads/autopilot/history",
+        "GET",
+        undefined,
+        tenant,
+      );
+      return json(r.json || { ok: false, entries: [] });
+    }
+    if (autopilotAction === "saveConfig") {
+      const tenant = String(fd.get("tenant") || shopName);
+      const configPayload = {
+        nonce: Date.now(),
+        enabled: fd.get("enabled") === "true",
+        aggressiveness: String(fd.get("aggressiveness") || "moderate"),
+        autoApprove: fd.get("autoApprove") === "true",
+        maxDailyBudgetChangePct: Number(fd.get("maxDailyBudgetChangePct") || 20),
+        maxBidChangePct: Number(fd.get("maxBidChangePct") || 30),
+        excludedCampaigns: JSON.parse(String(fd.get("excludedCampaigns") || "[]")),
+      };
+      const r = await backendFetch(
+        "/google-ads/autopilot/config",
+        "POST",
+        configPayload,
+        tenant,
+      );
+      return json(r.json || { ok: false, error: "Save failed" });
+    }
+    if (autopilotAction === "runNow") {
+      const tenant = String(fd.get("tenant") || shopName);
+      const r = await backendFetch(
+        "/google-ads/optimize",
+        "POST",
+        { nonce: Date.now() },
+        tenant,
+      );
+      return json(r.json || { ok: false, error: "Run failed" });
     }
 
     // Default return for other actions (SEO, etc.)
@@ -1919,6 +1994,17 @@ export default function Advanced() {
           )}
         </div>
       </Form>
+
+      {/* ---- Autopilot Engine Controls ---- */}
+      <div style={{ marginTop: "32px" }}>
+        <AutopilotControls
+          tenantId={data?.shopName || ""}
+          backendUrl={data?.backendUrl || ""}
+          initialStatus={data?.autopilotStatus || null}
+          initialHistory={data?.autopilotHistory || []}
+          campaignNames={data?.campaignNames || []}
+        />
+      </div>
 
       {Array.isArray(preview) && preview.length > 0 && (
         <div

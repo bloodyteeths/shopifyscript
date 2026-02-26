@@ -20,15 +20,18 @@ import { getWebsiteScraper } from './website-scraper.js';
 import { getCompetitorIntelligenceService } from './competitor-intelligence.js';
 import trafficAnalyzer from './traffic-analyzer.js';
 import demographicProfiler from './demographic-profiler.js';
-import { getSerpMonitorService } from './serp-monitor.js';
+import { getSERPMonitorService as getSerpMonitorService } from './serp-monitor.js';
 import { broadcastToTenant, broadcastSystemEvent, WS_EVENTS, MESSAGE_PRIORITY } from './websocket-server.js';
 
 // Import optimization services
 import { getCampaignOptimizer } from './campaign-optimizer.js';
 import { getBidManager } from './bid-manager.js';
 import { getBudgetAllocator } from './budget-allocator.js';
-import { getDynamicCopyService } from './dynamic-copy.js';
+import { getDynamicCopyGenerator as getDynamicCopyService } from './dynamic-copy.js';
 import { getABTestingService } from './ab-tester.js';
+
+// Import Google Ads client for auction insights aggregation
+import * as googleAdsClient from './google-ads-client.js';
 
 /**
  * Dashboard Orchestrator - Central data aggregation service
@@ -389,6 +392,322 @@ class DashboardOrchestratorService {
       });
 
       return dashboardTransformer.transformActivityFeed([], limit);
+    }
+  }
+
+  /**
+   * =====================================
+   * DATA-SOURCE INSIGHT ENDPOINTS
+   * (called by /api/dashboard/insights routes)
+   * =====================================
+   */
+
+  /**
+   * Get competitor insights — aggregates Google Ads auction insights
+   * across all active campaigns and transforms them into the
+   * CompetitorIntelData shape the frontend expects.
+   *
+   * @param {string} tenantId
+   * @param {object} options
+   * @returns {Promise<object>}
+   */
+  async getCompetitorInsights(tenantId, options = {}) {
+    const startTime = Date.now();
+
+    try {
+      // Check cache first
+      const cached = dashboardCache.get(tenantId, 'competitor_insights');
+      if (cached) {
+        this._trackPerformance(startTime, true);
+        return { ...cached, fromCache: true };
+      }
+
+      // 1. Fetch all active campaigns for the tenant
+      let campaigns = [];
+      try {
+        campaigns = await googleAdsClient.listCampaigns(tenantId);
+      } catch (err) {
+        logger.warn('Could not list campaigns for competitor insights', {
+          tenantId,
+          error: err.message
+        });
+      }
+
+      const activeCampaigns = campaigns.filter(c =>
+        c.status === 'ENABLED' || c.status === 'ACTIVE'
+      );
+
+      // 2. Fetch auction insights for each active campaign (in parallel)
+      const auctionResults = await Promise.allSettled(
+        activeCampaigns.map(c =>
+          googleAdsClient.getAuctionInsights(tenantId, c.id)
+            .then(insights => ({ campaignId: c.id, campaignName: c.name, insights }))
+        )
+      );
+
+      // 3. Aggregate auction insights across campaigns — deduplicate by domain
+      const domainMap = new Map();
+      for (const result of auctionResults) {
+        if (result.status !== 'fulfilled') continue;
+        const { campaignName, insights } = result.value;
+        for (const row of (insights || [])) {
+          const domain = row.displayDomain;
+          if (!domain) continue;
+
+          if (!domainMap.has(domain)) {
+            domainMap.set(domain, {
+              domain,
+              impressionShares: [],
+              overlapRates: [],
+              positionAboveRates: [],
+              topImpressionPcts: [],
+              absTopImpressionPcts: [],
+              outrankingShares: [],
+              campaigns: new Set()
+            });
+          }
+          const entry = domainMap.get(domain);
+          entry.impressionShares.push(row.impressionShare);
+          entry.overlapRates.push(row.overlapRate);
+          entry.positionAboveRates.push(row.positionAboveRate);
+          entry.topImpressionPcts.push(row.topImpressionPct);
+          entry.absTopImpressionPcts.push(row.absTopImpressionPct);
+          entry.outrankingShares.push(row.outrankingShare);
+          entry.campaigns.add(campaignName);
+        }
+      }
+
+      // 4. Transform into CompetitorProfile-compatible shape
+      const avg = arr => arr.length ? arr.reduce((s, v) => s + v, 0) / arr.length : 0;
+
+      const competitors = Array.from(domainMap.values())
+        .map((entry, idx) => {
+          const avgImprShare = avg(entry.impressionShares);
+          const avgOverlap = avg(entry.overlapRates);
+          const avgOutranking = avg(entry.outrankingShares);
+
+          // Derive threat level from outranking share
+          let threatLevel = 'low';
+          if (avgOutranking > 0.5) threatLevel = 'high';
+          else if (avgOutranking > 0.25) threatLevel = 'medium';
+
+          return {
+            id: `comp-${idx}`,
+            name: entry.domain.replace(/\.\w+$/, '').replace(/^www\./, ''),
+            domain: entry.domain,
+            threatLevel,
+            estimatedRevenue: 0,
+            employeeCount: 0,
+            marketPosition: {
+              x: Number((avgImprShare * 100).toFixed(1)),
+              y: Number((avgOutranking * 100).toFixed(1))
+            },
+            lastUpdated: new Date().toISOString(),
+            auctionMetrics: {
+              impressionShare: Number(avgImprShare.toFixed(4)),
+              overlapRate: Number(avg(entry.overlapRates).toFixed(4)),
+              positionAboveRate: Number(avg(entry.positionAboveRates).toFixed(4)),
+              topImpressionPct: Number(avg(entry.topImpressionPcts).toFixed(4)),
+              absTopImpressionPct: Number(avg(entry.absTopImpressionPcts).toFixed(4)),
+              outrankingShare: Number(avgOutranking.toFixed(4))
+            },
+            campaigns: Array.from(entry.campaigns)
+          };
+        })
+        .sort((a, b) => {
+          const order = { high: 0, medium: 1, low: 2 };
+          return (order[a.threatLevel] ?? 3) - (order[b.threatLevel] ?? 3);
+        });
+
+      // 5. Build threat matrix
+      const threatMatrix = {
+        high: competitors.filter(c => c.threatLevel === 'high'),
+        medium: competitors.filter(c => c.threatLevel === 'medium'),
+        low: competitors.filter(c => c.threatLevel === 'low')
+      };
+
+      // 6. Derive advantages and gaps from aggregate data
+      const advantages = [];
+      const gaps = [];
+
+      // Find domains we outrank
+      competitors.forEach(c => {
+        if (c.auctionMetrics.outrankingShare < 0.3) {
+          gaps.push({
+            id: `gap-${c.id}`,
+            gap: `Low outranking share vs ${c.domain}`,
+            description: `${c.domain} outranks you ${((1 - c.auctionMetrics.outrankingShare) * 100).toFixed(0)}% of the time in shared auctions.`,
+            impact: c.threatLevel === 'high' ? 'high' : 'medium',
+            difficulty: 'medium',
+            recommendation: `Review bid strategy and ad relevance for keywords where ${c.domain} competes.`
+          });
+        } else if (c.auctionMetrics.outrankingShare > 0.6) {
+          advantages.push({
+            id: `adv-${c.id}`,
+            advantage: `Strong position vs ${c.domain}`,
+            description: `You outrank ${c.domain} ${(c.auctionMetrics.outrankingShare * 100).toFixed(0)}% of the time.`,
+            importance: c.threatLevel === 'high' ? 'high' : 'medium',
+            actionable: true,
+            recommendation: `Maintain position — consider broadening keyword coverage to capture more share.`
+          });
+        }
+      });
+
+      const competitorData = {
+        competitors,
+        threatMatrix,
+        adCopies: [], // Ad copy analysis requires separate data source
+        advantages,
+        gaps,
+        recentChanges: [],
+        lastAnalyzed: new Date().toISOString(),
+        analysisStatus: activeCampaigns.length > 0 ? 'complete' : 'no_active_campaigns',
+        campaignsAnalyzed: activeCampaigns.length,
+        totalCompetitors: competitors.length
+      };
+
+      // Cache result
+      dashboardCache.set(tenantId, 'competitor_insights', competitorData);
+
+      this._trackPerformance(startTime, false);
+      return competitorData;
+
+    } catch (error) {
+      this._trackError(error);
+      logger.error('Failed to get competitor insights', {
+        tenantId,
+        error: error.message,
+        duration: Date.now() - startTime
+      });
+
+      // Return empty structure so the frontend still renders
+      return {
+        competitors: [],
+        threatMatrix: { high: [], medium: [], low: [] },
+        adCopies: [],
+        advantages: [],
+        gaps: [],
+        recentChanges: [],
+        lastAnalyzed: new Date().toISOString(),
+        analysisStatus: 'error',
+        campaignsAnalyzed: 0,
+        totalCompetitors: 0
+      };
+    }
+  }
+
+  /**
+   * Get website insights (stub — delegates to website scraper service)
+   * @param {string} tenantId
+   * @param {object} options
+   * @returns {Promise<object>}
+   */
+  async getWebsiteInsights(tenantId, options = {}) {
+    try {
+      await this._initializeServices();
+      if (this.services.websiteScraper && typeof this.services.websiteScraper.analyze === 'function') {
+        return await this.services.websiteScraper.analyze(tenantId, options);
+      }
+      return { status: 'not_available', tenantId };
+    } catch (error) {
+      logger.error('getWebsiteInsights error', { tenantId, error: error.message });
+      return { status: 'error', error: error.message };
+    }
+  }
+
+  /**
+   * Get traffic insights (stub — delegates to traffic analyzer service)
+   */
+  async getTrafficInsights(tenantId, options = {}) {
+    try {
+      await this._initializeServices();
+      if (this.services.trafficAnalyzer && typeof this.services.trafficAnalyzer.analyze === 'function') {
+        return await this.services.trafficAnalyzer.analyze(tenantId, options);
+      }
+      return { status: 'not_available', tenantId };
+    } catch (error) {
+      logger.error('getTrafficInsights error', { tenantId, error: error.message });
+      return { status: 'error', error: error.message };
+    }
+  }
+
+  /**
+   * Get customer insights (stub — delegates to demographic profiler)
+   */
+  async getCustomerInsights(tenantId, options = {}) {
+    try {
+      await this._initializeServices();
+      if (this.services.demographicProfiler && typeof this.services.demographicProfiler.profile === 'function') {
+        return await this.services.demographicProfiler.profile(tenantId, options);
+      }
+      return { status: 'not_available', tenantId };
+    } catch (error) {
+      logger.error('getCustomerInsights error', { tenantId, error: error.message });
+      return { status: 'error', error: error.message };
+    }
+  }
+
+  /**
+   * Get SERP insights (stub — delegates to SERP monitor service)
+   */
+  async getSerpInsights(tenantId, options = {}) {
+    try {
+      await this._initializeServices();
+      if (this.services.serpMonitor && typeof this.services.serpMonitor.analyze === 'function') {
+        return await this.services.serpMonitor.analyze(tenantId, options);
+      }
+      return { status: 'not_available', tenantId };
+    } catch (error) {
+      logger.error('getSerpInsights error', { tenantId, error: error.message });
+      return { status: 'error', error: error.message };
+    }
+  }
+
+  /**
+   * Trigger a website scan (stub)
+   */
+  async triggerWebsiteScan(tenantId, options = {}) {
+    try {
+      await this._initializeServices();
+      if (this.services.websiteScraper && typeof this.services.websiteScraper.scan === 'function') {
+        return await this.services.websiteScraper.scan(tenantId, options);
+      }
+      return { status: 'not_available', tenantId };
+    } catch (error) {
+      logger.error('triggerWebsiteScan error', { tenantId, error: error.message });
+      return { status: 'error', error: error.message };
+    }
+  }
+
+  /**
+   * Add a competitor for monitoring (stub)
+   */
+  async addCompetitor(tenantId, options = {}) {
+    try {
+      await this._initializeServices();
+      if (this.services.competitorIntelligence && typeof this.services.competitorIntelligence.addCompetitor === 'function') {
+        return await this.services.competitorIntelligence.addCompetitor(tenantId, options);
+      }
+      return { status: 'not_available', tenantId };
+    } catch (error) {
+      logger.error('addCompetitor error', { tenantId, error: error.message });
+      return { status: 'error', error: error.message };
+    }
+  }
+
+  /**
+   * Remove a competitor from monitoring (stub)
+   */
+  async removeCompetitor(tenantId, competitorId) {
+    try {
+      await this._initializeServices();
+      if (this.services.competitorIntelligence && typeof this.services.competitorIntelligence.removeCompetitor === 'function') {
+        return await this.services.competitorIntelligence.removeCompetitor(tenantId, competitorId);
+      }
+      return { status: 'not_available', tenantId };
+    } catch (error) {
+      logger.error('removeCompetitor error', { tenantId, error: error.message });
+      return { status: 'error', error: error.message };
     }
   }
 

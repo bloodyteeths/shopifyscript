@@ -708,7 +708,40 @@ router.get("/datasources/status", async (req, res) => {
         details: { error: error.message }
       });
     }
-    
+
+    // Google Ads API connection status
+    try {
+      const googleAdsAuth = await import('../services/google-ads-auth.js');
+      const googleAdsQuota = await import('../services/google-ads-quota.js');
+      const startGads = Date.now();
+      const connection = await googleAdsAuth.getConnectionStatus(tenant);
+      const quota = await googleAdsQuota.getRemainingQuota();
+      const gadsTime = Date.now() - startGads;
+
+      sources.push({
+        name: 'Google Ads API',
+        status: connection && connection.connectionStatus === 'active' ? 'connected' : 'disconnected',
+        lastUpdate: connection?.connectedAt || null,
+        responseTime: gadsTime,
+        details: {
+          healthy: connection?.connectionStatus === 'active',
+          customerId: connection?.customerId || null,
+          quotaRemaining: quota.remaining,
+          quotaUsed: quota.used,
+          quotaLimit: quota.limit,
+          quotaPercentUsed: quota.percentUsed,
+        }
+      });
+    } catch (gadsErr) {
+      sources.push({
+        name: 'Google Ads API',
+        status: 'error',
+        lastUpdate: null,
+        responseTime: 0,
+        details: { healthy: false, error: gadsErr.message }
+      });
+    }
+
     console.log('✅ Data sources status fetched:', sources.length, 'sources');
     
     return res.json({
@@ -1696,6 +1729,7 @@ router.post("/accept", async (req, res) => {
     ]);
 
     let accepted = 0;
+    const acceptedItems = [];
     const errors = [];
 
     for (const it of Array.isArray(items) ? items : []) {
@@ -1721,6 +1755,10 @@ router.post("/accept", async (req, res) => {
         headlines_pipe: lint.clipped.h.join("|"),
         descriptions_pipe: lint.clipped.d.join("|"),
         source: String(it.source || "accepted"),
+      });
+      acceptedItems.push({
+        headlines_pipe: lint.clipped.h.join("|"),
+        descriptions_pipe: lint.clipped.d.join("|"),
       });
       accepted += 1;
     }
@@ -1750,6 +1788,29 @@ router.post("/accept", async (req, res) => {
         [[new Date().toISOString(), `ai_accept:${accepted}`]],
       );
     } catch {}
+
+    // Attempt to push accepted RSAs to Google Ads if connected
+    try {
+      const googleAdsAuth = await import('../services/google-ads-auth.js');
+      const connection = await googleAdsAuth.getConnectionStatus(tenant);
+      if (connection && connection.connectionStatus === 'active') {
+        const { pushRSAToGoogleAds } = await import('../services/rsa-generator.js');
+        // Only push if adGroupId is provided in the request
+        const adGroupId = req.body.adGroupId;
+        if (adGroupId) {
+          for (const item of acceptedItems) {
+            await pushRSAToGoogleAds(tenant, adGroupId, {
+              headlines: item.headlines_pipe.split('|'),
+              descriptions: item.descriptions_pipe.split('|'),
+            });
+          }
+          console.log(`Pushed ${acceptedItems.length} RSAs to Google Ads for tenant ${tenant}`);
+        }
+      }
+    } catch (gadsErr) {
+      // Non-fatal: log but don't fail the accept operation
+      console.warn('Google Ads RSA push failed (non-fatal):', gadsErr.message);
+    }
 
     res.json({ ok: true, accepted, errors });
   } catch (e) {

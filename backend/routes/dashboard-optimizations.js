@@ -9,12 +9,11 @@
 import express from 'express';
 import { validateShopifyAccess } from '../middleware/shopify-auth.js';
 import { checkSubscriptionAccess } from '../middleware/subscription-check.js';
-import { responseOptimizer } from '../middleware/response-optimizer.js';
-import DashboardOrchestratorService from '../services/dashboard-orchestrator.js';
+import responseOptimizerMiddleware from '../middleware/response-optimizer.js';
+import dashboardOrchestrator from '../services/dashboard-orchestrator.js';
 import logger from '../services/logger.js';
 
 const router = express.Router();
-const dashboardOrchestrator = new DashboardOrchestratorService();
 
 /**
  * Common middleware for all optimization routes
@@ -60,7 +59,7 @@ router.use(async (req, res, next) => {
  */
 router.get('/pending',
   checkSubscriptionAccess(['basic', 'professional', 'enterprise']),
-  responseOptimizer,
+  responseOptimizerMiddleware,
   async (req, res) => {
     const startTime = Date.now();
 
@@ -111,7 +110,7 @@ router.get('/pending',
  */
 router.get('/applied',
   checkSubscriptionAccess(['basic', 'professional', 'enterprise']),
-  responseOptimizer,
+  responseOptimizerMiddleware,
   async (req, res) => {
     const startTime = Date.now();
 
@@ -163,7 +162,7 @@ router.get('/applied',
  */
 router.get('/history',
   checkSubscriptionAccess(['professional', 'enterprise']),
-  responseOptimizer,
+  responseOptimizerMiddleware,
   async (req, res) => {
     const startTime = Date.now();
 
@@ -357,7 +356,7 @@ router.post('/actions/rollback',
  */
 router.get('/recommendations',
   checkSubscriptionAccess(['professional', 'enterprise']),
-  responseOptimizer,
+  responseOptimizerMiddleware,
   async (req, res) => {
     const startTime = Date.now();
 
@@ -455,7 +454,7 @@ router.post('/batch-approve',
  */
 router.get('/impact/:id',
   checkSubscriptionAccess(['professional', 'enterprise']),
-  responseOptimizer,
+  responseOptimizerMiddleware,
   async (req, res) => {
     const startTime = Date.now();
 

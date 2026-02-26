@@ -998,4 +998,34 @@ export function getBidManager() {
   return bidManagerInstance;
 }
 
+/**
+ * Apply bid adjustments via the Google Ads API.
+ * @param {string} tenantId
+ * @param {Array<{adGroupId: string, criterionId: string, newBidMicros: number}>} adjustments
+ * @returns {Promise<object>}
+ */
+export async function applyBidAdjustments(tenantId, adjustments) {
+  const googleAdsClient = await import('./google-ads-client.js');
+  const results = { applied: [], errors: [] };
+
+  // Group by adGroupId for efficient batching
+  const byAdGroup = {};
+  for (const adj of adjustments) {
+    if (!byAdGroup[adj.adGroupId]) byAdGroup[adj.adGroupId] = [];
+    byAdGroup[adj.adGroupId].push({ criterionId: adj.criterionId, cpcBidMicros: adj.newBidMicros });
+  }
+
+  for (const [adGroupId, bids] of Object.entries(byAdGroup)) {
+    try {
+      await googleAdsClient.updateKeywordBids(tenantId, adGroupId, bids);
+      results.applied.push({ adGroupId, count: bids.length });
+    } catch (err) {
+      results.errors.push({ adGroupId, error: err.message });
+    }
+  }
+
+  console.log(`✅ Bid adjustments applied: ${results.applied.length} groups, ${results.errors.length} errors`);
+  return results;
+}
+
 export default getBidManager;

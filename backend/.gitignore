@@ -1,3 +1,5 @@
 .vercel
 .env
 *.env
+.google-ads-refresh-token
+test-google-ads-api.js

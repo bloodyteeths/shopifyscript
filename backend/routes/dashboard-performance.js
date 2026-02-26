@@ -9,12 +9,11 @@
 import express from 'express';
 import { validateShopifyAccess } from '../middleware/shopify-auth.js';
 import { checkSubscriptionAccess } from '../middleware/subscription-check.js';
-import { responseOptimizer } from '../middleware/response-optimizer.js';
-import DashboardOrchestratorService from '../services/dashboard-orchestrator.js';
+import responseOptimizerMiddleware from '../middleware/response-optimizer.js';
+import dashboardOrchestrator from '../services/dashboard-orchestrator.js';
 import logger from '../services/logger.js';
 
 const router = express.Router();
-const dashboardOrchestrator = new DashboardOrchestratorService();
 
 /**
  * Common middleware for all performance routes
@@ -60,7 +59,7 @@ router.use(async (req, res, next) => {
  */
 router.get('/metrics',
   checkSubscriptionAccess(['basic', 'professional', 'enterprise']),
-  responseOptimizer,
+  responseOptimizerMiddleware,
   async (req, res) => {
     const startTime = Date.now();
 
@@ -113,7 +112,7 @@ router.get('/metrics',
  */
 router.get('/roi',
   checkSubscriptionAccess(['professional', 'enterprise']),
-  responseOptimizer,
+  responseOptimizerMiddleware,
   async (req, res) => {
     const startTime = Date.now();
 
@@ -163,7 +162,7 @@ router.get('/roi',
  */
 router.get('/trends',
   checkSubscriptionAccess(['basic', 'professional', 'enterprise']),
-  responseOptimizer,
+  responseOptimizerMiddleware,
   async (req, res) => {
     const startTime = Date.now();
 
@@ -216,7 +215,7 @@ router.get('/trends',
  */
 router.get('/comparisons',
   checkSubscriptionAccess(['basic', 'professional', 'enterprise']),
-  responseOptimizer,
+  responseOptimizerMiddleware,
   async (req, res) => {
     const startTime = Date.now();
 
@@ -269,7 +268,7 @@ router.get('/comparisons',
  */
 router.get('/attribution',
   checkSubscriptionAccess(['professional', 'enterprise']),
-  responseOptimizer,
+  responseOptimizerMiddleware,
   async (req, res) => {
     const startTime = Date.now();
 
@@ -319,7 +318,7 @@ router.get('/attribution',
  */
 router.get('/cohorts',
   checkSubscriptionAccess(['enterprise']),
-  responseOptimizer,
+  responseOptimizerMiddleware,
   async (req, res) => {
     const startTime = Date.now();
 

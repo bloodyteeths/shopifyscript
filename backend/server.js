@@ -54,6 +54,8 @@ import monitoringRoutes from "./routes/monitoring.js";
 import dashboardRoutes from "./routes/dashboards.js";
 // Automation Routes
 import automationRoutes from "./routes/automation.js";
+// Google Ads Routes
+import googleAdsRoutes from "./routes/google-ads.js";
 // Scheduled Reports Service
 import scheduledReports from "./jobs/scheduled-reports.js";
 // ML Autopilot Service
@@ -1375,11 +1377,18 @@ app.use("/api/monitoring", monitoringRoutes);
 // ==== DASHBOARD ROUTES ====
 app.use("/api/dashboards", dashboardRoutes);
 
+// ==== DASHBOARD INSIGHTS ROUTES (AI data-source endpoints) ====
+import dashboardInsightsRoutes from "./routes/dashboard-insights.js";
+app.use("/api/dashboard/insights", dashboardInsightsRoutes);
+
 // ==== RSA TEST QUEUE ROUTES (PRO TIER) ====
 app.use("/api/ai", initializeRSATestQueueRoutes(verify));
 
 // ==== AUTOMATION ROUTES ====
 app.use("/api/automation", automationRoutes);
+
+// ==== GOOGLE ADS ROUTES ====
+app.use("/api/google-ads", googleAdsRoutes);
 
 // ==== ANALYTICS ROUTES ====
 import analyticsRoutes from "./routes/analytics.js";

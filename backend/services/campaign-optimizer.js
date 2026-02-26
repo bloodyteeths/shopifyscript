@@ -1142,4 +1142,81 @@ export function getCampaignOptimizer() {
   return optimizerInstance;
 }
 
+/**
+ * Execute an optimization plan via the Google Ads API.
+ * Takes the output of the optimizer's analysis and applies changes.
+ * @param {string} tenantId
+ * @param {object} plan - The optimization plan from analyze()
+ * @returns {Promise<object>} Results of applied actions
+ */
+export async function executePlan(tenantId, plan) {
+  // Import dynamically to avoid circular deps
+  const googleAdsClient = await import('./google-ads-client.js');
+
+  const results = { applied: [], skipped: [], errors: [] };
+
+  try {
+    // Apply bid adjustments
+    if (plan.bidAdjustments && plan.bidAdjustments.length > 0) {
+      for (const adj of plan.bidAdjustments) {
+        try {
+          await googleAdsClient.updateKeywordBids(tenantId, adj.adGroupId, [{
+            criterionId: adj.criterionId,
+            cpcBidMicros: adj.newBidMicros,
+          }]);
+          results.applied.push({ type: 'bid_adjustment', ...adj });
+        } catch (err) {
+          results.errors.push({ type: 'bid_adjustment', error: err.message, ...adj });
+        }
+      }
+    }
+
+    // Apply negative keywords
+    if (plan.negativeKeywords && plan.negativeKeywords.length > 0) {
+      for (const neg of plan.negativeKeywords) {
+        try {
+          await googleAdsClient.addNegativeKeywords(tenantId, neg.campaignId, neg.keywords);
+          results.applied.push({ type: 'negative_keywords', campaignId: neg.campaignId, count: neg.keywords.length });
+        } catch (err) {
+          results.errors.push({ type: 'negative_keywords', error: err.message, campaignId: neg.campaignId });
+        }
+      }
+    }
+
+    // Apply budget changes
+    if (plan.budgetChanges && plan.budgetChanges.length > 0) {
+      for (const bc of plan.budgetChanges) {
+        try {
+          await googleAdsClient.updateCampaignBudget(tenantId, bc.campaignId, bc.newBudgetMicros);
+          results.applied.push({ type: 'budget_change', ...bc });
+        } catch (err) {
+          results.errors.push({ type: 'budget_change', error: err.message, ...bc });
+        }
+      }
+    }
+
+    // Apply campaign status changes
+    if (plan.statusChanges && plan.statusChanges.length > 0) {
+      for (const sc of plan.statusChanges) {
+        try {
+          if (sc.newStatus === 'PAUSED') {
+            await googleAdsClient.pauseCampaign(tenantId, sc.campaignId);
+          } else if (sc.newStatus === 'ENABLED') {
+            await googleAdsClient.enableCampaign(tenantId, sc.campaignId);
+          }
+          results.applied.push({ type: 'status_change', ...sc });
+        } catch (err) {
+          results.errors.push({ type: 'status_change', error: err.message, ...sc });
+        }
+      }
+    }
+
+    console.log(`✅ Optimization plan executed: ${results.applied.length} applied, ${results.errors.length} errors`);
+    return results;
+  } catch (error) {
+    console.error('❌ executePlan failed:', error.message);
+    throw error;
+  }
+}
+
 export default getCampaignOptimizer;

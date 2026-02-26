@@ -107,7 +107,7 @@ export function CompetitorIntel({
 
     setLoading(true);
     try {
-      const response = await fetch(`/api/dashboard/competitor-intel?shop=${shopName}`);
+      const response = await fetch(`/api/proxy/dashboard/insights/competitors?shop=${shopName}`);
       const result = await response.json();
 
       if (result.success) {

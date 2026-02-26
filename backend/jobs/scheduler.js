@@ -10,6 +10,9 @@ import logger from "../services/logger.js";
 import { createWorkerPool } from "../services/worker-pool.js";
 import { createQueueManager, JOB_TYPES, JOB_PRIORITIES } from "../services/queue-manager.js";
 import { createJobMonitor } from "../services/job-monitor.js";
+import { runFullSync } from "../services/google-ads-sync.js";
+import { runAutopilotForAllTenants } from "../services/google-ads-autopilot.js";
+import { supabase, isSupabaseEnabled } from "../services/supabase-client.js";
 
 /**
  * Job Scheduler Class
@@ -60,6 +63,24 @@ export class JobScheduler {
       health_check: {
         interval: 5 * 60 * 1000, // 5 minutes
         fn: this.runHealthCheckJob.bind(this),
+        enabled: true,
+        lastRun: null,
+        runCount: 0,
+      },
+
+      // Campaign metrics sync - every 4 hours for all connected tenants
+      campaign_metrics_sync: {
+        interval: 4 * 60 * 60 * 1000, // 4 hours
+        fn: this.runCampaignMetricsSyncJob.bind(this),
+        enabled: true,
+        lastRun: null,
+        runCount: 0,
+      },
+
+      // Autopilot run - every 4 hours (service checks per-tenant tier eligibility)
+      autopilot_run: {
+        interval: 4 * 60 * 60 * 1000, // 4 hours
+        fn: this.runAutopilotJob.bind(this),
         enabled: true,
         lastRun: null,
         runCount: 0,
@@ -473,6 +494,82 @@ export class JobScheduler {
   }
 
   /**
+   * Campaign Metrics Sync Job
+   * Fetches all tenants with active Google Ads connections and runs a full sync for each.
+   */
+  async runCampaignMetricsSyncJob() {
+    const startTime = new Date().toISOString();
+    console.log(`[${startTime}] Campaign Metrics Sync job started`);
+
+    try {
+      // Get all tenants with active Google Ads connections from Supabase
+      let activeTenants = [];
+
+      if (isSupabaseEnabled()) {
+        const { data, error } = await supabase
+          .from("google_ads_connections")
+          .select("tenant_id")
+          .eq("connection_status", "active");
+
+        if (error) {
+          logger.error("Failed to fetch active Google Ads connections", { error: error.message });
+          console.log(`[${new Date().toISOString()}] Campaign Metrics Sync failed: ${error.message}`);
+          return { ok: false, error: error.message };
+        }
+
+        activeTenants = (data || []).map((row) => row.tenant_id);
+      } else {
+        // Fallback to scheduler's registered tenants
+        activeTenants = Array.from(this.tenants);
+      }
+
+      logger.info("Campaign Metrics Sync starting", { tenantCount: activeTenants.length });
+
+      const results = [];
+      for (const tenantId of activeTenants) {
+        try {
+          const result = await runFullSync(tenantId);
+          results.push({ tenantId, ok: true, result });
+          logger.info("Campaign Metrics Sync succeeded for tenant", { tenantId });
+        } catch (error) {
+          results.push({ tenantId, ok: false, error: error.message });
+          logger.error("Campaign Metrics Sync failed for tenant", { tenantId, error: error.message });
+        }
+      }
+
+      const endTime = new Date().toISOString();
+      console.log(`[${endTime}] Campaign Metrics Sync job completed — ${activeTenants.length} tenants processed`);
+
+      return { ok: true, tenantCount: activeTenants.length, results };
+    } catch (error) {
+      logger.error("Campaign Metrics Sync job error", { error: error.message, stack: error.stack });
+      console.log(`[${new Date().toISOString()}] Campaign Metrics Sync job error: ${error.message}`);
+      return { ok: false, error: error.message };
+    }
+  }
+
+  /**
+   * Autopilot Run Job
+   * Runs autopilot optimization for all eligible tenants (tier eligibility checked within the service).
+   */
+  async runAutopilotJob() {
+    const startTime = new Date().toISOString();
+    console.log(`[${startTime}] Autopilot Run job started`);
+
+    try {
+      const result = await runAutopilotForAllTenants();
+      const endTime = new Date().toISOString();
+      console.log(`[${endTime}] Autopilot Run job completed`);
+      logger.info("Autopilot Run job completed", { result });
+      return { ok: true, result };
+    } catch (error) {
+      logger.error("Autopilot Run job error", { error: error.message, stack: error.stack });
+      console.log(`[${new Date().toISOString()}] Autopilot Run job error: ${error.message}`);
+      return { ok: false, error: error.message };
+    }
+  }
+
+  /**
    * Get job status and statistics
    */
   getStatus() {
@@ -536,7 +633,9 @@ export class JobScheduler {
     const mapping = {
       'anomaly_detection': JOB_TYPES.ANOMALY_DETECTION,
       'weekly_summary': JOB_TYPES.WEEKLY_SUMMARY,
-      'health_check': JOB_TYPES.HEALTH_CHECK
+      'health_check': JOB_TYPES.HEALTH_CHECK,
+      'campaign_metrics_sync': JOB_TYPES.CAMPAIGN_METRICS_SYNC || 'campaign_metrics_sync',
+      'autopilot_run': JOB_TYPES.AUTOPILOT_RUN || 'autopilot_run'
     };
 
     return mapping[jobName] || JOB_TYPES.ANALYSIS;
@@ -549,7 +648,9 @@ export class JobScheduler {
     const priorities = {
       'health_check': JOB_PRIORITIES.LOW,
       'anomaly_detection': JOB_PRIORITIES.NORMAL,
-      'weekly_summary': JOB_PRIORITIES.HIGH
+      'weekly_summary': JOB_PRIORITIES.HIGH,
+      'campaign_metrics_sync': JOB_PRIORITIES.NORMAL,
+      'autopilot_run': JOB_PRIORITIES.NORMAL
     };
 
     return priorities[jobName] || JOB_PRIORITIES.NORMAL;

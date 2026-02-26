@@ -8,6 +8,7 @@ import { useShopContext, buildAppUrl } from "../utils/navigation";
 import { checkSubscriptionStatus, shouldRedirectToPlans, getPlanSelectionUrl, type SubscriptionInfo } from "../utils/subscription.server";
 import { SkeletonCard, Toast } from "../components/LoadingStates";
 import { AIStatusIndicator } from "../components/AIStatusIndicator";
+import { backendFetch } from "../server/hmac.server";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   try {
@@ -100,12 +101,73 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     const appHandle = process.env.SHOPIFY_APP_HANDLE || "adsautopilot-autopilot";
     const planSelectionUrl = `https://admin.shopify.com/store/${shopName}/charges/${appHandle}/pricing_plans`;
 
+    // Fetch Google Ads connection status and data
+    let googleAdsData: {
+      connected: boolean;
+      connectionStatus: any;
+      metrics: any;
+      campaigns: any[];
+    } = {
+      connected: false,
+      connectionStatus: null,
+      metrics: null,
+      campaigns: [],
+    };
+
+    try {
+      // 1. Check connection status
+      const connRes = await backendFetch(
+        "/google-ads/connection-status",
+        "GET",
+        undefined,
+        shopName,
+      );
+
+      const connJson = connRes.json;
+      const isConnected = connRes.status === 200 && connJson?.ok && connJson?.connected === true;
+
+      googleAdsData.connected = isConnected;
+      googleAdsData.connectionStatus = connJson;
+
+      if (isConnected) {
+        // 2. Fetch metrics and campaigns in parallel (only if connected)
+        const [metricsRes, campaignsRes] = await Promise.all([
+          backendFetch(
+            "/google-ads/metrics?dateRange=LAST_30_DAYS",
+            "GET",
+            undefined,
+            shopName,
+          ),
+          backendFetch(
+            "/google-ads/campaigns",
+            "GET",
+            undefined,
+            shopName,
+          ),
+        ]);
+
+        if (metricsRes.status === 200 && metricsRes.json?.ok) {
+          googleAdsData.metrics = metricsRes.json.metrics || metricsRes.json;
+        }
+
+        if (campaignsRes.status === 200 && campaignsRes.json?.ok) {
+          googleAdsData.campaigns = campaignsRes.json.campaigns || [];
+        }
+      }
+
+      console.log(`Google Ads status for ${shopName}: connected=${isConnected}, campaigns=${googleAdsData.campaigns.length}`);
+    } catch (gadsError) {
+      console.error(`Google Ads data fetch error for ${shopName}:`, gadsError);
+      // Non-blocking: dashboard still loads with empty Google Ads data
+    }
+
     return json({
       message: "AI-powered Google Ads optimization on autopilot",
       timestamp: new Date().toISOString(),
       shopName: shopName,
       subscriptionInfo,
-      planSelectionUrl
+      planSelectionUrl,
+      googleAds: googleAdsData,
     });
     
   } catch (authError) {
@@ -125,7 +187,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 };
 
 export default function AppIndex() {
-  const { message, timestamp, shopName, subscriptionInfo, planSelectionUrl } = useLoaderData<typeof loader>();
+  const { message, timestamp, shopName, subscriptionInfo, planSelectionUrl, googleAds } = useLoaderData<typeof loader>();
   const shopContext = useShopContext();
   const [isInitialLoad, setIsInitialLoad] = useState(true);
   const [toast, setToast] = useState<{message: string; type: 'success' | 'error' | 'warning' | 'info'; visible: boolean}>({
@@ -283,11 +345,152 @@ export default function AppIndex() {
     );
   };
 
+  // Helper to format metric values
+  const formatMetricNumber = (val: number | null | undefined): string => {
+    if (val == null) return "--";
+    if (val >= 1000000) return `${(val / 1000000).toFixed(1)}M`;
+    if (val >= 1000) return `${(val / 1000).toFixed(1)}K`;
+    return val.toLocaleString();
+  };
+
+  const formatMetricCurrency = (val: number | null | undefined): string => {
+    if (val == null) return "--";
+    return new Intl.NumberFormat("en-US", {
+      style: "currency",
+      currency: "USD",
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(val);
+  };
+
+  const formatMetricPercent = (val: number | null | undefined): string => {
+    if (val == null) return "--";
+    return `${val.toFixed(2)}%`;
+  };
+
+  const formatMetricRoas = (val: number | null | undefined): string => {
+    if (val == null) return "--";
+    return `${val.toFixed(2)}x`;
+  };
+
+  // Extract metrics from loader data
+  const gadsMetrics = googleAds?.metrics || null;
+  const gadsCampaigns = googleAds?.campaigns || [];
+  const gadsConnected = googleAds?.connected || false;
+  const gadsCustomerId = googleAds?.connectionStatus?.customerId || googleAds?.connectionStatus?.customer_id || null;
+
+  const renderGoogleAdsConnectionBanner = () => {
+    if (gadsConnected) {
+      return (
+        <div style={{
+          background: "#d1eddd",
+          border: "1px solid #28a745",
+          borderRadius: "8px",
+          padding: "16px",
+          marginBottom: "24px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+            <div style={{
+              width: "24px",
+              height: "24px",
+              background: "#28a745",
+              borderRadius: "4px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              color: "white",
+              fontSize: "12px",
+              fontWeight: "bold"
+            }}>✓</div>
+            <div>
+              <h3 style={{ margin: "0", fontSize: "16px", color: "#155724" }}>
+                Google Ads Connected
+              </h3>
+              <p style={{ margin: "4px 0 0 0", fontSize: "14px", color: "#155724" }}>
+                {gadsCustomerId ? `Customer ID: ${gadsCustomerId}` : "Your Google Ads account is linked and active"}
+              </p>
+            </div>
+          </div>
+          <Link
+            to={buildAppUrl("/app/connect-google", shopContext)}
+            style={{
+              background: "transparent",
+              color: "#155724",
+              padding: "8px 16px",
+              textDecoration: "none",
+              borderRadius: "6px",
+              border: "1px solid #28a745",
+              fontSize: "14px",
+              fontWeight: "bold",
+            }}
+          >
+            Manage Connection
+          </Link>
+        </div>
+      );
+    }
+
+    return (
+      <div style={{
+        background: "#fff3cd",
+        border: "1px solid #ffc107",
+        borderRadius: "8px",
+        padding: "16px",
+        marginBottom: "24px",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+      }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+          <div style={{
+            width: "24px",
+            height: "24px",
+            background: "#ffc107",
+            borderRadius: "4px",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            color: "#856404",
+            fontSize: "14px",
+            fontWeight: "bold"
+          }}>!</div>
+          <div>
+            <h3 style={{ margin: "0", fontSize: "16px", color: "#856404" }}>
+              Connect Your Google Ads Account
+            </h3>
+            <p style={{ margin: "4px 0 0 0", fontSize: "14px", color: "#856404" }}>
+              Connect your Google Ads account to see real performance data and enable AI optimization
+            </p>
+          </div>
+        </div>
+        <Link
+          to={buildAppUrl("/app/connect-google", shopContext)}
+          style={{
+            background: "#ffc107",
+            color: "#856404",
+            padding: "10px 20px",
+            textDecoration: "none",
+            borderRadius: "6px",
+            fontSize: "14px",
+            fontWeight: "bold",
+            whiteSpace: "nowrap",
+          }}
+        >
+          Connect Google Ads
+        </Link>
+      </div>
+    );
+  };
+
   return (
     <div style={{ padding: "2rem" }}>
       {renderSubscriptionBanner()}
+      {renderGoogleAdsConnectionBanner()}
       {renderDataRetentionInfo()}
-      
+
       <div
         style={{
           background: "#e7f3ff",
@@ -300,7 +503,7 @@ export default function AppIndex() {
           gap: "12px",
         }}
       >
-        <div style={{ 
+        <div style={{
           width: "24px",
           height: "24px",
           background: "#007bff",
@@ -324,6 +527,158 @@ export default function AppIndex() {
 
       <h1>Ads Autopilot AI Dashboard</h1>
       <p>{message}</p>
+
+      {/* Google Ads Performance Metrics */}
+      {gadsConnected && (
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(160px, 1fr))",
+            gap: "1rem",
+            marginTop: "1.5rem",
+            marginBottom: "1.5rem",
+          }}
+        >
+          <div style={{
+            border: "1px solid #e1e3e5",
+            borderRadius: "8px",
+            padding: "1.25rem",
+            background: "white",
+            textAlign: "center",
+          }}>
+            <div style={{ fontSize: "12px", color: "#666", marginBottom: "4px", textTransform: "uppercase", letterSpacing: "0.5px" }}>Impressions</div>
+            <div style={{ fontSize: "24px", fontWeight: "bold", color: "#333" }}>
+              {formatMetricNumber(gadsMetrics?.impressions)}
+            </div>
+            <div style={{ fontSize: "11px", color: "#999", marginTop: "4px" }}>Last 30 days</div>
+          </div>
+          <div style={{
+            border: "1px solid #e1e3e5",
+            borderRadius: "8px",
+            padding: "1.25rem",
+            background: "white",
+            textAlign: "center",
+          }}>
+            <div style={{ fontSize: "12px", color: "#666", marginBottom: "4px", textTransform: "uppercase", letterSpacing: "0.5px" }}>Clicks</div>
+            <div style={{ fontSize: "24px", fontWeight: "bold", color: "#333" }}>
+              {formatMetricNumber(gadsMetrics?.clicks)}
+            </div>
+            <div style={{ fontSize: "11px", color: "#999", marginTop: "4px" }}>
+              CTR: {formatMetricPercent(gadsMetrics?.ctr)}
+            </div>
+          </div>
+          <div style={{
+            border: "1px solid #e1e3e5",
+            borderRadius: "8px",
+            padding: "1.25rem",
+            background: "white",
+            textAlign: "center",
+          }}>
+            <div style={{ fontSize: "12px", color: "#666", marginBottom: "4px", textTransform: "uppercase", letterSpacing: "0.5px" }}>Conversions</div>
+            <div style={{ fontSize: "24px", fontWeight: "bold", color: "#28a745" }}>
+              {formatMetricNumber(gadsMetrics?.conversions)}
+            </div>
+            <div style={{ fontSize: "11px", color: "#999", marginTop: "4px" }}>Last 30 days</div>
+          </div>
+          <div style={{
+            border: "1px solid #e1e3e5",
+            borderRadius: "8px",
+            padding: "1.25rem",
+            background: "white",
+            textAlign: "center",
+          }}>
+            <div style={{ fontSize: "12px", color: "#666", marginBottom: "4px", textTransform: "uppercase", letterSpacing: "0.5px" }}>Ad Spend</div>
+            <div style={{ fontSize: "24px", fontWeight: "bold", color: "#333" }}>
+              {formatMetricCurrency(gadsMetrics?.cost ?? gadsMetrics?.spend ?? gadsMetrics?.adSpend)}
+            </div>
+            <div style={{ fontSize: "11px", color: "#999", marginTop: "4px" }}>Last 30 days</div>
+          </div>
+          <div style={{
+            border: "1px solid #28a745",
+            borderRadius: "8px",
+            padding: "1.25rem",
+            background: "#f8fff9",
+            textAlign: "center",
+          }}>
+            <div style={{ fontSize: "12px", color: "#666", marginBottom: "4px", textTransform: "uppercase", letterSpacing: "0.5px" }}>ROAS</div>
+            <div style={{ fontSize: "24px", fontWeight: "bold", color: "#28a745" }}>
+              {formatMetricRoas(gadsMetrics?.roas)}
+            </div>
+            <div style={{ fontSize: "11px", color: "#999", marginTop: "4px" }}>Return on ad spend</div>
+          </div>
+        </div>
+      )}
+
+      {/* Active Campaigns Summary */}
+      {gadsConnected && gadsCampaigns.length > 0 && (
+        <div style={{
+          border: "1px solid #e1e3e5",
+          borderRadius: "8px",
+          padding: "1.25rem",
+          background: "white",
+          marginBottom: "1.5rem",
+        }}>
+          <div style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: "12px",
+          }}>
+            <h3 style={{ margin: 0, fontSize: "16px", fontWeight: "bold" }}>
+              Active Campaigns ({gadsCampaigns.length})
+            </h3>
+            <Link
+              to={buildAppUrl("/app/ai-dashboard?tab=campaigns", shopContext)}
+              style={{
+                color: "#007bff",
+                textDecoration: "none",
+                fontSize: "14px",
+              }}
+            >
+              View All →
+            </Link>
+          </div>
+          <div style={{ display: "grid", gap: "8px" }}>
+            {gadsCampaigns.slice(0, 5).map((campaign: any, idx: number) => (
+              <div
+                key={campaign.id || idx}
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  padding: "10px 12px",
+                  background: "#f8f9fa",
+                  borderRadius: "6px",
+                  fontSize: "14px",
+                }}
+              >
+                <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                  <span style={{
+                    display: "inline-block",
+                    width: "8px",
+                    height: "8px",
+                    borderRadius: "50%",
+                    background: (campaign.status === "ENABLED" || campaign.status === "active") ? "#28a745" : "#ffc107",
+                  }} />
+                  <span style={{ fontWeight: "500" }}>{campaign.name || "Unnamed Campaign"}</span>
+                </div>
+                <div style={{ display: "flex", gap: "16px", fontSize: "13px", color: "#666" }}>
+                  {campaign.impressions != null && <span>{formatMetricNumber(campaign.impressions)} imp</span>}
+                  {campaign.clicks != null && <span>{formatMetricNumber(campaign.clicks)} clicks</span>}
+                  {(campaign.cost != null || campaign.spend != null) && (
+                    <span>{formatMetricCurrency(campaign.cost ?? campaign.spend)}</span>
+                  )}
+                </div>
+              </div>
+            ))}
+            {gadsCampaigns.length > 5 && (
+              <div style={{ textAlign: "center", fontSize: "13px", color: "#666", padding: "4px" }}>
+                +{gadsCampaigns.length - 5} more campaigns
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
       <div
         style={{
@@ -466,7 +821,10 @@ export default function AppIndex() {
           color: "#666",
         }}
       >
-        <strong>Status:</strong> Connected to backend • Last updated:{" "}
+        <strong>Status:</strong> Connected to backend
+        {gadsConnected && " • Google Ads connected"}
+        {!gadsConnected && " • Google Ads not connected"}
+        {" "}• Last updated:{" "}
         {new Date(timestamp).toLocaleString()}
       </div>
 
