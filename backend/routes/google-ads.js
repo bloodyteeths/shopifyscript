@@ -158,14 +158,14 @@ router.post("/auth/url", async (req, res) => {
 // ---------------------------------------------------------------------------
 router.get("/auth/callback", async (req, res) => {
   const { code, state } = req.query;
-  const redirectBase = process.env.SHOPIFY_APP_URL || "";
+  const appHandle = process.env.SHOPIFY_APP_HANDLE || "adsautopilot-autopilot";
 
   try {
     if (!code) {
       throw new Error("Missing authorization code from Google");
     }
 
-    // state carries a signed tenantId
+    // state carries a signed tenantId (shop name)
     const tenantId = googleAdsAuth.verifySignedState(state);
     if (!tenantId) {
       throw new Error("Invalid or expired OAuth state parameter");
@@ -178,14 +178,21 @@ router.get("/auth/callback", async (req, res) => {
     const connection = await googleAdsAuth.saveConnection(tenantId, tokens);
     const customerId = connection?.customerId || "";
 
-    // Redirect the user back into the Shopify embedded app
+    // Redirect back into the Shopify embedded app via admin URL
     const successUrl =
-      `${redirectBase}/app/connect-google?connected=true&customerId=${encodeURIComponent(customerId)}`;
+      `https://admin.shopify.com/store/${tenantId}/apps/${appHandle}/connect-google?connected=true&customerId=${encodeURIComponent(customerId)}`;
+    console.log("OAuth success, redirecting to:", successUrl);
     return res.redirect(successUrl);
   } catch (error) {
     console.error("google-ads /auth/callback error:", error.message);
+    // Try to extract tenantId for redirect even on error
+    let tenantId = "";
+    try { tenantId = googleAdsAuth.verifySignedState(state) || ""; } catch {}
+    const errorBase = tenantId
+      ? `https://admin.shopify.com/store/${tenantId}/apps/${appHandle}/connect-google`
+      : (process.env.SHOPIFY_APP_URL || "") + "/app/connect-google";
     const errorUrl =
-      `${redirectBase}/app/connect-google?error=auth_failed&message=${encodeURIComponent('Authorization failed. Please try again.')}`;
+      `${errorBase}?error=auth_failed&message=${encodeURIComponent('Authorization failed. Please try again.')}`;
     return res.redirect(errorUrl);
   }
 });
