@@ -273,6 +273,7 @@ function opKey(method: string, pathname: string): string {
   if (pathname.includes("/google-ads/accounts")) return "gads_accounts";
   if (pathname.includes("/google-ads/disconnect")) return "gads_disconnect";
   if (pathname.includes("/google-ads/quota")) return "gads_quota";
+  if (pathname.includes("/google-ads/campaigns/analyze-url")) return "gads_campaigns_analyze_url";
   if (pathname.includes("/google-ads/campaigns/create")) return "gads_campaigns_create";
   if (pathname.includes("/google-ads/campaigns") && pathname.includes("/pause")) return "gads_campaign_pause";
   if (pathname.includes("/google-ads/campaigns") && pathname.includes("/enable")) return "gads_campaign_enable";

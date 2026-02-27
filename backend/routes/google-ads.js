@@ -42,6 +42,7 @@ const OP_KEY_MAP = {
   "/quota":                        "gads_quota",
   "/campaigns":                    "gads_campaigns",
   "/campaigns/create":             "gads_campaigns_create",
+  "/campaigns/analyze-url":        "gads_campaigns_analyze_url",
   "/sync":                         "gads_sync",
   "/optimize":                     "gads_optimize",
   "/autopilot/status":             "gads_autopilot_status",
@@ -379,6 +380,38 @@ router.post("/campaigns/create", enforceCampaignLimits(), async (req, res) => {
   } catch (error) {
     console.error("google-ads /campaigns/create error:", error.message);
     return res.status(500).json({ ok: false, error: error.message });
+  }
+});
+
+// ---------------------------------------------------------------------------
+// POST /campaigns/analyze-url  - AI-analyze a landing page for campaign suggestions
+// ---------------------------------------------------------------------------
+router.post("/campaigns/analyze-url", async (req, res) => {
+  try {
+    const tenantId = requireTenant(req, res);
+    if (!tenantId) return;
+
+    const { url } = req.body || {};
+    if (!url || typeof url !== "string") {
+      return res.status(400).json({ ok: false, error: "URL is required" });
+    }
+
+    // Validate URL format
+    try { new URL(url); } catch {
+      return res.status(400).json({ ok: false, error: "Invalid URL format" });
+    }
+
+    const { getCampaignAIAnalyzer } = await import("../services/campaign-ai-analyzer.js");
+    const analyzer = getCampaignAIAnalyzer();
+    const suggestions = await analyzer.analyzeForCampaign(url, tenantId);
+
+    return res.json({ ok: true, suggestions });
+  } catch (error) {
+    console.error("google-ads /campaigns/analyze-url error:", error.message);
+    return res.status(500).json({
+      ok: false,
+      error: "Failed to analyze URL. Please try again.",
+    });
   }
 });
 

@@ -2,9 +2,14 @@
  * Campaign Creation Wizard
  * A step-by-step Polaris wizard for creating Google Ads campaigns.
  * 4 steps: Campaign Basics -> Keywords -> Ad Copy -> Review & Launch
+ *
+ * AI-assisted: After entering a landing page URL, the user can click
+ * "Analyze with AI" to get suggestions for all fields. Suggestions
+ * pre-fill the form and appear as clickable chips for alternatives.
  */
 
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
+import { useFetcher } from "@remix-run/react";
 import {
   Modal,
   Card,
@@ -36,6 +41,16 @@ export interface CampaignConfig {
   negativeKeywords: string[];
   headlines: string[];
   descriptions: string[];
+}
+
+export interface AISuggestions {
+  campaignNames: string[];
+  biddingStrategy: { recommended: string; reason: string };
+  keywords: string[];
+  negativeKeywords: string[];
+  headlines: string[];
+  descriptions: string[];
+  pageSummary: string;
 }
 
 export interface CampaignCreationWizardProps {
@@ -91,6 +106,43 @@ function isValidUrl(url: string): boolean {
 }
 
 /* ------------------------------------------------------------------ */
+/*  SuggestionChips – clickable Tag row for AI suggestions             */
+/* ------------------------------------------------------------------ */
+
+interface SuggestionChipsProps {
+  suggestions: string[];
+  onSelect: (value: string) => void;
+  label?: string;
+}
+
+const SuggestionChips: React.FC<SuggestionChipsProps> = ({
+  suggestions,
+  onSelect,
+  label = "AI suggestions:",
+}) => {
+  if (suggestions.length === 0) return null;
+
+  return (
+    <BlockStack gap="200">
+      <Text as="span" variant="bodySm" tone="subdued">
+        {label}
+      </Text>
+      <InlineStack gap="200" wrap>
+        {suggestions.map((suggestion, index) => (
+          <div
+            key={`sug-${index}-${suggestion.substring(0, 10)}`}
+            onClick={() => onSelect(suggestion)}
+            style={{ cursor: "pointer" }}
+          >
+            <Tag>{suggestion}</Tag>
+          </div>
+        ))}
+      </InlineStack>
+    </BlockStack>
+  );
+};
+
+/* ------------------------------------------------------------------ */
 /*  Step 1 – Campaign Basics                                           */
 /* ------------------------------------------------------------------ */
 
@@ -104,6 +156,10 @@ interface StepBasicsProps {
   onStrategyChange: (value: string) => void;
   onUrlChange: (value: string) => void;
   errors: Record<string, string>;
+  onAnalyze: () => void;
+  isAnalyzing: boolean;
+  analyzeError: string | null;
+  aiSuggestions: AISuggestions | null;
 }
 
 const StepBasics: React.FC<StepBasicsProps> = ({
@@ -116,14 +172,62 @@ const StepBasics: React.FC<StepBasicsProps> = ({
   onStrategyChange,
   onUrlChange,
   errors,
+  onAnalyze,
+  isAnalyzing,
+  analyzeError,
+  aiSuggestions,
 }) => (
   <BlockStack gap="400">
     <Text as="h2" variant="headingMd">
       Campaign Basics
     </Text>
     <Text as="p" variant="bodyMd" tone="subdued">
-      Set up the core settings for your new Google Ads campaign.
+      Enter your landing page URL and let AI suggest campaign settings, or fill
+      in everything manually.
     </Text>
+
+    <Divider />
+
+    <TextField
+      label="Website URL"
+      value={websiteUrl}
+      onChange={onUrlChange}
+      autoComplete="off"
+      placeholder="https://example.com/landing-page"
+      helpText="The landing page users will visit when they click your ad."
+      error={errors.websiteUrl}
+      requiredIndicator
+    />
+
+    <InlineStack gap="200" blockAlign="center">
+      <Button
+        onClick={onAnalyze}
+        loading={isAnalyzing}
+        disabled={!websiteUrl.trim() || isAnalyzing}
+      >
+        Analyze with AI
+      </Button>
+      {isAnalyzing && (
+        <Text as="span" variant="bodySm" tone="subdued">
+          Analyzing page content...
+        </Text>
+      )}
+    </InlineStack>
+
+    {analyzeError && (
+      <Banner tone="warning">
+        <p>{analyzeError}</p>
+      </Banner>
+    )}
+
+    {aiSuggestions && !isAnalyzing && (
+      <Banner tone="info">
+        <p>
+          AI analyzed your page and pre-filled suggestions across all steps.
+          You can modify any field or click alternative suggestions below.
+        </p>
+      </Banner>
+    )}
 
     <Divider />
 
@@ -136,6 +240,16 @@ const StepBasics: React.FC<StepBasicsProps> = ({
       error={errors.name}
       requiredIndicator
     />
+
+    {aiSuggestions && aiSuggestions.campaignNames.length > 0 && (
+      <SuggestionChips
+        suggestions={aiSuggestions.campaignNames.filter(
+          (n) => n.toLowerCase() !== name.toLowerCase(),
+        )}
+        onSelect={onNameChange}
+        label="AI-suggested names (click to use):"
+      />
+    )}
 
     <TextField
       label="Daily Budget (USD)"
@@ -155,18 +269,11 @@ const StepBasics: React.FC<StepBasicsProps> = ({
       options={BIDDING_STRATEGY_OPTIONS}
       value={biddingStrategy}
       onChange={onStrategyChange}
-      helpText="Determines how Google optimizes your bids."
-    />
-
-    <TextField
-      label="Website URL"
-      value={websiteUrl}
-      onChange={onUrlChange}
-      autoComplete="off"
-      placeholder="https://example.com/landing-page"
-      helpText="The landing page users will visit when they click your ad."
-      error={errors.websiteUrl}
-      requiredIndicator
+      helpText={
+        aiSuggestions?.biddingStrategy?.reason
+          ? `AI recommendation: ${aiSuggestions.biddingStrategy.reason}`
+          : "Determines how Google optimizes your bids."
+      }
     />
   </BlockStack>
 );
@@ -181,6 +288,7 @@ interface StepKeywordsProps {
   onKeywordsChange: (value: string) => void;
   onNegativeKeywordsChange: (value: string) => void;
   errors: Record<string, string>;
+  aiSuggestions: AISuggestions | null;
 }
 
 const StepKeywords: React.FC<StepKeywordsProps> = ({
@@ -189,9 +297,24 @@ const StepKeywords: React.FC<StepKeywordsProps> = ({
   onKeywordsChange,
   onNegativeKeywordsChange,
   errors,
+  aiSuggestions,
 }) => {
   const keywordCount = parseLines(keywordsText).length;
   const negativeKeywordCount = parseLines(negativeKeywordsText).length;
+
+  const currentKeywords = new Set(
+    parseLines(keywordsText).map((k) => k.toLowerCase()),
+  );
+  const currentNegatives = new Set(
+    parseLines(negativeKeywordsText).map((k) => k.toLowerCase()),
+  );
+
+  const unusedKeywords = (aiSuggestions?.keywords || []).filter(
+    (k) => !currentKeywords.has(k.toLowerCase()),
+  );
+  const unusedNegatives = (aiSuggestions?.negativeKeywords || []).filter(
+    (k) => !currentNegatives.has(k.toLowerCase()),
+  );
 
   return (
     <BlockStack gap="400">
@@ -225,6 +348,16 @@ const StepKeywords: React.FC<StepKeywordsProps> = ({
           helpText="Enter one keyword or phrase per line."
           error={errors.keywords}
         />
+        {unusedKeywords.length > 0 && (
+          <SuggestionChips
+            suggestions={unusedKeywords}
+            onSelect={(keyword) => {
+              const current = keywordsText.trim();
+              onKeywordsChange(current ? `${current}\n${keyword}` : keyword);
+            }}
+            label="AI-suggested keywords (click to add):"
+          />
+        )}
       </BlockStack>
 
       <Divider />
@@ -248,6 +381,18 @@ const StepKeywords: React.FC<StepKeywordsProps> = ({
           placeholder={"free\ncheap\nused"}
           helpText="Prevent your ads from showing for these search terms. One per line."
         />
+        {unusedNegatives.length > 0 && (
+          <SuggestionChips
+            suggestions={unusedNegatives}
+            onSelect={(keyword) => {
+              const current = negativeKeywordsText.trim();
+              onNegativeKeywordsChange(
+                current ? `${current}\n${keyword}` : keyword,
+              );
+            }}
+            label="AI-suggested negative keywords (click to add):"
+          />
+        )}
       </BlockStack>
     </BlockStack>
   );
@@ -267,6 +412,7 @@ interface StepAdCopyProps {
   onDescriptionAdd: () => void;
   onDescriptionRemove: (index: number) => void;
   errors: Record<string, string>;
+  aiSuggestions: AISuggestions | null;
 }
 
 const StepAdCopy: React.FC<StepAdCopyProps> = ({
@@ -279,139 +425,194 @@ const StepAdCopy: React.FC<StepAdCopyProps> = ({
   onDescriptionAdd,
   onDescriptionRemove,
   errors,
-}) => (
-  <BlockStack gap="400">
-    <Text as="h2" variant="headingMd">
-      Ad Copy
-    </Text>
-    <Text as="p" variant="bodyMd" tone="subdued">
-      Write compelling headlines and descriptions for your responsive search ad.
-      Google will test different combinations to find the best performers.
-    </Text>
+  aiSuggestions,
+}) => {
+  const usedHeadlines = new Set(
+    headlines.map((h) => h.toLowerCase().trim()).filter(Boolean),
+  );
+  const usedDescriptions = new Set(
+    descriptions.map((d) => d.toLowerCase().trim()).filter(Boolean),
+  );
 
-    <Divider />
+  const unusedHeadlines = (aiSuggestions?.headlines || []).filter(
+    (h) => !usedHeadlines.has(h.toLowerCase().trim()),
+  );
+  const unusedDescriptions = (aiSuggestions?.descriptions || []).filter(
+    (d) => !usedDescriptions.has(d.toLowerCase().trim()),
+  );
 
-    {/* Headlines */}
-    <BlockStack gap="300">
-      <InlineStack align="space-between" blockAlign="center">
-        <Text as="span" variant="bodyMd" fontWeight="semibold">
-          Headlines ({MIN_HEADLINES} required, up to {MAX_HEADLINES})
-        </Text>
-        <Badge tone={headlines.length >= MIN_HEADLINES ? "success" : "warning"}>
-          {`${headlines.length} / ${MAX_HEADLINES}`}
-        </Badge>
-      </InlineStack>
+  const handleSelectHeadline = (headline: string) => {
+    const emptyIndex = headlines.findIndex((h) => h.trim() === "");
+    if (emptyIndex >= 0) {
+      onHeadlineChange(emptyIndex, headline);
+    } else if (headlines.length < MAX_HEADLINES) {
+      onHeadlineAdd();
+      // The add creates an empty slot at end, fill it on next render
+      // We directly set it via the change handler at the new index
+      setTimeout(() => onHeadlineChange(headlines.length, headline), 0);
+    }
+  };
 
-      {errors.headlines && (
-        <Banner tone="critical">
-          <p>{errors.headlines}</p>
-        </Banner>
-      )}
+  const handleSelectDescription = (description: string) => {
+    const emptyIndex = descriptions.findIndex((d) => d.trim() === "");
+    if (emptyIndex >= 0) {
+      onDescriptionChange(emptyIndex, description);
+    } else if (descriptions.length < MAX_DESCRIPTIONS) {
+      onDescriptionAdd();
+      setTimeout(() => onDescriptionChange(descriptions.length, description), 0);
+    }
+  };
 
-      {headlines.map((headline, index) => (
-        <InlineStack key={`headline-${index}`} gap="200" blockAlign="start" wrap={false}>
-          <div style={{ flex: 1 }}>
-            <TextField
-              label={`Headline ${index + 1}`}
-              labelHidden
-              value={headline}
-              onChange={(value) => onHeadlineChange(index, value)}
-              autoComplete="off"
-              maxLength={HEADLINE_MAX_CHARS}
-              showCharacterCount
-              placeholder={`Headline ${index + 1}`}
-              error={
-                headline.length > HEADLINE_MAX_CHARS
-                  ? `Max ${HEADLINE_MAX_CHARS} characters`
-                  : undefined
-              }
-            />
-          </div>
-          {headlines.length > MIN_HEADLINES && (
-            <div style={{ paddingTop: "4px" }}>
-              <Button
-                variant="plain"
-                tone="critical"
-                onClick={() => onHeadlineRemove(index)}
-              >
-                Remove
-              </Button>
-            </div>
-          )}
+  return (
+    <BlockStack gap="400">
+      <Text as="h2" variant="headingMd">
+        Ad Copy
+      </Text>
+      <Text as="p" variant="bodyMd" tone="subdued">
+        Write compelling headlines and descriptions for your responsive search ad.
+        Google will test different combinations to find the best performers.
+      </Text>
+
+      <Divider />
+
+      {/* Headlines */}
+      <BlockStack gap="300">
+        <InlineStack align="space-between" blockAlign="center">
+          <Text as="span" variant="bodyMd" fontWeight="semibold">
+            Headlines ({MIN_HEADLINES} required, up to {MAX_HEADLINES})
+          </Text>
+          <Badge tone={headlines.length >= MIN_HEADLINES ? "success" : "warning"}>
+            {`${headlines.length} / ${MAX_HEADLINES}`}
+          </Badge>
         </InlineStack>
-      ))}
 
-      {headlines.length < MAX_HEADLINES && (
-        <Button onClick={onHeadlineAdd}>
-          + Add Headline
-        </Button>
-      )}
-    </BlockStack>
+        {errors.headlines && (
+          <Banner tone="critical">
+            <p>{errors.headlines}</p>
+          </Banner>
+        )}
 
-    <Divider />
-
-    {/* Descriptions */}
-    <BlockStack gap="300">
-      <InlineStack align="space-between" blockAlign="center">
-        <Text as="span" variant="bodyMd" fontWeight="semibold">
-          Descriptions ({MIN_DESCRIPTIONS} required, up to {MAX_DESCRIPTIONS})
-        </Text>
-        <Badge
-          tone={
-            descriptions.length >= MIN_DESCRIPTIONS ? "success" : "warning"
-          }
-        >
-          {`${descriptions.length} / ${MAX_DESCRIPTIONS}`}
-        </Badge>
-      </InlineStack>
-
-      {errors.descriptions && (
-        <Banner tone="critical">
-          <p>{errors.descriptions}</p>
-        </Banner>
-      )}
-
-      {descriptions.map((description, index) => (
-        <InlineStack key={`desc-${index}`} gap="200" blockAlign="start" wrap={false}>
-          <div style={{ flex: 1 }}>
-            <TextField
-              label={`Description ${index + 1}`}
-              labelHidden
-              value={description}
-              onChange={(value) => onDescriptionChange(index, value)}
-              autoComplete="off"
-              maxLength={DESCRIPTION_MAX_CHARS}
-              showCharacterCount
-              placeholder={`Description ${index + 1}`}
-              error={
-                description.length > DESCRIPTION_MAX_CHARS
-                  ? `Max ${DESCRIPTION_MAX_CHARS} characters`
-                  : undefined
-              }
-            />
-          </div>
-          {descriptions.length > MIN_DESCRIPTIONS && (
-            <div style={{ paddingTop: "4px" }}>
-              <Button
-                variant="plain"
-                tone="critical"
-                onClick={() => onDescriptionRemove(index)}
-              >
-                Remove
-              </Button>
+        {headlines.map((headline, index) => (
+          <InlineStack key={`headline-${index}`} gap="200" blockAlign="start" wrap={false}>
+            <div style={{ flex: 1 }}>
+              <TextField
+                label={`Headline ${index + 1}`}
+                labelHidden
+                value={headline}
+                onChange={(value) => onHeadlineChange(index, value)}
+                autoComplete="off"
+                maxLength={HEADLINE_MAX_CHARS}
+                showCharacterCount
+                placeholder={`Headline ${index + 1}`}
+                error={
+                  headline.length > HEADLINE_MAX_CHARS
+                    ? `Max ${HEADLINE_MAX_CHARS} characters`
+                    : undefined
+                }
+              />
             </div>
-          )}
-        </InlineStack>
-      ))}
+            {headlines.length > MIN_HEADLINES && (
+              <div style={{ paddingTop: "4px" }}>
+                <Button
+                  variant="plain"
+                  tone="critical"
+                  onClick={() => onHeadlineRemove(index)}
+                >
+                  Remove
+                </Button>
+              </div>
+            )}
+          </InlineStack>
+        ))}
 
-      {descriptions.length < MAX_DESCRIPTIONS && (
-        <Button onClick={onDescriptionAdd}>
-          + Add Description
-        </Button>
-      )}
+        {unusedHeadlines.length > 0 && (
+          <SuggestionChips
+            suggestions={unusedHeadlines}
+            onSelect={handleSelectHeadline}
+            label="AI-suggested headlines (click to use):"
+          />
+        )}
+
+        {headlines.length < MAX_HEADLINES && (
+          <Button onClick={onHeadlineAdd}>
+            + Add Headline
+          </Button>
+        )}
+      </BlockStack>
+
+      <Divider />
+
+      {/* Descriptions */}
+      <BlockStack gap="300">
+        <InlineStack align="space-between" blockAlign="center">
+          <Text as="span" variant="bodyMd" fontWeight="semibold">
+            Descriptions ({MIN_DESCRIPTIONS} required, up to {MAX_DESCRIPTIONS})
+          </Text>
+          <Badge
+            tone={
+              descriptions.length >= MIN_DESCRIPTIONS ? "success" : "warning"
+            }
+          >
+            {`${descriptions.length} / ${MAX_DESCRIPTIONS}`}
+          </Badge>
+        </InlineStack>
+
+        {errors.descriptions && (
+          <Banner tone="critical">
+            <p>{errors.descriptions}</p>
+          </Banner>
+        )}
+
+        {descriptions.map((description, index) => (
+          <InlineStack key={`desc-${index}`} gap="200" blockAlign="start" wrap={false}>
+            <div style={{ flex: 1 }}>
+              <TextField
+                label={`Description ${index + 1}`}
+                labelHidden
+                value={description}
+                onChange={(value) => onDescriptionChange(index, value)}
+                autoComplete="off"
+                maxLength={DESCRIPTION_MAX_CHARS}
+                showCharacterCount
+                placeholder={`Description ${index + 1}`}
+                error={
+                  description.length > DESCRIPTION_MAX_CHARS
+                    ? `Max ${DESCRIPTION_MAX_CHARS} characters`
+                    : undefined
+                }
+              />
+            </div>
+            {descriptions.length > MIN_DESCRIPTIONS && (
+              <div style={{ paddingTop: "4px" }}>
+                <Button
+                  variant="plain"
+                  tone="critical"
+                  onClick={() => onDescriptionRemove(index)}
+                >
+                  Remove
+                </Button>
+              </div>
+            )}
+          </InlineStack>
+        ))}
+
+        {unusedDescriptions.length > 0 && (
+          <SuggestionChips
+            suggestions={unusedDescriptions}
+            onSelect={handleSelectDescription}
+            label="AI-suggested descriptions (click to use):"
+          />
+        )}
+
+        {descriptions.length < MAX_DESCRIPTIONS && (
+          <Button onClick={onDescriptionAdd}>
+            + Add Description
+          </Button>
+        )}
+      </BlockStack>
     </BlockStack>
-  </BlockStack>
-);
+  );
+};
 
 /* ------------------------------------------------------------------ */
 /*  Step 4 – Review & Launch                                           */
@@ -603,8 +804,82 @@ export const CampaignCreationWizard: React.FC<CampaignCreationWizardProps> = ({
   const [headlines, setHeadlines] = useState<string[]>(["", "", ""]);
   const [descriptions, setDescriptions] = useState<string[]>(["", ""]);
 
+  // AI state
+  const analyzeFetcher = useFetcher();
+  const [aiSuggestions, setAiSuggestions] = useState<AISuggestions | null>(null);
+  const [analyzeError, setAnalyzeError] = useState<string | null>(null);
+
+  const isAnalyzing =
+    analyzeFetcher.state === "submitting" || analyzeFetcher.state === "loading";
+
   const totalSteps = STEP_LABELS.length;
   const progress = ((currentStep + 1) / totalSteps) * 100;
+
+  /* ---------- Handle AI analysis results ---------- */
+  useEffect(() => {
+    if (!analyzeFetcher.data) return;
+
+    const data = analyzeFetcher.data as {
+      ok?: boolean;
+      suggestions?: AISuggestions;
+      error?: string;
+    };
+
+    if (data.ok && data.suggestions) {
+      const s = data.suggestions;
+      setAiSuggestions(s);
+      setAnalyzeError(null);
+
+      // Pre-fill campaign name (only if empty)
+      if (s.campaignNames.length > 0 && !name.trim()) {
+        setName(s.campaignNames[0]);
+      }
+
+      // Pre-fill bidding strategy
+      if (s.biddingStrategy.recommended) {
+        setBiddingStrategy(s.biddingStrategy.recommended);
+      }
+
+      // Pre-fill keywords (only if empty)
+      if (s.keywords.length > 0 && !keywordsText.trim()) {
+        setKeywordsText(s.keywords.join("\n"));
+      }
+
+      // Pre-fill negative keywords (only if empty)
+      if (s.negativeKeywords.length > 0 && !negativeKeywordsText.trim()) {
+        setNegativeKeywordsText(s.negativeKeywords.join("\n"));
+      }
+
+      // Pre-fill headlines (first 3 into default slots)
+      if (s.headlines.length >= MIN_HEADLINES) {
+        const newHeadlines = s.headlines.slice(0, MIN_HEADLINES);
+        setHeadlines(newHeadlines);
+      }
+
+      // Pre-fill descriptions (first 2 into default slots)
+      if (s.descriptions.length >= MIN_DESCRIPTIONS) {
+        const newDescs = s.descriptions.slice(0, MIN_DESCRIPTIONS);
+        setDescriptions(newDescs);
+      }
+    } else {
+      setAnalyzeError(
+        data.error || "Analysis failed. You can still fill in fields manually.",
+      );
+    }
+  }, [analyzeFetcher.data]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  /* ---------- AI analyze handler ---------- */
+  const handleAnalyzeUrl = useCallback(() => {
+    if (!websiteUrl.trim() || !isValidUrl(websiteUrl.trim())) {
+      setErrors({ websiteUrl: "Please enter a valid URL before analyzing." });
+      return;
+    }
+    setAnalyzeError(null);
+    analyzeFetcher.submit(
+      { url: websiteUrl.trim() },
+      { method: "post", action: "/api/campaign-analyze" },
+    );
+  }, [websiteUrl, analyzeFetcher]);
 
   /* ---------- Build config from current state ---------- */
   const buildConfig = useCallback((): CampaignConfig => {
@@ -778,6 +1053,10 @@ export const CampaignCreationWizard: React.FC<CampaignCreationWizardProps> = ({
             onStrategyChange={setBiddingStrategy}
             onUrlChange={setWebsiteUrl}
             errors={errors}
+            onAnalyze={handleAnalyzeUrl}
+            isAnalyzing={isAnalyzing}
+            analyzeError={analyzeError}
+            aiSuggestions={aiSuggestions}
           />
         );
       case 1:
@@ -788,6 +1067,7 @@ export const CampaignCreationWizard: React.FC<CampaignCreationWizardProps> = ({
             onKeywordsChange={setKeywordsText}
             onNegativeKeywordsChange={setNegativeKeywordsText}
             errors={errors}
+            aiSuggestions={aiSuggestions}
           />
         );
       case 2:
@@ -802,6 +1082,7 @@ export const CampaignCreationWizard: React.FC<CampaignCreationWizardProps> = ({
             onDescriptionAdd={handleDescriptionAdd}
             onDescriptionRemove={handleDescriptionRemove}
             errors={errors}
+            aiSuggestions={aiSuggestions}
           />
         );
       case 3:
@@ -848,9 +1129,7 @@ export const CampaignCreationWizard: React.FC<CampaignCreationWizardProps> = ({
                               : undefined
                         }
                       >
-                        {index < currentStep
-                          ? `${index + 1}. ${label}`
-                          : `${index + 1}. ${label}`}
+                        {`${index + 1}. ${label}`}
                       </Badge>
                     ))}
                   </InlineStack>
