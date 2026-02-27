@@ -11,6 +11,8 @@ import * as googleAdsQuota from "../services/google-ads-quota.js";
 // ==== CAMPAIGN MANAGEMENT ROUTES ====
 import * as googleAdsClient from "../services/google-ads-client.js";
 import * as googleAdsCampaignManager from "../services/google-ads-campaign-manager.js";
+import { requireActiveSubscription, requireFeature } from '../middleware/subscription-check.js';
+import { enforceCampaignLimits, recordCampaignCreation } from '../services/campaign-counter.js';
 
 /**
  * Return a safe error message for client responses.
@@ -106,6 +108,18 @@ router.use((req, res, next) => {
   }
 
   next();
+});
+
+// ---------------------------------------------------------------------------
+// Subscription check — require active subscription for most routes
+// Auth/connection routes are exempt (needed before subscription exists)
+// ---------------------------------------------------------------------------
+router.use((req, res, next) => {
+  // These routes don't require a subscription
+  if (req.path === "/auth/callback" || req.path === "/auth/url" || req.path === "/connection-status" || req.path === "/disconnect") {
+    return next();
+  }
+  return requireActiveSubscription()(req, res, next);
 });
 
 // ---------------------------------------------------------------------------
@@ -321,7 +335,7 @@ router.get("/campaigns", async (req, res) => {
 // ---------------------------------------------------------------------------
 // POST /campaigns/create  - Create a full campaign
 // ---------------------------------------------------------------------------
-router.post("/campaigns/create", async (req, res) => {
+router.post("/campaigns/create", enforceCampaignLimits(), async (req, res) => {
   try {
     const tenantId = requireTenant(req, res);
     if (!tenantId) return;
@@ -346,6 +360,13 @@ router.post("/campaigns/create", async (req, res) => {
       headlines,
       descriptions,
     });
+
+    // Record campaign creation for tier limit tracking
+    try {
+      await recordCampaignCreation(tenantId, name, req.subscription?.tier || 'starter');
+    } catch (trackingErr) {
+      console.error("Failed to record campaign creation:", trackingErr.message);
+    }
 
     return res.json({ ok: true, campaign: result, campaignId: result?.campaignId || result?.id || null });
   } catch (error) {
@@ -478,7 +499,26 @@ router.get("/metrics", async (req, res) => {
     const tenantId = requireTenant(req, res);
     if (!tenantId) return;
 
-    const dateRange = req.query.dateRange || "LAST_30_DAYS";
+    let dateRange = req.query.dateRange || "LAST_30_DAYS";
+
+    // Clamp date range based on tier's data retention limit
+    const retentionDays = { starter: 7, professional: 30, enterprise: 90 };
+    const maxDays = retentionDays[req.subscription?.tier] || 7;
+    const dateRangeDays = {
+      LAST_7_DAYS: 7,
+      LAST_14_DAYS: 14,
+      LAST_30_DAYS: 30,
+      LAST_90_DAYS: 90,
+    };
+    const requestedDays = dateRangeDays[dateRange] || 30;
+    if (requestedDays > maxDays) {
+      // Find the largest allowed range
+      const allowedRanges = Object.entries(dateRangeDays)
+        .filter(([, days]) => days <= maxDays)
+        .sort(([, a], [, b]) => b - a);
+      dateRange = allowedRanges.length > 0 ? allowedRanges[0][0] : "LAST_7_DAYS";
+    }
+
     const result = await googleAdsClient.getCampaignMetrics(tenantId, dateRange);
     return res.json({ ok: true, metrics: result });
   } catch (error) {
@@ -490,7 +530,7 @@ router.get("/metrics", async (req, res) => {
 // ---------------------------------------------------------------------------
 // GET /campaigns/:id/auction-insights  - Competitor data
 // ---------------------------------------------------------------------------
-router.get("/campaigns/:id/auction-insights", async (req, res) => {
+router.get("/campaigns/:id/auction-insights", requireFeature("advanced_ai_optimization"), async (req, res) => {
   try {
     const tenantId = requireTenant(req, res);
     if (!tenantId) return;
@@ -527,7 +567,7 @@ router.post("/sync", async (req, res) => {
 // ---------------------------------------------------------------------------
 // POST /optimize  - Manual trigger for autopilot optimization
 // ---------------------------------------------------------------------------
-router.post("/optimize", async (req, res) => {
+router.post("/optimize", requireFeature("automated_bid_management"), async (req, res) => {
   try {
     const tenantId = requireTenant(req, res);
     if (!tenantId) return;

@@ -390,11 +390,7 @@ router.post("/shopify/sync-tier", async (req, res) => {
     const tenantRegistry = (await import('../services/tenant-registry.js')).default;
     const tenantData = tenantRegistry.getTenant(tenant);
 
-    // For mybabybymerry specifically, they're an enterprise customer
-    if (tenant === 'mybabybymerry') {
-      tier = 'enterprise';
-      console.log('🏯 Manual override: mybabybymerry is an enterprise customer');
-    }
+    // Tier overrides removed — all tenants use their actual Shopify subscription tier
 
     if (tenantData) {
       tenantData.plan = tier;

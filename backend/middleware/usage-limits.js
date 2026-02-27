@@ -71,15 +71,11 @@ const PLAN_LIMITS = {
  */
 async function getCurrentUsage(tenant) {
   try {
-    // This would query your data source to get current usage
-    // For now, we'll simulate with basic data
-    
-    // TODO: Query actual campaign count from Google Ads API or stored data
-    const campaignCount = 0; // Placeholder - implement actual counting
-    
+    const { getCampaignCount } = await import('../services/campaign-counter.js');
+    const campaignCount = await getCampaignCount(tenant);
+
     return {
       campaigns: campaignCount,
-      // Add other usage metrics as needed
     };
   } catch (error) {
     console.error('Error getting current usage:', error);

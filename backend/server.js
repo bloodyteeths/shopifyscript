@@ -69,6 +69,8 @@ import tenantRegistry from "./services/tenant-registry.js";
 // WebSocket Server
 import { initializeWebSocketServer } from "./services/websocket-server.js";
 import { requireActiveSubscription } from "./middleware/subscription-check.js";
+import cron from 'node-cron';
+import { runDataRetention } from './services/data-retention.js';
 
 // Load env from root and backend/.env (resolve relative to this file)
 dotenv.config();
@@ -6196,6 +6198,9 @@ app.listen(PORT, async () => {
     intervals: ["15min", "weekly"],
     note: "Always-on automation for all registered tenants",
   });
+
+  // Daily data retention cleanup (3 AM) — enforces tier-based data limits
+  cron.schedule('0 3 * * *', () => { runDataRetention().catch(err => console.error('[DataRetention] Cron error:', err.message)); });
 
   console.log(`🚀 Ads Autopilot AI SaaS backend server running on port ${PORT}`);
   console.log(`📊 Health checks available at: http://localhost:${PORT}/health`);

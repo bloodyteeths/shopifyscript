@@ -113,11 +113,10 @@ const TIER_HIERARCHY = {
  */
 async function getCurrentSubscription(tenant) {
   try {
-    // Check if billing enforcement is active
-    const billingActive = process.env.BILLING_ENFORCEMENT_ACTIVE === "true";
-    
-    if (!billingActive) {
-      // If billing enforcement disabled, grant enterprise access
+    // Billing enforcement is always active in production.
+    // Set BILLING_ENFORCEMENT_DISABLED=true ONLY for local development.
+    if (process.env.BILLING_ENFORCEMENT_DISABLED === "true") {
+      console.warn("[BILLING] Enforcement disabled via BILLING_ENFORCEMENT_DISABLED env var");
       return {
         tier: "enterprise",
         status: "active",

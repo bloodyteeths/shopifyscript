@@ -5,6 +5,7 @@
 
 import BillingService from "../services/billing.js";
 import ShopifyBillingService from "../services/shopify-billing.js";
+import { getCurrentSubscription } from "./subscription-check.js";
 
 const billingService = new BillingService();
 
@@ -14,29 +15,42 @@ const billingService = new BillingService();
 export function requireFeature(featureName, options = {}) {
   return async (req, res, next) => {
     try {
-      const user = req.user;
-      const shop = req.shop;
-
-      if (!user && !shop) {
-        return res.status(401).json({
-          error: "Authentication required",
-          code: "AUTH_REQUIRED",
-        });
-      }
-
       let hasAccess = false;
       let tier = null;
+      let tierName = null;
 
       // Check Shopify subscription
-      if (shop && shop.subscription) {
+      if (req.shop && req.shop.subscription) {
         const shopifyBilling = new ShopifyBillingService();
-        tier = shopifyBilling.getSubscriptionTier(shop.subscription);
-        hasAccess = tier && tier.features.includes(featureName);
+        tier = shopifyBilling.getSubscriptionTier(req.shop.subscription);
+        tierName = tier?.name;
+        hasAccess = tier && tier.features && tier.features.includes(featureName);
       }
       // Check Stripe subscription for WordPress users
-      else if (user && user.subscription) {
-        tier = billingService.getTierById(user.subscription.tier);
-        hasAccess = tier && tier.features.includes(featureName);
+      else if (req.user && req.user.subscription) {
+        tier = billingService.getTierById(req.user.subscription.tier);
+        tierName = tier?.name;
+        hasAccess = tier && tier.features && tier.features.includes(featureName);
+      }
+      // Fallback: tenant-based lookup via subscription-check
+      else {
+        const tenant = req.query?.tenant || req.body?.tenant || req.body?.tenantId;
+        if (tenant) {
+          const subscription = await getCurrentSubscription(tenant);
+          if (subscription && subscription.tier) {
+            tierName = subscription.tier;
+            // Check tier hierarchy if requiredTier is specified
+            if (options.requiredTier) {
+              const TIER_HIERARCHY = { starter: 1, professional: 2, enterprise: 3 };
+              const userLevel = TIER_HIERARCHY[subscription.tier.toLowerCase()] || 0;
+              const requiredLevel = TIER_HIERARCHY[options.requiredTier.toLowerCase()] || 0;
+              hasAccess = userLevel >= requiredLevel;
+            } else {
+              // Default: enterprise has access to everything
+              hasAccess = subscription.tier === 'enterprise' || subscription.status === 'active';
+            }
+          }
+        }
       }
 
       if (!hasAccess) {
@@ -44,14 +58,12 @@ export function requireFeature(featureName, options = {}) {
           error: `Feature '${featureName}' requires ${options.requiredTier || "a higher"} subscription tier`,
           code: "FEATURE_ACCESS_DENIED",
           feature: featureName,
-          currentTier: tier?.name || "none",
+          currentTier: tierName || "none",
           requiredTier: options.requiredTier,
           upgradeUrl: options.upgradeUrl || "/billing/upgrade",
         });
       }
 
-      // Feature access granted
-      req.tier = tier;
       req.featureAccess = true;
       next();
     } catch (error) {
@@ -168,6 +180,18 @@ export function requireTier(requiredTierIndex) {
           currentTierIndex = billingService.getTierIndexById(tier.id);
         }
       }
+      // Fallback: tenant-based lookup
+      else {
+        const tenant = req.query?.tenant || req.body?.tenant || req.body?.tenantId;
+        if (tenant) {
+          const subscription = await getCurrentSubscription(tenant);
+          if (subscription && subscription.tier) {
+            const TIER_HIERARCHY = { starter: 0, professional: 1, enterprise: 2 };
+            currentTierIndex = TIER_HIERARCHY[subscription.tier.toLowerCase()] ?? -1;
+            tier = { name: subscription.tier, id: subscription.tier };
+          }
+        }
+      }
 
       if (currentTierIndex < requiredTierIndex) {
         const requiredTiers = Object.values(billingService.PRICING_TIERS);
@@ -226,6 +250,15 @@ export function requireActiveSubscription(options = {}) {
           subscription &&
           (subscription.status === "active" ||
             subscription.status === "trialing");
+      }
+      // Fallback: tenant-based lookup
+      else {
+        const tenant = req.query?.tenant || req.body?.tenant || req.body?.tenantId;
+        if (tenant) {
+          const sub = await getCurrentSubscription(tenant);
+          hasActiveSubscription = sub && (sub.status === 'active' || sub.status === 'trialing');
+          subscription = sub;
+        }
       }
 
       if (!hasActiveSubscription) {

@@ -69,6 +69,9 @@ interface LoaderData {
   metrics: Metrics;
   subscriptionInfo: SubscriptionInfo;
   connectionError: string | null;
+  campaignLimit: number | null; // null = unlimited
+  campaignCount: number;
+  planSelectionUrl: string;
 }
 
 interface ActionData {
@@ -212,6 +215,22 @@ export async function loader({ request }: LoaderFunctionArgs) {
       }
     }
 
+    // Campaign limits per tier
+    const tier = subscriptionInfo.subscriptionTier;
+    const tierCampaignLimits: Record<string, number | null> = {
+      starter: 5,
+      professional: 25,
+      enterprise: null, // unlimited
+    };
+    const campaignLimit = tier ? (tierCampaignLimits[tier] ?? 5) : 5;
+    const campaignCount = campaigns.filter(
+      (c) => c.status !== "REMOVED",
+    ).length;
+
+    const appHandle =
+      process.env.SHOPIFY_APP_HANDLE || "adsautopilot-autopilot";
+    const planSelectionUrl = `https://admin.shopify.com/store/${shopName}/charges/${appHandle}/pricing_plans`;
+
     return json<LoaderData>({
       shopName,
       connected,
@@ -219,6 +238,9 @@ export async function loader({ request }: LoaderFunctionArgs) {
       metrics,
       subscriptionInfo,
       connectionError,
+      campaignLimit,
+      campaignCount,
+      planSelectionUrl,
     });
   } catch (authError) {
     console.error("Campaigns authentication error:", authError);
@@ -458,12 +480,17 @@ export default function Campaigns() {
     campaigns,
     metrics,
     connectionError,
+    campaignLimit,
+    campaignCount,
+    planSelectionUrl,
   } = useLoaderData<typeof loader>() as LoaderData;
   const actionData = useActionData<typeof action>() as ActionData | undefined;
   const submit = useSubmit();
   const navigation = useNavigation();
 
   const isSubmitting = navigation.state === "submitting";
+  const atCampaignLimit =
+    campaignLimit !== null && campaignCount >= campaignLimit;
 
   /* ----- wizard state ----- */
   const [wizardOpen, setWizardOpen] = useState(false);
@@ -669,7 +696,7 @@ export default function Campaigns() {
         <Button
           variant="primary"
           onClick={() => setWizardOpen(true)}
-          disabled={isSubmitting}
+          disabled={isSubmitting || atCampaignLimit}
         >
           Create Campaign
         </Button>
@@ -682,6 +709,22 @@ export default function Campaigns() {
             {banner && (
               <Banner tone={banner.tone} onDismiss={() => setBanner(null)}>
                 <p>{banner.message}</p>
+              </Banner>
+            )}
+
+            {atCampaignLimit && (
+              <Banner
+                title={`Campaign limit reached (${campaignCount}/${campaignLimit})`}
+                tone="warning"
+                action={{
+                  content: "Upgrade Plan",
+                  url: planSelectionUrl,
+                }}
+              >
+                <p>
+                  Your current plan allows up to {campaignLimit} campaigns.
+                  Upgrade to create more campaigns.
+                </p>
               </Banner>
             )}
 

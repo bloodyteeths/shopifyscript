@@ -1,175 +1,112 @@
 /**
  * Data Retention Service
- * Enforces tier-based data retention policies
+ * Enforces tier-based data retention by cleaning up old metrics and search terms.
+ * Runs daily via cron (see server.js).
+ *
+ * Retention limits:
+ *   starter:      7 days
+ *   professional: 30 days
+ *   enterprise:   90 days
  */
 
-// Tier-based data retention periods (matching Shopify plan descriptions)
-const RETENTION_PERIODS = {
-  starter: 7,      // 7 days
-  professional: 30, // 30 days  
-  enterprise: 90   // 90 days
+import { supabase, isSupabaseEnabled } from './supabase-client.js';
+
+const RETENTION_DAYS = {
+  starter: 7,
+  professional: 30,
+  enterprise: 90,
 };
 
-/**
- * Get data retention period for a tier
- */
-export function getRetentionPeriod(tier) {
-  return RETENTION_PERIODS[tier] || RETENTION_PERIODS.starter;
-}
+const DEFAULT_RETENTION_DAYS = 7;
 
 /**
- * Calculate cutoff date for data retention
+ * Run data retention cleanup for all tenants.
+ * Deletes tenant_metrics and search_terms rows older than the tenant's tier allows.
  */
-export function getRetentionCutoffDate(tier) {
-  const retentionDays = getRetentionPeriod(tier);
-  return new Date(Date.now() - (retentionDays * 24 * 60 * 60 * 1000));
-}
+export async function runDataRetention() {
+  if (!isSupabaseEnabled() || !supabase) {
+    console.log('[DataRetention] Supabase not enabled, skipping cleanup');
+    return { skipped: true };
+  }
 
-/**
- * Filter data array by retention period
- */
-export function filterDataByRetention(data, tier, dateField = 'date') {
-  const cutoffDate = getRetentionCutoffDate(tier);
-  
-  return data.filter(item => {
-    try {
-      const itemDate = new Date(item[dateField]);
-      return itemDate >= cutoffDate;
-    } catch (error) {
-      // If date parsing fails, include the item (safe default)
-      return true;
+  console.log('[DataRetention] Starting daily cleanup...');
+  const results = { processed: 0, metricsDeleted: 0, searchTermsDeleted: 0, errors: [] };
+
+  try {
+    // Get all tenants with their tier
+    const { data: tenants, error } = await supabase
+      .from('tenant_subscriptions')
+      .select('tenant_id, tier');
+
+    if (error) {
+      console.error('[DataRetention] Failed to fetch tenants:', error.message);
+      results.errors.push(error.message);
+      return results;
     }
-  });
-}
 
-/**
- * Filter metrics data for tier-appropriate retention
- */
-export function filterMetricsByRetention(metrics, tier) {
-  const cutoffDate = getRetentionCutoffDate(tier);
-  
-  return metrics.filter(metric => {
-    try {
-      // Handle different date formats
-      let metricDate;
-      if (metric.date) {
-        metricDate = new Date(metric.date);
-      } else if (metric[0]) {
-        metricDate = new Date(metric[0]); // Array format
-      } else {
-        return true; // Include if can't determine date
-      }
-      
-      return metricDate >= cutoffDate;
-    } catch (error) {
-      return true; // Include on error
+    if (!tenants || tenants.length === 0) {
+      console.log('[DataRetention] No tenants found, nothing to clean');
+      return results;
     }
-  });
-}
 
-/**
- * Filter search terms by retention period
- */
-export function filterSearchTermsByRetention(searchTerms, tier) {
-  const cutoffDate = getRetentionCutoffDate(tier);
-  
-  return searchTerms.filter(term => {
-    try {
-      const termDate = new Date(term.date || term[0]);
-      return termDate >= cutoffDate;
-    } catch (error) {
-      return true;
-    }
-  });
-}
+    for (const tenant of tenants) {
+      try {
+        const tier = tenant.tier || 'starter';
+        const retentionDays = RETENTION_DAYS[tier] || DEFAULT_RETENTION_DAYS;
+        const cutoffDate = new Date(Date.now() - retentionDays * 24 * 60 * 60 * 1000)
+          .toISOString()
+          .split('T')[0]; // YYYY-MM-DD
 
-/**
- * Get retention summary for user display
- */
-export function getRetentionSummary(tier) {
-  const days = getRetentionPeriod(tier);
-  const cutoffDate = getRetentionCutoffDate(tier);
-  
-  return {
-    tier,
-    retentionDays: days,
-    cutoffDate: cutoffDate.toISOString().split('T')[0],
-    description: `Data from the last ${days} days`,
-    upgradeMessage: tier === 'starter' ? 
-      'Upgrade to Professional for 30-day retention' :
-      tier === 'professional' ?
-      'Upgrade to Enterprise for 90-day retention' :
-      null
-  };
-}
+        // Delete old tenant_metrics rows
+        const { count: metricsCount, error: metricsError } = await supabase
+          .from('tenant_metrics')
+          .delete({ count: 'exact' })
+          .eq('tenant_id', tenant.tenant_id)
+          .lt('date', cutoffDate);
 
-/**
- * Middleware to enforce data retention on analytics endpoints
- */
-export function enforceDataRetention() {
-  return (req, res, next) => {
-    const userTier = req.subscription?.tier || 'starter';
-    const retentionInfo = getRetentionSummary(userTier);
-    
-    // Add retention info to request for downstream use
-    req.dataRetention = retentionInfo;
-    
-    console.log(`🗓️ Data retention for ${userTier}: ${retentionInfo.retentionDays} days (cutoff: ${retentionInfo.cutoffDate})`);
-    
-    // Intercept JSON responses to filter data
-    const originalJson = res.json;
-    res.json = function(data) {
-      if (data && typeof data === 'object') {
-        // Filter metrics if present
-        if (data.metrics && Array.isArray(data.metrics)) {
-          const originalLength = data.metrics.length;
-          data.metrics = filterMetricsByRetention(data.metrics, userTier);
-          const filteredLength = data.metrics.length;
-          
-          if (filteredLength < originalLength) {
-            console.log(`📉 Filtered metrics for ${userTier}: ${originalLength} → ${filteredLength} (${retentionInfo.retentionDays} day limit)`);
-          }
+        if (metricsError) {
+          console.error(`[DataRetention] Metrics cleanup failed for ${tenant.tenant_id}:`, metricsError.message);
+          results.errors.push(`${tenant.tenant_id}/metrics: ${metricsError.message}`);
+        } else {
+          results.metricsDeleted += metricsCount || 0;
         }
-        
-        // Filter search terms if present
-        if (data.search_terms && Array.isArray(data.search_terms)) {
-          const originalLength = data.search_terms.length;
-          data.search_terms = filterSearchTermsByRetention(data.search_terms, userTier);
-          const filteredLength = data.search_terms.length;
-          
-          if (filteredLength < originalLength) {
-            console.log(`🔍 Filtered search terms for ${userTier}: ${originalLength} → ${filteredLength} (${retentionInfo.retentionDays} day limit)`);
-          }
+
+        // Delete old search_terms rows
+        const { count: searchCount, error: searchError } = await supabase
+          .from('search_terms')
+          .delete({ count: 'exact' })
+          .eq('tenant_id', tenant.tenant_id)
+          .lt('date', cutoffDate);
+
+        if (searchError) {
+          console.error(`[DataRetention] Search terms cleanup failed for ${tenant.tenant_id}:`, searchError.message);
+          results.errors.push(`${tenant.tenant_id}/search_terms: ${searchError.message}`);
+        } else {
+          results.searchTermsDeleted += searchCount || 0;
         }
-        
-        // Add retention info to response
-        data._retention = retentionInfo;
+
+        results.processed++;
+      } catch (tenantError) {
+        console.error(`[DataRetention] Error processing tenant ${tenant.tenant_id}:`, tenantError.message);
+        results.errors.push(`${tenant.tenant_id}: ${tenantError.message}`);
       }
-      
-      return originalJson.call(this, data);
-    };
-    
-    next();
-  };
+    }
+
+    console.log(`[DataRetention] Cleanup complete: ${results.processed} tenants processed, ${results.metricsDeleted} metrics rows + ${results.searchTermsDeleted} search term rows deleted`);
+    return results;
+
+  } catch (error) {
+    console.error('[DataRetention] Unexpected error:', error.message);
+    results.errors.push(error.message);
+    return results;
+  }
 }
 
 /**
- * Check if data should be visible for a tier
+ * Get the maximum number of days a tier can view data.
  */
-export function isDataVisible(dataDate, tier) {
-  const cutoffDate = getRetentionCutoffDate(tier);
-  const itemDate = new Date(dataDate);
-  
-  return itemDate >= cutoffDate;
+export function getRetentionDays(tier) {
+  return RETENTION_DAYS[tier] || DEFAULT_RETENTION_DAYS;
 }
 
-export default {
-  getRetentionPeriod,
-  getRetentionCutoffDate,
-  filterDataByRetention,
-  filterMetricsByRetention,
-  filterSearchTermsByRetention,
-  getRetentionSummary,
-  enforceDataRetention,
-  isDataVisible
-};
+export default { runDataRetention, getRetentionDays, RETENTION_DAYS };
