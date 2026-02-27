@@ -49,9 +49,9 @@ export async function loader({ request }: LoaderFunctionArgs) {
       if (res.status >= 200 && res.status < 300 && res.json) {
         connectionStatus = {
           connected: !!res.json.connected,
-          email: res.json.email || undefined,
-          accountId: res.json.accountId || res.json.account_id || undefined,
-          accountName: res.json.accountName || res.json.account_name || undefined,
+          email: res.json.email || res.json.googleEmail || undefined,
+          accountId: res.json.accountId || res.json.customerId || undefined,
+          accountName: res.json.accountName || undefined,
         };
       } else {
         console.warn(
@@ -63,7 +63,25 @@ export async function loader({ request }: LoaderFunctionArgs) {
       console.error("Failed to check Google Ads connection status:", err);
     }
 
-    return json({ shopName, connectionStatus });
+    // If connected but no account selected, fetch available accounts
+    let accounts: Array<{ customerId: string; name?: string; isManager?: boolean }> = [];
+    if (connectionStatus.connected && !connectionStatus.accountId) {
+      try {
+        const acctRes = await backendFetch(
+          "/google-ads/accounts",
+          "GET",
+          undefined,
+          shopName,
+        );
+        if (acctRes.status >= 200 && acctRes.status < 300 && acctRes.json?.accounts) {
+          accounts = acctRes.json.accounts;
+        }
+      } catch (err) {
+        console.error("Failed to fetch Google Ads accounts:", err);
+      }
+    }
+
+    return json({ shopName, connectionStatus, accounts });
   } catch (authError) {
     console.error("connect-google authentication error:", authError);
     const url = new URL(request.url);
@@ -202,7 +220,7 @@ export async function action({ request }: ActionFunctionArgs) {
 /*  Component                                                          */
 /* ------------------------------------------------------------------ */
 export default function ConnectGoogle() {
-  const { shopName, connectionStatus } = useLoaderData<typeof loader>();
+  const { shopName, connectionStatus, accounts } = useLoaderData<typeof loader>();
   const actionData = useActionData<typeof action>();
   const submit = useSubmit();
   const [searchParams] = useSearchParams();
@@ -297,6 +315,17 @@ export default function ConnectGoogle() {
     submit(formData, { method: "post" });
   }, [submit]);
 
+  const handleSelectAccount = useCallback(
+    (accountId: string) => {
+      setBanner(null);
+      const formData = new FormData();
+      formData.set("intent", "select-account");
+      formData.set("accountId", accountId);
+      submit(formData, { method: "post" });
+    },
+    [submit],
+  );
+
   /* ---------- render ---------- */
 
   return (
@@ -312,8 +341,65 @@ export default function ConnectGoogle() {
           </Banner>
         )}
 
-        {/* ---- Connected state ---- */}
-        {connectionStatus.connected ? (
+        {/* ---- Connected: needs account selection ---- */}
+        {connectionStatus.connected && !connectionStatus.accountId && accounts.length > 0 ? (
+          <Card>
+            <Box padding="400">
+              <BlockStack gap="400">
+                <InlineStack align="space-between" blockAlign="center">
+                  <Text as="h2" variant="headingMd">
+                    Select a Google Ads Account
+                  </Text>
+                  <Badge tone="warning">Account Required</Badge>
+                </InlineStack>
+
+                <Divider />
+
+                <Text as="p" variant="bodyMd">
+                  Your Google account is connected. Now select which Google Ads
+                  account you want to manage:
+                </Text>
+
+                <BlockStack gap="300">
+                  {accounts.map((account) => (
+                    <Card key={account.customerId}>
+                      <InlineStack align="space-between" blockAlign="center">
+                        <BlockStack gap="100">
+                          <Text as="p" variant="bodyMd" fontWeight="semibold">
+                            {account.customerId}
+                          </Text>
+                          {account.isManager && (
+                            <Badge tone="info">Manager Account (MCC)</Badge>
+                          )}
+                        </BlockStack>
+                        <Button
+                          variant="primary"
+                          onClick={() => handleSelectAccount(account.customerId)}
+                        >
+                          Select
+                        </Button>
+                      </InlineStack>
+                    </Card>
+                  ))}
+                </BlockStack>
+
+                <Divider />
+
+                <InlineStack align="end">
+                  <Button
+                    tone="critical"
+                    loading={isDisconnecting}
+                    onClick={handleDisconnect}
+                  >
+                    Disconnect
+                  </Button>
+                </InlineStack>
+              </BlockStack>
+            </Box>
+          </Card>
+
+        ) : connectionStatus.connected ? (
+          /* ---- Connected state with account selected ---- */
           <Card>
             <Box padding="400">
               <BlockStack gap="400">

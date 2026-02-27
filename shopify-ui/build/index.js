@@ -140454,9 +140454,9 @@ async function loader3({ request: request2 }) {
       );
       res.status >= 200 && res.status < 300 && res.json ? connectionStatus = {
         connected: !!res.json.connected,
-        email: res.json.email || void 0,
-        accountId: res.json.accountId || res.json.account_id || void 0,
-        accountName: res.json.accountName || res.json.account_name || void 0
+        email: res.json.email || res.json.googleEmail || void 0,
+        accountId: res.json.accountId || res.json.customerId || void 0,
+        accountName: res.json.accountName || void 0
       } : console.warn(
         `Google Ads connection-status returned ${res.status}:`,
         res.json?.error
@@ -140464,7 +140464,20 @@ async function loader3({ request: request2 }) {
     } catch (err) {
       console.error("Failed to check Google Ads connection status:", err);
     }
-    return (0, import_node4.json)({ shopName, connectionStatus });
+    let accounts = [];
+    if (connectionStatus.connected && !connectionStatus.accountId)
+      try {
+        let acctRes = await backendFetch(
+          "/google-ads/accounts",
+          "GET",
+          void 0,
+          shopName
+        );
+        acctRes.status >= 200 && acctRes.status < 300 && acctRes.json?.accounts && (accounts = acctRes.json.accounts);
+      } catch (err) {
+        console.error("Failed to fetch Google Ads accounts:", err);
+      }
+    return (0, import_node4.json)({ shopName, connectionStatus, accounts });
   } catch (authError) {
     console.error("connect-google authentication error:", authError);
     let url = new URL(request2.url), shop = url.searchParams.get("shop") || url.searchParams.get("host"), authUrl = shop ? `/auth/login?shop=${shop}` : "/auth/login";
@@ -140550,7 +140563,7 @@ async function action2({ request: request2 }) {
   }
 }
 function ConnectGoogle() {
-  let { shopName, connectionStatus } = (0, import_react5.useLoaderData)(), actionData = (0, import_react5.useActionData)(), submit = (0, import_react5.useSubmit)(), [searchParams] = (0, import_react5.useSearchParams)(), [isConnecting, setIsConnecting] = (0, import_react4.useState)(!1), [isDisconnecting, setIsDisconnecting] = (0, import_react4.useState)(!1), [banner, setBanner] = (0, import_react4.useState)(null), connectedParam = searchParams.get("connected"), errorParam = searchParams.get("error");
+  let { shopName, connectionStatus, accounts } = (0, import_react5.useLoaderData)(), actionData = (0, import_react5.useActionData)(), submit = (0, import_react5.useSubmit)(), [searchParams] = (0, import_react5.useSearchParams)(), [isConnecting, setIsConnecting] = (0, import_react4.useState)(!1), [isDisconnecting, setIsDisconnecting] = (0, import_react4.useState)(!1), [banner, setBanner] = (0, import_react4.useState)(null), connectedParam = searchParams.get("connected"), errorParam = searchParams.get("error");
   (0, import_react4.useEffect)(() => {
     connectedParam === "true" ? setBanner({
       tone: "success",
@@ -140591,7 +140604,14 @@ function ConnectGoogle() {
     setIsDisconnecting(!0), setBanner(null);
     let formData = new FormData();
     formData.set("intent", "disconnect"), submit(formData, { method: "post" });
-  }, [submit]);
+  }, [submit]), handleSelectAccount = (0, import_react4.useCallback)(
+    (accountId) => {
+      setBanner(null);
+      let formData = new FormData();
+      formData.set("intent", "select-account"), formData.set("accountId", accountId), submit(formData, { method: "post" });
+    },
+    [submit]
+  );
   return /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(import_polaris2.Page, { title: "Connect Google Ads", children: /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(import_polaris2.BlockStack, { gap: "400", children: [
     banner && /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
       import_polaris2.Banner,
@@ -140601,38 +140621,72 @@ function ConnectGoogle() {
         children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)("p", { children: banner.message })
       }
     ),
-    connectionStatus.connected ? /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(import_polaris2.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(import_polaris2.Box, { padding: "400", children: /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(import_polaris2.BlockStack, { gap: "400", children: [
+    connectionStatus.connected && !connectionStatus.accountId && accounts.length > 0 ? /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(import_polaris2.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(import_polaris2.Box, { padding: "400", children: /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(import_polaris2.BlockStack, { gap: "400", children: [
       /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(import_polaris2.InlineStack, { align: "space-between", blockAlign: "center", children: [
-        /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(import_polaris2.Text, { as: "h2", variant: "headingMd", children: "Google Ads Connection" }),
-        /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(import_polaris2.Badge, { tone: "success", children: "Connected" })
+        /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(import_polaris2.Text, { as: "h2", variant: "headingMd", children: "Select a Google Ads Account" }),
+        /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(import_polaris2.Badge, { tone: "warning", children: "Account Required" })
       ] }),
       /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(import_polaris2.Divider, {}),
-      /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(import_polaris2.BlockStack, { gap: "200", children: [
-        connectionStatus.email && /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(import_polaris2.InlineStack, { gap: "200", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(import_polaris2.Text, { as: "span", variant: "bodyMd", fontWeight: "semibold", children: "Google Account:" }),
-          /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(import_polaris2.Text, { as: "span", variant: "bodyMd", children: connectionStatus.email })
+      /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(import_polaris2.Text, { as: "p", variant: "bodyMd", children: "Your Google account is connected. Now select which Google Ads account you want to manage:" }),
+      /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(import_polaris2.BlockStack, { gap: "300", children: accounts.map((account) => /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(import_polaris2.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(import_polaris2.InlineStack, { align: "space-between", blockAlign: "center", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(import_polaris2.BlockStack, { gap: "100", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(import_polaris2.Text, { as: "p", variant: "bodyMd", fontWeight: "semibold", children: account.customerId }),
+          account.isManager && /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(import_polaris2.Badge, { tone: "info", children: "Manager Account (MCC)" })
         ] }),
-        connectionStatus.accountId && /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(import_polaris2.InlineStack, { gap: "200", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(import_polaris2.Text, { as: "span", variant: "bodyMd", fontWeight: "semibold", children: "Ads Account ID:" }),
-          /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(import_polaris2.Text, { as: "span", variant: "bodyMd", children: connectionStatus.accountId })
-        ] }),
-        connectionStatus.accountName && /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(import_polaris2.InlineStack, { gap: "200", children: [
-          /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(import_polaris2.Text, { as: "span", variant: "bodyMd", fontWeight: "semibold", children: "Account Name:" }),
-          /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(import_polaris2.Text, { as: "span", variant: "bodyMd", children: connectionStatus.accountName })
-        ] })
-      ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
+          import_polaris2.Button,
+          {
+            variant: "primary",
+            onClick: () => handleSelectAccount(account.customerId),
+            children: "Select"
+          }
+        )
+      ] }) }, account.customerId)) }),
       /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(import_polaris2.Divider, {}),
       /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(import_polaris2.InlineStack, { align: "end", children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
         import_polaris2.Button,
         {
-          variant: "primary",
           tone: "critical",
           loading: isDisconnecting,
           onClick: handleDisconnect,
-          children: "Disconnect Google Ads"
+          children: "Disconnect"
         }
       ) })
-    ] }) }) }) : (
+    ] }) }) }) : connectionStatus.connected ? (
+      /* ---- Connected state with account selected ---- */
+      /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(import_polaris2.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(import_polaris2.Box, { padding: "400", children: /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(import_polaris2.BlockStack, { gap: "400", children: [
+        /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(import_polaris2.InlineStack, { align: "space-between", blockAlign: "center", children: [
+          /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(import_polaris2.Text, { as: "h2", variant: "headingMd", children: "Google Ads Connection" }),
+          /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(import_polaris2.Badge, { tone: "success", children: "Connected" })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(import_polaris2.Divider, {}),
+        /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(import_polaris2.BlockStack, { gap: "200", children: [
+          connectionStatus.email && /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(import_polaris2.InlineStack, { gap: "200", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(import_polaris2.Text, { as: "span", variant: "bodyMd", fontWeight: "semibold", children: "Google Account:" }),
+            /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(import_polaris2.Text, { as: "span", variant: "bodyMd", children: connectionStatus.email })
+          ] }),
+          connectionStatus.accountId && /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(import_polaris2.InlineStack, { gap: "200", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(import_polaris2.Text, { as: "span", variant: "bodyMd", fontWeight: "semibold", children: "Ads Account ID:" }),
+            /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(import_polaris2.Text, { as: "span", variant: "bodyMd", children: connectionStatus.accountId })
+          ] }),
+          connectionStatus.accountName && /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(import_polaris2.InlineStack, { gap: "200", children: [
+            /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(import_polaris2.Text, { as: "span", variant: "bodyMd", fontWeight: "semibold", children: "Account Name:" }),
+            /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(import_polaris2.Text, { as: "span", variant: "bodyMd", children: connectionStatus.accountName })
+          ] })
+        ] }),
+        /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(import_polaris2.Divider, {}),
+        /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(import_polaris2.InlineStack, { align: "end", children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(
+          import_polaris2.Button,
+          {
+            variant: "primary",
+            tone: "critical",
+            loading: isDisconnecting,
+            onClick: handleDisconnect,
+            children: "Disconnect Google Ads"
+          }
+        ) })
+      ] }) }) })
+    ) : (
       /* ---- Not connected state ---- */
       /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(import_polaris2.Card, { children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(import_polaris2.Box, { padding: "400", children: /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(import_polaris2.BlockStack, { gap: "400", children: [
         /* @__PURE__ */ (0, import_jsx_runtime4.jsxs)(import_polaris2.InlineStack, { align: "space-between", blockAlign: "center", children: [
@@ -146873,7 +146927,7 @@ function App2() {
 var ErrorBoundary2 = boundary.error, headers = (headersArgs) => boundary.headers(headersArgs);
 
 // server-assets-manifest:@remix-run/dev/assets-manifest
-var assets_manifest_default = { entry: { module: "/assets/entry.client-JXTFL6CA.js", imports: ["/assets/_shared/chunk-YFR5ESV5.js", "/assets/_shared/chunk-TXQSRDID.js", "/assets/_shared/chunk-P23QBOGJ.js"] }, routes: { root: { id: "root", parentId: void 0, path: "", index: void 0, caseSensitive: void 0, module: "/assets/root-RWOO63OM.js", imports: ["/assets/_shared/chunk-LXK74B4C.js", "/assets/_shared/chunk-ES6NUWLN.js"], hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/_health": { id: "routes/_health", parentId: "root", path: void 0, index: void 0, caseSensitive: void 0, module: "/assets/routes/_health-A5T2YZUT.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/_index": { id: "routes/_index", parentId: "root", path: void 0, index: !0, caseSensitive: void 0, module: "/assets/routes/_index-73J7LGV3.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/api.generate-script": { id: "routes/api.generate-script", parentId: "root", path: "api/generate-script", index: void 0, caseSensitive: void 0, module: "/assets/routes/api.generate-script-3DUZY66Z.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/api.proxy.$": { id: "routes/api.proxy.$", parentId: "root", path: "api/proxy/*", index: void 0, caseSensitive: void 0, module: "/assets/routes/api.proxy.$-44OW55O3.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/api.script-proxy": { id: "routes/api.script-proxy", parentId: "root", path: "api/script-proxy", index: void 0, caseSensitive: void 0, module: "/assets/routes/api.script-proxy-D7CGEASX.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app": { id: "routes/app", parentId: "root", path: "app", index: void 0, caseSensitive: void 0, module: "/assets/routes/app-BA3BCWRB.js", imports: ["/assets/_shared/chunk-PCQUX7PX.js", "/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/app._index": { id: "routes/app._index", parentId: "routes/app", path: void 0, index: !0, caseSensitive: void 0, module: "/assets/routes/app._index-F6YONGDI.js", imports: ["/assets/_shared/chunk-XGZ5RCNR.js", "/assets/_shared/chunk-ES6NUWLN.js", "/assets/_shared/chunk-WPWEXUS5.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.ai-tools": { id: "routes/app.ai-tools", parentId: "routes/app", path: "ai-tools", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.ai-tools-VLAKMGLN.js", imports: ["/assets/_shared/chunk-XGZ5RCNR.js", "/assets/_shared/chunk-ES6NUWLN.js", "/assets/_shared/chunk-WPWEXUS5.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.campaigns": { id: "routes/app.campaigns", parentId: "routes/app", path: "campaigns", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.campaigns-T6SRN7RN.js", imports: ["/assets/_shared/chunk-XGZ5RCNR.js", "/assets/_shared/chunk-ES6NUWLN.js", "/assets/_shared/chunk-WPWEXUS5.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.connect-google": { id: "routes/app.connect-google", parentId: "routes/app", path: "connect-google", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.connect-google-NPD64LBZ.js", imports: ["/assets/_shared/chunk-ES6NUWLN.js", "/assets/_shared/chunk-WPWEXUS5.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.settings": { id: "routes/app.settings", parentId: "routes/app", path: "settings", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.settings-RYROKSMH.js", imports: ["/assets/_shared/chunk-XGZ5RCNR.js", "/assets/_shared/chunk-ES6NUWLN.js", "/assets/_shared/chunk-WPWEXUS5.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/auth.$": { id: "routes/auth.$", parentId: "root", path: "auth/*", index: void 0, caseSensitive: void 0, module: "/assets/routes/auth.$-D4HZOJGU.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/auth.google-ads.callback": { id: "routes/auth.google-ads.callback", parentId: "root", path: "auth/google-ads/callback", index: void 0, caseSensitive: void 0, module: "/assets/routes/auth.google-ads.callback-62IR3D53.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/auth.session-token": { id: "routes/auth.session-token", parentId: "root", path: "auth/session-token", index: void 0, caseSensitive: void 0, module: "/assets/routes/auth.session-token-VO5NUU2V.js", imports: ["/assets/_shared/chunk-PCQUX7PX.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/debug": { id: "routes/debug", parentId: "root", path: "debug", index: void 0, caseSensitive: void 0, module: "/assets/routes/debug-5ZDPCOZX.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/health": { id: "routes/health", parentId: "root", path: "health", index: void 0, caseSensitive: void 0, module: "/assets/routes/health-FBV7EBK7.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/install": { id: "routes/install", parentId: "root", path: "install", index: void 0, caseSensitive: void 0, module: "/assets/routes/install-YL2XNGMC.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/local.autopilot": { id: "routes/local.autopilot", parentId: "root", path: "local/autopilot", index: void 0, caseSensitive: void 0, module: "/assets/routes/local.autopilot-4JM6WTCA.js", imports: ["/assets/_shared/chunk-WPWEXUS5.js", "/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/privacy": { id: "routes/privacy", parentId: "root", path: "privacy", index: void 0, caseSensitive: void 0, module: "/assets/routes/privacy-FAMCBMFP.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/support": { id: "routes/support", parentId: "root", path: "support", index: void 0, caseSensitive: void 0, module: "/assets/routes/support-SO42IY5R.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/terms": { id: "routes/terms", parentId: "root", path: "terms", index: void 0, caseSensitive: void 0, module: "/assets/routes/terms-T6ZZOXSF.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 } }, version: "d3bae1c9", hmr: void 0, url: "/assets/manifest-D3BAE1C9.js" };
+var assets_manifest_default = { entry: { module: "/assets/entry.client-JXTFL6CA.js", imports: ["/assets/_shared/chunk-YFR5ESV5.js", "/assets/_shared/chunk-TXQSRDID.js", "/assets/_shared/chunk-P23QBOGJ.js"] }, routes: { root: { id: "root", parentId: void 0, path: "", index: void 0, caseSensitive: void 0, module: "/assets/root-RWOO63OM.js", imports: ["/assets/_shared/chunk-LXK74B4C.js", "/assets/_shared/chunk-ES6NUWLN.js"], hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/_health": { id: "routes/_health", parentId: "root", path: void 0, index: void 0, caseSensitive: void 0, module: "/assets/routes/_health-A5T2YZUT.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/_index": { id: "routes/_index", parentId: "root", path: void 0, index: !0, caseSensitive: void 0, module: "/assets/routes/_index-73J7LGV3.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/api.generate-script": { id: "routes/api.generate-script", parentId: "root", path: "api/generate-script", index: void 0, caseSensitive: void 0, module: "/assets/routes/api.generate-script-3DUZY66Z.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/api.proxy.$": { id: "routes/api.proxy.$", parentId: "root", path: "api/proxy/*", index: void 0, caseSensitive: void 0, module: "/assets/routes/api.proxy.$-44OW55O3.js", imports: void 0, hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/api.script-proxy": { id: "routes/api.script-proxy", parentId: "root", path: "api/script-proxy", index: void 0, caseSensitive: void 0, module: "/assets/routes/api.script-proxy-D7CGEASX.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app": { id: "routes/app", parentId: "root", path: "app", index: void 0, caseSensitive: void 0, module: "/assets/routes/app-BA3BCWRB.js", imports: ["/assets/_shared/chunk-PCQUX7PX.js", "/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !0 }, "routes/app._index": { id: "routes/app._index", parentId: "routes/app", path: void 0, index: !0, caseSensitive: void 0, module: "/assets/routes/app._index-F6YONGDI.js", imports: ["/assets/_shared/chunk-XGZ5RCNR.js", "/assets/_shared/chunk-ES6NUWLN.js", "/assets/_shared/chunk-WPWEXUS5.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.ai-tools": { id: "routes/app.ai-tools", parentId: "routes/app", path: "ai-tools", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.ai-tools-VLAKMGLN.js", imports: ["/assets/_shared/chunk-XGZ5RCNR.js", "/assets/_shared/chunk-ES6NUWLN.js", "/assets/_shared/chunk-WPWEXUS5.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.campaigns": { id: "routes/app.campaigns", parentId: "routes/app", path: "campaigns", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.campaigns-T6SRN7RN.js", imports: ["/assets/_shared/chunk-XGZ5RCNR.js", "/assets/_shared/chunk-ES6NUWLN.js", "/assets/_shared/chunk-WPWEXUS5.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.connect-google": { id: "routes/app.connect-google", parentId: "routes/app", path: "connect-google", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.connect-google-KMRDMS7H.js", imports: ["/assets/_shared/chunk-ES6NUWLN.js", "/assets/_shared/chunk-WPWEXUS5.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/app.settings": { id: "routes/app.settings", parentId: "routes/app", path: "settings", index: void 0, caseSensitive: void 0, module: "/assets/routes/app.settings-RYROKSMH.js", imports: ["/assets/_shared/chunk-XGZ5RCNR.js", "/assets/_shared/chunk-ES6NUWLN.js", "/assets/_shared/chunk-WPWEXUS5.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/auth.$": { id: "routes/auth.$", parentId: "root", path: "auth/*", index: void 0, caseSensitive: void 0, module: "/assets/routes/auth.$-D4HZOJGU.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/auth.google-ads.callback": { id: "routes/auth.google-ads.callback", parentId: "root", path: "auth/google-ads/callback", index: void 0, caseSensitive: void 0, module: "/assets/routes/auth.google-ads.callback-62IR3D53.js", imports: void 0, hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/auth.session-token": { id: "routes/auth.session-token", parentId: "root", path: "auth/session-token", index: void 0, caseSensitive: void 0, module: "/assets/routes/auth.session-token-VO5NUU2V.js", imports: ["/assets/_shared/chunk-PCQUX7PX.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/debug": { id: "routes/debug", parentId: "root", path: "debug", index: void 0, caseSensitive: void 0, module: "/assets/routes/debug-5ZDPCOZX.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/health": { id: "routes/health", parentId: "root", path: "health", index: void 0, caseSensitive: void 0, module: "/assets/routes/health-FBV7EBK7.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/install": { id: "routes/install", parentId: "root", path: "install", index: void 0, caseSensitive: void 0, module: "/assets/routes/install-YL2XNGMC.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/local.autopilot": { id: "routes/local.autopilot", parentId: "root", path: "local/autopilot", index: void 0, caseSensitive: void 0, module: "/assets/routes/local.autopilot-4JM6WTCA.js", imports: ["/assets/_shared/chunk-WPWEXUS5.js", "/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !0, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/privacy": { id: "routes/privacy", parentId: "root", path: "privacy", index: void 0, caseSensitive: void 0, module: "/assets/routes/privacy-FAMCBMFP.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/support": { id: "routes/support", parentId: "root", path: "support", index: void 0, caseSensitive: void 0, module: "/assets/routes/support-SO42IY5R.js", imports: ["/assets/_shared/chunk-6TBH3TG6.js"], hasAction: !1, hasLoader: !0, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 }, "routes/terms": { id: "routes/terms", parentId: "root", path: "terms", index: void 0, caseSensitive: void 0, module: "/assets/routes/terms-T6ZZOXSF.js", imports: void 0, hasAction: !1, hasLoader: !1, hasClientAction: !1, hasClientLoader: !1, hasErrorBoundary: !1 } }, version: "97164277", hmr: void 0, url: "/assets/manifest-97164277.js" };
 
 // server-entry-module:@remix-run/dev/server-build
 var mode = "production", assetsBuildDirectory = "public/assets", future = { v3_fetcherPersist: !1, v3_relativeSplatPath: !1, v3_throwAbortReason: !1, v3_routeConfig: !1, v3_singleFetch: !1, v3_lazyRouteDiscovery: !1, unstable_optimizeDeps: !1 }, publicPath = "/assets/", entry = { module: entry_server_exports }, routes = {

@@ -150,13 +150,13 @@ async function buildCustomerClient(tenantId, forceRefresh = false) {
   const api = getApiInstance();
 
   const customerOptions = {
-    customer_id: connection.customer_id,
-    refresh_token: connection.refresh_token,
+    customer_id: connection.customerId,
+    refresh_token: connection.refreshToken,
   };
 
   // MCC (manager) accounts require login_customer_id
-  if (connection.login_customer_id) {
-    customerOptions.login_customer_id = connection.login_customer_id;
+  if (connection.loginCustomerId) {
+    customerOptions.login_customer_id = connection.loginCustomerId;
   }
 
   return api.Customer(customerOptions);

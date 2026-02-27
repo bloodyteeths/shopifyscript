@@ -247,7 +247,7 @@ router.get("/accounts", async (req, res) => {
       return res.status(404).json({ ok: false, error: "No Google Ads connection found for this tenant" });
     }
 
-    const accounts = await googleAdsAuth.listAccessibleAccounts(tenantId);
+    const accounts = await googleAdsAuth.listAccessibleAccounts(connection.refreshToken);
     return res.json({
       ok: true,
       accounts: (accounts || []).map((a) => ({
