@@ -30,6 +30,8 @@ export interface AutopilotControlsProps {
   initialHistory?: AutopilotHistoryEntry[];
   /** Campaign list for the exclude-campaigns multi-select */
   campaignNames?: string[];
+  /** Route action URL for fetcher submissions (defaults to "/app/advanced") */
+  actionUrl?: string;
 }
 
 interface AutopilotStatus {
@@ -79,6 +81,7 @@ export function AutopilotControls({
   initialStatus,
   initialHistory,
   campaignNames = [],
+  actionUrl = "/app/advanced",
 }: AutopilotControlsProps) {
   // -- Fetchers (Remix pattern: use fetcher to POST without full-page nav) --
   const configFetcher = useFetcher();
@@ -166,14 +169,14 @@ export function AutopilotControls({
   const refreshStatus = useCallback(() => {
     statusFetcher.submit(
       { _autopilotAction: "loadStatus", tenant: tenantId },
-      { method: "post", action: "/app/advanced" },
+      { method: "post", action: actionUrl },
     );
   }, [statusFetcher, tenantId]);
 
   const refreshHistory = useCallback(() => {
     historyFetcher.submit(
       { _autopilotAction: "loadHistory", tenant: tenantId },
-      { method: "post", action: "/app/advanced" },
+      { method: "post", action: actionUrl },
     );
   }, [historyFetcher, tenantId]);
 
@@ -189,14 +192,14 @@ export function AutopilotControls({
         maxBidChangePct,
         excludedCampaigns: JSON.stringify(excludedCampaigns),
       },
-      { method: "post", action: "/app/advanced" },
+      { method: "post", action: actionUrl },
     );
   };
 
   const handleRunNow = () => {
     runFetcher.submit(
       { _autopilotAction: "runNow", tenant: tenantId },
-      { method: "post", action: "/app/advanced" },
+      { method: "post", action: actionUrl },
     );
   };
 

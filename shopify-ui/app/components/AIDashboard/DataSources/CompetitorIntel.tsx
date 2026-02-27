@@ -7,12 +7,10 @@ import React, { useState, useEffect, useMemo } from 'react';
 import {
   Card,
   Layout,
-  Page,
   Text,
   Badge,
   DataTable,
   Button,
-  ButtonGroup,
   BlockStack,
   InlineStack,
   Box,
@@ -20,17 +18,12 @@ import {
   EmptyState,
   Tabs,
   TextField,
-  Select,
   Modal,
   TextContainer,
-  List,
   Avatar,
   Link,
-  Tooltip,
   Icon,
   Collapsible,
-  Divider,
-  ProgressBar,
   ChoiceList
 } from '@shopify/polaris';
 import {
@@ -576,25 +569,34 @@ export function CompetitorIntel({
   ];
 
   return (
-    <Page
-      title="Competitor Intelligence"
-      subtitle={`Last analyzed: ${formatters.dateTime(intelData.lastAnalyzed)} | Status: ${intelData.analysisStatus}`}
-      secondaryActions={[
-        {
-          content: 'Refresh',
-          icon: RefreshIcon,
-          onAction: () => {
-            fetchCompetitorIntel();
-            onRefresh?.();
-          }
-        },
-        ...(showExport ? [{
-          content: 'Export',
-          icon: ExportIcon,
-          onAction: () => handleExport({ format: 'csv', filename: 'competitor-intelligence' })
-        }] : [])
-      ]}
-    >
+    <BlockStack gap="400">
+      <InlineStack align="space-between" blockAlign="center">
+        <BlockStack gap="100">
+          <Text as="h2" variant="headingLg">Competitor Intelligence</Text>
+          <Text as="p" variant="bodySm" tone="subdued">
+            Last analyzed: {formatters.dateTime(intelData.lastAnalyzed)} | Status: {intelData.analysisStatus}
+          </Text>
+        </BlockStack>
+        <InlineStack gap="200">
+          <Button
+            icon={RefreshIcon}
+            onClick={() => {
+              fetchCompetitorIntel();
+              onRefresh?.();
+            }}
+          >
+            Refresh
+          </Button>
+          {showExport && (
+            <Button
+              icon={ExportIcon}
+              onClick={() => handleExport({ format: 'csv', filename: 'competitor-intelligence' })}
+            >
+              Export
+            </Button>
+          )}
+        </InlineStack>
+      </InlineStack>
       <Layout>
         {showFilters && (
           <Layout.Section>
@@ -844,6 +846,6 @@ export function CompetitorIntel({
           </Modal.Section>
         </Modal>
       )}
-    </Page>
+    </BlockStack>
   );
 }

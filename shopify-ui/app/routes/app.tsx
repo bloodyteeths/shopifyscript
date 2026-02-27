@@ -1,36 +1,25 @@
 import React from "react";
 import type { HeadersFunction, LoaderFunctionArgs } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { Outlet, useLoaderData } from "@remix-run/react";
+import { Link, Outlet, useLoaderData } from "@remix-run/react";
 // @ts-expect-error moduleResolution mismatch with shopify-app-remix
 import { boundary } from "@shopify/shopify-app-remix/server";
 // @ts-expect-error moduleResolution mismatch with shopify-app-remix
 import { AppProvider } from "@shopify/shopify-app-remix/react";
+import { NavMenu } from "@shopify/app-bridge-react";
 import polarisStyles from "@shopify/polaris/build/esm/styles.css";
 
 import { authenticate } from "../shopify.server";
-import { ErrorBoundary as ReactErrorBoundary } from "../components/ErrorBoundary";
 
 export const links = () => [{ rel: "stylesheet", href: polarisStyles }];
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   try {
-    if (process.env.NODE_ENV !== 'production') {
-      console.log(`🏪 Dashboard loaded for shop: ${new URL(request.url).searchParams.get('shop') || 'unknown'}`);
-    }
-    
-    // Standard Shopify authentication following best practices
     const { session } = await authenticate.admin(request);
-
     const shopName = session?.shop?.replace(".myshopify.com", "");
 
     if (!shopName) {
-      console.error("No shop name found in session:", session);
       throw new Error("Unable to determine shop name from Shopify session");
-    }
-
-    if (process.env.NODE_ENV !== 'production') {
-      console.log(`🏪 Shopify app authenticated for shop: ${shopName}`);
     }
 
     return json({
@@ -38,52 +27,36 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
       shopName,
     });
   } catch (error) {
-    if (process.env.NODE_ENV !== 'production') {
-      console.error("🚨 App route authentication error:", error);
-    } else {
-      console.error("App route authentication error:", error);
-    }
-    console.error("Request URL:", request.url);
-    
-    // Redirect to auth with shop context if possible
+    console.error("App route authentication error:", error);
+
     const url = new URL(request.url);
-    const shop = url.searchParams.get('shop') || url.searchParams.get('host');
-    const authUrl = shop ? `/auth/login?shop=${shop}` : '/auth/login';
-    
+    const shop = url.searchParams.get("shop") || url.searchParams.get("host");
+    const authUrl = shop ? `/auth/login?shop=${shop}` : "/auth/login";
+
     throw new Response(null, {
       status: 302,
-      headers: { Location: authUrl }
+      headers: { Location: authUrl },
     });
   }
 };
 
 export default function App() {
-  const { apiKey, shopName } = useLoaderData<typeof loader>();
+  const { apiKey } = useLoaderData<typeof loader>();
 
   return (
     <AppProvider isEmbeddedApp apiKey={apiKey}>
-      <ReactErrorBoundary>
-        <div
-          style={{
-            minHeight: "100vh",
-            backgroundColor: "#f6f6f7",
-            padding: "0",
-          }}
-        >
-          {/* Store shop name in a global context for child components */}
-          <div
-            id="__shop"
-            data-shop-name={shopName}
-            style={{ display: "none" }}
-          />
-          <Outlet />
-        </div>
-      </ReactErrorBoundary>
+      <NavMenu>
+        <Link to="/app" rel="home">Dashboard</Link>
+        <Link to="/app/campaigns">Campaigns</Link>
+        <Link to="/app/ai-tools">AI Tools</Link>
+        <Link to="/app/connect-google">Google Ads</Link>
+        <Link to="/app/settings">Settings</Link>
+      </NavMenu>
+      <Outlet />
     </AppProvider>
   );
 }
 
-// Shopify app boundary provides error handling for authentication errors
 export const ErrorBoundary = boundary.error;
 
 export const headers: HeadersFunction = (headersArgs) => {

@@ -300,10 +300,7 @@ export default function ConnectGoogle() {
   /* ---------- render ---------- */
 
   return (
-    <Page
-      title="Connect Google Ads"
-      backAction={{ content: "Dashboard", url: "/app" }}
-    >
+    <Page title="Connect Google Ads">
       <BlockStack gap="400">
         {/* Banners */}
         {banner && (
